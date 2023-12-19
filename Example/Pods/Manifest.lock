@@ -1,0 +1,23 @@
+PODS:
+  - Kingfisher (7.10.1)
+  - likeminds-feed-iOS (0.1.0):
+    - Kingfisher (~> 7.0)
+
+DEPENDENCIES:
+  - likeminds-feed-iOS (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - Kingfisher
+
+EXTERNAL SOURCES:
+  likeminds-feed-iOS:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Kingfisher: bc5abe80a8e0144537ef1dd5a0b2621b04f7f439
+  likeminds-feed-iOS: 87be59d78f2994bf97a62d0031a2acb1696a25d0
+
+PODFILE CHECKSUM: e59ae8caf413ceedbf7641379dc5d1012de2c3c9
+
+COCOAPODS: 1.14.3

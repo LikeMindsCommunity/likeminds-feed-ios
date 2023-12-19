@@ -1,0 +1,6 @@
+framework module likeminds_feed_iOS {
+  umbrella header "likeminds-feed-iOS-umbrella.h"
+
+  export *
+  module * { export * }
+}
