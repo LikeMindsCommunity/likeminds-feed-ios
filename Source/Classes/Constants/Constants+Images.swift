@@ -27,9 +27,11 @@ public extension Constants {
         public var bookmark = UIImage(systemName: "bookmark")
         public var bookmarkFilled = UIImage(systemName: "bookmark.fill")
         public var shareIcon = UIImage(systemName: "arrowshape.turn.up.right")
+        public var xmarkIcon = UIImage(systemName: "xmark")
         public var crossIcon = UIImage(systemName: "xmark.circle")
         public var ellipsis = UIImage(systemName: "ellipsis")
         public var planeIconFilled = UIImage(systemName: "paperplane.fill")
+        public var pencilIcon = UIImage(systemName: "pencil")
         public var pdfIcon = UIImage(named: "pdfIcon", in: Bundle.LMBundleIdentifier)
     }
 }

@@ -74,6 +74,7 @@
 		D9CC66222E55827BDBE32EFAB31B5381 /* KFOptionsSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493C837F9CE5C0A3DF3B40323AADC0EC /* KFOptionsSetter.swift */; };
 		DBD70DE28BDBC4B1C09EEBA3F6D76BF3 /* UIButton+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0902D1EF5885EB57D9DC40922F84B0F /* UIButton+Kingfisher.swift */; };
 		DE8B77B5FAEA64C398FB1C4B24D6A3C8 /* Pods-likeminds-feed-iOS_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AE5CB930B391C5F10F047722B442EC0 /* Pods-likeminds-feed-iOS_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E578AD4B2B3305A000C1BAEC /* Collection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E578AD4A2B3305A000C1BAEC /* Collection+Extension.swift */; };
 		E5B9C4AD2B31A541001DF80A /* LMButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C4742B31A541001DF80A /* LMButton.swift */; };
 		E5B9C4AE2B31A541001DF80A /* LMLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C4752B31A541001DF80A /* LMLabel.swift */; };
 		E5B9C4AF2B31A541001DF80A /* LMViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C4762B31A541001DF80A /* LMViewController.swift */; };
@@ -118,6 +119,11 @@
 		E5B9C4D72B31A542001DF80A /* LMFeedPostHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C4AA2B31A541001DF80A /* LMFeedPostHeaderView.swift */; };
 		E5B9C4D82B31A542001DF80A /* GetAttributedTextWithRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C4AC2B31A541001DF80A /* GetAttributedTextWithRoutes.swift */; };
 		E5B9C4DA2B31A54E001DF80A /* LMAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5B9C4D92B31A54E001DF80A /* LMAssets.xcassets */; };
+		E5B9C4EE2B32C6F3001DF80A /* LMFeedTopicViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C4EC2B32C67E001DF80A /* LMFeedTopicViewCell.swift */; };
+		E5B9C4F02B32D09C001DF80A /* LMFeedTopicEditIconViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C4EF2B32D09C001DF80A /* LMFeedTopicEditIconViewCell.swift */; };
+		E5B9C4F22B32D532001DF80A /* LMFeedTopicEditViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C4F12B32D532001DF80A /* LMFeedTopicEditViewCell.swift */; };
+		E5B9C4F42B32EBF5001DF80A /* LMFeedTopicCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C4F32B32EBF5001DF80A /* LMFeedTopicCollectionView.swift */; };
+		E5B9C4F62B32F9C7001DF80A /* LMFeedTopicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C4F52B32F9C7001DF80A /* LMFeedTopicView.swift */; };
 		E7378F61AD6959D5538E595EA4A48AF4 /* AVAssetImageDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11991C591C5331E0A5D646022633248 /* AVAssetImageDataProvider.swift */; };
 		E95D6E6462506EFD8EA9332AD9BC492A /* SizeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62FC6B2C6D167FCB245EB6E17CAA922 /* SizeExtensions.swift */; };
 		EE4E233D2DD0DFC4F82FD6748EC3429F /* ImageBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECE9203160C151152F13D89B83F08BE /* ImageBinder.swift */; };
@@ -242,6 +248,7 @@
 		DF6D5F7B79560B1B16BA5F0BFBEE8632 /* Pods-likeminds-feed-iOS_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-likeminds-feed-iOS_Example-Info.plist"; sourceTree = "<group>"; };
 		E1BB59765FCBAF6C947649CBABE1B34A /* String+MD5.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "String+MD5.swift"; path = "Sources/Utility/String+MD5.swift"; sourceTree = "<group>"; };
 		E2DE238FDFD3AF2621323331132303CD /* ImageView+Kingfisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ImageView+Kingfisher.swift"; path = "Sources/Extensions/ImageView+Kingfisher.swift"; sourceTree = "<group>"; };
+		E578AD4A2B3305A000C1BAEC /* Collection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Extension.swift"; sourceTree = "<group>"; };
 		E5B9C4742B31A541001DF80A /* LMButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LMButton.swift; sourceTree = "<group>"; };
 		E5B9C4752B31A541001DF80A /* LMLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LMLabel.swift; sourceTree = "<group>"; };
 		E5B9C4762B31A541001DF80A /* LMViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LMViewController.swift; sourceTree = "<group>"; };
@@ -286,6 +293,11 @@
 		E5B9C4AA2B31A541001DF80A /* LMFeedPostHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LMFeedPostHeaderView.swift; sourceTree = "<group>"; };
 		E5B9C4AC2B31A541001DF80A /* GetAttributedTextWithRoutes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetAttributedTextWithRoutes.swift; sourceTree = "<group>"; };
 		E5B9C4D92B31A54E001DF80A /* LMAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = LMAssets.xcassets; sourceTree = "<group>"; };
+		E5B9C4EC2B32C67E001DF80A /* LMFeedTopicViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTopicViewCell.swift; sourceTree = "<group>"; };
+		E5B9C4EF2B32D09C001DF80A /* LMFeedTopicEditIconViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTopicEditIconViewCell.swift; sourceTree = "<group>"; };
+		E5B9C4F12B32D532001DF80A /* LMFeedTopicEditViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTopicEditViewCell.swift; sourceTree = "<group>"; };
+		E5B9C4F32B32EBF5001DF80A /* LMFeedTopicCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTopicCollectionView.swift; sourceTree = "<group>"; };
+		E5B9C4F52B32F9C7001DF80A /* LMFeedTopicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTopicView.swift; sourceTree = "<group>"; };
 		E606751B33F26857B84095B85A628A65 /* likeminds-feed-iOS-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "likeminds-feed-iOS-Info.plist"; sourceTree = "<group>"; };
 		E62FC6B2C6D167FCB245EB6E17CAA922 /* SizeExtensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SizeExtensions.swift; path = Sources/Utility/SizeExtensions.swift; sourceTree = "<group>"; };
 		EAB9EE5D27873E20310A83AA5FB6D7BA /* Pods-likeminds-feed-iOS_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-likeminds-feed-iOS_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -567,23 +579,25 @@
 		E5B9C4732B31A541001DF80A /* Initials */ = {
 			isa = PBXGroup;
 			children = (
-				E5B9C4742B31A541001DF80A /* LMButton.swift */,
-				E5B9C4752B31A541001DF80A /* LMLabel.swift */,
-				E5B9C4762B31A541001DF80A /* LMViewController.swift */,
-				E5B9C4772B31A541001DF80A /* LMImageView.swift */,
-				E5B9C4782B31A541001DF80A /* LMCollectionView.swift */,
 				E5B9C4792B31A541001DF80A /* Bundle+Extension.swift */,
-				E5B9C47A2B31A541001DF80A /* LMTableViewCell.swift */,
-				E5B9C47B2B31A541001DF80A /* NSAttributedString.Key+Extension.swift */,
-				E5B9C47C2B31A541001DF80A /* LMTableView.swift */,
-				E5B9C47D2B31A541001DF80A /* LMTableViewHeaderFooterView.swift */,
-				E5B9C47E2B31A541001DF80A /* LMTextView.swift */,
+				E5B9C4742B31A541001DF80A /* LMButton.swift */,
+				E5B9C4782B31A541001DF80A /* LMCollectionView.swift */,
 				E5B9C47F2B31A541001DF80A /* LMCollectionViewCell.swift */,
-				E5B9C4802B31A541001DF80A /* LMViewLifeCycle.swift */,
-				E5B9C4812B31A541001DF80A /* LMView.swift */,
+				E5B9C4F32B32EBF5001DF80A /* LMFeedTopicCollectionView.swift */,
+				E5B9C4772B31A541001DF80A /* LMImageView.swift */,
+				E5B9C4752B31A541001DF80A /* LMLabel.swift */,
 				E5B9C4822B31A541001DF80A /* LMStackView.swift */,
-				E5B9C4832B31A541001DF80A /* UINavigationItem+Extension.swift */,
+				E5B9C47C2B31A541001DF80A /* LMTableView.swift */,
+				E5B9C47A2B31A541001DF80A /* LMTableViewCell.swift */,
+				E5B9C47D2B31A541001DF80A /* LMTableViewHeaderFooterView.swift */,
 				E5B9C4842B31A541001DF80A /* LMTappableLabel.swift */,
+				E5B9C47E2B31A541001DF80A /* LMTextView.swift */,
+				E5B9C4812B31A541001DF80A /* LMView.swift */,
+				E5B9C4762B31A541001DF80A /* LMViewController.swift */,
+				E5B9C4802B31A541001DF80A /* LMViewLifeCycle.swift */,
+				E5B9C47B2B31A541001DF80A /* NSAttributedString.Key+Extension.swift */,
+				E5B9C4832B31A541001DF80A /* UINavigationItem+Extension.swift */,
+				E578AD4A2B3305A000C1BAEC /* Collection+Extension.swift */,
 			);
 			path = Initials;
 			sourceTree = "<group>";
@@ -631,6 +645,7 @@
 		E5B9C4952B31A541001DF80A /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				E5B9C4E72B32C417001DF80A /* TopicFeed */,
 				E5B9C4962B31A541001DF80A /* PostWidget */,
 			);
 			path = UI;
@@ -704,6 +719,25 @@
 				E5B9C4AC2B31A541001DF80A /* GetAttributedTextWithRoutes.swift */,
 			);
 			path = Utility;
+			sourceTree = "<group>";
+		};
+		E5B9C4E72B32C417001DF80A /* TopicFeed */ = {
+			isa = PBXGroup;
+			children = (
+				E5B9C4EB2B32C5BB001DF80A /* CollectionCells */,
+				E5B9C4F52B32F9C7001DF80A /* LMFeedTopicView.swift */,
+			);
+			path = TopicFeed;
+			sourceTree = "<group>";
+		};
+		E5B9C4EB2B32C5BB001DF80A /* CollectionCells */ = {
+			isa = PBXGroup;
+			children = (
+				E5B9C4EC2B32C67E001DF80A /* LMFeedTopicViewCell.swift */,
+				E5B9C4EF2B32D09C001DF80A /* LMFeedTopicEditIconViewCell.swift */,
+				E5B9C4F12B32D532001DF80A /* LMFeedTopicEditViewCell.swift */,
+			);
+			path = CollectionCells;
 			sourceTree = "<group>";
 		};
 		E6791147770861F576E4ADD22B089490 /* Support Files */ = {
@@ -898,16 +932,20 @@
 			files = (
 				E5B9C4BC2B31A541001DF80A /* UINavigationItem+Extension.swift in Sources */,
 				E5B9C4B72B31A541001DF80A /* LMTextView.swift in Sources */,
+				E5B9C4F02B32D09C001DF80A /* LMFeedTopicEditIconViewCell.swift in Sources */,
 				E5B9C4BD2B31A541001DF80A /* LMTappableLabel.swift in Sources */,
 				E5B9C4B52B31A541001DF80A /* LMTableView.swift in Sources */,
 				E5B9C4AE2B31A541001DF80A /* LMLabel.swift in Sources */,
 				E5B9C4D82B31A542001DF80A /* GetAttributedTextWithRoutes.swift in Sources */,
 				E5B9C4B22B31A541001DF80A /* Bundle+Extension.swift in Sources */,
+				E5B9C4F62B32F9C7001DF80A /* LMFeedTopicView.swift in Sources */,
+				E578AD4B2B3305A000C1BAEC /* Collection+Extension.swift in Sources */,
 				E5B9C4D62B31A542001DF80A /* LMFeedPostFooterView.swift in Sources */,
 				E5B9C4B12B31A541001DF80A /* LMCollectionView.swift in Sources */,
 				E5B9C4C62B31A542001DF80A /* Components.swift in Sources */,
 				E5B9C4C92B31A542001DF80A /* LMFeedPostImageCollectionCell.swift in Sources */,
 				E5B9C4D42B31A542001DF80A /* LMFeedPostDocumentCell.swift in Sources */,
+				E5B9C4F42B32EBF5001DF80A /* LMFeedTopicCollectionView.swift in Sources */,
 				E5B9C4CA2B31A542001DF80A /* LMFeedPostMediaCell.swift in Sources */,
 				E5B9C4B82B31A541001DF80A /* LMCollectionViewCell.swift in Sources */,
 				E5B9C4BB2B31A541001DF80A /* LMStackView.swift in Sources */,
@@ -932,6 +970,7 @@
 				E5B9C4D02B31A542001DF80A /* LMFeedPostDetailCommentCell.swift in Sources */,
 				E5B9C4B32B31A541001DF80A /* LMTableViewCell.swift in Sources */,
 				E5B9C4D22B31A542001DF80A /* LMFeedPostDetailTotalCommentCell.swift in Sources */,
+				E5B9C4F22B32D532001DF80A /* LMFeedTopicEditViewCell.swift in Sources */,
 				E5B9C4C52B31A542001DF80A /* Constants+Images.swift in Sources */,
 				E5B9C4AD2B31A541001DF80A /* LMButton.swift in Sources */,
 				7BEE61C8831AD20FC7B995639BBC9CC1 /* likeminds-feed-iOS-dummy.m in Sources */,
@@ -940,6 +979,7 @@
 				E5B9C4D72B31A542001DF80A /* LMFeedPostHeaderView.swift in Sources */,
 				E5B9C4B02B31A541001DF80A /* LMImageView.swift in Sources */,
 				E5B9C4CF2B31A542001DF80A /* LMFeedPostMoreRepliesCell.swift in Sources */,
+				E5B9C4EE2B32C6F3001DF80A /* LMFeedTopicViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,6 +9,13 @@ import UIKit
 
 @IBDesignable
 open class LMCollectionViewCell: UICollectionViewCell {
+    // MARK: UI Elements
+    open private(set) lazy var containerView: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        view.backgroundColor = Appearance.shared.colors.white
+        return view
+    }()
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         initUI()
