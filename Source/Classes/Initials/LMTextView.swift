@@ -13,4 +13,12 @@ open class LMTextView: UITextView {
         translatesAutoresizingMaskIntoConstraints = false
         return self
     }
+    
+    open var numberOfLines: Int {
+        invalidateIntrinsicContentSize()
+        if let font {
+            return Int(intrinsicContentSize.height / font.lineHeight)
+        }
+        return .zero
+    }
 }

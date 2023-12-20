@@ -29,6 +29,7 @@ public extension Constants {
         public var shareIcon = UIImage(systemName: "arrowshape.turn.up.right")
         public var crossIcon = UIImage(systemName: "xmark.circle")
         public var ellipsis = UIImage(systemName: "ellipsis")
+        public var planeIconFilled = UIImage(systemName: "paperplane.fill")
         public var pdfIcon = UIImage(named: "pdfIcon", in: Bundle.LMBundleIdentifier)
     }
 }

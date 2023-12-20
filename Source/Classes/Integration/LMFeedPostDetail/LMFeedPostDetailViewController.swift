@@ -21,12 +21,43 @@ open class LMFeedPostDetailViewController: LMViewController {
         table.estimatedSectionHeaderHeight = 1
         table.sectionFooterHeight = .zero
         table.sectionHeaderHeight = UITableView.automaticDimension
+        table.contentInset = .init(top: -20, left: .zero, bottom: .zero, right: .zero)
         return table
     }()
+        
+    let containerView: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        view.backgroundColor = Appearance.shared.colors.white
+        return view
+    }()
     
-    open private(set) lazy var inputTextView: LMTextView = {
+    let stackView: LMStackView = {
+        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+        stack.axis = .horizontal
+        stack.alignment = .center
+        stack.distribution = .fill
+        stack.backgroundColor = Appearance.shared.colors.clear
+        return stack
+    }()
+    
+    let inputTextView: LMTextView = {
         let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
+        textView.isEditable = true
+        textView.isScrollEnabled = false
+        textView.backgroundColor = Appearance.shared.colors.clear
+        textView.textColor = Appearance.shared.colors.textColor
+        textView.contentMode = .center
+        textView.font = Appearance.shared.fonts.textFont1
         return textView
+    }()
+    
+    let sendButton: LMButton = {
+        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+        button.setTitle(nil, for: .normal)
+        button.setImage(Constants.shared.images.planeIconFilled, for: .normal)
+        button.tintColor = Appearance.shared.colors.appTintColor
+        button.isEnabled = false
+        return button
     }()
 
     open var inputTextViewHeightConstraint: NSLayoutConstraint?
@@ -35,13 +66,19 @@ open class LMFeedPostDetailViewController: LMViewController {
     
     // MARK: Data Variables
     var cellsData: [LMFeedPostTableCellProtocol] = []
+    open private(set) var textInputMaximumHeight: CGFloat = 100
     
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
         
         view.addSubview(tableView)
-        view.addSubview(inputTextView)
+        view.addSubview(containerView)
+        
+        containerView.addSubview(stackView)
+        
+        stackView.addArrangedSubview(inputTextView)
+        stackView.addArrangedSubview(sendButton)
     }
     
     
@@ -54,15 +91,27 @@ open class LMFeedPostDetailViewController: LMViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             
-            inputTextView.topAnchor.constraint(equalTo: tableView.bottomAnchor),
-            inputTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            inputTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: tableView.bottomAnchor),
+            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
+            stackView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            
+            inputTextView.topAnchor.constraint(equalTo: stackView.topAnchor),
+            inputTextView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
+            
+            sendButton.topAnchor.constraint(greaterThanOrEqualTo: stackView.topAnchor),
+            sendButton.bottomAnchor.constraint(lessThanOrEqualTo: stackView.bottomAnchor),
+            sendButton.widthAnchor.constraint(equalTo: sendButton.heightAnchor, multiplier: 1)
         ])
         
-        inputTextViewBottomConstraint = NSLayoutConstraint(item: inputTextView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
+        inputTextViewBottomConstraint = NSLayoutConstraint(item: containerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
         inputTextViewBottomConstraint?.isActive = true
         
-        inputTextViewHeightConstraint = NSLayoutConstraint(item: inputTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 50)
+        inputTextViewHeightConstraint = NSLayoutConstraint(item: inputTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
         inputTextViewHeightConstraint?.isActive = true
     }
     
@@ -81,6 +130,8 @@ open class LMFeedPostDetailViewController: LMViewController {
         tableView.register(Components.shared.totalCommentCell)
         tableView.register(Components.shared.loadMoreReplies)
         tableView.registerHeaderFooter(Components.shared.commentHeaderView)
+        
+        inputTextView.delegate = self
     }
     
     
@@ -94,10 +145,35 @@ open class LMFeedPostDetailViewController: LMViewController {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
         sampleDataGenerator()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
+// MARK: Keyboard Extension
+@objc
+extension LMFeedPostDetailViewController {
+    open func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            inputTextViewBottomConstraint?.constant = -keyboardSize.size.height
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    open func keyboardWillHide(notification: NSNotification){
+        inputTextViewBottomConstraint?.constant = .zero
+        containerView.layoutIfNeeded()
+    }
+}
 
 // MARK: UITableViewDataSource, UITableViewDelegate
 @objc
@@ -109,7 +185,7 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
     
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let comment = cellsData[section] as? LMFeedPostDetailCommentCellViewModel {
-            return comment.replies.count + (comment.loadMoreComments != nil ? 1 : 0)
+            return comment.replies.count
         }
         return 1
     }
@@ -157,6 +233,13 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
     
     open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return nil
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if type(of: scrollView) is UITableView.Type {
+            view.endEditing(true)
+            inputTextViewHeightConstraint?.constant = 40
+        }
     }
 }
 
@@ -222,6 +305,41 @@ extension LMFeedPostDetailViewController: LMFeedPostMoreRepliesCellProtocol {
     }
 }
 
+
+// MARK: UITextViewDelegate
+@objc
+extension LMFeedPostDetailViewController: UITextViewDelegate {
+    open func textViewDidChange(_ textView: UITextView) {
+        sendButton.isEnabled = !textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        
+        textView.isScrollEnabled = false
+        
+        if textView.intrinsicContentSize.height > textInputMaximumHeight {
+            inputTextViewHeightConstraint?.constant = textInputMaximumHeight
+            textView.isScrollEnabled = true
+        } else if textView.intrinsicContentSize.height > 40 {
+            inputTextViewHeightConstraint?.constant = textView.intrinsicContentSize.height
+        } else {
+            inputTextViewHeightConstraint?.constant = 40
+        }
+        
+        UIView.animate(withDuration: 0.1) { [weak self] in
+            self?.containerView.layoutIfNeeded()
+        }
+    }
+    
+    open func textViewDidBeginEditing(_ textView: UITextView) {
+        let newPosition = textView.endOfDocument
+        textView.selectedTextRange = textView.textRange(from: newPosition, to: newPosition)
+    }
+    
+    open func textViewDidEndEditing(_ textView: UITextView) {
+        textView.text = textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        inputTextViewHeightConstraint?.constant = 40
+    }
+}
+
+
 extension LMFeedPostDetailViewController {
     func sampleDataGenerator() {
         docGenerator()
@@ -281,7 +399,7 @@ extension LMFeedPostDetailViewController {
                 postId: "POSTER",
                 commentId: "COMMENTER",
                 tempCommentId: nil,
-                comment: "This is a Comment, I'm making a SDK, god help me!",
+                comment: "This is a Comment, I'm making a SDK, god help me!This is a Comment, I'm making a SDK, god help me!This is a Comment, I'm making a SDK, god help me!This is a Comment, I'm making a SDK, god help me!This is a Comment, I'm making a SDK, god help me!This is a Comment, I'm making a SDK, god help me!This is a Comment, I'm making a SDK, god help me!This is a Comment, I'm making a SDK, god help me!",
                 commentTime: "Just Now",
                 likeCount: 3,
                 totalReplyCount: 20,

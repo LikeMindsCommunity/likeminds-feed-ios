@@ -101,7 +101,6 @@
 		E5B9C4C52B31A542001DF80A /* Constants+Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C4902B31A541001DF80A /* Constants+Images.swift */; };
 		E5B9C4C62B31A542001DF80A /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C4912B31A541001DF80A /* Components.swift */; };
 		E5B9C4C72B31A542001DF80A /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C4922B31A541001DF80A /* Appearance.swift */; };
-		E5B9C4C82B31A542001DF80A /* SampleDocCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B9C4942B31A541001DF80A /* SampleDocCell.xib */; };
 		E5B9C4C92B31A542001DF80A /* LMFeedPostImageCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C4982B31A541001DF80A /* LMFeedPostImageCollectionCell.swift */; };
 		E5B9C4CA2B31A542001DF80A /* LMFeedPostMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C4992B31A541001DF80A /* LMFeedPostMediaCell.swift */; };
 		E5B9C4CB2B31A542001DF80A /* LMFeedPostVideoCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9C49A2B31A541001DF80A /* LMFeedPostVideoCollectionCell.swift */; };
@@ -270,7 +269,6 @@
 		E5B9C4902B31A541001DF80A /* Constants+Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Constants+Images.swift"; sourceTree = "<group>"; };
 		E5B9C4912B31A541001DF80A /* Components.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		E5B9C4922B31A541001DF80A /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
-		E5B9C4942B31A541001DF80A /* SampleDocCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SampleDocCell.xib; sourceTree = "<group>"; };
 		E5B9C4982B31A541001DF80A /* LMFeedPostImageCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LMFeedPostImageCollectionCell.swift; sourceTree = "<group>"; };
 		E5B9C4992B31A541001DF80A /* LMFeedPostMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LMFeedPostMediaCell.swift; sourceTree = "<group>"; };
 		E5B9C49A2B31A541001DF80A /* LMFeedPostVideoCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LMFeedPostVideoCollectionCell.swift; sourceTree = "<group>"; };
@@ -552,7 +550,6 @@
 				E5B9C48A2B31A541001DF80A /* Constants */,
 				E5B9C4732B31A541001DF80A /* Initials */,
 				E5B9C4852B31A541001DF80A /* Integration */,
-				E5B9C4932B31A541001DF80A /* TryXIB */,
 				E5B9C4952B31A541001DF80A /* UI */,
 				E5B9C4AB2B31A541001DF80A /* Utility */,
 			);
@@ -631,14 +628,6 @@
 			path = Constants;
 			sourceTree = "<group>";
 		};
-		E5B9C4932B31A541001DF80A /* TryXIB */ = {
-			isa = PBXGroup;
-			children = (
-				E5B9C4942B31A541001DF80A /* SampleDocCell.xib */,
-			);
-			path = TryXIB;
-			sourceTree = "<group>";
-		};
 		E5B9C4952B31A541001DF80A /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -650,12 +639,12 @@
 		E5B9C4962B31A541001DF80A /* PostWidget */ = {
 			isa = PBXGroup;
 			children = (
-				E5B9C4972B31A541001DF80A /* LMFeedPostMediaCell */,
-				E5B9C49B2B31A541001DF80A /* LMFeedPostLinkCell */,
-				E5B9C49E2B31A541001DF80A /* LMFeedPostDetailCommentCell */,
 				E5B9C4A42B31A541001DF80A /* LMPostWidgetTableViewCell.swift */,
+				E5B9C49E2B31A541001DF80A /* LMFeedPostDetailCommentCell */,
 				E5B9C4A52B31A541001DF80A /* LMFeedPostDocumentCell */,
 				E5B9C4A82B31A541001DF80A /* LMFeedPostHeaderFooter */,
+				E5B9C49B2B31A541001DF80A /* LMFeedPostLinkCell */,
+				E5B9C4972B31A541001DF80A /* LMFeedPostMediaCell */,
 			);
 			path = PostWidget;
 			sourceTree = "<group>";
@@ -888,7 +877,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5B9C4C82B31A542001DF80A /* SampleDocCell.xib in Resources */,
 				E5B9C4DA2B31A54E001DF80A /* LMAssets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -21,6 +21,7 @@ public extension Appearance {
         public var subHeadingFont1: UIFont = .systemFont(ofSize: 12)
         public var subHeadingFont2: UIFont = .systemFont(ofSize: 14)
         public var textFont1: UIFont = .systemFont(ofSize: 16)
+        public var textFont2: UIFont = .systemFont(ofSize: 14)
         public var buttonFont: UIFont = .systemFont(ofSize: 14)
         public var navigationFont: UIFont = .systemFont(ofSize: 18, weight: .bold)
     }

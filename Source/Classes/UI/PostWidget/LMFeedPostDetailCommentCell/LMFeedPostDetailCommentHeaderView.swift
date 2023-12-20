@@ -40,10 +40,16 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         return stack
     }()
     
-    open private(set) lazy var commentLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var commentLabel: LMTextView = {
+        let label = LMTextView().translatesAutoresizingMaskIntoConstraints()
+        label.isScrollEnabled = false
+        label.textContainer.lineBreakMode = .byTruncatingTail
+        label.backgroundColor = Appearance.shared.colors.clear
         label.textColor = Appearance.shared.colors.gray1
         label.font = Appearance.shared.fonts.subHeadingFont2
+        label.textContainer.lineFragmentPadding = CGFloat(0.0)
+        label.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        label.contentInset = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 0)
         return label
     }()
     
@@ -246,7 +252,12 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         self.delegate = delegate
         
         authorNameLabel.text = data.authorName
-        commentLabel.text = data.comment
+        
+        commentLabel.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.comment)
+        commentLabel.textContainer.maximumNumberOfLines = commentLabel.numberOfLines > 4 && data.isShowMore ? .zero : 4
+        
+        seeMoreText.isHidden = !(commentLabel.numberOfLines > 4 && data.isShowMore)
+        
         commentTimeLabel.text = data.commentTimeFormatted
         
         likeButton.setImage(data.isLiked ? Constants.shared.images.heartFilled : Constants.shared.images.heart, for: .normal)

@@ -37,6 +37,9 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
     
     open private(set) lazy var commentLabel: LMTextView = {
         let label = LMTextView().translatesAutoresizingMaskIntoConstraints()
+        label.isScrollEnabled = false
+        label.textContainer.lineBreakMode = .byTruncatingTail
+        label.backgroundColor = Appearance.shared.colors.clear
         label.textColor = Appearance.shared.colors.gray1
         label.font = Appearance.shared.fonts.subHeadingFont2
         return label
@@ -234,7 +237,12 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         self.delegate = delegate
         
         authorNameLabel.text = data.authorName
+        
         commentLabel.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.comment)
+        commentLabel.textContainer.maximumNumberOfLines = commentLabel.numberOfLines > 4 && data.isShowMore ? .zero : 4
+        
+        seeMoreText.isHidden = !(commentLabel.numberOfLines > 4 && data.isShowMore)
+        
         commentTimeLabel.text = data.commentTimeFormatted
         
         likeButton.setImage(data.isLiked ? Constants.shared.images.heartFilled : Constants.shared.images.heart, for: .normal)

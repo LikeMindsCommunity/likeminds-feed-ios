@@ -28,6 +28,7 @@ public struct LMFeedPostDetailCommentCellViewModel: LMFeedPostTableCellProtocol 
     let likeCount: Int
     let totalReplyCount: Int
     let replies: [LMFeedPostDetailCommentCellViewModel]
+    var isShowMore: Bool
     
     var authorName: String { author.name }
     
@@ -57,19 +58,32 @@ public struct LMFeedPostDetailCommentCellViewModel: LMFeedPostTableCellProtocol 
         return nil
     }
     
-    public init(author: UserProfile, postId: String, commentId: String?, tempCommentId: String?, comment: String, commentTime: String, likeCount: Int, totalReplyCount: Int, replies: [LMFeedPostDetailCommentCellViewModel], isEdited: Bool = false, isLiked: Bool = false) {
-        self.author = author
-        self.postId = postId
-        self.commentId = commentId
-        self.tempCommentId = tempCommentId
-        self.comment = comment
-        self.commentTime = commentTime
-        self.isEdited = isEdited
-        self.isLiked = isLiked
-        self.likeCount = likeCount
-        self.totalReplyCount = totalReplyCount
-        self.replies = replies
-    }
+    public init(
+        author: UserProfile,
+        postId: String,
+        commentId: String?,
+        tempCommentId: String?,
+        comment: String,
+        commentTime: String,
+        likeCount: Int,
+        totalReplyCount: Int,
+        replies: [LMFeedPostDetailCommentCellViewModel],
+        isEdited: Bool = false,
+        isLiked: Bool = false,
+        isShowMore: Bool = false) {
+            self.author = author
+            self.postId = postId
+            self.commentId = commentId
+            self.tempCommentId = tempCommentId
+            self.comment = comment
+            self.commentTime = commentTime
+            self.isEdited = isEdited
+            self.isLiked = isLiked
+            self.likeCount = likeCount
+            self.totalReplyCount = totalReplyCount
+            self.replies = replies
+            self.isShowMore = isShowMore
+        }
     
     // MARK: UserProfile
     public struct UserProfile {
