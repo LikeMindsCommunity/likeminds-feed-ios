@@ -40,4 +40,5 @@ TODO: Add long description of the pod here.
   s.swift_version = '5.0'
 #  s.frameworks = 'UIKit'
   s.dependency 'Kingfisher', '~> 7.0'
+#  s.dependency 'LikeMindsFeed'
 end

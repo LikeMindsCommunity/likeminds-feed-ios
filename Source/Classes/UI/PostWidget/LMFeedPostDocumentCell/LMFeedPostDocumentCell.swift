@@ -136,7 +136,8 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         guard let indexPath else { return }
         delegate?.didTapShowMoreDocuments(for: indexPath)
     }
-            
+        
+    
     // MARK: configure
     open func configure(for indexPath: IndexPath, with data: ViewModel, delegate: (LMFeedPostDocumentCellProtocol & LMFeedTableCellToViewControllerProtocol)) {
         self.indexPath = indexPath
@@ -173,6 +174,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         }
     }
 }
+
 
 // MARK: LMChatDocumentCellViewProtocol
 @objc

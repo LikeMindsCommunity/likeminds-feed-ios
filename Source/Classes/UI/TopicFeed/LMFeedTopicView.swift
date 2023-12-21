@@ -132,4 +132,11 @@ extension LMFeedTopicView: UICollectionViewDataSource, UICollectionViewDelegateF
         
         return UICollectionViewCell()
     }
+    
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let size = topics[safe: indexPath.row]?.topic.sizeOfString(with: Appearance.shared.fonts.textFont2)
+        let width = size?.width ?? 24
+        
+        return .init(width: width, height: 50)
+    }
 }

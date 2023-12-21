@@ -19,7 +19,12 @@
   "platforms": {
     "ios": "13.0"
   },
-  "source_files": "Source/Classes/*",
+  "source_files": "Source/Classes/**/*",
+  "resource_bundles": {
+    "likeminds-feed-iOS": [
+      "Source/Assets/*.{xcassets}"
+    ]
+  },
   "swift_versions": "5.0",
   "dependencies": {
     "Kingfisher": [
