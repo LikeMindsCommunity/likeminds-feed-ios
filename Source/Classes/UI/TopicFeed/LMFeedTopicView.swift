@@ -19,8 +19,8 @@ open class LMFeedTopicView: LMView {
         let isEditFlow: Bool
         let isSepratorShown: Bool
         
-        init(topics: [LMFeedTopicCollectionCellDataModel], isEditFlow: Bool = false, isSepratorShown: Bool) {
-            self.topics = topics
+        init(topics: [LMFeedTopicCollectionCellDataModel]? = nil, isEditFlow: Bool = false, isSepratorShown: Bool = false) {
+            self.topics = topics ?? []
             self.isEditFlow = isEditFlow
             self.isSepratorShown = isSepratorShown
         }
@@ -89,7 +89,7 @@ open class LMFeedTopicView: LMView {
             
             stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            stackView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
             stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             
             sepratorView.heightAnchor.constraint(equalToConstant: 1)
@@ -105,6 +105,7 @@ open class LMFeedTopicView: LMView {
     open func configure(with data: ViewModel) {
         topics = data.topics
         isEditFlow = data.isEditFlow
+        sepratorView.isHidden = !data.isSepratorShown
         
         collectionView.reloadData()
         layoutIfNeeded()
@@ -128,6 +129,7 @@ extension LMFeedTopicView: UICollectionViewDataSource, UICollectionViewDelegateF
             cell.configure { [weak self] in
                 self?.delegate?.didTapEditButton()
             }
+            return cell
         }
         
         return UICollectionViewCell()
@@ -135,7 +137,7 @@ extension LMFeedTopicView: UICollectionViewDataSource, UICollectionViewDelegateF
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = topics[safe: indexPath.row]?.topic.sizeOfString(with: Appearance.shared.fonts.textFont2)
-        let width = size?.width ?? 24
+        let width = size?.width ?? 50
         
         return .init(width: width, height: 50)
     }

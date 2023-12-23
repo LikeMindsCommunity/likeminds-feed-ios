@@ -15,27 +15,20 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     public struct ViewModel: LMFeedPostTableCellProtocol {
         let headerData: LMFeedPostHeaderView.ViewModel
         let postText: String
+        let topics: LMFeedTopicView.ViewModel
         let mediaData: [LMFeedMediaProtocol]
         var footerData: LMFeedPostFooterView.ViewModel
         
-        public init(headerData: LMFeedPostHeaderView.ViewModel, postText: String?, mediaData: [LMFeedMediaProtocol], footerData: LMFeedPostFooterView.ViewModel) {
+        public init(headerData: LMFeedPostHeaderView.ViewModel, postText: String, topics: LMFeedTopicView.ViewModel?, mediaData: [LMFeedMediaProtocol], footerData: LMFeedPostFooterView.ViewModel) {
             self.headerData = headerData
-            self.postText = postText ?? ""
+            self.postText = postText
+            self.topics = topics ?? .init()
             self.mediaData = mediaData
             self.footerData = footerData
         }
     }
     
     // MARK: UI Elements
-    open private(set) lazy var contentStack: LMStackView = {
-        let stack = LMStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .vertical
-        stack.alignment = .center
-        stack.distribution = .fill
-        return stack
-    }()
-    
     open private(set) lazy var mediaCollectionView: LMCollectionView = {
         let collection = LMCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collection.translatesAutoresizingMaskIntoConstraints = false
@@ -82,6 +75,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         containerView.addSubview(footerView)
         containerView.addSubview(postText)
         
+        contentStack.addArrangedSubview(topicFeed)
         contentStack.addArrangedSubview(postText)
         contentStack.addArrangedSubview(mediaCollectionView)
         contentStack.addArrangedSubview(pageControl)
@@ -101,19 +95,24 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
             headerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             headerView.bottomAnchor.constraint(equalTo: contentStack.topAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 64),
+            headerView.heightAnchor.constraint(equalToConstant: Constants.shared.number.postHeaderSize),
             
             contentStack.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
             contentStack.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
             
-            mediaCollectionView.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor),
-            mediaCollectionView.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor),
             postText.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor, constant: 16),
             postText.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor, constant: -16),
+            
+            topicFeed.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor, constant: 16),
+            topicFeed.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor, constant: -16),
+            
+            mediaCollectionView.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor),
+            mediaCollectionView.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor),
+            mediaCollectionView.widthAnchor.constraint(equalTo: mediaCollectionView.heightAnchor, multiplier: 3/2),
+            
             pageControl.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor),
             pageControl.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor),
             
-            mediaCollectionView.widthAnchor.constraint(equalTo: mediaCollectionView.heightAnchor, multiplier: 3/2),
             
             footerView.topAnchor.constraint(equalTo: contentStack.bottomAnchor, constant: 0),
             footerView.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor, constant: 16),
@@ -171,6 +170,9 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         headerView.configure(with: data.headerData)
         postText.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.postText)
         postText.isHidden = data.postText.isEmpty
+        
+        topicFeed.configure(with: data.topics)
+        topicFeed.isHidden = data.topics.topics.isEmpty
         
         mediaCellsData = data.mediaData
         setupMediaCells()

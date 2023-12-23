@@ -49,7 +49,7 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle("See More", for: .normal)
         button.setTitleColor(Appearance.shared.colors.gray155, for: .normal)
-        button.setFont(Appearance.shared.fonts.buttonFont)
+        button.setFont(Appearance.shared.fonts.buttonFont1)
         button.setImage(nil, for: .normal)
         return button
     }()
@@ -84,7 +84,7 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         button.setTitle(nil, for: .normal)
         button.setImage(nil, for: .normal)
         button.setTitleColor(Appearance.shared.colors.gray3, for: .normal)
-        button.setFont(Appearance.shared.fonts.buttonFont)
+        button.setFont(Appearance.shared.fonts.buttonFont1)
         return button
     }()
     

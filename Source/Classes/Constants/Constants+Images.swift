@@ -17,21 +17,35 @@ public extension Constants {
     struct Images {
         private init() { }
         
+        /// Need For These Methods - A Develeoper can also set custom images in these variables we need to make sure that dev is not setting these images as nil, so get non-optional value of UIImage without force unwrapping.
+        private static func loadImage(with imageName: String) -> UIImage {
+            UIImage(named: imageName, in: Bundle.LMBundleIdentifier) ?? .circleImage
+        }
+        
+        private static func loadSystemImage(with imageName: String) -> UIImage {
+            UIImage(systemName: imageName) ?? .circleImage
+        }
+        
         // Shared Instance
         public static var shared = Images()
         
         // Images
-        public var heart = UIImage(systemName: "heart")
-        public var heartFilled = UIImage(systemName: "heart.fill")
-        public var commentIcon = UIImage(systemName: "message")
-        public var bookmark = UIImage(systemName: "bookmark")
-        public var bookmarkFilled = UIImage(systemName: "bookmark.fill")
-        public var shareIcon = UIImage(systemName: "arrowshape.turn.up.right")
-        public var xmarkIcon = UIImage(systemName: "xmark")
-        public var crossIcon = UIImage(systemName: "xmark.circle")
-        public var ellipsis = UIImage(systemName: "ellipsis")
-        public var planeIconFilled = UIImage(systemName: "paperplane.fill")
-        public var pencilIcon = UIImage(systemName: "pencil")
-        public var pdfIcon = UIImage(named: "pdfIcon", in: Bundle.LMBundleIdentifier)
+        public var heart = loadSystemImage(with: "heart")
+        public var heartFilled = loadSystemImage(with: "heart.fill")
+        public var commentIcon = loadSystemImage(with: "message")
+        public var bookmark = loadSystemImage(with: "bookmark")
+        public var bookmarkFilled = loadSystemImage(with: "bookmark.fill")
+        public var shareIcon = loadSystemImage(with: "arrowshape.turn.up.right")
+        public var xmarkIcon = loadSystemImage(with: "xmark")
+        public var crossIcon = loadSystemImage(with: "xmark.circle")
+        public var ellipsis = loadSystemImage(with: "ellipsis")
+        public var planeIconFilled = loadSystemImage(with: "paperplane.fill")
+        public var pencilIcon = loadSystemImage(with: "pencil")
+        public var downArrow = loadSystemImage(with: "arrow.down")
+        public var menuIcon = loadSystemImage(with: "line.3.horizontal")
+        public var personIcon = loadSystemImage(with: "person")
+        
+        public var pdfIcon = loadImage(with: "pdfIcon")
+        public var placeholderProfileImage = loadImage(with: "placeholderProfile")
     }
 }

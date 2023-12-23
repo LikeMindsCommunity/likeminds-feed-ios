@@ -60,8 +60,10 @@ open class LMFeedTopicEditViewCell: LMCollectionViewCell {
             textLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4),
             
             crossButton.centerYAnchor.constraint(equalTo: textLabel.centerYAnchor),
-            crossButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 4),
-            crossButton.leadingAnchor.constraint(greaterThanOrEqualTo: textLabel.trailingAnchor, constant: 8)
+            crossButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -4),
+            crossButton.leadingAnchor.constraint(equalTo: textLabel.trailingAnchor, constant: 8),
+            crossButton.heightAnchor.constraint(equalToConstant: 20),
+            crossButton.heightAnchor.constraint(equalTo: crossButton.widthAnchor, multiplier: 1)
         ])
     }
     

@@ -43,7 +43,7 @@ open class LMFeedPostFooterView: LMView {
         if #available(iOS 15.0, *) {
             var btnConfig = UIButton.Configuration.plain()
             btnConfig.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 4)
-            btnConfig.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont)
+            btnConfig.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont1)
             btnConfig.image = Constants.Images.shared.heart
             
             let button = LMButton(configuration: btnConfig)
@@ -69,7 +69,7 @@ open class LMFeedPostFooterView: LMView {
             btnConfig.titleAlignment = .center
             
             var titleAttributes = AttributeContainer()
-            titleAttributes.font = Appearance.shared.fonts.buttonFont
+            titleAttributes.font = Appearance.shared.fonts.buttonFont1
             titleAttributes.foregroundColor = Appearance.shared.colors.gray2
             btnConfig.attributedTitle = AttributedString(Constants.shared.strings.like, attributes: titleAttributes)
             
@@ -86,7 +86,7 @@ open class LMFeedPostFooterView: LMView {
             button.setContentHuggingPriority(.defaultLow, for: .horizontal)
             button.setTitle(Constants.shared.strings.like, for: .normal)
             button.setTitleColor(Appearance.shared.colors.gray2, for: .normal)
-            button.titleLabel?.font = Appearance.shared.fonts.buttonFont
+            button.titleLabel?.font = Appearance.shared.fonts.buttonFont1
             button.tintColor = Appearance.shared.colors.gray2
             return button
         }
@@ -98,11 +98,11 @@ open class LMFeedPostFooterView: LMView {
             btnConfig.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 0)
             
             var titleAttributes = AttributeContainer()
-            titleAttributes.font = Appearance.shared.fonts.buttonFont
+            titleAttributes.font = Appearance.shared.fonts.buttonFont1
             titleAttributes.foregroundColor = Appearance.shared.colors.gray2
             btnConfig.attributedTitle = AttributedString(Constants.shared.strings.comment, attributes: titleAttributes)
             
-            btnConfig.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont)
+            btnConfig.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont1)
             btnConfig.image = Constants.Images.shared.commentIcon
             btnConfig.imagePadding = 4
             
@@ -118,7 +118,7 @@ open class LMFeedPostFooterView: LMView {
             button.setContentHuggingPriority(.defaultLow, for: .horizontal)
             button.setTitle(Constants.shared.strings.comment, for: .normal)
             button.setTitleColor(Appearance.shared.colors.gray2, for: .normal)
-            button.titleLabel?.font = Appearance.shared.fonts.buttonFont
+            button.titleLabel?.font = Appearance.shared.fonts.buttonFont1
             button.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 4)
             button.setImage(Constants.Images.shared.commentIcon, for: .normal)
             button.tintColor = Appearance.shared.colors.gray2
@@ -131,7 +131,7 @@ open class LMFeedPostFooterView: LMView {
             var btnConfig = UIButton.Configuration.plain()
             btnConfig.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 8)
             
-            btnConfig.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont)
+            btnConfig.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont1)
             btnConfig.image = Constants.Images.shared.bookmark
             btnConfig.title = nil
             
@@ -158,7 +158,7 @@ open class LMFeedPostFooterView: LMView {
             btnConfig.imagePadding = 8
             
             btnConfig.title = nil
-            btnConfig.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont)
+            btnConfig.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont1)
             btnConfig.image = Constants.Images.shared.shareIcon
             
             let button = LMButton(configuration: btnConfig)

@@ -16,5 +16,6 @@ public extension Constants {
         
         // Numbers
         public var imageSize: CGFloat = 48
+        public var postHeaderSize: CGFloat = 64
     }
 }

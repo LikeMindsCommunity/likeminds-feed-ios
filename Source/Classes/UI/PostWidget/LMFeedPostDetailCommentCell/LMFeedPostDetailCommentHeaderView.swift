@@ -57,7 +57,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle("See More", for: .normal)
         button.setTitleColor(Appearance.shared.colors.gray155, for: .normal)
-        button.setFont(Appearance.shared.fonts.buttonFont)
+        button.setFont(Appearance.shared.fonts.buttonFont1)
         button.setImage(nil, for: .normal)
         return button
     }()
@@ -92,7 +92,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         button.setTitle(nil, for: .normal)
         button.setImage(nil, for: .normal)
         button.setTitleColor(Appearance.shared.colors.gray3, for: .normal)
-        button.setFont(Appearance.shared.fonts.buttonFont)
+        button.setFont(Appearance.shared.fonts.buttonFont1)
         return button
     }()
     
@@ -107,7 +107,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         button.setImage(nil, for: .normal)
         button.setTitle("Reply", for: .normal)
         button.setTitleColor(Appearance.shared.colors.gray3, for: .normal)
-        button.setFont(Appearance.shared.fonts.buttonFont)
+        button.setFont(Appearance.shared.fonts.buttonFont1)
         return button
     }()
     
@@ -116,7 +116,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         button.setTitle(nil, for: .normal)
         button.setImage(nil, for: .normal)
         button.setTitleColor(Appearance.shared.colors.appTintColor, for: .normal)
-        button.setFont(Appearance.shared.fonts.buttonFont)
+        button.setFont(Appearance.shared.fonts.buttonFont1)
         return button
     }()
     

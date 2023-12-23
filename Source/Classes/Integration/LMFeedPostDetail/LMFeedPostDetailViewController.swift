@@ -378,7 +378,8 @@ extension LMFeedPostDetailViewController {
         }
         
         let datum = LMFeedPostDocumentCell.ViewModel.init(
-            headerData: headerData(),
+            headerData: headerData(), 
+            topics: .init(topics: generateTopics(), isEditFlow: Bool.random(), isSepratorShown: Bool.random()),
             postText: "<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments",
             documents: docs,
             footerData: .init(isSaved: Bool.random(), isLiked: Bool.random()))
@@ -429,5 +430,15 @@ extension LMFeedPostDetailViewController {
     func generateTotalComment() {
         let data: LMFeedPostDetailTotalCommentCell.ViewModel = .init(totalComments: 15)
         cellsData.append(data)
+    }
+    
+    func generateTopics() -> [LMFeedTopicCollectionCellDataModel] {
+        var data = [LMFeedTopicCollectionCellDataModel]()
+        
+        (0...20).forEach { i in
+            data.append(.init(topic: "\(i*i)", topicID: "\(i+i)"))
+        }
+        
+        return data
     }
 }

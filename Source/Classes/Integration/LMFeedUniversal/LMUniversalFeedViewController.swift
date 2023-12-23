@@ -17,32 +17,84 @@ open class LMUniversalFeedViewController: LMViewController {
         return table
     }()
     
-    open private(set) lazy var headerView: LMFeedPostHeaderView = {
-        let vc = LMFeedPostHeaderView()
-        vc.translatesAutoresizingMaskIntoConstraints = false
-        return vc
-    }()
-    
-    open private(set) lazy var footerView: LMFeedPostFooterView = {
-        let vc = LMFeedPostFooterView()
-        vc.translatesAutoresizingMaskIntoConstraints = false
-        return vc
-    }()
-    
     open private(set) lazy var searchBar: UISearchController = {
         let search = UISearchController(searchResultsController: nil)
         return search
     }()
     
+    open private(set) lazy var contentStack: LMStackView = {
+        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+        stack.backgroundColor = Appearance.shared.colors.clear
+        stack.axis = .vertical
+        stack.alignment = .fill
+        stack.distribution = .fill
+        stack.spacing = 4
+        return stack
+    }()
+    
+    open private(set) lazy var topicContainerView: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        view.backgroundColor = Appearance.shared.colors.white
+        return view
+    }()
+    
+    open private(set) lazy var topicStackView: LMStackView = {
+        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+        stack.backgroundColor = Appearance.shared.colors.clear
+        stack.axis = .horizontal
+        stack.alignment = .center
+        stack.distribution = .fill
+        stack.spacing = 8
+        return stack
+    }()
+    
+    open private(set) lazy var allTopicsButton: LMButton = {
+        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+        button.setTitle(Constants.shared.strings.allTopics, for: .normal)
+        button.setImage(Constants.shared.images.downArrow, for: .normal)
+        button.setFont(Appearance.shared.fonts.buttonFont2)
+        button.setTitleColor(Appearance.shared.colors.gray102, for: .normal)
+        button.tintColor = Appearance.shared.colors.gray102
+        button.semanticContentAttribute = .forceRightToLeft
+        return button
+    }()
+    
+    open private(set) lazy var topicCollection: LMCollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.estimatedItemSize = .init(width: 100, height: 30)
+        
+        let collection = LMCollectionView(frame: .zero, collectionViewLayout: layout).translatesAutoresizingMaskIntoConstraints()
+        collection.dataSource = self
+        collection.delegate = self
+        collection.registerCell(type: Components.shared.topicFeedEditCollectionCell)
+        collection.showsHorizontalScrollIndicator = false
+        collection.showsVerticalScrollIndicator = false
+        return collection
+    }()
+    
+    open private(set) lazy var clearButton: LMButton = {
+        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+        button.setFont(Appearance.shared.fonts.buttonFont2)
+        button.setTitleColor(Appearance.shared.colors.gray102, for: .normal)
+        button.setTitle("Clear", for: .normal)
+        button.setImage(nil, for: .normal)
+        button.tintColor = Appearance.shared.colors.gray102
+        return button
+    }()
+    
     
     // MARK: Data Variables
     public var data: [LMFeedPostTableCellProtocol] = []
+    public var selectedTopics: [LMFeedTopicCollectionCellDataModel] = []
     
     
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
         dataGenerator()
+        selectedTopics = [.init(topic: "Topic #1", topicID: "123"), .init(topic: "Topic #2", topicID: "234"), .init(topic: "Topic #3", topicID: "345"), .init(topic: "Topic #4", topicID: "456")]
+        allTopicsButton.isHidden = true
         tableViewScrolled(tableView: tableView)
     }
     
@@ -50,7 +102,15 @@ open class LMUniversalFeedViewController: LMViewController {
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
-        view.addSubview(tableView)
+        view.addSubview(contentStack)
+        
+        contentStack.addArrangedSubview(topicContainerView)
+        contentStack.addArrangedSubview(tableView)
+        
+        topicContainerView.addSubview(topicStackView)
+        topicStackView.addArrangedSubview(allTopicsButton)
+        topicStackView.addArrangedSubview(topicCollection)
+        topicStackView.addArrangedSubview(clearButton)
     }
     
     // MARK: setupLayouts
@@ -58,11 +118,24 @@ open class LMUniversalFeedViewController: LMViewController {
         super.setupLayouts()
         
         NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            contentStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            contentStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            contentStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            contentStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            topicContainerView.heightAnchor.constraint(equalToConstant: 50),
+            topicStackView.leadingAnchor.constraint(equalTo: topicContainerView.leadingAnchor, constant: 16),
+            topicStackView.trailingAnchor.constraint(lessThanOrEqualTo: topicContainerView.trailingAnchor, constant: -16),
+            topicStackView.topAnchor.constraint(equalTo: topicContainerView.topAnchor),
+            topicStackView.bottomAnchor.constraint(equalTo: topicContainerView.bottomAnchor),
+            
+            topicCollection.topAnchor.constraint(equalTo: topicStackView.topAnchor),
+            topicCollection.bottomAnchor.constraint(equalTo: topicStackView.bottomAnchor),
+            topicCollection.widthAnchor.constraint(greaterThanOrEqualToConstant: 100)
         ])
+        
+        allTopicsButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        clearButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     }
     
     // MARK: setupActions
@@ -96,11 +169,11 @@ open class LMUniversalFeedViewController: LMViewController {
     open override func setupNavigationBar() {
         super.setupNavigationBar()
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal"), style: .plain, target: self, action: #selector(didTapNavigationMenuButton))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: Constants.shared.images.menuIcon, style: .plain, target: self, action: #selector(didTapNavigationMenuButton))
         navigationController?.navigationBar.backgroundColor = Appearance.shared.colors.navigationBackgroundColor
-        navigationItem.setTitle(with: "CommunityHood")
+        navigationItem.setTitle(with: Constants.shared.strings.communityHood)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"), style: .plain, target: nil, action: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: Constants.shared.images.personIcon, style: .plain, target: nil, action: nil)
         
         navigationItem.searchController = searchBar
     }
@@ -159,6 +232,30 @@ extension LMUniversalFeedViewController: UITableViewDataSource, UITableViewDeleg
     }
 }
 
+
+// MARK: UICollectionView
+@objc
+extension LMUniversalFeedViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        selectedTopics.count
+    }
+    
+    open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if let cell = collectionView.dequeueReusableCell(with: Components.shared.topicFeedEditCollectionCell, for: indexPath),
+           let data = selectedTopics[safe: indexPath.row] {
+            cell.configure(with: data, delegate: self)
+            return cell
+        }
+        
+        return UICollectionViewCell()
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let size = selectedTopics[indexPath.row].topic.sizeOfString(with: Appearance.shared.fonts.textFont1)
+        return .init(width: size.width + 40, height: 30)
+    }
+}
+
 // MARK: LMFeedPostDocumentCellProtocol
 @objc
 extension LMUniversalFeedViewController: LMFeedPostDocumentCellProtocol {
@@ -197,6 +294,20 @@ extension LMUniversalFeedViewController: LMFeedTableCellToViewControllerProtocol
     open func didTapSaveButton(for postID: String) { print(#function) }
 }
 
+
+// MARK: LMFeedTopicViewCellProtocol
+@objc
+extension LMUniversalFeedViewController: LMFeedTopicViewCellProtocol {
+    open func didTapCrossButton(for topicId: String) {
+        print(#function)
+    }
+    
+    open func didTapEditButton() {
+        print(#function)
+    }
+}
+
+
 // MARK: Sample Data
 extension LMUniversalFeedViewController {
     func dataGenerator() {
@@ -224,7 +335,8 @@ extension LMUniversalFeedViewController {
             }
             
             let datum = LMFeedPostDocumentCell.ViewModel.init(
-                headerData: headerData(),
+                headerData: headerData(), 
+                topics: .init(topics: generateTopics(), isEditFlow: Bool.random(), isSepratorShown: Bool.random()),
                 postText: "<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments",
                 documents: docs,
                 footerData: .init(isSaved: Bool.random(), isLiked: Bool.random()))
@@ -277,8 +389,9 @@ extension LMUniversalFeedViewController {
         for _ in 0..<5 {
             let medium = LMFeedPostMediaCell.ViewModel.init(
                 headerData: headerData(),
-                postText: "<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments",
-                mediaData: [imageMedium(), videMedium(), imageMedium()], 
+                postText: "<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments", 
+                topics: .init(topics: generateTopics(), isEditFlow: Bool.random(), isSepratorShown: Bool.random()),
+                mediaData: [imageMedium(), videMedium(), imageMedium()],
                 footerData: .init(isSaved: Bool.random(), isLiked: Bool.random())
             )
             

@@ -11,10 +11,10 @@ import UIKit
 open class LMFeedTopicEditIconViewCell: LMCollectionViewCell {
     // MARK: UI Elements
     open private(set) lazy var editIcon: LMButton = {
-        let button = LMButton()
+        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(Constants.shared.images.pencilIcon, for: .normal)
-        button.setPreferredSymbolConfiguration(.init(scale: .medium), forImageIn: .normal)
+        button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
         button.tintColor = Appearance.shared.colors.appTintColor
         return button
     }()

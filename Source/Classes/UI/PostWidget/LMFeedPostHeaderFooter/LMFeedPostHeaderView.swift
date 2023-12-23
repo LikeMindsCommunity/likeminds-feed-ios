@@ -5,6 +5,7 @@
 //  Created by Devansh Mohata on 28/11/23.
 //
 
+import Kingfisher
 import UIKit
 
 public protocol LMFeedPostHeaderViewProtocol: AnyObject {
@@ -230,10 +231,11 @@ open class LMFeedPostHeaderView: LMView {
         
         backgroundColor = .clear
         contentContainerView.backgroundColor = .white
+        imageView.layer.cornerRadius = Constants.shared.number.imageSize / 2
     }
     
     open func configure(with data: ViewModel) {
-        // Need to configure Kingfisher for profile image
+        imageView.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: Constants.shared.images.placeholderProfileImage)
         
         authorNameLabel.text = data.authorName
         authorTagLabel.text = data.authorTag

@@ -22,17 +22,32 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
         return view
     }()
     
+    open private(set) lazy var contentStack: LMStackView = {
+        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.distribution = .fill
+        stack.spacing = 8
+        return stack
+    }()
+    
+    open private(set) lazy var topicFeed: LMFeedTopicView = {
+        let view = LMFeedTopicView().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
     open private(set) lazy var postText: LMTextView = {
-        let label = LMTextView().translatesAutoresizingMaskIntoConstraints()
-        label.textContainer.maximumNumberOfLines = 0
-        label.isScrollEnabled = false
-        label.isUserInteractionEnabled = true
-        label.isEditable = false
-        label.isSelectable = false
-        label.font = Appearance.shared.fonts.textFont1
-        label.textColor = Appearance.shared.colors.textColor
-        label.backgroundColor = .clear
-        return label
+        let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
+        textView.textContainer.maximumNumberOfLines = 0
+        textView.isScrollEnabled = false
+        textView.isUserInteractionEnabled = true
+        textView.isEditable = false
+        textView.isSelectable = false
+        textView.font = Appearance.shared.fonts.textFont1
+        textView.textColor = Appearance.shared.colors.textColor
+        textView.backgroundColor = .clear
+        textView.smartInsertDeleteType = .no
+        return textView
     }()
     
     
@@ -40,6 +55,21 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     weak var actionDelegate: LMFeedTableCellToViewControllerProtocol?
     var userUUID: String?
     var postID: String?
+    
+    
+    // MARK: setupLayouts
+    open override func setupLayouts() {
+        super.setupLayouts()
+        
+        let topicHeight = NSLayoutConstraint(item: topicFeed, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 10)
+        topicHeight.priority = .defaultLow
+        topicHeight.isActive = true
+        
+        let postTextHeight = NSLayoutConstraint(item: postText, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 10)
+        postTextHeight.priority = .defaultLow
+//        postTextHeight.isActive = true
+    }
+    
     
     // MARK: setupActions
     open override func setupActions() {
