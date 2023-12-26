@@ -44,6 +44,7 @@ public extension Constants {
         public var downArrow = loadSystemImage(with: "arrow.down")
         public var menuIcon = loadSystemImage(with: "line.3.horizontal")
         public var personIcon = loadSystemImage(with: "person")
+        public var checkmarkIconFilled = loadSystemImage(with: "checkmark.circle.fill")
         
         public var pdfIcon = loadImage(with: "pdfIcon")
         public var placeholderProfileImage = loadImage(with: "placeholderProfile")

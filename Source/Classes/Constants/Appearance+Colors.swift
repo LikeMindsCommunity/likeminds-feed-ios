@@ -25,6 +25,7 @@ public extension Appearance {
         public var gray2: UIColor = UIColor(r: 80, g: 75, b: 75)
         public var gray3: UIColor = UIColor(r: 15, g: 30, b: 61, a: 0.4)
         public var gray4: UIColor = UIColor(r: 208, g: 216, b: 226, a: 0.4)
+        public var gray51: UIColor = UIColor(r: 51, g: 51, b: 51)
         public var gray102: UIColor = UIColor(r: 102, g: 102, b: 102)
         public var gray155: UIColor = UIColor(r: 155, g: 155, b: 155)
         public var blueGray: UIColor = UIColor(r: 72, g: 79, b: 103)

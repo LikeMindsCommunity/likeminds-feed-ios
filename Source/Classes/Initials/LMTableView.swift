@@ -29,7 +29,7 @@ extension UITableView {
     }
 }
 
-open class LMTableView: UITableView {
+public class LMTableView: UITableView {
     open func translatesAutoresizingMaskIntoConstraints() -> Self {
         translatesAutoresizingMaskIntoConstraints = false
         return self

@@ -12,8 +12,17 @@ public protocol LMFeedPostTableCellProtocol { }
 open class LMUniversalFeedViewController: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var tableView: LMTableView = {
-        let table = LMTableView()
-        table.translatesAutoresizingMaskIntoConstraints = false
+        let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
+        table.backgroundColor = Appearance.shared.colors.clear
+        table.dataSource = self
+        table.delegate = self
+        table.separatorStyle = .none
+        table.showsVerticalScrollIndicator = false
+        table.showsHorizontalScrollIndicator = false
+        table.rowHeight = UITableView.automaticDimension
+        table.register(Components.shared.postCell)
+        table.register(Components.shared.documentCell)
+        table.register(Components.shared.linkCell)
         return table
     }()
     
@@ -40,7 +49,7 @@ open class LMUniversalFeedViewController: LMViewController {
     
     open private(set) lazy var topicStackView: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
-        stack.backgroundColor = Appearance.shared.colors.clear
+        stack.backgroundColor = Appearance.shared.colors.white
         stack.axis = .horizontal
         stack.alignment = .center
         stack.distribution = .fill
@@ -70,6 +79,7 @@ open class LMUniversalFeedViewController: LMViewController {
         collection.registerCell(type: Components.shared.topicFeedEditCollectionCell)
         collection.showsHorizontalScrollIndicator = false
         collection.showsVerticalScrollIndicator = false
+        collection.backgroundColor = Appearance.shared.colors.clear
         return collection
     }()
     
@@ -93,8 +103,12 @@ open class LMUniversalFeedViewController: LMViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         dataGenerator()
-        selectedTopics = [.init(topic: "Topic #1", topicID: "123"), .init(topic: "Topic #2", topicID: "234"), .init(topic: "Topic #3", topicID: "345"), .init(topic: "Topic #4", topicID: "456")]
-        allTopicsButton.isHidden = true
+//        selectedTopics = [.init(topic: "Topic #1", topicID: "123"), .init(topic: "Topic #2", topicID: "234"), .init(topic: "Topic #3", topicID: "345"), .init(topic: "Topic #4", topicID: "456")]
+        
+        allTopicsButton.isHidden = !selectedTopics.isEmpty
+        topicCollection.isHidden = selectedTopics.isEmpty
+        clearButton.isHidden = selectedTopics.isEmpty
+        
         tableViewScrolled(tableView: tableView)
     }
     
@@ -142,21 +156,18 @@ open class LMUniversalFeedViewController: LMViewController {
     open override func setupActions() {
         super.setupActions()
         
-        tableView.backgroundColor = .clear
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.separatorStyle = .none
-        tableView.showsVerticalScrollIndicator = false
-        tableView.showsHorizontalScrollIndicator = false
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.register(Components.shared.postCell)
-        tableView.register(Components.shared.documentCell)
-        tableView.register(Components.shared.linkCell)
+        allTopicsButton.addTarget(self, action: #selector(didTapAllTopicsButton), for: .touchUpInside)
     }
     
     @objc
     open func didTapNavigationMenuButton() {
         print(#function)
+    }
+    
+    @objc
+    open func didTapAllTopicsButton() {
+        let vc = LMFeedTopicSelectionViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     // MARK: setupAppearance

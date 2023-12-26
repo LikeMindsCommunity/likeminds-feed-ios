@@ -121,6 +121,9 @@
 		E5EC98D52B34089700CD5C4B /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EC98D42B34089700CD5C4B /* String+Extension.swift */; };
 		E5EC98D62B3555F000CD5C4B /* LMAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E02E239FADA1CA853BB6D4A3983A71A5 /* LMAssets.xcassets */; };
 		E5EC98D82B35A97E00CD5C4B /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EC98D72B35A97E00CD5C4B /* UIImage+Extension.swift */; };
+		E5EC98DE2B3744EC00CD5C4B /* LMFeedTopicSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EC98DD2B3744EC00CD5C4B /* LMFeedTopicSelectionViewController.swift */; };
+		E5EC98E12B39BBD600CD5C4B /* LMFeedTopicSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EC98E02B39BBD600CD5C4B /* LMFeedTopicSelectionView.swift */; };
+		E5EC99092B3AB38100CD5C4B /* LMFeedTopicSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EC99082B3AB38100CD5C4B /* LMFeedTopicSelectionCell.swift */; };
 		E7378F61AD6959D5538E595EA4A48AF4 /* AVAssetImageDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11991C591C5331E0A5D646022633248 /* AVAssetImageDataProvider.swift */; };
 		E95D6E6462506EFD8EA9332AD9BC492A /* SizeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62FC6B2C6D167FCB245EB6E17CAA922 /* SizeExtensions.swift */; };
 		E9CEFB9E9AFA663A55915B1A57955D28 /* LMTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2C4A2E9E62CD04BFADAA1302FBAA15 /* LMTableViewCell.swift */; };
@@ -308,6 +311,9 @@
 		E5005FD5DC9D41B03A0659E27C4529A9 /* LMButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMButton.swift; sourceTree = "<group>"; };
 		E5EC98D42B34089700CD5C4B /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		E5EC98D72B35A97E00CD5C4B /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		E5EC98DD2B3744EC00CD5C4B /* LMFeedTopicSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTopicSelectionViewController.swift; sourceTree = "<group>"; };
+		E5EC98E02B39BBD600CD5C4B /* LMFeedTopicSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTopicSelectionView.swift; sourceTree = "<group>"; };
+		E5EC99082B3AB38100CD5C4B /* LMFeedTopicSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTopicSelectionCell.swift; sourceTree = "<group>"; };
 		E62FC6B2C6D167FCB245EB6E17CAA922 /* SizeExtensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SizeExtensions.swift; path = Sources/Utility/SizeExtensions.swift; sourceTree = "<group>"; };
 		EA6BEE50F4BB1546A76880AED5B1BADB /* LMFeedPostVideoCollectionCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostVideoCollectionCell.swift; sourceTree = "<group>"; };
 		EAB9EE5D27873E20310A83AA5FB6D7BA /* Pods-likeminds-feed-iOS_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-likeminds-feed-iOS_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -630,8 +636,8 @@
 		9DAA6EDEBE6DF2F1D03B1F610153FEFA /* TopicFeed */ = {
 			isa = PBXGroup;
 			children = (
-				499E7A33A9D19A0BA9D6354CFD8DC6FB /* LMFeedTopicView.swift */,
-				866E515BAAB397A73CDE8897611E8EE3 /* CollectionCells */,
+				E5EC99052B3A9AC400CD5C4B /* DisplayScreen */,
+				E5EC99042B3A9AAB00CD5C4B /* SelectionScreen */,
 			);
 			path = TopicFeed;
 			sourceTree = "<group>";
@@ -657,6 +663,7 @@
 			isa = PBXGroup;
 			children = (
 				FCFAD8DE24D1EB85DFE834B6E892CF4D /* LMFeedPostDetail */,
+				E5EC98DC2B3744C600CD5C4B /* LMFeedTopicSelection */,
 				D0F383A925A020D23C8682BE3491F10B /* LMFeedUniversal */,
 			);
 			name = Integration;
@@ -710,6 +717,40 @@
 			);
 			name = Initials;
 			path = Source/Classes/Initials;
+			sourceTree = "<group>";
+		};
+		E5EC98DC2B3744C600CD5C4B /* LMFeedTopicSelection */ = {
+			isa = PBXGroup;
+			children = (
+				E5EC98DD2B3744EC00CD5C4B /* LMFeedTopicSelectionViewController.swift */,
+			);
+			path = LMFeedTopicSelection;
+			sourceTree = "<group>";
+		};
+		E5EC98DF2B39BBB300CD5C4B /* LMFeedTopicSelectionView */ = {
+			isa = PBXGroup;
+			children = (
+				E5EC98E02B39BBD600CD5C4B /* LMFeedTopicSelectionView.swift */,
+			);
+			path = LMFeedTopicSelectionView;
+			sourceTree = "<group>";
+		};
+		E5EC99042B3A9AAB00CD5C4B /* SelectionScreen */ = {
+			isa = PBXGroup;
+			children = (
+				E5EC98DF2B39BBB300CD5C4B /* LMFeedTopicSelectionView */,
+				E5EC99082B3AB38100CD5C4B /* LMFeedTopicSelectionCell.swift */,
+			);
+			path = SelectionScreen;
+			sourceTree = "<group>";
+		};
+		E5EC99052B3A9AC400CD5C4B /* DisplayScreen */ = {
+			isa = PBXGroup;
+			children = (
+				499E7A33A9D19A0BA9D6354CFD8DC6FB /* LMFeedTopicView.swift */,
+				866E515BAAB397A73CDE8897611E8EE3 /* CollectionCells */,
+			);
+			path = DisplayScreen;
 			sourceTree = "<group>";
 		};
 		E6791147770861F576E4ADD22B089490 /* Support Files */ = {
@@ -1054,6 +1095,7 @@
 				E31595251F3244CC39969F777A33B9F9 /* LMButton.swift in Sources */,
 				B76504D84DB3D3D4C25090AED5607767 /* LMCollectionView.swift in Sources */,
 				1A12C50AE6EF54265C72F1F2C086B8CE /* LMCollectionViewCell.swift in Sources */,
+				E5EC98DE2B3744EC00CD5C4B /* LMFeedTopicSelectionViewController.swift in Sources */,
 				28CEF3BF5253C141BE3BD0E99A6FD59E /* LMFeedPostDetailCommentCell.swift in Sources */,
 				AAEB60FBB02AAC4847AAC0086E823B7D /* LMFeedPostDetailCommentCellViewModel.swift in Sources */,
 				7A73EA3B9FC434E4A0C30BE61AA2C05C /* LMFeedPostDetailCommentHeaderView.swift in Sources */,
@@ -1078,9 +1120,11 @@
 				70D6C7A2E97C9F0A4692266436487C64 /* LMImageView.swift in Sources */,
 				22698D9613B8F4EC41F78BB0D199108F /* LMLabel.swift in Sources */,
 				C01FEA600FB2EC263DF2961708B6C16D /* LMPostWidgetTableViewCell.swift in Sources */,
+				E5EC98E12B39BBD600CD5C4B /* LMFeedTopicSelectionView.swift in Sources */,
 				E5EC98D82B35A97E00CD5C4B /* UIImage+Extension.swift in Sources */,
 				A187B59D9CDBA7692C0545220260E0BE /* LMStackView.swift in Sources */,
 				A5F9FD5268BCA8B0AFA414AC07EAB909 /* LMTableView.swift in Sources */,
+				E5EC99092B3AB38100CD5C4B /* LMFeedTopicSelectionCell.swift in Sources */,
 				E9CEFB9E9AFA663A55915B1A57955D28 /* LMTableViewCell.swift in Sources */,
 				5D04D1155984D2F69F97AD8774FE093F /* LMTableViewHeaderFooterView.swift in Sources */,
 				CEAFC7ED7F5950020FB85BAE9AD0FF46 /* LMTappableLabel.swift in Sources */,
