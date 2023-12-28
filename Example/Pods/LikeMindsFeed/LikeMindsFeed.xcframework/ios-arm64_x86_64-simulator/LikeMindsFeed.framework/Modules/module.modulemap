@@ -1,0 +1,4 @@
+framework module LikeMindsFeed {
+  header "LikeMindsFeed-Swift.h"
+  requires objc
+}

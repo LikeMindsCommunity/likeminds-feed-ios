@@ -29,6 +29,9 @@
   "dependencies": {
     "Kingfisher": [
       "~> 7.0"
+    ],
+    "LikeMindsFeed": [
+
     ]
   },
   "swift_version": "5.0"
