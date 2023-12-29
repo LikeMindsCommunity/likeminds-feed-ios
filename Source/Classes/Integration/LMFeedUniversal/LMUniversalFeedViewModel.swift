@@ -36,7 +36,14 @@ public class LMUniversalFeedViewModel {
         return vc
     }
     
-    func getFeed() {
+    func getFeed(fetchInitialPage: Bool = false) {
+        if fetchInitialPage {
+            isLastPostReached = false
+            isFetchingFeed = false
+            currentPage = 1
+            postList.removeAll()
+        }
+        
         guard !isLastPostReached,
               !isFetchingFeed else { return }
         

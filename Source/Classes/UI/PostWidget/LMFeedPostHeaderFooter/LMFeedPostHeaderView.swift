@@ -235,7 +235,14 @@ open class LMFeedPostHeaderView: LMView {
     }
     
     open func configure(with data: ViewModel) {
-        imageView.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: Constants.shared.images.placeholderProfileImage)
+        imageView.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: Constants.shared.images.placeholderProfileImage, completionHandler: { result in
+            switch result {
+            case .success(let data):
+                dump(data)
+            case .failure(let error):
+                dump(error)
+            }
+        })
         
         authorNameLabel.text = data.authorName
         authorTagLabel.text = data.authorTag

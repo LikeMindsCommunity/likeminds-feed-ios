@@ -26,6 +26,11 @@ open class LMUniversalFeedViewController: LMViewController {
         return table
     }()
     
+    open private(set) lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        return refreshControl
+    }()
+    
     open private(set) lazy var searchBar: UISearchController = {
         let search = UISearchController(searchResultsController: nil)
         return search
@@ -156,6 +161,9 @@ open class LMUniversalFeedViewController: LMViewController {
         super.setupActions()
         
         allTopicsButton.addTarget(self, action: #selector(didTapAllTopicsButton), for: .touchUpInside)
+        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
+        
+        tableView.refreshControl = refreshControl
     }
     
     @objc
@@ -234,11 +242,20 @@ extension LMUniversalFeedViewController: UITableViewDataSource, UITableViewDeleg
         if tableView.bounds.contains(cellRect) {
             print(indexPath)
         }
+        if indexPath.row == (data.count - 1) {
+            viewModel?.getFeed()
+        }
     }
     
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = Components.shared.postDetailScreen.init()
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc
+    open func pullToRefresh(refreshControl: UIRefreshControl) {
+        viewModel?.getFeed(fetchInitialPage: true)
+        refreshControl.endRefreshing()
     }
 }
 

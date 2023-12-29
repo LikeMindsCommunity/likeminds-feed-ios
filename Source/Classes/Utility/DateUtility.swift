@@ -15,7 +15,7 @@ public struct DateUtility {
         }
         
         if let time = timeIntervalToDate(Double(time / 1000)) {
-           return "\(time) Ago"
+           return time
         }
         
         return ""
@@ -24,11 +24,9 @@ public struct DateUtility {
     
     /// Generic Function to Convert `Double` aka `TimeInterval` to Human Readable Formatted Time String
     public static func timeIntervalToDate(_ time: Double) -> String? {
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .abbreviated
-        formatter.zeroFormattingBehavior = .default
-        formatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
-        
-        return formatter.string(from: time)
+        let formatter = RelativeDateTimeFormatter()
+        formatter.dateTimeStyle = .named
+        formatter.unitsStyle = .full
+        return formatter.string(for: Date(timeIntervalSince1970: time))
     }
 }

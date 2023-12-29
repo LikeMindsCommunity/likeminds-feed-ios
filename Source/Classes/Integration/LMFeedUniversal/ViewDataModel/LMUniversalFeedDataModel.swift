@@ -75,10 +75,11 @@ public struct LMUniversalFeedDataModel {
 extension LMUniversalFeedDataModel {
     init?(post: Post, user: User, allTopics: [TopicFeedResponse.TopicResponse]) {
         guard let username = user.name,
-        let userID = user.uuid else { return nil }
+              let userID = user.uuid,
+              post.isDeleted != true else { return nil }
         
         self.postId = post.id
-        self.postContent = post.heading ?? ""
+        self.postContent = post.text ?? ""
         self.likeCount = post.likesCount ?? .zero
         self.isLiked = post.isLiked ?? false
         self.isPinned = post.isPinned ?? false
@@ -99,12 +100,6 @@ extension LMUniversalFeedDataModel {
                   !title.isEmpty else { return nil }
             return .init(id: state, name: title)
         } ?? []
-        
-//        self.topics = post.topics?.compactMap { topic in
-//            guard let topic = allTopics.first(where: { $0.id == topic }),
-//                  let name = topic.name else { return nil}
-//            return .init(topicId: topic, topic: name)
-//        } ?? []
         
         self.topics = post.topics?.compactMap { topicID in
             guard let topic = allTopics.first(where: { $0.id == topicID }),

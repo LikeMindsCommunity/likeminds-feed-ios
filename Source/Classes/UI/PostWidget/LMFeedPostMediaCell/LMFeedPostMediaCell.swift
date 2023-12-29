@@ -5,6 +5,7 @@
 //  Created by Devansh Mohata on 29/11/23.
 //
 
+import AVKit
 import UIKit
 
 public protocol LMFeedMediaProtocol { }
@@ -61,8 +62,17 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         return layout
     }()
     
+    open private(set) lazy var videoPlayer: AVPlayerViewController = {
+        let player = AVPlayerViewController()
+        player.view.translatesAutoresizingMaskIntoConstraints = false
+        player.showsPlaybackControls = true
+        return player
+    }()
+    
+    
     //MARK: Data Variables
     private var mediaCellsData: [LMFeedMediaProtocol] = []
+
     
     // MARK: View Hierachy
     open override func setupViews() {
@@ -206,7 +216,7 @@ extension LMFeedPostMediaCell: UICollectionViewDataSource,
             return cell
         } else if let cell = collectionView.dequeueReusableCell(with: Components.shared.videoCollectionCell, for: indexPath),
                   let data = mediaCellsData[indexPath.row] as? LMFeedPostVideoCollectionCell.ViewModel {
-            cell.configure(with: data)
+            cell.configure(with: data, videoPlayer: videoPlayer)
             return cell
         }
         

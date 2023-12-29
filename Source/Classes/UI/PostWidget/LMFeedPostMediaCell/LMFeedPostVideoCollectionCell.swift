@@ -14,24 +14,19 @@ open class LMFeedPostVideoCollectionCell: LMCollectionViewCell {
         let videoURL: String
     }
     
-    // MARK: UI Elements
-    open private(set) lazy var videoPlayer: AVPlayerViewController = {
-        let player = AVPlayerViewController()
-        player.view.translatesAutoresizingMaskIntoConstraints = false
-        player.showsPlaybackControls = true
-        return player
-    }()
+    private var videoPlayer: AVPlayerViewController?
     
     open override func prepareForReuse() {
         super.prepareForReuse()
         pauseVideo()
+        videoPlayer = nil
     }
     
     // MARK: View Hierachy
     public override func setupViews() {
         super.setupViews()
         
-        contentView.addSubview(videoPlayer.view)
+        contentView.addSubview(containerView)
     }
     
     // MARK: Constraints
@@ -39,10 +34,10 @@ open class LMFeedPostVideoCollectionCell: LMCollectionViewCell {
         super.setupLayouts()
         
         NSLayoutConstraint.activate([
-            videoPlayer.view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            videoPlayer.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            videoPlayer.view.topAnchor.constraint(equalTo: contentView.topAnchor),
-            videoPlayer.view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
     
@@ -54,24 +49,33 @@ open class LMFeedPostVideoCollectionCell: LMCollectionViewCell {
     }
     
     // MARK: Configure Method
-    open func configure(with data: ViewModel) {
+    open func configure(with data: ViewModel, videoPlayer: AVPlayerViewController) {
+        self.videoPlayer = videoPlayer
+        containerView.addSubview(videoPlayer.view)
+        
+        NSLayoutConstraint.activate([
+            videoPlayer.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            videoPlayer.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            videoPlayer.view.topAnchor.constraint(equalTo: containerView.topAnchor),
+            videoPlayer.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
+        
         guard let url = URL(string: data.videoURL) else { return }
         DispatchQueue.global(qos: .background).async {
             let player = AVPlayer(url: url)
             
             DispatchQueue.main.async { [weak self] in
-                self?.videoPlayer.player = player
+                self?.videoPlayer?.player = player
                 self?.playVideo()
             }
         }
-        videoPlayer.player = .init(url: url)
     }
     
     open func playVideo() {
-        videoPlayer.player?.play()
+        videoPlayer?.player?.play()
     }
     
     open func pauseVideo() {
-        videoPlayer.player?.pause()
+        videoPlayer?.player?.pause()
     }
 }
