@@ -97,19 +97,18 @@ open class LMUniversalFeedViewController: LMViewController {
     // MARK: Data Variables
     public var data: [LMFeedPostTableCellProtocol] = []
     public var selectedTopics: [LMFeedTopicCollectionCellDataModel] = []
-    
+    public var viewModel: LMUniversalFeedViewModel?
     
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
-        dataGenerator()
-//        selectedTopics = [.init(topic: "Topic #1", topicID: "123"), .init(topic: "Topic #2", topicID: "234"), .init(topic: "Topic #3", topicID: "345"), .init(topic: "Topic #4", topicID: "456")]
         
         allTopicsButton.isHidden = !selectedTopics.isEmpty
         topicCollection.isHidden = selectedTopics.isEmpty
         clearButton.isHidden = selectedTopics.isEmpty
         
         tableViewScrolled(tableView: tableView)
+        viewModel?.getFeed()
     }
     
     
@@ -319,105 +318,10 @@ extension LMUniversalFeedViewController: LMFeedTopicViewCellProtocol {
 }
 
 
-// MARK: Sample Data
-extension LMUniversalFeedViewController {
-    func dataGenerator() {
-        docGenerator()
-        linkGenerator()
-        mediaGenerator()
-    }
-    
-    func docGenerator() {
-        func doccer(id: Int) -> LMFeedPostDocumentCellView.ViewModel {
-            .init(
-                documentID: id,
-                title: "This is PDF \(id)",
-                size: Double(id * id) * 10,
-                pageCount: id,
-                docType: "PDF"
-            )
-        }
-        
-        for i in 0..<5 {
-            var docs: [LMFeedPostDocumentCellView.ViewModel] = []
-            
-            for j in 0...i {
-                docs.append(doccer(id: j))
-            }
-            
-            let datum = LMFeedPostDocumentCell.ViewModel.init(
-                headerData: headerData(), 
-                topics: .init(topics: generateTopics(), isEditFlow: Bool.random(), isSepratorShown: Bool.random()),
-                postText: "<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments",
-                documents: docs,
-                footerData: .init(isSaved: Bool.random(), isLiked: Bool.random()))
-            
-            data.append(datum)
-        }
-    }
-    
-    func linkGenerator() {
-        func linker() -> LMFeedPostLinkCellView.ViewModel {
-            .init(
-                linkPreview: "https://picsum.photos/200",
-                title: "This is Gooogle",
-                description: "Google.com is the best Search Engine",
-                url: "www.google.com"
-            )
-        }
-        
-        (0...5).forEach { _ in
-            let linkum = LMFeedPostLinkCell.ViewModel.init(
-                headerData: headerData(),
-                postText: "<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments", 
-                topics: .init(topics: generateTopics(), isEditFlow: false, isSepratorShown: true),
-                mediaData: linker(),
-                footerData: .init(isSaved: Bool.random(), isLiked: Bool.random())
-            )
-            data.append(linkum)
-        }
-    }
-    
-    func generateTopics() -> [LMFeedTopicCollectionCellDataModel] {
-        var data = [LMFeedTopicCollectionCellDataModel]()
-        
-        (0...20).forEach { i in
-            data.append(.init(topic: "\(i*i)", topicID: "\(i+i)"))
-        }
-        
-        return data
-    }
-    
-    func mediaGenerator() {
-        func imageMedium() -> LMFeedPostImageCollectionCell.ViewModel {
-            .init(image: "pdfIcon")
-        }
-        
-        func videMedium() -> LMFeedPostVideoCollectionCell.ViewModel {
-            .init(videoURL: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4")
-        }
-        
-        for _ in 0..<5 {
-            let medium = LMFeedPostMediaCell.ViewModel.init(
-                headerData: headerData(),
-                postText: "<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments", 
-                topics: .init(topics: generateTopics(), isEditFlow: Bool.random(), isSepratorShown: Bool.random()),
-                mediaData: [imageMedium(), videMedium(), imageMedium()],
-                footerData: .init(isSaved: Bool.random(), isLiked: Bool.random())
-            )
-            
-            data.append(medium)
-        }
-    }
-    
-    func headerData() -> LMFeedPostHeaderView.ViewModel {
-        .init(
-            profileImage: "https://picsum.photos/200/300",
-            authorName: "Devansh Mohata",
-            authorTag: Bool.random() ? "Owner" : nil,
-            subtitle: "3 Hours Ago",
-            isPinned: Bool.random(),
-            showMenu: Bool.random()
-        )
+// MARK: LMUniversalFeedViewModelProtocol
+extension LMUniversalFeedViewController: LMUniversalFeedViewModelProtocol {
+    public func loadPosts(with data: [LMFeedPostTableCellProtocol]) {
+        self.data.append(contentsOf: data)
+        tableView.reloadData()
     }
 }

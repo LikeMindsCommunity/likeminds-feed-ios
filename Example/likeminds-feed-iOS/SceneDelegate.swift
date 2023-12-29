@@ -21,8 +21,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             
-            let vc = Components.shared.feedListViewController.init()
-            window.rootViewController = UINavigationController(rootViewController: vc)
+            let storyboard = UIStoryboard(name: "Main", bundle: Bundle(for: ViewController.self))
+            if let vc = storyboard.instantiateInitialViewController() as? ViewController {
+                window.rootViewController = UINavigationController(rootViewController: vc)
+            }
             
             self.window = window
             window.makeKeyAndVisible()

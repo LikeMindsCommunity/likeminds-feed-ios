@@ -148,8 +148,6 @@ open class LMFeedPostDetailViewController: LMViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        sampleDataGenerator()
     }
     
     deinit {
@@ -336,109 +334,5 @@ extension LMFeedPostDetailViewController: UITextViewDelegate {
     open func textViewDidEndEditing(_ textView: UITextView) {
         textView.text = textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
         inputTextViewHeightConstraint?.constant = 40
-    }
-}
-
-
-extension LMFeedPostDetailViewController {
-    func sampleDataGenerator() {
-        docGenerator()
-        generateTotalComment()
-        generateCommentCell()
-        tableView.reloadData()
-    }
-    
-    func headerData() -> LMFeedPostHeaderView.ViewModel {
-        .init(
-            profileImage: "https://picsum.photos/200/300",
-            authorName: "Devansh Mohata",
-            authorTag: Bool.random() ? "Owner" : nil,
-            subtitle: "3 Hours Ago",
-            isPinned: Bool.random(),
-            showMenu: Bool.random()
-        )
-    }
-    
-    func docGenerator() {
-        func doccer(id: Int) -> LMFeedPostDocumentCellView.ViewModel {
-            .init(
-                documentID: id,
-                title: "This is PDF \(id)",
-                size: Double(id * id) * 10,
-                pageCount: id,
-                docType: "PDF"
-            )
-        }
-        
-        
-        var docs: [LMFeedPostDocumentCellView.ViewModel] = []
-        
-        for j in 0...5 {
-            docs.append(doccer(id: j))
-        }
-        
-        let datum = LMFeedPostDocumentCell.ViewModel.init(
-            headerData: headerData(), 
-            topics: .init(topics: generateTopics(), isEditFlow: Bool.random(), isSepratorShown: Bool.random()),
-            postText: "<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments<<Thor|route://user_profile/thor123>> <<DB|route://user_profile/fgsdfgs>> fdsgkdskfbj <<DB|route://user_profile/fgsdfgs>> <<Feed Api key bot|route://user_profile/1d7fcd74-21ed-4e54-b5b4-792e2d2a1e2f>> This is a Post containing Documents www.google.com as #Attachments",
-            documents: docs,
-            footerData: .init(isSaved: Bool.random(), isLiked: Bool.random()))
-        
-        cellsData.append(datum)
-    }
-    
-    func generateCommentCell() {
-        var replies: [LMFeedPostDetailCommentCellViewModel] = []
-        
-        for _ in (0...2) {
-            replies.append(generateCommentCellReply())
-        }
-        
-        for _ in (0...3) {
-            let data = LMFeedPostDetailCommentCellViewModel(
-                author: .init(name: "Devansh", avatarURL: "www.o.com", uuid: "devansh_rocks"),
-                postId: "POSTER",
-                commentId: "COMMENTER",
-                tempCommentId: nil,
-                comment: "This is a Comment, I'm making a SDK, god help me!This is a Comment, I'm making a SDK, god help me!This is a Comment, I'm making a SDK, god help me!This is a Comment, I'm making a SDK, god help me!This is a Comment, I'm making a SDK, god help me!This is a Comment, I'm making a SDK, god help me!This is a Comment, I'm making a SDK, god help me!This is a Comment, I'm making a SDK, god help me!",
-                commentTime: "Just Now",
-                likeCount: 3,
-                totalReplyCount: 20,
-                replies: replies,
-                isEdited: Bool.random()
-            )
-            
-            cellsData.append(data)
-        }
-    }
-    
-    func generateCommentCellReply() -> LMFeedPostDetailCommentCellViewModel {
-        LMFeedPostDetailCommentCellViewModel(
-            author: .init(name: "Devansh", avatarURL: "www.o.com", uuid: "devansh_rocks"),
-            postId: "POSTER",
-            commentId: "COMMENTER",
-            tempCommentId: nil,
-            comment: "This is a Comment, I'm making a SDK, god help me!",
-            commentTime: "Just Now",
-            likeCount: 3,
-            totalReplyCount: 0,
-            replies: [],
-            isEdited: Bool.random()
-        )
-    }
-    
-    func generateTotalComment() {
-        let data: LMFeedPostDetailTotalCommentCell.ViewModel = .init(totalComments: 15)
-        cellsData.append(data)
-    }
-    
-    func generateTopics() -> [LMFeedTopicCollectionCellDataModel] {
-        var data = [LMFeedTopicCollectionCellDataModel]()
-        
-        (0...20).forEach { i in
-            data.append(.init(topic: "\(i*i)", topicID: "\(i+i)"))
-        }
-        
-        return data
     }
 }

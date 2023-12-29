@@ -7,18 +7,42 @@
 //
 
 import UIKit
+import likeminds_feed_iOS
 
 class ViewController: UIViewController {
 
+    @IBOutlet private weak var apiKeyTextField: UITextField!
+    @IBOutlet private weak var usernameTextField: UITextField!
+    @IBOutlet private weak var userIdTextField: UITextField!
+    @IBOutlet private weak var submitBtn: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        submitBtn.layer.cornerRadius = 8
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(endEditing)))
+        
+        if let apiKey = LocalPreferences.apiKey,
+           !apiKey.isEmpty {
+            LMFeedMain.shared.initiateLikeMindsFeed(withViewController: self, apiKey: apiKey, username: LocalPreferences.userObj?.name ?? "username", userId: LocalPreferences.userObj?.uuid ?? "userId")
+        }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    @IBAction private func submitBtnClicked(_ sender: UIButton) {
+        guard let apiKey = apiKeyTextField.text,
+              !apiKey.isEmpty else {
+            apiKeyTextField.layer.borderColor = UIColor.red.cgColor
+            apiKeyTextField.layer.borderWidth = 1
+            return
+        }
+        
+        let username = usernameTextField.text ?? "username"
+        let userId = userIdTextField.text ?? "userId"
+        
+        LMFeedMain.shared.initiateLikeMindsFeed(withViewController: self, apiKey: apiKey, username: username, userId: userId)
     }
-
+    
+    @objc
+    private func endEditing() {
+        view.endEditing(true)
+    }
 }
-

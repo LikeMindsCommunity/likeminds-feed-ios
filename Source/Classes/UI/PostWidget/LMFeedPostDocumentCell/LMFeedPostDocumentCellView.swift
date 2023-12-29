@@ -15,16 +15,16 @@ public protocol LMChatDocumentCellViewProtocol: AnyObject {
 @IBDesignable
 open class LMFeedPostDocumentCellView: LMView {
     public struct ViewModel {
-        let documentID: Int
         let title: String
-        let size: Double?
+        let documentURL: String
+        let size: Int?
         let pageCount: Int?
         let docType: String?
         let isShowCrossButton: Bool
         
-        public init(documentID: Int, title: String, size: Double?, pageCount: Int?, docType: String?, isShowCrossButton: Bool = false) {
-            self.documentID = documentID
+        public init(title: String, documentURL: String, size: Int?, pageCount: Int?, docType: String?, isShowCrossButton: Bool = false) {
             self.title = title
+            self.documentURL = documentURL
             self.size = size
             self.pageCount = pageCount
             self.docType = docType
@@ -191,7 +191,6 @@ open class LMFeedPostDocumentCellView: LMView {
     // MARK: Configure
     open func configure(with data: ViewModel, delegate: LMChatDocumentCellViewProtocol?) {
         self.delegate = delegate
-        documentID = data.documentID
         
         titleLabel.text = data.title
         

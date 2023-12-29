@@ -5,17 +5,16 @@
 //  Created by Devansh Mohata on 01/12/23.
 //
 
+import Kingfisher
 import UIKit
 
 @IBDesignable
 open class LMFeedPostImageCollectionCell: LMCollectionViewCell {
     public struct ViewModel: LMFeedMediaProtocol {
         let image: String
-        let bundle: Bundle?
         
-        public init(image: String, bundle: Bundle? = nil) {
+        public init(image: String) {
             self.image = image
-            self.bundle = bundle
         }
     }
     
@@ -42,6 +41,6 @@ open class LMFeedPostImageCollectionCell: LMCollectionViewCell {
     }
     
     open func configure(with data: ViewModel) {
-        imageView.image = UIImage(named: data.image, in: data.bundle, with: nil)
+        imageView.kf.setImage(with: URL(string: data.image))
     }
 }

@@ -20,8 +20,12 @@ open class LMFeedPostFooterView: LMView {
     public struct ViewModel {
         var isSaved: Bool
         var isLiked: Bool
+        var likeCount: Int
+        var commentCount: Int
         
-        public init(isSaved: Bool = false, isLiked: Bool = false) {
+        public init(likeCount: Int, commentCount: Int, isSaved: Bool = false, isLiked: Bool = false) {
+            self.likeCount = likeCount
+            self.commentCount = commentCount
             self.isSaved = isSaved
             self.isLiked = isLiked
         }
@@ -234,7 +238,30 @@ open class LMFeedPostFooterView: LMView {
         likeButton.setImage(data.isLiked ? Constants.shared.images.heartFilled : Constants.shared.images.heart , for: .normal)
         likeButton.tintColor = data.isLiked ? Appearance.shared.colors.red : Appearance.shared.colors.gray2
         
+        likeTextButton.setTitle(getLikeText(for: data.likeCount), for: .normal)
+        commentButton.setTitle(getCommentText(for: data.commentCount), for: .normal)
+        
         saveButton.setImage(data.isSaved ? Constants.shared.images.bookmarkFilled : Constants.shared.images.bookmark, for: .normal)
+    }
+    
+    open func getLikeText(for likeCount: Int) -> String {
+        if likeCount == .zero {
+            return "Like"
+        } else if likeCount == 1 {
+            return "1 Like"
+        }
+        
+        return "\(likeCount) Likes"
+    }
+    
+    open func getCommentText(for commentCount: Int) -> String {
+        if commentCount == .zero {
+            return "Comment"
+        } else if commentCount == 1 {
+            return "1 Comment"
+        }
+        
+        return "\(commentCount) Comments"
     }
 }
 

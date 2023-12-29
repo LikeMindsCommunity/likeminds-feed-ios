@@ -16,8 +16,8 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
     // MARK: Data Model
     public struct ViewModel: LMFeedPostTableCellProtocol {
         let headerData: LMFeedPostHeaderView.ViewModel
-        let topics: LMFeedTopicView.ViewModel
         let postText: String
+        let topics: LMFeedTopicView.ViewModel
         let documents: [LMFeedPostDocumentCellView.ViewModel]
         let isShowFullText: Bool
         var isShowAllDocuments: Bool
