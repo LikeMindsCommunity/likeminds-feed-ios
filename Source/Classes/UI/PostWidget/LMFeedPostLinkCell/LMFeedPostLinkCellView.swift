@@ -5,6 +5,7 @@
 //  Created by Devansh Mohata on 13/12/23.
 //
 
+import Kingfisher
 import UIKit
 
 @IBDesignable
@@ -152,8 +153,7 @@ open class LMFeedPostLinkCellView: LMView {
     
     // MARK: configure
     open func configure(with data: ViewModel) {
-        // Need to import KingFisher first
-//        imageView.kf.setImage()
+        imageView.kf.setImage(with: URL(string: data.linkPreview ?? ""), placeholder: Constants.shared.images.brokenLink)
         titleLabel.text = data.title
         titleLabel.isHidden = data.title?.isEmpty != false
         

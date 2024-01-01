@@ -128,6 +128,8 @@ public class LMUniversalFeedViewModel {
     
     func convertToLinkViewData(from data: LMUniversalFeedDataModel, link: LMUniversalFeedDataModel.LinkAttachment) -> LMFeedPostLinkCell.ViewModel {
         .init(
+            postID: data.postId,
+            userUUID: data.userUUID,
             headerData: convertToHeaderViewData(from: data),
             postText: data.postContent,
             topics: generateTopicViewModel(from: data.topics),
@@ -144,6 +146,8 @@ public class LMUniversalFeedViewModel {
         }
         
         return .init(
+            postID: data.postId,
+            userUUID: data.userUUID,
             headerData: convertToHeaderViewData(from: data),
             topics: generateTopicViewModel(from: data.topics),
             postText: data.postContent,
@@ -164,6 +168,8 @@ public class LMUniversalFeedViewModel {
         }
         
         return .init(
+            postID: data.postId,
+            userUUID: data.userUUID,
             headerData: convertToHeaderViewData(from: data),
             postText: data.postContent,
             topics: generateTopicViewModel(from: data.topics),

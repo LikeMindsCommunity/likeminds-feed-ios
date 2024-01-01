@@ -15,21 +15,27 @@ public protocol LMFeedPostDocumentCellProtocol: AnyObject {
 open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
     // MARK: Data Model
     public struct ViewModel: LMFeedPostTableCellProtocol {
-        let headerData: LMFeedPostHeaderView.ViewModel
-        let postText: String
-        let topics: LMFeedTopicView.ViewModel
-        let documents: [LMFeedPostDocumentCellView.ViewModel]
-        let isShowFullText: Bool
-        var isShowAllDocuments: Bool
-        var footerData: LMFeedPostFooterView.ViewModel
+        public var postID: String
+        public var userUUID: String
+        public var headerData: LMFeedPostHeaderView.ViewModel
+        public var postText: String
+        public var topics: LMFeedTopicView.ViewModel
+        public let documents: [LMFeedPostDocumentCellView.ViewModel]
+        public let isShowFullText: Bool
+        public var isShowAllDocuments: Bool
+        public var footerData: LMFeedPostFooterView.ViewModel
         
-        init(headerData: LMFeedPostHeaderView.ViewModel,
-             topics: LMFeedTopicView.ViewModel?,
-             postText: String?,
-             documents: [LMFeedPostDocumentCellView.ViewModel],
-             footerData: LMFeedPostFooterView.ViewModel,
-             isShowFullText: Bool = false,
-             isShowAllDocuments: Bool = false) {
+        public init( postID: String,
+                     userUUID: String,
+                     headerData: LMFeedPostHeaderView.ViewModel,
+                     topics: LMFeedTopicView.ViewModel?,
+                     postText: String?,
+                     documents: [LMFeedPostDocumentCellView.ViewModel],
+                     footerData: LMFeedPostFooterView.ViewModel,
+                     isShowFullText: Bool = false,
+                     isShowAllDocuments: Bool = false) {
+            self.postID = postID
+            self.userUUID = userUUID
             self.headerData = headerData
             self.postText = postText ?? ""
             self.topics = topics ?? .init()

@@ -14,16 +14,28 @@ public protocol LMFeedMediaProtocol { }
 open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     // MARK: Data Model
     public struct ViewModel: LMFeedPostTableCellProtocol {
-        let headerData: LMFeedPostHeaderView.ViewModel
-        let postText: String
-        let topics: LMFeedTopicView.ViewModel
-        let mediaData: [LMFeedMediaProtocol]
-        var footerData: LMFeedPostFooterView.ViewModel
+        public var postID: String
+        public var userUUID: String
+        public var headerData: LMFeedPostHeaderView.ViewModel
+        public var postText: String
+        public var topics: LMFeedTopicView.ViewModel
+        public var mediaData: [LMFeedMediaProtocol]
+        public var footerData: LMFeedPostFooterView.ViewModel
         
-        public init(headerData: LMFeedPostHeaderView.ViewModel, postText: String, topics: LMFeedTopicView.ViewModel?, mediaData: [LMFeedMediaProtocol], footerData: LMFeedPostFooterView.ViewModel) {
+        public init(
+            postID: String,
+            userUUID: String,
+            headerData: LMFeedPostHeaderView.ViewModel,
+            postText: String,
+            topics: LMFeedTopicView.ViewModel,
+            mediaData: [LMFeedMediaProtocol],
+            footerData: LMFeedPostFooterView.ViewModel
+        ) {
+            self.postID = postID
+            self.userUUID = userUUID
             self.headerData = headerData
             self.postText = postText
-            self.topics = topics ?? .init()
+            self.topics = topics
             self.mediaData = mediaData
             self.footerData = footerData
         }

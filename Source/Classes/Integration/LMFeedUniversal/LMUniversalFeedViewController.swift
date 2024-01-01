@@ -7,7 +7,14 @@
 
 import UIKit
 
-public protocol LMFeedPostTableCellProtocol { }
+public protocol LMFeedPostTableCellProtocol {
+//    var postID: String { get }
+//    var userUUID: String { get }
+//    var headerData: LMFeedPostHeaderView.ViewModel { get }
+//    var postText: String { get }
+//    var topics: LMFeedTopicView.ViewModel { get }
+//    var footerData: LMFeedPostFooterView.ViewModel { get }
+}
 
 open class LMUniversalFeedViewController: LMViewController {
     // MARK: UI Elements

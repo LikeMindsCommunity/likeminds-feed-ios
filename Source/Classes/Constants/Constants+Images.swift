@@ -48,5 +48,6 @@ public extension Constants {
         
         public var pdfIcon = loadImage(with: "pdfIcon")
         public var placeholderProfileImage = loadImage(with: "placeholderProfile")
+        public var brokenLink = loadImage(with: "brokenLink")
     }
 }
