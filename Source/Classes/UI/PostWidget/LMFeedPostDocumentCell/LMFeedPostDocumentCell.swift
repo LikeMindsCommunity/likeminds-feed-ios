@@ -153,7 +153,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         
     
     // MARK: configure
-    open func configure(for indexPath: IndexPath, with data: ViewModel, delegate: (LMFeedPostDocumentCellProtocol & LMFeedTableCellToViewControllerProtocol)) {
+    open func configure(for indexPath: IndexPath, with data: ViewModel, delegate: (LMFeedPostDocumentCellProtocol & LMFeedTableCellToViewControllerProtocol)?) {
         self.indexPath = indexPath
         self.delegate = delegate
         self.actionDelegate = delegate

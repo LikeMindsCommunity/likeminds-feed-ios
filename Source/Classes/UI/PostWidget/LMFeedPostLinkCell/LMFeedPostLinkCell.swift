@@ -130,7 +130,7 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
     
     
     // MARK: configure
-    open func configure(with data: ViewModel, delegate: (LMChatLinkProtocol & LMFeedTableCellToViewControllerProtocol)) {
+    open func configure(with data: ViewModel, delegate: (LMChatLinkProtocol & LMFeedTableCellToViewControllerProtocol)?) {
         postID = data.postID
         userUUID = data.userUUID
         

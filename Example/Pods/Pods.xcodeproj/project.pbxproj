@@ -168,6 +168,8 @@
 		DD2E5DCDE2E3123CACD25C57DEF4A719 /* LMFeedPostDocumentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE963F9A505E31BC2D4B1C2B5C56A558 /* LMFeedPostDocumentCell.swift */; };
 		E592CBEA2B430E7E007474F2 /* LMFeedTopicSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592CBE92B430E7E007474F2 /* LMFeedTopicSelectionViewModel.swift */; };
 		E592CBEC2B43E808007474F2 /* LMFeedTopicSelectionDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592CBEB2B43E807007474F2 /* LMFeedTopicSelectionDataModel.swift */; };
+		E592CBF02B443E98007474F2 /* LMFeedPostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592CBEF2B443E98007474F2 /* LMFeedPostListViewController.swift */; };
+		E592CBF22B4467CD007474F2 /* LMFeedPostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592CBF12B4467CD007474F2 /* LMFeedPostListViewModel.swift */; };
 		E5A785142B3D65E600B7031B /* LMAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11FC43EB708B4C356254455434480FB6 /* LMAssets.xcassets */; };
 		E5A7851B2B3D6ADA00B7031B /* LMFeedMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A7851A2B3D6ADA00B7031B /* LMFeedMain.swift */; };
 		E5A7851D2B3D6CF400B7031B /* LocalPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A7851C2B3D6CF400B7031B /* LocalPreferences.swift */; };
@@ -449,6 +451,8 @@
 		E4C715DB6703B3BCC97C29E0ECD62DE6 /* GetAttributedTextWithRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GetAttributedTextWithRoutes.swift; sourceTree = "<group>"; };
 		E592CBE92B430E7E007474F2 /* LMFeedTopicSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTopicSelectionViewModel.swift; sourceTree = "<group>"; };
 		E592CBEB2B43E807007474F2 /* LMFeedTopicSelectionDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTopicSelectionDataModel.swift; sourceTree = "<group>"; };
+		E592CBEF2B443E98007474F2 /* LMFeedPostListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPostListViewController.swift; sourceTree = "<group>"; };
+		E592CBF12B4467CD007474F2 /* LMFeedPostListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPostListViewModel.swift; sourceTree = "<group>"; };
 		E5A7851A2B3D6ADA00B7031B /* LMFeedMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedMain.swift; sourceTree = "<group>"; };
 		E5A7851C2B3D6CF400B7031B /* LocalPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPreferences.swift; sourceTree = "<group>"; };
 		E5A7851E2B3D7D9A00B7031B /* LMUniversalFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMUniversalFeedViewModel.swift; sourceTree = "<group>"; };
@@ -587,6 +591,7 @@
 		18642D965372AC43157C4A08E56CC0E1 /* Integration */ = {
 			isa = PBXGroup;
 			children = (
+				E592CBEE2B443E8F007474F2 /* LMFeedPostListView */,
 				D6029C015DE03ADEB6F03B6C4BD851B9 /* LMFeedPostDetail */,
 				E211006577717288806C432A349F7943 /* LMFeedTopicSelection */,
 				93ED0F281BB21BD886C3873DBCEC0B6A /* LMFeedUniversal */,
@@ -1008,6 +1013,15 @@
 				E592CBEB2B43E807007474F2 /* LMFeedTopicSelectionDataModel.swift */,
 			);
 			path = ViewDataModel;
+			sourceTree = "<group>";
+		};
+		E592CBEE2B443E8F007474F2 /* LMFeedPostListView */ = {
+			isa = PBXGroup;
+			children = (
+				E592CBEF2B443E98007474F2 /* LMFeedPostListViewController.swift */,
+				E592CBF12B4467CD007474F2 /* LMFeedPostListViewModel.swift */,
+			);
+			path = LMFeedPostListView;
 			sourceTree = "<group>";
 		};
 		E5A785222B3DADA600B7031B /* ViewDataModel */ = {
@@ -1489,6 +1503,7 @@
 				E5A7851F2B3D7D9B00B7031B /* LMUniversalFeedViewModel.swift in Sources */,
 				67EC2AAB80E43D5B47DA4DEAEA1E96D0 /* LMFeedPostDetailCommentCell.swift in Sources */,
 				C3A988BE1C6130AE4DF8ADB698BC3AC0 /* LMFeedPostDetailCommentCellViewModel.swift in Sources */,
+				E592CBF22B4467CD007474F2 /* LMFeedPostListViewModel.swift in Sources */,
 				FE6087AA77EB7F394F59154D48449DAE /* LMFeedPostDetailCommentHeaderView.swift in Sources */,
 				179CC46E4DBE91345067AF98C8334E90 /* LMFeedPostDetailTotalCommentCell.swift in Sources */,
 				42C5456A225E63A848B6EA849FDDAA08 /* LMFeedPostDetailViewController.swift in Sources */,
@@ -1497,6 +1512,7 @@
 				928D17C6AEC7AD0F1769FD7D018DD8B3 /* LMFeedPostDocumentCellView.swift in Sources */,
 				5A34AEF7E74A56FE920C9CE18E7D2A30 /* LMFeedPostFooterView.swift in Sources */,
 				7C048340A5C987DA7FADD5EAC8796ACD /* LMFeedPostHeaderView.swift in Sources */,
+				E592CBF02B443E98007474F2 /* LMFeedPostListViewController.swift in Sources */,
 				1C2E6D20563E8C603288439B6F53EFF9 /* LMFeedPostImageCollectionCell.swift in Sources */,
 				5C7E277B7FB1FA37B97B557F5F4ADC80 /* LMFeedPostLinkCell.swift in Sources */,
 				24C4E032186F4A6770572B8F9258D2C2 /* LMFeedPostLinkCellView.swift in Sources */,

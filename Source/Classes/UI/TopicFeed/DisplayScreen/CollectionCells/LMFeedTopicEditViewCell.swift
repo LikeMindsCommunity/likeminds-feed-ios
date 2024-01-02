@@ -94,7 +94,7 @@ open class LMFeedTopicEditViewCell: LMCollectionViewCell {
     
     
     // MARK: configure
-    open func configure(with data: LMFeedTopicCollectionCellDataModel, delegate: LMFeedTopicViewCellProtocol) {
+    open func configure(with data: LMFeedTopicCollectionCellDataModel, delegate: LMFeedTopicViewCellProtocol?) {
         self.delegate = delegate
         topicID = data.topicID
         textLabel.text = data.topic

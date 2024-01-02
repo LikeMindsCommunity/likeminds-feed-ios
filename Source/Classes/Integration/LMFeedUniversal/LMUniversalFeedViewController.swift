@@ -18,30 +18,6 @@ public protocol LMFeedPostTableCellProtocol {
 
 open class LMUniversalFeedViewController: LMViewController {
     // MARK: UI Elements
-    open private(set) lazy var tableView: LMTableView = {
-        let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
-        table.backgroundColor = Appearance.shared.colors.clear
-        table.dataSource = self
-        table.delegate = self
-        table.separatorStyle = .none
-        table.showsVerticalScrollIndicator = false
-        table.showsHorizontalScrollIndicator = false
-        table.rowHeight = UITableView.automaticDimension
-        table.register(Components.shared.postCell)
-        table.register(Components.shared.documentCell)
-        table.register(Components.shared.linkCell)
-        return table
-    }()
-    
-    open private(set) lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        return refreshControl
-    }()
-    
-    open private(set) lazy var searchBar: UISearchController = {
-        let search = UISearchController(searchResultsController: nil)
-        return search
-    }()
     
     open private(set) lazy var contentStack: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
@@ -105,11 +81,18 @@ open class LMUniversalFeedViewController: LMViewController {
         return button
     }()
     
+    open private(set) lazy var postList: LMFeedPostListViewController = {
+        let vc = LMFeedPostListViewModel.createModule(with: self)
+        vc.view.translatesAutoresizingMaskIntoConstraints = false
+        return vc
+    }()
+    
     
     // MARK: Data Variables
     public var data: [LMFeedPostTableCellProtocol] = []
     public var selectedTopics: [LMFeedTopicCollectionCellDataModel] = []
     public var viewModel: LMUniversalFeedViewModel?
+    public weak var feedListDelegate: LMFeedPostListVCToProtocol?
     
     // MARK: viewDidLoad
     open override func viewDidLoad() {
@@ -118,9 +101,6 @@ open class LMUniversalFeedViewController: LMViewController {
         allTopicsButton.isHidden = !selectedTopics.isEmpty
         topicCollection.isHidden = selectedTopics.isEmpty
         clearButton.isHidden = selectedTopics.isEmpty
-        
-        tableViewScrolled(tableView: tableView)
-        viewModel?.getFeed()
     }
     
     
@@ -130,7 +110,9 @@ open class LMUniversalFeedViewController: LMViewController {
         view.addSubview(contentStack)
         
         contentStack.addArrangedSubview(topicContainerView)
-        contentStack.addArrangedSubview(tableView)
+        addChild(postList)
+        contentStack.addArrangedSubview(postList.view)
+        postList.didMove(toParent: self)
         
         topicContainerView.addSubview(topicStackView)
         topicStackView.addArrangedSubview(allTopicsButton)
@@ -173,9 +155,7 @@ open class LMUniversalFeedViewController: LMViewController {
         
         allTopicsButton.addTarget(self, action: #selector(didTapAllTopicsButton), for: .touchUpInside)
         clearButton.addTarget(self, action: #selector(didTapClearButton), for: .touchUpInside)
-        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
-        
-        tableView.refreshControl = refreshControl
+        feedListDelegate = postList
     }
     
     @objc
@@ -209,71 +189,6 @@ open class LMUniversalFeedViewController: LMViewController {
         setNavigationTitleAndSubtitle(with: Constants.shared.strings.communityHood, subtitle: nil)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: Constants.shared.images.personIcon, style: .plain, target: nil, action: nil)
-        
-        navigationItem.searchController = searchBar
-    }
-    
-    open func tableViewScrolled(tableView: LMTableView) {
-        for case let cell as LMFeedPostMediaCell in tableView.visibleCells {
-            if let indexPath = tableView.indexPath(for: cell) {
-                let cellRect = tableView.rectForRow(at: indexPath)
-                let convertedRect = tableView.convert(cellRect, to: tableView.superview)
-                cell.tableViewScrolled(isPlay: tableView.bounds.contains(convertedRect))
-            }
-        }
-    }
-}
-
-// MARK: UITableViewDataSource, UITableViewDelegate
-@objc
-extension LMUniversalFeedViewController: UITableViewDataSource, UITableViewDelegate {
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        data.count
-    }
-    
-    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(Components.shared.postCell),
-           let cellData = data[indexPath.row] as? LMFeedPostMediaCell.ViewModel {
-            cell.configure(with: cellData, delegate: self)
-            return cell
-        } else if let cell = tableView.dequeueReusableCell(Components.shared.documentCell),
-                  let cellData = data[indexPath.row] as? LMFeedPostDocumentCell.ViewModel {
-            cell.configure(for: indexPath, with: cellData, delegate: self)
-            return cell
-        } else if let cell = tableView.dequeueReusableCell(Components.shared.linkCell),
-                  let cellData = data[indexPath.row] as? LMFeedPostLinkCell.ViewModel {
-            cell.configure(with: cellData, delegate: self)
-            return cell
-        }
-        
-        return UITableViewCell()
-    }
-    
-    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let tableView = scrollView as? LMTableView else { return }
-        tableViewScrolled(tableView: tableView)
-    }
-    
-    open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let cellRect = tableView.rectForRow(at: indexPath)
-        if tableView.bounds.contains(cellRect) {
-            print(indexPath)
-        }
-        if indexPath.row == (data.count - 1) {
-            viewModel?.getFeed()
-        }
-    }
-    
-    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = Components.shared.postDetailScreen.init()
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    @objc
-    open func pullToRefresh(refreshControl: UIRefreshControl) {
-        viewModel?.getFeed(fetchInitialPage: true)
-        data.removeAll()
-        refreshControl.endRefreshing()
     }
 }
 
@@ -301,111 +216,18 @@ extension LMUniversalFeedViewController: UICollectionViewDataSource, UICollectio
     }
 }
 
-// MARK: LMFeedPostDocumentCellProtocol
-@objc
-extension LMUniversalFeedViewController: LMFeedPostDocumentCellProtocol {
-    open func didTapShowMoreDocuments(for indexPath: IndexPath) {
-        guard var datum = data[indexPath.row] as? LMFeedPostDocumentCell.ViewModel else { return }
-        datum.isShowAllDocuments.toggle()
-        data[indexPath.row] = datum
-        tableView.reloadRows(at: [indexPath], with: .fade)
-    }
-}
-
-
-// MARK: LMChatLinkProtocol
-@objc
-extension LMUniversalFeedViewController: LMChatLinkProtocol {
-    open func didTapLinkPreview(with url: String) {
-        print(#function, url)
-    }
-}
-
-// MARK: LMFeedTableCellToViewControllerProtocol
-@objc
-extension LMUniversalFeedViewController: LMFeedTableCellToViewControllerProtocol {
-    open func didTapProfilePicture(for uuid: String) { print(#function) }
-    
-    open func didTapMenuButton(for postID: String) { print(#function) }
-    
-    open func didTapLikeButton(for postID: String) {
-        guard let index = data.firstIndex(where: { $0.postID == postID }) else { return }
-        viewModel?.likePost(postId: postID)
-        
-        var tempData = data[index]
-        var tempFooterData = tempData.footerData
-        tempFooterData.isLiked.toggle()
-        tempFooterData.likeCount += tempFooterData.isLiked ? 1 : -1
-        
-        tempData.footerData = tempFooterData
-        
-        data[index] = tempData
-        
-        tableView.reloadRows(at: [.init(row: index, section: 0)], with: .none)
-    }
-    
-    open func didTapLikeTextButton(for postID: String) { print(#function) }
-    
-    open func didTapCommentButton(for postID: String) { print(#function) }
-    
-    open func didTapShareButton(for postID: String) { print(#function) }
-    
-    open func didTapSaveButton(for postID: String) { print(#function) }
-}
-
-
-// MARK: LMFeedTopicViewCellProtocol
-@objc
-extension LMUniversalFeedViewController: LMFeedTopicViewCellProtocol {
-    open func didTapCrossButton(for topicId: String) {
-        print(#function)
-    }
-    
-    open func didTapEditButton() {
-        print(#function)
-    }
-}
-
 
 // MARK: LMUniversalFeedViewModelProtocol
 extension LMUniversalFeedViewController: LMUniversalFeedViewModelProtocol {
     public func loadTopics(with topics: [LMFeedTopicCollectionCellDataModel]) {
         self.selectedTopics = topics
+        feedListDelegate?.loadPostsWithTopics(selectedTopics.map { $0.topicID })
+        
         topicCollection.reloadData()
 
         allTopicsButton.isHidden = !topics.isEmpty
         topicCollection.isHidden = topics.isEmpty
         clearButton.isHidden = topics.isEmpty
-    }
-    
-    public func loadPosts(with data: [LMFeedPostTableCellProtocol]) {
-        tableView.backgroundView = nil
-        showHideFooterLoader(isShow: false)
-        self.data.append(contentsOf: data)
-        tableView.reloadData()
-    }
-    
-    public func undoLikeAction(for postID: String) {
-        guard let index = data.firstIndex(where: { $0.postID == postID }) else { return }
-        var tempData = data[index].footerData
-        
-        tempData.isLiked.toggle()
-        tempData.likeCount += tempData.isLiked ? 1 : -1
-        
-        data[index].footerData = tempData
-        
-        tableView.reloadRows(at: [.init(row: index, section: 0)], with: .none)
-    }
-    
-    
-    public func showHideFooterLoader(isShow: Bool) {
-        tableView.showHideFooterLoader(isShow: isShow)
-    }
-    
-    public func showActivityLoader() {
-        data.removeAll()
-        tableView.reloadData()
-        tableView.refreshControl?.beginRefreshing()
     }
 }
 
@@ -414,5 +236,26 @@ extension LMUniversalFeedViewController: LMUniversalFeedViewModelProtocol {
 extension LMUniversalFeedViewController: LMFeedTopicSelectionViewProtocol {
     public func updateTopicFeed(with topics: [(topicName: String, topicID: String)]) {
         viewModel?.updateSelectedTopics(with: topics)
+    }
+}
+
+
+// MARK: LMFeedTopicViewCellProtocol
+@objc
+extension LMUniversalFeedViewController: LMFeedTopicViewCellProtocol {
+    open func didTapCrossButton(for topicId: String) {
+        viewModel?.removeTopic(id: topicId)
+    }
+}
+
+// MARK: LMFeedPostListVCFromProtocol
+@objc
+extension LMUniversalFeedViewController: LMFeedPostListVCFromProtocol {
+    open func openPostDetail(for postID: String) {
+        print(#function)
+    }
+    
+    open func openUserDetail(for uuid: String) {
+        print(#function)
     }
 }

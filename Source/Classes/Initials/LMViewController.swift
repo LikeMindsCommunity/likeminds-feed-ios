@@ -7,6 +7,28 @@
 
 import UIKit
 
+public extension UIViewController {
+    
+    /// Adds child view controller to the parent.
+    ///
+    /// - Parameter child: Child view controller.
+    func add(child: UIViewController, to subView: UIView) {
+        addChild(child)
+        subView.addSubview(child.view)
+        child.didMove(toParent: self)
+    }
+    
+    /// It removes the child view controller from the parent.
+    func remove() {
+        guard parent != nil else {
+            return
+        }
+        willMove(toParent: nil)
+        removeFromParent()
+        view.removeFromSuperview()
+    }
+}
+
 /// Base LM View Controller Class with LM Life Cycle Methods
 @IBDesignable
 open class LMViewController: UIViewController {

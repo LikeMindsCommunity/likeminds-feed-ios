@@ -12,6 +12,11 @@ public protocol LMFeedTopicViewCellProtocol: AnyObject {
     func didTapEditButton()
 }
 
+public extension LMFeedTopicViewCellProtocol {
+    func didTapCrossButton(for topicId: String) { }
+    func didTapEditButton() { }
+}
+
 @IBDesignable
 open class LMFeedTopicView: LMView {
     public struct ViewModel {

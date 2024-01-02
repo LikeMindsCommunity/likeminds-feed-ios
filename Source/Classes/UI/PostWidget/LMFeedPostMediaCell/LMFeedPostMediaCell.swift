@@ -186,7 +186,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     }
     
     // MARK: Configure Function
-    open func configure(with data: ViewModel, delegate: LMFeedTableCellToViewControllerProtocol) {
+    open func configure(with data: ViewModel, delegate: LMFeedTableCellToViewControllerProtocol?) {
         actionDelegate = delegate
         postID = data.postID
         userUUID = data.userUUID

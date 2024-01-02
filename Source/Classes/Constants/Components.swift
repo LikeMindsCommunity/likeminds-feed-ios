@@ -11,7 +11,7 @@ public struct Components {
     public static var shared = Self()
     
     // MARK: Universal Feed
-    public var feedListViewController: LMUniversalFeedViewController.Type = LMUniversalFeedViewController.self
+    public var universalFeedViewController: LMUniversalFeedViewController.Type = LMUniversalFeedViewController.self
     public var headerCell: LMFeedPostHeaderView.Type = LMFeedPostHeaderView.self
     public var documentCell: LMFeedPostDocumentCell.Type = LMFeedPostDocumentCell.self
     public var linkCell: LMFeedPostLinkCell.Type = LMFeedPostLinkCell.self
@@ -19,6 +19,7 @@ public struct Components {
     public var imageCollectionCell: LMFeedPostImageCollectionCell.Type = LMFeedPostImageCollectionCell.self
     public var videoCollectionCell: LMFeedPostVideoCollectionCell.Type = LMFeedPostVideoCollectionCell.self
     public var footerCell: LMFeedPostFooterView.Type = LMFeedPostFooterView.self
+    public var feedListViewController: LMFeedPostListViewController.Type = LMFeedPostListViewController.self
     
     // MARK: Post Detail
     public var postDetailScreen: LMFeedPostDetailViewController.Type = LMFeedPostDetailViewController.self

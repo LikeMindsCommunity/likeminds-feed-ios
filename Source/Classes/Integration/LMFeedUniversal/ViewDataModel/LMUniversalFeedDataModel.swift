@@ -8,29 +8,77 @@
 import LikeMindsFeed
 
 public struct LMUniversalFeedDataModel {
-    let postId: String
-    let postContent: String
-    var likeCount: Int
-    var isLiked: Bool
-    let isPinned: Bool
-    let isSaved: Bool
-    let commentCount: Int
-    let createTime: String
-    let isEdited: Bool
-    let postMenu: [MenuItem]
-    let userName: String
-    let userUUID: String
-    let userImage: String?
-    let userCustomTitle: String?
-    let topics: [TopicModel]
-    var imageVideoAttachment: [ImageVideoAttachment] = []
-    var documentAttachment: [DocumentAttachment] = []
-    var linkAttachment: LinkAttachment? = .none
-    var isShowFullText: Bool
-    var isShowAllDocuments: Bool
+    public let postId: String
+    public let postContent: String
+    public var likeCount: Int
+    public var isLiked: Bool
+    public var isPinned: Bool
+    public var isSaved: Bool
+    public let commentCount: Int
+    public let createTime: String
+    public let isEdited: Bool
+    public let postMenu: [MenuItem]
+    public let userName: String
+    public let userUUID: String
+    public let userImage: String?
+    public let userCustomTitle: String?
+    public let topics: [TopicModel]
+    public var imageVideoAttachment: [ImageVideoAttachment] = []
+    public var documentAttachment: [DocumentAttachment] = []
+    public var linkAttachment: LinkAttachment? = .none
+    public var isShowFullText: Bool
+    public var isShowAllDocuments: Bool
     
+    public init(
+        postId: String,
+        postContent: String,
+        likeCount: Int,
+        isLiked: Bool,
+        isPinned: Bool,
+        isSaved: Bool,
+        commentCount: Int,
+        createTime: String,
+        isEdited: Bool,
+        postMenu: [LMUniversalFeedDataModel.MenuItem],
+        userName: String,
+        userUUID: String,
+        userImage: String? = nil,
+        userCustomTitle: String? = nil,
+        topics: [LMUniversalFeedDataModel.TopicModel],
+        imageVideoAttachment: [LMUniversalFeedDataModel.ImageVideoAttachment] = [],
+        documentAttachment: [LMUniversalFeedDataModel.DocumentAttachment] = [],
+        linkAttachment: LMUniversalFeedDataModel.LinkAttachment? = .none, 
+        isShowFullText: Bool = false,
+        isShowAllDocuments: Bool = false
+    ) {
+        self.postId = postId
+        self.postContent = postContent
+        self.likeCount = likeCount
+        self.isLiked = isLiked
+        self.isPinned = isPinned
+        self.isSaved = isSaved
+        self.commentCount = commentCount
+        self.createTime = createTime
+        self.isEdited = isEdited
+        self.postMenu = postMenu
+        self.userName = userName
+        self.userUUID = userUUID
+        self.userImage = userImage
+        self.userCustomTitle = userCustomTitle
+        self.topics = topics
+        self.imageVideoAttachment = imageVideoAttachment
+        self.documentAttachment = documentAttachment
+        self.linkAttachment = linkAttachment
+        self.isShowFullText = isShowFullText
+        self.isShowAllDocuments = isShowAllDocuments
+    }
+}
+
+
+// MARK: LMUniversalFeedDataModel+MenuItem
+public extension LMUniversalFeedDataModel {
     struct MenuItem {
-        enum State: Int {
+        public enum State: Int {
             case deletePost = 1
             case pinPost
             case unpinPost
@@ -41,36 +89,84 @@ public struct LMUniversalFeedDataModel {
             case editComment
         }
         
-        let id: State
-        let name: String
-    }
-    
-    struct ImageVideoAttachment {
-        let name: String
-        let url: String
-        let isVideo: Bool
-    }
-    
-    struct DocumentAttachment {
-        let url: String
-        let name: String
-        let format: String?
-        let size: Int?
-        let pageCount: Int?
-    }
-    
-    struct LinkAttachment {
-        let url: String
-        let title: String?
-        let description: String?
-        let previewImage: String?
-    }
-    
-    struct TopicModel {
-        let topicId: String
-        let topic: String
+        public let id: State
+        public let name: String
+        
+        public init(id: LMUniversalFeedDataModel.MenuItem.State, name: String) {
+            self.id = id
+            self.name = name
+        }
     }
 }
+
+
+// MARK: LMUniversalFeedDataModel+ImageVideoAttachment
+public extension LMUniversalFeedDataModel {
+    struct ImageVideoAttachment {
+        public let name: String
+        public let url: String
+        public let isVideo: Bool
+        
+        public init(name: String, url: String, isVideo: Bool) {
+            self.name = name
+            self.url = url
+            self.isVideo = isVideo
+        }
+    }
+}
+
+
+// MARK: LMUniversalFeedDataModel+DocumentAttachment
+public extension LMUniversalFeedDataModel {
+    struct DocumentAttachment {
+        public let url: String
+        public let name: String
+        public let format: String?
+        public let size: Int?
+        public let pageCount: Int?
+        
+        public init(url: String, name: String, format: String? = nil, size: Int? = nil, pageCount: Int? = nil) {
+            self.url = url
+            self.name = name
+            self.format = format
+            self.size = size
+            self.pageCount = pageCount
+        }
+    }
+}
+
+
+// MARK: LMUniversalFeedDataModel+LinkAttachment
+public extension LMUniversalFeedDataModel {
+    struct LinkAttachment {
+        public let url: String
+        public let title: String?
+        public let description: String?
+        public let previewImage: String?
+        
+        public init(url: String, title: String? = nil, description: String? = nil, previewImage: String? = nil) {
+            self.url = url
+            self.title = title
+            self.description = description
+            self.previewImage = previewImage
+        }
+    }
+}
+
+
+// MARK: LMUniversalFeedDataModel+TopicModel
+public extension LMUniversalFeedDataModel {
+    struct TopicModel {
+        public let topicId: String
+        public let topic: String
+        
+        public init(topicId: String, topic: String) {
+            self.topicId = topicId
+            self.topic = topic
+        }
+    }
+}
+
 
 extension LMUniversalFeedDataModel {
     init?(post: Post, user: User, allTopics: [TopicFeedResponse.TopicResponse]) {
