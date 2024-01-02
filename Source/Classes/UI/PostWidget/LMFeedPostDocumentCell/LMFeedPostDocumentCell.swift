@@ -158,6 +158,9 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         self.delegate = delegate
         self.actionDelegate = delegate
         
+        postID = data.postID
+        userUUID = data.userUUID
+        
         headerView.configure(with: data.headerData)
         
         postText.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.postText)

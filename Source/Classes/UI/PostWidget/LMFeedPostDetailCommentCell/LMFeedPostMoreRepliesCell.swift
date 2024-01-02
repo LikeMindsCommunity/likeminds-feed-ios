@@ -13,12 +13,14 @@ public protocol LMFeedPostMoreRepliesCellProtocol: AnyObject {
 
 @IBDesignable
 open class LMFeedPostMoreRepliesCell: LMTableViewCell {
-    public struct ViewModel: LMFeedPostTableCellProtocol {
+    public struct ViewModel: LMFeedPostCommentCellProtocol {
+        public var postID: String
         let parentCommentId: String?
         let commentCount: Int
         let totalComments: Int
         
-        public init(parentCommentId: String?, commentCount: Int, totalComments: Int) {
+        public init(postID: String, parentCommentId: String?, commentCount: Int, totalComments: Int) {
+            self.postID = postID
             self.parentCommentId = parentCommentId
             self.commentCount = commentCount
             self.totalComments = totalComments

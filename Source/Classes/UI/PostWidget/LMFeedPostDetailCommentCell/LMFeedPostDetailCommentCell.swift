@@ -233,7 +233,7 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
     open func configure(with data: LMFeedPostDetailCommentCellViewModel, delegate: LMChatPostCommentProtocol, isShowSeprator: Bool) {
         commentId = data.commentId
         userUUID = data.author.uuid
-        postID = data.postId
+        postID = data.postID
         self.delegate = delegate
         
         authorNameLabel.text = data.authorName

@@ -9,31 +9,39 @@ import LikeMindsFeed
 
 // MARK: LMUniversalFeedViewModelProtocol
 public protocol LMUniversalFeedViewModelProtocol: AnyObject {
+    func loadTopics(with topics: [LMFeedTopicCollectionCellDataModel])
     func loadPosts(with data: [LMFeedPostTableCellProtocol])
+    func undoLikeAction(for postID: String)
+    func showHideFooterLoader(isShow: Bool)
+    func showActivityLoader()
 }
 
 public class LMUniversalFeedViewModel {
     public var currentPage: Int = 1
     public var pageSize: Int = 10
-    public var selectedTopics: [String] = []
+    public var selectedTopics: [(topicName: String, topicID: String)] = []
     public var isLastPostReached: Bool = false
     public var isFetchingFeed: Bool = false
-    public var postList: [LMUniversalFeedDataModel] = [] {
-        didSet {
-            convertToViewData()
-        }
-    }
+    public var postList: [LMUniversalFeedDataModel] = []
     
     public weak var delegate: LMUniversalFeedViewModelProtocol?
     
+    init(delegate: LMUniversalFeedViewModelProtocol?) {
+        self.currentPage = 1
+        self.pageSize = 10
+        self.selectedTopics = []
+        self.isLastPostReached = false
+        self.isFetchingFeed = false
+        self.postList = []
+        self.delegate = delegate
+    }
+    
     public static func createModule() -> LMUniversalFeedViewController {
-        let viewModel: LMUniversalFeedViewModel = .init()
-        let vc = Components.shared.feedListViewController.init()
+        let viewController = Components.shared.feedListViewController.init()
+        let viewModel: LMUniversalFeedViewModel = .init(delegate: viewController)
         
-        vc.viewModel = viewModel
-        viewModel.delegate = vc
-        
-        return vc
+        viewController.viewModel = viewModel
+        return viewController
     }
     
     func getFeed(fetchInitialPage: Bool = false) {
@@ -42,6 +50,9 @@ public class LMUniversalFeedViewModel {
             isFetchingFeed = false
             currentPage = 1
             postList.removeAll()
+            delegate?.showActivityLoader()
+        } else {
+            delegate?.showHideFooterLoader(isShow: true)
         }
         
         guard !isLastPostReached,
@@ -49,11 +60,16 @@ public class LMUniversalFeedViewModel {
         
         isFetchingFeed = true
         
-        let requestFeed = GetFeedRequest.builder()
+        var requestFeed = GetFeedRequest.builder()
             .page(currentPage)
             .pageSize(pageSize)
-            .topics(selectedTopics)
-            .build()
+        
+        if !selectedTopics.isEmpty {
+            requestFeed = requestFeed
+                .topics(selectedTopics.map { $0.topicID })
+                .build()
+        }
+        
         LMFeedClient.shared.getFeed(requestFeed) { [weak self] result in
             // Getting `self` or it is of no use
             guard let self else { return }
@@ -70,6 +86,7 @@ public class LMUniversalFeedViewModel {
                   let users = result.data?.users else { return }
             
             self.isLastPostReached = posts.isEmpty
+            self.currentPage += 1
             
             if !posts.isEmpty {
                 let topics: [TopicFeedResponse.TopicResponse] = result.data?.topics?.compactMap {
@@ -82,7 +99,27 @@ public class LMUniversalFeedViewModel {
                 }
                 
                 self.postList.append(contentsOf: convertedData)
-                self.currentPage += 1
+                self.convertToViewData()
+            }
+        }
+    }
+    
+    func likePost(postId: String) {
+        let request = LikePostRequest.builder()
+            .postId(postId)
+            .build()
+        
+        LMFeedClient.shared.likePost(request) { [weak self] response in
+            guard let self else { return }
+            
+            if response.success,
+               let index = postList.firstIndex(where: { $0.postId == postId }) {
+                var feed = postList[index]
+                feed.isLiked.toggle()
+                feed.likeCount = feed.isLiked ? 1 : -1
+                postList[index] = feed
+            } else if !response.success {
+                delegate?.undoLikeAction(for: postId)
             }
         }
     }
@@ -176,5 +213,12 @@ public class LMUniversalFeedViewModel {
             mediaData: convertToMediaProtocol(from: data.imageVideoAttachment),
             footerData: convertToFooterViewData(from: data)
         )
+    }
+    
+    func updateSelectedTopics(with selectedTopics: [(topicName: String, topicID: String)]) {
+        self.selectedTopics = selectedTopics
+        
+        getFeed(fetchInitialPage: true)
+        delegate?.loadTopics(with: selectedTopics.map { .init(topic: $0.topicName, topicID: $0.topicID) })
     }
 }

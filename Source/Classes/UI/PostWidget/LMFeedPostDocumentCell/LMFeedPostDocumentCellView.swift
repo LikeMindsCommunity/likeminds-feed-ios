@@ -149,6 +149,8 @@ open class LMFeedPostDocumentCellView: LMView {
             
             labelStackView.topAnchor.constraint(greaterThanOrEqualTo: labelContainerView.topAnchor),
             labelStackView.bottomAnchor.constraint(greaterThanOrEqualTo: labelContainerView.bottomAnchor),
+            labelStackView.leadingAnchor.constraint(equalTo: labelContainerView.leadingAnchor),
+            labelStackView.trailingAnchor.constraint(greaterThanOrEqualTo: labelContainerView.trailingAnchor),
             labelStackView.centerYAnchor.constraint(equalTo: labelContainerView.centerYAnchor),
             
             crossButton.heightAnchor.constraint(equalToConstant: 30),

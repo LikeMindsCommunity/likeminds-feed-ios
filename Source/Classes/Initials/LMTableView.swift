@@ -34,4 +34,16 @@ public class LMTableView: UITableView {
         translatesAutoresizingMaskIntoConstraints = false
         return self
     }
+    
+    open func showHideFooterLoader(isShow: Bool) {
+        switch isShow {
+        case true:
+            let spinner = UIActivityIndicatorView(style: .medium)
+            spinner.frame = CGRect(x: 0.0, y: 0.0, width: bounds.width, height: 70)
+            spinner.startAnimating()
+            tableFooterView = spinner
+        case false:
+            tableFooterView = nil
+        }
+    }
 }

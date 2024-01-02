@@ -67,7 +67,7 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
         
         let postTextHeight = NSLayoutConstraint(item: postText, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 10)
         postTextHeight.priority = .defaultLow
-//        postTextHeight.isActive = true
+        postTextHeight.isActive = true
     }
     
     

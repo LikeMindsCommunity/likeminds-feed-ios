@@ -146,8 +146,6 @@ open class LMFeedPostLinkCellView: LMView {
         outerContaineView.layer.cornerRadius = 8
         outerContaineView.layer.borderWidth = 1
         outerContaineView.layer.borderColor = Appearance.shared.colors.gray3.cgColor
-        
-        imageView.image = Constants.shared.images.pdfIcon
     }
     
     

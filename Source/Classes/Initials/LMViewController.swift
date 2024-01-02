@@ -36,6 +36,48 @@ open class LMViewController: UIViewController {
             navigationController?.navigationBar.scrollEdgeAppearance = appearance
         }
     }
+    
+    open func setNavigationTitleAndSubtitle(with title: String?, subtitle: String?) {
+        let titleView = LMView().translatesAutoresizingMaskIntoConstraints()
+        let widthConstraint = NSLayoutConstraint.init(item: titleView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: UIScreen.main.bounds.width)
+        widthConstraint.priority = .defaultLow
+        widthConstraint.isActive = true
+        
+        let stackView = LMStackView().translatesAutoresizingMaskIntoConstraints()
+        stackView.spacing = 4
+        stackView.axis = .vertical
+        stackView.alignment = .leading
+        stackView.distribution = .fillProportionally
+        
+        titleView.addSubview(stackView)
+        
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: titleView.leadingAnchor),
+            stackView.topAnchor.constraint(equalTo: titleView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: titleView.bottomAnchor),
+            stackView.trailingAnchor.constraint(equalTo: titleView.trailingAnchor)
+        ])
+        
+        if let title,
+           !title.isEmpty {
+            let titleLabel = LMLabel().translatesAutoresizingMaskIntoConstraints()
+            titleLabel.text = title
+            titleLabel.textColor = Appearance.shared.colors.gray51
+            titleLabel.font = Appearance.shared.fonts.navigationTitleFont
+            stackView.addArrangedSubview(titleLabel)
+        }
+        
+        if let subtitle,
+           !subtitle.isEmpty {
+            let subtitleLabel = LMLabel().translatesAutoresizingMaskIntoConstraints()
+            subtitleLabel.text = subtitle
+            subtitleLabel.textColor = Appearance.shared.colors.gray51
+            subtitleLabel.font = Appearance.shared.fonts.navigationSubtitleFont
+            stackView.addArrangedSubview(subtitleLabel)
+        }
+        
+        navigationItem.titleView = titleView
+    }
 }
 
 extension LMViewController: LMViewLifeCycle {

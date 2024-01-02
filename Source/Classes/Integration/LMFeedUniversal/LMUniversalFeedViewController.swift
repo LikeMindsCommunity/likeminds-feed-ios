@@ -8,12 +8,12 @@
 import UIKit
 
 public protocol LMFeedPostTableCellProtocol {
-//    var postID: String { get }
-//    var userUUID: String { get }
-//    var headerData: LMFeedPostHeaderView.ViewModel { get }
-//    var postText: String { get }
-//    var topics: LMFeedTopicView.ViewModel { get }
-//    var footerData: LMFeedPostFooterView.ViewModel { get }
+    var postID: String { get }
+    var userUUID: String { get }
+    var headerData: LMFeedPostHeaderView.ViewModel { get }
+    var postText: String { get }
+    var topics: LMFeedTopicView.ViewModel { get }
+    var footerData: LMFeedPostFooterView.ViewModel { get set }
 }
 
 open class LMUniversalFeedViewController: LMViewController {
@@ -161,6 +161,10 @@ open class LMUniversalFeedViewController: LMViewController {
         
         allTopicsButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         clearButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        
+        let topicWidth = NSLayoutConstraint(item: topicCollection, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 500)
+        topicWidth.priority = .defaultLow
+        topicWidth.isActive = true
     }
     
     // MARK: setupActions
@@ -168,6 +172,7 @@ open class LMUniversalFeedViewController: LMViewController {
         super.setupActions()
         
         allTopicsButton.addTarget(self, action: #selector(didTapAllTopicsButton), for: .touchUpInside)
+        clearButton.addTarget(self, action: #selector(didTapClearButton), for: .touchUpInside)
         refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
         
         tableView.refreshControl = refreshControl
@@ -180,8 +185,13 @@ open class LMUniversalFeedViewController: LMViewController {
     
     @objc
     open func didTapAllTopicsButton() {
-        let vc = LMFeedTopicSelectionViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        let viewController = LMFeedTopicSelectionViewModel.createModule(topicEnabledState: false, isShowAllTopicsButton: true, delegate: self)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    @objc
+    open func didTapClearButton() {
+        viewModel?.updateSelectedTopics(with: [])
     }
     
     // MARK: setupAppearance
@@ -196,7 +206,7 @@ open class LMUniversalFeedViewController: LMViewController {
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: Constants.shared.images.menuIcon, style: .plain, target: self, action: #selector(didTapNavigationMenuButton))
         navigationController?.navigationBar.backgroundColor = Appearance.shared.colors.navigationBackgroundColor
-        navigationItem.setTitle(with: Constants.shared.strings.communityHood)
+        setNavigationTitleAndSubtitle(with: Constants.shared.strings.communityHood, subtitle: nil)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: Constants.shared.images.personIcon, style: .plain, target: nil, action: nil)
         
@@ -262,6 +272,7 @@ extension LMUniversalFeedViewController: UITableViewDataSource, UITableViewDeleg
     @objc
     open func pullToRefresh(refreshControl: UIRefreshControl) {
         viewModel?.getFeed(fetchInitialPage: true)
+        data.removeAll()
         refreshControl.endRefreshing()
     }
 }
@@ -317,7 +328,21 @@ extension LMUniversalFeedViewController: LMFeedTableCellToViewControllerProtocol
     
     open func didTapMenuButton(for postID: String) { print(#function) }
     
-    open func didTapLikeButton(for postID: String) { print(#function) }
+    open func didTapLikeButton(for postID: String) {
+        guard let index = data.firstIndex(where: { $0.postID == postID }) else { return }
+        viewModel?.likePost(postId: postID)
+        
+        var tempData = data[index]
+        var tempFooterData = tempData.footerData
+        tempFooterData.isLiked.toggle()
+        tempFooterData.likeCount += tempFooterData.isLiked ? 1 : -1
+        
+        tempData.footerData = tempFooterData
+        
+        data[index] = tempData
+        
+        tableView.reloadRows(at: [.init(row: index, section: 0)], with: .none)
+    }
     
     open func didTapLikeTextButton(for postID: String) { print(#function) }
     
@@ -344,8 +369,50 @@ extension LMUniversalFeedViewController: LMFeedTopicViewCellProtocol {
 
 // MARK: LMUniversalFeedViewModelProtocol
 extension LMUniversalFeedViewController: LMUniversalFeedViewModelProtocol {
+    public func loadTopics(with topics: [LMFeedTopicCollectionCellDataModel]) {
+        self.selectedTopics = topics
+        topicCollection.reloadData()
+
+        allTopicsButton.isHidden = !topics.isEmpty
+        topicCollection.isHidden = topics.isEmpty
+        clearButton.isHidden = topics.isEmpty
+    }
+    
     public func loadPosts(with data: [LMFeedPostTableCellProtocol]) {
+        tableView.backgroundView = nil
+        showHideFooterLoader(isShow: false)
         self.data.append(contentsOf: data)
         tableView.reloadData()
+    }
+    
+    public func undoLikeAction(for postID: String) {
+        guard let index = data.firstIndex(where: { $0.postID == postID }) else { return }
+        var tempData = data[index].footerData
+        
+        tempData.isLiked.toggle()
+        tempData.likeCount += tempData.isLiked ? 1 : -1
+        
+        data[index].footerData = tempData
+        
+        tableView.reloadRows(at: [.init(row: index, section: 0)], with: .none)
+    }
+    
+    
+    public func showHideFooterLoader(isShow: Bool) {
+        tableView.showHideFooterLoader(isShow: isShow)
+    }
+    
+    public func showActivityLoader() {
+        data.removeAll()
+        tableView.reloadData()
+        tableView.refreshControl?.beginRefreshing()
+    }
+}
+
+
+// MARK: LMFeedTopicSelectionViewProtocol
+extension LMUniversalFeedViewController: LMFeedTopicSelectionViewProtocol {
+    public func updateTopicFeed(with topics: [(topicName: String, topicID: String)]) {
+        viewModel?.updateSelectedTopics(with: topics)
     }
 }

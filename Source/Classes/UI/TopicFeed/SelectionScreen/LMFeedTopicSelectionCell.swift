@@ -25,13 +25,9 @@ open class LMFeedTopicSelectionCell: LMTableViewCell {
         return label
     }()
     
-    open private(set) lazy var tickButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
-        button.setTitle(nil, for: .normal)
-        button.setTitle(nil, for: .selected)
-        button.setImage(nil, for: .normal)
-        button.setImage(Constants.shared.images.checkmarkIconFilled, for: .selected)
-        button.isUserInteractionEnabled = false
+    open private(set) lazy var tickButton: LMImageView = {
+        let button = LMImageView().translatesAutoresizingMaskIntoConstraints()
+        button.image = nil
         button.tintColor = Appearance.shared.colors.appTintColor
         return button
     }()
@@ -63,14 +59,16 @@ open class LMFeedTopicSelectionCell: LMTableViewCell {
             
             tickButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
             tickButton.centerYAnchor.constraint(equalTo: topicLabel.centerYAnchor),
-            tickButton.leadingAnchor.constraint(greaterThanOrEqualTo: topicLabel.trailingAnchor, constant: 16)
+            tickButton.leadingAnchor.constraint(greaterThanOrEqualTo: topicLabel.trailingAnchor, constant: 16),
+            tickButton.heightAnchor.constraint(equalToConstant: 24),
+            tickButton.widthAnchor.constraint(equalTo: tickButton.heightAnchor, multiplier: 1)
         ])
     }
     
     
     // MARK: configure
-    func configure(with data: ViewModel) {
+    open func configure(with data: ViewModel) {
         topicLabel.text = data.topic
-        tickButton.isSelected =  data.isSelected
+        tickButton.image = data.isSelected ? Constants.shared.images.checkmarkIconFilled : nil
     }
 }

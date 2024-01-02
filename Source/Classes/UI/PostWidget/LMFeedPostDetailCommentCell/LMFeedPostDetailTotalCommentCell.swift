@@ -9,10 +9,12 @@ import UIKit
 
 @IBDesignable
 open class LMFeedPostDetailTotalCommentCell: LMTableViewCell {
-    public struct ViewModel: LMFeedPostTableCellProtocol {
+    public struct ViewModel: LMFeedPostCommentCellProtocol {
+        public var postID: String
         let totalComments: Int
         
-        public init(totalComments: Int) {
+        public init(postID: String, totalComments: Int) {
+            self.postID = postID
             self.totalComments = totalComments
         }
     }

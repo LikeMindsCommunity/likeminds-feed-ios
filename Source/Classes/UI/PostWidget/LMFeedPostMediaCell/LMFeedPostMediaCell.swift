@@ -188,6 +188,8 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     // MARK: Configure Function
     open func configure(with data: ViewModel, delegate: LMFeedTableCellToViewControllerProtocol) {
         actionDelegate = delegate
+        postID = data.postID
+        userUUID = data.userUUID
         
         headerView.configure(with: data.headerData)
         postText.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.postText)

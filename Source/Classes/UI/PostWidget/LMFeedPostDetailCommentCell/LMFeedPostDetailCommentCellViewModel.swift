@@ -15,17 +15,21 @@ public protocol LMChatPostCommentProtocol: AnyObject {
     func didTapReplyCountButton(for commentId: String)
 }
 
+public protocol LMFeedPostCommentCellProtocol { 
+    var postID: String { get }
+}
+
 // MARK: LMFeedPostDetailCommentCellViewModel
-public struct LMFeedPostDetailCommentCellViewModel: LMFeedPostTableCellProtocol {
+public struct LMFeedPostDetailCommentCellViewModel: LMFeedPostCommentCellProtocol {
+    public var postID: String
     let author: UserProfile
-    let postId: String
     let commentId: String?
     let tempCommentId: String?
     let comment: String
     let commentTime: String
     let isEdited: Bool
-    let isLiked: Bool
-    let likeCount: Int
+    var isLiked: Bool
+    var likeCount: Int
     let totalReplyCount: Int
     let replies: [LMFeedPostDetailCommentCellViewModel]
     var isShowMore: Bool
@@ -53,7 +57,7 @@ public struct LMFeedPostDetailCommentCellViewModel: LMFeedPostTableCellProtocol 
     
     var loadMoreComments: LMFeedPostMoreRepliesCell.ViewModel? {
         if repliesCount < totalReplyCount {
-            return .init(parentCommentId: commentId, commentCount: repliesCount, totalComments: totalReplyCount)
+            return .init(postID: postID, parentCommentId: commentId, commentCount: repliesCount, totalComments: totalReplyCount)
         }
         return nil
     }
@@ -72,7 +76,7 @@ public struct LMFeedPostDetailCommentCellViewModel: LMFeedPostTableCellProtocol 
         isLiked: Bool = false,
         isShowMore: Bool = false) {
             self.author = author
-            self.postId = postId
+            self.postID = postId
             self.commentId = commentId
             self.tempCommentId = tempCommentId
             self.comment = comment

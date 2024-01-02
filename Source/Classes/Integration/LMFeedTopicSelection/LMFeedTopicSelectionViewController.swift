@@ -7,6 +7,10 @@
 
 import UIKit
 
+public protocol LMFeedTopicSelectionViewProtocol: AnyObject {
+    func updateTopicFeed(with topics: [(topicName: String, topicID: String)])
+}
+
 @IBDesignable
 open class LMFeedTopicSelectionViewController: LMViewController {
     // MARK: UI Elements
@@ -30,22 +34,31 @@ open class LMFeedTopicSelectionViewController: LMViewController {
         return table
     }()
     
+    open private(set) lazy var searchController: UISearchController = {
+        let search = UISearchController(searchResultsController: nil)
+        search.searchBar.placeholder = "Search Topic"
+        search.delegate = self
+        search.searchBar.delegate = self
+        return search
+    }()
+    
+    open private(set) lazy var rightBarButton: LMButton = {
+        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+        button.setTitle("Done", for: .normal)
+        return button
+    }()
     
     // MARK: Data Variables
     public var topicList: [[LMFeedTopicSelectionCell.ViewModel]] = []
-    
+    public var viewModel: LMFeedTopicSelectionViewModel?
+    public var searchTimer: Timer?
+    public weak var delegate: LMFeedTopicSelectionViewProtocol?
     
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
-        
-        topicList.append([.init(topic: "All Topics", topicID: nil, isSelected: true)])
-        
-        topicList.append([.init(topic: "Topic #1", topicID: "Topic#1", isSelected: false),
-                          .init(topic: "Topic #2", topicID: "Topic#2", isSelected: false),
-                          .init(topic: "Topic #3", topicID: "Topic#3", isSelected: false)])
-        
-        tableView.reloadData()
+        setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: nil)
+        viewModel?.getTopics(for: searchController.searchBar.text, isFreshSearch: true)
     }
     
     // MARK: setupViews
@@ -53,6 +66,8 @@ open class LMFeedTopicSelectionViewController: LMViewController {
         super.setupViews()
         view.addSubview(containerView)
         containerView.addSubview(tableView)
+        
+        navigationItem.searchController = searchController
     }
     
     
@@ -74,9 +89,14 @@ open class LMFeedTopicSelectionViewController: LMViewController {
     }
     
     
-    // MARK: configure
-    open func configure(with topicList: [[LMFeedTopicSelectionCell.ViewModel]]) {
-        self.topicList = topicList
+    // MARK: setupActions
+    open override func setupActions() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(didTapDoneButton))
+    }
+    
+    @objc
+    open func didTapDoneButton() {
+        viewModel?.didTapDoneButton()
     }
 }
 
@@ -111,5 +131,57 @@ extension LMFeedTopicSelectionViewController: UITableViewDataSource, UITableView
     }
     open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         section == .zero ? 2 : .leastNonzeroMagnitude
+    }
+    
+    open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == topicList.count - 1 {
+            viewModel?.getTopics(for: searchController.searchBar.text)
+        }
+    }
+    
+    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel?.didSelectTopic(at: indexPath)
+    }
+    
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        searchController.searchBar.endEditing(true)
+    }
+}
+
+
+// MARK: LMFeedTopicSelectionViewModelProtocol
+extension LMFeedTopicSelectionViewController: LMFeedTopicSelectionViewModelProtocol {
+    public func updateTopicList(with data: [[LMFeedTopicSelectionCell.ViewModel]], selectedCount: Int) {
+        self.topicList = data
+        tableView.reloadData()
+        
+        if selectedCount == .zero {
+            setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: nil)
+        } else {
+            setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: "\(selectedCount) Selected")
+        }
+    }
+    
+    public func updateTopicFeed(with topics: [(topicName: String, topicID: String)]) {
+        delegate?.updateTopicFeed(with: topics)
+        navigationController?.popViewController(animated: true)
+    }
+}
+
+
+// MARK: UISearchControllerDelegate
+@objc
+extension LMFeedTopicSelectionViewController: UISearchControllerDelegate, UISearchBarDelegate {
+    open func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchTimer?.invalidate()
+        
+        searchTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
+            self?.viewModel?.getTopics(for: searchBar.text, isFreshSearch: true)
+        }
+    }
+    
+    public func willDismissSearchController(_ searchController: UISearchController) {
+        searchTimer?.invalidate()
+        viewModel?.getTopics(isFreshSearch: true)
     }
 }

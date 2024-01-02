@@ -131,6 +131,9 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
     
     // MARK: configure
     open func configure(with data: ViewModel, delegate: (LMChatLinkProtocol & LMFeedTableCellToViewControllerProtocol)) {
+        postID = data.postID
+        userUUID = data.userUUID
+        
         self.delegate = delegate
         self.actionDelegate = delegate
         postURL = data.mediaData.url
