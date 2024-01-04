@@ -22,7 +22,7 @@ public class LMFeedPostListViewModel {
     public var selectedTopics: [String] = []
     public var isLastPostReached: Bool = false
     public var isFetchingFeed: Bool = false
-    public var postList: [LMUniversalFeedDataModel] = []
+    public var postList: [LMFeedPostDataModel] = []
     
     public weak var delegate: LMFeedPostListViewModelProtocol?
     
@@ -102,9 +102,8 @@ public extension LMFeedPostListViewModel {
                     $0.value
                 } ?? []
                 
-                let convertedData: [LMUniversalFeedDataModel] = posts.compactMap { post in
-                    guard let user = users[post.uuid ?? ""] else { return nil }
-                    return .init(post: post, user: user, allTopics: topics)
+                let convertedData: [LMFeedPostDataModel] = posts.compactMap { post in
+                    return .init(post: post, users: users, allTopics: topics)
                 }
                 
                 self.postList.append(contentsOf: convertedData)
@@ -117,91 +116,10 @@ public extension LMFeedPostListViewModel {
         var convertedViewData: [LMFeedPostTableCellProtocol] = []
         
         postList.forEach { post in
-            if let link = post.linkAttachment {
-                convertedViewData.append(convertToLinkViewData(from: post, link: link))
-            } else if !post.documentAttachment.isEmpty {
-                convertedViewData.append(convertToDocumentCells(from: post))
-            } else {
-                convertedViewData.append(convertToImageVideoCells(from: post))
-            }
+            convertedViewData.append(LMFeedConvertToFeedPost.convertToViewModel(for: post))
         }
         
         delegate?.loadPosts(with: convertedViewData)
-    }
-    
-    func generateTopicViewModel(from topics: [LMUniversalFeedDataModel.TopicModel]) -> LMFeedTopicView.ViewModel {
-        let mappedTopics: [LMFeedTopicCollectionCellDataModel] = topics.map {
-            .init(topic: $0.topic, topicID: $0.topicId)
-        }
-        
-        return .init(topics: mappedTopics)
-    }
-    
-    func convertToHeaderViewData(from data: LMUniversalFeedDataModel) -> LMFeedPostHeaderView.ViewModel {
-        .init(
-            profileImage: data.userImage,
-            authorName: data.userName,
-            authorTag: data.userCustomTitle,
-            subtitle: "\(data.createTime)\(data.isEdited ? " • Edited" : "")",
-            isPinned: data.isPinned,
-            showMenu: !data.postMenu.isEmpty
-        )
-    }
-    
-    func convertToFooterViewData(from data: LMUniversalFeedDataModel) -> LMFeedPostFooterView.ViewModel {
-        .init(likeCount: data.likeCount, commentCount: data.commentCount, isSaved: data.isLiked, isLiked: data.isSaved)
-    }
-    
-    func convertToLinkViewData(from data: LMUniversalFeedDataModel, link: LMUniversalFeedDataModel.LinkAttachment) -> LMFeedPostLinkCell.ViewModel {
-        .init(
-            postID: data.postId,
-            userUUID: data.userUUID,
-            headerData: convertToHeaderViewData(from: data),
-            postText: data.postContent,
-            topics: generateTopicViewModel(from: data.topics),
-            mediaData: .init(linkPreview: link.previewImage, title: link.title, description: link.description, url: link.url),
-            footerData: convertToFooterViewData(from: data)
-        )
-    }
-    
-    func convertToDocumentCells(from data: LMUniversalFeedDataModel) -> LMFeedPostDocumentCell.ViewModel {
-        func convertToDocument(from data: [LMUniversalFeedDataModel.DocumentAttachment]) -> [LMFeedPostDocumentCellView.ViewModel] {
-            data.map { datum in
-                    .init(title: datum.name, documentURL: datum.url, size: datum.size, pageCount: datum.pageCount, docType: datum.format)
-            }
-        }
-        
-        return .init(
-            postID: data.postId,
-            userUUID: data.userUUID,
-            headerData: convertToHeaderViewData(from: data),
-            topics: generateTopicViewModel(from: data.topics),
-            postText: data.postContent,
-            documents: convertToDocument(from: data.documentAttachment),
-            footerData: convertToFooterViewData(from: data)
-        )
-    }
-    
-    func convertToImageVideoCells(from data: LMUniversalFeedDataModel) -> LMFeedPostMediaCell.ViewModel {
-        func convertToMediaProtocol(from data: [LMUniversalFeedDataModel.ImageVideoAttachment]) -> [LMFeedMediaProtocol] {
-            data.map { datum in
-                if datum.isVideo {
-                    return LMFeedPostVideoCollectionCell.ViewModel(videoURL: datum.url)
-                } else {
-                    return LMFeedPostImageCollectionCell.ViewModel(image: datum.url)
-                }
-            }
-        }
-        
-        return .init(
-            postID: data.postId,
-            userUUID: data.userUUID,
-            headerData: convertToHeaderViewData(from: data),
-            postText: data.postContent,
-            topics: generateTopicViewModel(from: data.topics),
-            mediaData: convertToMediaProtocol(from: data.imageVideoAttachment),
-            footerData: convertToFooterViewData(from: data)
-        )
     }
 }
 

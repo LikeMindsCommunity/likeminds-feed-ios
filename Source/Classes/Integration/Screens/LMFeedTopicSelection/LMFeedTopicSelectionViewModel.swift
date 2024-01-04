@@ -7,7 +7,7 @@
 
 import LikeMindsFeed
 
-public protocol LMFeedTopicSelectionViewModelProtocol: AnyObject {
+public protocol LMFeedTopicSelectionViewModelProtocol: LMBaseViewControllerProtocol {
     func updateTopicList(with data: [[LMFeedTopicSelectionCell.ViewModel]], selectedCount: Int)
     func updateTopicFeed(with topics: [(topicName: String, topicID: String)])
 }

@@ -166,16 +166,21 @@
 		DBA2E76930293EF2C7C74920DD7D73C5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E5A82465C584447E0BB2E9F8F08CF0 /* Constants.swift */; };
 		DBD70DE28BDBC4B1C09EEBA3F6D76BF3 /* UIButton+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5115DF0BCFE48F7DBFCAE9D678BADB /* UIButton+Kingfisher.swift */; };
 		DD2E5DCDE2E3123CACD25C57DEF4A719 /* LMFeedPostDocumentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE963F9A505E31BC2D4B1C2B5C56A558 /* LMFeedPostDocumentCell.swift */; };
+		E52F3AE52B45678D00B9C36C /* LMFeedMenuDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F3AE42B45678D00B9C36C /* LMFeedMenuDataModel.swift */; };
+		E52F3AE72B45687800B9C36C /* LMFeedCommentDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F3AE62B45687800B9C36C /* LMFeedCommentDataModel.swift */; };
+		E52F3AE92B45694700B9C36C /* LMFeedUserDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F3AE82B45694700B9C36C /* LMFeedUserDataModel.swift */; };
+		E52F3AEC2B457D0A00B9C36C /* LMFeedConvertToFeedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F3AEB2B457D0A00B9C36C /* LMFeedConvertToFeedPost.swift */; };
 		E592CBEA2B430E7E007474F2 /* LMFeedTopicSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592CBE92B430E7E007474F2 /* LMFeedTopicSelectionViewModel.swift */; };
 		E592CBEC2B43E808007474F2 /* LMFeedTopicSelectionDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592CBEB2B43E807007474F2 /* LMFeedTopicSelectionDataModel.swift */; };
 		E592CBF02B443E98007474F2 /* LMFeedPostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592CBEF2B443E98007474F2 /* LMFeedPostListViewController.swift */; };
 		E592CBF22B4467CD007474F2 /* LMFeedPostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592CBF12B4467CD007474F2 /* LMFeedPostListViewModel.swift */; };
+		E592CBF42B4551F4007474F2 /* LMFeedPostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592CBF32B4551F4007474F2 /* LMFeedPostDetailViewModel.swift */; };
 		E5A785142B3D65E600B7031B /* LMAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11FC43EB708B4C356254455434480FB6 /* LMAssets.xcassets */; };
 		E5A7851B2B3D6ADA00B7031B /* LMFeedMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A7851A2B3D6ADA00B7031B /* LMFeedMain.swift */; };
 		E5A7851D2B3D6CF400B7031B /* LocalPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A7851C2B3D6CF400B7031B /* LocalPreferences.swift */; };
 		E5A7851F2B3D7D9B00B7031B /* LMUniversalFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A7851E2B3D7D9A00B7031B /* LMUniversalFeedViewModel.swift */; };
 		E5A785212B3DA82500B7031B /* DateUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A785202B3DA82500B7031B /* DateUtility.swift */; };
-		E5A785242B3DAE2400B7031B /* LMUniversalFeedDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A785232B3DAE2300B7031B /* LMUniversalFeedDataModel.swift */; };
+		E5A785242B3DAE2400B7031B /* LMFeedPostDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A785232B3DAE2300B7031B /* LMFeedPostDataModel.swift */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CB8621F3C4DDD64CBE5E987973DABEA /* SessionDelegate.swift */; };
 		E7378F61AD6959D5538E595EA4A48AF4 /* AVAssetImageDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9B6F55BA25B6F2C681A617FDE03CF7 /* AVAssetImageDataProvider.swift */; };
 		E918028D5B1B4436A40297BBFD1F3016 /* LMImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89013AB1073C174A0397191FB9A06795 /* LMImageView.swift */; };
@@ -449,15 +454,20 @@
 		E0EE0269D286220E618B5451AFFDACE8 /* EventMonitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EventMonitor.swift; path = Source/EventMonitor.swift; sourceTree = "<group>"; };
 		E16E601A495DE964E66454251F598B91 /* NSButton+Kingfisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSButton+Kingfisher.swift"; path = "Sources/Extensions/NSButton+Kingfisher.swift"; sourceTree = "<group>"; };
 		E4C715DB6703B3BCC97C29E0ECD62DE6 /* GetAttributedTextWithRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GetAttributedTextWithRoutes.swift; sourceTree = "<group>"; };
+		E52F3AE42B45678D00B9C36C /* LMFeedMenuDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedMenuDataModel.swift; sourceTree = "<group>"; };
+		E52F3AE62B45687800B9C36C /* LMFeedCommentDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCommentDataModel.swift; sourceTree = "<group>"; };
+		E52F3AE82B45694700B9C36C /* LMFeedUserDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedUserDataModel.swift; sourceTree = "<group>"; };
+		E52F3AEB2B457D0A00B9C36C /* LMFeedConvertToFeedPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedConvertToFeedPost.swift; sourceTree = "<group>"; };
 		E592CBE92B430E7E007474F2 /* LMFeedTopicSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTopicSelectionViewModel.swift; sourceTree = "<group>"; };
 		E592CBEB2B43E807007474F2 /* LMFeedTopicSelectionDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTopicSelectionDataModel.swift; sourceTree = "<group>"; };
 		E592CBEF2B443E98007474F2 /* LMFeedPostListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPostListViewController.swift; sourceTree = "<group>"; };
 		E592CBF12B4467CD007474F2 /* LMFeedPostListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPostListViewModel.swift; sourceTree = "<group>"; };
+		E592CBF32B4551F4007474F2 /* LMFeedPostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailViewModel.swift; sourceTree = "<group>"; };
 		E5A7851A2B3D6ADA00B7031B /* LMFeedMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedMain.swift; sourceTree = "<group>"; };
 		E5A7851C2B3D6CF400B7031B /* LocalPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPreferences.swift; sourceTree = "<group>"; };
 		E5A7851E2B3D7D9A00B7031B /* LMUniversalFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMUniversalFeedViewModel.swift; sourceTree = "<group>"; };
 		E5A785202B3DA82500B7031B /* DateUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtility.swift; sourceTree = "<group>"; };
-		E5A785232B3DAE2300B7031B /* LMUniversalFeedDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMUniversalFeedDataModel.swift; sourceTree = "<group>"; };
+		E5A785232B3DAE2300B7031B /* LMFeedPostDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPostDataModel.swift; sourceTree = "<group>"; };
 		E6C5FAA45D83230FFD5C09EB5DC1D83A /* likeminds-feed-iOS.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = "likeminds-feed-iOS.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		E792DBE23186E2111DD46186A67692D9 /* KFImageProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KFImageProtocol.swift; path = Sources/SwiftUI/KFImageProtocol.swift; sourceTree = "<group>"; };
 		EAB9EE5D27873E20310A83AA5FB6D7BA /* Pods-likeminds-feed-iOS_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-likeminds-feed-iOS_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -591,10 +601,9 @@
 		18642D965372AC43157C4A08E56CC0E1 /* Integration */ = {
 			isa = PBXGroup;
 			children = (
-				E592CBEE2B443E8F007474F2 /* LMFeedPostListView */,
-				D6029C015DE03ADEB6F03B6C4BD851B9 /* LMFeedPostDetail */,
-				E211006577717288806C432A349F7943 /* LMFeedTopicSelection */,
-				93ED0F281BB21BD886C3873DBCEC0B6A /* LMFeedUniversal */,
+				E52F3AEA2B457CE100B9C36C /* Converter */,
+				E52F3AE32B45675100B9C36C /* DataModels */,
+				E52F3AE22B45674A00B9C36C /* Screens */,
 			);
 			name = Integration;
 			path = Source/Classes/Integration;
@@ -857,7 +866,6 @@
 		93ED0F281BB21BD886C3873DBCEC0B6A /* LMFeedUniversal */ = {
 			isa = PBXGroup;
 			children = (
-				E5A785222B3DADA600B7031B /* ViewDataModel */,
 				4C2656522343AB88C08A8F501C507AA3 /* LMUniversalFeedViewController.swift */,
 				E5A7851E2B3D7D9A00B7031B /* LMUniversalFeedViewModel.swift */,
 			);
@@ -950,6 +958,7 @@
 			isa = PBXGroup;
 			children = (
 				693442DFCFFF59E3919ADBCC8932110E /* LMFeedPostDetailViewController.swift */,
+				E592CBF32B4551F4007474F2 /* LMFeedPostDetailViewModel.swift */,
 			);
 			path = LMFeedPostDetail;
 			sourceTree = "<group>";
@@ -1007,6 +1016,36 @@
 			path = LMFeedTopicSelection;
 			sourceTree = "<group>";
 		};
+		E52F3AE22B45674A00B9C36C /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				E592CBEE2B443E8F007474F2 /* LMFeedPostListView */,
+				D6029C015DE03ADEB6F03B6C4BD851B9 /* LMFeedPostDetail */,
+				E211006577717288806C432A349F7943 /* LMFeedTopicSelection */,
+				93ED0F281BB21BD886C3873DBCEC0B6A /* LMFeedUniversal */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		E52F3AE32B45675100B9C36C /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				E52F3AE62B45687800B9C36C /* LMFeedCommentDataModel.swift */,
+				E52F3AE42B45678D00B9C36C /* LMFeedMenuDataModel.swift */,
+				E5A785232B3DAE2300B7031B /* LMFeedPostDataModel.swift */,
+				E52F3AE82B45694700B9C36C /* LMFeedUserDataModel.swift */,
+			);
+			path = DataModels;
+			sourceTree = "<group>";
+		};
+		E52F3AEA2B457CE100B9C36C /* Converter */ = {
+			isa = PBXGroup;
+			children = (
+				E52F3AEB2B457D0A00B9C36C /* LMFeedConvertToFeedPost.swift */,
+			);
+			path = Converter;
+			sourceTree = "<group>";
+		};
 		E592CBED2B43E80F007474F2 /* ViewDataModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1022,14 +1061,6 @@
 				E592CBF12B4467CD007474F2 /* LMFeedPostListViewModel.swift */,
 			);
 			path = LMFeedPostListView;
-			sourceTree = "<group>";
-		};
-		E5A785222B3DADA600B7031B /* ViewDataModel */ = {
-			isa = PBXGroup;
-			children = (
-				E5A785232B3DAE2300B7031B /* LMUniversalFeedDataModel.swift */,
-			);
-			path = ViewDataModel;
 			sourceTree = "<group>";
 		};
 		F078EB2ABD95ECDF22E92CB9E88F5FFB /* SelectionScreen */ = {
@@ -1498,7 +1529,7 @@
 				A93F6E6C1BBCAA4F811C8611CFC109C8 /* likeminds-feed-iOS-dummy.m in Sources */,
 				9DBFAB1341FBE770B248EE5053990F6C /* LMButton.swift in Sources */,
 				3BC7086359BAF5BE5FBE260D96432CB0 /* LMCollectionView.swift in Sources */,
-				E5A785242B3DAE2400B7031B /* LMUniversalFeedDataModel.swift in Sources */,
+				E5A785242B3DAE2400B7031B /* LMFeedPostDataModel.swift in Sources */,
 				B61D6BAE6C0B8A8B82CD4CD05AD11ACF /* LMCollectionViewCell.swift in Sources */,
 				E5A7851F2B3D7D9B00B7031B /* LMUniversalFeedViewModel.swift in Sources */,
 				67EC2AAB80E43D5B47DA4DEAEA1E96D0 /* LMFeedPostDetailCommentCell.swift in Sources */,
@@ -1510,8 +1541,10 @@
 				DD2E5DCDE2E3123CACD25C57DEF4A719 /* LMFeedPostDocumentCell.swift in Sources */,
 				E592CBEC2B43E808007474F2 /* LMFeedTopicSelectionDataModel.swift in Sources */,
 				928D17C6AEC7AD0F1769FD7D018DD8B3 /* LMFeedPostDocumentCellView.swift in Sources */,
+				E592CBF42B4551F4007474F2 /* LMFeedPostDetailViewModel.swift in Sources */,
 				5A34AEF7E74A56FE920C9CE18E7D2A30 /* LMFeedPostFooterView.swift in Sources */,
 				7C048340A5C987DA7FADD5EAC8796ACD /* LMFeedPostHeaderView.swift in Sources */,
+				E52F3AE72B45687800B9C36C /* LMFeedCommentDataModel.swift in Sources */,
 				E592CBF02B443E98007474F2 /* LMFeedPostListViewController.swift in Sources */,
 				1C2E6D20563E8C603288439B6F53EFF9 /* LMFeedPostImageCollectionCell.swift in Sources */,
 				5C7E277B7FB1FA37B97B557F5F4ADC80 /* LMFeedPostLinkCell.swift in Sources */,
@@ -1521,10 +1554,12 @@
 				F5B1FB60A1F237355C8236D3E885BC62 /* LMFeedPostMoreRepliesCell.swift in Sources */,
 				E5A785212B3DA82500B7031B /* DateUtility.swift in Sources */,
 				0637E84D929C801257214F631D7E5E42 /* LMFeedPostVideoCollectionCell.swift in Sources */,
+				E52F3AEC2B457D0A00B9C36C /* LMFeedConvertToFeedPost.swift in Sources */,
 				B856205C0067A76C8C64AAC3A153FA89 /* LMFeedTopicCollectionView.swift in Sources */,
 				08AF2D5632ECC8303F140CE979023299 /* LMFeedTopicEditIconViewCell.swift in Sources */,
 				E592CBEA2B430E7E007474F2 /* LMFeedTopicSelectionViewModel.swift in Sources */,
 				420CB08EF92D9BF10A809E57B41AE31B /* LMFeedTopicEditViewCell.swift in Sources */,
+				E52F3AE92B45694700B9C36C /* LMFeedUserDataModel.swift in Sources */,
 				57B6F4D784B729C083CF21D46814EE89 /* LMFeedTopicSelectionCell.swift in Sources */,
 				FC73A40F4333BB60D2388B272C3B7023 /* LMFeedTopicSelectionView.swift in Sources */,
 				EFE0FCD363339CF0F02C46BB4190B83D /* LMFeedTopicSelectionViewController.swift in Sources */,
@@ -1544,6 +1579,7 @@
 				9BED95410DCF12261914BFB60FE20D9A /* LMView.swift in Sources */,
 				6E17E112E48BADF3D5B7E28A0CDDEBD8 /* LMViewController.swift in Sources */,
 				3FDC813BCF14DA15718A3922D0A89858 /* LMViewLifeCycle.swift in Sources */,
+				E52F3AE52B45678D00B9C36C /* LMFeedMenuDataModel.swift in Sources */,
 				70F7D3CA11E128EA71098381AA624028 /* NSAttributedString.Key+Extension.swift in Sources */,
 				6FCD5A794EC9EA7E7823D2FB78BCAB05 /* String+Extension.swift in Sources */,
 				CDD008D4D604D49FD90D5EBA3BAA0FEF /* UIImage+Extension.swift in Sources */,

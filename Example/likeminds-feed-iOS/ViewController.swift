@@ -35,8 +35,16 @@ class ViewController: UIViewController {
             return
         }
         
-        let username = usernameTextField.text ?? "username"
-        let userId = userIdTextField.text ?? "userId"
+        var username = usernameTextField.text ?? "username"
+        var userId = userIdTextField.text ?? "userId"
+        
+        if username.isEmpty {
+            username = "username"
+        }
+        
+        if userId.isEmpty {
+            userId = "userId"
+        }
         
         LMFeedMain.shared.initiateLikeMindsFeed(withViewController: self, apiKey: apiKey, username: username, userId: userId)
     }
@@ -44,5 +52,14 @@ class ViewController: UIViewController {
     @objc
     private func endEditing() {
         view.endEditing(true)
+    }
+}
+
+
+
+class tt: LMUniversalFeedViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print(#function, #file)
     }
 }

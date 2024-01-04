@@ -252,7 +252,8 @@ extension LMUniversalFeedViewController: LMFeedTopicViewCellProtocol {
 @objc
 extension LMUniversalFeedViewController: LMFeedPostListVCFromProtocol {
     open func openPostDetail(for postID: String) {
-        print(#function)
+        let viewController = LMFeedPostDetailViewModel.createModule(for: postID)
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     open func openUserDetail(for uuid: String) {

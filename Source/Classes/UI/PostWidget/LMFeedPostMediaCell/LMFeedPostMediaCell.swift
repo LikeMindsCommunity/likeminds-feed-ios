@@ -208,7 +208,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         mediaCollectionView.isHidden = mediaCellsData.isEmpty
         mediaCollectionView.reloadData()
         
-        pageControl.isHidden = mediaCellsData.isEmpty
+        pageControl.isHidden = mediaCellsData.count < 2
         pageControl.numberOfPages = mediaCellsData.count
     }
 }

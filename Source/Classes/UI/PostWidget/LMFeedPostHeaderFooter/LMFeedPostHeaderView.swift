@@ -215,6 +215,10 @@ open class LMFeedPostHeaderView: LMView {
         
         authorNameLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         authorTagLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        
+        let tagLabelWidthConstraint = NSLayoutConstraint(item: authorTagLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+        tagLabelWidthConstraint.priority = .defaultLow
+        tagLabelWidthConstraint.isActive = true
     }
     
     // MARK: Actions

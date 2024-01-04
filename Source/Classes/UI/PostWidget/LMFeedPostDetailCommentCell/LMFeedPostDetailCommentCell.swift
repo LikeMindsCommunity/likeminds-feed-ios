@@ -107,7 +107,8 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
     weak var delegate: LMChatPostCommentProtocol?
     public var commentId: String?
     public var userUUID: String?
-    public var postID: String?
+    public var indexPath: IndexPath?
+    
     
     // MARK: setupViews
     open override func setupViews() {
@@ -177,8 +178,9 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
     
     @objc
     open func didTapLikeButton() {
-        guard let commentId else { return }
-        delegate?.didTapLikeButton(for: commentId)
+        guard let commentId,
+              let indexPath else { return }
+        delegate?.didTapLikeButton(for: commentId, indexPath: indexPath)
     }
     
     @objc
@@ -230,11 +232,11 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
     
     
     // MARK: configure
-    open func configure(with data: LMFeedPostDetailCommentCellViewModel, delegate: LMChatPostCommentProtocol, isShowSeprator: Bool) {
+    open func configure(with data: LMFeedPostDetailCommentCellViewModel, delegate: LMChatPostCommentProtocol, isShowSeprator: Bool, indexPath: IndexPath) {
         commentId = data.commentId
-        userUUID = data.author.uuid
-        postID = data.postID
         self.delegate = delegate
+        self.userUUID = data.author.userUUID
+        self.indexPath = indexPath
         
         authorNameLabel.text = data.authorName
         

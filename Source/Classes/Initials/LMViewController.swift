@@ -29,6 +29,10 @@ public extension UIViewController {
     }
 }
 
+public protocol LMBaseViewControllerProtocol: AnyObject {
+    func presentAlert(with alert: UIAlertController, animated: Bool)
+}
+
 /// Base LM View Controller Class with LM Life Cycle Methods
 @IBDesignable
 open class LMViewController: UIViewController {
@@ -102,6 +106,8 @@ open class LMViewController: UIViewController {
     }
 }
 
+
+// MARK: LMViewLifeCycle
 extension LMViewController: LMViewLifeCycle {
     /// This function handles the initialization of views.
     open func setupViews() { }
@@ -114,4 +120,13 @@ extension LMViewController: LMViewLifeCycle {
     
     /// This function handles the initialization of styles.
     open func setupAppearance() { }
+}
+
+
+// MARK: LMBaseViewControllerProtocol
+@objc
+extension LMViewController: LMBaseViewControllerProtocol {
+    open func presentAlert(with alert: UIAlertController, animated: Bool = true) {
+        present(alert, animated: animated)
+    }
 }

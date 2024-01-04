@@ -9,20 +9,17 @@
 public protocol LMChatPostCommentProtocol: AnyObject {
     func didTapUserName(for uuid: String)
     func didTapMenuButton(for commentId: String)
-    func didTapLikeButton(for commentId: String)
+    func didTapLikeButton(for commentId: String, indexPath: IndexPath)
     func didTapLikeCountButton(for commentId: String)
     func didTapReplyButton(for commentId: String)
     func didTapReplyCountButton(for commentId: String)
 }
 
-public protocol LMFeedPostCommentCellProtocol { 
-    var postID: String { get }
-}
+public protocol LMFeedPostCommentCellProtocol { }
 
 // MARK: LMFeedPostDetailCommentCellViewModel
 public struct LMFeedPostDetailCommentCellViewModel: LMFeedPostCommentCellProtocol {
-    public var postID: String
-    let author: UserProfile
+    let author: LMFeedUserDataModel
     let commentId: String?
     let tempCommentId: String?
     let comment: String
@@ -31,10 +28,10 @@ public struct LMFeedPostDetailCommentCellViewModel: LMFeedPostCommentCellProtoco
     var isLiked: Bool
     var likeCount: Int
     let totalReplyCount: Int
-    let replies: [LMFeedPostDetailCommentCellViewModel]
+    var replies: [LMFeedPostDetailCommentCellViewModel]
     var isShowMore: Bool
     
-    var authorName: String { author.name }
+    var authorName: String { author.userName }
     
     var repliesCount: Int { replies.count }
     
@@ -55,16 +52,13 @@ public struct LMFeedPostDetailCommentCellViewModel: LMFeedPostCommentCellProtoco
         totalReplyCount > 1 ? "\(totalReplyCount) \(Constants.shared.strings.replies)" : "\(totalReplyCount) \(Constants.shared.strings.reply)"
     }
     
-    var loadMoreComments: LMFeedPostMoreRepliesCell.ViewModel? {
-        if repliesCount < totalReplyCount {
-            return .init(postID: postID, parentCommentId: commentId, commentCount: repliesCount, totalComments: totalReplyCount)
-        }
-        return nil
+    mutating func updateSelfLike() {
+        isLiked.toggle()
+        likeCount += isLiked ? 1 : -1
     }
     
     public init(
-        author: UserProfile,
-        postId: String,
+        author: LMFeedUserDataModel,
         commentId: String?,
         tempCommentId: String?,
         comment: String,
@@ -74,31 +68,18 @@ public struct LMFeedPostDetailCommentCellViewModel: LMFeedPostCommentCellProtoco
         replies: [LMFeedPostDetailCommentCellViewModel],
         isEdited: Bool = false,
         isLiked: Bool = false,
-        isShowMore: Bool = false) {
-            self.author = author
-            self.postID = postId
-            self.commentId = commentId
-            self.tempCommentId = tempCommentId
-            self.comment = comment
-            self.commentTime = commentTime
-            self.isEdited = isEdited
-            self.isLiked = isLiked
-            self.likeCount = likeCount
-            self.totalReplyCount = totalReplyCount
-            self.replies = replies
-            self.isShowMore = isShowMore
-        }
-    
-    // MARK: UserProfile
-    public struct UserProfile {
-        let name: String
-        let avatarURL: String
-        let uuid: String
-        
-        public init(name: String, avatarURL: String, uuid: String) {
-            self.name = name
-            self.avatarURL = avatarURL
-            self.uuid = uuid
-        }
+        isShowMore: Bool = false
+    ) {
+        self.author = author
+        self.commentId = commentId
+        self.tempCommentId = tempCommentId
+        self.comment = comment
+        self.commentTime = commentTime
+        self.isEdited = isEdited
+        self.isLiked = isLiked
+        self.likeCount = likeCount
+        self.totalReplyCount = totalReplyCount
+        self.replies = replies
+        self.isShowMore = isShowMore
     }
 }

@@ -13,10 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        //        Components.shared.feedListViewController = CustomTableView.self
-        //        Components.shared.headerCell = CustomHeaderView.self
-        //        Components.shared.postCell = CustomTableCell.self
-        //        Components.shared.imageCollectionCell = CustomImageView.self
+        Components.shared.universalFeedViewController = tt.self
         
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)

@@ -16,11 +16,11 @@ open class LMFeedPostDetailViewController: LMViewController {
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.bounces = false
-        table.rowHeight = UITableView.automaticDimension
         table.estimatedRowHeight = 50
+        table.rowHeight = UITableView.automaticDimension
         table.estimatedSectionHeaderHeight = 1
-        table.sectionFooterHeight = .zero
         table.sectionHeaderHeight = UITableView.automaticDimension
+        table.sectionFooterHeight = .zero
         table.contentInset = .init(top: -20, left: .zero, bottom: .zero, right: .zero)
         return table
     }()
@@ -65,8 +65,10 @@ open class LMFeedPostDetailViewController: LMViewController {
     
     
     // MARK: Data Variables
-    var cellsData: [LMFeedPostTableCellProtocol] = []
+    var postData: LMFeedPostTableCellProtocol?
+    var cellsData: [LMFeedPostCommentCellProtocol] = []
     open private(set) var textInputMaximumHeight: CGFloat = 100
+    public var viewModel: LMFeedPostDetailViewModel?
     
     // MARK: setupViews
     open override func setupViews() {
@@ -148,6 +150,8 @@ open class LMFeedPostDetailViewController: LMViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        viewModel?.getPost(isInitialFetch: true)
     }
     
     deinit {
@@ -178,41 +182,44 @@ extension LMFeedPostDetailViewController {
 extension LMFeedPostDetailViewController: UITableViewDataSource,
                                           UITableViewDelegate {
     open func numberOfSections(in tableView: UITableView) -> Int {
-        cellsData.count
+        guard postData != nil else { return .zero }
+        return cellsData.count + 1
     }
     
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let comment = cellsData[section] as? LMFeedPostDetailCommentCellViewModel {
+        if let comment = cellsData[safe: section - 1] as? LMFeedPostDetailCommentCellViewModel {
             return comment.replies.count
         }
         return 1
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(Components.shared.postCell),
-           let data = cellsData[indexPath.section] as? LMFeedPostMediaCell.ViewModel {
-            cell.configure(with: data, delegate: self)
-            return cell
-        } else if let cell = tableView.dequeueReusableCell(Components.shared.linkCell),
-                  let data = cellsData[indexPath.section] as? LMFeedPostLinkCell.ViewModel {
-            cell.configure(with: data, delegate: self)
-            return cell
-        } else if let cell = tableView.dequeueReusableCell(Components.shared.documentCell),
-                  let data = cellsData[indexPath.section] as? LMFeedPostDocumentCell.ViewModel {
-            cell.configure(for: indexPath, with: data, delegate: self)
-            return cell
+        if indexPath.section == 0,
+           let postData {
+            if let cell = tableView.dequeueReusableCell(Components.shared.postCell),
+               let data = postData as? LMFeedPostMediaCell.ViewModel {
+                cell.configure(with: data, delegate: self)
+                return cell
+            } else if let cell = tableView.dequeueReusableCell(Components.shared.linkCell),
+                      let data = postData as? LMFeedPostLinkCell.ViewModel {
+                cell.configure(with: data, delegate: self)
+                return cell
+            } else if let cell = tableView.dequeueReusableCell(Components.shared.documentCell),
+                      let data = postData as? LMFeedPostDocumentCell.ViewModel {
+                cell.configure(for: indexPath, with: data, delegate: self)
+                return cell
+            }
         } else if let cell = tableView.dequeueReusableCell(Components.shared.totalCommentCell),
-                  let data = cellsData[indexPath.section] as? LMFeedPostDetailTotalCommentCell.ViewModel {
+                  let data = cellsData[safe: indexPath.section - 1] as? LMFeedPostDetailTotalCommentCell.ViewModel {
             cell.configure(with: data)
             return cell
         } else if let cell = tableView.dequeueReusableCell(Components.shared.commentCell),
-                  let data = cellsData[indexPath.section] as? LMFeedPostDetailCommentCellViewModel {
+                  let data = cellsData[safe: indexPath.section - 1] as? LMFeedPostDetailCommentCellViewModel {
             let comment = data.replies[indexPath.row]
-            cell.configure(with: comment, delegate: self, isShowSeprator: (data.replies.count - 1) == indexPath.row)
+            cell.configure(with: comment, delegate: self, isShowSeprator: (data.replies.count - 1) == indexPath.row, indexPath: indexPath)
             return cell
         } else if let cell = tableView.dequeueReusableCell(Components.shared.loadMoreReplies),
-                  let tempData = cellsData[indexPath.section] as? LMFeedPostDetailCommentCellViewModel,
-                  let data = tempData.loadMoreComments {
+                  let data = cellsData[safe: indexPath.section - 1] as? LMFeedPostMoreRepliesCell.ViewModel {
             cell.configure(with: data, delegate: self)
             return cell
         }
@@ -222,8 +229,8 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
     
     open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let header = tableView.dequeueReusableHeaderFooterView(Components.shared.commentHeaderView),
-           let data = cellsData[section] as? LMFeedPostDetailCommentCellViewModel {
-            header.configure(with: data, delegate: self)
+           let data = cellsData[safe: section - 1] as? LMFeedPostDetailCommentCellViewModel {
+            header.configure(with: data, delegate: self, indexPath: .init(row: NSNotFound, section: section))
             return header
         }
         return nil
@@ -233,11 +240,15 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
         return nil
     }
     
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if type(of: scrollView) is UITableView.Type {
             view.endEditing(true)
             inputTextViewHeightConstraint?.constant = 40
         }
+    }
+    
+    open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
     }
 }
 
@@ -254,10 +265,9 @@ extension LMFeedPostDetailViewController: LMChatLinkProtocol {
 @objc
 extension LMFeedPostDetailViewController: LMFeedPostDocumentCellProtocol {
     open func didTapShowMoreDocuments(for indexPath: IndexPath) {
-        if var data = cellsData[indexPath.section] as? LMFeedPostDocumentCell.ViewModel {
+        if var data = postData as? LMFeedPostDocumentCell.ViewModel {
             data.isShowAllDocuments.toggle()
-            cellsData[indexPath.section] = data
-            tableView.reloadRows(at: [indexPath], with: .none)
+            tableView.reloadRows(at: [.init(row: 0, section: 0)], with: .automatic)
         }
     }
 }
@@ -268,9 +278,14 @@ extension LMFeedPostDetailViewController: LMFeedPostDocumentCellProtocol {
 extension LMFeedPostDetailViewController: LMChatPostCommentProtocol {
     open func didTapUserName(for uuid: String) { }
     
-    open func didTapMenuButton(for commentId: String) { }
+    open func didTapMenuButton(for commentId: String) {
+        viewModel?.showMenu(for: commentId)
+    }
     
-    open func didTapLikeButton(for commentId: String) { }
+    open func didTapLikeButton(for commentId: String, indexPath: IndexPath) {
+        changeCommentLike(for: indexPath)
+        viewModel?.likeComment(for: commentId, indexPath: indexPath)
+    }
     
     open func didTapLikeCountButton(for commentId: String) { }
     
@@ -283,6 +298,11 @@ extension LMFeedPostDetailViewController: LMChatPostCommentProtocol {
 // MARK: LMFeedTableCellToViewControllerProtocol
 @objc
 extension LMFeedPostDetailViewController: LMFeedTableCellToViewControllerProtocol {
+    open func didTapLikeButton(for postID: String) {
+        changePostLike()
+        viewModel?.likePost(for: postID)
+    }
+    
     open func didTapProfilePicture(for uuid: String) { }
     
     open func didTapLikeTextButton(for postID: String) { }
@@ -291,7 +311,10 @@ extension LMFeedPostDetailViewController: LMFeedTableCellToViewControllerProtoco
     
     open func didTapShareButton(for postID: String) { }
     
-    open func didTapSaveButton(for postID: String) { }
+    open func didTapSaveButton(for postID: String) {
+        changePostSave()
+        viewModel?.savePost(for: postID)
+    }
 }
 
 
@@ -334,5 +357,50 @@ extension LMFeedPostDetailViewController: UITextViewDelegate {
     open func textViewDidEndEditing(_ textView: UITextView) {
         textView.text = textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
         inputTextViewHeightConstraint?.constant = 40
+    }
+}
+
+
+// MARK: LMFeedPostDetailViewModelProtocol
+extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
+    public func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostCommentCellProtocol], indexPath: IndexPath?) {
+        self.postData = post
+        self.cellsData = comments
+        
+        if let indexPath {
+            tableView.reloadRows(at: [indexPath], with: .none)
+        } else {
+            tableView.reloadData()
+        }
+    }
+    
+    public func changePostLike() {
+        let isLiked = postData?.footerData.isLiked ?? true
+        postData?.footerData.isLiked = !isLiked
+        postData?.footerData.likeCount += !isLiked ? 1 : -1
+        tableView.reloadRows(at: [.init(row: 0, section: 0)], with: .none)
+    }
+    
+    public func changePostSave() {
+        postData?.footerData.isSaved.toggle()
+        tableView.reloadRows(at: [.init(row: 0, section: 0)], with: .none)
+    }
+    
+    public func changeCommentLike(for indexPath: IndexPath) {
+        if var sectionData = cellsData[safe: indexPath.section - 1] as? LMFeedPostDetailCommentCellViewModel {
+            if indexPath.row == NSNotFound {
+                let isLiked = sectionData.isLiked
+                sectionData.isLiked = !isLiked
+                sectionData.likeCount = !isLiked ? 1 : -1
+            } else if var reply = sectionData.replies[safe: indexPath.row] {
+                let isLiked = reply.isLiked
+                reply.isLiked = !isLiked
+                reply.likeCount += !isLiked ? 1 : -1
+                sectionData.replies[indexPath.row] = reply
+            }
+            
+            cellsData[indexPath.section - 1] = sectionData
+            tableView.reloadRows(at: [indexPath], with: .none)
+        }
     }
 }

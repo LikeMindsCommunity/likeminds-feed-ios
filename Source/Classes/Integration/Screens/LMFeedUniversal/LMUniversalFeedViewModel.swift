@@ -8,7 +8,7 @@
 import LikeMindsFeed
 
 // MARK: LMUniversalFeedViewModelProtocol
-public protocol LMUniversalFeedViewModelProtocol: AnyObject {
+public protocol LMUniversalFeedViewModelProtocol: LMBaseViewControllerProtocol {
     func loadTopics(with topics: [LMFeedTopicCollectionCellDataModel])
 }
 
