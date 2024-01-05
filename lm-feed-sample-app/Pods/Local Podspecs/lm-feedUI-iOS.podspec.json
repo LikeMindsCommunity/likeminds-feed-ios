@@ -3,11 +3,15 @@
   "summary": "Masterpiece in Making",
   "homepage": "https://likeminds.community/",
   "version": "0.1.0",
+  "license": {
+    "type": "MIT",
+    "file": "../LICENSE"
+  },
   "authors": {
     "Devansh Mohata": "devansh.mohata@likeminds.community"
   },
   "source": {
-    "git": "https://github.com/KeepSafe/iOS.git",
+    "git": "git@github.com:LikeMindsCommunity/likeminds-feed-ios.git",
     "tag": "MyAmazingFramework_v0.1.0"
   },
   "source_files": "lm-feedUI-iOS/Source/Classes/**/*.swift",

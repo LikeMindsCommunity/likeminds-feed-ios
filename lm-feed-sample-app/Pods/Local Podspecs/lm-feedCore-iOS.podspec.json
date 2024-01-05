@@ -4,14 +4,14 @@
   "homepage": "https://likeminds.community/",
   "version": "0.1.0",
   "license": {
-    "type": "Apache 2.0",
-    "file": "LICENSE"
+    "type": "MIT",
+    "file": "../LICENSE"
   },
   "authors": {
     "Devansh Mohata": "devansh.mohata@likeminds.community"
   },
   "source": {
-    "git": "https://github.com/KeepSafe/iOS.git",
+    "git": "git@github.com:LikeMindsCommunity/likeminds-feed-ios.git",
     "tag": "MyAmazingFramework_v0.1.0"
   },
   "source_files": "lm-feedCore-iOS/Source/**/*.swift",
