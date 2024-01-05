@@ -1,0 +1,6 @@
+${PODS_ROOT}/Target Support Files/Pods-lm-feed-sample-app/Pods-lm-feed-sample-app-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
+${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework
+${BUILT_PRODUCTS_DIR}/lm-feedCore-iOS/lm_feedCore_iOS.framework
+${BUILT_PRODUCTS_DIR}/lm-feedUI-iOS/lm_feedUI_iOS.framework
+${PODS_XCFRAMEWORKS_BUILD_DIR}/LikeMindsFeed/LikeMindsFeed.framework/LikeMindsFeed

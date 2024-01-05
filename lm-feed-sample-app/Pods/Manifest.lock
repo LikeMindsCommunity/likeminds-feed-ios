@@ -1,0 +1,37 @@
+PODS:
+  - Alamofire (5.7.1)
+  - Kingfisher (7.10.1)
+  - LikeMindsFeed (1.7.0):
+    - Alamofire (~> 5.7.1)
+  - lm-feedCore-iOS (0.1.0):
+    - LikeMindsFeed
+    - lm-feedUI-iOS
+  - lm-feedUI-iOS (0.1.0):
+    - Kingfisher (~> 7.0)
+
+DEPENDENCIES:
+  - lm-feedCore-iOS (from `../lm-feedCore-iOS`)
+  - lm-feedUI-iOS (from `../lm-feedUI-iOS`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - Kingfisher
+    - LikeMindsFeed
+
+EXTERNAL SOURCES:
+  lm-feedCore-iOS:
+    :path: "../lm-feedCore-iOS"
+  lm-feedUI-iOS:
+    :path: "../lm-feedUI-iOS"
+
+SPEC CHECKSUMS:
+  Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
+  Kingfisher: bc5abe80a8e0144537ef1dd5a0b2621b04f7f439
+  LikeMindsFeed: 2980dfc0439a131109d9be4c29aa92254dd10b33
+  lm-feedCore-iOS: 7ad7a34089f50b62e04fd8d543876f823a7b1a76
+  lm-feedUI-iOS: 9d4c9787a704579b973f37af3e3fec4060b3cfcf
+
+PODFILE CHECKSUM: 0f67f931bcc06886edef9f2324baa19e7e6b1a64
+
+COCOAPODS: 1.14.3
