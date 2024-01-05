@@ -1,0 +1,6 @@
+framework module lm_feedCore_iOS {
+  umbrella header "lm-feedCore-iOS-umbrella.h"
+
+  export *
+  module * { export * }
+}

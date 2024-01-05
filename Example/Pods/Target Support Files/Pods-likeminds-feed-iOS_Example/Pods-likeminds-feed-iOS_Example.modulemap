@@ -1,6 +1,0 @@
-framework module Pods_likeminds_feed_iOS_Example {
-  umbrella header "Pods-likeminds-feed-iOS_Example-umbrella.h"
-
-  export *
-  module * { export * }
-}
