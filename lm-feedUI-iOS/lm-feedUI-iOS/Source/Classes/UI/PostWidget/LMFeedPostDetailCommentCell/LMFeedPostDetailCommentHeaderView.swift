@@ -241,7 +241,6 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        likeTextButton.isHidden = true
         contentView.backgroundColor = Appearance.shared.colors.white
         containerView.backgroundColor = Appearance.shared.colors.clear
     }

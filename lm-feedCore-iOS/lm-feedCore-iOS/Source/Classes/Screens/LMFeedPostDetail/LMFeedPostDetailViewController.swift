@@ -293,7 +293,9 @@ extension LMFeedPostDetailViewController: LMChatPostCommentProtocol {
     
     open func didTapReplyButton(for commentId: String) { }
     
-    open func didTapReplyCountButton(for commentId: String) { }
+    open func didTapReplyCountButton(for commentId: String) { 
+        viewModel?.getCommentReplies(commentId: commentId)
+    }
 }
 
 
@@ -316,6 +318,10 @@ extension LMFeedPostDetailViewController: LMFeedTableCellToViewControllerProtoco
     open func didTapSaveButton(for postID: String) {
         changePostSave()
         viewModel?.savePost(for: postID)
+    }
+    
+    open func didTapMenuButton(postID: String) {
+        viewModel?.showMenu(postID: postID)
     }
 }
 
@@ -370,7 +376,11 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         self.cellsData = comments
         
         if let indexPath {
-            tableView.reloadRows(at: [indexPath], with: .none)
+            if indexPath.row == NSNotFound {
+                tableView.reloadSections(.init(integer: indexPath.section), with: .automatic)
+            } else {
+                tableView.reloadRows(at: [indexPath], with: .none)
+            }
         } else {
             tableView.reloadData()
         }
@@ -393,7 +403,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
             if indexPath.row == NSNotFound {
                 let isLiked = sectionData.isLiked
                 sectionData.isLiked = !isLiked
-                sectionData.likeCount = !isLiked ? 1 : -1
+                sectionData.likeCount += !isLiked ? 1 : -1
             } else if var reply = sectionData.replies[safe: indexPath.row] {
                 let isLiked = reply.isLiked
                 reply.isLiked = !isLiked

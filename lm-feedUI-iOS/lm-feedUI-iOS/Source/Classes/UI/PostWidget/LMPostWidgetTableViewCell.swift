@@ -83,9 +83,11 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
+        containerView.isUserInteractionEnabled = true
         headerView.delegate = self
         footerView.delegate = self
         postText.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedTextView)))
+        containerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapPost)))
     }
     
     @objc
@@ -99,8 +101,8 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
             didTapHashTag(hashtag: hashtag)
         } else if let route = text[.route] as? String {
             didTapRoute(route: route)
-        } else {
-            didTapPostText()
+        } else if let postID {
+            actionDelegate?.didTapPost(postID: postID)
         }
     }
     
@@ -112,7 +114,11 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     
     open func didTapRoute(route: String) { }
     
-    open func didTapPostText() { }
+    @objc
+    open func didTapPost() {
+        guard let postID else { return }
+        actionDelegate?.didTapPost(postID: postID)
+    }
 }
 
 
@@ -126,7 +132,7 @@ extension LMPostWidgetTableViewCell: LMFeedPostHeaderViewProtocol {
     
     open func didTapMenuButton() {
         guard let postID else { return }
-        actionDelegate?.didTapMenuButton(for: postID)
+        actionDelegate?.didTapMenuButton(postID: postID)
     }
 }
 
@@ -171,10 +177,15 @@ extension LMPostWidgetTableViewCell: LMTappableLabelDelegate {
 // MARK: LMTableCellToViewController
 public protocol LMFeedTableCellToViewControllerProtocol: AnyObject {
     func didTapProfilePicture(for uuid: String)
-    func didTapMenuButton(for postID: String)
+    func didTapMenuButton(postID: String)
     func didTapLikeButton(for postID: String)
     func didTapLikeTextButton(for postID: String)
     func didTapCommentButton(for postID: String)
     func didTapShareButton(for postID: String)
     func didTapSaveButton(for postID: String)
+    func didTapPost(postID: String)
+}
+
+public extension LMFeedTableCellToViewControllerProtocol {
+    func didTapPost(postID: String) { }
 }

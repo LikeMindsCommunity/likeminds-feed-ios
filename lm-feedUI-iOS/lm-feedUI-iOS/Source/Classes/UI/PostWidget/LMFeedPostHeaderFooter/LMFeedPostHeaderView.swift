@@ -239,7 +239,7 @@ open class LMFeedPostHeaderView: LMView {
     }
     
     open func configure(with data: ViewModel) {
-        imageView.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: Constants.shared.images.placeholderProfileImage)
+        imageView.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.authorName))
         
         authorNameLabel.text = data.authorName
         authorTagLabel.text = data.authorTag

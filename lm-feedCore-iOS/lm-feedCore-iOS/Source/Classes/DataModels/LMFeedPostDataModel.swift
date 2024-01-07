@@ -18,7 +18,7 @@ public struct LMFeedPostDataModel {
     public let commentCount: Int	
     public let createTime: String
     public let isEdited: Bool
-    public let postMenu: [LMFeedMenuDataModel]
+    public var postMenu: [LMFeedMenuDataModel]
     public let userDetails: LMFeedUserDataModel
     public let topics: [TopicModel]
     public var imageVideoAttachment: [ImageVideoAttachment] = []

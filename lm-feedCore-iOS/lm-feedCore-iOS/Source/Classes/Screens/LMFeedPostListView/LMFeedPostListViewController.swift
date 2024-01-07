@@ -90,6 +90,13 @@ open class LMFeedPostListViewController: LMViewController {
         super.viewDidLoad()
         viewModel?.getFeed()
     }
+    
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tableView.visibleCells.forEach { cell in
+            (cell as? LMFeedPostMediaCell)?.resetPlayerInstance()
+        }
+    }
 }
 
 // MARK: UITableView
@@ -122,11 +129,6 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
             viewModel?.getFeed()
         }
     }
-    
-    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let postID = data[safe: indexPath.row]?.postID else { return }
-        delegate?.openPostDetail(for: postID)
-    }
 }
 
 
@@ -137,7 +139,7 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
         delegate?.openUserDetail(for: uuid)
     }
     
-    open func didTapMenuButton(for postID: String) {
+    open func didTapMenuButton(postID: String) {
         print(#function)
     }
     
@@ -182,6 +184,10 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
         data[index] = tempData
         
         tableView.reloadRows(at: [.init(row: index, section: 0)], with: .none)
+    }
+    
+    open func didTapPost(postID: String) {
+        delegate?.openPostDetail(for: postID)
     }
 }
 

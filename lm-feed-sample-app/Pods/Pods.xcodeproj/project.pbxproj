@@ -189,6 +189,7 @@
 		E53C967FDC0F3F744407E34FFFB10C97 /* Collection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53532F3E98180DDC1EA346C9966577BA /* Collection+Extension.swift */; };
 		E572B7822B480CCB00E36655 /* LMFeedUIAssetsCatalog.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16C2B851FFD856F60C8937090D9DE2F8 /* LMFeedUIAssetsCatalog.xcassets */; };
 		E572B7832B48160100E36655 /* LMTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80401CCFEEF2B16009D356B69E93B22C /* LMTableView.swift */; };
+		E572B78B2B49991200E36655 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B78A2B49991200E36655 /* UIColor+Extension.swift */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CB8621F3C4DDD64CBE5E987973DABEA /* SessionDelegate.swift */; };
 		E7378F61AD6959D5538E595EA4A48AF4 /* AVAssetImageDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9B6F55BA25B6F2C681A617FDE03CF7 /* AVAssetImageDataProvider.swift */; };
 		E95D6E6462506EFD8EA9332AD9BC492A /* SizeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816B902D34604867221711EF73B61188 /* SizeExtensions.swift */; };
@@ -508,6 +509,7 @@
 		DFD4DA709328F5CF9FE001844F17D715 /* KFImage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KFImage.swift; path = Sources/SwiftUI/KFImage.swift; sourceTree = "<group>"; };
 		E0EE0269D286220E618B5451AFFDACE8 /* EventMonitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EventMonitor.swift; path = Source/EventMonitor.swift; sourceTree = "<group>"; };
 		E16E601A495DE964E66454251F598B91 /* NSButton+Kingfisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSButton+Kingfisher.swift"; path = "Sources/Extensions/NSButton+Kingfisher.swift"; sourceTree = "<group>"; };
+		E572B78A2B49991200E36655 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		E792DBE23186E2111DD46186A67692D9 /* KFImageProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KFImageProtocol.swift; path = Sources/SwiftUI/KFImageProtocol.swift; sourceTree = "<group>"; };
 		E7DDA8C009792C8E04B9B0AF675E6DCA /* LMFeedUserDataModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedUserDataModel.swift; sourceTree = "<group>"; };
 		E9291A580EC020DD7A3BE7AF7376601D /* LMFeedTopicSelectionViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedTopicSelectionViewController.swift; sourceTree = "<group>"; };
@@ -723,6 +725,7 @@
 				6C355FB3341546E866264E7D2DB3194C /* NSAttributedString.Key+Extension.swift */,
 				D80037E9317279F42CB5C6591895C5A2 /* String+Extension.swift */,
 				ABEF2BDAA949304732A7773282B940EB /* UIImage+Extension.swift */,
+				E572B78A2B49991200E36655 /* UIColor+Extension.swift */,
 			);
 			name = Initials;
 			path = "lm-feedUI-iOS/Source/Classes/Initials";
@@ -1560,6 +1563,7 @@
 				42D610D7611D34E0DEAE3218252BCCF9 /* Appearance.swift in Sources */,
 				C4F9167008B88E2CCDFF5D066B7E8617 /* Appearance+Colors.swift in Sources */,
 				658C878E6F3F9B879EEE9D1A326AA91B /* Appearance+Fonts.swift in Sources */,
+				E572B78B2B49991200E36655 /* UIColor+Extension.swift in Sources */,
 				406918E87D2D72E316C3C169457D9CD8 /* Bundle+Extension.swift in Sources */,
 				AC004211EB22842E76F7B5880F476A26 /* Collection+Extension.swift in Sources */,
 				6E998107500DB7B8AF4490338DB62782 /* Constants.swift in Sources */,

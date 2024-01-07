@@ -211,6 +211,17 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         pageControl.isHidden = mediaCellsData.count < 2
         pageControl.numberOfPages = mediaCellsData.count
     }
+    
+    
+    // MARK: Reset Player
+    open override func prepareForReuse() {
+        super.prepareForReuse()
+        resetPlayerInstance()
+    }
+    
+    open func resetPlayerInstance() {
+        videoPlayer.player = nil
+    }
 }
 
 

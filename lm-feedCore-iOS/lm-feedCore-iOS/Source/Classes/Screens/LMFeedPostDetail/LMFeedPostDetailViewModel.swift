@@ -42,6 +42,20 @@ public class LMFeedPostDetailViewModel {
         viewController.viewModel = viewModel
         return viewController
     }
+    
+    func findComment(for commentID: String, from comments: [LMFeedCommentDataModel]) -> LMFeedCommentDataModel? {
+        for comment in comments {
+            if comment.commentID == commentID {
+                return comment
+            }
+            
+            if let resultComment = findComment(for: commentID, from: comment.replies) {
+                return resultComment
+            }
+        }
+        
+        return nil
+    }
 }
 
 // MARK: Get Post Details
@@ -145,55 +159,7 @@ public extension LMFeedPostDetailViewModel {
 }
 
 
-// MARK: Menu Actions
-public extension LMFeedPostDetailViewModel {
-    func showMenu(for commentID: String) {
-        guard let comment = findComment(for: commentID, from: postDetail?.comments ?? []),
-        !comment.menuItems.isEmpty else { return }
-        
-        let alert = UIAlertController(title: .none, message: .none, preferredStyle: .actionSheet)
-        
-        comment.menuItems.forEach { menu in
-            switch menu.id {
-            case .deleteComment:
-                alert.addAction(.init(title: "Delete Comment", style: .destructive) { _ in
-                    print("Delete Action")
-                })
-            case .reportComment:
-                alert.addAction(.init(title: "Report Comment", style: .destructive) { _ in
-                    print("Report Action")
-                })
-            case .editComment:
-                alert.addAction(.init(title: "Edit Comment", style: .destructive) { _ in
-                    print("Edit Action")
-                })
-            default:
-                break
-            }
-        }
-        
-        alert.addAction(.init(title: "Cancel", style: .cancel))
-        
-        delegate?.presentAlert(with: alert, animated: true)
-    }
-    
-    func findComment(for commentID: String, from comments: [LMFeedCommentDataModel]) -> LMFeedCommentDataModel? {
-        for comment in comments {
-            if comment.commentID == commentID {
-                return comment
-            }
-            
-            if let resultComment = findComment(for: commentID, from: comment.replies) {
-                return resultComment
-            }
-        }
-        
-        return nil
-    }
-}
-
-
-// MARK: Like Comment
+// MARK: Comment Shenanigans
 public extension LMFeedPostDetailViewModel {
     func likeComment(for commentID: String, indexPath: IndexPath) {
         guard let postID = postDetail?.postId else { return }
@@ -225,6 +191,82 @@ public extension LMFeedPostDetailViewModel {
                 delegate?.changeCommentLike(for: indexPath)
             }
         }
+    }
+    
+    func getCommentReplies(commentId: String) {
+        if let index = postDetail?.comments.firstIndex(where: { $0.commentID == commentId }),
+           postDetail?.comments[index].replies.isEmpty == false {
+            postDetail?.comments[index].replies = []
+            convertToViewData()
+            return
+        }
+        
+        
+        guard !isFetchingData,
+              let postID = postDetail?.postId,
+              let parentComment = findComment(for: commentId, from: postDetail?.comments ?? []) else { return }
+        self.isFetchingData = true
+        
+        let replyCurrentPage = (parentComment.replies.count / 5) + 1
+        
+        let request = GetCommentRequest.builder()
+            .postId(postID)
+            .commentId(commentId)
+            .page(replyCurrentPage)
+            .pageSize(5)
+            .build()
+        
+        LMFeedClient.shared.getComment(request) { [weak self] response in
+            guard let self else { return }
+            isFetchingData = false
+            
+            guard let commentArray = response.data?.comment,
+                  let users =  response.data?.users else {
+                return
+            }
+            
+            let newComments: [LMFeedCommentDataModel] = commentArray.replies?.enumerated().compactMap { index, comment in
+                guard let user = users[comment.uuid ?? ""] else { return nil }
+                return .init(comment: comment, user: user, index: .init(row: index, section: index))
+            } ?? []
+            
+            var oldComments = postDetail?.comments[parentComment.index.section].replies ?? []
+            oldComments.append(contentsOf: newComments)
+            postDetail?.comments[parentComment.index.section].replies = oldComments
+            self.convertToViewData()
+        }
+    }
+    
+    
+    // MARK: Show Comment Menu
+    func showMenu(for commentID: String) {
+        guard let comment = findComment(for: commentID, from: postDetail?.comments ?? []),
+        !comment.menuItems.isEmpty else { return }
+        
+        let alert = UIAlertController(title: .none, message: .none, preferredStyle: .actionSheet)
+        
+        comment.menuItems.forEach { menu in
+            switch menu.id {
+            case .deleteComment:
+                alert.addAction(.init(title: menu.name, style: .destructive) { _ in
+                    print("Delete Action")
+                })
+            case .reportComment:
+                alert.addAction(.init(title: menu.name, style: .destructive) { _ in
+                    print("Report Action")
+                })
+            case .editComment:
+                alert.addAction(.init(title: menu.name, style: .default) { _ in
+                    print("Edit Action")
+                })
+            default:
+                break
+            }
+        }
+        
+        alert.addAction(.init(title: "Cancel", style: .cancel))
+        
+        delegate?.presentAlert(with: alert, animated: true)
     }
 }
 
@@ -265,6 +307,70 @@ public extension LMFeedPostDetailViewModel {
                 delegate?.changePostSave()
             }
         }
+    }
+    
+    
+    // MARK: Un/Pin Post
+    func pinUnpinPost(postId: String) {
+        let request = PinPostRequest.builder()
+            .postId(postId)
+            .build()
+        LMFeedClient.shared.pinPost(request) {[weak self] response in
+            guard let self else { return }
+            if response.success {
+                postDetail?.isPinned.toggle()
+                updatePinMenu()
+                convertToViewData(for: .init(row: NSNotFound, section: 0))
+            }
+        }
+    }
+    
+    func updatePinMenu() {
+        guard let index = postDetail?.postMenu.firstIndex(where: { $0.id == .pinPost || $0.id == .unpinPost }) else { return }
+        if postDetail?.isPinned == true {
+            postDetail?.postMenu[index] = .init(id: .unpinPost, name: "Unpin this Post")
+        } else {
+            postDetail?.postMenu[index] = .init(id: .pinPost, name: "Pin this Post")
+        }
+    }
+    
+    
+    // MARK: Show Post Menu
+    func showMenu(postID: String) {
+        guard let postDetail else { return }
+        
+        let alert = UIAlertController(title: .none, message: .none, preferredStyle: .actionSheet)
+        
+        postDetail.postMenu.forEach { menu in
+            switch menu.id {
+            case .deletePost:
+                alert.addAction(.init(title: menu.name, style: .destructive) { _ in
+                    print("Delete Action")
+                })
+            case .pinPost:
+                alert.addAction(.init(title: menu.name, style: .default) { [weak self] _ in
+                    self?.pinUnpinPost(postId: postID)
+                })
+            case .unpinPost:
+                alert.addAction(.init(title: menu.name, style: .default) { [weak self] _ in
+                    self?.pinUnpinPost(postId: postID)
+                })
+            case .reportPost:
+                alert.addAction(.init(title: menu.name, style: .destructive) { _ in
+                    print("Report Action")
+                })
+            case .editPost:
+                alert.addAction(.init(title: menu.name, style: .default) { _ in
+                    print("Edit Action")
+                })
+            default:
+                break
+            }
+        }
+        
+        alert.addAction(.init(title: "Cancel", style: .cancel))
+        
+        delegate?.presentAlert(with: alert, animated: true)
     }
 }
 
