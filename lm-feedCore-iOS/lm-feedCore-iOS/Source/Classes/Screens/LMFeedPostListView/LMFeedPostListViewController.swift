@@ -125,7 +125,7 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
     }
     
     open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if data.count == indexPath.row - 1 {
+        if data.count == indexPath.row + 1 {
             viewModel?.getFeed()
         }
     }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import lm_feedUI_iOS
 import lm_feedCore_iOS
 
 class ViewController: UIViewController {

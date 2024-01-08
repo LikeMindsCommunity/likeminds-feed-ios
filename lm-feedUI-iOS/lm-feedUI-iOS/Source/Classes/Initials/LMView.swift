@@ -33,6 +33,12 @@ open class LMView: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
         return self
     }
+    
+    public func roundCorners(_ corners: CACornerMask, with cornerRadius: CGFloat) {
+        clipsToBounds = true
+        layer.maskedCorners = corners
+        layer.cornerRadius = cornerRadius
+    }
 }
 
 // MARK: LMViewLifeCycle
