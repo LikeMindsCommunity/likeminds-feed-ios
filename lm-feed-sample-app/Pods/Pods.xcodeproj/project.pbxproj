@@ -192,6 +192,7 @@
 		E572B78B2B49991200E36655 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B78A2B49991200E36655 /* UIColor+Extension.swift */; };
 		E572B7B62B4AE8C500E36655 /* LMFeedTaggingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B7B52B4AE8C500E36655 /* LMFeedTaggingView.swift */; };
 		E572B7B82B4BDDB100E36655 /* LMFeedTaggingUserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B7B72B4BDDB100E36655 /* LMFeedTaggingUserTableCell.swift */; };
+		E5F076152B4D21F200F9119D /* LMFeedTaggingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F076142B4D21F200F9119D /* LMFeedTaggingTextView.swift */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CB8621F3C4DDD64CBE5E987973DABEA /* SessionDelegate.swift */; };
 		E7378F61AD6959D5538E595EA4A48AF4 /* AVAssetImageDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9B6F55BA25B6F2C681A617FDE03CF7 /* AVAssetImageDataProvider.swift */; };
 		E95D6E6462506EFD8EA9332AD9BC492A /* SizeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816B902D34604867221711EF73B61188 /* SizeExtensions.swift */; };
@@ -514,6 +515,7 @@
 		E572B78A2B49991200E36655 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		E572B7B52B4AE8C500E36655 /* LMFeedTaggingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTaggingView.swift; sourceTree = "<group>"; };
 		E572B7B72B4BDDB100E36655 /* LMFeedTaggingUserTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTaggingUserTableCell.swift; sourceTree = "<group>"; };
+		E5F076142B4D21F200F9119D /* LMFeedTaggingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTaggingTextView.swift; sourceTree = "<group>"; };
 		E792DBE23186E2111DD46186A67692D9 /* KFImageProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KFImageProtocol.swift; path = Sources/SwiftUI/KFImageProtocol.swift; sourceTree = "<group>"; };
 		E7DDA8C009792C8E04B9B0AF675E6DCA /* LMFeedUserDataModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedUserDataModel.swift; sourceTree = "<group>"; };
 		E9291A580EC020DD7A3BE7AF7376601D /* LMFeedTopicSelectionViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedTopicSelectionViewController.swift; sourceTree = "<group>"; };
@@ -1210,6 +1212,7 @@
 			children = (
 				E572B7B52B4AE8C500E36655 /* LMFeedTaggingView.swift */,
 				E572B7B72B4BDDB100E36655 /* LMFeedTaggingUserTableCell.swift */,
+				E5F076142B4D21F200F9119D /* LMFeedTaggingTextView.swift */,
 			);
 			path = LMFeedTaggingView;
 			sourceTree = "<group>";
@@ -1574,6 +1577,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5F076152B4D21F200F9119D /* LMFeedTaggingTextView.swift in Sources */,
 				42D610D7611D34E0DEAE3218252BCCF9 /* Appearance.swift in Sources */,
 				C4F9167008B88E2CCDFF5D066B7E8617 /* Appearance+Colors.swift in Sources */,
 				658C878E6F3F9B879EEE9D1A326AA91B /* Appearance+Fonts.swift in Sources */,
