@@ -30,6 +30,11 @@ public extension UITableView {
 }
 
 public class LMTableView: UITableView {
+    public var tableViewHeight: CGFloat {
+        layoutIfNeeded()
+        return contentSize.height
+    }
+    
     open func translatesAutoresizingMaskIntoConstraints() -> Self {
         translatesAutoresizingMaskIntoConstraints = false
         return self

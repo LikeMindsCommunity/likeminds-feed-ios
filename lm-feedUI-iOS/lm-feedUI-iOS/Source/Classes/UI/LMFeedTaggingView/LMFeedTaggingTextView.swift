@@ -33,8 +33,6 @@ open class LMFeedTaggingTextView: LMTextView {
     public func handleTagging(for textView: UITextView) {
         let selectedLocation = textView.selectedRange.location
         let taggingText = (textView.text as NSString).substring(with: NSMakeRange(0, selectedLocation))
-        let space: Character = " "
-        let lineBrak: Character = "\n"
         var characters: [Character] = []
         
         isMentioning = false
@@ -68,7 +66,7 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
             var newRange = range
             
             textView.attributedText.enumerateAttributes(in: .init(location: 0, length: textView.attributedText.length)) { attributes, xRange, _ in
-                if attributes.contains(where: { $0.key == .link }),
+                if attributes.contains(where: { $0.key == .route }),
                    NSIntersectionRange(xRange, range).length > 0 {
                     newRange = NSUnionRange(newRange, xRange)
                 }
@@ -89,5 +87,29 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
         
         handleTagging(for: textView)
         return true
+    }
+    
+    open func textViewDidChangeSelection(_ textView: UITextView) {
+        var position = textView.selectedRange
+        
+        if position.length > .zero {
+            textView.attributedText.enumerateAttributes(in: .init(location: 0, length: textView.attributedText.length)) { attr, range, _ in
+                if attr.contains(where: { $0.key == .route }),
+                   NSIntersectionRange(range, textView.selectedRange).length > 0 {
+                    position = NSUnionRange(range, position)
+                }
+            }
+            
+            textView.selectedRange = position
+        } else if let range = textView.attributedText.attributeRange(at: position.location, for: .route) {
+            let distanceToStart = abs(range.location - position.location)
+            let distanceToEnd = abs(range.location + range.length - position.location)
+            
+            if distanceToStart < distanceToEnd {
+                textView.selectedRange = .init(location: range.location, length: 0)
+            } else {
+                textView.selectedRange = .init(location: range.location + range.length, length: 0)
+            }
+        }
     }
 }

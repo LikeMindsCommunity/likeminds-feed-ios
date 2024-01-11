@@ -19,4 +19,7 @@ public struct Components {
     
     // MARK: Topic Feed
     public var topicFeedSelectionScreen: LMFeedTopicSelectionViewController.Type = LMFeedTopicSelectionViewController.self
+    
+    // MARK: Tagging List View
+    public var taggingListView: LMFeedTaggingListView.Type = LMFeedTaggingListView.self
 }

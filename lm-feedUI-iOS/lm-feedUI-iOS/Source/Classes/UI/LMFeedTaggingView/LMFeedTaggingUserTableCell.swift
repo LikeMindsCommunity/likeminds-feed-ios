@@ -14,6 +14,12 @@ open class LMFeedTaggingUserTableCell: LMTableViewCell {
         public let userImage: String?
         public let userName: String
         public let route: String
+        
+        public init(userImage: String?, userName: String, route: String) {
+            self.userImage = userImage
+            self.userName = userName
+            self.route = route
+        }
     }
     
     open private(set) lazy var userImage: LMImageView = {
