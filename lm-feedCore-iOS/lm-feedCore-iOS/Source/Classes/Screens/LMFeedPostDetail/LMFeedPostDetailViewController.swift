@@ -151,7 +151,7 @@ open class LMFeedPostDetailViewController: LMViewController {
         inputTextViewBottomConstraint = NSLayoutConstraint(item: containerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
         inputTextViewBottomConstraint?.isActive = true
         
-        inputTextViewHeightConstraint = NSLayoutConstraint(item: inputTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
+        inputTextViewHeightConstraint = NSLayoutConstraint(item: inputTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 140)
         inputTextViewHeightConstraint?.isActive = true
         
         if let tagger = taggingView.view {
