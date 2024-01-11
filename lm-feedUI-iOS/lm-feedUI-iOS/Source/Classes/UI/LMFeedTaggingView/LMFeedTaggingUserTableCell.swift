@@ -14,6 +14,12 @@ open class LMFeedTaggingUserTableCell: LMTableViewCell {
         public let userImage: String?
         public let userName: String
         public let route: String
+        
+        public init(userImage: String?, userName: String, route: String) {
+            self.userImage = userImage
+            self.userName = userName
+            self.route = route
+        }
     }
     
     open private(set) lazy var userImage: LMImageView = {
@@ -34,8 +40,7 @@ open class LMFeedTaggingUserTableCell: LMTableViewCell {
     
     
     // MARK: Data Variables
-    public var route: String?
-    public var routeCallback: ((String) -> Void)?
+    public var routeCallback: (() -> Void)?
     
     open override func setupViews() {
         super.setupViews()
@@ -58,6 +63,7 @@ open class LMFeedTaggingUserTableCell: LMTableViewCell {
             userImage.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
             userImage.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
             userImage.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12),
+            userImage.widthAnchor.constraint(equalTo: userImage.heightAnchor),
             
             userNameLabel.centerYAnchor.constraint(equalTo: userImage.centerYAnchor),
             userNameLabel.leadingAnchor.constraint(equalTo: userImage.trailingAnchor, constant: 12),
@@ -86,16 +92,14 @@ open class LMFeedTaggingUserTableCell: LMTableViewCell {
         containerView.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(didTapView)))
     }
     
-    open func configure(with data: ViewModel, routeCallback: ((String) -> Void)?) {
+    open func configure(with data: ViewModel, routeCallback: (() -> Void)?) {
         userNameLabel.text = data.userName
         userImage.kf.setImage(with: URL(string: data.userImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.userName))
         self.routeCallback = routeCallback
-        route = data.route
     }
     
     @objc
     open func didTapView() {
-        guard let route else { return }
-        routeCallback?(route)
+        routeCallback?()
     }
 }

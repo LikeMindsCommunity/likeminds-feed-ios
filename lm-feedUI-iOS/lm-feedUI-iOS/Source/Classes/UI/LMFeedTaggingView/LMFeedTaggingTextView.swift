@@ -15,9 +15,17 @@ public protocol LMFeedTaggingTextViewProtocol: AnyObject {
 @IBDesignable
 open class LMFeedTaggingTextView: LMTextView {
     public var rawText: String = ""
-    public var isMentioning: Bool = false
+    public var isMentioning: Bool = false {
+        willSet {
+            if !newValue {
+                mentionDelegate?.mentionStopped()
+            }
+        }
+    }
     public var spaceChar: Character = " "
     public var newLineChar: Character = "\n"
+    public var startIndex: Int?
+    public var characters: [Character] = []
     public weak var mentionDelegate: LMFeedTaggingTextViewProtocol?
     
     public override init(frame: CGRect, textContainer: NSTextContainer?) {
@@ -33,14 +41,13 @@ open class LMFeedTaggingTextView: LMTextView {
     public func handleTagging(for textView: UITextView) {
         let selectedLocation = textView.selectedRange.location
         let taggingText = (textView.text as NSString).substring(with: NSMakeRange(0, selectedLocation))
-        let space: Character = " "
-        let lineBrak: Character = "\n"
-        var characters: [Character] = []
         
-        isMentioning = false
+        characters.removeAll()
+        startIndex = nil
         
-        for char in Array(taggingText).reversed() {
+        for (idx, char) in Array(taggingText).reversed().enumerated() {
             if char == "@" {
+                startIndex = selectedLocation - idx - 1
                 isMentioning = true
                 break
             } else if char == spaceChar || char == newLineChar {
@@ -50,10 +57,9 @@ open class LMFeedTaggingTextView: LMTextView {
             characters.append(char)
         }
         
-        guard isMentioning else {
-            mentionDelegate?.mentionStopped()
-            return
-        }
+        characters = characters.reversed()
+        
+        guard isMentioning else { return }
         
         mentionDelegate?.mentionStarted(with: String(characters))
     }
@@ -64,11 +70,22 @@ open class LMFeedTaggingTextView: LMTextView {
 extension LMFeedTaggingTextView: UITextViewDelegate {
     open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text.isEmpty {
+            if isMentioning {
+                if range.length <= characters.count {
+                    characters.removeLast(range.length)
+                    mentionDelegate?.mentionStarted(with: String(characters))
+                } else {
+                    startIndex = nil
+                    isMentioning.toggle()
+                    characters.removeAll(keepingCapacity: true)
+                }
+            }
+            
             let attrString = NSMutableAttributedString(attributedString: textView.attributedText)
             var newRange = range
             
             textView.attributedText.enumerateAttributes(in: .init(location: 0, length: textView.attributedText.length)) { attributes, xRange, _ in
-                if attributes.contains(where: { $0.key == .link }),
+                if attributes.contains(where: { $0.key == .route }),
                    NSIntersectionRange(xRange, range).length > 0 {
                     newRange = NSUnionRange(newRange, xRange)
                 }
@@ -89,5 +106,33 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
         
         handleTagging(for: textView)
         return true
+    }
+    
+    open func textViewDidChangeSelection(_ textView: UITextView) {
+        var position = textView.selectedRange
+        
+        if position.length > .zero {
+            textView.attributedText.enumerateAttributes(in: .init(location: 0, length: textView.attributedText.length)) { attr, range, _ in
+                if attr.contains(where: { $0.key == .route }),
+                   NSIntersectionRange(range, textView.selectedRange).length > 0 {
+                    position = NSUnionRange(range, position)
+                }
+            }
+            
+            textView.selectedRange = position
+        } else if let range = textView.attributedText.attributeRange(at: position.location, for: .route) {
+            let distanceToStart = abs(range.location - position.location)
+            let distanceToEnd = abs(range.location + range.length - position.location)
+            
+            if distanceToStart < distanceToEnd {
+                textView.selectedRange = .init(location: range.location, length: 0)
+            } else {
+                textView.selectedRange = .init(location: range.location + range.length, length: 0)
+            }
+        }
+    }
+    
+    open func textViewDidChange(_ textView: UITextView) {
+        handleTagging(for: textView)
     }
 }

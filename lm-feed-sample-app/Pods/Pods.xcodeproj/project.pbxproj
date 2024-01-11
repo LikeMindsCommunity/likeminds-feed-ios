@@ -58,7 +58,7 @@
 		2D9F6B088E25E2C9BEAA13BB93FE0EE2 /* LMFeedTopicSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD544DC5D12F172398A1DE420B3AB37E /* LMFeedTopicSelectionCell.swift */; };
 		2E17032ED71D33DF8BCEAFF4CBF01AFF /* LMFeedPostLinkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD98DC8B22ED664C3DDF07487DF845C8 /* LMFeedPostLinkCell.swift */; };
 		2E7321581005F0AAF767213937D29680 /* NSButton+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16E601A495DE964E66454251F598B91 /* NSButton+Kingfisher.swift */; };
-		2F47E5C53A9AF37486B6B6FB49B097F1 /* NSAttributedString.Key+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C355FB3341546E866264E7D2DB3194C /* NSAttributedString.Key+Extension.swift */; };
+		2F47E5C53A9AF37486B6B6FB49B097F1 /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C355FB3341546E866264E7D2DB3194C /* NSAttributedString+Extension.swift */; };
 		320C0D7A88AA812EFB20016BA1F5D7AE /* AFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09AA46B87C4EF0E4892F894D23A3071 /* AFError.swift */; };
 		36BCDD5E5E7AF741CA9742EB8E39CF9C /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABEF2BDAA949304732A7773282B940EB /* UIImage+Extension.swift */; };
 		3841545F19CF975D5CA907A73A949FF6 /* Kingfisher-Kingfisher in Resources */ = {isa = PBXBuildFile; fileRef = C298ABB78D9B05529B89D8322DB2E7B0 /* Kingfisher-Kingfisher */; };
@@ -190,8 +190,10 @@
 		E572B7822B480CCB00E36655 /* LMFeedUIAssetsCatalog.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16C2B851FFD856F60C8937090D9DE2F8 /* LMFeedUIAssetsCatalog.xcassets */; };
 		E572B7832B48160100E36655 /* LMTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80401CCFEEF2B16009D356B69E93B22C /* LMTableView.swift */; };
 		E572B78B2B49991200E36655 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B78A2B49991200E36655 /* UIColor+Extension.swift */; };
-		E572B7B62B4AE8C500E36655 /* LMFeedTaggingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B7B52B4AE8C500E36655 /* LMFeedTaggingView.swift */; };
 		E572B7B82B4BDDB100E36655 /* LMFeedTaggingUserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B7B72B4BDDB100E36655 /* LMFeedTaggingUserTableCell.swift */; };
+		E5CFEACF2B5009F00090A902 /* LMFeedTaggingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFEACE2B5009F00090A902 /* LMFeedTaggingListView.swift */; };
+		E5CFEAD12B500B9F0090A902 /* LMFeedTaggingListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFEAD02B500B9F0090A902 /* LMFeedTaggingListViewModel.swift */; };
+		E5CFEAD32B500E880090A902 /* LMFeedTagListDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFEAD22B500E880090A902 /* LMFeedTagListDataModel.swift */; };
 		E5F076152B4D21F200F9119D /* LMFeedTaggingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F076142B4D21F200F9119D /* LMFeedTaggingTextView.swift */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CB8621F3C4DDD64CBE5E987973DABEA /* SessionDelegate.swift */; };
 		E7378F61AD6959D5538E595EA4A48AF4 /* AVAssetImageDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9B6F55BA25B6F2C681A617FDE03CF7 /* AVAssetImageDataProvider.swift */; };
@@ -395,7 +397,7 @@
 		624264F6F8FDE84460AF26D580AE9F6A /* lm-feedUI-iOS-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "lm-feedUI-iOS-Info.plist"; sourceTree = "<group>"; };
 		64E08AA2AB4D09DD3C328F6CDB4507D4 /* CPListItem+Kingfisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CPListItem+Kingfisher.swift"; path = "Sources/Extensions/CPListItem+Kingfisher.swift"; sourceTree = "<group>"; };
 		6AEA066D9FC6C4819B90A7B3A98B0086 /* ResourceBundle-Kingfisher-Kingfisher-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-Kingfisher-Kingfisher-Info.plist"; sourceTree = "<group>"; };
-		6C355FB3341546E866264E7D2DB3194C /* NSAttributedString.Key+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "NSAttributedString.Key+Extension.swift"; sourceTree = "<group>"; };
+		6C355FB3341546E866264E7D2DB3194C /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extension.swift"; sourceTree = "<group>"; };
 		6CB8621F3C4DDD64CBE5E987973DABEA /* SessionDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionDelegate.swift; path = Source/SessionDelegate.swift; sourceTree = "<group>"; };
 		6E650FEF7828A18DB14DA64BB376AE46 /* Kingfisher.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Kingfisher.modulemap; sourceTree = "<group>"; };
 		6F076C2C49D8350417930582E796FAF4 /* ImageDataProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageDataProvider.swift; path = Sources/General/ImageSource/ImageDataProvider.swift; sourceTree = "<group>"; };
@@ -513,8 +515,10 @@
 		E0EE0269D286220E618B5451AFFDACE8 /* EventMonitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EventMonitor.swift; path = Source/EventMonitor.swift; sourceTree = "<group>"; };
 		E16E601A495DE964E66454251F598B91 /* NSButton+Kingfisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSButton+Kingfisher.swift"; path = "Sources/Extensions/NSButton+Kingfisher.swift"; sourceTree = "<group>"; };
 		E572B78A2B49991200E36655 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
-		E572B7B52B4AE8C500E36655 /* LMFeedTaggingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTaggingView.swift; sourceTree = "<group>"; };
 		E572B7B72B4BDDB100E36655 /* LMFeedTaggingUserTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTaggingUserTableCell.swift; sourceTree = "<group>"; };
+		E5CFEACE2B5009F00090A902 /* LMFeedTaggingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTaggingListView.swift; sourceTree = "<group>"; };
+		E5CFEAD02B500B9F0090A902 /* LMFeedTaggingListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTaggingListViewModel.swift; sourceTree = "<group>"; };
+		E5CFEAD22B500E880090A902 /* LMFeedTagListDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTagListDataModel.swift; sourceTree = "<group>"; };
 		E5F076142B4D21F200F9119D /* LMFeedTaggingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTaggingTextView.swift; sourceTree = "<group>"; };
 		E792DBE23186E2111DD46186A67692D9 /* KFImageProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KFImageProtocol.swift; path = Sources/SwiftUI/KFImageProtocol.swift; sourceTree = "<group>"; };
 		E7DDA8C009792C8E04B9B0AF675E6DCA /* LMFeedUserDataModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedUserDataModel.swift; sourceTree = "<group>"; };
@@ -704,6 +708,7 @@
 				A1F1131A7A4AB54A87E9DCD1CB0EB12A /* LMFeedMenuDataModel.swift */,
 				C653621BE9E77625B6E21F1FB8243482 /* LMFeedPostDataModel.swift */,
 				E7DDA8C009792C8E04B9B0AF675E6DCA /* LMFeedUserDataModel.swift */,
+				E5CFEAD22B500E880090A902 /* LMFeedTagListDataModel.swift */,
 			);
 			name = DataModels;
 			path = "lm-feedCore-iOS/Source/Classes/DataModels";
@@ -729,7 +734,7 @@
 				E9C7347B092C756A70B34FC258C8F15C /* LMView.swift */,
 				912B0CF03681721DDCAC81A4A66666DB /* LMViewController.swift */,
 				0DCEAE0AF2FB906D099CCC0A7A0CC0DE /* LMViewLifeCycle.swift */,
-				6C355FB3341546E866264E7D2DB3194C /* NSAttributedString.Key+Extension.swift */,
+				6C355FB3341546E866264E7D2DB3194C /* NSAttributedString+Extension.swift */,
 				D80037E9317279F42CB5C6591895C5A2 /* String+Extension.swift */,
 				ABEF2BDAA949304732A7773282B940EB /* UIImage+Extension.swift */,
 				E572B78A2B49991200E36655 /* UIColor+Extension.swift */,
@@ -811,6 +816,7 @@
 		4776E06622810ED5C602C26CCA6CAD3D /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				E5CFEACD2B5009BC0090A902 /* LMFeedTaggingListView */,
 				0E09A808121730EC2FB43077FE0BF471 /* LMFeedPostDetail */,
 				6A7DFA8313C92B9056B22CAA2712A423 /* LMFeedPostListView */,
 				CA5F7265D483367995DB386C61BB83D9 /* LMFeedTopicSelection */,
@@ -1210,11 +1216,19 @@
 		E572B7B42B4AE87400E36655 /* LMFeedTaggingView */ = {
 			isa = PBXGroup;
 			children = (
-				E572B7B52B4AE8C500E36655 /* LMFeedTaggingView.swift */,
 				E572B7B72B4BDDB100E36655 /* LMFeedTaggingUserTableCell.swift */,
 				E5F076142B4D21F200F9119D /* LMFeedTaggingTextView.swift */,
 			);
 			path = LMFeedTaggingView;
+			sourceTree = "<group>";
+		};
+		E5CFEACD2B5009BC0090A902 /* LMFeedTaggingListView */ = {
+			isa = PBXGroup;
+			children = (
+				E5CFEACE2B5009F00090A902 /* LMFeedTaggingListView.swift */,
+				E5CFEAD02B500B9F0090A902 /* LMFeedTaggingListViewModel.swift */,
+			);
+			path = LMFeedTaggingListView;
 			sourceTree = "<group>";
 		};
 		EE034B1E975860AEB9A3438186E267E8 /* LMFeedPostHeaderFooter */ = {
@@ -1581,7 +1595,6 @@
 				42D610D7611D34E0DEAE3218252BCCF9 /* Appearance.swift in Sources */,
 				C4F9167008B88E2CCDFF5D066B7E8617 /* Appearance+Colors.swift in Sources */,
 				658C878E6F3F9B879EEE9D1A326AA91B /* Appearance+Fonts.swift in Sources */,
-				E572B7B62B4AE8C500E36655 /* LMFeedTaggingView.swift in Sources */,
 				E572B78B2B49991200E36655 /* UIColor+Extension.swift in Sources */,
 				406918E87D2D72E316C3C169457D9CD8 /* Bundle+Extension.swift in Sources */,
 				AC004211EB22842E76F7B5880F476A26 /* Collection+Extension.swift in Sources */,
@@ -1631,7 +1644,7 @@
 				423AE3CCF2BBA070FDBC2680C4B3DDFC /* LMViewController.swift in Sources */,
 				D60C73C5C19B76D9B801D8E8E86F6E8D /* LMViewLifeCycle.swift in Sources */,
 				E572B7832B48160100E36655 /* LMTableView.swift in Sources */,
-				2F47E5C53A9AF37486B6B6FB49B097F1 /* NSAttributedString.Key+Extension.swift in Sources */,
+				2F47E5C53A9AF37486B6B6FB49B097F1 /* NSAttributedString+Extension.swift in Sources */,
 				521D944B24B5A98CC7313C5BF566EBD9 /* String+Extension.swift in Sources */,
 				36BCDD5E5E7AF741CA9742EB8E39CF9C /* UIImage+Extension.swift in Sources */,
 			);
@@ -1783,6 +1796,7 @@
 				B5729F46DEC7914439D9B7BC595C6BAE /* lm-feedCore-iOS-dummy.m in Sources */,
 				5E9651769FCAA755D1B7F9A780D1E217 /* LMFeedCommentDataModel.swift in Sources */,
 				CD8BB71E2E310A91E9504583EECCA350 /* LMFeedConvertToFeedPost.swift in Sources */,
+				E5CFEAD32B500E880090A902 /* LMFeedTagListDataModel.swift in Sources */,
 				FA0551F883B8CA0C9DFF29237E65B344 /* LMFeedMain.swift in Sources */,
 				9D32C02AD22DC249C96E871109095CCD /* LMFeedMenuDataModel.swift in Sources */,
 				7AA231071A1EC525B1D34958E45BECB7 /* LMFeedPostDataModel.swift in Sources */,
@@ -1791,9 +1805,11 @@
 				C5CE9608A8477A0CAACB98D9FA22B5D7 /* LMFeedPostListViewController.swift in Sources */,
 				8E5FD24793FD2C0928FDBE43CB43A933 /* LMFeedPostListViewModel.swift in Sources */,
 				2811DC4D707C6B41BFDDD28119793C3F /* LMFeedTopicSelectionDataModel.swift in Sources */,
+				E5CFEACF2B5009F00090A902 /* LMFeedTaggingListView.swift in Sources */,
 				EA617BB9B3D7E575D1DF9403B0610E45 /* LMFeedTopicSelectionViewController.swift in Sources */,
 				7F4E48828F276362A3B4BB05E6632654 /* LMFeedTopicSelectionViewModel.swift in Sources */,
 				2988A8BE43BD47FE3D60C4D99CA4205C /* LMFeedUserDataModel.swift in Sources */,
+				E5CFEAD12B500B9F0090A902 /* LMFeedTaggingListViewModel.swift in Sources */,
 				5AFE7AF250A938F575C4450C8C5B4F17 /* LMUniversalFeedViewController.swift in Sources */,
 				9357AE987D9B064FDE59FD4EB25CC00D /* LMUniversalFeedViewModel.swift in Sources */,
 				CBAE48C2E098F23C72A59F78C5CD2CA3 /* LocalPreferences.swift in Sources */,

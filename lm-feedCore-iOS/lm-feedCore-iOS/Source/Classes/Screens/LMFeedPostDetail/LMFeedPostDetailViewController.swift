@@ -23,16 +23,39 @@ open class LMFeedPostDetailViewController: LMViewController {
         table.sectionHeaderHeight = UITableView.automaticDimension
         table.sectionFooterHeight = .zero
         table.contentInset = .init(top: -20, left: .zero, bottom: .zero, right: .zero)
+        table.dataSource = self
+        table.delegate = self
+        table.register(LMUIComponents.shared.postCell)
+        table.register(LMUIComponents.shared.linkCell)
+        table.register(LMUIComponents.shared.documentCell)
+        table.register(LMUIComponents.shared.commentCell)
+        table.register(LMUIComponents.shared.totalCommentCell)
+        table.register(LMUIComponents.shared.loadMoreReplies)
+        table.registerHeaderFooter(LMUIComponents.shared.commentHeaderView)
         return table
     }()
         
-    let containerView: LMView = {
+    open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = Appearance.shared.colors.white
         return view
     }()
     
-    let stackView: LMStackView = {
+    open private(set) lazy var containerStackView: LMStackView = {
+        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.distribution = .fill
+        stack.spacing = .zero
+        return stack
+    }()
+    
+    open private(set) lazy var taggingView: LMFeedTaggingListView = {
+        let view = LMFeedTaggingListViewModel.createModule(delegate: self)
+        return view
+    }()
+    
+    open private(set) lazy var stackView: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .horizontal
         stack.alignment = .center
@@ -41,8 +64,8 @@ open class LMFeedPostDetailViewController: LMViewController {
         return stack
     }()
     
-    let inputTextView: LMTextView = {
-        let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var inputTextView: LMFeedTaggingTextView = {
+        let textView = LMFeedTaggingTextView().translatesAutoresizingMaskIntoConstraints()
         textView.isEditable = true
         textView.isScrollEnabled = false
         textView.backgroundColor = Appearance.shared.colors.clear
@@ -52,7 +75,7 @@ open class LMFeedPostDetailViewController: LMViewController {
         return textView
     }()
     
-    let sendButton: LMButton = {
+    open private(set) lazy var sendButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(Constants.shared.images.planeIconFilled, for: .normal)
@@ -63,6 +86,7 @@ open class LMFeedPostDetailViewController: LMViewController {
 
     open var inputTextViewHeightConstraint: NSLayoutConstraint?
     open var inputTextViewBottomConstraint: NSLayoutConstraint?
+    open var tagsTableViewHeightConstraint: NSLayoutConstraint?
     
     
     // MARK: Data Variables
@@ -79,7 +103,12 @@ open class LMFeedPostDetailViewController: LMViewController {
         view.addSubview(tableView)
         view.addSubview(containerView)
         
-        containerView.addSubview(stackView)
+        containerView.addSubview(containerStackView)
+        
+        addChild(taggingView)
+        containerStackView.addArrangedSubview(taggingView.view)
+        taggingView.didMove(toParent: self)
+        containerStackView.addArrangedSubview(stackView)
         
         stackView.addArrangedSubview(inputTextView)
         stackView.addArrangedSubview(sendButton)
@@ -98,11 +127,18 @@ open class LMFeedPostDetailViewController: LMViewController {
             containerView.topAnchor.constraint(equalTo: tableView.bottomAnchor),
             containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            containerStackView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            containerStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            containerStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            containerStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            
+            taggingView.view.leadingAnchor.constraint(equalTo: containerStackView.leadingAnchor),
+            taggingView.view.trailingAnchor.constraint(equalTo: containerStackView.trailingAnchor),
             
             stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
-            stackView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             
             inputTextView.topAnchor.constraint(equalTo: stackView.topAnchor),
             inputTextView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
@@ -117,25 +153,18 @@ open class LMFeedPostDetailViewController: LMViewController {
         
         inputTextViewHeightConstraint = NSLayoutConstraint(item: inputTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
         inputTextViewHeightConstraint?.isActive = true
+        
+        if let tagger = taggingView.view {
+            tagsTableViewHeightConstraint = NSLayoutConstraint(item: tagger, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+            tagsTableViewHeightConstraint?.isActive = true
+        }
     }
     
     
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
-        
-        // Setting up Table View
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.register(LMUIComponents.shared.postCell)
-        tableView.register(LMUIComponents.shared.linkCell)
-        tableView.register(LMUIComponents.shared.documentCell)
-        tableView.register(LMUIComponents.shared.commentCell)
-        tableView.register(LMUIComponents.shared.totalCommentCell)
-        tableView.register(LMUIComponents.shared.loadMoreReplies)
-        tableView.registerHeaderFooter(LMUIComponents.shared.commentHeaderView)
-        
-        inputTextView.delegate = self
+        inputTextView.mentionDelegate = self
     }
     
     
@@ -414,5 +443,30 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
             cellsData[indexPath.section - 1] = sectionData
             tableView.reloadRows(at: [indexPath], with: .none)
         }
+    }
+}
+
+
+// MARK: LMFeedTaggingTextViewProtocol
+@objc
+extension LMFeedPostDetailViewController: LMFeedTaggingTextViewProtocol {
+    open func mentionStarted(with text: String) {
+        taggingView.getUsers(for: text)
+    }
+    
+    open func mentionStopped() {
+        taggingView.stopFetchingUsers()
+    }
+}
+
+
+// MARK: LMFeedTaggedUserFoundProtocol
+extension LMFeedPostDetailViewController: LMFeedTaggedUserFoundProtocol {
+    public func userSelected(with route: String) {
+        print(route)
+    }
+    
+    public func updateHeight(with height: CGFloat) {
+        tagsTableViewHeightConstraint?.constant = height
     }
 }
