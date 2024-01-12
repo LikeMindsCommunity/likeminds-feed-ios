@@ -9,7 +9,7 @@ import lm_feedUI_iOS
 import UIKit
 
 public protocol LMFeedTaggedUserFoundProtocol: AnyObject {
-    func userSelected(with route: String)
+    func userSelected(with route: String, and userName: String)
     func updateHeight(with height: CGFloat)
 }
 
@@ -18,8 +18,13 @@ public protocol LMFeedTaggingProtocol: AnyObject {
 }
 
 @IBDesignable
-open class LMFeedTaggingListView: LMViewController {
+open class LMFeedTaggingListView: LMView {
     // MARK: UI Elements
+    open private(set) lazy var containerView: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
     open private(set) lazy var tableView: LMTableView = {
         let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
         table.dataSource = self
@@ -33,7 +38,7 @@ open class LMFeedTaggingListView: LMViewController {
     
     
     // MARK: Data Variables
-    public let cellHeight: CGFloat = 64
+    public let cellHeight: CGFloat = 60
     public var taggingCellsData: [LMFeedTaggingUserTableCell.ViewModel] = []
     public var viewModel: LMFeedTaggingListViewModel?
     public weak var delegate: LMFeedTaggedUserFoundProtocol?
@@ -42,8 +47,8 @@ open class LMFeedTaggingListView: LMViewController {
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
-        
-        view.addSubview(tableView)
+        addSubview(containerView)
+        containerView.addSubview(tableView)
     }
     
     
@@ -52,11 +57,28 @@ open class LMFeedTaggingListView: LMViewController {
         super.setupLayouts()
         
         NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
         ])
+    }
+    
+    
+    // MARK: setupAppearance
+    open override func setupAppearance() {
+        super.setupAppearance()
+        backgroundColor = Appearance.shared.colors.clear
+        containerView.backgroundColor = Appearance.shared.colors.white
+        containerView.layer.borderColor = Appearance.shared.colors.gray4.cgColor
+        containerView.layer.borderWidth = 1
+        containerView.roundCornerWithShadow(cornerRadius: 16, shadowRadius: .zero, offsetX: .zero, offsetY: .zero, colour: .black, opacity: 0.1, corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner])
+        tableView.backgroundColor = Appearance.shared.colors.clear
     }
     
     
@@ -80,9 +102,7 @@ extension LMFeedTaggingListView: UITableViewDataSource, UITableViewDelegate {
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.taggingTableViewCell),
            let data = taggingCellsData[safe: indexPath.row] {
-            cell.configure(with: data) { [weak self] in
-                self?.delegate?.userSelected(with: data.route)
-            }
+            cell.configure(with: data)
             return cell
         }
         
@@ -94,6 +114,12 @@ extension LMFeedTaggingListView: UITableViewDataSource, UITableViewDelegate {
     open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if taggingCellsData.count - 1 == indexPath.row {
             viewModel?.fetchMoreUsers()
+        }
+    }
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let user = taggingCellsData[safe: indexPath.row] {
+            delegate?.userSelected(with: user.route, and: user.userName)
         }
     }
 }

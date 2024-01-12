@@ -10,6 +10,11 @@ import UIKit
 public protocol LMFeedTaggingTextViewProtocol: AnyObject {
     func mentionStarted(with text: String)
     func mentionStopped()
+    func contentHeightChanged()
+}
+
+public extension LMFeedTaggingTextViewProtocol {
+    func contentHeightChanged() { }
 }
 
 @IBDesignable
@@ -63,6 +68,46 @@ open class LMFeedTaggingTextView: LMTextView {
         
         mentionDelegate?.mentionStarted(with: String(characters))
     }
+    
+    public func addTaggedUser(with username: String, route: String) {
+        if let startIndex {
+            let partOneString = NSMutableAttributedString(attributedString: attributedText.attributedSubstring(from: NSRange(location: 0, length: startIndex)))
+            let partTwoString = NSMutableAttributedString(attributedString: attributedText.attributedSubstring(from: NSRange(location: startIndex + 1 + characters.count, length: attributedText.length - startIndex - 1 - characters.count)))
+            
+            let attrName = NSAttributedString(string: "@\(username.trimmingCharacters(in: .whitespacesAndNewlines))", attributes: [
+                .font: Appearance.shared.fonts.textFont1,
+                .foregroundColor: Appearance.shared.colors.linkColor,
+                .route: route
+            ])
+            
+            var newLocation = partTwoString.string.isEmpty ? 1 : 0
+            newLocation += partOneString.length
+            newLocation += attrName.length
+            
+            if partTwoString.string.isEmpty {
+                partTwoString.append(.init(string: " "))
+            }
+            
+            let attrString =  NSMutableAttributedString(attributedString: partOneString)
+            attrString.append(attrName)
+            attrString.append(partTwoString)
+            
+            attrString.addAttributes([.foregroundColor: Appearance.shared.colors.textColor,
+                                      .font: Appearance.shared.fonts.textFont1], range: NSRange(location: 0, length: attrString.length))
+            
+            
+            let tempAttrString = attrString
+            
+            tempAttrString.enumerateAttributes(in: NSRange(location: 0, length: tempAttrString.length)) { attr, range, _ in
+                if attr.contains(where: { $0.key == .route }) {
+                    attrString.addAttribute(.foregroundColor, value: Appearance.shared.colors.linkColor, range: range)
+                }
+            }
+            
+            attributedText = attrString
+            selectedRange = NSRange(location: newLocation, length: 0)
+        }
+    }
 }
 
 
@@ -101,6 +146,8 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
             }
             
             textView.selectedTextRange = textView.textRange(from: oldSelectedRange, to: oldSelectedRange)
+            
+            mentionDelegate?.contentHeightChanged()
             return false
         }
         
@@ -110,6 +157,16 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
     
     open func textViewDidChangeSelection(_ textView: UITextView) {
         var position = textView.selectedRange
+        
+        if isMentioning,
+           let tempIndex = startIndex {
+            if !(tempIndex...tempIndex + characters.count).contains(position.location) {
+                startIndex = nil
+                isMentioning.toggle()
+                mentionDelegate?.mentionStopped()
+                characters.removeAll(keepingCapacity: true)
+            }
+        }
         
         if position.length > .zero {
             textView.attributedText.enumerateAttributes(in: .init(location: 0, length: textView.attributedText.length)) { attr, range, _ in
@@ -133,6 +190,7 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
     }
     
     open func textViewDidChange(_ textView: UITextView) {
+        mentionDelegate?.contentHeightChanged()
         handleTagging(for: textView)
     }
 }

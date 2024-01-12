@@ -22,6 +22,8 @@ open class LMFeedTaggingUserTableCell: LMTableViewCell {
         }
     }
     
+    
+    // MARK: UI Elements
     open private(set) lazy var userImage: LMImageView = {
         let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
         image.clipsToBounds = true
@@ -39,9 +41,7 @@ open class LMFeedTaggingUserTableCell: LMTableViewCell {
     }()
     
     
-    // MARK: Data Variables
-    public var routeCallback: (() -> Void)?
-    
+    // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
         
@@ -51,6 +51,8 @@ open class LMFeedTaggingUserTableCell: LMTableViewCell {
         containerView.addSubview(sepratorView)
     }
     
+    
+    // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
         
@@ -77,6 +79,7 @@ open class LMFeedTaggingUserTableCell: LMTableViewCell {
     }
     
     
+    // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
         
@@ -84,22 +87,16 @@ open class LMFeedTaggingUserTableCell: LMTableViewCell {
         userImage.layer.cornerRadius = userImage.bounds.height / 2
         userNameLabel.font = Appearance.shared.fonts.textFont1
         userNameLabel.textColor = Appearance.shared.colors.textColor
+        
+        backgroundColor = Appearance.shared.colors.clear
+        contentView.backgroundColor = Appearance.shared.colors.clear
+        containerView.backgroundColor = Appearance.shared.colors.clear
     }
     
-    open override func setupActions() {
-        super.setupActions()
-        containerView.isUserInteractionEnabled = true
-        containerView.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(didTapView)))
-    }
     
-    open func configure(with data: ViewModel, routeCallback: (() -> Void)?) {
+    // MARK: configure
+    open func configure(with data: ViewModel) {
         userNameLabel.text = data.userName
         userImage.kf.setImage(with: URL(string: data.userImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.userName))
-        self.routeCallback = routeCallback
-    }
-    
-    @objc
-    open func didTapView() {
-        routeCallback?()
     }
 }

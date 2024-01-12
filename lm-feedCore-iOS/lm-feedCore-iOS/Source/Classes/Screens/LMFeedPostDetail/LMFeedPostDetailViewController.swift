@@ -52,6 +52,8 @@ open class LMFeedPostDetailViewController: LMViewController {
     
     open private(set) lazy var taggingView: LMFeedTaggingListView = {
         let view = LMFeedTaggingListViewModel.createModule(delegate: self)
+        view.backgroundColor = Appearance.shared.colors.clear
+        view.isUserInteractionEnabled = true
         return view
     }()
     
@@ -105,9 +107,7 @@ open class LMFeedPostDetailViewController: LMViewController {
         
         containerView.addSubview(containerStackView)
         
-        addChild(taggingView)
-        containerStackView.addArrangedSubview(taggingView.view)
-        taggingView.didMove(toParent: self)
+        containerStackView.addArrangedSubview(taggingView)
         containerStackView.addArrangedSubview(stackView)
         
         stackView.addArrangedSubview(inputTextView)
@@ -134,8 +134,8 @@ open class LMFeedPostDetailViewController: LMViewController {
             containerStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             containerStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             
-            taggingView.view.leadingAnchor.constraint(equalTo: containerStackView.leadingAnchor),
-            taggingView.view.trailingAnchor.constraint(equalTo: containerStackView.trailingAnchor),
+            taggingView.leadingAnchor.constraint(equalTo: containerStackView.leadingAnchor),
+            taggingView.trailingAnchor.constraint(equalTo: containerStackView.trailingAnchor),
             
             stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
@@ -151,13 +151,11 @@ open class LMFeedPostDetailViewController: LMViewController {
         inputTextViewBottomConstraint = NSLayoutConstraint(item: containerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
         inputTextViewBottomConstraint?.isActive = true
         
-        inputTextViewHeightConstraint = NSLayoutConstraint(item: inputTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 140)
+        inputTextViewHeightConstraint = NSLayoutConstraint(item: inputTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
         inputTextViewHeightConstraint?.isActive = true
         
-        if let tagger = taggingView.view {
-            tagsTableViewHeightConstraint = NSLayoutConstraint(item: tagger, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
-            tagsTableViewHeightConstraint?.isActive = true
-        }
+        tagsTableViewHeightConstraint = NSLayoutConstraint(item: taggingView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+        tagsTableViewHeightConstraint?.isActive = true
     }
     
     
@@ -172,7 +170,7 @@ open class LMFeedPostDetailViewController: LMViewController {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        tableView.backgroundColor = .clear
+        tableView.backgroundColor = Appearance.shared.colors.clear
         view.backgroundColor = Appearance.shared.colors.backgroundColor
     }
     
@@ -457,13 +455,23 @@ extension LMFeedPostDetailViewController: LMFeedTaggingTextViewProtocol {
     open func mentionStopped() {
         taggingView.stopFetchingUsers()
     }
+    
+    open func contentHeightChanged() {
+        let width = inputTextView.frame.size.width
+        
+        let newSize = inputTextView.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
+        
+        inputTextView.isScrollEnabled = newSize.height > textInputMaximumHeight
+        inputTextViewHeightConstraint?.constant = min(newSize.height, textInputMaximumHeight)
+    }
 }
 
 
 // MARK: LMFeedTaggedUserFoundProtocol
 extension LMFeedPostDetailViewController: LMFeedTaggedUserFoundProtocol {
-    public func userSelected(with route: String) {
-        print(route)
+    public func userSelected(with route: String, and userName: String) {
+        inputTextView.addTaggedUser(with: userName, route: route)
+        mentionStopped()
     }
     
     public func updateHeight(with height: CGFloat) {
