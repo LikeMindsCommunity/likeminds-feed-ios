@@ -29,9 +29,13 @@ open class LMFeedTaggingTextView: LMTextView {
     }
     public var spaceChar: Character = " "
     public var newLineChar: Character = "\n"
+    public var isSpaceAdded: Bool = false
     public var startIndex: Int?
     public var characters: [Character] = []
     public weak var mentionDelegate: LMFeedTaggingTextViewProtocol?
+    
+    public var textAttributes: [NSAttributedString.Key: Any] = [.font: Appearance.shared.fonts.textFont1,
+                                                                .foregroundColor: Appearance.shared.colors.textColor]
     
     public override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
@@ -43,10 +47,21 @@ open class LMFeedTaggingTextView: LMTextView {
         delegate = self
     }
     
-    public func handleTagging(for textView: UITextView) {
-        let selectedLocation = textView.selectedRange.location
-        let taggingText = (textView.text as NSString).substring(with: NSMakeRange(0, selectedLocation))
+    public func handleTagging() {
+        let selectedLocation = selectedRange.location
         
+        var encounteredRoute = false
+        var taggingText = ""
+        
+        attributedText.enumerateAttributes(in: NSRange(location: 0, length: selectedLocation), options: .reverse) {attr, range, _ in
+            if attr.contains(where: { $0.key == .route }) {
+                encounteredRoute = true
+            } else if !encounteredRoute {
+                taggingText.append(attributedText.attributedSubstring(from: range).string)
+            }
+        }
+        
+        isSpaceAdded = false
         characters.removeAll()
         startIndex = nil
         
@@ -55,7 +70,14 @@ open class LMFeedTaggingTextView: LMTextView {
                 startIndex = selectedLocation - idx - 1
                 isMentioning = true
                 break
-            } else if char == spaceChar || char == newLineChar {
+            } else if char == spaceChar {
+                if isSpaceAdded {
+                    isMentioning = false
+                    break
+                } else {
+                    isSpaceAdded = true
+                }
+            } else if char == newLineChar {
                 isMentioning = false
                 break
             }
@@ -92,9 +114,7 @@ open class LMFeedTaggingTextView: LMTextView {
             attrString.append(attrName)
             attrString.append(partTwoString)
             
-            attrString.addAttributes([.foregroundColor: Appearance.shared.colors.textColor,
-                                      .font: Appearance.shared.fonts.textFont1], range: NSRange(location: 0, length: attrString.length))
-            
+            attrString.addAttributes(textAttributes, range: NSRange(location: 0, length: attrString.length))
             
             let tempAttrString = attrString
             
@@ -118,7 +138,7 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
             if isMentioning {
                 if range.length <= characters.count {
                     characters.removeLast(range.length)
-                    mentionDelegate?.mentionStarted(with: String(characters))
+//                    mentionDelegate?.mentionStarted(with: String(characters))
                 } else {
                     startIndex = nil
                     isMentioning.toggle()
@@ -151,22 +171,21 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
             return false
         }
         
-        handleTagging(for: textView)
+//        handleTagging()
         return true
     }
     
     open func textViewDidChangeSelection(_ textView: UITextView) {
         var position = textView.selectedRange
         
-        if isMentioning,
-           let tempIndex = startIndex {
-            if !(tempIndex...tempIndex + characters.count).contains(position.location) {
-                startIndex = nil
-                isMentioning.toggle()
-                mentionDelegate?.mentionStopped()
-                characters.removeAll(keepingCapacity: true)
-            }
-        }
+//        if isMentioning,
+//           let tempIndex = startIndex {
+//            if !(tempIndex...tempIndex + characters.count).contains(position.location - position.length - 1) {
+//                startIndex = nil
+//                isMentioning.toggle()
+//                characters.removeAll(keepingCapacity: true)
+//            }
+//        }
         
         if position.length > .zero {
             textView.attributedText.enumerateAttributes(in: .init(location: 0, length: textView.attributedText.length)) { attr, range, _ in
@@ -187,10 +206,11 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
                 textView.selectedRange = .init(location: range.location + range.length, length: 0)
             }
         }
+        
+        handleTagging()
     }
     
     open func textViewDidChange(_ textView: UITextView) {
         mentionDelegate?.contentHeightChanged()
-        handleTagging(for: textView)
     }
 }

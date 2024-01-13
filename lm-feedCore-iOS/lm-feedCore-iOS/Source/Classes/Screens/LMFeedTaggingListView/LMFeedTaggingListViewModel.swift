@@ -80,7 +80,7 @@ public final class LMFeedTaggingListViewModel {
         isFetching = true
         
         let request = GetTaggingListRequest.builder()
-            .searchName(searchString)
+            .searchName(searchString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
             .page(currentPage)
             .pageSize(pageSize)
             .build()
