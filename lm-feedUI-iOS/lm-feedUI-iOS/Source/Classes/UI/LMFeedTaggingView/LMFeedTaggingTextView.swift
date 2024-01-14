@@ -32,6 +32,16 @@ open class LMFeedTaggingTextView: LMTextView {
     public var isSpaceAdded: Bool = false
     public var startIndex: Int?
     public var characters: [Character] = []
+    public var placeHolderText: String? {
+        didSet {
+            text = placeHolderText
+            textColor = placeHolderTextColor
+            font = placeHolderFont
+        }
+    }
+    public var placeHolderFont: UIFont = Appearance.shared.fonts.subHeadingFont1
+    public var placeHolderTextColor: UIColor = Appearance.shared.colors.gray155
+    
     public weak var mentionDelegate: LMFeedTaggingTextViewProtocol?
     
     public var textAttributes: [NSAttributedString.Key: Any] = [.font: Appearance.shared.fonts.textFont1,
@@ -128,6 +138,20 @@ open class LMFeedTaggingTextView: LMTextView {
             selectedRange = NSRange(location: newLocation, length: 0)
         }
     }
+    
+    public func getText() -> String {
+        var message = ""
+        
+        attributedText.enumerateAttributes(in: NSRange(location: 0, length: attributedText.length)) { attr, range, _ in
+            if let route = attr.first(where: { $0.key == .route })?.value as? String {
+                message.append(route)
+            } else {
+                message.append(attributedText.attributedSubstring(from: range).string)
+            }
+        }
+        
+        return message
+    }
 }
 
 
@@ -171,21 +195,11 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
             return false
         }
         
-//        handleTagging()
         return true
     }
     
     open func textViewDidChangeSelection(_ textView: UITextView) {
         var position = textView.selectedRange
-        
-//        if isMentioning,
-//           let tempIndex = startIndex {
-//            if !(tempIndex...tempIndex + characters.count).contains(position.location - position.length - 1) {
-//                startIndex = nil
-//                isMentioning.toggle()
-//                characters.removeAll(keepingCapacity: true)
-//            }
-//        }
         
         if position.length > .zero {
             textView.attributedText.enumerateAttributes(in: .init(location: 0, length: textView.attributedText.length)) { attr, range, _ in
@@ -212,5 +226,19 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
     
     open func textViewDidChange(_ textView: UITextView) {
         mentionDelegate?.contentHeightChanged()
+    }
+    
+    open func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == placeHolderText {
+            textView.text = nil
+        }
+    }
+    
+    open func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            textView.text = placeHolderText
+            textView.font = placeHolderFont
+            textView.textColor = placeHolderTextColor
+        }
     }
 }

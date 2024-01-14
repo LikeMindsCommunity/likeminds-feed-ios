@@ -249,8 +249,9 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         
         likeButton.setImage(data.isLiked ? Constants.shared.images.heartFilled : Constants.shared.images.heart, for: .normal)
         likeButton.tintColor = data.isLiked ? Appearance.shared.colors.red : Appearance.shared.colors.gray3
+        likeButton.isEnabled = data.commentId != nil
         
-        likeTextButton.isHidden = data.likeCount == 0
+        likeTextButton.isHidden = data.likeCount == .zero
         likeTextButton.setTitle(data.likeText, for: .normal)
         
         bottomLine.isHidden = !isShowSeprator

@@ -9,9 +9,9 @@ import lm_feedUI_iOS
 import LikeMindsFeed
 
 public struct LMFeedCommentDataModel {
-    public let commentID: String
+    public let commentID: String?
     public let userDetail: LMFeedUserDataModel
-    public let index: IndexPath
+    public var index: IndexPath
     public var temporaryCommentID: String?
     public var createdAt: Int
     public var isLiked: Bool

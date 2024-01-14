@@ -15,19 +15,23 @@ public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol 
     func changePostSave()
     
     func changeCommentLike(for indexPath: IndexPath)
+    func replyToComment(userName: String)
 }
 
-public class LMFeedPostDetailViewModel {
+final public class LMFeedPostDetailViewModel {
     public let postID: String
     public var currentPage: Int
     public var pageSize: Int
     public var isFetchingData: Bool
     public var isDataAvailable: Bool
     public var postDetail: LMFeedPostDataModel?
+    public var commentList: [LMFeedCommentDataModel]
+    public var replyToComment:  LMFeedCommentDataModel?
     public weak var delegate: LMFeedPostDetailViewModelProtocol?
     
     init(postID: String, delegate: LMFeedPostDetailViewModelProtocol?) {
         self.postID = postID
+        self.commentList = []
         self.currentPage = 1
         self.pageSize = 10
         self.isFetchingData = false
@@ -91,20 +95,19 @@ public extension LMFeedPostDetailViewModel {
             
             let allTopics = response.data?.topics?.compactMap({ $0.value }) ?? []
             
-            if currentPage != 1 {
-                let newComments: [LMFeedCommentDataModel] = post.replies?.enumerated().compactMap { index, comment in
-                    guard let user = users[comment.uuid ?? ""] else { return nil }
-                    return .init(comment: comment, user: user, index: .init(row: NSNotFound, section: index))
-                } ?? []
-                
-                var commentList = postDetail?.comments ?? []
-                commentList.append(contentsOf: newComments)
-                
-                postDetail?.comments = commentList
-                self.isDataAvailable = !newComments.isEmpty
-            } else {
-                self.postDetail = .init(post: post, users: users, allTopics: allTopics)
+            if currentPage == 1 {
+                commentList.removeAll(keepingCapacity: true)
             }
+            
+            self.postDetail = .init(post: post, users: users, allTopics: allTopics)
+            
+            let newComments: [LMFeedCommentDataModel] = post.replies?.enumerated().compactMap { index, comment in
+                guard let user = users[comment.uuid ?? ""] else { return nil }
+                return .init(comment: comment, user: user, index: .init(row: NSNotFound, section: index))
+            } ?? []
+            
+            commentList.append(contentsOf: newComments)
+            isDataAvailable = !newComments.isEmpty
             
             self.currentPage += 1
             self.convertToViewData()
@@ -117,11 +120,11 @@ public extension LMFeedPostDetailViewModel {
         
         var convertedComments: [LMFeedPostCommentCellProtocol] = []
         
-        if !postDetail.comments.isEmpty {
+        if !commentList.isEmpty {
             let totalCommentCellData: LMFeedPostDetailTotalCommentCell.ViewModel = .init(totalComments: postDetail.commentCount)
             convertedComments.append(totalCommentCellData)
             
-            postDetail.comments.enumerated().forEach { index, comment in
+            commentList.enumerated().forEach { index, comment in
                 convertedComments.append(convertToCommentModel(from: comment))
                 
                 if !comment.replies.isEmpty,
@@ -154,7 +157,7 @@ public extension LMFeedPostDetailViewModel {
     }
     
     func convertToShowMoreReplies(from comment: LMFeedCommentDataModel) -> LMFeedPostMoreRepliesCell.ViewModel {
-        .init(parentCommentId: comment.commentID, commentCount: comment.replies.count, totalComments: comment.totalRepliesCount)
+        .init(parentCommentId: comment.commentID ?? "", commentCount: comment.replies.count, totalComments: comment.totalRepliesCount)
     }
 }
 
@@ -173,7 +176,7 @@ public extension LMFeedPostDetailViewModel {
             guard let self else { return }
             
             if response.success,
-               var comment = findComment(for: commentID, from: postDetail?.comments ?? []) {
+               var comment = findComment(for: commentID, from: commentList) {
                 let isLiked = comment.isLiked
                 comment.isLiked = !isLiked
                 comment.likeCount += !isLiked ? 1 : -1
@@ -181,11 +184,9 @@ public extension LMFeedPostDetailViewModel {
                 let index = comment.index
                 
                 if index.row == NSNotFound {
-                    postDetail?.comments[index.section] = comment
-                    dump(postDetail?.comments[index.section])
+                    commentList[index.section] = comment
                 } else {
-                    postDetail?.comments[index.section].replies[index.row] = comment
-                    dump(postDetail?.comments[index.section].replies[index.row])
+                    commentList[index.section].replies[index.row] = comment
                 }
             } else {
                 delegate?.changeCommentLike(for: indexPath)
@@ -194,17 +195,16 @@ public extension LMFeedPostDetailViewModel {
     }
     
     func getCommentReplies(commentId: String) {
-        if let index = postDetail?.comments.firstIndex(where: { $0.commentID == commentId }),
-           postDetail?.comments[index].replies.isEmpty == false {
-            postDetail?.comments[index].replies = []
+        if let index = commentList.firstIndex(where: { $0.commentID == commentId }),
+           !commentList[index].replies.isEmpty {
+            commentList[index].replies = []
             convertToViewData()
             return
         }
         
-        
         guard !isFetchingData,
               let postID = postDetail?.postId,
-              let parentComment = findComment(for: commentId, from: postDetail?.comments ?? []) else { return }
+              let parentComment = findComment(for: commentId, from: commentList) else { return }
         self.isFetchingData = true
         
         let replyCurrentPage = (parentComment.replies.count / 5) + 1
@@ -230,9 +230,9 @@ public extension LMFeedPostDetailViewModel {
                 return .init(comment: comment, user: user, index: .init(row: index, section: index))
             } ?? []
             
-            var oldComments = postDetail?.comments[parentComment.index.section].replies ?? []
+            var oldComments = commentList[parentComment.index.section].replies
             oldComments.append(contentsOf: newComments)
-            postDetail?.comments[parentComment.index.section].replies = oldComments
+            commentList[parentComment.index.section].replies = oldComments
             self.convertToViewData()
         }
     }
@@ -240,8 +240,8 @@ public extension LMFeedPostDetailViewModel {
     
     // MARK: Show Comment Menu
     func showMenu(for commentID: String) {
-        guard let comment = findComment(for: commentID, from: postDetail?.comments ?? []),
-        !comment.menuItems.isEmpty else { return }
+        guard let comment = findComment(for: commentID, from: commentList),
+              !comment.menuItems.isEmpty else { return }
         
         let alert = UIAlertController(title: .none, message: .none, preferredStyle: .actionSheet)
         
@@ -267,6 +267,108 @@ public extension LMFeedPostDetailViewModel {
         alert.addAction(.init(title: "Cancel", style: .cancel))
         
         delegate?.presentAlert(with: alert, animated: true)
+    }
+    
+    // MARK: Click on Reply Button
+    func replyToComment(having commentID: String?) {
+        guard let commentID,
+              let comment = findComment(for: commentID, from: commentList) else {
+            replyToComment = nil
+            return
+        }
+        
+        replyToComment = comment
+        delegate?.replyToComment(userName: comment.userDetail.userName)
+    }
+    
+    // MARK: Send Comment Button
+    func postReply(with commentString: String) {
+        guard let userInfo = LocalPreferences.userObj,
+              let userName = userInfo.name,
+              let uuid = userInfo.uuid else { return }
+        
+        let userObj = LMFeedUserDataModel(userName: userName, userUUID: uuid, userProfileImage: userInfo.imageUrl, customTitle: userInfo.customTitle)
+        let time = Int(Date().millisecondsSince1970.rounded())
+        
+        var localComment: LMFeedCommentDataModel = .init(
+            commentID: nil,
+            userDetail: userObj,
+            index: .init(row: NSNotFound, section: 0),
+            temporaryCommentID: "\(time)",
+            createdAt: time,
+            isLiked: false,
+            likeCount: 0,
+            isEdited: false,
+            commentText: commentString,
+            menuItems: [],
+            totalRepliesCount: 0
+        )
+        
+        if let comment = replyToComment,
+           let commentID = comment.commentID {
+            localComment.index = .init(row: 0, section: comment.index.section)
+            commentList[comment.index.section].replies.insert(localComment, at: 0)
+            postReplyOnComment(with: commentString, commentID: commentID, localComment: localComment)
+        } else {
+            commentList.insert(localComment, at: 0)
+            postReplyOnPost(with: commentString, localComment: localComment)
+        }
+        
+        replyToComment = nil
+        convertToViewData()
+    }
+    
+    private func postReplyOnPost(with comment: String, localComment: LMFeedCommentDataModel) {
+        let request = AddCommentRequest.builder()
+            .postId(postID)
+            .text(comment)
+            .tempId("\(localComment.createdAt)")
+            .build()
+        
+        LMFeedClient.shared.addComment(request) { [weak self] response in
+            guard let self else { return }
+            
+            guard response.success,
+                  let comment = response.data?.comment,
+                  let user = response.data?.users?[comment.uuid ?? ""],
+                  let newComment = LMFeedCommentDataModel.init(comment: comment, user: user, index: localComment.index) else { return }
+            
+            if commentList.indices.contains(localComment.index.section) {
+                if commentList[localComment.index.section].replies.indices.contains(localComment.index.row) {
+                    commentList[localComment.index.section].replies[localComment.index.row] = newComment
+                } else {
+                    commentList[localComment.index.section] = newComment
+                }
+                convertToViewData(for: localComment.index)
+            }
+        }
+    }
+    
+    private func postReplyOnComment(with comment: String, commentID: String, localComment: LMFeedCommentDataModel) {
+        let request = ReplyCommentRequest.builder()
+            .postId(postID)
+            .commentId(commentID)
+            .text(comment)
+            .tempId("\(localComment.createdAt)")
+            .build()
+        
+        LMFeedClient.shared.replyComment(request) { [weak self] response in
+            guard let self else { return }
+            
+            guard response.success,
+                  let comment = response.data?.comment,
+                  let user = response.data?.users?[comment.uuid ?? ""],
+                  let newComment = LMFeedCommentDataModel.init(comment: comment, user: user, index: localComment.index) else { return }
+            
+            if commentList.indices.contains(localComment.index.section) {
+                if commentList[localComment.index.section].replies.indices.contains(localComment.index.row) {
+                    commentList[localComment.index.section].replies[localComment.index.row] = newComment
+                } else {
+                    commentList[localComment.index.section] = newComment
+                }
+                convertToViewData(for: localComment.index)
+            }
+        }
     }
 }
 

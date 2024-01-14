@@ -34,7 +34,7 @@ open class LMFeedPostDetailViewController: LMViewController {
         table.registerHeaderFooter(LMUIComponents.shared.commentHeaderView)
         return table
     }()
-        
+    
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = Appearance.shared.colors.white
@@ -55,6 +55,27 @@ open class LMFeedPostDetailViewController: LMViewController {
         view.backgroundColor = Appearance.shared.colors.clear
         view.isUserInteractionEnabled = true
         return view
+    }()
+    
+    open private(set) lazy var replyView: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
+    open private(set) lazy var replyNameLabel: LMLabel = {
+        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+        label.text = "Replying To XYZ"
+        label.font = Appearance.shared.fonts.textFont1
+        label.textColor = Appearance.shared.colors.gray3
+        return label
+    }()
+    
+    open private(set) lazy var replyCross: LMButton = {
+        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+        button.setTitle(nil, for: .normal)
+        button.setImage(Constants.shared.images.xmarkIcon, for: .normal)
+        button.tintColor = Appearance.shared.colors.gray3
+        return button
     }()
     
     open private(set) lazy var stackView: LMStackView = {
@@ -85,7 +106,7 @@ open class LMFeedPostDetailViewController: LMViewController {
         button.isEnabled = false
         return button
     }()
-
+    
     open var inputTextViewHeightConstraint: NSLayoutConstraint?
     open var inputTextViewBottomConstraint: NSLayoutConstraint?
     open var tagsTableViewHeightConstraint: NSLayoutConstraint?
@@ -108,7 +129,11 @@ open class LMFeedPostDetailViewController: LMViewController {
         containerView.addSubview(containerStackView)
         
         containerStackView.addArrangedSubview(taggingView)
+        containerStackView.addArrangedSubview(replyView)
         containerStackView.addArrangedSubview(stackView)
+        
+        replyView.addSubview(replyNameLabel)
+        replyView.addSubview(replyCross)
         
         stackView.addArrangedSubview(inputTextView)
         stackView.addArrangedSubview(sendButton)
@@ -137,6 +162,17 @@ open class LMFeedPostDetailViewController: LMViewController {
             taggingView.leadingAnchor.constraint(equalTo: containerStackView.leadingAnchor),
             taggingView.trailingAnchor.constraint(equalTo: containerStackView.trailingAnchor),
             
+            replyView.leadingAnchor.constraint(equalTo: containerStackView.leadingAnchor),
+            replyView.trailingAnchor.constraint(equalTo: containerStackView.trailingAnchor),
+            
+            replyNameLabel.leadingAnchor.constraint(equalTo: replyView.leadingAnchor, constant: 16),
+            replyNameLabel.topAnchor.constraint(equalTo: replyView.topAnchor, constant: 16),
+            replyNameLabel.bottomAnchor.constraint(equalTo: replyView.bottomAnchor, constant: -16),
+
+            replyCross.centerYAnchor.constraint(equalTo: replyNameLabel.centerYAnchor),
+            replyCross.trailingAnchor.constraint(equalTo: replyView.trailingAnchor, constant: -16),
+            replyCross.leadingAnchor.constraint(greaterThanOrEqualTo: replyNameLabel.trailingAnchor, constant: 16),
+            
             stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
             
@@ -163,8 +199,25 @@ open class LMFeedPostDetailViewController: LMViewController {
     open override func setupActions() {
         super.setupActions()
         inputTextView.mentionDelegate = self
+        replyCross.addTarget(self, action: #selector(didTapReplyCrossButton), for: .touchUpInside)
+        sendButton.addTarget(self, action: #selector(didTapSendCommentButton), for: .touchUpInside)
     }
     
+    @objc
+    open func didTapReplyCrossButton() {
+        replyView.isHidden = true
+        viewModel?.replyToComment(having: nil)
+    }
+    
+    @objc
+    open func didTapSendCommentButton() {
+        let commentText = inputTextView.getText()
+        viewModel?.postReply(with: commentText)
+        inputTextView.resignFirstResponder()
+        inputTextView.attributedText = nil
+        inputTextView.text = nil
+        replyView.isHidden = true
+    }
     
     // MARK: setupAppearance
     open override func setupAppearance() {
@@ -180,6 +233,8 @@ open class LMFeedPostDetailViewController: LMViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
+        inputTextView.placeHolderText = "Write a Comment"
+        replyView.isHidden = true
         viewModel?.getPost(isInitialFetch: true)
     }
     
@@ -318,9 +373,11 @@ extension LMFeedPostDetailViewController: LMChatPostCommentProtocol {
     
     open func didTapLikeCountButton(for commentId: String) { }
     
-    open func didTapReplyButton(for commentId: String) { }
+    open func didTapReplyButton(for commentId: String) { 
+        viewModel?.replyToComment(having: commentId)
+    }
     
-    open func didTapReplyCountButton(for commentId: String) { 
+    open func didTapReplyCountButton(for commentId: String) {
         viewModel?.getCommentReplies(commentId: commentId)
     }
 }
@@ -442,6 +499,18 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
             tableView.reloadRows(at: [indexPath], with: .none)
         }
     }
+    
+    public func replyToComment(userName: String) {
+        let replyLabelText = NSMutableAttributedString(string: "Replying To ", attributes: [.font: Appearance.shared.fonts.textFont2,
+                                                                                           .foregroundColor: Appearance.shared.colors.gray51])
+        
+        replyLabelText.append(NSAttributedString(string: userName, attributes: [.font: Appearance.shared.fonts.textFont2,
+                                                                                .foregroundColor: Appearance.shared.colors.appTintColor]))
+        
+        replyNameLabel.attributedText = replyLabelText
+        replyView.isHidden = false
+        inputTextView.becomeFirstResponder()
+    }
 }
 
 
@@ -463,6 +532,8 @@ extension LMFeedPostDetailViewController: LMFeedTaggingTextViewProtocol {
         
         inputTextView.isScrollEnabled = newSize.height > textInputMaximumHeight
         inputTextViewHeightConstraint?.constant = min(newSize.height, textInputMaximumHeight)
+        
+        sendButton.isEnabled = !inputTextView.attributedText.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 }
 

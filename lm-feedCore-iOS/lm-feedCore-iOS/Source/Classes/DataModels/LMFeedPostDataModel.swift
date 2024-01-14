@@ -26,7 +26,6 @@ public struct LMFeedPostDataModel {
     public var linkAttachment: LinkAttachment? = .none
     public var isShowFullText: Bool
     public var isShowAllDocuments: Bool
-    public var comments: [LMFeedCommentDataModel]
     
     public init(
         postId: String,
@@ -45,8 +44,7 @@ public struct LMFeedPostDataModel {
         documentAttachment: [LMFeedPostDataModel.DocumentAttachment] = [],
         linkAttachment: LMFeedPostDataModel.LinkAttachment? = .none, 
         isShowFullText: Bool = false,
-        isShowAllDocuments: Bool = false,
-        comments: [LMFeedCommentDataModel] = []
+        isShowAllDocuments: Bool = false
     ) {
         self.postId = postId
         self.postContent = postContent
@@ -65,7 +63,6 @@ public struct LMFeedPostDataModel {
         self.linkAttachment = linkAttachment
         self.isShowFullText = isShowFullText
         self.isShowAllDocuments = isShowAllDocuments
-        self.comments = comments
     }
 }
 
@@ -100,11 +97,6 @@ extension LMFeedPostDataModel {
             guard let topic = allTopics.first(where: { $0.id == topicID }),
                   let name = topic.name else { return nil }
             return .init(topicId: topicID, topic: name)
-        } ?? []
-        
-        self.comments = post.replies?.enumerated().compactMap { index, comment in
-            guard let user = users[comment.uuid ?? ""] else { return nil }
-            return .init(comment: comment, user: user, index: .init(row: NSNotFound, section: index))
         } ?? []
         
         let attachments = handleAttachments(with: post.attachments ?? [])
