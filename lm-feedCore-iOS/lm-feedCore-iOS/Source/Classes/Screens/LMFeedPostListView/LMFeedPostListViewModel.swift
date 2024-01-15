@@ -10,7 +10,7 @@ import LikeMindsFeed
 
 // MARK: LMUniversalFeedViewModelProtocol
 public protocol LMFeedPostListViewModelProtocol: AnyObject {
-    func loadPosts(with data: [LMFeedPostTableCellProtocol])
+    func loadPosts(with data: [LMFeedPostTableCellProtocol], for index: IndexPath?)
     func undoLikeAction(for postID: String)
     func undoSaveAction(for postID: String)
     func showHideFooterLoader(isShow: Bool)
@@ -113,14 +113,14 @@ public extension LMFeedPostListViewModel {
         }
     }
     
-    func convertToViewData() {
+    func convertToViewData(for index: IndexPath? = nil) {
         var convertedViewData: [LMFeedPostTableCellProtocol] = []
         
         postList.forEach { post in
             convertedViewData.append(LMFeedConvertToFeedPost.convertToViewModel(for: post))
         }
         
-        delegate?.loadPosts(with: convertedViewData)
+        delegate?.loadPosts(with: convertedViewData, for: index)
     }
 }
 
@@ -167,5 +167,15 @@ public extension LMFeedPostListViewModel {
                 delegate?.undoSaveAction(for: postId)
             }
         }
+    }
+}
+
+
+// MARK: Update Post Content
+public extension LMFeedPostListViewModel {
+    func updatePostData(for post: LMFeedPostDataModel) {
+        guard let index = postList.firstIndex(where: { $0.postId == post.postId }) else { return }
+        postList[index] = post
+        convertToViewData(for: IndexPath(row: index, section: 0))
     }
 }

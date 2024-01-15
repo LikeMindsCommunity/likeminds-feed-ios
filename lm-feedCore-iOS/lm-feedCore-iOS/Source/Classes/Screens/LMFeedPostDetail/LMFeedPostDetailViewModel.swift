@@ -17,7 +17,8 @@ public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol 
     func changeCommentLike(for indexPath: IndexPath)
     func replyToComment(userName: String)
     
-    func showNoPostError(with message: String, isPop: Bool) 
+    func showNoPostError(with message: String, isPop: Bool)
+    func updateCommentStatus(isEnabled: Bool)
 }
 
 final public class LMFeedPostDetailViewModel {
@@ -26,11 +27,18 @@ final public class LMFeedPostDetailViewModel {
     public var pageSize: Int
     public var isFetchingData: Bool
     public var isDataAvailable: Bool
-    public var postDetail: LMFeedPostDataModel?
+    public var postDetail: LMFeedPostDataModel? {
+        willSet {
+            if let newValue {
+                listViewDelegate?.updatePostData(for: newValue)
+            }
+        }
+    }
     public var commentList: [LMFeedCommentDataModel]
     public var replyToComment:  LMFeedCommentDataModel?
     public var openCommentSection: Bool
     public weak var delegate: LMFeedPostDetailViewModelProtocol?
+    public weak var listViewDelegate: LMFeedUpdatePostDataProtocol?
     
     public init(postID: String, delegate: LMFeedPostDetailViewModelProtocol?, openCommentSection: Bool = false) {
         self.postID = postID
@@ -43,10 +51,15 @@ final public class LMFeedPostDetailViewModel {
         self.delegate = delegate
     }
     
-    public static func createModule(for postID: String, openCommentSection: Bool = false) -> LMFeedPostDetailViewController {
+    public static func createModule(
+        for postID: String,
+        listViewDelegate: LMFeedUpdatePostDataProtocol?,
+        openCommentSection: Bool = false
+    ) -> LMFeedPostDetailViewController {
         let viewController = Components.shared.postDetailScreen.init()
         let viewModel: LMFeedPostDetailViewModel = .init(postID: postID, delegate: viewController, openCommentSection: openCommentSection)
         
+        viewModel.listViewDelegate = listViewDelegate
         viewController.viewModel = viewModel
         return viewController
     }
@@ -63,6 +76,19 @@ final public class LMFeedPostDetailViewModel {
         }
         
         return nil
+    }
+    
+    func getMemberState() {
+        LMFeedClient.shared.getMemberState() { [weak self] result in
+            guard let self else { return }
+            
+            if result.success,
+               let memberState = result.data {
+                LocalPreferences.memberState = memberState
+            }
+            
+            delegate?.updateCommentStatus(isEnabled: LocalPreferences.memberState?.memberRights?.contains(where: { $0.state == .commentOrReplyOnPost }) ?? false)
+        }
     }
 }
 
@@ -340,6 +366,7 @@ public extension LMFeedPostDetailViewModel {
             if let idx = commentList.firstIndex(where: { $0.temporaryCommentID == localComment.temporaryCommentID }) {
                 commentList[idx] = newComment
                 convertToViewData(for: .init(row: NSNotFound, section: idx))
+                postDetail?.commentCount += 1
             }
         }
     }
@@ -382,9 +409,8 @@ public extension LMFeedPostDetailViewModel {
             guard let self else { return }
             
             if response.success {
-                let isLiked = postDetail?.isLiked ?? true
-                postDetail?.isLiked = !isLiked
-                postDetail?.likeCount = !isLiked ? 1 : -1
+                postDetail?.isLiked.toggle()
+                postDetail?.likeCount += postDetail?.isLiked == true ? 1 : -1
             } else if !response.success {
                 delegate?.changePostLike()
             }

@@ -8,6 +8,12 @@
 import UIKit
 import lm_feedUI_iOS
 
+// MARK: LMFeedUpdatePostDataProtocol
+// This contains list of functions that are triggered by other screens to update post data locally!
+public protocol LMFeedUpdatePostDataProtocol: AnyObject {
+    func updatePostData(for post: LMFeedPostDataModel)
+}
+
 // MARK: LMFeedPostListVCProtocol
 // This contains list of functions that are triggered from Child View Controller aka `LMFeedPostListViewController` to be handled by Parent View Controller
 public protocol LMFeedPostListVCFromProtocol: AnyObject {
@@ -161,8 +167,7 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
     }
     
     open func didTapCommentButton(for postID: String) {
-        let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: true)
-        navigationController?.pushViewController(viewController, animated: true)
+        delegate?.openPostDetail(for: postID)
     }
     
     open func didTapShareButton(for postID: String) {
@@ -211,10 +216,13 @@ extension LMFeedPostListViewController: LMChatLinkProtocol {
 
 // MARK: LMFeedPostListViewModelProtocol
 extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
-    public func loadPosts(with data: [LMFeedPostTableCellProtocol]) {
+    public func loadPosts(with data: [LMFeedPostTableCellProtocol], for index: IndexPath?) {
         self.data = data
-        tableView.refreshControl?.endRefreshing()
-        tableView.reloadData()
+        if let index {
+            tableView.reloadRows(at: [index], with: .none)
+        } else {
+            tableView.reloadData()
+        }
     }
     
     public func undoLikeAction(for postID: String) {
@@ -256,5 +264,13 @@ extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
 extension LMFeedPostListViewController: LMFeedPostListVCToProtocol {
     open func loadPostsWithTopics(_ topics: [String]) {
         viewModel?.updateTopics(with: topics)
+    }
+}
+
+
+// MARK: LMFeedUpdatePostDataProtocol
+extension LMFeedPostListViewController: LMFeedUpdatePostDataProtocol {
+    public func updatePostData(for post: LMFeedPostDataModel) {
+        viewModel?.updatePostData(for: post)
     }
 }

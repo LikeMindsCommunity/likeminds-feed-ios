@@ -121,7 +121,7 @@ open class LMFeedPostDetailViewController: LMViewController {
     var cellsData: [LMFeedPostCommentCellProtocol] = []
     open private(set) var textInputMaximumHeight: CGFloat = 100
     public var viewModel: LMFeedPostDetailViewModel?
-    
+    public var isCommentingEnabled: Bool = LocalPreferences.memberState?.memberRights?.contains(where: { $0.state == .commentOrReplyOnPost }) ?? false
     
     // MARK: setupViews
     open override func setupViews() {
@@ -249,6 +249,7 @@ open class LMFeedPostDetailViewController: LMViewController {
         
         inputTextView.placeHolderText = "Write a Comment"
         replyView.isHidden = true
+        viewModel?.getMemberState()
         viewModel?.getPost(isInitialFetch: true)
         showHideLoaderView(isShow: true)
     }
@@ -393,6 +394,7 @@ extension LMFeedPostDetailViewController: LMChatPostCommentProtocol {
     open func didTapLikeCountButton(for commentId: String) { }
     
     open func didTapReplyButton(for commentId: String) { 
+        guard isCommentingEnabled else { return }
         viewModel?.replyToComment(having: commentId)
     }
     
@@ -415,6 +417,7 @@ extension LMFeedPostDetailViewController: LMFeedTableCellToViewControllerProtoco
     open func didTapLikeTextButton(for postID: String) { }
     
     open func didTapCommentButton(for postID: String) { 
+        guard isCommentingEnabled else { return }
         inputTextView.becomeFirstResponder()
     }
     
@@ -492,8 +495,9 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
             tableView.reloadData()
         }
         
-        if openCommentSection {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {[weak self] in
+        if openCommentSection,
+           isCommentingEnabled{
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 self?.inputTextView.becomeFirstResponder()
             }
         }
@@ -551,6 +555,14 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         })
         
         presentAlert(with: alert)
+    }
+    
+    public func updateCommentStatus(isEnabled: Bool) {
+        isCommentingEnabled = isEnabled
+        
+        inputTextView.placeHolderText = isCommentingEnabled ? "Write a Comment" : "You do not have permission to comment."
+        inputTextView.isUserInteractionEnabled = isCommentingEnabled
+        sendButton.isHidden = !isCommentingEnabled
     }
 }
 

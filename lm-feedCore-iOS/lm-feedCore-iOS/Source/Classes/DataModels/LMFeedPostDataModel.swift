@@ -15,9 +15,9 @@ public struct LMFeedPostDataModel {
     public var isLiked: Bool
     public var isPinned: Bool
     public var isSaved: Bool
-    public let commentCount: Int	
+    public var commentCount: Int
     public let createTime: String
-    public let isEdited: Bool
+    public var isEdited: Bool
     public var postMenu: [LMFeedMenuDataModel]
     public let userDetails: LMFeedUserDataModel
     public let topics: [TopicModel]
