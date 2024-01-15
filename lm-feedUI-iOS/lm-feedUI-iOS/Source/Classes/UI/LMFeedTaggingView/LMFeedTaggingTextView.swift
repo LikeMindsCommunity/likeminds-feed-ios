@@ -32,15 +32,6 @@ open class LMFeedTaggingTextView: LMTextView {
     public var isSpaceAdded: Bool = false
     public var startIndex: Int?
     public var characters: [Character] = []
-    public var placeHolderText: String? {
-        didSet {
-            text = placeHolderText
-            textColor = placeHolderTextColor
-            font = placeHolderFont
-        }
-    }
-    public var placeHolderFont: UIFont = Appearance.shared.fonts.subHeadingFont1
-    public var placeHolderTextColor: UIColor = Appearance.shared.colors.gray155
     
     public weak var mentionDelegate: LMFeedTaggingTextViewProtocol?
     
@@ -71,6 +62,8 @@ open class LMFeedTaggingTextView: LMTextView {
             }
         }
         
+        isMentioning = false
+        taggingText = taggingText.trimmingCharacters(in: .whitespacesAndNewlines)
         isSpaceAdded = false
         characters.removeAll()
         startIndex = nil
@@ -112,30 +105,30 @@ open class LMFeedTaggingTextView: LMTextView {
                 .route: route
             ])
             
-            var newLocation = partTwoString.string.isEmpty ? 1 : 0
+            var newLocation = 1
             newLocation += partOneString.length
             newLocation += attrName.length
             
-            if partTwoString.string.isEmpty {
-                partTwoString.append(.init(string: " "))
-            }
+            partTwoString.insert(.init(string: " "), at: 0)
             
             let attrString =  NSMutableAttributedString(attributedString: partOneString)
             attrString.append(attrName)
             attrString.append(partTwoString)
             
-            attrString.addAttributes(textAttributes, range: NSRange(location: 0, length: attrString.length))
-            
             let tempAttrString = attrString
             
             tempAttrString.enumerateAttributes(in: NSRange(location: 0, length: tempAttrString.length)) { attr, range, _ in
                 if attr.contains(where: { $0.key == .route }) {
-                    attrString.addAttribute(.foregroundColor, value: Appearance.shared.colors.linkColor, range: range)
+                    attrString.addAttributes(linkTextAttributes, range: range)
+                } else {
+                    attrString.addAttributes(textAttributes, range: range)
                 }
             }
             
             attributedText = attrString
             selectedRange = NSRange(location: newLocation, length: 0)
+            characters.removeAll(keepingCapacity: true)
+            mentionDelegate?.contentHeightChanged()
         }
     }
     
@@ -162,7 +155,6 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
             if isMentioning {
                 if range.length <= characters.count {
                     characters.removeLast(range.length)
-//                    mentionDelegate?.mentionStarted(with: String(characters))
                 } else {
                     startIndex = nil
                     isMentioning.toggle()
@@ -221,6 +213,18 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
             }
         }
         
+        let attrString = NSMutableAttributedString(attributedString: textView.attributedText)
+        
+        textView.attributedText.enumerateAttributes(in: NSRange(location: 0, length: textView.attributedText.length)) { attr, range, _ in
+            if attr.contains(where: { $0.key == .route }) {
+                attrString.addAttributes(linkTextAttributes, range: range)
+            } else {
+                attrString.addAttributes(textAttributes, range: range)
+            }
+        }
+        
+        textView.attributedText = attrString
+        
         handleTagging()
     }
     
@@ -236,9 +240,8 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
     
     open func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            textView.text = placeHolderText
-            textView.font = placeHolderFont
-            textView.textColor = placeHolderTextColor
+            textView.attributedText = NSAttributedString(string: placeHolderText, attributes: textAttributes)
         }
+        mentionDelegate?.contentHeightChanged()
     }
 }

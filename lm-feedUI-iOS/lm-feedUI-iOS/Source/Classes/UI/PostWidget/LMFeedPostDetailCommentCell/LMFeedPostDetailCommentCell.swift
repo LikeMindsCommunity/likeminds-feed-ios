@@ -127,6 +127,7 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         commentStack.addArrangedSubview(seeMoreText)
         
         actionStack.addArrangedSubview(likeButton)
+        actionStack.addArrangedSubview(likeTextButton)
     }
     
     open override func setupLayouts() {

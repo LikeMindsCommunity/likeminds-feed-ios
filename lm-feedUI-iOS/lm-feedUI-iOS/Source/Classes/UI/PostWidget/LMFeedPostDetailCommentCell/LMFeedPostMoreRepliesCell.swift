@@ -108,6 +108,7 @@ open class LMFeedPostMoreRepliesCell: LMTableViewCell {
     // MARK: configure
     open func configure(with data: ViewModel, delegate: LMFeedPostMoreRepliesCellProtocol) {
         self.delegate = delegate
+        commentId = data.parentCommentId
         countLabel.text = "\(data.commentCount) of \(data.totalComments)"
     }
 }

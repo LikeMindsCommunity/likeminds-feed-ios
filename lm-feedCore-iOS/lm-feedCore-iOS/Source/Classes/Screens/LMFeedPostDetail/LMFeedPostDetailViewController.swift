@@ -16,7 +16,6 @@ open class LMFeedPostDetailViewController: LMViewController {
         table.separatorStyle = .none
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
-        table.bounces = false
         table.estimatedRowHeight = 50
         table.rowHeight = UITableView.automaticDimension
         table.estimatedSectionHeaderHeight = 1
@@ -33,6 +32,11 @@ open class LMFeedPostDetailViewController: LMViewController {
         table.register(LMUIComponents.shared.loadMoreReplies)
         table.registerHeaderFooter(LMUIComponents.shared.commentHeaderView)
         return table
+    }()
+    
+    open private(set) lazy var refreshControl: UIRefreshControl = {
+        let refresh = UIRefreshControl()
+        return refresh
     }()
     
     open private(set) lazy var containerView: LMView = {
@@ -199,8 +203,12 @@ open class LMFeedPostDetailViewController: LMViewController {
     open override func setupActions() {
         super.setupActions()
         inputTextView.mentionDelegate = self
+        
         replyCross.addTarget(self, action: #selector(didTapReplyCrossButton), for: .touchUpInside)
         sendButton.addTarget(self, action: #selector(didTapSendCommentButton), for: .touchUpInside)
+        
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
     }
     
     @objc
@@ -217,6 +225,12 @@ open class LMFeedPostDetailViewController: LMViewController {
         inputTextView.attributedText = nil
         inputTextView.text = nil
         replyView.isHidden = true
+    }
+    
+    @objc
+    open func pullToRefresh(_ refreshControl: UIRefreshControl) {
+        refreshControl.endRefreshing()
+        viewModel?.getPost(isInitialFetch: true)
     }
     
     // MARK: setupAppearance
@@ -236,6 +250,7 @@ open class LMFeedPostDetailViewController: LMViewController {
         inputTextView.placeHolderText = "Write a Comment"
         replyView.isHidden = true
         viewModel?.getPost(isInitialFetch: true)
+        showHideLoaderView(isShow: true)
     }
     
     deinit {
@@ -324,6 +339,10 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
         return nil
     }
     
+    open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        0.5
+    }
+    
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if type(of: scrollView) is UITableView.Type {
             view.endEditing(true)
@@ -378,7 +397,7 @@ extension LMFeedPostDetailViewController: LMChatPostCommentProtocol {
     }
     
     open func didTapReplyCountButton(for commentId: String) {
-        viewModel?.getCommentReplies(commentId: commentId)
+        viewModel?.getCommentReplies(commentId: commentId, isClose: true)
     }
 }
 
@@ -395,7 +414,9 @@ extension LMFeedPostDetailViewController: LMFeedTableCellToViewControllerProtoco
     
     open func didTapLikeTextButton(for postID: String) { }
     
-    open func didTapCommentButton(for postID: String) { }
+    open func didTapCommentButton(for postID: String) { 
+        inputTextView.becomeFirstResponder()
+    }
     
     open func didTapShareButton(for postID: String) { }
     
@@ -414,7 +435,7 @@ extension LMFeedPostDetailViewController: LMFeedTableCellToViewControllerProtoco
 @objc
 extension LMFeedPostDetailViewController: LMFeedPostMoreRepliesCellProtocol {
     open func didTapMoreComments(for commentID: String) {
-        print(#function)
+        viewModel?.getCommentReplies(commentId: commentID, isClose: false)
     }
 }
 
@@ -455,7 +476,9 @@ extension LMFeedPostDetailViewController: UITextViewDelegate {
 
 // MARK: LMFeedPostDetailViewModelProtocol
 extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
-    public func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostCommentCellProtocol], indexPath: IndexPath?) {
+    public func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostCommentCellProtocol], indexPath: IndexPath?, openCommentSection: Bool) {
+        showHideLoaderView(isShow: false)
+        
         self.postData = post
         self.cellsData = comments
         
@@ -467,6 +490,12 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
             }
         } else {
             tableView.reloadData()
+        }
+        
+        if openCommentSection {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {[weak self] in
+                self?.inputTextView.becomeFirstResponder()
+            }
         }
     }
     
@@ -511,6 +540,18 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         replyView.isHidden = false
         inputTextView.becomeFirstResponder()
     }
+    
+    public func showNoPostError(with message: String, isPop: Bool) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        
+        alert.addAction(.init(title: "OK", style: .default) { [weak self] _ in
+            if isPop {
+                self?.navigationController?.popViewController(animated: true)
+            }
+        })
+        
+        presentAlert(with: alert)
+    }
 }
 
 
@@ -533,7 +574,7 @@ extension LMFeedPostDetailViewController: LMFeedTaggingTextViewProtocol {
         inputTextView.isScrollEnabled = newSize.height > textInputMaximumHeight
         inputTextViewHeightConstraint?.constant = min(newSize.height, textInputMaximumHeight)
         
-        sendButton.isEnabled = !inputTextView.attributedText.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        sendButton.isEnabled = !inputTextView.attributedText.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && inputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines) != inputTextView.placeHolderText
     }
 }
 

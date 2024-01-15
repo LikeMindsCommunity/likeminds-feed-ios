@@ -36,6 +36,20 @@ public protocol LMBaseViewControllerProtocol: AnyObject {
 /// Base LM View Controller Class with LM Life Cycle Methods
 @IBDesignable
 open class LMViewController: UIViewController {
+    // MARK: UI Elements
+    open private(set) lazy var loaderScreen: LMView = {
+        let view = LMView(frame: view.bounds).translatesAutoresizingMaskIntoConstraints()
+        view.backgroundColor = Appearance.shared.colors.white
+        return view
+    }()
+    
+    open private(set) lazy var loaderView: UIActivityIndicatorView = {
+        let loader = UIActivityIndicatorView(style: .large)
+        loader.translatesAutoresizingMaskIntoConstraints = false
+        loader.tintColor = Appearance.shared.colors.gray51
+        return loader
+    }()
+    
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -111,6 +125,32 @@ open class LMViewController: UIViewController {
         }
         
         navigationItem.titleView = titleView
+    }
+    
+    open func showHideLoaderView(isShow: Bool) {
+        if isShow {
+            view.addSubview(loaderScreen)
+            loaderScreen.addSubview(loaderView)
+            
+            NSLayoutConstraint.activate([
+                loaderScreen.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                loaderScreen.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                loaderScreen.topAnchor.constraint(equalTo: view.topAnchor),
+                loaderScreen.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                
+                loaderView.centerXAnchor.constraint(equalTo: loaderScreen.centerXAnchor),
+                loaderView.centerYAnchor.constraint(equalTo: loaderScreen.centerYAnchor),
+                loaderView.heightAnchor.constraint(equalToConstant: 50),
+                loaderView.widthAnchor.constraint(equalTo: loaderView.heightAnchor, multiplier: 1)
+            ])
+            view.bringSubviewToFront(loaderScreen)
+            loaderView.startAnimating()
+        } else if loaderView.isDescendant(of: view) {
+            view.sendSubviewToBack(loaderScreen)
+            loaderView.stopAnimating()
+            loaderView.removeFromSuperview()
+            loaderScreen.removeFromSuperview()
+        }
     }
 }
 

@@ -25,6 +25,15 @@ public protocol LMFeedPostListVCToProtocol: AnyObject {
 open class LMFeedPostListViewController: LMViewController {
     open private(set) lazy var tableView: LMTableView = {
         let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
+        table.dataSource = self
+        table.delegate = self
+        table.separatorStyle = .none
+        table.showsVerticalScrollIndicator = false
+        table.showsHorizontalScrollIndicator = false
+        table.rowHeight = UITableView.automaticDimension
+        table.register(LMUIComponents.shared.postCell)
+        table.register(LMUIComponents.shared.documentCell)
+        table.register(LMUIComponents.shared.linkCell)
         return table
     }()
     
@@ -58,19 +67,7 @@ open class LMFeedPostListViewController: LMViewController {
     
     open override func setupActions() {
         super.setupActions()
-        
-        // Setting Table View
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.separatorStyle = .none
-        tableView.showsVerticalScrollIndicator = false
-        tableView.showsHorizontalScrollIndicator = false
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.register(LMUIComponents.shared.postCell)
-        tableView.register(LMUIComponents.shared.documentCell)
-        tableView.register(LMUIComponents.shared.linkCell)
         tableView.refreshControl = refreshControl
-        
         refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
     }
     
@@ -164,7 +161,8 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
     }
     
     open func didTapCommentButton(for postID: String) {
-        print(#function)
+        let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: true)
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     open func didTapShareButton(for postID: String) {
