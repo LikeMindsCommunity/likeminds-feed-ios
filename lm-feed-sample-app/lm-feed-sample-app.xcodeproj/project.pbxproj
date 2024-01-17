@@ -13,7 +13,8 @@
 		E572B6822B47106000E36655 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E572B6802B47106000E36655 /* LaunchScreen.storyboard */; };
 		E572B77C2B47F47900E36655 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E572B77B2B47F47900E36655 /* Main.storyboard */; };
 		E572B7812B480BF400E36655 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B7802B480BF400E36655 /* ViewController.swift */; };
-		E572B7BC2B4BE40700E36655 /* DummyUI.xib in Resources */ = {isa = PBXBuildFile; fileRef = E572B7BB2B4BE40700E36655 /* DummyUI.xib */; };
+		E572B7BC2B4BE40700E36655 /* DummyUI1.xib in Resources */ = {isa = PBXBuildFile; fileRef = E572B7BB2B4BE40700E36655 /* DummyUI1.xib */; };
+		E59F9D1D2B57ACFA00E68030 /* DummyUI2.xib in Resources */ = {isa = PBXBuildFile; fileRef = E59F9D1C2B57ACFA00E68030 /* DummyUI2.xib */; };
 		F3B6AA0CEF26A2B40F1C3FB1 /* Pods_lm_feed_sample_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9679E7AE6D9A24137D165E6 /* Pods_lm_feed_sample_app.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,7 +29,8 @@
 		E572B6832B47106000E36655 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E572B77B2B47F47900E36655 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		E572B7802B480BF400E36655 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		E572B7BB2B4BE40700E36655 /* DummyUI.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DummyUI.xib; sourceTree = "<group>"; };
+		E572B7BB2B4BE40700E36655 /* DummyUI1.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DummyUI1.xib; sourceTree = "<group>"; };
+		E59F9D1C2B57ACFA00E68030 /* DummyUI2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DummyUI2.xib; sourceTree = "<group>"; };
 		F7D90F50B245DEA02D0087D1 /* Pods-lm-feed-sample-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lm-feed-sample-app.release.xcconfig"; path = "Target Support Files/Pods-lm-feed-sample-app/Pods-lm-feed-sample-app.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,7 +82,8 @@
 				E572B67E2B47106000E36655 /* Assets.xcassets */,
 				E572B6802B47106000E36655 /* LaunchScreen.storyboard */,
 				E572B6832B47106000E36655 /* Info.plist */,
-				E572B7BB2B4BE40700E36655 /* DummyUI.xib */,
+				E59F9D1C2B57ACFA00E68030 /* DummyUI2.xib */,
+				E572B7BB2B4BE40700E36655 /* DummyUI1.xib */,
 			);
 			path = "lm-feed-sample-app";
 			sourceTree = "<group>";
@@ -155,8 +158,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E572B6822B47106000E36655 /* LaunchScreen.storyboard in Resources */,
+				E59F9D1D2B57ACFA00E68030 /* DummyUI2.xib in Resources */,
 				E572B67F2B47106000E36655 /* Assets.xcassets in Resources */,
-				E572B7BC2B4BE40700E36655 /* DummyUI.xib in Resources */,
+				E572B7BC2B4BE40700E36655 /* DummyUI1.xib in Resources */,
 				E572B77C2B47F47900E36655 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

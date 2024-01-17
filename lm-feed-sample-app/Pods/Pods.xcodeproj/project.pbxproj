@@ -191,6 +191,10 @@
 		E572B7832B48160100E36655 /* LMTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80401CCFEEF2B16009D356B69E93B22C /* LMTableView.swift */; };
 		E572B78B2B49991200E36655 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B78A2B49991200E36655 /* UIColor+Extension.swift */; };
 		E572B7B82B4BDDB100E36655 /* LMFeedTaggingUserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B7B72B4BDDB100E36655 /* LMFeedTaggingUserTableCell.swift */; };
+		E59F9D0F2B56A75C00E68030 /* LMFeedCreatePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59F9D0E2B56A75C00E68030 /* LMFeedCreatePostViewController.swift */; };
+		E59F9D222B57B05B00E68030 /* LMFeedCreatePostHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59F9D212B57B05B00E68030 /* LMFeedCreatePostHeaderView.swift */; };
+		E59F9D252B57D5F500E68030 /* LMFeedCreatePostAddMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59F9D242B57D5F500E68030 /* LMFeedCreatePostAddMediaView.swift */; };
+		E59F9D282B57E88A00E68030 /* LMFeedCreatePostLinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59F9D272B57E88A00E68030 /* LMFeedCreatePostLinkPreview.swift */; };
 		E5BEB73A2B5420F8006CD452 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BEB7392B5420F8006CD452 /* Date+Extension.swift */; };
 		E5CFEACF2B5009F00090A902 /* LMFeedTaggingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFEACE2B5009F00090A902 /* LMFeedTaggingListView.swift */; };
 		E5CFEAD12B500B9F0090A902 /* LMFeedTaggingListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFEAD02B500B9F0090A902 /* LMFeedTaggingListViewModel.swift */; };
@@ -517,6 +521,10 @@
 		E16E601A495DE964E66454251F598B91 /* NSButton+Kingfisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSButton+Kingfisher.swift"; path = "Sources/Extensions/NSButton+Kingfisher.swift"; sourceTree = "<group>"; };
 		E572B78A2B49991200E36655 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		E572B7B72B4BDDB100E36655 /* LMFeedTaggingUserTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTaggingUserTableCell.swift; sourceTree = "<group>"; };
+		E59F9D0E2B56A75C00E68030 /* LMFeedCreatePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePostViewController.swift; sourceTree = "<group>"; };
+		E59F9D212B57B05B00E68030 /* LMFeedCreatePostHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePostHeaderView.swift; sourceTree = "<group>"; };
+		E59F9D242B57D5F500E68030 /* LMFeedCreatePostAddMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePostAddMediaView.swift; sourceTree = "<group>"; };
+		E59F9D272B57E88A00E68030 /* LMFeedCreatePostLinkPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePostLinkPreview.swift; sourceTree = "<group>"; };
 		E5BEB7392B5420F8006CD452 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		E5CFEACE2B5009F00090A902 /* LMFeedTaggingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTaggingListView.swift; sourceTree = "<group>"; };
 		E5CFEAD02B500B9F0090A902 /* LMFeedTaggingListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTaggingListViewModel.swift; sourceTree = "<group>"; };
@@ -679,6 +687,7 @@
 		19690253DDB5788C5D29F2AAE17AD491 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				E59F9D1F2B57AFE100E68030 /* CreatePostWidgets */,
 				E572B7B42B4AE87400E36655 /* LMFeedTaggingView */,
 				96F96CB39C4BBD7545E7363A633FC72E /* PostWidget */,
 				8FC9D89B0E788E0CE9DE38D254C77252 /* TopicFeed */,
@@ -818,9 +827,10 @@
 		4776E06622810ED5C602C26CCA6CAD3D /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				E5CFEACD2B5009BC0090A902 /* LMFeedTaggingListView */,
+				E59F9D0D2B56A72D00E68030 /* LMFeedCreatePost */,
 				0E09A808121730EC2FB43077FE0BF471 /* LMFeedPostDetail */,
 				6A7DFA8313C92B9056B22CAA2712A423 /* LMFeedPostListView */,
+				E5CFEACD2B5009BC0090A902 /* LMFeedTaggingListView */,
 				CA5F7265D483367995DB386C61BB83D9 /* LMFeedTopicSelection */,
 				4A1C8F01B4A5065F3968E3B4A338C214 /* LMFeedUniversal */,
 			);
@@ -1225,6 +1235,48 @@
 			path = LMFeedTaggingView;
 			sourceTree = "<group>";
 		};
+		E59F9D0D2B56A72D00E68030 /* LMFeedCreatePost */ = {
+			isa = PBXGroup;
+			children = (
+				E59F9D0E2B56A75C00E68030 /* LMFeedCreatePostViewController.swift */,
+			);
+			path = LMFeedCreatePost;
+			sourceTree = "<group>";
+		};
+		E59F9D1F2B57AFE100E68030 /* CreatePostWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				E59F9D262B57E87500E68030 /* LMFeedCreatePostLinkPreview */,
+				E59F9D232B57D43900E68030 /* LMFeedCreatePostAddMediaView */,
+				E59F9D202B57B02500E68030 /* LMFeedCreatePostHeaderView */,
+			);
+			path = CreatePostWidgets;
+			sourceTree = "<group>";
+		};
+		E59F9D202B57B02500E68030 /* LMFeedCreatePostHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				E59F9D212B57B05B00E68030 /* LMFeedCreatePostHeaderView.swift */,
+			);
+			path = LMFeedCreatePostHeaderView;
+			sourceTree = "<group>";
+		};
+		E59F9D232B57D43900E68030 /* LMFeedCreatePostAddMediaView */ = {
+			isa = PBXGroup;
+			children = (
+				E59F9D242B57D5F500E68030 /* LMFeedCreatePostAddMediaView.swift */,
+			);
+			path = LMFeedCreatePostAddMediaView;
+			sourceTree = "<group>";
+		};
+		E59F9D262B57E87500E68030 /* LMFeedCreatePostLinkPreview */ = {
+			isa = PBXGroup;
+			children = (
+				E59F9D272B57E88A00E68030 /* LMFeedCreatePostLinkPreview.swift */,
+			);
+			path = LMFeedCreatePostLinkPreview;
+			sourceTree = "<group>";
+		};
 		E5CFEACD2B5009BC0090A902 /* LMFeedTaggingListView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1594,12 +1646,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E59F9D282B57E88A00E68030 /* LMFeedCreatePostLinkPreview.swift in Sources */,
 				E5F076152B4D21F200F9119D /* LMFeedTaggingTextView.swift in Sources */,
 				42D610D7611D34E0DEAE3218252BCCF9 /* Appearance.swift in Sources */,
 				C4F9167008B88E2CCDFF5D066B7E8617 /* Appearance+Colors.swift in Sources */,
 				658C878E6F3F9B879EEE9D1A326AA91B /* Appearance+Fonts.swift in Sources */,
 				E572B78B2B49991200E36655 /* UIColor+Extension.swift in Sources */,
 				406918E87D2D72E316C3C169457D9CD8 /* Bundle+Extension.swift in Sources */,
+				E59F9D252B57D5F500E68030 /* LMFeedCreatePostAddMediaView.swift in Sources */,
 				AC004211EB22842E76F7B5880F476A26 /* Collection+Extension.swift in Sources */,
 				6E998107500DB7B8AF4490338DB62782 /* Constants.swift in Sources */,
 				1170DBDC23E645ACE5232FAF09E5B637 /* Constants+Images.swift in Sources */,
@@ -1637,6 +1691,7 @@
 				192118D797602E8643E137AA31F54232 /* LMImageView.swift in Sources */,
 				05F0DE2248E230A067280F9BFEA00A3B /* LMLabel.swift in Sources */,
 				FE620BA3ED97217E946A030F311BEEB2 /* LMPostWidgetTableViewCell.swift in Sources */,
+				E59F9D222B57B05B00E68030 /* LMFeedCreatePostHeaderView.swift in Sources */,
 				EC39910653ACDA1F0BCE2B078AF71682 /* LMStackView.swift in Sources */,
 				02E2BF1845C2B64D1C4845E30B7098D4 /* LMTableViewCell.swift in Sources */,
 				9D4A5CA63277BE041CA64484A24E7756 /* LMTableViewHeaderFooterView.swift in Sources */,
@@ -1794,6 +1849,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E53C967FDC0F3F744407E34FFFB10C97 /* Collection+Extension.swift in Sources */,
+				E59F9D0F2B56A75C00E68030 /* LMFeedCreatePostViewController.swift in Sources */,
 				5F20B62648686B13D3E2430FC9B34319 /* CollectionView+Extension.swift in Sources */,
 				5F27D7D09C4E42A96D6897472BD421C7 /* Components.swift in Sources */,
 				B5729F46DEC7914439D9B7BC595C6BAE /* lm-feedCore-iOS-dummy.m in Sources */,

@@ -45,9 +45,13 @@ public extension Constants {
         public var menuIcon = loadSystemImage(with: "line.3.horizontal")
         public var personIcon = loadSystemImage(with: "person")
         public var checkmarkIconFilled = loadSystemImage(with: "checkmark.circle.fill")
+        public var plusIcon = loadSystemImage(with: "plus")
         
         public var pdfIcon = loadImage(with: "pdfIcon")
         public var placeholderProfileImage = loadImage(with: "placeholderProfile")
         public var brokenLink = loadImage(with: "brokenLink")
+        public var galleryIcon = loadImage(with: "galleryIcon")
+        public var videoIcon = loadImage(with: "videoIcon")
+        public var paperclipIcon = loadImage(with: "paperclip")
     }
 }
