@@ -48,10 +48,11 @@ public extension Constants {
         public var plusIcon = loadSystemImage(with: "plus")
         
         public var pdfIcon = loadImage(with: "pdfIcon")
-        public var placeholderProfileImage = loadImage(with: "placeholderProfile")
+        public var placeholderImage = loadImage(with: "placeholderImage")
         public var brokenLink = loadImage(with: "brokenLink")
         public var galleryIcon = loadImage(with: "galleryIcon")
         public var videoIcon = loadImage(with: "videoIcon")
         public var paperclipIcon = loadImage(with: "paperclip")
+        public var createPostIcon = loadImage(with: "createPostIcon")
     }
 }

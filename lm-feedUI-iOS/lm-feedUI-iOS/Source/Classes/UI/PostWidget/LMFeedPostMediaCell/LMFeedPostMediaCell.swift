@@ -151,8 +151,8 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         footerView.delegate = self
         pageControl.addTarget(self, action: #selector(didChangePageControl), for: .primaryActionTriggered)
         
-        mediaCollectionView.registerCell(type: LMUIComponents.shared.imageCollectionCell)
-        mediaCollectionView.registerCell(type: LMUIComponents.shared.videoCollectionCell)
+        mediaCollectionView.registerCell(type: LMUIComponents.shared.imagePreviewCell)
+        mediaCollectionView.registerCell(type: LMUIComponents.shared.videoPreviewCell)
     }
     
     // MARK: Appearance
@@ -171,7 +171,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     }
     
     open func tableViewScrolled(isPlay: Bool) {
-        for case let cell as LMFeedPostVideoCollectionCell in mediaCollectionView.visibleCells {
+        for case let cell as LMFeedVideoCollectionCell in mediaCollectionView.visibleCells {
             if let indexPath = mediaCollectionView.indexPath(for: cell),
                let itemRect = mediaCollectionView.layoutAttributesForItem(at: indexPath)?.frame{
                 let convertedRect = mediaCollectionView.convert(itemRect, to: mediaCollectionView.superview)
@@ -235,12 +235,12 @@ extension LMFeedPostMediaCell: UICollectionViewDataSource,
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imageCollectionCell, for: indexPath),
-           let data = mediaCellsData[indexPath.row] as? LMFeedPostImageCollectionCell.ViewModel {
+        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreviewCell, for: indexPath),
+           let data = mediaCellsData[indexPath.row] as? LMFeedImageCollectionCell.ViewModel {
             cell.configure(with: data)
             return cell
-        } else if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoCollectionCell, for: indexPath),
-                  let data = mediaCellsData[indexPath.row] as? LMFeedPostVideoCollectionCell.ViewModel {
+        } else if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath),
+                  let data = mediaCellsData[indexPath.row] as? LMFeedVideoCollectionCell.ViewModel {
             cell.configure(with: data, videoPlayer: videoPlayer)
             return cell
         }
@@ -263,7 +263,7 @@ extension LMFeedPostMediaCell: UICollectionViewDataSource,
     }
     
     open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let cell = cell as? LMFeedPostVideoCollectionCell else { return }
+        guard let cell = cell as? LMFeedVideoCollectionCell else { return }
         cell.pauseVideo()
     }
     

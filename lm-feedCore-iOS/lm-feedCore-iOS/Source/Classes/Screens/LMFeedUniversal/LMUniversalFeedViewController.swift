@@ -79,12 +79,22 @@ open class LMUniversalFeedViewController: LMViewController {
         return vc
     }()
     
+    open private(set) lazy var createPostButton: LMButton = {
+        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+        button.setTitle("Create Post", for: .normal)
+        button.setImage(Constants.shared.images.createPostIcon, for: .normal)
+        button.backgroundColor = Appearance.shared.colors.appTintColor
+        button.tintColor = Appearance.shared.colors.white
+        return button
+    }()
+    
     
     // MARK: Data Variables
     public var data: [LMFeedPostTableCellProtocol] = []
     public var selectedTopics: [LMFeedTopicCollectionCellDataModel] = []
     public var viewModel: LMUniversalFeedViewModel?
     public weak var feedListDelegate: LMFeedPostListVCToProtocol?
+    public var createPostButtonWidth: NSLayoutConstraint?
     
     // MARK: viewDidLoad
     open override func viewDidLoad() {
@@ -100,6 +110,7 @@ open class LMUniversalFeedViewController: LMViewController {
     open override func setupViews() {
         super.setupViews()
         view.addSubview(contentStack)
+        view.addSubview(createPostButton)
         
         contentStack.addArrangedSubview(topicContainerView)
         addChild(postList)
@@ -117,6 +128,10 @@ open class LMUniversalFeedViewController: LMViewController {
         super.setupLayouts()
         
         NSLayoutConstraint.activate([
+            createPostButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            createPostButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
+            createPostButton.heightAnchor.constraint(equalToConstant: 50),
+            
             contentStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             contentStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             contentStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -139,6 +154,9 @@ open class LMUniversalFeedViewController: LMViewController {
         let topicWidth = NSLayoutConstraint(item: topicCollection, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 500)
         topicWidth.priority = .defaultLow
         topicWidth.isActive = true
+        
+        
+        createPostButtonWidth = NSLayoutConstraint(item: createPostButton, attribute: .width, relatedBy: .equal, toItem: createPostButton, attribute: .height, multiplier: 1, constant: 0)
     }
     
     // MARK: setupActions
@@ -249,6 +267,24 @@ extension LMUniversalFeedViewController: LMFeedPostListVCFromProtocol {
     }
     
     open func openUserDetail(for uuid: String) {
+        print(#function)
+    }
+    
+    open func tableViewScrolled(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y > .zero {
+            UIView.animate(withDuration: 0.2, delay: 1, options: .curveEaseIn) { [weak self] in
+                self?.createPostButton.setTitle(nil, for: .normal)
+                self?.createPostButtonWidth?.isActive = true
+            }
+        } else {
+            UIView.animate(withDuration: 0.2, delay: 1, options: .curveEaseOut) { [weak self] in
+                self?.createPostButton.setTitle("Create Post", for: .normal)
+                self?.createPostButtonWidth?.isActive = false
+            }
+        }
+    }
+    
+    open func postDataFetched() {
         print(#function)
     }
 }

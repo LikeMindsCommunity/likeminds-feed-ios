@@ -55,7 +55,7 @@ public struct LMFeedConvertToFeedPost {
     }
     
     private static func convertToDocumentCells(from data: LMFeedPostDataModel) -> LMFeedPostDocumentCell.ViewModel {
-        func convertToDocument(from data: [LMFeedPostDataModel.DocumentAttachment]) -> [LMFeedPostDocumentCellView.ViewModel] {
+        func convertToDocument(from data: [LMFeedPostDataModel.DocumentAttachment]) -> [LMFeedDocumentPreview.ViewModel] {
             data.map { datum in
                     .init(title: datum.name, documentURL: datum.url, size: datum.size, pageCount: datum.pageCount, docType: datum.format)
             }
@@ -76,9 +76,9 @@ public struct LMFeedConvertToFeedPost {
         func convertToMediaProtocol(from data: [LMFeedPostDataModel.ImageVideoAttachment]) -> [LMFeedMediaProtocol] {
             data.map { datum in
                 if datum.isVideo {
-                    return LMFeedPostVideoCollectionCell.ViewModel(videoURL: datum.url)
+                    return LMFeedVideoCollectionCell.ViewModel(videoURL: datum.url)
                 } else {
-                    return LMFeedPostImageCollectionCell.ViewModel(image: datum.url)
+                    return LMFeedImageCollectionCell.ViewModel(image: datum.url)
                 }
             }
         }

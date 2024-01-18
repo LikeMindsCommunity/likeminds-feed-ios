@@ -20,7 +20,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         public var headerData: LMFeedPostHeaderView.ViewModel
         public var postText: String
         public var topics: LMFeedTopicView.ViewModel
-        public let documents: [LMFeedPostDocumentCellView.ViewModel]
+        public let documents: [LMFeedDocumentPreview.ViewModel]
         public let isShowFullText: Bool
         public var isShowAllDocuments: Bool
         public var footerData: LMFeedPostFooterView.ViewModel
@@ -30,7 +30,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
                      headerData: LMFeedPostHeaderView.ViewModel,
                      topics: LMFeedTopicView.ViewModel?,
                      postText: String?,
-                     documents: [LMFeedPostDocumentCellView.ViewModel],
+                     documents: [LMFeedDocumentPreview.ViewModel],
                      footerData: LMFeedPostFooterView.ViewModel,
                      isShowFullText: Bool = false,
                      isShowAllDocuments: Bool = false) {
@@ -175,7 +175,10 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         
         data.documents.enumerated().forEach { index, document in
             guard index < 2 || data.isShowAllDocuments else { return }
-            let documentView = LMFeedPostDocumentCellView(frame: .init(x: 0, y: 0, width: documentContainerStack.frame.width, height: 90))
+            let documentView = LMUIComponents.shared.documentPreview.init()
+            
+            NSLayoutConstraint(item: documentView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 90).isActive = true
+            
             documentView.configure(with: document, delegate: self)
             documentContainerStack.addArrangedSubview(documentView)
             
@@ -199,9 +202,9 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
 }
 
 
-// MARK: LMChatDocumentCellViewProtocol
+// MARK: LMFeedDocumentPreviewProtocol
 @objc
-extension LMFeedPostDocumentCell: LMChatDocumentCellViewProtocol {
+extension LMFeedPostDocumentCell: LMFeedDocumentPreviewProtocol {
     open func didTapCrossButton(documentID: Int) { print(#function) }
     open func didTapDocument(documentID: Int) { print(#function) }
 }

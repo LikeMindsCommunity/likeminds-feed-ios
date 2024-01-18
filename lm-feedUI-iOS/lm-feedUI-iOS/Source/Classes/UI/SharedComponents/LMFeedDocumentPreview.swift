@@ -1,5 +1,5 @@
 //
-//  LMFeedPostDocumentCellView.swift
+//  LMFeedDocumentPreview.swift
 //  LMFramework
 //
 //  Created by Devansh Mohata on 13/12/23.
@@ -7,20 +7,20 @@
 
 import UIKit
 
-public protocol LMChatDocumentCellViewProtocol: AnyObject {
+public protocol LMFeedDocumentPreviewProtocol: AnyObject {
     func didTapCrossButton(documentID: Int)
     func didTapDocument(documentID: Int)
 }
 
 @IBDesignable
-open class LMFeedPostDocumentCellView: LMView {
+open class LMFeedDocumentPreview: LMView {
     public struct ViewModel {
-        let title: String
-        let documentURL: String
-        let size: Int?
-        let pageCount: Int?
-        let docType: String?
-        let isShowCrossButton: Bool
+        public let title: String
+        public let documentURL: String
+        public let size: Int?
+        public let pageCount: Int?
+        public let docType: String?
+        public let isShowCrossButton: Bool
         
         public init(title: String, documentURL: String, size: Int?, pageCount: Int?, docType: String?, isShowCrossButton: Bool = false) {
             self.title = title
@@ -102,7 +102,7 @@ open class LMFeedPostDocumentCellView: LMView {
     
     
     // MARK: Data Variables
-    public var delegate: LMChatDocumentCellViewProtocol?
+    public var delegate: LMFeedDocumentPreviewProtocol?
     public var documentID: Int?
     
     
@@ -191,7 +191,7 @@ open class LMFeedPostDocumentCellView: LMView {
     
     
     // MARK: Configure
-    open func configure(with data: ViewModel, delegate: LMChatDocumentCellViewProtocol?) {
+    open func configure(with data: ViewModel, delegate: LMFeedDocumentPreviewProtocol?) {
         self.delegate = delegate
         
         titleLabel.text = data.title

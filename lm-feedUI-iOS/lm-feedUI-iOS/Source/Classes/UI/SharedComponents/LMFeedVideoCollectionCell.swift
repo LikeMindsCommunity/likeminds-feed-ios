@@ -9,31 +9,52 @@ import AVKit
 import UIKit
 
 @IBDesignable
-open class LMFeedPostVideoCollectionCell: LMCollectionViewCell {
+open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     public struct ViewModel: LMFeedMediaProtocol {
         public let videoURL: String
+        public let isFilePath: Bool
         
-        public init(videoURL: String) {
+        public init(videoURL: String, isFilePath: Bool = false) {
             self.videoURL = videoURL
+            self.isFilePath = isFilePath
         }
     }
     
-    private var videoPlayer: AVPlayerViewController?
     
+    // MARK: UI Elements
+    open private(set) lazy var crossButton: LMButton = {
+        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+        button.setTitle(nil, for: .normal)
+        button.setImage(Constants.shared.images.crossIcon, for: .normal)
+        button.tintColor = Appearance.shared.colors.gray51
+        button.backgroundColor = Appearance.shared.colors.white
+        return button
+    }()
+    
+    
+    // MARK: Data Variables
+    private var videoPlayer: AVPlayerViewController?
+    public var crossButtonAction: ((String) -> Void)?
+    public var videoURL: String?
+    
+    
+    // MARK: prepareForReuse
     open override func prepareForReuse() {
         super.prepareForReuse()
         pauseVideo()
         videoPlayer = nil
     }
     
-    // MARK: View Hierachy
+    
+    // MARK: setupViews
     public override func setupViews() {
         super.setupViews()
         
         contentView.addSubview(containerView)
     }
     
-    // MARK: Constraints
+    
+    // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
         
@@ -41,20 +62,41 @@ open class LMFeedPostVideoCollectionCell: LMCollectionViewCell {
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            
+            crossButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
+            crossButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
+            crossButton.heightAnchor.constraint(equalToConstant: 24),
+            crossButton.widthAnchor.constraint(equalTo: crossButton.heightAnchor)
         ])
     }
     
+    
+    // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        
         backgroundColor = .clear
-        contentView.backgroundColor = .black
     }
     
-    // MARK: Configure Method
-    open func configure(with data: ViewModel, videoPlayer: AVPlayerViewController) {
+    
+    // MARK: setupActions
+    open override func setupActions() {
+        super.setupActions()
+        crossButton.addTarget(self, action: #selector(didTapCrossButton), for: .touchUpInside)
+    }
+    
+    @objc
+    open func didTapCrossButton() {
+        guard let videoURL else { return }
+        crossButtonAction?(videoURL)
+    }
+    
+    // MARK: configure
+    open func configure(with data: ViewModel, videoPlayer: AVPlayerViewController, crossButtonAction: ((String) -> Void)? = nil) {
         self.videoPlayer = videoPlayer
+        self.crossButtonAction = crossButtonAction
+        videoURL = data.videoURL
+        
         containerView.addSubview(videoPlayer.view)
         
         NSLayoutConstraint.activate([
@@ -72,6 +114,12 @@ open class LMFeedPostVideoCollectionCell: LMCollectionViewCell {
                 self?.videoPlayer?.player = player
                 self?.playVideo()
             }
+        }
+        
+        self.crossButtonAction = crossButtonAction
+        crossButton.isHidden = crossButtonAction == nil
+        if crossButtonAction != nil {
+            containerView.bringSubviewToFront(crossButton)
         }
     }
     

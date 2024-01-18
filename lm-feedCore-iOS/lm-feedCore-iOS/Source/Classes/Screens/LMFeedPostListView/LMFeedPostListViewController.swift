@@ -19,6 +19,8 @@ public protocol LMFeedUpdatePostDataProtocol: AnyObject {
 public protocol LMFeedPostListVCFromProtocol: AnyObject {
     func openPostDetail(for postID: String)
     func openUserDetail(for uuid: String)
+    func tableViewScrolled(_ scrollView: UIScrollView)
+    func postDataFetched()
 }
 
 // MARK: LMFeedPostListVCToProtocol
@@ -131,6 +133,10 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
         if data.count == indexPath.row + 1 {
             viewModel?.getFeed()
         }
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        delegate?.tableViewScrolled(scrollView)
     }
 }
 

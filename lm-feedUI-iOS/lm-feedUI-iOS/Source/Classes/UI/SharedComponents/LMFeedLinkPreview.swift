@@ -9,7 +9,7 @@ import Kingfisher
 import UIKit
 
 @IBDesignable
-open class LMFeedCreatePostLinkPreview: LMView {
+open class LMFeedLinkPreview: LMView {
     public struct ViewModel: LMFeedMediaProtocol {
         let linkPreview: String?
         let title: String?
@@ -38,7 +38,6 @@ open class LMFeedCreatePostLinkPreview: LMView {
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fill
-        stack.spacing = 8
         return stack
     }()
     
@@ -156,10 +155,10 @@ open class LMFeedCreatePostLinkPreview: LMView {
             sepratorView.topAnchor.constraint(equalTo: metaDataContainerView.topAnchor),
             sepratorView.heightAnchor.constraint(equalToConstant: 1),
             
-            metaDataStackView.leadingAnchor.constraint(equalTo: sepratorView.leadingAnchor),
-            metaDataStackView.trailingAnchor.constraint(equalTo: sepratorView.trailingAnchor),
-            metaDataStackView.bottomAnchor.constraint(equalTo: metaDataContainerView.bottomAnchor),
-            metaDataStackView.topAnchor.constraint(equalTo: sepratorView.bottomAnchor, constant: 16),
+            metaDataStackView.leadingAnchor.constraint(equalTo: metaDataContainerView.leadingAnchor, constant: 16),
+            metaDataStackView.trailingAnchor.constraint(equalTo: metaDataContainerView.trailingAnchor, constant: -16),
+            metaDataStackView.bottomAnchor.constraint(equalTo: metaDataContainerView.bottomAnchor, constant: -8),
+            metaDataStackView.topAnchor.constraint(equalTo: sepratorView.bottomAnchor, constant: 8),
         ])
     }
     
@@ -175,7 +174,8 @@ open class LMFeedCreatePostLinkPreview: LMView {
     
     
     // MARK: configure
-    open func configure(with data: ViewModel, crossButtonAction: (() -> Void)?) {
+    open func configure(with data: ViewModel, crossButtonAction: (() -> Void)? = nil) {
+        crossButton.isHidden = crossButtonAction == nil
         self.crossButtonAction = crossButtonAction
         
         imageView.kf.indicatorType = .activity
