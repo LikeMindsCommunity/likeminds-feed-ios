@@ -51,6 +51,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         super.setupViews()
         
         contentView.addSubview(containerView)
+        containerView.addSubview(crossButton)
     }
     
     

@@ -165,6 +165,7 @@ open class LMUniversalFeedViewController: LMViewController {
         
         allTopicsButton.addTarget(self, action: #selector(didTapAllTopicsButton), for: .touchUpInside)
         clearButton.addTarget(self, action: #selector(didTapClearButton), for: .touchUpInside)
+        createPostButton.addTarget(self, action: #selector(didTapNewPostButton), for: .touchUpInside)
         feedListDelegate = postList
     }
     
@@ -184,11 +185,19 @@ open class LMUniversalFeedViewController: LMViewController {
         viewModel?.updateSelectedTopics(with: [])
     }
     
+    @objc
+    open func didTapNewPostButton() {
+        let viewcontroller = LMFeedCreatePostViewModel.createModule()
+        navigationController?.pushViewController(viewcontroller, animated: true)
+    }
+    
+    
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
         view.backgroundColor = Appearance.shared.colors.backgroundColor
     }
+    
     
     // MARK: setupNavigationBar
     open override func setupNavigationBar() {

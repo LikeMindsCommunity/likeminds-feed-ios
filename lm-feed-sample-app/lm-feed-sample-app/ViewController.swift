@@ -55,12 +55,3 @@ class ViewController: UIViewController {
         view.endEditing(true)
     }
 }
-
-
-
-class tt: LMUniversalFeedViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        print(#function, #file)
-    }
-}

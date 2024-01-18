@@ -22,4 +22,7 @@ public struct Components {
     
     // MARK: Tagging List View
     public var taggingListView: LMFeedTaggingListView.Type = LMFeedTaggingListView.self
+    
+    // MARK: Create Post
+    public var createPostScreen: LMFeedCreatePostViewController.Type = LMFeedCreatePostViewController.self
 }

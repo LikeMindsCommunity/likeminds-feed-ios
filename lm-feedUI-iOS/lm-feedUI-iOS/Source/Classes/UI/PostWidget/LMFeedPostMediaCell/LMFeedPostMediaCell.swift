@@ -43,9 +43,8 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     
     // MARK: UI Elements
     open private(set) lazy var mediaCollectionView: LMCollectionView = {
-        let collection = LMCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        let collection = LMCollectionView(frame: .zero, collectionViewLayout: LMCollectionView.mediaFlowLayout())
         collection.translatesAutoresizingMaskIntoConstraints = false
-        collection.collectionViewLayout = imageCollectionViewLayout
         collection.dataSource = self
         collection.delegate = self
         collection.isPagingEnabled = true
@@ -65,13 +64,6 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         pageControl.hidesForSinglePage = true
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
-    }()
-    
-    open private(set) lazy var imageCollectionViewLayout: UICollectionViewLayout = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 4
-        return layout
     }()
     
     open private(set) lazy var videoPlayer: AVPlayerViewController = {

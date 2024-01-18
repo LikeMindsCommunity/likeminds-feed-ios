@@ -750,8 +750,8 @@
 				0DCEAE0AF2FB906D099CCC0A7A0CC0DE /* LMViewLifeCycle.swift */,
 				6C355FB3341546E866264E7D2DB3194C /* NSAttributedString+Extension.swift */,
 				D80037E9317279F42CB5C6591895C5A2 /* String+Extension.swift */,
-				ABEF2BDAA949304732A7773282B940EB /* UIImage+Extension.swift */,
 				E572B78A2B49991200E36655 /* UIColor+Extension.swift */,
+				ABEF2BDAA949304732A7773282B940EB /* UIImage+Extension.swift */,
 			);
 			name = Initials;
 			path = "lm-feedUI-iOS/Source/Classes/Initials";

@@ -31,6 +31,33 @@ public extension UIView {
         self.backgroundColor = nil
         layer.backgroundColor = bColour?.cgColor
     }
+    
+    func pinSubView(subView: UIView, padding: UIEdgeInsets = .zero) {
+        NSLayoutConstraint.activate([
+            subView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding.left),
+            subView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: padding.right),
+            subView.topAnchor.constraint(equalTo: topAnchor, constant: padding.top),
+            subView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: padding.bottom)
+        ])
+    }
+    
+    @discardableResult
+    func setHeightConstraint(with value: CGFloat, relatedBy: NSLayoutConstraint.Relation = .equal, priority: UILayoutPriority = .defaultHigh) -> NSLayoutConstraint {
+        let heightConstraint = NSLayoutConstraint(item: self, attribute: .height, relatedBy: relatedBy, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)
+        heightConstraint.priority = priority
+        heightConstraint.isActive = true
+        
+        return heightConstraint
+    }
+    
+    @discardableResult
+    func setWidthConstraint(with value: CGFloat, relatedBy: NSLayoutConstraint.Relation = .equal, priority: UILayoutPriority = .defaultHigh) -> NSLayoutConstraint {
+        let widthConstraint = NSLayoutConstraint(item: self, attribute: .width, relatedBy: relatedBy, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)
+        widthConstraint.priority = priority
+        widthConstraint.isActive = true
+        
+        return widthConstraint
+    }
 }
 
 @IBDesignable

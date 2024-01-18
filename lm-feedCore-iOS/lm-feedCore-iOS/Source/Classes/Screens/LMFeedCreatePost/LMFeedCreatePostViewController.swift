@@ -21,13 +21,16 @@ open class LMFeedCreatePostViewController: LMViewController {
     open private(set) lazy var containerStackView: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
-        stack.alignment = .center
+        stack.alignment = .fill
         stack.distribution = .fill
         return stack
     }()
     
     open private(set) lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()
+        scroll.isDirectionalLockEnabled = true
+        scroll.showsHorizontalScrollIndicator = false
+        scroll.showsVerticalScrollIndicator = false
         scroll.translatesAutoresizingMaskIntoConstraints = false
         return scroll
     }()
@@ -54,6 +57,10 @@ open class LMFeedCreatePostViewController: LMViewController {
     open private(set) lazy var inputTextView: LMFeedTaggingTextView = {
         let textView = LMFeedTaggingTextView().translatesAutoresizingMaskIntoConstraints()
         textView.dataDetectorTypes = [.link]
+        textView.mentionDelegate = self
+        textView.isScrollEnabled = false
+        textView.isEditable = true
+        textView.placeHolderText = "Write Something here..."
         return textView
     }()
     
@@ -64,7 +71,8 @@ open class LMFeedCreatePostViewController: LMViewController {
     }()
     
     open private(set) lazy var mediaCollectionView: LMCollectionView = {
-        let collection = LMCollectionView().translatesAutoresizingMaskIntoConstraints()
+        let collection = LMCollectionView(frame: .zero, collectionViewLayout: LMCollectionView.mediaFlowLayout())
+        collection.translatesAutoresizingMaskIntoConstraints = false
         collection.registerCell(type: LMUIComponents.shared.imagePreviewCell)
         collection.registerCell(type: LMUIComponents.shared.videoPreviewCell)
         collection.showsVerticalScrollIndicator = false
@@ -78,6 +86,9 @@ open class LMFeedCreatePostViewController: LMViewController {
         let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
+        table.isScrollEnabled = false
+        table.alwaysBounceVertical = false
+        table.alwaysBounceHorizontal = false
         table.register(LMFeedCreatePostDocumentPreviewCell.self)
         table.dataSource = self
         table.delegate = self
@@ -130,6 +141,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     // MARK: Data Variables
     public var documentCellData: [LMFeedDocumentPreview.ViewModel] = []
     public var documentCellHeight: CGFloat = 90
+    public var documenTableHeight: NSLayoutConstraint?
     
     public var mediaCellData: [LMFeedMediaProtocol] = []
     
@@ -161,41 +173,22 @@ open class LMFeedCreatePostViewController: LMViewController {
     open override func setupLayouts() {
         super.setupLayouts()
         
+        view.pinSubView(subView: containerView)
+        containerView.pinSubView(subView: containerStackView)
+        scrollView.pinSubView(subView: scrollStackView)
+        headerView.setHeightConstraint(with: 64)
+        topicView.setHeightConstraint(with: 2, priority: .defaultLow)
+        linkPreview.setHeightConstraint(with: 1000, priority: .defaultLow)
+        addPhotosTab.setHeightConstraint(with: 40)
+        scrollStackView.setHeightConstraint(with: 1000, priority: .defaultLow)
+        
+        documenTableHeight = documentTableView.setHeightConstraint(with: documentCellHeight, priority: .defaultLow)
+        
         NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: view.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            containerStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            containerStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            containerStackView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            containerStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            
             scrollView.widthAnchor.constraint(equalTo: containerStackView.widthAnchor),
-            
-            scrollStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            scrollStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            scrollStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            scrollStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            scrollStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            
-            headerView.heightAnchor.constraint(equalToConstant: 64),
-            mediaCollectionView.heightAnchor.constraint(equalTo: mediaCollectionView.widthAnchor),
-            
-            addPhotosTab.heightAnchor.constraint(equalToConstant: 40)
+            scrollStackView.widthAnchor.constraint(equalTo: containerStackView.widthAnchor),
+            mediaCollectionView.heightAnchor.constraint(equalTo: mediaCollectionView.widthAnchor)
         ])
-        
-        let tableHeightConstraint = NSLayoutConstraint(item: documentTableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: documentCellHeight)
-        tableHeightConstraint.isActive = true
-        
-        let heightConstraint = NSLayoutConstraint(item: scrollStackView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100)
-        heightConstraint.priority = .defaultLow
-        heightConstraint.isActive = true
-        
-        let linkPreviewHeightConstraint = NSLayoutConstraint(item: linkPreview, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 1000)
-        linkPreviewHeightConstraint.priority = .defaultLow
-        linkPreviewHeightConstraint.isActive = true
     }
     
     
@@ -286,5 +279,21 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: collectionView.frame.width, height: collectionView.frame.width)
+    }
+}
+
+
+// MARK: LMFeedTaggingTextViewProtocol
+extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
+    public func mentionStarted(with text: String) {
+        print(text)
+    }
+    
+    public func mentionStopped() {
+        print(#function)
+    }
+    
+    public func contentHeightChanged() {
+        print(#function)
     }
 }

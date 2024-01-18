@@ -132,33 +132,23 @@ open class LMFeedLinkPreview: LMView {
     open override func setupLayouts() {
         super.setupLayouts()
         
+        pinSubView(subView: containerView)
+        containerView.pinSubView(subView: containerStackView)
+        metaDataContainerView.pinSubView(subView: metaDataStackView, padding: .init(top: 8, left: 16, bottom: -8, right: -16))
+        metaDataStackView.setHeightConstraint(with: 10, priority: .defaultLow)
+        sepratorView.setHeightConstraint(with: 1)
+        
         NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: topAnchor),
-            containerView.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor),
-            
             crossButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
             crossButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
             crossButton.heightAnchor.constraint(equalToConstant: 24),
             crossButton.widthAnchor.constraint(equalTo: crossButton.heightAnchor),
-            
-            containerStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            containerStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            containerStackView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            containerStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 3/2),
             
             sepratorView.leadingAnchor.constraint(equalTo: metaDataContainerView.leadingAnchor),
             sepratorView.trailingAnchor.constraint(equalTo: metaDataContainerView.trailingAnchor),
             sepratorView.topAnchor.constraint(equalTo: metaDataContainerView.topAnchor),
-            sepratorView.heightAnchor.constraint(equalToConstant: 1),
-            
-            metaDataStackView.leadingAnchor.constraint(equalTo: metaDataContainerView.leadingAnchor, constant: 16),
-            metaDataStackView.trailingAnchor.constraint(equalTo: metaDataContainerView.trailingAnchor, constant: -16),
-            metaDataStackView.bottomAnchor.constraint(equalTo: metaDataContainerView.bottomAnchor, constant: -8),
-            metaDataStackView.topAnchor.constraint(equalTo: sepratorView.bottomAnchor, constant: 8),
         ])
     }
     

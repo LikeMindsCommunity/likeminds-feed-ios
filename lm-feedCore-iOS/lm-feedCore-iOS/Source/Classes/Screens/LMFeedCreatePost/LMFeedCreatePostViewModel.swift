@@ -9,5 +9,9 @@ import lm_feedUI_iOS
 import LikeMindsFeed
 
 public final class LMFeedCreatePostViewModel {
-    
+    public static func createModule() -> LMFeedCreatePostViewController {
+        let viewcontroller = Components.shared.createPostScreen.init()
+        
+        return viewcontroller
+    }
 }
