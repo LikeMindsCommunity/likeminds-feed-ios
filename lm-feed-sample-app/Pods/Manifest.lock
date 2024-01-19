@@ -1,9 +1,11 @@
 PODS:
   - Alamofire (5.7.1)
+  - BSImagePicker (3.3.1)
   - Kingfisher (7.10.1)
   - LikeMindsFeed (1.7.0):
     - Alamofire (~> 5.7.1)
   - lm-feedCore-iOS (0.1.0):
+    - BSImagePicker
     - LikeMindsFeed
     - lm-feedUI-iOS
   - lm-feedUI-iOS (0.1.0):
@@ -16,6 +18,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
+    - BSImagePicker
     - Kingfisher
     - LikeMindsFeed
 
@@ -27,9 +30,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
+  BSImagePicker: 0fe04b574d4d6b81093785d2af6c26227efc8428
   Kingfisher: bc5abe80a8e0144537ef1dd5a0b2621b04f7f439
   LikeMindsFeed: 2980dfc0439a131109d9be4c29aa92254dd10b33
-  lm-feedCore-iOS: 0c37a69d84621e6a0fb98a1130d27688ee11bf8a
+  lm-feedCore-iOS: a28f861eb288c43f1825fd9e033883bf664a5202
   lm-feedUI-iOS: 5565c8f34ce1032e23907397359d31c633270f44
 
 PODFILE CHECKSUM: 0f67f931bcc06886edef9f2324baa19e7e6b1a64

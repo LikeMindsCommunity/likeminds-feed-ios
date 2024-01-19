@@ -5,8 +5,9 @@
 //  Created by Devansh Mohata on 16/01/24.
 //
 
-import lm_feedUI_iOS
 import AVKit
+import BSImagePicker
+import lm_feedUI_iOS
 import UIKit
 
 @IBDesignable
@@ -32,19 +33,21 @@ open class LMFeedCreatePostViewController: LMViewController {
         scroll.showsHorizontalScrollIndicator = false
         scroll.showsVerticalScrollIndicator = false
         scroll.translatesAutoresizingMaskIntoConstraints = false
+        scroll.bounces = false
         return scroll
     }()
     
     open private(set) lazy var scrollStackView: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
-        stack.alignment = .fill
+        stack.alignment = .center
         stack.distribution = .fill
+        stack.spacing = 8
         return stack
     }()
     
-    open private(set) lazy var headerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var headerView: LMFeedCreatePostHeaderView = {
+        let view = LMUIComponents.shared.createPostHeaderView.init().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = Appearance.shared.colors.clear
         return view
     }()
@@ -139,6 +142,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     
     
     // MARK: Data Variables
+    public var viewModel: LMFeedCreatePostViewModel?
     public var documentCellData: [LMFeedDocumentPreview.ViewModel] = []
     public var documentCellHeight: CGFloat = 90
     public var documenTableHeight: NSLayoutConstraint?
@@ -189,6 +193,15 @@ open class LMFeedCreatePostViewController: LMViewController {
             scrollStackView.widthAnchor.constraint(equalTo: containerStackView.widthAnchor),
             mediaCollectionView.heightAnchor.constraint(equalTo: mediaCollectionView.widthAnchor)
         ])
+        
+        scrollStackView.subviews.forEach { subView in
+            if subView != addMoreButton {
+                NSLayoutConstraint.activate([
+                    subView.leadingAnchor.constraint(equalTo: scrollStackView.leadingAnchor, constant: 16),
+                    subView.trailingAnchor.constraint(equalTo: scrollStackView.trailingAnchor, constant: -16)
+                ])
+            }
+        }
     }
     
     
@@ -220,6 +233,22 @@ open class LMFeedCreatePostViewController: LMViewController {
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
+        setupAddMedia()
+        setupInitialView()
+    }
+    
+    open func setupAddMedia() {
+        addPhotosTab.configure(with: "Add Photo", image: Constants.shared.images.galleryIcon)
+        addVideoTab.configure(with: "Add Video", image: Constants.shared.images.videoIcon)
+        addDocumentsTab.configure(with: "Attach Files", image: Constants.shared.images.paperclipIcon)
+    }
+    
+    open func setupInitialView() {
+        linkPreview.isHidden = true
+        mediaCollectionView.isHidden = true
+        documentTableView.isHidden = true
+        addMoreButton.isHidden = true
+        topicView.isHidden = true
     }
 }
 
@@ -236,7 +265,7 @@ extension LMFeedCreatePostViewController: UITableViewDataSource, UITableViewDele
         return UITableViewCell()
     }
     
-    open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { documentCellHeight }
+    open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { Constants.shared.number.documentPreviewSize }
 }
 
 
@@ -270,7 +299,6 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
                 guard let self else { return }
                 print(videoID)
             }
-            
             return cell
         }
         
@@ -282,6 +310,11 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
     }
 }
 
+
+// MARK: LMFeedCreatePostViewModelProtocol
+extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
+    
+}
 
 // MARK: LMFeedTaggingTextViewProtocol
 extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {

@@ -41,6 +41,37 @@ public extension UIView {
         ])
     }
     
+    func addConstraint(top: (anchor: NSLayoutYAxisAnchor, padding: CGFloat)? = nil,
+                       bottom: (anchor: NSLayoutYAxisAnchor, padding: CGFloat)? = nil,
+                       leading: (anchor: NSLayoutXAxisAnchor, padding: CGFloat)? = nil,
+                       trailing: (anchor: NSLayoutXAxisAnchor, padding: CGFloat)? = nil,
+                       centerX: (anchor: NSLayoutXAxisAnchor, padding: CGFloat)? = nil,
+                       centerY: (anchor: NSLayoutYAxisAnchor, padding: CGFloat)? = nil) {
+        if let top {
+            topAnchor.constraint(equalTo: top.anchor, constant: top.padding).isActive = true
+        }
+        
+        if let bottom {
+            bottomAnchor.constraint(equalTo: bottom.anchor, constant: bottom.padding).isActive = true
+        }
+        
+        if let leading {
+            leadingAnchor.constraint(equalTo: leading.anchor, constant: leading.padding).isActive = true
+        }
+        
+        if let trailing {
+            trailingAnchor.constraint(equalTo: trailing.anchor, constant: trailing.padding).isActive = true
+        }
+        
+        if let centerX {
+            centerXAnchor.constraint(equalTo: centerX.anchor, constant: centerX.padding).isActive = true
+        }
+        
+        if let centerY {
+            centerYAnchor.constraint(equalTo: centerY.anchor, constant: centerY.padding).isActive = true
+        }
+    }
+    
     @discardableResult
     func setHeightConstraint(with value: CGFloat, relatedBy: NSLayoutConstraint.Relation = .equal, priority: UILayoutPriority = .defaultHigh) -> NSLayoutConstraint {
         let heightConstraint = NSLayoutConstraint(item: self, attribute: .height, relatedBy: relatedBy, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)

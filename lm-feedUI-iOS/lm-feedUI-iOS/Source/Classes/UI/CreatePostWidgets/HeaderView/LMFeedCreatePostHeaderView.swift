@@ -33,6 +33,7 @@ open class LMFeedCreatePostHeaderView: LMView {
         stack.axis = .horizontal
         stack.alignment = .center
         stack.distribution = .fill
+        stack.spacing = 8
         return stack
     }()
     
@@ -44,6 +45,7 @@ open class LMFeedCreatePostHeaderView: LMView {
     
     open private(set) lazy var userProfileImage: LMImageView = {
         let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
+        image.image = UIImage(systemName: "person.circle.fill")
         return image
     }()
     
@@ -51,6 +53,7 @@ open class LMFeedCreatePostHeaderView: LMView {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = Appearance.shared.fonts.headingFont1
         label.textColor = Appearance.shared.colors.gray1
+        label.text = "Devansh Mohata"
         return label
     }()
     
@@ -79,33 +82,16 @@ open class LMFeedCreatePostHeaderView: LMView {
     open override func setupLayouts() {
         super.setupLayouts()
         
+        pinSubView(subView: containerView)
+        imageContainerView.addConstraint(top: (stackView.topAnchor, 0), bottom: (stackView.bottomAnchor, 0))
+        userProfileImage.pinSubView(subView: imageContainerView)
+        imageContainerView.widthAnchor.constraint(equalTo: imageContainerView.heightAnchor).isActive = true
+        
         NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            
             stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            stackView.trailingAnchor.constraint(greaterThanOrEqualTo: containerView.trailingAnchor),
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            
-            imageContainerView.topAnchor.constraint(equalTo: stackView.topAnchor),
-            imageContainerView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
-            
-            editAuthorButton.topAnchor.constraint(greaterThanOrEqualTo: stackView.topAnchor),
-            editAuthorButton.bottomAnchor.constraint(greaterThanOrEqualTo: stackView.bottomAnchor),
-            
-            userNameLabel.topAnchor.constraint(equalTo: stackView.topAnchor),
-            userNameLabel.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
-            
-            userProfileImage.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor),
-            userProfileImage.trailingAnchor.constraint(equalTo: imageContainerView.trailingAnchor),
-            userProfileImage.topAnchor.constraint(equalTo: imageContainerView.topAnchor),
-            userProfileImage.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor),
-            
-            imageContainerView.widthAnchor.constraint(equalTo: imageContainerView.heightAnchor),
-            editAuthorButton.widthAnchor.constraint(equalTo: editAuthorButton.heightAnchor)
+            stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
         ])
     }
     

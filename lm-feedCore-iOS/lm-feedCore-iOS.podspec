@@ -14,5 +14,6 @@ Pod::Spec.new do |spec|
   spec.swift_version = '5.0'
   spec.requires_arc = true
   spec.dependency 'lm-feedUI-iOS'
+  spec.dependency 'BSImagePicker'
   spec.dependency 'LikeMindsFeed'
 end
