@@ -169,7 +169,10 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
     }
     
     open func didTapLikeTextButton(for postID: String) {
-        print(#function)
+        if viewModel?.allowPostLikeView(for: postID) == true {
+            let viewcontroller = LMFeedLikeViewModel.createModule(postID: postID)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        }
     }
     
     open func didTapCommentButton(for postID: String) {

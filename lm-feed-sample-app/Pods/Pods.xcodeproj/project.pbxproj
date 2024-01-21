@@ -17,6 +17,7 @@
 				728BB9AD81C4494205A94DAF09731740 /* PBXTargetDependency */,
 			);
 			name = LikeMindsFeed;
+			productName = LikeMindsFeed;
 		};
 /* End PBXAggregateTarget section */
 
@@ -95,7 +96,6 @@
 		4736CE92BC497751A5561C1FA693EA88 /* LMFeedTaggingUserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DDD943EA1FA8674077D273DE5E9D89 /* LMFeedTaggingUserTableCell.swift */; };
 		482B74C0548970BB9C095E2D8530E421 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F0595488B18A269F362A634B8D87C5 /* ParameterEncoding.swift */; };
 		495464F2685231BEC9B4F63225D95EFF /* LMFeedPostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BC3365F6C5C9A30A5972981FB12731 /* LMFeedPostDetailViewModel.swift */; };
-		49A3FCFB9AAB2427A58E17108C5A646B /* LMFeedUIAssetsCatalog.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F10EA0A59B2AE810E39615931352A44B /* LMFeedUIAssetsCatalog.xcassets */; };
 		4B23B05F62E805619C9B5BA83E34F4A9 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7E55656B3577C8D7165A6EA62B4150 /* Box.swift */; };
 		4DEAE5703BDD544C9956BF42F7D57CE5 /* DiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DAC56C1F31868586B7922DCCC1D278 /* DiskStorage.swift */; };
 		4E5382445AC9C6B27C4ED0640457323B /* Constants+Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A30D0D1EE6BCEDC5078D61AC7D2D132 /* Constants+Numbers.swift */; };
@@ -247,6 +247,11 @@
 		E1B315AE47B85F1F705663FA31D2D661 /* BSImagePicker-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 69B4995E1D2FC140BD59E6A32AC8A927 /* BSImagePicker-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E3C1BBBC87C31CE396C11BDB1387A661 /* LMTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37615356D0D5155846C9F4F3AB90D32F /* LMTextView.swift */; };
 		E56C619A6AFAA7B0060F2188B2C98B42 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884D818F1DCE62C477240F9FD02ED368 /* Appearance.swift */; };
+		E5A348FA2B5CEA600042EB01 /* LMFeedLikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A348F82B5CEA600042EB01 /* LMFeedLikeViewController.swift */; };
+		E5A348FD2B5CF0AC0042EB01 /* LMFeedLikeUserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A348FC2B5CF0AC0042EB01 /* LMFeedLikeUserTableCell.swift */; };
+		E5A349002B5D0B5D0042EB01 /* LMFeedLikeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A348FF2B5D0B5D0042EB01 /* LMFeedLikeViewModel.swift */; };
+		E5A349222B5D15B60042EB01 /* LMFeedLikeDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A349212B5D15B60042EB01 /* LMFeedLikeDataModel.swift */; };
+		E5A349232B5D24C40042EB01 /* LMFeedUIAssetsCatalog.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F10EA0A59B2AE810E39615931352A44B /* LMFeedUIAssetsCatalog.xcassets */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEFBF2CCF45A69A0F58E2CCA3E8818D9 /* SessionDelegate.swift */; };
 		E7378F61AD6959D5538E595EA4A48AF4 /* AVAssetImageDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DAC55EFF2338BA951304D44FD3B97A /* AVAssetImageDataProvider.swift */; };
 		E840C8756ABB92719BF7D20087C16A05 /* LMFeedTopicSelectionDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FE56BC31906ADF48261791832F3311 /* LMFeedTopicSelectionDataModel.swift */; };
@@ -382,7 +387,7 @@
 		0695435D9867D07A53A511676A3ECF66 /* LMFeedTopicViewCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedTopicViewCell.swift; sourceTree = "<group>"; };
 		0715DEDCDC2B12425940D0D765A06C5A /* LMFeedMain.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMFeedMain.swift; path = "lm-feedCore-iOS/Source/Classes/LMFeedMain.swift"; sourceTree = "<group>"; };
 		075ED6166EB52DFE323FDEDC3DC6152A /* LMFeedPostListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostListViewController.swift; sourceTree = "<group>"; };
-		07FB9B3C85D5CBD500016757386263C4 /* lm-feedUI-iOS.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = "lm-feedUI-iOS.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		07FB9B3C85D5CBD500016757386263C4 /* lm-feedUI-iOS.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = "lm-feedUI-iOS.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		08E094D04E8F6F2FF081CD57F9C66338 /* ImagePickerControllerDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImagePickerControllerDelegate.swift; path = Sources/Controller/ImagePickerControllerDelegate.swift; sourceTree = "<group>"; };
 		094FE0E2560BD518F9302D4EA7123D18 /* CameraPreviewView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CameraPreviewView.swift; path = Sources/Scene/Camera/CameraPreviewView.swift; sourceTree = "<group>"; };
 		0A1ABA847C6DB92C02CA1695623A8848 /* KF.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KF.swift; path = Sources/General/KF.swift; sourceTree = "<group>"; };
@@ -449,7 +454,7 @@
 		3B9A1C227B2162BD4C60370B07DCAEED /* LMImageView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMImageView.swift; sourceTree = "<group>"; };
 		3E45F76DAD0B33726858096EC474F728 /* LMFeedPostDetailCommentHeaderView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailCommentHeaderView.swift; sourceTree = "<group>"; };
 		3E48A37C5099F05D6E0B97965EA98145 /* LMFeedVideoCollectionCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedVideoCollectionCell.swift; sourceTree = "<group>"; };
-		3F923055E4C0A326984321A9712B6850 /* lm-feedCore-iOS.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = "lm-feedCore-iOS.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		3F923055E4C0A326984321A9712B6850 /* lm-feedCore-iOS.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = "lm-feedCore-iOS.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		401D0ED9F063836AC364DF82C983978A /* Collection+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Collection+Extension.swift"; sourceTree = "<group>"; };
 		4178A420572C98840F82D82AB3D26DF6 /* CameraCollectionViewCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CameraCollectionViewCell.swift; path = Sources/Scene/Assets/CameraCollectionViewCell.swift; sourceTree = "<group>"; };
 		4213FF4D7AB02FA3CA21B8AC51ADDA34 /* ImageDownloaderDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageDownloaderDelegate.swift; path = Sources/Networking/ImageDownloaderDelegate.swift; sourceTree = "<group>"; };
@@ -503,7 +508,7 @@
 		6CC4C38922C0955B35851139603B4EE8 /* ImagePickerController+PresentationDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ImagePickerController+PresentationDelegate.swift"; path = "Sources/Controller/ImagePickerController+PresentationDelegate.swift"; sourceTree = "<group>"; };
 		6FB4295AB085980FC537636A6623E1CD /* PreviewViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PreviewViewController.swift; path = Sources/Scene/Preview/PreviewViewController.swift; sourceTree = "<group>"; };
 		700EC35CF67076A175588204275530E8 /* lm-feedUI-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "lm-feedUI-iOS.release.xcconfig"; sourceTree = "<group>"; };
-		7064BDA4E2328E801C5DEE7E9439019A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = Sources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		7064BDA4E2328E801C5DEE7E9439019A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Sources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		7094DE5F1096286233DF615C51FB9B31 /* GetAttributedTextWithRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GetAttributedTextWithRoutes.swift; sourceTree = "<group>"; };
 		70CF58597350CBFCF281B05C4C355759 /* LMTableView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMTableView.swift; sourceTree = "<group>"; };
 		70E3841C2F5BD18E116172CD2F63ADD2 /* String+MD5.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "String+MD5.swift"; path = "Sources/Utility/String+MD5.swift"; sourceTree = "<group>"; };
@@ -549,7 +554,7 @@
 		9CA1340F8FF3A9B1520E36F95F15C8F8 /* Result.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Sources/Utility/Result.swift; sourceTree = "<group>"; };
 		9CE7DB49682E50A2AF98020A84D05AB0 /* ResourceBundle-Kingfisher-Kingfisher-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-Kingfisher-Kingfisher-Info.plist"; sourceTree = "<group>"; };
 		9D3A33E5BA22EE0FCD2C4DB54643EAB9 /* Alamofire-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Alamofire-umbrella.h"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9FEDA95E0883AC8174594C6441475B3F /* ImageDownloader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageDownloader.swift; path = Sources/Networking/ImageDownloader.swift; sourceTree = "<group>"; };
 		A05740B906DB3F7DB44C37CEE68873D4 /* LMFeedTopicSelectionCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedTopicSelectionCell.swift; sourceTree = "<group>"; };
 		A09F018D3AC97C68DF9A6607F7AAC21B /* SizeExtensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SizeExtensions.swift; path = Sources/Utility/SizeExtensions.swift; sourceTree = "<group>"; };
@@ -563,7 +568,7 @@
 		A6F1B8F24299DC310DFCABEB37527386 /* Kingfisher.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Kingfisher.debug.xcconfig; sourceTree = "<group>"; };
 		A72AC1E79AFF9CC452332E8D75A1852E /* EventMonitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EventMonitor.swift; path = Source/EventMonitor.swift; sourceTree = "<group>"; };
 		A7F554E16A018D7DD5E10DA1CEFFAD82 /* Collection+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Collection+Extension.swift"; sourceTree = "<group>"; };
-		A8C1E7B1324B5CFE947C3C6A6A425A1B /* LikeMindsFeed.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = LikeMindsFeed.xcframework; sourceTree = "<group>"; };
+		A8C1E7B1324B5CFE947C3C6A6A425A1B /* LikeMindsFeed.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; path = LikeMindsFeed.xcframework; sourceTree = "<group>"; };
 		AC5C1E44C87F3BE37037652C41AC9286 /* ImageDrawing.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageDrawing.swift; path = Sources/Image/ImageDrawing.swift; sourceTree = "<group>"; };
 		ACE982448FF1DCA1DDED9CA1143A5E02 /* ImagePickerController+Albums.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ImagePickerController+Albums.swift"; path = "Sources/Controller/ImagePickerController+Albums.swift"; sourceTree = "<group>"; };
 		AD796F9C570EB2BE3007A7073CF41CC8 /* LMTappableLabel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMTappableLabel.swift; sourceTree = "<group>"; };
@@ -635,6 +640,10 @@
 		E38912FA82B320B0A318BC6A8AFA0A41 /* LMFeedPostDataModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostDataModel.swift; sourceTree = "<group>"; };
 		E53A5060744FDC34FCDB8FF2F771C3F1 /* SelectionView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SelectionView.swift; path = Sources/Scene/Assets/SelectionView.swift; sourceTree = "<group>"; };
 		E56D8FF34284043B04F01EF2E7CD5C12 /* RedirectHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RedirectHandler.swift; path = Source/RedirectHandler.swift; sourceTree = "<group>"; };
+		E5A348F82B5CEA600042EB01 /* LMFeedLikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedLikeViewController.swift; sourceTree = "<group>"; };
+		E5A348FC2B5CF0AC0042EB01 /* LMFeedLikeUserTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedLikeUserTableCell.swift; sourceTree = "<group>"; };
+		E5A348FF2B5D0B5D0042EB01 /* LMFeedLikeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedLikeViewModel.swift; sourceTree = "<group>"; };
+		E5A349212B5D15B60042EB01 /* LMFeedLikeDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedLikeDataModel.swift; sourceTree = "<group>"; };
 		E5EC68EF84C4805EBC041064C9CE4D03 /* ImagePickerController+ButtonActions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ImagePickerController+ButtonActions.swift"; path = "Sources/Controller/ImagePickerController+ButtonActions.swift"; sourceTree = "<group>"; };
 		E7610A7ECF7159227EF406AF4F112B47 /* DropdownPresentationController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DropdownPresentationController.swift; path = Sources/Presentation/Dropdown/DropdownPresentationController.swift; sourceTree = "<group>"; };
 		E77FC8C7C6986AF627C4B3AFE916C5AC /* Source.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Source.swift; path = Sources/General/ImageSource/Source.swift; sourceTree = "<group>"; };
@@ -656,7 +665,7 @@
 		F57504D26B39E357222270357B520026 /* Kingfisher.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Kingfisher.modulemap; sourceTree = "<group>"; };
 		F58A26576DB4CBE4A420A6CFC2875273 /* PlayerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PlayerView.swift; path = Sources/Scene/Preview/PlayerView.swift; sourceTree = "<group>"; };
 		F6E634D296B0497A50C7D3BF0B9EE39E /* LMFeedTopicSelectionView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedTopicSelectionView.swift; sourceTree = "<group>"; };
-		F8034211F0793598FEED164C2EB04AC3 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		F8034211F0793598FEED164C2EB04AC3 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		F8FB3B0A1DC8EF50CAEBBFFF10D8D1D2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		F96CC5B0FC6C4C55B0670DAA14D2A634 /* HTTPMethod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HTTPMethod.swift; path = Source/HTTPMethod.swift; sourceTree = "<group>"; };
 		FAA2772275F8798A91DB4DE0078C1C6B /* ImageBinder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageBinder.swift; path = Sources/SwiftUI/ImageBinder.swift; sourceTree = "<group>"; };
@@ -751,7 +760,6 @@
 			children = (
 				50E48229430D150AD51C29B48FE1A0EB /* LMFeedCreatePostAddMediaView.swift */,
 			);
-			name = AddMediaView;
 			path = AddMediaView;
 			sourceTree = "<group>";
 		};
@@ -780,7 +788,6 @@
 				E565B104E3EE6E3CA49E8DC865EE0178 /* DocumentPreviewTableCell */,
 				5A6221195303ABAA41150DADD4DEF9E7 /* HeaderView */,
 			);
-			name = CreatePostWidgets;
 			path = CreatePostWidgets;
 			sourceTree = "<group>";
 		};
@@ -875,7 +882,6 @@
 				C0200851E8247CCFFE050F2F98FE3216 /* Resources */,
 				BF7DEA15E99F7A90BA7A5205775EA72E /* Support Files */,
 			);
-			name = Kingfisher;
 			path = Kingfisher;
 			sourceTree = "<group>";
 		};
@@ -885,7 +891,6 @@
 				B2AF1AA36B087970F616B2B61638DCCD /* LMFeedPostFooterView.swift */,
 				4E9B57AAAA6112BEC9ACF772473B333C /* LMFeedPostHeaderView.swift */,
 			);
-			name = LMFeedPostHeaderFooter;
 			path = LMFeedPostHeaderFooter;
 			sourceTree = "<group>";
 		};
@@ -899,7 +904,6 @@
 				D2B59FE75D699F331510A325209CD1F9 /* LMFeedPostLinkCell */,
 				9478496D2D6A9F8DAC0F6E39EE67D7BC /* LMFeedPostMediaCell */,
 			);
-			name = PostWidget;
 			path = PostWidget;
 			sourceTree = "<group>";
 		};
@@ -908,7 +912,6 @@
 			children = (
 				C1FE56BC31906ADF48261791832F3311 /* LMFeedTopicSelectionDataModel.swift */,
 			);
-			name = ViewDataModel;
 			path = ViewDataModel;
 			sourceTree = "<group>";
 		};
@@ -920,7 +923,6 @@
 				9AD77B46F688F0873003F74CC30E73B9 /* LMFeedLinkPreview.swift */,
 				3E48A37C5099F05D6E0B97965EA98145 /* LMFeedVideoCollectionCell.swift */,
 			);
-			name = SharedComponents;
 			path = SharedComponents;
 			sourceTree = "<group>";
 		};
@@ -971,7 +973,6 @@
 			children = (
 				20FD74D36D75DBD9A457705147D67232 /* LMFeedCreatePostHeaderView.swift */,
 			);
-			name = HeaderView;
 			path = HeaderView;
 			sourceTree = "<group>";
 		};
@@ -998,7 +999,6 @@
 				5382B97A14B85B28BE9247539D5FCCCF /* LMFeedTopicSelectionViewModel.swift */,
 				3E98AFC127D268F4D0421DF4E6D90942 /* ViewDataModel */,
 			);
-			name = LMFeedTopicSelection;
 			path = LMFeedTopicSelection;
 			sourceTree = "<group>";
 		};
@@ -1029,18 +1029,16 @@
 				D89A5527476B968A29524B44CF2E2E19 /* LMFeedPostDetailTotalCommentCell.swift */,
 				9471A82960620F5AD2BC614439725C99 /* LMFeedPostMoreRepliesCell.swift */,
 			);
-			name = LMFeedPostDetailCommentCell;
 			path = LMFeedPostDetailCommentCell;
 			sourceTree = "<group>";
 		};
-		7E236F0559E64F7434C54D13D6570C63 /* LMFeedTaggingView */ = {
+		7E236F0559E64F7434C54D13D6570C63 /* TaggingView */ = {
 			isa = PBXGroup;
 			children = (
 				92F9F3BDCE6D68F8F0B3D52DAD5CB874 /* LMFeedTaggingTextView.swift */,
 				A2DDD943EA1FA8674077D273DE5E9D89 /* LMFeedTaggingUserTableCell.swift */,
 			);
-			name = LMFeedTaggingView;
-			path = LMFeedTaggingView;
+			path = TaggingView;
 			sourceTree = "<group>";
 		};
 		8188299B0DD58AF360A3A441C5643F8E /* Pods-lm-feed-sample-app */ = {
@@ -1081,7 +1079,6 @@
 			children = (
 				F6E634D296B0497A50C7D3BF0B9EE39E /* LMFeedTopicSelectionView.swift */,
 			);
-			name = LMFeedTopicSelectionView;
 			path = LMFeedTopicSelectionView;
 			sourceTree = "<group>";
 		};
@@ -1105,7 +1102,6 @@
 				FC4034EC5B7084C77761B700128B086C /* LMFeedTopicEditViewCell.swift */,
 				0695435D9867D07A53A511676A3ECF66 /* LMFeedTopicViewCell.swift */,
 			);
-			name = CollectionCells;
 			path = CollectionCells;
 			sourceTree = "<group>";
 		};
@@ -1114,7 +1110,6 @@
 			children = (
 				7AA3F694CA99DC3D9AF135DB7ADC9191 /* LMFeedPostDocumentCell.swift */,
 			);
-			name = LMFeedPostDocumentCell;
 			path = LMFeedPostDocumentCell;
 			sourceTree = "<group>";
 		};
@@ -1123,7 +1118,6 @@
 			children = (
 				1CE5D223D26DA15944A211D04B6E0585 /* LMFeedPostMediaCell.swift */,
 			);
-			name = LMFeedPostMediaCell;
 			path = LMFeedPostMediaCell;
 			sourceTree = "<group>";
 		};
@@ -1133,7 +1127,6 @@
 				D8785FB8A17BE4A7D37BA0942214444F /* LMUniversalFeedViewController.swift */,
 				0F084E5A56265D6B42A2414A0C1398E1 /* LMUniversalFeedViewModel.swift */,
 			);
-			name = LMFeedUniversal;
 			path = LMFeedUniversal;
 			sourceTree = "<group>";
 		};
@@ -1151,7 +1144,6 @@
 				212E245748DC284C84EC7092B2A7E9A5 /* Frameworks */,
 				4FB2F4199654464FF5FDBA8F3C53F03D /* Support Files */,
 			);
-			name = LikeMindsFeed;
 			path = LikeMindsFeed;
 			sourceTree = "<group>";
 		};
@@ -1206,15 +1198,15 @@
 				CCFEB747072E60E913482DF2FB1EB5B2 /* Validation.swift */,
 				C7D5796DCC101FDA7AA27B74B07DE1BD /* Support Files */,
 			);
-			name = Alamofire;
 			path = Alamofire;
 			sourceTree = "<group>";
 		};
 		B934351129411B070D1DB4580489895B /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				E5A348FB2B5CF0630042EB01 /* LikeUserView */,
 				20080B9869C533F223681B03C7BC0BBA /* CreatePostWidgets */,
-				7E236F0559E64F7434C54D13D6570C63 /* LMFeedTaggingView */,
+				7E236F0559E64F7434C54D13D6570C63 /* TaggingView */,
 				2E0C62230FF862F59C02EDC04D7D1A8E /* PostWidget */,
 				4A5FD7660907925747213673EC55D2F9 /* SharedComponents */,
 				D5B3AEB44FCC1201FBC19E3A05FA272C /* TopicFeed */,
@@ -1290,6 +1282,7 @@
 		CE424104AAE519CD25D1BF1D5B0BBF65 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				E5A348F72B5CEA090042EB01 /* LMFeedLikeScreen */,
 				F77956AD23FEFF312648F354E0D910A3 /* LMFeedCreatePost */,
 				D543C87C65F78DB669D062D323A4D4A2 /* LMFeedPostDetail */,
 				FF2750F24FE7ED1D454A309DF9374C5C /* LMFeedPostListView */,
@@ -1318,7 +1311,6 @@
 			children = (
 				0F49D7578DF3410B34F8993572E1C971 /* LMFeedPostLinkCell.swift */,
 			);
-			name = LMFeedPostLinkCell;
 			path = LMFeedPostLinkCell;
 			sourceTree = "<group>";
 		};
@@ -1328,7 +1320,6 @@
 				2480D3AA9D8BB14E02514429658BDD26 /* LMFeedPostDetailViewController.swift */,
 				74BC3365F6C5C9A30A5972981FB12731 /* LMFeedPostDetailViewModel.swift */,
 			);
-			name = LMFeedPostDetail;
 			path = LMFeedPostDetail;
 			sourceTree = "<group>";
 		};
@@ -1338,7 +1329,6 @@
 				FE6D0BC6E82879B4E58E17CA8523E76B /* DisplayScreen */,
 				DED6190865B47F5386D67B6B5D0C14B2 /* SelectionScreen */,
 			);
-			name = TopicFeed;
 			path = TopicFeed;
 			sourceTree = "<group>";
 		};
@@ -1364,7 +1354,6 @@
 				A05740B906DB3F7DB44C37CEE68873D4 /* LMFeedTopicSelectionCell.swift */,
 				84B08F763302214DCFACD247D39285A9 /* LMFeedTopicSelectionView */,
 			);
-			name = SelectionScreen;
 			path = SelectionScreen;
 			sourceTree = "<group>";
 		};
@@ -1389,8 +1378,25 @@
 			children = (
 				22B7780D2FE68FF1DCBB5A1F21A0AAA1 /* LMFeedCreatePostDocumentPreviewCell.swift */,
 			);
-			name = DocumentPreviewTableCell;
 			path = DocumentPreviewTableCell;
+			sourceTree = "<group>";
+		};
+		E5A348F72B5CEA090042EB01 /* LMFeedLikeScreen */ = {
+			isa = PBXGroup;
+			children = (
+				E5A348F82B5CEA600042EB01 /* LMFeedLikeViewController.swift */,
+				E5A348FF2B5D0B5D0042EB01 /* LMFeedLikeViewModel.swift */,
+				E5A349212B5D15B60042EB01 /* LMFeedLikeDataModel.swift */,
+			);
+			path = LMFeedLikeScreen;
+			sourceTree = "<group>";
+		};
+		E5A348FB2B5CF0630042EB01 /* LikeUserView */ = {
+			isa = PBXGroup;
+			children = (
+				E5A348FC2B5CF0AC0042EB01 /* LMFeedLikeUserTableCell.swift */,
+			);
+			path = LikeUserView;
 			sourceTree = "<group>";
 		};
 		ED890AAD9964B4C3848A1F9369A343CA /* Pod */ = {
@@ -1447,7 +1453,6 @@
 				9ADE03F90F69CEB7B1D82D98E84E9483 /* ZoomTransitionDelegate.swift */,
 				F831C88D45F3C789AE4C944D71DE0291 /* Support Files */,
 			);
-			name = BSImagePicker;
 			path = BSImagePicker;
 			sourceTree = "<group>";
 		};
@@ -1457,7 +1462,6 @@
 				604ADC450EB2F8FD7D4FEA24D8DA8F3A /* LMFeedTaggingListView.swift */,
 				0A9790AD69463C77BD4491FE92265BCF /* LMFeedTaggingListViewModel.swift */,
 			);
-			name = LMFeedTaggingListView;
 			path = LMFeedTaggingListView;
 			sourceTree = "<group>";
 		};
@@ -1467,7 +1471,6 @@
 				AE26471EF13A474073F428B57FCA3AD5 /* LMFeedCreatePostViewController.swift */,
 				22AE37991EF922DDD18A159578117DF3 /* LMFeedCreatePostViewModel.swift */,
 			);
-			name = LMFeedCreatePost;
 			path = LMFeedCreatePost;
 			sourceTree = "<group>";
 		};
@@ -1542,7 +1545,6 @@
 				DE60D433E314200E78006CE7DCED4FDC /* LMFeedTopicView.swift */,
 				86A0A06E653A278DC418219B6E805BF4 /* CollectionCells */,
 			);
-			name = DisplayScreen;
 			path = DisplayScreen;
 			sourceTree = "<group>";
 		};
@@ -1552,7 +1554,6 @@
 				075ED6166EB52DFE323FDEDC3DC6152A /* LMFeedPostListViewController.swift */,
 				9B9653535BF9B5C4EFF82466B2E6CFB6 /* LMFeedPostListViewModel.swift */,
 			);
-			name = LMFeedPostListView;
 			path = LMFeedPostListView;
 			sourceTree = "<group>";
 		};
@@ -1840,6 +1841,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA58F09DE6E7C88547EB1A8662BA462E /* lm-feedUI-iOS-lm-feedUI-iOS in Resources */,
+				E5A349232B5D24C40042EB01 /* LMFeedUIAssetsCatalog.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1883,7 +1885,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49A3FCFB9AAB2427A58E17108C5A646B /* LMFeedUIAssetsCatalog.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2080,6 +2081,7 @@
 				0438C1C48F201D44E839CDAEF884DDF2 /* LMFeedTopicEditViewCell.swift in Sources */,
 				87B4C404E58B9572A68BEC725A40837F /* LMFeedTopicSelectionCell.swift in Sources */,
 				553286D2D9464A74A34D8D54F444BAD8 /* LMFeedTopicSelectionView.swift in Sources */,
+				E5A348FD2B5CF0AC0042EB01 /* LMFeedLikeUserTableCell.swift in Sources */,
 				C58DFE57AB68128F8CE91BC572EB38B5 /* LMFeedTopicView.swift in Sources */,
 				3739B854A527971D35E6743C274C6B68 /* LMFeedTopicViewCell.swift in Sources */,
 				6BE242B1CF37E495F1BBD2515606336E /* LMFeedUserDataModel.swift in Sources */,
@@ -2108,8 +2110,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5A349002B5D0B5D0042EB01 /* LMFeedLikeViewModel.swift in Sources */,
 				5E9F133CECB3C9086BEF08098B021932 /* Collection+Extension.swift in Sources */,
 				A2127ADA84EE43C240C2C00AFF0391F2 /* CollectionView+Extension.swift in Sources */,
+				E5A349222B5D15B60042EB01 /* LMFeedLikeDataModel.swift in Sources */,
 				335E5FA14FFAAAD76E75391E2EAE0611 /* Components.swift in Sources */,
 				01A70FEDAE6F006294938B345F7FD380 /* Date+Extension.swift in Sources */,
 				19FF17F5E83AE2512CE68B1832574AE0 /* DateUtility.swift in Sources */,
@@ -2130,6 +2134,7 @@
 				8C9CDE9FCF72ACC29711B96F41786D78 /* LMFeedTagListDataModel.swift in Sources */,
 				E840C8756ABB92719BF7D20087C16A05 /* LMFeedTopicSelectionDataModel.swift in Sources */,
 				0296503E2A2013272A0A4706DFD2591C /* LMFeedTopicSelectionViewController.swift in Sources */,
+				E5A348FA2B5CEA600042EB01 /* LMFeedLikeViewController.swift in Sources */,
 				C571B98391EEB3EB213E7B13CD23324C /* LMFeedTopicSelectionViewModel.swift in Sources */,
 				1D03EC90F9A7A8B6948C7D510257A597 /* LMFeedUserDataModel.swift in Sources */,
 				9F54AC76D2EF26618427C829DA6F0E66 /* LMUniversalFeedViewController.swift in Sources */,

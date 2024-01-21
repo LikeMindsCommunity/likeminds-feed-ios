@@ -31,6 +31,7 @@ public extension UIViewController {
 
 public protocol LMBaseViewControllerProtocol: AnyObject {
     func presentAlert(with alert: UIAlertController, animated: Bool)
+    func showHideLoaderView(isShow: Bool)
 }
 
 /// Base LM View Controller Class with LM Life Cycle Methods

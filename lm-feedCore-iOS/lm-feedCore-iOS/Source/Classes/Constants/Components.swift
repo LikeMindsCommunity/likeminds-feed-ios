@@ -25,4 +25,7 @@ public struct Components {
     
     // MARK: Create Post
     public var createPostScreen: LMFeedCreatePostViewController.Type = LMFeedCreatePostViewController.self
+    
+    // MARK: Like Screen
+    public var likeListScreen: LMFeedLikeViewController.Type = LMFeedLikeViewController.self
 }

@@ -8,7 +8,7 @@
 import lm_feedUI_iOS
 import LikeMindsFeed
 
-public protocol LMFeedCreatePostViewModelProtocol: AnyObject { }
+public protocol LMFeedCreatePostViewModelProtocol: LMBaseViewControllerProtocol { }
 
 public final class LMFeedCreatePostViewModel {
     public struct Attachment {

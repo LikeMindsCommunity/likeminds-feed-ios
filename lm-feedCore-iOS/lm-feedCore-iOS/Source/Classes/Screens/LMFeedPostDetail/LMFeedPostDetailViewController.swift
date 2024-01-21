@@ -391,7 +391,13 @@ extension LMFeedPostDetailViewController: LMChatPostCommentProtocol {
         viewModel?.likeComment(for: commentId, indexPath: indexPath)
     }
     
-    open func didTapLikeCountButton(for commentId: String) { }
+    open func didTapLikeCountButton(for commentId: String) {
+        if let viewModel,
+           viewModel.allowCommentLikeView(for: commentId) {
+            let viewcontroller = LMFeedLikeViewModel.createModule(postID: viewModel.postID, commentID: commentId)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        }
+    }
     
     open func didTapReplyButton(for commentId: String) { 
         guard isCommentingEnabled else { return }
@@ -414,7 +420,12 @@ extension LMFeedPostDetailViewController: LMFeedTableCellToViewControllerProtoco
     
     open func didTapProfilePicture(for uuid: String) { }
     
-    open func didTapLikeTextButton(for postID: String) { }
+    open func didTapLikeTextButton(for postID: String) { 
+        if viewModel?.allowPostLikeView() == true {
+            let viewcontroller = LMFeedLikeViewModel.createModule(postID: postID)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        }
+    }
     
     open func didTapCommentButton(for postID: String) { 
         guard isCommentingEnabled else { return }

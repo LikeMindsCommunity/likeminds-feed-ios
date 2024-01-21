@@ -90,6 +90,17 @@ final public class LMFeedPostDetailViewModel {
             delegate?.updateCommentStatus(isEnabled: LocalPreferences.memberState?.memberRights?.contains(where: { $0.state == .commentOrReplyOnPost }) ?? false)
         }
     }
+    
+    func allowPostLikeView() -> Bool {
+        postDetail?.likeCount ?? 0 > 0
+    }
+    
+    func allowCommentLikeView(for commentId: String) -> Bool {
+        if let comment = findCommentIndex(for: commentId, from: commentList) {
+            return comment.comment.likeCount > 0
+        }
+        return false
+    }
 }
 
 // MARK: Get Post Details

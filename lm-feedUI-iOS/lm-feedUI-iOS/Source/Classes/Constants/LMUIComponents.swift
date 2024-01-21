@@ -43,4 +43,7 @@ public struct LMUIComponents {
     // MARK: Create Post Components
     public var createPostAddMediaView: LMFeedCreatePostAddMediaView.Type = LMFeedCreatePostAddMediaView.self
     public var createPostHeaderView: LMFeedCreatePostHeaderView.Type = LMFeedCreatePostHeaderView.self
+    
+    // MARK: Like Count Screen Components
+    public var likedUserTableCell: LMFeedLikeUserTableCell.Type = LMFeedLikeUserTableCell.self
 }

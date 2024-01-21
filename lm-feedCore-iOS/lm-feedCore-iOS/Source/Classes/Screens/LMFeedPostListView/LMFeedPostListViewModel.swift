@@ -146,6 +146,11 @@ public extension LMFeedPostListViewModel {
             }
         }
     }
+    
+    func allowPostLikeView(for postId: String) -> Bool {
+        guard let likeCount = postList.first(where: { $0.postId == postId })?.likeCount else { return false }
+        return likeCount > 0
+    }
 }
 
 // MARK: Save Post
