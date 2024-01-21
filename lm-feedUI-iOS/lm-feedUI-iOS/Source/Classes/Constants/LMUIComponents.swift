@@ -46,4 +46,7 @@ public struct LMUIComponents {
     
     // MARK: Like Count Screen Components
     public var likedUserTableCell: LMFeedLikeUserTableCell.Type = LMFeedLikeUserTableCell.self
+    
+    // MARK: Notification Screen Components
+    public var notificationTableCell: LMFeedNotificationView.Type = LMFeedNotificationView.self
 }

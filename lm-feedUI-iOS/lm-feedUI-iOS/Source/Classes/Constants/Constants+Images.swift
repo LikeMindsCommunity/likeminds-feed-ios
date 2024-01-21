@@ -18,11 +18,11 @@ public extension Constants {
         private init() { }
         
         /// Need For These Methods - A Develeoper can also set custom images in these variables we need to make sure that dev is not setting these images as nil, so get non-optional value of UIImage without force unwrapping.
-        private static func loadImage(with imageName: String) -> UIImage {
+        static func loadImage(with imageName: String) -> UIImage {
             UIImage(named: imageName, in: Bundle.LMBundleIdentifier) ?? .circleImage
         }
         
-        private static func loadSystemImage(with imageName: String) -> UIImage {
+        static func loadSystemImage(with imageName: String) -> UIImage {
             UIImage(systemName: imageName) ?? .circleImage
         }
         
@@ -46,11 +46,13 @@ public extension Constants {
         public var personIcon = loadSystemImage(with: "person")
         public var checkmarkIconFilled = loadSystemImage(with: "checkmark.circle.fill")
         public var plusIcon = loadSystemImage(with: "plus")
+        public var notificationBell = loadSystemImage(with: "bell.fill")
+        public var documentsIcon = loadSystemImage(with: "doc.fill")
+        public var galleryIcon = loadSystemImage(with: "photo")
         
         public var pdfIcon = loadImage(with: "pdfIcon")
         public var placeholderImage = loadImage(with: "placeholderImage")
         public var brokenLink = loadImage(with: "brokenLink")
-        public var galleryIcon = loadImage(with: "galleryIcon")
         public var videoIcon = loadImage(with: "videoIcon")
         public var paperclipIcon = loadImage(with: "paperclip")
         public var createPostIcon = loadImage(with: "createPostIcon")

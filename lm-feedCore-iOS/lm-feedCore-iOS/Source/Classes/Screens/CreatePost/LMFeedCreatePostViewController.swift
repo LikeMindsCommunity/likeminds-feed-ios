@@ -238,7 +238,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     }
     
     open func setupAddMedia() {
-        addPhotosTab.configure(with: "Add Photo", image: Constants.shared.images.galleryIcon)
+        addPhotosTab.configure(with: "Add Photo", image: Constants.shared.images.galleryIcon.withTintColor(.orange))
         addVideoTab.configure(with: "Add Video", image: Constants.shared.images.videoIcon)
         addDocumentsTab.configure(with: "Attach Files", image: Constants.shared.images.paperclipIcon)
     }

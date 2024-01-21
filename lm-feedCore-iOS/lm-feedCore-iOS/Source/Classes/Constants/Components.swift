@@ -28,4 +28,7 @@ public struct Components {
     
     // MARK: Like Screen
     public var likeListScreen: LMFeedLikeViewController.Type = LMFeedLikeViewController.self
+    
+    // MARK: Notification Screen
+    public var notificationScreen: LMFeedNotificationViewController.Type = LMFeedNotificationViewController.self
 }

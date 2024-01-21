@@ -252,6 +252,10 @@
 		E5A349002B5D0B5D0042EB01 /* LMFeedLikeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A348FF2B5D0B5D0042EB01 /* LMFeedLikeViewModel.swift */; };
 		E5A349222B5D15B60042EB01 /* LMFeedLikeDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A349212B5D15B60042EB01 /* LMFeedLikeDataModel.swift */; };
 		E5A349232B5D24C40042EB01 /* LMFeedUIAssetsCatalog.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F10EA0A59B2AE810E39615931352A44B /* LMFeedUIAssetsCatalog.xcassets */; };
+		E5A349262B5D5A770042EB01 /* LMFeedNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A349252B5D5A770042EB01 /* LMFeedNotificationView.swift */; };
+		E5A349292B5D6EAA0042EB01 /* LMFeedNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A349282B5D6EAA0042EB01 /* LMFeedNotificationViewController.swift */; };
+		E5A3492B2B5D701F0042EB01 /* LMFeedNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3492A2B5D701F0042EB01 /* LMFeedNotificationViewModel.swift */; };
+		E5A3492D2B5D71120042EB01 /* LMFeedNotificationDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3492C2B5D71120042EB01 /* LMFeedNotificationDataModel.swift */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEFBF2CCF45A69A0F58E2CCA3E8818D9 /* SessionDelegate.swift */; };
 		E7378F61AD6959D5538E595EA4A48AF4 /* AVAssetImageDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DAC55EFF2338BA951304D44FD3B97A /* AVAssetImageDataProvider.swift */; };
 		E840C8756ABB92719BF7D20087C16A05 /* LMFeedTopicSelectionDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FE56BC31906ADF48261791832F3311 /* LMFeedTopicSelectionDataModel.swift */; };
@@ -644,6 +648,10 @@
 		E5A348FC2B5CF0AC0042EB01 /* LMFeedLikeUserTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedLikeUserTableCell.swift; sourceTree = "<group>"; };
 		E5A348FF2B5D0B5D0042EB01 /* LMFeedLikeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedLikeViewModel.swift; sourceTree = "<group>"; };
 		E5A349212B5D15B60042EB01 /* LMFeedLikeDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedLikeDataModel.swift; sourceTree = "<group>"; };
+		E5A349252B5D5A770042EB01 /* LMFeedNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedNotificationView.swift; sourceTree = "<group>"; };
+		E5A349282B5D6EAA0042EB01 /* LMFeedNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedNotificationViewController.swift; sourceTree = "<group>"; };
+		E5A3492A2B5D701F0042EB01 /* LMFeedNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedNotificationViewModel.swift; sourceTree = "<group>"; };
+		E5A3492C2B5D71120042EB01 /* LMFeedNotificationDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedNotificationDataModel.swift; sourceTree = "<group>"; };
 		E5EC68EF84C4805EBC041064C9CE4D03 /* ImagePickerController+ButtonActions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ImagePickerController+ButtonActions.swift"; path = "Sources/Controller/ImagePickerController+ButtonActions.swift"; sourceTree = "<group>"; };
 		E7610A7ECF7159227EF406AF4F112B47 /* DropdownPresentationController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DropdownPresentationController.swift; path = Sources/Presentation/Dropdown/DropdownPresentationController.swift; sourceTree = "<group>"; };
 		E77FC8C7C6986AF627C4B3AFE916C5AC /* Source.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Source.swift; path = Sources/General/ImageSource/Source.swift; sourceTree = "<group>"; };
@@ -992,14 +1000,14 @@
 			path = "../lm-feed-sample-app/Pods/Target Support Files/lm-feedUI-iOS";
 			sourceTree = "<group>";
 		};
-		61220DCF6F78C254E313CB8F1897E9FF /* LMFeedTopicSelection */ = {
+		61220DCF6F78C254E313CB8F1897E9FF /* TopicSelection */ = {
 			isa = PBXGroup;
 			children = (
 				A1EFC65E722C4601771C62F8CFC74840 /* LMFeedTopicSelectionViewController.swift */,
 				5382B97A14B85B28BE9247539D5FCCCF /* LMFeedTopicSelectionViewModel.swift */,
 				3E98AFC127D268F4D0421DF4E6D90942 /* ViewDataModel */,
 			);
-			path = LMFeedTopicSelection;
+			path = TopicSelection;
 			sourceTree = "<group>";
 		};
 		6E2E18700448F1E396571F5C001619C0 /* lm-feedCore-iOS */ = {
@@ -1121,13 +1129,13 @@
 			path = LMFeedPostMediaCell;
 			sourceTree = "<group>";
 		};
-		94A55D5D14907C269FB2DC56A08E4BFD /* LMFeedUniversal */ = {
+		94A55D5D14907C269FB2DC56A08E4BFD /* UniversalFeed */ = {
 			isa = PBXGroup;
 			children = (
 				D8785FB8A17BE4A7D37BA0942214444F /* LMUniversalFeedViewController.swift */,
 				0F084E5A56265D6B42A2414A0C1398E1 /* LMUniversalFeedViewModel.swift */,
 			);
-			path = LMFeedUniversal;
+			path = UniversalFeed;
 			sourceTree = "<group>";
 		};
 		AD0C6638A40C8066B4E07A8770F1F3FE /* Targets Support Files */ = {
@@ -1204,6 +1212,7 @@
 		B934351129411B070D1DB4580489895B /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				E5A349242B5D5A4B0042EB01 /* NotificationView */,
 				E5A348FB2B5CF0630042EB01 /* LikeUserView */,
 				20080B9869C533F223681B03C7BC0BBA /* CreatePostWidgets */,
 				7E236F0559E64F7434C54D13D6570C63 /* TaggingView */,
@@ -1282,13 +1291,14 @@
 		CE424104AAE519CD25D1BF1D5B0BBF65 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				E5A348F72B5CEA090042EB01 /* LMFeedLikeScreen */,
-				F77956AD23FEFF312648F354E0D910A3 /* LMFeedCreatePost */,
-				D543C87C65F78DB669D062D323A4D4A2 /* LMFeedPostDetail */,
-				FF2750F24FE7ED1D454A309DF9374C5C /* LMFeedPostListView */,
-				F3F773EFC6DECAA853A1BC43AD0B5710 /* LMFeedTaggingListView */,
-				61220DCF6F78C254E313CB8F1897E9FF /* LMFeedTopicSelection */,
-				94A55D5D14907C269FB2DC56A08E4BFD /* LMFeedUniversal */,
+				F77956AD23FEFF312648F354E0D910A3 /* CreatePost */,
+				E5A348F72B5CEA090042EB01 /* LikeScreen */,
+				E5A349272B5D6E2D0042EB01 /* NotificationScreen */,
+				D543C87C65F78DB669D062D323A4D4A2 /* PostDetail */,
+				FF2750F24FE7ED1D454A309DF9374C5C /* PostListView */,
+				F3F773EFC6DECAA853A1BC43AD0B5710 /* TaggingListView */,
+				61220DCF6F78C254E313CB8F1897E9FF /* TopicSelection */,
+				94A55D5D14907C269FB2DC56A08E4BFD /* UniversalFeed */,
 			);
 			name = Screens;
 			path = "lm-feedCore-iOS/Source/Classes/Screens";
@@ -1314,13 +1324,13 @@
 			path = LMFeedPostLinkCell;
 			sourceTree = "<group>";
 		};
-		D543C87C65F78DB669D062D323A4D4A2 /* LMFeedPostDetail */ = {
+		D543C87C65F78DB669D062D323A4D4A2 /* PostDetail */ = {
 			isa = PBXGroup;
 			children = (
 				2480D3AA9D8BB14E02514429658BDD26 /* LMFeedPostDetailViewController.swift */,
 				74BC3365F6C5C9A30A5972981FB12731 /* LMFeedPostDetailViewModel.swift */,
 			);
-			path = LMFeedPostDetail;
+			path = PostDetail;
 			sourceTree = "<group>";
 		};
 		D5B3AEB44FCC1201FBC19E3A05FA272C /* TopicFeed */ = {
@@ -1381,14 +1391,14 @@
 			path = DocumentPreviewTableCell;
 			sourceTree = "<group>";
 		};
-		E5A348F72B5CEA090042EB01 /* LMFeedLikeScreen */ = {
+		E5A348F72B5CEA090042EB01 /* LikeScreen */ = {
 			isa = PBXGroup;
 			children = (
 				E5A348F82B5CEA600042EB01 /* LMFeedLikeViewController.swift */,
 				E5A348FF2B5D0B5D0042EB01 /* LMFeedLikeViewModel.swift */,
 				E5A349212B5D15B60042EB01 /* LMFeedLikeDataModel.swift */,
 			);
-			path = LMFeedLikeScreen;
+			path = LikeScreen;
 			sourceTree = "<group>";
 		};
 		E5A348FB2B5CF0630042EB01 /* LikeUserView */ = {
@@ -1397,6 +1407,24 @@
 				E5A348FC2B5CF0AC0042EB01 /* LMFeedLikeUserTableCell.swift */,
 			);
 			path = LikeUserView;
+			sourceTree = "<group>";
+		};
+		E5A349242B5D5A4B0042EB01 /* NotificationView */ = {
+			isa = PBXGroup;
+			children = (
+				E5A349252B5D5A770042EB01 /* LMFeedNotificationView.swift */,
+			);
+			path = NotificationView;
+			sourceTree = "<group>";
+		};
+		E5A349272B5D6E2D0042EB01 /* NotificationScreen */ = {
+			isa = PBXGroup;
+			children = (
+				E5A349282B5D6EAA0042EB01 /* LMFeedNotificationViewController.swift */,
+				E5A3492A2B5D701F0042EB01 /* LMFeedNotificationViewModel.swift */,
+				E5A3492C2B5D71120042EB01 /* LMFeedNotificationDataModel.swift */,
+			);
+			path = NotificationScreen;
 			sourceTree = "<group>";
 		};
 		ED890AAD9964B4C3848A1F9369A343CA /* Pod */ = {
@@ -1456,22 +1484,22 @@
 			path = BSImagePicker;
 			sourceTree = "<group>";
 		};
-		F3F773EFC6DECAA853A1BC43AD0B5710 /* LMFeedTaggingListView */ = {
+		F3F773EFC6DECAA853A1BC43AD0B5710 /* TaggingListView */ = {
 			isa = PBXGroup;
 			children = (
 				604ADC450EB2F8FD7D4FEA24D8DA8F3A /* LMFeedTaggingListView.swift */,
 				0A9790AD69463C77BD4491FE92265BCF /* LMFeedTaggingListViewModel.swift */,
 			);
-			path = LMFeedTaggingListView;
+			path = TaggingListView;
 			sourceTree = "<group>";
 		};
-		F77956AD23FEFF312648F354E0D910A3 /* LMFeedCreatePost */ = {
+		F77956AD23FEFF312648F354E0D910A3 /* CreatePost */ = {
 			isa = PBXGroup;
 			children = (
 				AE26471EF13A474073F428B57FCA3AD5 /* LMFeedCreatePostViewController.swift */,
 				22AE37991EF922DDD18A159578117DF3 /* LMFeedCreatePostViewModel.swift */,
 			);
-			path = LMFeedCreatePost;
+			path = CreatePost;
 			sourceTree = "<group>";
 		};
 		F831C88D45F3C789AE4C944D71DE0291 /* Support Files */ = {
@@ -1548,13 +1576,13 @@
 			path = DisplayScreen;
 			sourceTree = "<group>";
 		};
-		FF2750F24FE7ED1D454A309DF9374C5C /* LMFeedPostListView */ = {
+		FF2750F24FE7ED1D454A309DF9374C5C /* PostListView */ = {
 			isa = PBXGroup;
 			children = (
 				075ED6166EB52DFE323FDEDC3DC6152A /* LMFeedPostListViewController.swift */,
 				9B9653535BF9B5C4EFF82466B2E6CFB6 /* LMFeedPostListViewModel.swift */,
 			);
-			path = LMFeedPostListView;
+			path = PostListView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2050,6 +2078,7 @@
 				D2AD985D74C5F1387666572C566E8ACD /* Bundle+Extension.swift in Sources */,
 				C23DD1DAA3D25C2CB33B34F0597A3701 /* Collection+Extension.swift in Sources */,
 				412A2396F432721A179A6DF2525C761C /* Constants.swift in Sources */,
+				E5A349262B5D5A770042EB01 /* LMFeedNotificationView.swift in Sources */,
 				FABF3C1588200B43139227A96EFFAEBA /* Constants+Images.swift in Sources */,
 				4E5382445AC9C6B27C4ED0640457323B /* Constants+Numbers.swift in Sources */,
 				C902D8D308F68E93AAA4CD2E38107F36 /* Constants+Strings.swift in Sources */,
@@ -2125,10 +2154,13 @@
 				6768C36256EB61EED1C4E2525AF4FAD7 /* LMFeedMain.swift in Sources */,
 				38E1846995502B851E57E1CCBC400BBF /* LMFeedMenuDataModel.swift in Sources */,
 				79DF0A358521E95297A62836B2EBF0DA /* LMFeedPostDataModel.swift in Sources */,
+				E5A349292B5D6EAA0042EB01 /* LMFeedNotificationViewController.swift in Sources */,
 				7C64DDD6B49ADAACA81D86B35C612570 /* LMFeedPostDetailViewController.swift in Sources */,
 				495464F2685231BEC9B4F63225D95EFF /* LMFeedPostDetailViewModel.swift in Sources */,
+				E5A3492D2B5D71120042EB01 /* LMFeedNotificationDataModel.swift in Sources */,
 				C50E3FD70355C979D13F4731B69CBB29 /* LMFeedPostListViewController.swift in Sources */,
 				A1BB07678648E2324E409B5675B090AD /* LMFeedPostListViewModel.swift in Sources */,
+				E5A3492B2B5D701F0042EB01 /* LMFeedNotificationViewModel.swift in Sources */,
 				0F06E746C0A094C5E17C9577775642D4 /* LMFeedTaggingListView.swift in Sources */,
 				42FCE74E16E35430C03BAA4EC953D29F /* LMFeedTaggingListViewModel.swift in Sources */,
 				8C9CDE9FCF72ACC29711B96F41786D78 /* LMFeedTagListDataModel.swift in Sources */,

@@ -207,13 +207,19 @@ open class LMUniversalFeedViewController: LMViewController {
         navigationController?.navigationBar.backgroundColor = Appearance.shared.colors.navigationBackgroundColor
         setNavigationTitleAndSubtitle(with: Constants.shared.strings.communityHood, subtitle: nil)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: Constants.shared.images.personIcon, style: .plain, target: nil, action: nil)
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(image: Constants.shared.images.personIcon, style: .plain, target: nil, action: nil),
+                                              UIBarButtonItem(image: Constants.shared.images.notificationBell, style: .plain, target: self, action: #selector(didTapNotificationButton))]
+    }
+    
+    @objc
+    open func didTapNotificationButton() {
+        let viewcontroller = LMFeedNotificationViewModel.createModule()
+        navigationController?.pushViewController(viewcontroller, animated: true)
     }
 }
 
 
 // MARK: UICollectionView
-@objc
 extension LMUniversalFeedViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         selectedTopics.count
@@ -229,7 +235,7 @@ extension LMUniversalFeedViewController: UICollectionViewDataSource, UICollectio
         return UICollectionViewCell()
     }
     
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = selectedTopics[indexPath.row].topic.sizeOfString(with: Appearance.shared.fonts.textFont1)
         return .init(width: size.width + 40, height: 30)
     }

@@ -11,7 +11,6 @@ import LikeMindsFeed
 public struct LMFeedCommentDataModel {
     public let commentID: String?
     public let userDetail: LMFeedUserDataModel
-//    public var index: IndexPath
     public var temporaryCommentID: String?
     public var createdAt: Int
     public var isLiked: Bool
@@ -50,6 +49,5 @@ public extension LMFeedCommentDataModel {
                   !name.isEmpty else { return nil }
             return .init(id: state, name: name)
         } ?? []
-//        self.index = index
     }
 }
