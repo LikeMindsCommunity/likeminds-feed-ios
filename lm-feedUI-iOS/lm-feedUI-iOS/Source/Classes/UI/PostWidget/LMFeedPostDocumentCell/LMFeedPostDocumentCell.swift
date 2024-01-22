@@ -196,6 +196,6 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
 // MARK: LMFeedDocumentPreviewProtocol
 @objc
 extension LMFeedPostDocumentCell: LMFeedDocumentPreviewProtocol {
-    open func didTapCrossButton(documentID: Int) { print(#function) }
-    open func didTapDocument(documentID: Int) { print(#function) }
+    open func didTapCrossButton(documentID: String) { print(#function) }
+    open func didTapDocument(documentID: String) { print(#function) }
 }

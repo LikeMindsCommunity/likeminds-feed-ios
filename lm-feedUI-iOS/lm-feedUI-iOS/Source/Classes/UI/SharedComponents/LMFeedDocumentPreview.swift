@@ -8,8 +8,8 @@
 import UIKit
 
 public protocol LMFeedDocumentPreviewProtocol: AnyObject {
-    func didTapCrossButton(documentID: Int)
-    func didTapDocument(documentID: Int)
+    func didTapCrossButton(documentID: String)
+    func didTapDocument(documentID: String)
 }
 
 @IBDesignable
@@ -103,7 +103,7 @@ open class LMFeedDocumentPreview: LMView {
     
     // MARK: Data Variables
     public var delegate: LMFeedDocumentPreviewProtocol?
-    public var documentID: Int?
+    public var documentID: String?
     
     
     // MARK: setupViews
@@ -153,7 +153,7 @@ open class LMFeedDocumentPreview: LMView {
             labelStackView.trailingAnchor.constraint(greaterThanOrEqualTo: labelContainerView.trailingAnchor),
             labelStackView.centerYAnchor.constraint(equalTo: labelContainerView.centerYAnchor),
             
-            crossButton.heightAnchor.constraint(equalToConstant: 30),
+            crossButton.heightAnchor.constraint(equalToConstant: 44),
             crossButton.widthAnchor.constraint(equalTo: crossButton.heightAnchor, multiplier: 1)
         ])
     }
@@ -193,6 +193,7 @@ open class LMFeedDocumentPreview: LMView {
     // MARK: Configure
     open func configure(with data: ViewModel, delegate: LMFeedDocumentPreviewProtocol?) {
         self.delegate = delegate
+        self.documentID = data.documentURL
         
         titleLabel.text = data.title
         
@@ -210,9 +211,9 @@ open class LMFeedDocumentPreview: LMView {
             if size < 1024 {
                 subtitle.append("\(size) Kb")
             } else if size < 1024 * 1024 {
-                subtitle.append("\(size) Mb")
+                subtitle.append("\(size / 1024) Mb")
             } else {
-                subtitle.append("\(size) Gb")
+                subtitle.append("\(size / (1024 * 1024)) Gb")
             }
         }
         

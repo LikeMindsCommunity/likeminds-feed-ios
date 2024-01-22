@@ -31,7 +31,7 @@ open class LMFeedCreatePostDocumentPreviewCell: LMTableViewCell {
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
             
             documentPreview.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             documentPreview.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),

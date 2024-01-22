@@ -25,7 +25,8 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
     open private(set) lazy var imageView: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.contentMode = .scaleAspectFill
+        image.contentMode = .scaleAspectFit
+        image.backgroundColor = Appearance.shared.colors.black
         return image
     }()
     
@@ -106,7 +107,8 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
                 switch result {
                 case .success(_):
                     break
-                case .failure(_):
+                case .failure(let error):
+                    print(error.errorDescription ?? "")
                     self?.imageView.image = Constants.shared.images.placeholderImage
                 }
             }

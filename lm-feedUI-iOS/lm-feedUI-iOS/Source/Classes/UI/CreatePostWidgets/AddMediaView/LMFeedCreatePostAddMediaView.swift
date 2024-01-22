@@ -67,7 +67,7 @@ open class LMFeedCreatePostAddMediaView: LMView {
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
             
             titleLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(greaterThanOrEqualTo: containerView.trailingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -16),
             titleLabel.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
             
             sepratorView.heightAnchor.constraint(equalToConstant: 1),

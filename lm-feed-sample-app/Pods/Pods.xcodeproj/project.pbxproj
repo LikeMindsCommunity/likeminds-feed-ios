@@ -256,6 +256,8 @@
 		E5A349292B5D6EAA0042EB01 /* LMFeedNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A349282B5D6EAA0042EB01 /* LMFeedNotificationViewController.swift */; };
 		E5A3492B2B5D701F0042EB01 /* LMFeedNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3492A2B5D701F0042EB01 /* LMFeedNotificationViewModel.swift */; };
 		E5A3492D2B5D71120042EB01 /* LMFeedNotificationDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3492C2B5D71120042EB01 /* LMFeedNotificationDataModel.swift */; };
+		E5A3492F2B5E43490042EB01 /* PHAsset+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3492E2B5E43490042EB01 /* PHAsset+Extension.swift */; };
+		E5A349312B5E53CC0042EB01 /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A349302B5E53CC0042EB01 /* URL+Extension.swift */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEFBF2CCF45A69A0F58E2CCA3E8818D9 /* SessionDelegate.swift */; };
 		E7378F61AD6959D5538E595EA4A48AF4 /* AVAssetImageDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DAC55EFF2338BA951304D44FD3B97A /* AVAssetImageDataProvider.swift */; };
 		E840C8756ABB92719BF7D20087C16A05 /* LMFeedTopicSelectionDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FE56BC31906ADF48261791832F3311 /* LMFeedTopicSelectionDataModel.swift */; };
@@ -652,6 +654,8 @@
 		E5A349282B5D6EAA0042EB01 /* LMFeedNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedNotificationViewController.swift; sourceTree = "<group>"; };
 		E5A3492A2B5D701F0042EB01 /* LMFeedNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedNotificationViewModel.swift; sourceTree = "<group>"; };
 		E5A3492C2B5D71120042EB01 /* LMFeedNotificationDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedNotificationDataModel.swift; sourceTree = "<group>"; };
+		E5A3492E2B5E43490042EB01 /* PHAsset+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHAsset+Extension.swift"; sourceTree = "<group>"; };
+		E5A349302B5E53CC0042EB01 /* URL+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extension.swift"; sourceTree = "<group>"; };
 		E5EC68EF84C4805EBC041064C9CE4D03 /* ImagePickerController+ButtonActions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ImagePickerController+ButtonActions.swift"; path = "Sources/Controller/ImagePickerController+ButtonActions.swift"; sourceTree = "<group>"; };
 		E7610A7ECF7159227EF406AF4F112B47 /* DropdownPresentationController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DropdownPresentationController.swift; path = Sources/Presentation/Dropdown/DropdownPresentationController.swift; sourceTree = "<group>"; };
 		E77FC8C7C6986AF627C4B3AFE916C5AC /* Source.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Source.swift; path = Sources/General/ImageSource/Source.swift; sourceTree = "<group>"; };
@@ -971,6 +975,8 @@
 				A7F554E16A018D7DD5E10DA1CEFFAD82 /* Collection+Extension.swift */,
 				FE51C7A6D783D4874D2633292D98FE6E /* CollectionView+Extension.swift */,
 				B122650DBC2785EC0E6C98E31276992F /* Date+Extension.swift */,
+				E5A3492E2B5E43490042EB01 /* PHAsset+Extension.swift */,
+				E5A349302B5E53CC0042EB01 /* URL+Extension.swift */,
 			);
 			name = Extensions;
 			path = "lm-feedCore-iOS/Source/Classes/Extensions";
@@ -2151,6 +2157,7 @@
 				504D164A0B24207426D185D8A8858C1E /* LMFeedConvertToFeedPost.swift in Sources */,
 				D17E1FB2F4FA02A6502717B559996538 /* LMFeedCreatePostViewController.swift in Sources */,
 				984B05FE03686A7A6FEAC13C40EE7AF9 /* LMFeedCreatePostViewModel.swift in Sources */,
+				E5A3492F2B5E43490042EB01 /* PHAsset+Extension.swift in Sources */,
 				6768C36256EB61EED1C4E2525AF4FAD7 /* LMFeedMain.swift in Sources */,
 				38E1846995502B851E57E1CCBC400BBF /* LMFeedMenuDataModel.swift in Sources */,
 				79DF0A358521E95297A62836B2EBF0DA /* LMFeedPostDataModel.swift in Sources */,
@@ -2171,6 +2178,7 @@
 				1D03EC90F9A7A8B6948C7D510257A597 /* LMFeedUserDataModel.swift in Sources */,
 				9F54AC76D2EF26618427C829DA6F0E66 /* LMUniversalFeedViewController.swift in Sources */,
 				79A236F8DF72900D361E783B7B8332EE /* LMUniversalFeedViewModel.swift in Sources */,
+				E5A349312B5E53CC0042EB01 /* URL+Extension.swift in Sources */,
 				8DB2E5A87982D6622A54DD0939DF3AB5 /* LocalPreferences.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
