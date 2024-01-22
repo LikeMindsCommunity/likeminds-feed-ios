@@ -62,18 +62,27 @@ extension LMFeedNotificationViewController: UITableViewDataSource, UITableViewDe
         return UITableViewCell()
     }
     
-    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == cellsData.count - 1 {
             viewModel?.getNotifications(isInitialFetch: false)
         }
+    }
+    
+    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel?.didSelectNotificationAt(index: indexPath)
     }
 }
 
 // MARK: LMFeedNotificationViewModelProtocol
 extension LMFeedNotificationViewController: LMFeedNotificationViewModelProtocol {
-    public func showNotifications(with data: [LMFeedNotificationView.ViewModel]) {
+    public func showNotifications(with data: [LMFeedNotificationView.ViewModel], indexPath: IndexPath?) {
         cellsData = data
-        tableView.reloadData()
+        
+        if let indexPath {
+            tableView.reloadRows(at: [indexPath], with: .none)
+        } else {
+            tableView.reloadData()
+        }
     }
     
     public func showHideTableLoader(isShow: Bool) {

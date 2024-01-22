@@ -9,7 +9,7 @@ import lm_feedUI_iOS
 import LikeMindsFeed
 
 public protocol LMFeedNotificationViewModelProtocol: LMBaseViewControllerProtocol {
-    func showNotifications(with data: [LMFeedNotificationView.ViewModel])
+    func showNotifications(with data: [LMFeedNotificationView.ViewModel], indexPath: IndexPath?)
     func showHideTableLoader(isShow: Bool)
     func showError(with message: String)
 }
@@ -75,23 +75,6 @@ public final class LMFeedNotificationViewModel {
         }
     }
     
-//    func markReadNotification(activityId: String?) {
-//        guard let activityId = activityId else {return}
-//        let request = MarkReadNotificationRequest.builder()
-//            .activityId(activityId)
-//            .build()
-//        
-//        LMFeedClient.shared.markReadNotification(request) {[weak self] response in
-//            if response.success {
-////                self?.delegate?.didReceiveMarkReadNotificationResponse()
-//            } else {
-////                self?.postErrorMessageNotification(error: response.errorMessage)
-//            }
-//        }
-//    }
-    
-    
-    
     func convertToDataModel(from activity: Activity, users: [String: User]?) -> LMFeedNotificationDataModel? {
         let users: [LMFeedUserDataModel] = activity.actionBy?.compactMap { actionBy in
             guard let userInfo = users?[actionBy],
@@ -136,7 +119,7 @@ public final class LMFeedNotificationViewModel {
 }
 
 extension LMFeedNotificationViewModel {
-    func convertToViewModel() {
+    func convertToViewModel(indexPath: IndexPath? = nil) {
         let convertedData: [LMFeedNotificationView.ViewModel] = notifications.map { notification in
                 .init(
                     notification: notification.activityText,
@@ -148,6 +131,29 @@ extension LMFeedNotificationViewModel {
                 )
         }
         
-        delegate?.showNotifications(with: convertedData)
+        delegate?.showNotifications(with: convertedData, indexPath: indexPath)
+    }
+}
+
+// MARK: Read Notification
+extension LMFeedNotificationViewModel {
+    func didSelectNotificationAt(index: IndexPath) {
+        guard let notification = notifications[safe: index.row] else { return }
+        markReadNotification(activityId: notification.id) { [weak self] in
+            self?.notifications[index.row].isRead = true
+            self?.convertToViewModel(indexPath: index)
+        }
+        // TODO: Add Routing Mechanism
+    }
+    
+    func markReadNotification(activityId: String, callback: (() -> Void)?) {
+        let request = MarkReadNotificationRequest.builder()
+            .activityId(activityId)
+            .build()
+        LMFeedClient.shared.markReadNotification(request) { response in
+            if response.success {
+                callback?()
+            }
+        }
     }
 }
