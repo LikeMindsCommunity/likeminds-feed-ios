@@ -55,6 +55,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     
     open private(set) lazy var topicView: LMFeedTopicView = {
         let view = LMUIComponents.shared.topicFeed.init().translatesAutoresizingMaskIntoConstraints()
+        view.delegate = self
         return view
     }()
     
@@ -145,14 +146,23 @@ open class LMFeedCreatePostViewController: LMViewController {
         return player
     }()
     
+    open private(set) lazy var taggingView: LMFeedTaggingListView = {
+        let view = LMFeedTaggingListViewModel.createModule(delegate: self)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     
     // MARK: Data Variables
     public var viewModel: LMFeedCreatePostViewModel?
     public var documentCellData: [LMFeedDocumentPreview.ViewModel] = []
     public var documenTableHeight: NSLayoutConstraint?
     
+    public var taggingViewHeight: NSLayoutConstraint?
+    public var inputTextViewHeight: NSLayoutConstraint?
+    public var textInputMaximumHeight: CGFloat = 150
+    
     public var mediaCellData: [LMFeedMediaProtocol] = []
-    public lazy var imagePicker = ImagePickerController()
     public lazy var documentPicker: UIDocumentPickerViewController = {
         if #available(iOS 14, *) {
             let doc = UIDocumentPickerViewController(forOpeningContentTypes: [.pdf])
@@ -172,6 +182,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         view.addSubview(containerView)
         
         containerView.addSubview(containerStackView)
+        containerView.addSubview(taggingView)
         
         containerStackView.addArrangedSubview(scrollView)
         containerStackView.addArrangedSubview(addMediaStack)
@@ -200,6 +211,15 @@ open class LMFeedCreatePostViewController: LMViewController {
         linkPreview.setHeightConstraint(with: 1000, priority: .defaultLow)
         addPhotosTab.setHeightConstraint(with: 40)
         scrollStackView.setHeightConstraint(with: 1000, priority: .defaultLow)
+        
+        taggingView.addConstraint(top: (inputTextView.bottomAnchor, 0),
+                                  leading: (inputTextView.leadingAnchor, 0),
+                                  trailing: (inputTextView.trailingAnchor, 0))
+        taggingView.bottomAnchor.constraint(lessThanOrEqualTo: scrollStackView.bottomAnchor, constant: -16).isActive = true
+        taggingViewHeight = taggingView.setHeightConstraint(with: 100)
+        
+        inputTextViewHeight = NSLayoutConstraint(item: inputTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
+        inputTextViewHeight?.isActive = true
         
         documenTableHeight = documentTableView.setHeightConstraint(with: Constants.shared.number.documentPreviewSize)
         
@@ -256,12 +276,14 @@ open class LMFeedCreatePostViewController: LMViewController {
         super.viewDidLoad()
         setupAddMedia()
         setupInitialView()
+        viewModel?.getTopics()
     }
     
     open func setupAddMedia() {
         addPhotosTab.configure(with: "Add Photo", image: Constants.shared.images.galleryIcon.withTintColor(.orange))
         addVideoTab.configure(with: "Add Video", image: Constants.shared.images.videoIcon)
         addDocumentsTab.configure(with: "Attach Files", image: Constants.shared.images.paperclipIcon)
+        taggingView.isHidden = true
     }
     
     open func setupInitialView() {
@@ -330,6 +352,16 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
 
 // MARK: LMFeedCreatePostViewModelProtocol
 extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
+    public func navigateToTopicView(with topics: [String]) {
+        let viewcontroller = LMFeedTopicSelectionViewModel.createModule(topicEnabledState: true, isShowAllTopicsButton: false, selectedTopicIds: topics, delegate: self)
+        navigationController?.pushViewController(viewcontroller, animated: true)
+    }
+    
+    public func updateTopicView(with data: LMFeedTopicView.ViewModel) {
+        topicView.isHidden = false
+        topicView.configure(with: data)
+    }
+    
     public func showMedia(documents: [LMFeedDocumentPreview.ViewModel], isShowAddMore: Bool, isShowBottomTab: Bool) {
         documentTableView.isHidden = documents.isEmpty
         documentCellData.append(contentsOf: documents)
@@ -370,41 +402,51 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
     }
 }
 
+
 // MARK: LMFeedTaggingTextViewProtocol
 extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
     public func mentionStarted(with text: String) {
-        print(text)
+        taggingView.getUsers(for: text)
     }
     
     public func mentionStopped() {
-        print(#function)
+        taggingView.stopFetchingUsers()
+        taggingView.isHidden = true
     }
     
     public func contentHeightChanged() {
-        print(#function)
+        let width = inputTextView.frame.size.width
+        let newSize = inputTextView.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
+        
+        inputTextView.isScrollEnabled = newSize.height > textInputMaximumHeight
+        inputTextViewHeight?.constant = min(newSize.height, textInputMaximumHeight)
     }
 }
 
 
 // MARK: Media Control
 public extension LMFeedCreatePostViewController {
-    func openImagePicker(_ mediaType: Settings.Fetch.Assets.MediaTypes, isFirstTime: Bool, maxSelection: Int) {imagePicker.settings.selection.max = 10
+    func openImagePicker(_ mediaType: Settings.Fetch.Assets.MediaTypes, isFirstTime: Bool, maxSelection: Int) {
+        var currentAssets: [(asset: PHAsset, url: URL)] = []
+        
+        let imagePicker = ImagePickerController()
+        imagePicker.settings.selection.max = 10
         imagePicker.settings.theme.selectionStyle = .numbered
         imagePicker.settings.fetch.assets.supportedMediaTypes = isFirstTime ? [mediaType] : [.image, .video]
         imagePicker.settings.selection.unselectOnReachingMax = false
         
-        presentImagePicker(imagePicker, select: { [weak self] asset in
-            asset.getURL { url in
+        presentImagePicker(imagePicker, select: { asset in
+            asset.asyncURL { url in
                 guard let url else { return }
-                self?.viewModel?.handleAssets(asset: url, type: asset.mediaType)
+                currentAssets.append((asset, url))
             }
-        }, deselect: { [weak self] asset in
-            asset.getURL { url in
-                guard let url else { return }
-                self?.viewModel?.handleAssets(asset: url, type: asset.mediaType)
+        }, deselect: { asset in
+            asset.asyncURL { _ in
+                currentAssets.removeAll(where: { $0.asset == asset })
             }
         }, cancel: { _ in
-        }, finish: { _ in
+        }, finish: { [weak self] assets in
+            self?.viewModel?.handleAssets(assets: currentAssets)
         })
     }
     
@@ -415,6 +457,8 @@ public extension LMFeedCreatePostViewController {
     }
 }
 
+
+// MARK: UIDocumentPickerDelegate
 extension LMFeedCreatePostViewController: UIDocumentPickerDelegate {
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         viewModel?.handleAssets(assets: urls)
@@ -423,5 +467,38 @@ extension LMFeedCreatePostViewController: UIDocumentPickerDelegate {
     
     public func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         controller.dismiss(animated: true)
+    }
+}
+
+
+// MARK: LMFeedTaggedUserFoundProtocol
+extension LMFeedCreatePostViewController: LMFeedTaggedUserFoundProtocol {
+    public func userSelected(with route: String, and userName: String) {
+        inputTextView.addTaggedUser(with: userName, route: route)
+    }
+    
+    public func updateHeight(with height: CGFloat) {
+        taggingView.isHidden = false
+        taggingViewHeight?.constant = height == 0 ? 30 : height
+    }
+}
+
+
+// MARK: LMFeedTopicViewCellProtocol
+extension LMFeedCreatePostViewController: LMFeedTopicViewCellProtocol {
+    public func didTapEditButton() {
+        viewModel?.didTapTopicSelection()
+    }
+    
+    public func didTapSelectTopicButton() {
+        viewModel?.didTapTopicSelection()
+    }
+}
+
+
+// MARK: LMFeedTopicSelectionViewProtocol
+extension LMFeedCreatePostViewController: LMFeedTopicSelectionViewProtocol {
+    public func updateTopicFeed(with topics: [(topicName: String, topicID: String)]) {
+        viewModel?.updateTopicFeed(with: topics)
     }
 }

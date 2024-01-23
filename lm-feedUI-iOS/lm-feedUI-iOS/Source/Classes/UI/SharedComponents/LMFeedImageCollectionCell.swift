@@ -99,28 +99,6 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
         self.url = data.image
         self.crossButtonAction = crossButtonAction
         crossButton.isHidden = crossButtonAction == nil
-        
-        if data.isFilePath {
-            let url = URL(fileURLWithPath: data.image)
-            let provider = LocalFileImageDataProvider(fileURL: url)
-            imageView.kf.setImage(with: provider) { [weak self] result in
-                switch result {
-                case .success(_):
-                    break
-                case .failure(let error):
-                    print(error.errorDescription ?? "")
-                    self?.imageView.image = Constants.shared.images.placeholderImage
-                }
-            }
-        } else {
-            imageView.kf.setImage(with: URL(string: data.image)) { [weak self] result in
-                switch result {
-                case .success(_):
-                    break
-                case .failure(_):
-                    self?.imageView.image = Constants.shared.images.placeholderImage
-                }
-            }
-        }
+        imageView.kf.setImage(with: URL(string: data.image), placeholder: Constants.shared.images.placeholderImage)
     }
 }

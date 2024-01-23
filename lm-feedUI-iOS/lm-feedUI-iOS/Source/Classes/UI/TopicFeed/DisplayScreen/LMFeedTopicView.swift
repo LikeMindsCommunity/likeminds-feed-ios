@@ -10,22 +10,26 @@ import UIKit
 public protocol LMFeedTopicViewCellProtocol: AnyObject {
     func didTapCrossButton(for topicId: String)
     func didTapEditButton()
+    func didTapSelectTopicButton()
 }
 
 public extension LMFeedTopicViewCellProtocol {
     func didTapCrossButton(for topicId: String) { }
     func didTapEditButton() { }
+    func didTapSelectTopicButton() { }
 }
 
 @IBDesignable
 open class LMFeedTopicView: LMView {
     public struct ViewModel {
         public let topics: [LMFeedTopicCollectionCellDataModel]
+        public let isSelectFlow: Bool
         public let isEditFlow: Bool
         public let isSepratorShown: Bool
         
-        public init(topics: [LMFeedTopicCollectionCellDataModel]? = nil, isEditFlow: Bool = false, isSepratorShown: Bool = false) {
+        public init(topics: [LMFeedTopicCollectionCellDataModel]? = nil, isSelectFlow: Bool = false, isEditFlow: Bool = false, isSepratorShown: Bool = false) {
             self.topics = topics ?? []
+            self.isSelectFlow = isSelectFlow
             self.isEditFlow = isEditFlow
             self.isSepratorShown = isSepratorShown
         }
@@ -56,6 +60,7 @@ open class LMFeedTopicView: LMView {
         collection.backgroundColor = Appearance.shared.colors.clear
         collection.registerCell(type: LMUIComponents.shared.topicFeedCollectionCell)
         collection.registerCell(type: LMUIComponents.shared.topicFeedEditIconCollectionCell)
+        collection.registerCell(type: LMUIComponents.shared.topicSelectIconCollectionCell)
         return collection
     }()
     
@@ -69,6 +74,7 @@ open class LMFeedTopicView: LMView {
     // MARK: Data Variables
     public var topics: [LMFeedTopicCollectionCellDataModel] = []
     public var isEditFlow: Bool = false
+    public var isSelectFlow: Bool = false
     public weak var delegate: LMFeedTopicViewCellProtocol?
     
     
@@ -110,6 +116,7 @@ open class LMFeedTopicView: LMView {
     open func configure(with data: ViewModel) {
         topics = data.topics
         isEditFlow = data.isEditFlow
+        isSelectFlow = data.isSelectFlow
         sepratorView.isHidden = !data.isSepratorShown
         
         collectionView.reloadData()
@@ -121,7 +128,7 @@ open class LMFeedTopicView: LMView {
 @objc
 extension LMFeedTopicView: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        topics.count + (isEditFlow ? 1 : 0)
+        topics.count + (isEditFlow ? 1 : 0) + (isSelectFlow ? 1 : 0)
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -133,6 +140,12 @@ extension LMFeedTopicView: UICollectionViewDataSource, UICollectionViewDelegateF
                   let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.topicFeedEditIconCollectionCell, for: indexPath) {
             cell.configure { [weak self] in
                 self?.delegate?.didTapEditButton()
+            }
+            return cell
+        } else if isSelectFlow,
+                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.topicSelectIconCollectionCell, for: indexPath) {
+            cell.configure { [weak self] in
+                self?.delegate?.didTapSelectTopicButton()
             }
             return cell
         }

@@ -8,28 +8,25 @@
 import Photos
 
 extension PHAsset {
-    func getURL(completionHandler : @escaping ((_ responseURL : URL?) -> Void)) {
-        var fileURL: URL?
-        
-        if self.mediaType == .image {
-            let options: PHContentEditingInputRequestOptions = PHContentEditingInputRequestOptions()
-            options.canHandleAdjustmentData = {(adjustmeta: PHAdjustmentData) -> Bool in
-                return true
+    func asyncURL(_ completion: @escaping ((URL?) -> Void)) {
+        switch mediaType {
+        case .image:
+            let options: PHContentEditingInputRequestOptions = .init()
+            options.canHandleAdjustmentData = { _ in true }
+            requestContentEditingInput(with: options) { editingInput, _ in
+                completion(editingInput?.fullSizeImageURL)
             }
-            self.requestContentEditingInput(with: options, completionHandler: {(contentEditingInput: PHContentEditingInput?, info: [AnyHashable : Any]) -> Void in
-                fileURL = contentEditingInput?.fullSizeImageURL as? URL
-            })
-        } else if self.mediaType == .video {
-            let options: PHVideoRequestOptions = PHVideoRequestOptions()
+        case .video:
+            let options: PHVideoRequestOptions = .init()
             options.version = .original
-            PHImageManager.default().requestAVAsset(forVideo: self, options: options, resultHandler: {(asset: AVAsset?, audioMix: AVAudioMix?, info: [AnyHashable : Any]?) -> Void in
-                if let urlAsset = asset as? AVURLAsset {
-                    fileURL =  urlAsset.url
+            PHImageManager.default()
+                .requestAVAsset(forVideo: self, options: options) { asset, _, _ in
+                    DispatchQueue.main.async {
+                        completion((asset as? AVURLAsset)?.url)
+                    }
                 }
-            })
-        }
-        DispatchQueue.main.async {
-            completionHandler(fileURL)
+        default:
+            completion(nil)
         }
     }
 }

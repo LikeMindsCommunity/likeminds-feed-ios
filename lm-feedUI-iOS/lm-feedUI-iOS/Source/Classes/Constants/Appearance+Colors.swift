@@ -28,9 +28,9 @@ public extension Appearance {
         public var navigationTitleColor: UIColor = UIColor(r: 51, g: 51, b: 51)
         public var navigationBackgroundColor: UIColor = UIColor(r: 249, g: 249, b: 249, a: 0.94)
         public var notificationBackgroundColor: UIColor = UIColor(r: 236, g: 239, b: 243)
+        public var appTintColor: UIColor = UIColor(r: 80, g: 70, b: 229)
         
         // UIKit Colors
-        public var appTintColor: UIColor = .purple
         public var white: UIColor = .white
         public var black: UIColor = .black
         public var clear: UIColor = .clear

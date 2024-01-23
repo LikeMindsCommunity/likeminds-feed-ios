@@ -246,6 +246,7 @@
 		E149A80A32F7857C7B93459C01ABDA16 /* GetAttributedTextWithRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7094DE5F1096286233DF615C51FB9B31 /* GetAttributedTextWithRoutes.swift */; };
 		E1B315AE47B85F1F705663FA31D2D661 /* BSImagePicker-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 69B4995E1D2FC140BD59E6A32AC8A927 /* BSImagePicker-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E3C1BBBC87C31CE396C11BDB1387A661 /* LMTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37615356D0D5155846C9F4F3AB90D32F /* LMTextView.swift */; };
+		E52546072B5F99B6003000BA /* LMFeedSelectTopicViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52546062B5F99B6003000BA /* LMFeedSelectTopicViewCell.swift */; };
 		E56C619A6AFAA7B0060F2188B2C98B42 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884D818F1DCE62C477240F9FD02ED368 /* Appearance.swift */; };
 		E5A348FA2B5CEA600042EB01 /* LMFeedLikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A348F82B5CEA600042EB01 /* LMFeedLikeViewController.swift */; };
 		E5A348FD2B5CF0AC0042EB01 /* LMFeedLikeUserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A348FC2B5CF0AC0042EB01 /* LMFeedLikeUserTableCell.swift */; };
@@ -644,6 +645,7 @@
 		E187E04B3518067D815B4F5DB691512C /* DropdownAnimator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DropdownAnimator.swift; path = Sources/Presentation/Dropdown/DropdownAnimator.swift; sourceTree = "<group>"; };
 		E2DAC56C1F31868586B7922DCCC1D278 /* DiskStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DiskStorage.swift; path = Sources/Cache/DiskStorage.swift; sourceTree = "<group>"; };
 		E38912FA82B320B0A318BC6A8AFA0A41 /* LMFeedPostDataModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostDataModel.swift; sourceTree = "<group>"; };
+		E52546062B5F99B6003000BA /* LMFeedSelectTopicViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedSelectTopicViewCell.swift; sourceTree = "<group>"; };
 		E53A5060744FDC34FCDB8FF2F771C3F1 /* SelectionView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SelectionView.swift; path = Sources/Scene/Assets/SelectionView.swift; sourceTree = "<group>"; };
 		E56D8FF34284043B04F01EF2E7CD5C12 /* RedirectHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RedirectHandler.swift; path = Source/RedirectHandler.swift; sourceTree = "<group>"; };
 		E5A348F82B5CEA600042EB01 /* LMFeedLikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedLikeViewController.swift; sourceTree = "<group>"; };
@@ -1112,6 +1114,7 @@
 		86A0A06E653A278DC418219B6E805BF4 /* CollectionCells */ = {
 			isa = PBXGroup;
 			children = (
+				E52546062B5F99B6003000BA /* LMFeedSelectTopicViewCell.swift */,
 				D98CE0B523C65D4C963803A04D1ABE44 /* LMFeedTopicEditIconViewCell.swift */,
 				FC4034EC5B7084C77761B700128B086C /* LMFeedTopicEditViewCell.swift */,
 				0695435D9867D07A53A511676A3ECF66 /* LMFeedTopicViewCell.swift */,
@@ -2103,6 +2106,7 @@
 				79443A9C3E5C44CB97D713EBA71F6C04 /* LMFeedPostDetailCommentCellViewModel.swift in Sources */,
 				7CF718FC5F03D652943FC0508F2882DE /* LMFeedPostDetailCommentHeaderView.swift in Sources */,
 				3257C5A291484A65827068556BD6EB38 /* LMFeedPostDetailTotalCommentCell.swift in Sources */,
+				E52546072B5F99B6003000BA /* LMFeedSelectTopicViewCell.swift in Sources */,
 				692C3EB46BD8EED1E0B472E36832E8FD /* LMFeedPostDocumentCell.swift in Sources */,
 				95EA6B1EB47C7733EF8840E7213425C8 /* LMFeedPostFooterView.swift in Sources */,
 				C46005973BEF85E9E1D5459F54372C2D /* LMFeedPostHeaderView.swift in Sources */,

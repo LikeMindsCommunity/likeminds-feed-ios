@@ -20,7 +20,7 @@ open class LMFeedTopicEditIconViewCell: LMCollectionViewCell {
     }()
     
     
-    // MARK: Variables
+    // MARK: Data Variables
     var editCallback: (() -> Void)?
     
     
@@ -37,17 +37,11 @@ open class LMFeedTopicEditIconViewCell: LMCollectionViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
-            editIcon.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
-            editIcon.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
-            editIcon.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 4),
-            editIcon.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4)
-        ])
+        contentView.pinSubView(subView: containerView)
+        editIcon.addConstraint(top: (containerView.topAnchor, 4),
+                               bottom: (containerView.bottomAnchor, -4),
+                               leading: (containerView.leadingAnchor, 8),
+                               trailing: (containerView.trailingAnchor, -8))
     }
     
     

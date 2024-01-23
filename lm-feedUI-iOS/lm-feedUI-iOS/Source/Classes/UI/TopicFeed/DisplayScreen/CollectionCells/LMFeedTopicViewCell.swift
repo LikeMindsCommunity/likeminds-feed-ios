@@ -31,6 +31,8 @@ open class LMFeedTopicViewCell: LMCollectionViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
+        contentView.pinSubView(subView: containerView)
+        
         NSLayoutConstraint.activate([
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),

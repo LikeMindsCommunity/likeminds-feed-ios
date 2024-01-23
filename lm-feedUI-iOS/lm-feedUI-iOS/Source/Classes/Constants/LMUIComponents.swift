@@ -36,6 +36,7 @@ public struct LMUIComponents {
     public var topicFeedCollectionCell: LMFeedTopicViewCell.Type = LMFeedTopicViewCell.self
     public var topicFeedEditCollectionCell: LMFeedTopicEditViewCell.Type = LMFeedTopicEditViewCell.self
     public var topicFeedEditIconCollectionCell: LMFeedTopicEditIconViewCell.Type = LMFeedTopicEditIconViewCell.self
+    public var topicSelectIconCollectionCell: LMFeedSelectTopicViewCell.Type = LMFeedSelectTopicViewCell.self
     
     // MARK: Tagging View
     public var taggingTableViewCell: LMFeedTaggingUserTableCell.Type = LMFeedTaggingUserTableCell.self

@@ -225,7 +225,9 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
         
         textView.attributedText = attrString
         
-        handleTagging()
+        if textView.text != placeHolderText {
+            handleTagging()
+        }
     }
     
     open func textViewDidChange(_ textView: UITextView) {

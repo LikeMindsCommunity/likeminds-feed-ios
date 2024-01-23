@@ -15,6 +15,8 @@ public protocol LMFeedCreatePostViewModelProtocol: LMBaseViewControllerProtocol 
     func showMedia(media: [LMFeedMediaProtocol], isShowAddMore: Bool, isShowBottomTab: Bool)
     func resetMediaView()
     func openMediaPicker(_ mediaType: LMFeedCreatePostViewModel.AttachmentType, isFirstPick: Bool, allowedNumber: Int)
+    func updateTopicView(with data: LMFeedTopicView.ViewModel)
+    func navigateToTopicView(with topics: [String])
 }
 
 public final class LMFeedCreatePostViewModel {
@@ -40,10 +42,14 @@ public final class LMFeedCreatePostViewModel {
     public var currentMediaSelectionType: AttachmentType
     public weak var delegate: LMFeedCreatePostViewModelProtocol?
     public var maxMedia = 10
+    public var isShowTopicFeed: Bool
+    public var selectedTopics: [(topic: String, topicID: String)]
     
     init(delegate: LMFeedCreatePostViewModelProtocol?) {
         currentMediaSelectionType = .none
         media = []
+        isShowTopicFeed = false
+        selectedTopics = []
         self.delegate = delegate
     }
     
@@ -55,12 +61,49 @@ public final class LMFeedCreatePostViewModel {
         return viewcontroller
     }
     
-    public func handleAssets(asset: URL, type: PHAssetMediaType) {
-        if type == .image {
-            media.append(.init(url: asset, mediaType: .image))
-        } else if type == .video {
-            media.append(.init(url: asset, mediaType: .video))
+    func getTopics() {
+        let request = TopicFeedRequest.builder()
+            .setEnableState(true)
+            .build()
+        
+        LMFeedClient.shared.getTopicFeed(request) { [weak self] response in
+            self?.isShowTopicFeed = !(response.data?.topics?.isEmpty ?? true)
+            self?.setupTopicFeed()
         }
+    }
+    
+    func setupTopicFeed() {
+        if isShowTopicFeed {
+            let data: LMFeedTopicView.ViewModel = .init(topics: selectedTopics.map({ .init(topic: $0.topic, topicID: $0.topicID) }),
+                                                        isSelectFlow: selectedTopics.isEmpty,
+                                                        isEditFlow: !selectedTopics.isEmpty,
+                                                        isSepratorShown: true)
+            
+            delegate?.updateTopicView(with: data)
+        }
+    }
+    
+    func didTapTopicSelection() {
+        let currentTopics = selectedTopics.map({ $0.topicID })
+        delegate?.navigateToTopicView(with: currentTopics)
+    }
+    
+    func updateTopicFeed(with topics: [(String, String)]) {
+        self.selectedTopics = topics
+        setupTopicFeed()
+    }
+    
+    public func handleAssets(assets: [(PHAsset, URL)]) {
+        assets.forEach { asset in
+            if !media.contains(where: { $0.url == asset.1 }) {
+                if asset.0.mediaType == .image {
+                    media.append(.init(url: asset.1, mediaType: .image))
+                } else if asset.0.mediaType == .video {
+                    media.append(.init(url: asset.1, mediaType: .video))
+                }
+            }
+        }
+        
         reloadMedia()
     }
     
