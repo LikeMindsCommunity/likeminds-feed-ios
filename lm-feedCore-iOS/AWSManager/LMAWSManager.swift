@@ -30,13 +30,8 @@ public class LMAWSManager {
     ///   - progress: Tells us about the progress rate of uploading
     ///   - completion: What to do after file is done uploading
     func uploadfile(fileUrl: URL, fileName: String, contenType: String, progress: progressBlock?, completion: completionBlock?) {
-        // Upload progress block
         do {
-            guard fileUrl.startAccessingSecurityScopedResource() else {
-                completion?(nil, nil)
-                return
-            }
-            
+            _ = fileUrl.startAccessingSecurityScopedResource()
             let data = try Data(contentsOf: fileUrl)
             fileUrl.stopAccessingSecurityScopedResource()
             

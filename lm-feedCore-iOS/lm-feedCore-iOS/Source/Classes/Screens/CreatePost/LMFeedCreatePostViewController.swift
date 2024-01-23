@@ -105,11 +105,14 @@ open class LMFeedCreatePostViewController: LMViewController {
     open private(set) lazy var addMoreButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle("Add More", for: .normal)
+        button.setTitleColor(Appearance.shared.colors.appTintColor, for: .normal)
+        button.setFont(Appearance.shared.fonts.buttonFont1)
         button.setImage(Constants.shared.images.plusIcon, for: .normal)
-        button.semanticContentAttribute = .forceRightToLeft
+        button.setPreferredSymbolConfiguration(.init(font: Appearance.shared.fonts.buttonFont1), forImageIn: .normal)
         button.tintColor = Appearance.shared.colors.appTintColor
         button.layer.borderColor = Appearance.shared.colors.appTintColor.cgColor
         button.layer.borderWidth = 1
+        button.layer.cornerRadius = 8
         return button
     }()
     
