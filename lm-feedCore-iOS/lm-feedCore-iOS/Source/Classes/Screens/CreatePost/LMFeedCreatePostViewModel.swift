@@ -17,6 +17,7 @@ public protocol LMFeedCreatePostViewModelProtocol: LMBaseViewControllerProtocol 
     func openMediaPicker(_ mediaType: LMFeedCreatePostViewModel.AttachmentType, isFirstPick: Bool, allowedNumber: Int)
     func updateTopicView(with data: LMFeedTopicView.ViewModel)
     func navigateToTopicView(with topics: [String])
+    func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?)
 }
 
 public final class LMFeedCreatePostViewModel {
@@ -43,6 +44,9 @@ public final class LMFeedCreatePostViewModel {
     public weak var delegate: LMFeedCreatePostViewModelProtocol?
     public var maxMedia = 10
     public var isShowTopicFeed: Bool
+    public var showLinkPreview: Bool
+    public var debounceForDecodeLink: Timer?
+    public var linkPreview: LMFeedLinkPreviewDataModel?
     public var selectedTopics: [(topic: String, topicID: String)]
     
     init(delegate: LMFeedCreatePostViewModelProtocol?) {
@@ -50,6 +54,7 @@ public final class LMFeedCreatePostViewModel {
         media = []
         isShowTopicFeed = false
         selectedTopics = []
+        showLinkPreview = true
         self.delegate = delegate
     }
     
@@ -126,6 +131,10 @@ public final class LMFeedCreatePostViewModel {
         var docData: [LMFeedDocumentPreview.ViewModel] = []
         var mediaData: [LMFeedMediaProtocol] = []
         
+        if media.isEmpty {
+            currentMediaSelectionType = .none
+        }
+        
         media.forEach { medium in
             switch medium.mediaType {
             case .image:
@@ -181,5 +190,55 @@ public final class LMFeedCreatePostViewModel {
         case .none:
             break
         }
+    }
+}
+
+
+// MARK: Link Detection
+extension LMFeedCreatePostViewModel {
+    func handleLinkDetection(in text: String) {
+        guard showLinkPreview,
+              currentMediaSelectionType == .none,
+              let link = text.detectLink() else {
+            delegate?.setupLinkPreview(with: nil)
+            return }
+        
+        debounceForDecodeLink?.invalidate()
+        
+        debounceForDecodeLink = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
+            let request = DecodeUrlRequest.builder()
+                .link(link)
+                .build()
+            
+            LMFeedClient.shared.decodeUrl(request) { [weak self] response in
+                if response.success,
+                    let ogTags = response.data?.oGTags {
+                    self?.linkPreview = .init(url: link, imagePreview: ogTags.image, title: ogTags.title, description: ogTags.description)
+                } else {
+                    self?.linkPreview = nil
+                }
+                self?.convertToLinkViewData()
+            }
+        }
+    }
+    
+    func convertToLinkViewData() {
+        guard let linkPreview else { 
+            delegate?.setupLinkPreview(with: nil)
+            return
+        }
+        
+        let linkViewModel: LMFeedLinkPreview.ViewModel = .init(
+            linkPreview: linkPreview.imagePreview,
+            title: linkPreview.title,
+            description: linkPreview.description,
+            url: linkPreview.url
+        )
+        
+        delegate?.setupLinkPreview(with: linkViewModel)
+    }
+    
+    func hideLinkPreview() {
+        self.showLinkPreview = false
     }
 }

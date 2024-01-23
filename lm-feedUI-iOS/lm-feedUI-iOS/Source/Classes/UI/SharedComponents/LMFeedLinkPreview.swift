@@ -160,6 +160,19 @@ open class LMFeedLinkPreview: LMView {
         containerView.layer.borderWidth = 1
         containerView.layer.borderColor = Appearance.shared.colors.gray102.cgColor
         sepratorView.backgroundColor = Appearance.shared.colors.gray102
+        crossButton.layer.cornerRadius = crossButton.frame.height / 2
+    }
+    
+    
+    // MARK: setupActions
+    open override func setupActions() {
+        super.setupActions()
+        crossButton.addTarget(self, action: #selector(didTapCrossButton), for: .touchUpInside)
+    }
+    
+    @objc
+    open func didTapCrossButton() {
+        crossButtonAction?()
     }
     
     

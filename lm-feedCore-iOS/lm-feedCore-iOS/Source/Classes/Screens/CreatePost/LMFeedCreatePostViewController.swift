@@ -66,6 +66,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         textView.isScrollEnabled = false
         textView.isEditable = true
         textView.placeHolderText = "Write Something here..."
+        textView.addDoneButtonOnKeyboard()
         return textView
     }()
     
@@ -276,6 +277,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         super.viewDidLoad()
         setupAddMedia()
         setupInitialView()
+        setupProfileData()
         viewModel?.getTopics()
     }
     
@@ -292,6 +294,14 @@ open class LMFeedCreatePostViewController: LMViewController {
         documentTableView.isHidden = true
         addMoreButton.isHidden = true
         topicView.isHidden = true
+    }
+    
+    open func setupProfileData() {
+        guard let user = LocalPreferences.userObj else {
+            headerView.configure(with: .init(profileImage: nil, username: "user_name"))
+            return
+        }
+        headerView.configure(with: .init(profileImage: user.imageUrl, username: user.name ?? "user_name"))
     }
 }
 
@@ -352,6 +362,16 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
 
 // MARK: LMFeedCreatePostViewModelProtocol
 extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
+    public func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?) {
+        linkPreview.isHidden = data == nil
+        if let data {
+            linkPreview.configure(with: data) { [weak self] in
+                self?.viewModel?.hideLinkPreview()
+                self?.linkPreview.isHidden = true
+            }
+        }
+    }
+    
     public func navigateToTopicView(with topics: [String]) {
         let viewcontroller = LMFeedTopicSelectionViewModel.createModule(topicEnabledState: true, isShowAllTopicsButton: false, selectedTopicIds: topics, delegate: self)
         navigationController?.pushViewController(viewcontroller, animated: true)
@@ -420,6 +440,8 @@ extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
         
         inputTextView.isScrollEnabled = newSize.height > textInputMaximumHeight
         inputTextViewHeight?.constant = min(newSize.height, textInputMaximumHeight)
+        
+        viewModel?.handleLinkDetection(in: inputTextView.text)
     }
 }
 

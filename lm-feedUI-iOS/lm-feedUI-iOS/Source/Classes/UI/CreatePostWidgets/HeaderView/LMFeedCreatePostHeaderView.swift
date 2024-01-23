@@ -82,17 +82,13 @@ open class LMFeedCreatePostHeaderView: LMView {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        pinSubView(subView: containerView)
-        imageContainerView.addConstraint(top: (stackView.topAnchor, 0), bottom: (stackView.bottomAnchor, 0))
-        userProfileImage.pinSubView(subView: imageContainerView)
+        containerView.addConstraint(top: (topAnchor, 0), leading: (leadingAnchor, 0), trailing: (trailingAnchor, 0))
+        containerView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor).isActive = true
+        userProfileImage.setHeightConstraint(with: 64)
+        containerView.pinSubView(subView: stackView)
+        imageContainerView.addConstraint(top: (stackView.topAnchor, 8), bottom: (stackView.bottomAnchor, 8))
+        imageContainerView.pinSubView(subView: userProfileImage)
         imageContainerView.widthAnchor.constraint(equalTo: imageContainerView.heightAnchor).isActive = true
-        
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            stackView.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-        ])
     }
     
     
@@ -106,7 +102,7 @@ open class LMFeedCreatePostHeaderView: LMView {
   
     // MARK: configure
     open func configure(with data: ViewDataModel) {
-        userProfileImage.kf.setImage(with: URL(string: data.profileImage ?? ""))
+        userProfileImage.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.username))
         userNameLabel.text = data.username
         editAuthorButton.isHidden = !data.isEditFlow
     }
