@@ -39,6 +39,7 @@ open class LMFeedCreatePostHeaderView: LMView {
     
     open private(set) lazy var imageContainerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        view.clipsToBounds = true
         view.backgroundColor = .clear
         return view
     }()
@@ -46,6 +47,7 @@ open class LMFeedCreatePostHeaderView: LMView {
     open private(set) lazy var userProfileImage: LMImageView = {
         let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
         image.image = UIImage(systemName: "person.circle.fill")
+        image.clipsToBounds = true
         return image
     }()
     
@@ -82,11 +84,9 @@ open class LMFeedCreatePostHeaderView: LMView {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        containerView.addConstraint(top: (topAnchor, 0), leading: (leadingAnchor, 0), trailing: (trailingAnchor, 0))
-        containerView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor).isActive = true
-        userProfileImage.setHeightConstraint(with: 64)
+        pinSubView(subView: containerView)
         containerView.pinSubView(subView: stackView)
-        imageContainerView.addConstraint(top: (stackView.topAnchor, 8), bottom: (stackView.bottomAnchor, 8))
+        imageContainerView.addConstraint(top: (stackView.topAnchor, 8), bottom: (stackView.bottomAnchor, -8))
         imageContainerView.pinSubView(subView: userProfileImage)
         imageContainerView.widthAnchor.constraint(equalTo: imageContainerView.heightAnchor).isActive = true
     }
@@ -95,8 +95,7 @@ open class LMFeedCreatePostHeaderView: LMView {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        
-        userProfileImage.layer.cornerRadius = userProfileImage.frame.height / 2
+        imageContainerView.layer.cornerRadius = 24
     }
     
   

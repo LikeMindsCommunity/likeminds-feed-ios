@@ -142,8 +142,8 @@ open class LMFeedTaggingTextView: LMTextView {
                 message.append(attributedText.attributedSubstring(from: range).string)
             }
         }
-        
-        return message
+        message = message.trimmingCharacters(in: .whitespacesAndNewlines)
+        return message != placeHolderText ? message : ""
     }
 }
 

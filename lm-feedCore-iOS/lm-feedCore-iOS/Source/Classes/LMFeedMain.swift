@@ -6,7 +6,7 @@
 //
 
 import LikeMindsFeed
-
+// Keep Onyl Auth Logic
 public class LMFeedMain {
     
     private init() {}
@@ -20,6 +20,8 @@ public class LMFeedMain {
             .uuid(userId)
             .isGuest(false)
             .build()
+        
+        LMAWSManager.shared.initialize()
         
         LMFeedClient.shared.initiateUser(request: request) { [weak self] response in
             print(response)

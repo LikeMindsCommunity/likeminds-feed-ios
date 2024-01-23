@@ -153,6 +153,12 @@ open class LMFeedCreatePostViewController: LMViewController {
         return view
     }()
     
+    open private(set) lazy var createPostButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: "Create", style: .plain, target: self, action: #selector(didTapCreateButton))
+        button.tintColor = Appearance.shared.colors.appTintColor
+        return button
+    }()
+    
     
     // MARK: Data Variables
     public var viewModel: LMFeedCreatePostViewModel?
@@ -249,6 +255,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         addVideoTab.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapAddVideo)))
         addDocumentsTab.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapAddDocument)))
         addMoreButton.addTarget(self, action: #selector(didTapAddMoreButton), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = createPostButton
     }
     
     @objc
@@ -269,6 +276,12 @@ open class LMFeedCreatePostViewController: LMViewController {
     @objc
     open func didTapAddMoreButton() {
         viewModel?.addMoreButtonClicked()
+    }
+    
+    @objc
+    open func didTapCreateButton() {
+        viewModel?.createPost(with: inputTextView.getText())
+        navigationController?.popViewController(animated: true)
     }
     
     
@@ -294,6 +307,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         documentTableView.isHidden = true
         addMoreButton.isHidden = true
         topicView.isHidden = true
+        createPostButton.isEnabled = false
     }
     
     open func setupProfileData() {
@@ -362,6 +376,10 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
 
 // MARK: LMFeedCreatePostViewModelProtocol
 extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
+    public func observeCreateButton(isEnabled: Bool) {
+        createPostButton.isEnabled = isEnabled || !inputTextView.getText().isEmpty
+    }
+    
     public func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?) {
         linkPreview.isHidden = data == nil
         if let data {
@@ -383,6 +401,7 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
     }
     
     public func showMedia(documents: [LMFeedDocumentPreview.ViewModel], isShowAddMore: Bool, isShowBottomTab: Bool) {
+        linkPreview.isHidden = true
         documentTableView.isHidden = documents.isEmpty
         documentCellData.append(contentsOf: documents)
         documentTableView.reloadData()
@@ -393,6 +412,7 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
     }
     
     public func showMedia(media: [LMFeedMediaProtocol], isShowAddMore: Bool, isShowBottomTab: Bool) {
+        linkPreview.isHidden = true
         mediaCollectionView.isHidden = media.isEmpty
         mediaCellData.append(contentsOf: media)
         mediaCollectionView.reloadData()
@@ -408,7 +428,7 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
         documentCellData.removeAll(keepingCapacity: true)
     }
     
-    public func openMediaPicker(_ mediaType: LMFeedCreatePostViewModel.AttachmentType, isFirstPick: Bool, allowedNumber: Int) {
+    public func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int) {
         switch mediaType {
         case .image:
             openImagePicker(.image, isFirstTime: isFirstPick, maxSelection: allowedNumber)
@@ -442,6 +462,7 @@ extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
         inputTextViewHeight?.constant = min(newSize.height, textInputMaximumHeight)
         
         viewModel?.handleLinkDetection(in: inputTextView.text)
+        viewModel?.observeCreateButton(text: inputTextView.text)
     }
 }
 

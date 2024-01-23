@@ -26,6 +26,15 @@
   "swift_versions": "5.0",
   "requires_arc": true,
   "dependencies": {
+    "AWSCore": [
+
+    ],
+    "AWSCognito": [
+
+    ],
+    "AWSS3": [
+
+    ],
     "lm-feedUI-iOS": [
 
     ],

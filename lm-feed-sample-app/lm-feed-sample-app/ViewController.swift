@@ -55,3 +55,17 @@ class ViewController: UIViewController {
         view.endEditing(true)
     }
 }
+
+
+class Temp: UIViewController {
+    let button: LMButton = {
+        return .init()
+    }()
+    
+    @objc
+    open func didTap() {
+        let createPost = LMFeedCreatePostViewModel.createModule()
+        present(createPost, animated: true)
+    }
+}
+

@@ -14,40 +14,40 @@ public protocol LMFeedCreatePostViewModelProtocol: LMBaseViewControllerProtocol 
     func showMedia(documents: [LMFeedDocumentPreview.ViewModel], isShowAddMore: Bool, isShowBottomTab: Bool)
     func showMedia(media: [LMFeedMediaProtocol], isShowAddMore: Bool, isShowBottomTab: Bool)
     func resetMediaView()
-    func openMediaPicker(_ mediaType: LMFeedCreatePostViewModel.AttachmentType, isFirstPick: Bool, allowedNumber: Int)
+    func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int)
     func updateTopicView(with data: LMFeedTopicView.ViewModel)
     func navigateToTopicView(with topics: [String])
     func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?)
+    func observeCreateButton(isEnabled: Bool)
 }
 
 public final class LMFeedCreatePostViewModel {
     public struct Attachment {
         let url: URL
-        let mediaType: AttachmentType
+        let mediaType: PostCreationAttachmentType
         
-        public init(url: URL, mediaType: AttachmentType) {
+        public init(url: URL, mediaType: PostCreationAttachmentType) {
             self.url = url
             self.mediaType = mediaType
         }
     }
     
-    public enum AttachmentType {
-        case image,
-             video,
-             document,
-             none
-    }
-    
     // MARK: Data Variables
-    public var media: [Attachment]
-    public var currentMediaSelectionType: AttachmentType
     public weak var delegate: LMFeedCreatePostViewModelProtocol?
+    private var media: [Attachment]
+    private var currentMediaSelectionType: PostCreationAttachmentType
     public var maxMedia = 10
-    public var isShowTopicFeed: Bool
-    public var showLinkPreview: Bool
-    public var debounceForDecodeLink: Timer?
-    public var linkPreview: LMFeedLinkPreviewDataModel?
-    public var selectedTopics: [(topic: String, topicID: String)]
+    private var isShowTopicFeed: Bool
+    private var debounceForDecodeLink: Timer?
+    private var selectedTopics: [(topic: String, topicID: String)]
+    private var linkPreview: LMFeedLinkPreviewDataModel?
+    private var showLinkPreview: Bool {
+        willSet {
+            if !newValue {
+                linkPreview = nil
+            }
+        }
+    }
     
     init(delegate: LMFeedCreatePostViewModelProtocol?) {
         currentMediaSelectionType = .none
@@ -66,39 +66,26 @@ public final class LMFeedCreatePostViewModel {
         return viewcontroller
     }
     
-    func getTopics() {
-        let request = TopicFeedRequest.builder()
-            .setEnableState(true)
-            .build()
+    func observeCreateButton(text: String) {
+        delegate?.observeCreateButton(isEnabled: !media.isEmpty || !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+    }
+    
+    func createPost(with text: String) {
+        var attachments: [LMFeedCreatePostOperation.LMAWSRequestModel] = []
+        let filePath = "files/post/\(LocalPreferences.userObj?.clientUUID ?? "user")/"
         
-        LMFeedClient.shared.getTopicFeed(request) { [weak self] response in
-            self?.isShowTopicFeed = !(response.data?.topics?.isEmpty ?? true)
-            self?.setupTopicFeed()
+        media.forEach { medium in
+            attachments.append(.init(url: medium.url, fileName: medium.url.lastPathComponent, awsFilePath: filePath, contentType: medium.mediaType))
         }
+        
+        LMFeedCreatePostOperation.shared.createPost(with: text, topics: selectedTopics.map({ $0.topicID }), files: attachments, linkPreview: linkPreview)
     }
-    
-    func setupTopicFeed() {
-        if isShowTopicFeed {
-            let data: LMFeedTopicView.ViewModel = .init(topics: selectedTopics.map({ .init(topic: $0.topic, topicID: $0.topicID) }),
-                                                        isSelectFlow: selectedTopics.isEmpty,
-                                                        isEditFlow: !selectedTopics.isEmpty,
-                                                        isSepratorShown: true)
-            
-            delegate?.updateTopicView(with: data)
-        }
-    }
-    
-    func didTapTopicSelection() {
-        let currentTopics = selectedTopics.map({ $0.topicID })
-        delegate?.navigateToTopicView(with: currentTopics)
-    }
-    
-    func updateTopicFeed(with topics: [(String, String)]) {
-        self.selectedTopics = topics
-        setupTopicFeed()
-    }
-    
-    public func handleAssets(assets: [(PHAsset, URL)]) {
+}
+
+
+// MARK: Assets Arena
+public extension LMFeedCreatePostViewModel {
+    func handleAssets(assets: [(PHAsset, URL)]) {
         assets.forEach { asset in
             if !media.contains(where: { $0.url == asset.1 }) {
                 if asset.0.mediaType == .image {
@@ -112,13 +99,12 @@ public final class LMFeedCreatePostViewModel {
         reloadMedia()
     }
     
-    public func removeAsset(url: String) {
+    func removeAsset(url: String) {
         media.removeAll(where: { $0.url.absoluteString == url })
         reloadMedia()
     }
     
-    public func handleAssets(assets: [URL]) {
-        
+    func handleAssets(assets: [URL]) {
         assets.prefix(maxMedia - media.count).forEach { asset in
             if !media.contains(where: { $0.url == asset }) {
                 media.append(.init(url: asset, mediaType: .document))
@@ -127,12 +113,28 @@ public final class LMFeedCreatePostViewModel {
         reloadMedia()
     }
     
+    func updateCurrentSelection(to type: PostCreationAttachmentType) {
+        currentMediaSelectionType = type
+        delegate?.openMediaPicker(type, isFirstPick: media.isEmpty, allowedNumber: maxMedia - media.count)
+    }
+    
+    func addMoreButtonClicked() {
+        switch currentMediaSelectionType {
+        case .image, .video, .document:
+            delegate?.openMediaPicker(currentMediaSelectionType, isFirstPick: media.isEmpty, allowedNumber: maxMedia - media.count)
+        case .none:
+            break
+        }
+    }
+    
     func reloadMedia() {
         var docData: [LMFeedDocumentPreview.ViewModel] = []
         var mediaData: [LMFeedMediaProtocol] = []
         
-        if media.isEmpty {
-            currentMediaSelectionType = .none
+        currentMediaSelectionType = media.isEmpty ? .none : currentMediaSelectionType
+        
+        if !media.isEmpty {
+            showLinkPreview = false
         }
         
         media.forEach { medium in
@@ -170,26 +172,7 @@ public final class LMFeedCreatePostViewModel {
     }
     
     func getNumberOfPages(from url: URL) -> Int? {
-        guard url.isFileURL else { return nil }
-        if let pdfDocument = PDFDocument(url: url) {
-            return pdfDocument.pageCount
-        } else {
-            return nil
-        }
-    }
-    
-    func updateCurrentSelection(to type: AttachmentType) {
-        currentMediaSelectionType = type
-        delegate?.openMediaPicker(type, isFirstPick: media.isEmpty, allowedNumber: maxMedia - media.count)
-    }
-    
-    func addMoreButtonClicked() {
-        switch currentMediaSelectionType {
-        case .image, .video, .document:
-            delegate?.openMediaPicker(currentMediaSelectionType, isFirstPick: media.isEmpty, allowedNumber: maxMedia - media.count)
-        case .none:
-            break
-        }
+        PDFDocument(url: url)?.pageCount
     }
 }
 
@@ -240,5 +223,41 @@ extension LMFeedCreatePostViewModel {
     
     func hideLinkPreview() {
         self.showLinkPreview = false
+    }
+}
+
+
+// MARK: Topics Arena
+extension LMFeedCreatePostViewModel {
+    func getTopics() {
+        let request = TopicFeedRequest.builder()
+            .setEnableState(true)
+            .build()
+        
+        LMFeedClient.shared.getTopicFeed(request) { [weak self] response in
+            self?.isShowTopicFeed = !(response.data?.topics?.isEmpty ?? true)
+            self?.setupTopicFeed()
+        }
+    }
+    
+    func setupTopicFeed() {
+        if isShowTopicFeed {
+            let data: LMFeedTopicView.ViewModel = .init(topics: selectedTopics.map({ .init(topic: $0.topic, topicID: $0.topicID) }),
+                                                        isSelectFlow: selectedTopics.isEmpty,
+                                                        isEditFlow: !selectedTopics.isEmpty,
+                                                        isSepratorShown: true)
+            
+            delegate?.updateTopicView(with: data)
+        }
+    }
+    
+    func didTapTopicSelection() {
+        let currentTopics = selectedTopics.map({ $0.topicID })
+        delegate?.navigateToTopicView(with: currentTopics)
+    }
+    
+    func updateTopicFeed(with topics: [(String, String)]) {
+        self.selectedTopics = topics
+        setupTopicFeed()
     }
 }
