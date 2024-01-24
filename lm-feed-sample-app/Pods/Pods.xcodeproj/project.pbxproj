@@ -457,6 +457,7 @@
 		E525460E2B5FDC3A003000BA /* LMAWSManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525460D2B5FDC3A003000BA /* LMAWSManager.swift */; };
 		E52546162B60048B003000BA /* LMFeedCreatePostOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52546152B60048B003000BA /* LMFeedCreatePostOperation.swift */; };
 		E52546172B6019CE003000BA /* LMFeedUIAssetsCatalog.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F2D387444C923AC2BB14AB7B7A70BAA /* LMFeedUIAssetsCatalog.xcassets */; };
+		E52546192B60FD54003000BA /* LMFeedError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52546182B60FD54003000BA /* LMFeedError.swift */; };
 		E5635DECB22362CA17521F7B6A752BB4 /* AWSS3Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = B9D03729E894DF03FD1341DDB039C798 /* AWSS3Resources.m */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EDB2EFA59D4CF17488D59DD6F18B29 /* SessionDelegate.swift */; };
 		E643496069890D798E34797A552BD844 /* AWSEXTKeyPathCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = AE1BA168CF62D11A9448822DF172A5C4 /* AWSEXTKeyPathCoding.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1168,6 +1169,7 @@
 		E449A78FF5150AAD5E4D87F1B78CFCC8 /* LMFeedPostDocumentCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostDocumentCell.swift; sourceTree = "<group>"; };
 		E525460D2B5FDC3A003000BA /* LMAWSManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMAWSManager.swift; sourceTree = "<group>"; };
 		E52546152B60048B003000BA /* LMFeedCreatePostOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePostOperation.swift; sourceTree = "<group>"; };
+		E52546182B60FD54003000BA /* LMFeedError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedError.swift; sourceTree = "<group>"; };
 		E58C401B31E4087006987350D2AA7097 /* Fabric.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Fabric.h; path = AWSCore/Fabric/Fabric.h; sourceTree = "<group>"; };
 		E661CC24B90A91F628112F64E7CBC04D /* AWSURLRequestRetryHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSURLRequestRetryHandler.h; path = AWSCore/Serialization/AWSURLRequestRetryHandler.h; sourceTree = "<group>"; };
 		E6A18619D55A01F1A4D7E0B2C4B8727E /* Resource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Resource.swift; path = Sources/General/ImageSource/Resource.swift; sourceTree = "<group>"; };
@@ -2439,6 +2441,7 @@
 		F93131973A5E0CA3584D20CD37B953D1 /* lm-feedCore-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				E52546182B60FD54003000BA /* LMFeedError.swift */,
 				5F82959C70E88103789798367D3B9D57 /* LMFeedMain.swift */,
 				5D03C63089F62B7CF0426412E3373BDD /* LocalPreferences.swift */,
 				E525460C2B5FDC1D003000BA /* AWSManager */,
@@ -3266,6 +3269,7 @@
 				5870E72E081102189AAE380C8AF8EE6E /* LMFeedConvertToFeedPost.swift in Sources */,
 				37CFBB3BC0214C7A2FDD073F8ABECB49 /* LMFeedCreatePostViewController.swift in Sources */,
 				D8C12DADB7415260ACE4BDF2384CFE79 /* LMFeedCreatePostViewModel.swift in Sources */,
+				E52546192B60FD54003000BA /* LMFeedError.swift in Sources */,
 				F42D3FAD009CCF58ECB26A7FB937A9BB /* LMFeedLikeDataModel.swift in Sources */,
 				5CA7D341BC1F9741096A8D173C462C8A /* LMFeedLikeViewController.swift in Sources */,
 				96FE3F38EBA8ADD80F0A29EE6DCC687C /* LMFeedLikeViewModel.swift in Sources */,

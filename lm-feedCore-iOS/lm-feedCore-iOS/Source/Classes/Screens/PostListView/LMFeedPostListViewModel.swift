@@ -37,7 +37,8 @@ public class LMFeedPostListViewModel {
         self.delegate = delegate
     }
     
-    public static func createModule(with delegate: LMFeedPostListVCFromProtocol) -> LMFeedPostListViewController {
+    public static func createModule(with delegate: LMFeedPostListVCFromProtocol) -> LMFeedPostListViewController? {
+        guard LMFeedMain.isInitialized else { return nil }
         let viewController = Components.shared.feedListViewController.init()
         let viewModel: LMFeedPostListViewModel = .init(delegate: viewController)
         

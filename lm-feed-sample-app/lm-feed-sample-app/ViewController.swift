@@ -24,7 +24,15 @@ class ViewController: UIViewController {
         
         if let apiKey = LocalPreferences.apiKey,
            !apiKey.isEmpty {
-            LMFeedMain.shared.initiateLikeMindsFeed(withViewController: self, apiKey: apiKey, username: LocalPreferences.userObj?.name ?? "username", userId: LocalPreferences.userObj?.uuid ?? "userId")
+            LMFeedMain.shared.initiateLikeMindsFeed(apiKey: apiKey, username: "username", userId: "userId") { [weak self] result in
+                switch result {
+                case .success(_):
+                    guard let viewController = LMUniversalFeedViewModel.createModule() else { return }
+                    self?.navigationController?.pushViewController(viewController, animated: true)
+                case .failure(let error):
+                    dump(error)
+                }
+            }
         }
     }
     
@@ -47,7 +55,15 @@ class ViewController: UIViewController {
             userId = "userId"
         }
         
-        LMFeedMain.shared.initiateLikeMindsFeed(withViewController: self, apiKey: apiKey, username: username, userId: userId)
+        LMFeedMain.shared.initiateLikeMindsFeed(apiKey: apiKey, username: username, userId: userId) { [weak self] result in
+            switch result {
+            case .success(_):
+                guard let viewController = LMUniversalFeedViewModel.createModule() else { return }
+                self?.navigationController?.pushViewController(viewController, animated: true)
+            case .failure(let error):
+                dump(error)
+            }
+        }
     }
     
     @objc
@@ -55,17 +71,3 @@ class ViewController: UIViewController {
         view.endEditing(true)
     }
 }
-
-
-class Temp: UIViewController {
-    let button: LMButton = {
-        return .init()
-    }()
-    
-    @objc
-    open func didTap() {
-        let createPost = LMFeedCreatePostViewModel.createModule()
-        present(createPost, animated: true)
-    }
-}
-

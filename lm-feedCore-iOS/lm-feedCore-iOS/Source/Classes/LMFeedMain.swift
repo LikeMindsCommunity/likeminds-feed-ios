@@ -12,8 +12,9 @@ public class LMFeedMain {
     private init() {}
     
     public static var shared: LMFeedMain = .init()
+    public static private(set) var isInitialized: Bool = false
     
-    public func initiateLikeMindsFeed(withViewController viewController: UIViewController, apiKey: String, username: String, userId: String) {
+    public func initiateLikeMindsFeed(apiKey: String, username: String, userId: String, completionHandler: ((Result<Bool, LMFeedError>) -> Void)?) {
         let request = InitiateUserRequest.builder()
             .apiKey(apiKey)
             .userName(username)
@@ -24,24 +25,24 @@ public class LMFeedMain {
         LMAWSManager.shared.initialize()
         
         LMFeedClient.shared.initiateUser(request: request) { [weak self] response in
-            print(response)
-            guard let user = response.data?.user else {
-                let alert = UIAlertController(title: "Error", message: response.errorMessage ?? "", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                viewController.present(alert, animated: false)
+            guard response.success,
+                  let user = response.data?.user else {
+                completionHandler?(.failure(.apiInitializationFailed(error: response.errorMessage)))
                 return
             }
+            
             if response.data?.appAccess == false {
                 self?.logout(response.data?.refreshToken ?? "", deviceId: UIDevice.current.identifierForVendor?.uuidString ?? "")
+                completionHandler?(.failure(.appAccessFalse))
                 return
             }
             
             LocalPreferences.apiKey = apiKey
             LocalPreferences.userObj = user
             
-            let homeFeedVC = UINavigationController(rootViewController: LMUniversalFeedViewModel.createModule())
-            homeFeedVC.modalPresentationStyle = .fullScreen
-            viewController.navigationController?.present(homeFeedVC, animated: true)
+            Self.isInitialized = true
+            
+            completionHandler?(.success(true))
         }
     }
     

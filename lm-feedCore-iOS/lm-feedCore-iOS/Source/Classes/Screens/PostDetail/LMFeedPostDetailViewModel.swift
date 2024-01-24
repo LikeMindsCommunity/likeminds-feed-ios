@@ -55,7 +55,8 @@ final public class LMFeedPostDetailViewModel {
         for postID: String,
         listViewDelegate: LMFeedUpdatePostDataProtocol?,
         openCommentSection: Bool = false
-    ) -> LMFeedPostDetailViewController {
+    ) -> LMFeedPostDetailViewController? {
+        guard LMFeedMain.isInitialized else { return nil }
         let viewController = Components.shared.postDetailScreen.init()
         let viewModel: LMFeedPostDetailViewModel = .init(postID: postID, delegate: viewController, openCommentSection: openCommentSection)
         

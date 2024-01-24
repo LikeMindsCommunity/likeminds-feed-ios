@@ -73,8 +73,8 @@ open class LMUniversalFeedViewController: LMViewController {
         return button
     }()
     
-    open private(set) lazy var postList: LMFeedPostListViewController = {
-        let vc = LMFeedPostListViewModel.createModule(with: self)
+    open private(set) lazy var postList: LMFeedPostListViewController? = {
+        guard let vc = LMFeedPostListViewModel.createModule(with: self) else { return nil }
         vc.view.translatesAutoresizingMaskIntoConstraints = false
         return vc
     }()
@@ -120,9 +120,11 @@ open class LMUniversalFeedViewController: LMViewController {
         view.addSubview(createPostButton)
         
         contentStack.addArrangedSubview(topicContainerView)
-        addChild(postList)
-        contentStack.addArrangedSubview(postList.view)
-        postList.didMove(toParent: self)
+        if let postList {
+            addChild(postList)
+            contentStack.addArrangedSubview(postList.view)
+            postList.didMove(toParent: self)
+        }
         
         topicContainerView.addSubview(topicStackView)
         topicStackView.addArrangedSubview(allTopicsButton)
@@ -194,7 +196,7 @@ open class LMUniversalFeedViewController: LMViewController {
     
     @objc
     open func didTapNewPostButton() {
-        let viewcontroller = LMFeedCreatePostViewModel.createModule()
+        guard let viewcontroller = LMFeedCreatePostViewModel.createModule() else { return }
         navigationController?.pushViewController(viewcontroller, animated: true)
     }
     
@@ -284,7 +286,7 @@ extension LMUniversalFeedViewController: LMFeedTopicViewCellProtocol {
 @objc
 extension LMUniversalFeedViewController: LMFeedPostListVCFromProtocol {
     open func openPostDetail(for postID: String) {
-        let viewController = LMFeedPostDetailViewModel.createModule(for: postID, listViewDelegate: postList)
+        guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, listViewDelegate: postList) else { return }
         navigationController?.pushViewController(viewController, animated: true)
     }
     
