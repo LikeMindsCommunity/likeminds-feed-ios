@@ -43,9 +43,8 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     
     // MARK: UI Elements
     open private(set) lazy var mediaCollectionView: LMCollectionView = {
-        let collection = LMCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        let collection = LMCollectionView(frame: .zero, collectionViewLayout: LMCollectionView.mediaFlowLayout())
         collection.translatesAutoresizingMaskIntoConstraints = false
-        collection.collectionViewLayout = imageCollectionViewLayout
         collection.dataSource = self
         collection.delegate = self
         collection.isPagingEnabled = true
@@ -65,13 +64,6 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         pageControl.hidesForSinglePage = true
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
-    }()
-    
-    open private(set) lazy var imageCollectionViewLayout: UICollectionViewLayout = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 4
-        return layout
     }()
     
     open private(set) lazy var videoPlayer: AVPlayerViewController = {
@@ -107,41 +99,31 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-            
-            headerView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            headerView.bottomAnchor.constraint(equalTo: contentStack.topAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: Constants.shared.number.postHeaderSize),
-            
-            contentStack.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
-            contentStack.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
-            
-            postText.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor, constant: 16),
-            postText.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor, constant: -16),
-            
-            topicFeed.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor, constant: 16),
-            topicFeed.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor, constant: -16),
-            
-            mediaCollectionView.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor),
-            mediaCollectionView.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor),
-            mediaCollectionView.widthAnchor.constraint(equalTo: mediaCollectionView.heightAnchor, multiplier: 3/2),
-            
-            pageControl.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor),
-            pageControl.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor),
-            
-            
-            footerView.topAnchor.constraint(equalTo: contentStack.bottomAnchor, constant: 0),
-            footerView.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor, constant: 16),
-            footerView.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor, constant: -16),
-            footerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0),
-            footerView.heightAnchor.constraint(equalToConstant: 44)
-        ])
+        contentView.pinSubView(subView: containerView, padding: .init(top: .zero, left: .zero, bottom: -16, right: .zero))
+        headerView.setHeightConstraint(with: Constants.shared.number.postHeaderSize)
+        headerView.addConstraint(
+            top: (containerView.topAnchor, 0),
+            bottom: (contentStack.topAnchor, 0),
+            leading: (containerView.leadingAnchor, 0),
+            trailing: (containerView.trailingAnchor, 0)
+        )
+        
+        contentStack.addConstraint(leading: (headerView.leadingAnchor, 0), trailing: (headerView.trailingAnchor, 0))
+        topicFeed.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
+        postText.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
+        
+        mediaCollectionView.addConstraint(leading: (contentStack.leadingAnchor, 0), trailing: (contentStack.trailingAnchor, 0))
+        mediaCollectionView.widthAnchor.constraint(equalTo: mediaCollectionView.heightAnchor, multiplier: 3/2).isActive = true
+        
+        pageControl.addConstraint(leading: (contentStack.leadingAnchor, 0), trailing: (contentStack.trailingAnchor, 0))
+        
+        footerView.setHeightConstraint(with: Constants.shared.number.postFooterSize)
+        footerView.addConstraint(
+            top: (contentStack.bottomAnchor, 0),
+            bottom: (containerView.bottomAnchor, 0),
+            leading: (contentStack.leadingAnchor, 16),
+            trailing: (contentStack.trailingAnchor, -16)
+        )
     }
     
     open override func setupActions() {
@@ -151,8 +133,8 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         footerView.delegate = self
         pageControl.addTarget(self, action: #selector(didChangePageControl), for: .primaryActionTriggered)
         
-        mediaCollectionView.registerCell(type: LMUIComponents.shared.imageCollectionCell)
-        mediaCollectionView.registerCell(type: LMUIComponents.shared.videoCollectionCell)
+        mediaCollectionView.registerCell(type: LMUIComponents.shared.imagePreviewCell)
+        mediaCollectionView.registerCell(type: LMUIComponents.shared.videoPreviewCell)
     }
     
     // MARK: Appearance
@@ -171,7 +153,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     }
     
     open func tableViewScrolled(isPlay: Bool) {
-        for case let cell as LMFeedPostVideoCollectionCell in mediaCollectionView.visibleCells {
+        for case let cell as LMFeedVideoCollectionCell in mediaCollectionView.visibleCells {
             if let indexPath = mediaCollectionView.indexPath(for: cell),
                let itemRect = mediaCollectionView.layoutAttributesForItem(at: indexPath)?.frame{
                 let convertedRect = mediaCollectionView.convert(itemRect, to: mediaCollectionView.superview)
@@ -235,12 +217,12 @@ extension LMFeedPostMediaCell: UICollectionViewDataSource,
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imageCollectionCell, for: indexPath),
-           let data = mediaCellsData[indexPath.row] as? LMFeedPostImageCollectionCell.ViewModel {
+        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreviewCell, for: indexPath),
+           let data = mediaCellsData[indexPath.row] as? LMFeedImageCollectionCell.ViewModel {
             cell.configure(with: data)
             return cell
-        } else if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoCollectionCell, for: indexPath),
-                  let data = mediaCellsData[indexPath.row] as? LMFeedPostVideoCollectionCell.ViewModel {
+        } else if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath),
+                  let data = mediaCellsData[indexPath.row] as? LMFeedVideoCollectionCell.ViewModel {
             cell.configure(with: data, videoPlayer: videoPlayer)
             return cell
         }
@@ -263,7 +245,7 @@ extension LMFeedPostMediaCell: UICollectionViewDataSource,
     }
     
     open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let cell = cell as? LMFeedPostVideoCollectionCell else { return }
+        guard let cell = cell as? LMFeedVideoCollectionCell else { return }
         cell.pauseVideo()
     }
     

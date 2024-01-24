@@ -29,4 +29,11 @@ open class LMCollectionView: UICollectionView {
         self.translatesAutoresizingMaskIntoConstraints = false
         return self
     }
+    
+    public static func mediaFlowLayout() -> UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 4
+        return layout
+    }
 }

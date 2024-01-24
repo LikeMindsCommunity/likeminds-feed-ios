@@ -57,10 +57,15 @@ class ViewController: UIViewController {
 }
 
 
-
-class tt: LMUniversalFeedViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        print(#function, #file)
+class Temp: UIViewController {
+    let button: LMButton = {
+        return .init()
+    }()
+    
+    @objc
+    open func didTap() {
+        let createPost = LMFeedCreatePostViewModel.createModule()
+        present(createPost, animated: true)
     }
 }
+

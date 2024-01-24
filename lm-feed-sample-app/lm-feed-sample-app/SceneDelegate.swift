@@ -5,6 +5,7 @@
 //  Created by Devansh Mohata on 04/01/24.
 //
 
+import lm_feedUI_iOS
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {

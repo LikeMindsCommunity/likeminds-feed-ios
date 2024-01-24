@@ -54,12 +54,9 @@ open class LMFeedTopicEditViewCell: LMCollectionViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
+        contentView.pinSubView(subView: containerView)
+        
         NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
             textLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
             textLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 4),
             textLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4),

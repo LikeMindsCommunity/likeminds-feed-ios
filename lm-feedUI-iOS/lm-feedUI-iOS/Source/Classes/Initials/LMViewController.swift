@@ -31,6 +31,7 @@ public extension UIViewController {
 
 public protocol LMBaseViewControllerProtocol: AnyObject {
     func presentAlert(with alert: UIAlertController, animated: Bool)
+    func showHideLoaderView(isShow: Bool)
 }
 
 /// Base LM View Controller Class with LM Life Cycle Methods
@@ -85,7 +86,7 @@ open class LMViewController: UIViewController {
         }
     }
     
-    open func setNavigationTitleAndSubtitle(with title: String?, subtitle: String?) {
+    open func setNavigationTitleAndSubtitle(with title: String?, subtitle: String?, alignment: UIStackView.Alignment = .leading) {
         let titleView = LMView().translatesAutoresizingMaskIntoConstraints()
         let widthConstraint = NSLayoutConstraint.init(item: titleView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: UIScreen.main.bounds.width)
         widthConstraint.priority = .defaultLow
@@ -94,7 +95,7 @@ open class LMViewController: UIViewController {
         let stackView = LMStackView().translatesAutoresizingMaskIntoConstraints()
         stackView.spacing = 4
         stackView.axis = .vertical
-        stackView.alignment = .leading
+        stackView.alignment = alignment
         stackView.distribution = .fillProportionally
         
         titleView.addSubview(stackView)

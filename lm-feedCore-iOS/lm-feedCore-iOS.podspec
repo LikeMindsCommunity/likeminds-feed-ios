@@ -13,6 +13,11 @@ Pod::Spec.new do |spec|
   spec.ios.deployment_target = '13.0'
   spec.swift_version = '5.0'
   spec.requires_arc = true
+
+  spec.dependency "AWSCore"
+  spec.dependency "AWSCognito"
+  spec.dependency "AWSS3"
   spec.dependency 'lm-feedUI-iOS'
+  spec.dependency 'BSImagePicker'
   spec.dependency 'LikeMindsFeed'
 end
