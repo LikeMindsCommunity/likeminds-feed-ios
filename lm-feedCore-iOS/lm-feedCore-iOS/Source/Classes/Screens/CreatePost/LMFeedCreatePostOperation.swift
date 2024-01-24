@@ -171,8 +171,9 @@ final class LMFeedCreatePostOperation {
         guard let awsURL = attachment.awsURL,
               !awsURL.isEmpty else { return nil }
         
+        _ = attachment.url.startAccessingSecurityScopedResource()
         var size: Int?
-        if let attr = try? FileManager.default.attributesOfItem(atPath: attachment.url.absoluteString) {
+        if let attr = try? FileManager.default.attributesOfItem(atPath: attachment.url.path) {
             size = attr[.size] as? Int
         }
         
@@ -180,6 +181,7 @@ final class LMFeedCreatePostOperation {
         if let pdf = PDFDocument(url: attachment.url) {
             pageCount = pdf.pageCount
         }
+        attachment.url.stopAccessingSecurityScopedResource()
         
         let attachmentMeta = AttachmentMeta()
             .attachmentUrl(awsURL)

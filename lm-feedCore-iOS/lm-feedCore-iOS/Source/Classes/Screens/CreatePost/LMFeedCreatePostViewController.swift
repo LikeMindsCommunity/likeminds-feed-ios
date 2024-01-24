@@ -103,12 +103,8 @@ open class LMFeedCreatePostViewController: LMViewController {
     }()
     
     open private(set) lazy var addMoreButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
-        button.setTitle("Add More", for: .normal)
-        button.setTitleColor(Appearance.shared.colors.appTintColor, for: .normal)
-        button.setFont(Appearance.shared.fonts.buttonFont1)
-        button.setImage(Constants.shared.images.plusIcon, for: .normal)
-        button.setPreferredSymbolConfiguration(.init(font: Appearance.shared.fonts.buttonFont1), forImageIn: .normal)
+        let button = LMButton.createButton(with: "Add More", image: Constants.shared.images.plusIcon, textColor: Appearance.shared.colors.appTintColor, textFont: Appearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 4, left: 8, bottom: 4, right: 8))
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = Appearance.shared.colors.appTintColor
         button.layer.borderColor = Appearance.shared.colors.appTintColor.cgColor
         button.layer.borderWidth = 1
@@ -320,6 +316,10 @@ open class LMFeedCreatePostViewController: LMViewController {
         }
         headerView.configure(with: .init(profileImage: user.imageUrl, username: user.name ?? "user_name"))
     }
+    
+    open func observeCreateButton() {
+        createPostButton.isEnabled = !mediaCellData.isEmpty || !inputTextView.getText().isEmpty || !documentCellData.isEmpty
+    }
 }
 
 
@@ -379,10 +379,6 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
 
 // MARK: LMFeedCreatePostViewModelProtocol
 extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
-    public func observeCreateButton(isEnabled: Bool) {
-        createPostButton.isEnabled = isEnabled || !inputTextView.getText().isEmpty
-    }
-    
     public func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?) {
         linkPreview.isHidden = data == nil
         if let data {
@@ -412,6 +408,7 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
         addMoreButton.isHidden = !isShowAddMore
         
         addMediaStack.isHidden = !isShowBottomTab
+        observeCreateButton()
     }
     
     public func showMedia(media: [LMFeedMediaProtocol], isShowAddMore: Bool, isShowBottomTab: Bool) {
@@ -421,6 +418,8 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
         mediaCollectionView.reloadData()
         addMoreButton.isHidden = !isShowAddMore
         addMediaStack.isHidden = !isShowBottomTab
+        
+        observeCreateButton()
     }
     
     public func resetMediaView() {
@@ -429,6 +428,10 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
         addMoreButton.isHidden = true
         mediaCellData.removeAll(keepingCapacity: true)
         documentCellData.removeAll(keepingCapacity: true)
+    }
+    
+    public func showAddMediaView() {
+        
     }
     
     public func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int) {
@@ -465,7 +468,7 @@ extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
         inputTextViewHeight?.constant = min(newSize.height, textInputMaximumHeight)
         
         viewModel?.handleLinkDetection(in: inputTextView.text)
-        viewModel?.observeCreateButton(text: inputTextView.text)
+        observeCreateButton()
     }
 }
 
@@ -476,7 +479,7 @@ public extension LMFeedCreatePostViewController {
         var currentAssets: [(asset: PHAsset, url: URL)] = []
         
         let imagePicker = ImagePickerController()
-        imagePicker.settings.selection.max = 10
+        imagePicker.settings.selection.max = maxSelection
         imagePicker.settings.theme.selectionStyle = .numbered
         imagePicker.settings.fetch.assets.supportedMediaTypes = isFirstTime ? [mediaType] : [.image, .video]
         imagePicker.settings.selection.unselectOnReachingMax = false

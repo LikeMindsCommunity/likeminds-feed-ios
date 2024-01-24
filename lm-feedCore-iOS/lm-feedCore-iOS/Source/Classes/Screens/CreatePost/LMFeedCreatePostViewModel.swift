@@ -18,7 +18,6 @@ public protocol LMFeedCreatePostViewModelProtocol: LMBaseViewControllerProtocol 
     func updateTopicView(with data: LMFeedTopicView.ViewModel)
     func navigateToTopicView(with topics: [String])
     func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?)
-    func observeCreateButton(isEnabled: Bool)
 }
 
 public final class LMFeedCreatePostViewModel {
@@ -66,13 +65,9 @@ public final class LMFeedCreatePostViewModel {
         return viewcontroller
     }
     
-    func observeCreateButton(text: String) {
-        delegate?.observeCreateButton(isEnabled: !media.isEmpty || !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-    }
-    
     func createPost(with text: String) {
         var attachments: [LMFeedCreatePostOperation.LMAWSRequestModel] = []
-        let filePath = "files/post/\(LocalPreferences.userObj?.clientUUID ?? "user")/"
+        let filePath = "files/post/\(LocalPreferences.userObj?.clientUUID ?? "user")/\(Int(Date().timeIntervalSince1970))/"
         
         media.forEach { medium in
             attachments.append(.init(url: medium.url, fileName: medium.url.lastPathComponent, awsFilePath: filePath, contentType: medium.mediaType))
@@ -162,12 +157,10 @@ public extension LMFeedCreatePostViewModel {
         delegate?.resetMediaView()
         
         switch currentMediaSelectionType {
-        case .image, .video:
+        case .image, .video, .none:
             delegate?.showMedia(media: mediaData, isShowAddMore: !media.isEmpty && media.count < maxMedia, isShowBottomTab: media.isEmpty)
         case .document:
             delegate?.showMedia(documents: docData, isShowAddMore: !media.isEmpty && media.count < maxMedia, isShowBottomTab: media.isEmpty)
-        case .none:
-            break
         }
     }
     

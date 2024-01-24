@@ -77,6 +77,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     open override func setupAppearance() {
         super.setupAppearance()
         backgroundColor = .clear
+        crossButton.layer.cornerRadius = crossButton.frame.height / 2
     }
     
     
@@ -95,6 +96,8 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     // MARK: configure
     open func configure(with data: ViewModel, videoPlayer: AVPlayerViewController, crossButtonAction: ((String) -> Void)? = nil) {
         self.videoPlayer = videoPlayer
+        self.videoPlayer?.showsPlaybackControls = false
+        self.videoPlayer?.allowsPictureInPicturePlayback = false
         self.crossButtonAction = crossButtonAction
         videoURL = data.videoURL
         

@@ -80,11 +80,18 @@ open class LMUniversalFeedViewController: LMViewController {
     }()
     
     open private(set) lazy var createPostButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
-        button.setTitle("Create Post", for: .normal)
-        button.setImage(Constants.shared.images.createPostIcon, for: .normal)
+        let button = LMButton.createButton(
+            with: "Create Post",
+            image: Constants.shared.images.createPostIcon,
+            textColor: Appearance.shared.colors.white,
+            textFont: Appearance.shared.fonts.buttonFont1,
+            contentSpacing: .init(top: 8, left: 8, bottom: 8, right: 8),
+            imageSpacing: 8
+        )
+        button.tintColor = Appearance.shared.colors.appTintColor
         button.backgroundColor = Appearance.shared.colors.appTintColor
-        button.tintColor = Appearance.shared.colors.white
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 8
         return button
     }()
     
@@ -288,12 +295,16 @@ extension LMUniversalFeedViewController: LMFeedPostListVCFromProtocol {
     open func tableViewScrolled(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y > .zero {
             UIView.animate(withDuration: 0.2, delay: 1, options: .curveEaseIn) { [weak self] in
-                self?.createPostButton.setTitle(nil, for: .normal)
+                self?.createPostButton.setContentInsets(with: .zero)
+                self?.createPostButton.setImageInsets(with: .zero)
+                self?.createPostButton.titleLabel?.text = nil
                 self?.createPostButtonWidth?.isActive = true
             }
         } else {
             UIView.animate(withDuration: 0.2, delay: 1, options: .curveEaseOut) { [weak self] in
                 self?.createPostButton.setTitle("Create Post", for: .normal)
+                self?.createPostButton.setImageInsets(with: 8)
+                self?.createPostButton.setContentInsets(with: .init(top: 4, left: 8, bottom: 4, right: 8))
                 self?.createPostButtonWidth?.isActive = false
             }
         }
