@@ -458,6 +458,8 @@
 		E52546162B60048B003000BA /* LMFeedCreatePostOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52546152B60048B003000BA /* LMFeedCreatePostOperation.swift */; };
 		E52546172B6019CE003000BA /* LMFeedUIAssetsCatalog.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F2D387444C923AC2BB14AB7B7A70BAA /* LMFeedUIAssetsCatalog.xcassets */; };
 		E52546192B60FD54003000BA /* LMFeedError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52546182B60FD54003000BA /* LMFeedError.swift */; };
+		E525461C2B61223A003000BA /* LMFeedEditPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525461B2B61223A003000BA /* LMFeedEditPostViewController.swift */; };
+		E532D1A02B624AFD00CAB401 /* LMFeedEditPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E532D19F2B624AFD00CAB401 /* LMFeedEditPostViewModel.swift */; };
 		E5635DECB22362CA17521F7B6A752BB4 /* AWSS3Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = B9D03729E894DF03FD1341DDB039C798 /* AWSS3Resources.m */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EDB2EFA59D4CF17488D59DD6F18B29 /* SessionDelegate.swift */; };
 		E643496069890D798E34797A552BD844 /* AWSEXTKeyPathCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = AE1BA168CF62D11A9448822DF172A5C4 /* AWSEXTKeyPathCoding.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1170,6 +1172,8 @@
 		E525460D2B5FDC3A003000BA /* LMAWSManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMAWSManager.swift; sourceTree = "<group>"; };
 		E52546152B60048B003000BA /* LMFeedCreatePostOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePostOperation.swift; sourceTree = "<group>"; };
 		E52546182B60FD54003000BA /* LMFeedError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedError.swift; sourceTree = "<group>"; };
+		E525461B2B61223A003000BA /* LMFeedEditPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedEditPostViewController.swift; sourceTree = "<group>"; };
+		E532D19F2B624AFD00CAB401 /* LMFeedEditPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedEditPostViewModel.swift; sourceTree = "<group>"; };
 		E58C401B31E4087006987350D2AA7097 /* Fabric.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Fabric.h; path = AWSCore/Fabric/Fabric.h; sourceTree = "<group>"; };
 		E661CC24B90A91F628112F64E7CBC04D /* AWSURLRequestRetryHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSURLRequestRetryHandler.h; path = AWSCore/Serialization/AWSURLRequestRetryHandler.h; sourceTree = "<group>"; };
 		E6A18619D55A01F1A4D7E0B2C4B8727E /* Resource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Resource.swift; path = Sources/General/ImageSource/Resource.swift; sourceTree = "<group>"; };
@@ -1371,6 +1375,7 @@
 		09223DE9EADC4F7066594A19350133C5 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				E525461A2B6121F4003000BA /* EditPost */,
 				51433FA1AA5903530CF3B04BC84E60B8 /* CreatePost */,
 				6DBB58A3CE8D457897155429957D9282 /* LikeScreen */,
 				666DD1D06691AC0ABB56DF6D2F74AA56 /* NotificationScreen */,
@@ -2333,6 +2338,15 @@
 			path = AWSManager;
 			sourceTree = "<group>";
 		};
+		E525461A2B6121F4003000BA /* EditPost */ = {
+			isa = PBXGroup;
+			children = (
+				E525461B2B61223A003000BA /* LMFeedEditPostViewController.swift */,
+				E532D19F2B624AFD00CAB401 /* LMFeedEditPostViewModel.swift */,
+			);
+			path = EditPost;
+			sourceTree = "<group>";
+		};
 		E574E299158D639851C738D31E5D0A6B /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -3263,9 +3277,11 @@
 				E525460E2B5FDC3A003000BA /* LMAWSManager.swift in Sources */,
 				183FE1F7F752DC7B336FB4B3DA056D4E /* Components.swift in Sources */,
 				D8589617A9DBE649579FF5CFD8A1D4DF /* Date+Extension.swift in Sources */,
+				E525461C2B61223A003000BA /* LMFeedEditPostViewController.swift in Sources */,
 				F43D648C64494223B1E71A11E9B897BF /* DateUtility.swift in Sources */,
 				2B9832BCDE383E9665746EE98F568ACE /* lm-feedCore-iOS-dummy.m in Sources */,
 				5041DF07B551D7394CEC48046DAEA0C6 /* LMFeedCommentDataModel.swift in Sources */,
+				E532D1A02B624AFD00CAB401 /* LMFeedEditPostViewModel.swift in Sources */,
 				5870E72E081102189AAE380C8AF8EE6E /* LMFeedConvertToFeedPost.swift in Sources */,
 				37CFBB3BC0214C7A2FDD073F8ABECB49 /* LMFeedCreatePostViewController.swift in Sources */,
 				D8C12DADB7415260ACE4BDF2384CFE79 /* LMFeedCreatePostViewModel.swift in Sources */,

@@ -24,8 +24,8 @@ public struct NameWithRoute {
 
 // MARK: GetAttributedTextWithRoutes
 public struct GetAttributedTextWithRoutes {
-    static func getAttributedText(from text: String) -> NSMutableAttributedString {
-        var attributedString = replaceRouteToName(with: text)
+    static func getAttributedText(from text: String, andPrefix: String? = nil) -> NSMutableAttributedString {
+        var attributedString = replaceRouteToName(with: text, andPrefix: andPrefix)
         attributedString = detectAndHighlightURLs(in: attributedString)
         attributedString = detectAndHighlightHashtags(in: attributedString)
         

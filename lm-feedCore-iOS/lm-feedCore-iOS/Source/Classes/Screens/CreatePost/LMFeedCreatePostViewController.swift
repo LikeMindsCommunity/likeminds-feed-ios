@@ -165,10 +165,11 @@ open class LMFeedCreatePostViewController: LMViewController {
     public var documenTableHeight: NSLayoutConstraint?
     
     public var taggingViewHeight: NSLayoutConstraint?
-    public var inputTextViewHeight: NSLayoutConstraint?
+    public var inputTextViewHeightConstraint: NSLayoutConstraint?
     public var textInputMaximumHeight: CGFloat = 150
     
     public var mediaCellData: [LMFeedMediaProtocol] = []
+    
     public lazy var documentPicker: UIDocumentPickerViewController = {
         if #available(iOS 14, *) {
             let doc = UIDocumentPickerViewController(forOpeningContentTypes: [.pdf])
@@ -180,6 +181,7 @@ open class LMFeedCreatePostViewController: LMViewController {
             return doc
         }
     }()
+    
     
     // MARK: setupViews
     open override func setupViews() {
@@ -222,10 +224,9 @@ open class LMFeedCreatePostViewController: LMViewController {
                                   leading: (inputTextView.leadingAnchor, 0),
                                   trailing: (inputTextView.trailingAnchor, 0))
         taggingView.bottomAnchor.constraint(lessThanOrEqualTo: scrollStackView.bottomAnchor, constant: -16).isActive = true
-        taggingViewHeight = taggingView.setHeightConstraint(with: 100)
+        taggingViewHeight = taggingView.setHeightConstraint(with: 10)
         
-        inputTextViewHeight = NSLayoutConstraint(item: inputTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
-        inputTextViewHeight?.isActive = true
+        inputTextViewHeightConstraint = inputTextView.setHeightConstraint(with: 40)
         
         documenTableHeight = documentTableView.setHeightConstraint(with: Constants.shared.number.documentPreviewSize)
         
@@ -245,6 +246,12 @@ open class LMFeedCreatePostViewController: LMViewController {
         }
     }
     
+    
+    // MARK: setupAppearance
+    open override func setupAppearance() {
+        super.setupAppearance()
+        taggingView.isHidden = true
+    }
     
     // MARK: setupActions
     open override func setupActions() {
@@ -452,6 +459,7 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
 // MARK: LMFeedTaggingTextViewProtocol
 extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
     public func mentionStarted(with text: String) {
+        taggingView.isHidden = false
         taggingView.getUsers(for: text)
     }
     
@@ -465,7 +473,7 @@ extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
         let newSize = inputTextView.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
         
         inputTextView.isScrollEnabled = newSize.height > textInputMaximumHeight
-        inputTextViewHeight?.constant = min(newSize.height, textInputMaximumHeight)
+        inputTextViewHeightConstraint?.constant = min(newSize.height, textInputMaximumHeight)
         
         viewModel?.handleLinkDetection(in: inputTextView.text)
         observeCreateButton()
@@ -527,8 +535,7 @@ extension LMFeedCreatePostViewController: LMFeedTaggedUserFoundProtocol {
     }
     
     public func updateHeight(with height: CGFloat) {
-        taggingView.isHidden = false
-        taggingViewHeight?.constant = height == 0 ? 30 : height
+        taggingViewHeight?.constant = height
     }
 }
 
