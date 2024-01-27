@@ -51,4 +51,6 @@ extension LMTableViewCell: LMViewLifeCycle {
         selectionStyle = .none
         contentView.backgroundColor = Appearance.shared.colors.clear
     }
+    
+    open func setupObservers() { }
 }

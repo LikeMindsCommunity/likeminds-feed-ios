@@ -21,4 +21,7 @@ public protocol LMViewLifeCycle {
     
     /// This function handles the initialization of styles.
     func setupAppearance()
+    
+    /// This function handles the initialization of observers.
+    func setupObservers()
 }

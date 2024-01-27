@@ -224,11 +224,13 @@ extension LMFeedCreatePostViewModel {
 // MARK: Topics Arena
 extension LMFeedCreatePostViewModel {
     func getTopics() {
+        delegate?.showHideLoaderView(isShow: true)
         let request = TopicFeedRequest.builder()
             .setEnableState(true)
             .build()
         
         LMFeedClient.shared.getTopicFeed(request) { [weak self] response in
+            self?.delegate?.showHideLoaderView(isShow: false)
             self?.isShowTopicFeed = !(response.data?.topics?.isEmpty ?? true)
             self?.setupTopicFeed()
         }

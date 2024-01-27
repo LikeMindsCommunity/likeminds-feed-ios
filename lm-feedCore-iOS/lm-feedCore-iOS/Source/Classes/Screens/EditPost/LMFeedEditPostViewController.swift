@@ -135,7 +135,7 @@ open class LMFeedEditPostViewController: LMViewController {
         view.addSubview(containerView)
         containerView.addSubview(scrollView)
         scrollView.addSubview(scrollStackView)
-        scrollView.addSubview(taggingView)
+        containerView.addSubview(taggingView)
         
         [headerView, topicView, inputTextView, linkPreview, mediaCollectionView, mediaPageControl, documentTableView].forEach { subview in
             scrollStackView.addArrangedSubview(subview)

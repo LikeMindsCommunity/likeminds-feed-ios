@@ -460,6 +460,9 @@
 		E525461C2B61223A003000BA /* LMFeedEditPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525461B2B61223A003000BA /* LMFeedEditPostViewController.swift */; };
 		E532D1A02B624AFD00CAB401 /* LMFeedEditPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E532D19F2B624AFD00CAB401 /* LMFeedEditPostViewModel.swift */; };
 		E532D1C42B65088E00CAB401 /* LMFeedEditPostOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E532D1C32B65088E00CAB401 /* LMFeedEditPostOperation.swift */; };
+		E532D1C62B6526D700CAB401 /* Notification+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E532D1C52B6526D700CAB401 /* Notification+Extension.swift */; };
+		E532D1D42B65396800CAB401 /* LMFeedShareUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E532D1D32B65396800CAB401 /* LMFeedShareUtility.swift */; };
+		E532D1D72B656BB500CAB401 /* LMFeedPostOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E532D1D62B656BB500CAB401 /* LMFeedPostOperation.swift */; };
 		E5635DECB22362CA17521F7B6A752BB4 /* AWSS3Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = B9D03729E894DF03FD1341DDB039C798 /* AWSS3Resources.m */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EDB2EFA59D4CF17488D59DD6F18B29 /* SessionDelegate.swift */; };
 		E643496069890D798E34797A552BD844 /* AWSEXTKeyPathCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = AE1BA168CF62D11A9448822DF172A5C4 /* AWSEXTKeyPathCoding.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1174,6 +1177,9 @@
 		E525461B2B61223A003000BA /* LMFeedEditPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedEditPostViewController.swift; sourceTree = "<group>"; };
 		E532D19F2B624AFD00CAB401 /* LMFeedEditPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedEditPostViewModel.swift; sourceTree = "<group>"; };
 		E532D1C32B65088E00CAB401 /* LMFeedEditPostOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedEditPostOperation.swift; sourceTree = "<group>"; };
+		E532D1C52B6526D700CAB401 /* Notification+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extension.swift"; sourceTree = "<group>"; };
+		E532D1D32B65396800CAB401 /* LMFeedShareUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedShareUtility.swift; sourceTree = "<group>"; };
+		E532D1D62B656BB500CAB401 /* LMFeedPostOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPostOperation.swift; sourceTree = "<group>"; };
 		E58C401B31E4087006987350D2AA7097 /* Fabric.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Fabric.h; path = AWSCore/Fabric/Fabric.h; sourceTree = "<group>"; };
 		E661CC24B90A91F628112F64E7CBC04D /* AWSURLRequestRetryHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSURLRequestRetryHandler.h; path = AWSCore/Serialization/AWSURLRequestRetryHandler.h; sourceTree = "<group>"; };
 		E6A18619D55A01F1A4D7E0B2C4B8727E /* Resource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Resource.swift; path = Sources/General/ImageSource/Resource.swift; sourceTree = "<group>"; };
@@ -1339,6 +1345,7 @@
 				CFDEB735A7A447BF549372C8429C2118 /* Collection+Extension.swift */,
 				F88269A67413C9A6672305E389B6A5BC /* CollectionView+Extension.swift */,
 				02BEEE2E70B145D158E6A5206084A972 /* Date+Extension.swift */,
+				E532D1C52B6526D700CAB401 /* Notification+Extension.swift */,
 				7714D0EBB27103CD7D271E55A81B9122 /* PHAsset+Extension.swift */,
 				8A435F0724036D98A764BFBD1778B8E3 /* String+Extension.swift */,
 				CB21C67E26CCB30CF80B60F6153D758B /* URL+Extension.swift */,
@@ -1528,7 +1535,6 @@
 			children = (
 				DB5F2FF5D4F60434AED02CACE40B593A /* LMFeedCreatePostViewController.swift */,
 				F7047D72F1CB7FEAABACFDF1FC40391C /* LMFeedCreatePostViewModel.swift */,
-				E52546152B60048B003000BA /* LMFeedCreatePostOperation.swift */,
 			);
 			path = CreatePost;
 			sourceTree = "<group>";
@@ -2340,11 +2346,20 @@
 		E525461A2B6121F4003000BA /* EditPost */ = {
 			isa = PBXGroup;
 			children = (
-				E532D1C32B65088E00CAB401 /* LMFeedEditPostOperation.swift */,
 				E525461B2B61223A003000BA /* LMFeedEditPostViewController.swift */,
 				E532D19F2B624AFD00CAB401 /* LMFeedEditPostViewModel.swift */,
 			);
 			path = EditPost;
+			sourceTree = "<group>";
+		};
+		E532D1D52B656B8B00CAB401 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				E52546152B60048B003000BA /* LMFeedCreatePostOperation.swift */,
+				E532D1C32B65088E00CAB401 /* LMFeedEditPostOperation.swift */,
+				E532D1D62B656BB500CAB401 /* LMFeedPostOperation.swift */,
+			);
+			path = Operations;
 			sourceTree = "<group>";
 		};
 		E574E299158D639851C738D31E5D0A6B /* UI */ = {
@@ -2457,12 +2472,14 @@
 			children = (
 				E52546182B60FD54003000BA /* LMFeedError.swift */,
 				5F82959C70E88103789798367D3B9D57 /* LMFeedMain.swift */,
+				E532D1D32B65396800CAB401 /* LMFeedShareUtility.swift */,
 				5D03C63089F62B7CF0426412E3373BDD /* LocalPreferences.swift */,
 				E525460C2B5FDC1D003000BA /* AWSManager */,
 				775880B47C91203DF901C9FA9C98F607 /* Constants */,
 				07641A45EA55EB801EA335E1CC0B024B /* Converters */,
 				D83A35906FEDC425828EC124F67226CD /* DataModels */,
 				029DC41D26523737D4274164A54A68F5 /* Extensions */,
+				E532D1D52B656B8B00CAB401 /* Operations */,
 				7369E9ECEFDD8E13A37EA14CE02CE65E /* Pod */,
 				09223DE9EADC4F7066594A19350133C5 /* Screens */,
 				D9900CA3AFF8722DAA5DFBA1F70DE3FF /* Support Files */,
@@ -3283,6 +3300,8 @@
 				5041DF07B551D7394CEC48046DAEA0C6 /* LMFeedCommentDataModel.swift in Sources */,
 				E532D1A02B624AFD00CAB401 /* LMFeedEditPostViewModel.swift in Sources */,
 				5870E72E081102189AAE380C8AF8EE6E /* LMFeedConvertToFeedPost.swift in Sources */,
+				E532D1D42B65396800CAB401 /* LMFeedShareUtility.swift in Sources */,
+				E532D1C62B6526D700CAB401 /* Notification+Extension.swift in Sources */,
 				37CFBB3BC0214C7A2FDD073F8ABECB49 /* LMFeedCreatePostViewController.swift in Sources */,
 				D8C12DADB7415260ACE4BDF2384CFE79 /* LMFeedCreatePostViewModel.swift in Sources */,
 				E52546192B60FD54003000BA /* LMFeedError.swift in Sources */,
@@ -3293,6 +3312,7 @@
 				1AABA53EB0038A5B4907EC4E2A091BE2 /* LMFeedMenuDataModel.swift in Sources */,
 				F5634C8B8DA5394DC48D9551F1B13E8D /* LMFeedNotificationDataModel.swift in Sources */,
 				B1C0CE9A682AC245F2BE3311B55957E3 /* LMFeedNotificationViewController.swift in Sources */,
+				E532D1D72B656BB500CAB401 /* LMFeedPostOperation.swift in Sources */,
 				FFA8980312EB119485BBA2C0EC7145D6 /* LMFeedNotificationViewModel.swift in Sources */,
 				609824CF088809405FA07717A7A994A4 /* LMFeedPostDataModel.swift in Sources */,
 				18CCE66864A51AE25FF1A248423D0AD3 /* LMFeedPostDetailViewController.swift in Sources */,

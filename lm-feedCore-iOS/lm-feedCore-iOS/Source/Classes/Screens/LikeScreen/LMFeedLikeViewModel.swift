@@ -11,7 +11,6 @@ import LikeMindsFeed
 public protocol LMFeedLikeViewModelProtocol: LMBaseViewControllerProtocol {
     func reloadTableView(with data: [LMFeedLikeUserTableCell.ViewModel], totalCount: Int)
     func showHideTableLoader(isShow: Bool)
-    func showError(with message: String)
 }
 
 public final class LMFeedLikeViewModel {
@@ -100,7 +99,7 @@ public final class LMFeedLikeViewModel {
                 currentPage += 1
                 convertToViewData()
             } else if currentPage == 1 {
-                delegate?.showError(with: response.errorMessage ?? "Something Went Wrong")
+                delegate?.showError(with: response.errorMessage ?? "Something Went Wrong", isPopVC: true)
             }
         }
     }

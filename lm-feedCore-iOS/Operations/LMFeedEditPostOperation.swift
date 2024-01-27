@@ -21,8 +21,15 @@ final class LMFeedEditPostOperation {
             .attachments(attachments)
             .addTopics(topics)
             .build()
-        LMFeedClient.shared.editPost(editPostRequest) { [weak self] response in
-            print(response)
+        LMFeedClient.shared.editPost(editPostRequest) { response in
+            if response.success,
+               let data = response.data?.post,
+               let users = response.data?.users,
+               let post = LMFeedPostDataModel(post: data, users: users, allTopics: []) {
+                NotificationCenter.default.post(name: .LMPostEdited, object: post)
+            } else {
+                NotificationCenter.default.post(name: .LMPostEditError, object: LMFeedError.postEditFailed(error: response.errorMessage))
+            }
         }
     }
     

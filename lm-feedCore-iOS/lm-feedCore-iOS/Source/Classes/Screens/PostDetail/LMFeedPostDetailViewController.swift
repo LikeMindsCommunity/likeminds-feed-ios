@@ -148,41 +148,37 @@ open class LMFeedPostDetailViewController: LMViewController {
     open override func setupLayouts() {
         super.setupLayouts()
         
+        tableView.addConstraint(top: (view.topAnchor, 0),
+                                leading: (view.leadingAnchor, 0),
+                                trailing: (view.trailingAnchor, 0))
+        
+        containerView.addConstraint(top: (tableView.bottomAnchor, 0),
+                                    bottom: (view.bottomAnchor, 0),
+                                    leading: (view.leadingAnchor, 0),
+                                    trailing: (view.trailingAnchor, 0))
+        containerView.pinSubView(subView: containerStackView)
+        
+        taggingView.addConstraint(leading: (containerStackView.leadingAnchor, 0),
+                                  trailing: (containerStackView.trailingAnchor, 0))
+        
+        replyView.addConstraint(leading: (containerStackView.leadingAnchor, 0),
+                                  trailing: (containerStackView.trailingAnchor, 0))
+        
+        replyNameLabel.addConstraint(top: (replyView.topAnchor, 16),
+                                     bottom: (replyView.bottomAnchor, -16),
+                                     leading: (replyView.leadingAnchor, 16))
+        
+        replyCross.addConstraint( leading: (replyNameLabel.trailingAnchor, 16),
+                                  trailing: (replyView.trailingAnchor, -16),
+                                  centerY: (replyNameLabel.centerYAnchor, 0))
+        
+        stackView.addConstraint(leading: (containerView.leadingAnchor, 16),
+                                trailing: (containerView.trailingAnchor, -16))
+        
+        inputTextView.addConstraint(top: (stackView.topAnchor, 0),
+                                    bottom: (stackView.bottomAnchor, 0))
+                
         NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            
-            containerView.topAnchor.constraint(equalTo: tableView.bottomAnchor),
-            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            containerStackView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            containerStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            containerStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            containerStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            
-            taggingView.leadingAnchor.constraint(equalTo: containerStackView.leadingAnchor),
-            taggingView.trailingAnchor.constraint(equalTo: containerStackView.trailingAnchor),
-            
-            replyView.leadingAnchor.constraint(equalTo: containerStackView.leadingAnchor),
-            replyView.trailingAnchor.constraint(equalTo: containerStackView.trailingAnchor),
-            
-            replyNameLabel.leadingAnchor.constraint(equalTo: replyView.leadingAnchor, constant: 16),
-            replyNameLabel.topAnchor.constraint(equalTo: replyView.topAnchor, constant: 16),
-            replyNameLabel.bottomAnchor.constraint(equalTo: replyView.bottomAnchor, constant: -16),
-
-            replyCross.centerYAnchor.constraint(equalTo: replyNameLabel.centerYAnchor),
-            replyCross.trailingAnchor.constraint(equalTo: replyView.trailingAnchor, constant: -16),
-            replyCross.leadingAnchor.constraint(greaterThanOrEqualTo: replyNameLabel.trailingAnchor, constant: 16),
-            
-            stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
-            
-            inputTextView.topAnchor.constraint(equalTo: stackView.topAnchor),
-            inputTextView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
-            
             sendButton.topAnchor.constraint(greaterThanOrEqualTo: stackView.topAnchor),
             sendButton.bottomAnchor.constraint(lessThanOrEqualTo: stackView.bottomAnchor),
             sendButton.widthAnchor.constraint(equalTo: sendButton.heightAnchor, multiplier: 1)
@@ -241,6 +237,33 @@ open class LMFeedPostDetailViewController: LMViewController {
         view.backgroundColor = Appearance.shared.colors.backgroundColor
     }
     
+    
+    // MARK: setupObservers
+    open override func setupObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostEdited, object: LMFeedPostDataModel.self)
+        NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostEditError, object: LMFeedError.self)
+    }
+    
+    @objc
+    open func postUpdated(notification: Notification) {
+        if let data = notification.object as? LMFeedPostDataModel {
+            viewModel?.updatePostData(with: data)
+        }
+    }
+    
+    @objc
+    open func postError(notification: Notification) {
+        if let error = notification.object as? LMFeedError {
+            switch error {
+            case .postEditFailed(let errorMessage):
+                showError(with: errorMessage ?? "Something went wrong")
+            default:
+                break
+            }
+        }
+    }
+    
+    // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
         

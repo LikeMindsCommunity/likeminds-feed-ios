@@ -285,21 +285,12 @@ extension LMUniversalFeedViewController: LMFeedTopicViewCellProtocol {
 // MARK: LMFeedPostListVCFromProtocol
 @objc
 extension LMUniversalFeedViewController: LMFeedPostListVCFromProtocol {
-    open func openPostDetail(for postID: String) {
-        guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, listViewDelegate: postList) else { return }
-        navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    open func openUserDetail(for uuid: String) {
-        print(#function)
-    }
-    
     open func tableViewScrolled(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y > .zero {
             UIView.animate(withDuration: 0.2, delay: 1, options: .curveEaseIn) { [weak self] in
+                self?.createPostButton.setTitle("", for: .normal)
                 self?.createPostButton.setContentInsets(with: .zero)
                 self?.createPostButton.setImageInsets(with: .zero)
-                self?.createPostButton.titleLabel?.text = nil
                 self?.createPostButtonWidth?.isActive = true
             }
         } else {

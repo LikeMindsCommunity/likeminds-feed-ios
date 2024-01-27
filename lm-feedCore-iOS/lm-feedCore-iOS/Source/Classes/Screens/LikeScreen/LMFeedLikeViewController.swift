@@ -99,14 +99,4 @@ extension LMFeedLikeViewController: LMFeedLikeViewModelProtocol {
     public func showHideTableLoader(isShow: Bool) {
         tableView.showHideFooterLoader(isShow: isShow)
     }
-    
-    public func showError(with message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        
-        alert.addAction(.init(title: "OK", style: .default) { _ in
-            self.navigationController?.popViewController(animated: true)
-        })
-        
-        presentAlert(with: alert)
-    }
 }
