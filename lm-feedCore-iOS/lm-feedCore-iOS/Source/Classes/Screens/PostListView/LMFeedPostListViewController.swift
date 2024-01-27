@@ -8,17 +8,9 @@
 import UIKit
 import lm_feedUI_iOS
 
-// MARK: LMFeedUpdatePostDataProtocol
-// This contains list of functions that are triggered by other screens to update post data locally!
-public protocol LMFeedUpdatePostDataProtocol: AnyObject {
-    func updatePostData(for post: LMFeedPostDataModel)
-}
-
 // MARK: LMFeedPostListVCProtocol
 // This contains list of functions that are triggered from Child View Controller aka `LMFeedPostListViewController` to be handled by Parent View Controller
 public protocol LMFeedPostListVCFromProtocol: AnyObject {
-    func openPostDetail(for postID: String)
-    func openUserDetail(for uuid: String)
     func tableViewScrolled(_ scrollView: UIScrollView)
     func postDataFetched()
 }
@@ -62,6 +54,8 @@ open class LMFeedPostListViewController: LMViewController {
         view.addSubview(tableView)
     }
     
+    
+    // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
         
@@ -73,6 +67,8 @@ open class LMFeedPostListViewController: LMViewController {
         ])
     }
     
+    
+    // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
         tableView.refreshControl = refreshControl
@@ -85,12 +81,47 @@ open class LMFeedPostListViewController: LMViewController {
         viewModel?.getFeed(fetchInitialPage: true)
     }
     
+    
+    // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
         view.backgroundColor = Appearance.shared.colors.backgroundColor
         tableView.backgroundColor = Appearance.shared.colors.clear
     }
     
+    
+    // MARK: setupObservers
+    open override func setupObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostEdited, object: LMFeedPostDataModel.self)
+        NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostUpdate, object: LMFeedPostDataModel.self)
+//        NotificationCenter.default.addObserver(self, selector: <#T##Selector#>, name: .LMPostCreationStarted, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: <#T##Selector#>, name: .LMPostCreated, object: <#T##Any?#>)
+        NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostEditError, object: LMFeedError.self)
+        NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostCreateError, object: LMFeedError.self)
+    }
+    
+    @objc 
+    open func postUpdated(notification: Notification) {
+        if let data = notification.object as? LMFeedPostDataModel {
+            viewModel?.updatePostData(for: data)
+        }
+    }
+    
+    @objc
+    open func postError(notification: Notification) {
+        if let error = notification.object as? LMFeedError {
+            switch error {
+            case .postEditFailed(let errorMessage),
+                    .postCreationFailed(let errorMessage):
+                showError(with: errorMessage ?? "Something went wrong")
+            default:
+                break
+            }
+        }
+    }
+    
+    
+    // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
         viewModel?.getFeed()
@@ -145,7 +176,7 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
 @objc
 extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol {
     open func didTapProfilePicture(for uuid: String) {
-        delegate?.openUserDetail(for: uuid)
+        print(#function)
     }
     
     open func didTapMenuButton(postID: String) {
@@ -176,11 +207,11 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
     }
     
     open func didTapCommentButton(for postID: String) {
-        delegate?.openPostDetail(for: postID)
+        openPost(postID: postID)
     }
     
     open func didTapShareButton(for postID: String) {
-        print(#function)
+        LMFeedShareUtility.sharePost(from: self, postID: postID)
     }
     
     open func didTapSaveButton(for postID: String) {
@@ -199,7 +230,12 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
     }
     
     open func didTapPost(postID: String) {
-        delegate?.openPostDetail(for: postID)
+        openPost(postID: postID)
+    }
+    
+    public func openPost(postID: String) {
+        guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID) else { return }
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
@@ -208,7 +244,11 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
 @objc
 extension LMFeedPostListViewController: LMFeedPostDocumentCellProtocol {
     open func didTapShowMoreDocuments(for indexPath: IndexPath) {
-        print(#function)
+        if var docData = data[safe: indexPath.row] as? LMFeedPostDocumentCell.ViewModel {
+            docData.isShowAllDocuments.toggle()
+            data[indexPath.row] = docData
+            tableView.reloadRows(at: [indexPath], with: .none)
+        }
     }
 }
 
@@ -273,13 +313,5 @@ extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
 extension LMFeedPostListViewController: LMFeedPostListVCToProtocol {
     open func loadPostsWithTopics(_ topics: [String]) {
         viewModel?.updateTopics(with: topics)
-    }
-}
-
-
-// MARK: LMFeedUpdatePostDataProtocol
-extension LMFeedPostListViewController: LMFeedUpdatePostDataProtocol {
-    public func updatePostData(for post: LMFeedPostDataModel) {
-        viewModel?.updatePostData(for: post)
     }
 }

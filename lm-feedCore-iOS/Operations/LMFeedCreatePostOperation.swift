@@ -46,6 +46,7 @@ final class LMFeedCreatePostOperation {
     
     
     func createPost(with content: String, topics: [String], files: [LMAWSRequestModel], linkPreview: LMFeedPostDataModel.LinkAttachment?) {
+        NotificationCenter.default.post(name: .LMPostCreationStarted, object: nil)
         if let linkPreview {
             let attachmentMeta = AttachmentMeta()
                 .ogTags(.init()
@@ -96,7 +97,10 @@ final class LMFeedCreatePostOperation {
                     }
                 }
                 
-                guard tempFiles.count == attachments.count else { return }
+                guard tempFiles.count == attachments.count else {
+                    postMessageForCompleteCreatePost(with: "Files Upload Error!")
+                    return
+                }
                 self.createPost(with: content, attachments: attachments, topics: topics)
             }
         } else {
@@ -199,8 +203,7 @@ final class LMFeedCreatePostOperation {
     
     func postMessageForCompleteCreatePost(with error: String?) {
         DispatchQueue.main.async {
-            print("Something went wrong")
-//            NotificationCenter.default.post(name: .postCreationCompleted, object: error)
+            NotificationCenter.default.post(name: .LMPostCreateError, object: LMFeedError.postCreationFailed(error: error))
         }
     }
 }

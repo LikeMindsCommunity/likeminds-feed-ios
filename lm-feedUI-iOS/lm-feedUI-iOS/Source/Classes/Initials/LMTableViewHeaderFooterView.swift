@@ -30,12 +30,15 @@ open class LMTableViewHeaderFooterView: UITableViewHeaderFooterView {
     }
 }
 
+@objc
 extension LMTableViewHeaderFooterView: LMViewLifeCycle {
-    public func setupViews() { }
+    open func setupViews() { }
     
-    public func setupLayouts() { }
+    open func setupLayouts() { }
     
-    public func setupActions() { }
+    open func setupActions() { }
     
-    public func setupAppearance() { }
+    open func setupAppearance() { }
+    
+    open func setupObservers() { }
 }

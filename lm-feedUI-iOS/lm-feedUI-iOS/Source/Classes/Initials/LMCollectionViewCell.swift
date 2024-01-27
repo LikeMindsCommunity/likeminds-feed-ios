@@ -48,4 +48,6 @@ extension LMCollectionViewCell: LMViewLifeCycle {
     open func setupActions() { }
     
     open func setupAppearance() { }
+    
+    open func setupObservers() { }
 }

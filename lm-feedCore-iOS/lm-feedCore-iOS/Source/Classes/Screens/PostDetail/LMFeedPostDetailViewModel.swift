@@ -29,18 +29,11 @@ final public class LMFeedPostDetailViewModel {
     public var pageSize: Int
     public var isFetchingData: Bool
     public var isDataAvailable: Bool
-    public var postDetail: LMFeedPostDataModel? {
-        willSet {
-            if let newValue {
-                listViewDelegate?.updatePostData(for: newValue)
-            }
-        }
-    }
+    public var postDetail: LMFeedPostDataModel?
     public var commentList: [LMFeedCommentDataModel]
     public var replyToComment:  LMFeedCommentDataModel?
     public var openCommentSection: Bool
     public weak var delegate: LMFeedPostDetailViewModelProtocol?
-    public weak var listViewDelegate: LMFeedUpdatePostDataProtocol?
     
     public init(postID: String, delegate: LMFeedPostDetailViewModelProtocol?, openCommentSection: Bool = false) {
         self.postID = postID
@@ -55,14 +48,12 @@ final public class LMFeedPostDetailViewModel {
     
     public static func createModule(
         for postID: String,
-        listViewDelegate: LMFeedUpdatePostDataProtocol?,
         openCommentSection: Bool = false
     ) -> LMFeedPostDetailViewController? {
         guard LMFeedMain.isInitialized else { return nil }
         let viewController = Components.shared.postDetailScreen.init()
         let viewModel: LMFeedPostDetailViewModel = .init(postID: postID, delegate: viewController, openCommentSection: openCommentSection)
         
-        viewModel.listViewDelegate = listViewDelegate
         viewController.viewModel = viewModel
         return viewController
     }
@@ -103,6 +94,16 @@ final public class LMFeedPostDetailViewModel {
             return comment.comment.likeCount > 0
         }
         return false
+    }
+    
+    func notifyObjectChange() {
+        guard let postDetail else { return }
+        NotificationCenter.default.post(name: .LMPostUpdate, object: postDetail)
+    }
+    
+    func updatePostData(with data: LMFeedPostDataModel) {
+        postDetail = data
+        convertToViewData()
     }
 }
 
@@ -381,6 +382,7 @@ public extension LMFeedPostDetailViewModel {
                 commentList[idx] = newComment
                 convertToViewData(for: .init(row: NSNotFound, section: idx))
                 postDetail?.commentCount += 1
+                notifyObjectChange()
             }
         }
     }
@@ -423,8 +425,10 @@ public extension LMFeedPostDetailViewModel {
             guard let self else { return }
             
             if response.success {
-                postDetail?.isLiked.toggle()
-                postDetail?.likeCount += postDetail?.isLiked == true ? 1 : -1
+                let newState = !(postDetail?.isLiked ?? true)
+                postDetail?.isLiked = newState
+                postDetail?.likeCount += newState ? 1 : -1
+                notifyObjectChange()
             } else if !response.success {
                 delegate?.changePostLike()
             }
@@ -442,6 +446,7 @@ public extension LMFeedPostDetailViewModel {
             
             if response.success {
                 postDetail?.isSaved.toggle()
+                notifyObjectChange()
             } else {
                 delegate?.changePostSave()
             }
@@ -460,6 +465,7 @@ public extension LMFeedPostDetailViewModel {
                 postDetail?.isPinned.toggle()
                 updatePinMenu()
                 convertToViewData(for: .init(row: NSNotFound, section: 0))
+                notifyObjectChange()
             }
         }
     }
