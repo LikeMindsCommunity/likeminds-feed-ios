@@ -83,6 +83,8 @@ open class LMFeedEditPostViewController: LMViewController {
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.hidesForSinglePage = true
         pageControl.tintColor = Appearance.shared.colors.appTintColor
+        pageControl.currentPageIndicatorTintColor = Appearance.shared.colors.appTintColor
+        pageControl.pageIndicatorTintColor = Appearance.shared.colors.gray155
         return pageControl
     }()
     
@@ -112,6 +114,8 @@ open class LMFeedEditPostViewController: LMViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    open private(set) lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(didTapSaveButton))
     
     
     // MARK: Data Variables
@@ -174,9 +178,24 @@ open class LMFeedEditPostViewController: LMViewController {
     }
     
     
+    open override func setupActions() {
+        super.setupActions()
+        
+        saveButton.tintColor = Appearance.shared.colors.appTintColor
+        navigationItem.rightBarButtonItem = saveButton
+    }
+    
+    @objc
+    open func didTapSaveButton() {
+        viewmodel?.updatePost(with: inputTextView.getText())
+        navigationController?.popViewController(animated: true)
+    }
+    
+    
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
+        view.backgroundColor = Appearance.shared.colors.white
         taggingView.isHidden = true
         topicView.isHidden = true
     }
@@ -185,7 +204,15 @@ open class LMFeedEditPostViewController: LMViewController {
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
+        setupInitialView()
         viewmodel?.getInitalData()
+    }
+    
+    open func setupInitialView() {
+        linkPreview.isHidden = true
+        mediaCollectionView.isHidden = true
+        mediaPageControl.isHidden = true
+        documentTableView.isHidden = true
     }
 }
 
@@ -209,7 +236,7 @@ extension LMFeedEditPostViewController: UITableViewDataSource, UITableViewDelega
 
 
 // MARK: UICollectionView
-extension LMFeedEditPostViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension LMFeedEditPostViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         mediaCells.count
     }
@@ -218,11 +245,27 @@ extension LMFeedEditPostViewController: UICollectionViewDataSource, UICollection
         if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreviewCell, for: indexPath),
            let data = mediaCells[safe: indexPath.row] as? LMFeedImageCollectionCell.ViewModel {
             cell.configure(with: data)
+            return cell
         } else if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath),
                   let data = mediaCells[safe: indexPath.row] as? LMFeedVideoCollectionCell.ViewModel {
             cell.configure(with: data, videoPlayer: videoPlayer)
+            return cell
         }
         return UICollectionViewCell()
+    }
+    
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        collectionView.frame.size
+    }
+    
+    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        mediaPageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.width)
+    }
+    
+    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            mediaPageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.width)
+        }
     }
 }
 
@@ -258,12 +301,49 @@ extension LMFeedEditPostViewController: LMFeedTaggingTextViewProtocol {
         
         inputTextView.isScrollEnabled = newSize.height > textInputMaximumHeight
         inputTextViewHeightConstraint?.constant = min(newSize.height, textInputMaximumHeight)
+        
+        viewmodel?.handleLinkDetection(in: inputTextView.text)
+        saveButton.isEnabled = !inputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !documentCells.isEmpty || !mediaCells.isEmpty
     }
 }
 
 
 // MARK: LMFeedEditPostViewModelProtocol
 extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {
+    public func setupData(with userData: LMFeedCreatePostHeaderView.ViewDataModel, text: String) {
+        headerView.configure(with: userData)
+        inputTextView.setAttributedText(from: text, prefix: "@")
+    }
+    
+    public func setupDocumentPreview(with data: [LMFeedDocumentPreview.ViewModel]) {
+        self.documentCells = data
+        
+        documentTableView.isHidden = false
+        documentTableView.reloadData()
+    }
+    
+    public func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?) {
+        linkPreview.isHidden = data != nil
+        
+        if let data {
+            linkPreview.configure(with: data) { [weak self] in
+                self?.linkPreview.isHidden = true
+                self?.viewmodel?.hideLinkPreview()
+            }
+        }
+    }
+    
+    public func setupMediaPreview(with mediaCells: [LMFeedMediaProtocol]) {
+        self.mediaCells = mediaCells
+        
+        mediaCollectionView.isHidden = false
+        mediaCollectionView.reloadData()
+
+        mediaPageControl.isHidden = false
+        mediaPageControl.numberOfPages = mediaCells.count
+        mediaPageControl.currentPage = 0
+    }
+    
     public func showErrorMessage(with message: String) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         
@@ -272,22 +352,6 @@ extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {
         })
         
         presentAlert(with: alert)
-    }
-    
-    public func setupData(with userData: LMFeedCreatePostHeaderView.ViewDataModel, text: String, mediaCells: [LMFeedMediaProtocol], documentCells: [LMFeedDocumentPreview.ViewModel]) {
-        headerView.configure(with: userData)
-        
-        inputTextView.setAttributedText(from: text, prefix: "@")
-        
-        mediaCollectionView.isHidden = mediaCells.isEmpty
-        self.mediaCells = mediaCells
-        mediaPageControl.isHidden = mediaCells.isEmpty
-        mediaPageControl.numberOfPages = mediaCells.count
-        mediaCollectionView.reloadData()
-        
-        documentTableView.isHidden = documentCells.isEmpty
-        self.documentCells = documentCells
-        documentTableView.reloadData()
     }
     
     public func navigateToTopicView(with topics: [String]) {

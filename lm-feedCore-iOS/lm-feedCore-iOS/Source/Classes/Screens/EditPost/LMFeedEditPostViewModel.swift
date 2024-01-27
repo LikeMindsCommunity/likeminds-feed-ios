@@ -8,32 +8,51 @@
 import LikeMindsFeed
 import lm_feedUI_iOS
 
-public protocol LMFeedEditPostViewModelProtocol: LMBaseViewControllerProtocol { 
-    func showErrorMessage(with message: String)
-    func setupData(with userData: LMFeedCreatePostHeaderView.ViewDataModel, text: String, mediaCells: [LMFeedMediaProtocol], documentCells: [LMFeedDocumentPreview.ViewModel])
+public protocol LMFeedEditPostViewModelProtocol: LMBaseViewControllerProtocol {
     func navigateToTopicView(with topics: [String])
+    func setupData(with userData: LMFeedCreatePostHeaderView.ViewDataModel, text: String)
+    func setupDocumentPreview(with data: [LMFeedDocumentPreview.ViewModel])
+    func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?)
+    func setupMediaPreview(with mediaCells: [LMFeedMediaProtocol])
     func setupTopicFeed(with data: LMFeedTopicView.ViewModel)
+    func showErrorMessage(with message: String)
 }
 
 public final class LMFeedEditPostViewModel {
-    public weak var delegate: LMFeedEditPostViewModelProtocol?
-    public var postID: String
-    public var isShowTopicFeed: Bool
-    public var postDetail: LMFeedPostDataModel?
-    let dispatchGroup: DispatchGroup
+    private let dispatchGroup: DispatchGroup
+    private let postID: String
+    
+    private var documents: [LMFeedPostDataModel.DocumentAttachment]
+    private var linkPreview: LMFeedPostDataModel.LinkAttachment?
+    private var media: [LMFeedPostDataModel.ImageVideoAttachment]
+    
+    private var debounceForDecodeLink: Timer?
     private var errorMessage: String
+    private var isShowLinkPreview: Bool
+    private var isShowTopicFeed: Bool
+    private var postDetail: LMFeedPostDataModel?
     private var selectedTopics: [(topic: String, topicID: String)]
     
+    private weak var delegate: LMFeedEditPostViewModelProtocol?
+    
     init(postID: String, delegate: LMFeedEditPostViewModelProtocol) {
-        self.postID = postID
-        self.isShowTopicFeed = false
-        self.delegate = delegate
         self.dispatchGroup = DispatchGroup()
-        self.selectedTopics = []
+        self.postID = postID
+        
+        self.documents = []
+        self.media = []
+        
         self.errorMessage = "Something Went Wrong"
+        self.isShowLinkPreview = true
+        self.isShowTopicFeed = false
+        self.selectedTopics = []
+
+        self.delegate = delegate
     }
     
-    public static func createModule(for postID: String) -> LMFeedEditPostViewController {
+    public static func createModule(for postID: String) -> LMFeedEditPostViewController? {
+        guard LMFeedMain.isInitialized else { return nil }
+        
         let viewcontroller = Components.shared.editPostScreen.init()
         let viewmodel = Self.init(postID: postID, delegate: viewcontroller)
         
@@ -109,21 +128,92 @@ public final class LMFeedEditPostViewModel {
         }
         
         selectedTopics = postDetail.topics.map { ($0.topic, $0.topicId) }
+        documents = postDetail.documentAttachment
+        media = postDetail.imageVideoAttachment
+        
+        isShowLinkPreview = documents.isEmpty && media.isEmpty
         
         let headerData: LMFeedCreatePostHeaderView.ViewDataModel = .init(profileImage: postDetail.userDetails.userProfileImage, username: postDetail.userDetails.userName)
-        let mediaCells = LMFeedConvertToFeedPost.convertToMediaProtocol(from: postDetail.imageVideoAttachment)
-        let documentCells = LMFeedConvertToFeedPost.convertToDocument(from: postDetail.documentAttachment)
+        
+        delegate?.setupData(with: headerData, text: postDetail.postContent)
+        
+        
+        if !media.isEmpty {
+            let mediaCells = LMFeedConvertToFeedPost.convertToMediaProtocol(from: media)
+            delegate?.setupMediaPreview(with: mediaCells)
+        } else if !documents.isEmpty {
+            let documentCells = LMFeedConvertToFeedPost.convertToDocument(from: documents)
+            delegate?.setupDocumentPreview(with: documentCells)
+        } else if let linkData = postDetail.linkAttachment {
+            linkPreview = .init(url: linkData.url, title: linkData.title, description: linkData.description, previewImage: linkData.previewImage)
+            convertToLinkViewData()
+        }
         
         if isShowTopicFeed || !selectedTopics.isEmpty {
             setupTopicFeed()
         }
-        
-        delegate?.setupData(with: headerData, text: postDetail.postContent, mediaCells: mediaCells, documentCells: documentCells)
     }
     
     private func setupTopicFeed() {
-        var topics: [LMFeedTopicCollectionCellDataModel] = selectedTopics.map({ .init(topic: $0.topic, topicID: $0.topicID) })
+        let topics: [LMFeedTopicCollectionCellDataModel] = selectedTopics.map({ .init(topic: $0.topic, topicID: $0.topicID) })
         let topicData: LMFeedTopicView.ViewModel = .init(topics: topics, isSelectFlow: isShowTopicFeed && topics.isEmpty, isEditFlow: isShowTopicFeed && !topics.isEmpty, isSepratorShown: true)
         delegate?.setupTopicFeed(with: topicData)
     }
 }
+
+
+// MARK: Link Preview Handling
+extension LMFeedEditPostViewModel {
+    func handleLinkDetection(in text: String) {
+        guard isShowLinkPreview,
+              linkPreview == nil,
+              let link = text.detectLink() else { return }
+        
+        debounceForDecodeLink?.invalidate()
+        
+        debounceForDecodeLink = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
+            let request = DecodeUrlRequest.builder()
+                .link(link)
+                .build()
+            
+            LMFeedClient.shared.decodeUrl(request) { [weak self] response in
+                if response.success,
+                    let ogTags = response.data?.oGTags {
+                    self?.linkPreview = .init(url: ogTags.url ?? link, title: ogTags.title, description: ogTags.description, previewImage: ogTags.image)
+                } else {
+                    self?.linkPreview = nil
+                }
+                self?.convertToLinkViewData()
+            }
+        }
+    }
+    
+    func convertToLinkViewData() {
+        guard let linkPreview else {
+            delegate?.setupLinkPreview(with: nil)
+            return
+        }
+        
+        let linkViewModel: LMFeedLinkPreview.ViewModel = .init(
+            linkPreview: linkPreview.previewImage,
+            title: linkPreview.title,
+            description: linkPreview.description,
+            url: linkPreview.url
+        )
+        
+        delegate?.setupLinkPreview(with: linkViewModel)
+    }
+    
+    func hideLinkPreview() {
+        isShowLinkPreview = false
+    }
+}
+
+
+// MARK: Update Post
+extension LMFeedEditPostViewModel {
+    func updatePost(with text: String) {
+        LMFeedEditPostOperation.shared.editPostWithAttachments(postID: postID, postCaption: text, topics: selectedTopics.map({ $0.topicID }), documents: documents, media: media, linkAttachment: linkPreview)
+    }
+}
+

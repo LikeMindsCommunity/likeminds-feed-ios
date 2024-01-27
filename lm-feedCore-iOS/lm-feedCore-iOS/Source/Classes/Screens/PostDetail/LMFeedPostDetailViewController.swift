@@ -490,6 +490,11 @@ extension LMFeedPostDetailViewController: UITextViewDelegate {
 
 // MARK: LMFeedPostDetailViewModelProtocol
 extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
+    public func navigateToEditPost(for postID: String) {
+        guard let viewcontroller = LMFeedEditPostViewModel.createModule(for: postID) else { return }
+        navigationController?.pushViewController(viewcontroller, animated: true)
+    }
+    
     public func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostCommentCellProtocol], indexPath: IndexPath?, openCommentSection: Bool) {
         showHideLoaderView(isShow: false)
         

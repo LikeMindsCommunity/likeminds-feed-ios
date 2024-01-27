@@ -115,7 +115,13 @@ extension LMFeedPostDataModel {
                 switch type {
                 case .image, .video:
                     if let url = attachment.attachmentMeta?.attachmentUrl {
-                        tempImageVideoAttachment.append(.init(name: attachment.attachmentMeta?.name ?? "", url: url, isVideo: type == .video))
+                        tempImageVideoAttachment.append(.init(
+                            name: attachment.attachmentMeta?.name ?? "",
+                            url: url,
+                            isVideo: type == .video,
+                            size: attachment.attachmentMeta?.size ?? 0, 
+                            duration: attachment.attachmentMeta?.duration
+                        ))
                     }
                 case .doc:
                     if let url = attachment.attachmentMeta?.attachmentUrl {
@@ -143,11 +149,15 @@ public extension LMFeedPostDataModel {
         public let name: String
         public let url: String
         public let isVideo: Bool
+        public let size: Int
+        public let duration: Int?
         
-        public init(name: String, url: String, isVideo: Bool) {
+        public init(name: String, url: String, isVideo: Bool, size: Int, duration: Int?) {
             self.name = name
             self.url = url
             self.isVideo = isVideo
+            self.size = size
+            self.duration = duration
         }
     }
 }

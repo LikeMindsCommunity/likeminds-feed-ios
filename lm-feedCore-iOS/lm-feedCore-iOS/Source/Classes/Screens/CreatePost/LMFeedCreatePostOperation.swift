@@ -45,11 +45,11 @@ final class LMFeedCreatePostOperation {
     let dispatchGroup = DispatchGroup()
     
     
-    func createPost(with content: String, topics: [String], files: [LMAWSRequestModel], linkPreview: LMFeedLinkPreviewDataModel?) {
+    func createPost(with content: String, topics: [String], files: [LMAWSRequestModel], linkPreview: LMFeedPostDataModel.LinkAttachment?) {
         if let linkPreview {
             let attachmentMeta = AttachmentMeta()
                 .ogTags(.init()
-                    .image(linkPreview.imagePreview ?? "")
+                    .image(linkPreview.previewImage ?? "")
                     .title(linkPreview.title ?? "")
                     .description(linkPreview.description ?? "")
                     .url(linkPreview.url))

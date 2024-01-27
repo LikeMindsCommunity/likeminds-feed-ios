@@ -19,6 +19,8 @@ public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol 
     
     func showNoPostError(with message: String, isPop: Bool)
     func updateCommentStatus(isEnabled: Bool)
+    
+    func navigateToEditPost(for postID: String)
 }
 
 final public class LMFeedPostDetailViewModel {
@@ -497,8 +499,8 @@ public extension LMFeedPostDetailViewModel {
                     print("Report Action")
                 })
             case .editPost:
-                alert.addAction(.init(title: menu.name, style: .default) { _ in
-                    print("Edit Action")
+                alert.addAction(.init(title: menu.name, style: .default) { [weak self] _ in
+                    self?.delegate?.navigateToEditPost(for: postID)
                 })
             default:
                 break
