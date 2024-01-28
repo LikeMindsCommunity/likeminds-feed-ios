@@ -24,25 +24,63 @@ open class LMFeedNotificationViewController: LMViewController {
         return table
     }()
     
+    open private(set) lazy var refreshControl: UIRefreshControl = UIRefreshControl()
+    
+    open private(set) lazy var emptyNotificationView: LMFeedEmptyNotificationView = {
+        let view = LMFeedEmptyNotificationView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     // MARK: Data Variables
     public var viewModel: LMFeedNotificationViewModel?
     public var cellsData: [LMFeedNotificationView.ViewModel] = []
     
+    
+    // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
         view.addSubview(tableView)
     }
     
+    
+    // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
         view.pinSubView(subView: tableView)
     }
     
+    
+    // MARK: setupActions
+    open override func setupActions() {
+        super.setupActions()
+        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
+    }
+    
+    @objc
+    open func pullToRefresh(_ refreshControl: UIRefreshControl) {
+        refreshControl.endRefreshing()
+        viewModel?.getNotifications(isInitialFetch: true)
+    }
+    
+    
+    // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationTitleAndSubtitle(with: "Notifications", subtitle: nil, alignment: .center)
+        tableView.refreshControl = refreshControl
         viewModel?.getNotifications(isInitialFetch: true)
+    }
+    
+    public func navigateToPost(from route: String) {
+        LMFeedRouter.fetchRoute(from: route) { result in
+            switch result {
+            case .success(let viewcontroller):
+                navigationController?.pushViewController(viewcontroller, animated: true)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
 
@@ -56,7 +94,10 @@ extension LMFeedNotificationViewController: UITableViewDataSource, UITableViewDe
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.notificationTableCell),
            let data = cellsData[safe: indexPath.row] {
-            cell.configure(with: data)
+            cell.configure(with: data) { [weak self] in
+                self?.viewModel?.markReadNotification(activityId: data.notificationID)
+                self?.navigateToPost(from: data.route)
+            }
             return cell
         }
         return UITableViewCell()
@@ -67,15 +108,12 @@ extension LMFeedNotificationViewController: UITableViewDataSource, UITableViewDe
             viewModel?.getNotifications(isInitialFetch: false)
         }
     }
-    
-    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel?.didSelectNotificationAt(index: indexPath)
-    }
 }
 
 // MARK: LMFeedNotificationViewModelProtocol
 extension LMFeedNotificationViewController: LMFeedNotificationViewModelProtocol {
     public func showNotifications(with data: [LMFeedNotificationView.ViewModel], indexPath: IndexPath?) {
+        tableView.backgroundView = nil
         cellsData = data
         
         if let indexPath {
@@ -97,5 +135,11 @@ extension LMFeedNotificationViewController: LMFeedNotificationViewModelProtocol 
         })
         
         presentAlert(with: alert)
+    }
+    
+    public func showEmptyNotificationView() {
+        tableView.backgroundView = emptyNotificationView
+        emptyNotificationView.heightAnchor.constraint(equalTo: tableView.heightAnchor, multiplier: 1).isActive = true
+        emptyNotificationView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1).isActive = true
     }
 }

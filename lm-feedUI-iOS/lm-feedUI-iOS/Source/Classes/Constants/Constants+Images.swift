@@ -56,5 +56,6 @@ public extension Constants {
         public var videoIcon = loadImage(with: "videoIcon")
         public var paperclipIcon = loadImage(with: "paperclip")
         public var createPostIcon = loadImage(with: "createPostIcon")
+        public var emptyViewIcon = loadImage(with: "emptyView")
     }
 }

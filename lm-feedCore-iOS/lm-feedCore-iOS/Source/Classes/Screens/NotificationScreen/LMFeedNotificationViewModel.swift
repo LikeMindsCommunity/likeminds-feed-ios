@@ -12,6 +12,7 @@ public protocol LMFeedNotificationViewModelProtocol: LMBaseViewControllerProtoco
     func showNotifications(with data: [LMFeedNotificationView.ViewModel], indexPath: IndexPath?)
     func showHideTableLoader(isShow: Bool)
     func showError(with message: String)
+    func showEmptyNotificationView()
 }
 
 public final class LMFeedNotificationViewModel {
@@ -47,6 +48,13 @@ public final class LMFeedNotificationViewModel {
         
         guard !isFetchingNotifications,
               !isLastPage else { return }
+        
+        if currentPage == 1 {
+            delegate?.showHideLoaderView(isShow: true)
+        } else {
+            delegate?.showHideTableLoader(isShow: true)
+        }
+        
         fetchNotifications()
     }
     
@@ -57,6 +65,12 @@ public final class LMFeedNotificationViewModel {
         
         LMFeedClient.shared.getNotificationFeed(request) { [weak self] response in
             guard let self else { return }
+            
+            if currentPage == 1 {
+                delegate?.showHideLoaderView(isShow: false)
+            } else {
+                delegate?.showHideTableLoader(isShow: false)
+            }
             
             if response.success,
                let activities = response.data?.activities,
@@ -70,7 +84,7 @@ public final class LMFeedNotificationViewModel {
                 currentPage += 1
                 convertToViewModel()
             } else if currentPage == 1 {
-                
+                delegate?.showEmptyNotificationView()
             }
         }
     }
@@ -122,6 +136,7 @@ extension LMFeedNotificationViewModel {
     func convertToViewModel(indexPath: IndexPath? = nil) {
         let convertedData: [LMFeedNotificationView.ViewModel] = notifications.map { notification in
                 .init(
+                    notificationID: notification.id,
                     notification: notification.activityText,
                     user: notification.user,
                     time: DateUtility.timeIntervalPostWidget(timeIntervalInMilliSeconds: notification.createdAt),
@@ -131,29 +146,28 @@ extension LMFeedNotificationViewModel {
                 )
         }
         
-        delegate?.showNotifications(with: convertedData, indexPath: indexPath)
+        if convertedData.isEmpty {
+            delegate?.showEmptyNotificationView()
+        } else {
+            delegate?.showNotifications(with: convertedData, indexPath: indexPath)
+        }
     }
 }
 
 // MARK: Read Notification
 extension LMFeedNotificationViewModel {
-    func didSelectNotificationAt(index: IndexPath) {
-        guard let notification = notifications[safe: index.row] else { return }
-        markReadNotification(activityId: notification.id) { [weak self] in
-            self?.notifications[index.row].isRead = true
-            self?.convertToViewModel(indexPath: index)
-        }
-        // TODO: Add Routing Mechanism
-    }
-    
-    func markReadNotification(activityId: String, callback: (() -> Void)?) {
+    func markReadNotification(activityId: String) {
+        guard let index = notifications.firstIndex(where: { $0.id == activityId }),
+              !notifications[index].isRead else { return }
+        
         let request = MarkReadNotificationRequest.builder()
             .activityId(activityId)
             .build()
-        LMFeedClient.shared.markReadNotification(request) { response in
-            if response.success {
-                callback?()
-            }
+        LMFeedClient.shared.markReadNotification(request) { [weak self] response in
+            guard let self,
+                  response.success else { return }
+            notifications[index].isRead = true
+            convertToViewModel(indexPath: IndexPath(row: index, section: 0))
         }
     }
 }

@@ -203,7 +203,7 @@ extension LMViewController: LMViewLifeCycle {
 // MARK: LMBaseViewControllerProtocol
 @objc
 extension LMViewController: LMBaseViewControllerProtocol {
-    open func presentAlert(with alert: UIAlertController, animated: Bool = true) {
+    public func presentAlert(with alert: UIAlertController, animated: Bool = true) {
         present(alert, animated: animated)
     }
 }
