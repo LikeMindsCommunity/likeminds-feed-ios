@@ -250,6 +250,11 @@ extension LMFeedPostListViewController: LMFeedPostDocumentCellProtocol {
             tableView.reloadRows(at: [indexPath], with: .none)
         }
     }
+    
+    open func didTapDocument(with url: String) {
+        guard let url = URL(string: url) else { return }
+        UIApplication.shared.open(url)
+    }
 }
 
 
