@@ -27,7 +27,7 @@ public struct LMFeedConvertToFeedPost {
         return .init(topics: mappedTopics)
     }
     
-    private static func convertToHeaderViewData(from data: LMFeedPostDataModel) -> LMFeedPostHeaderView.ViewModel {
+    public static func convertToHeaderViewData(from data: LMFeedPostDataModel) -> LMFeedPostHeaderView.ViewModel {
         .init(
             profileImage: data.userDetails.userProfileImage,
             authorName: data.userDetails.userName,
@@ -38,11 +38,11 @@ public struct LMFeedConvertToFeedPost {
         )
     }
     
-    private static func convertToFooterViewData(from data: LMFeedPostDataModel) -> LMFeedPostFooterView.ViewModel {
+    public static func convertToFooterViewData(from data: LMFeedPostDataModel) -> LMFeedPostFooterView.ViewModel {
         .init(likeCount: data.likeCount, commentCount: data.commentCount, isSaved: data.isSaved, isLiked: data.isLiked)
     }
     
-    private static func convertToLinkViewData(from data: LMFeedPostDataModel, link: LMFeedPostDataModel.LinkAttachment) -> LMFeedPostLinkCell.ViewModel {
+    public static func convertToLinkViewData(from data: LMFeedPostDataModel, link: LMFeedPostDataModel.LinkAttachment) -> LMFeedPostLinkCell.ViewModel {
         .init(
             postID: data.postId,
             userUUID: data.userDetails.userUUID,
@@ -54,13 +54,7 @@ public struct LMFeedConvertToFeedPost {
         )
     }
     
-    private static func convertToDocumentCells(from data: LMFeedPostDataModel) -> LMFeedPostDocumentCell.ViewModel {
-        func convertToDocument(from data: [LMFeedPostDataModel.DocumentAttachment]) -> [LMFeedDocumentPreview.ViewModel] {
-            data.map { datum in
-                    .init(title: datum.name, documentURL: datum.url, size: datum.size, pageCount: datum.pageCount, docType: datum.format)
-            }
-        }
-        
+    public static func convertToDocumentCells(from data: LMFeedPostDataModel) -> LMFeedPostDocumentCell.ViewModel {
         return .init(
             postID: data.postId,
             userUUID: data.userDetails.userUUID,
@@ -72,17 +66,13 @@ public struct LMFeedConvertToFeedPost {
         )
     }
     
-    private static func convertToImageVideoCells(from data: LMFeedPostDataModel) -> LMFeedPostMediaCell.ViewModel {
-        func convertToMediaProtocol(from data: [LMFeedPostDataModel.ImageVideoAttachment]) -> [LMFeedMediaProtocol] {
-            data.map { datum in
-                if datum.isVideo {
-                    return LMFeedVideoCollectionCell.ViewModel(videoURL: datum.url)
-                } else {
-                    return LMFeedImageCollectionCell.ViewModel(image: datum.url)
-                }
-            }
+    public static func convertToDocument(from data: [LMFeedPostDataModel.DocumentAttachment]) -> [LMFeedDocumentPreview.ViewModel] {
+        data.map { datum in
+                .init(title: datum.name, documentURL: datum.url, size: datum.size, pageCount: datum.pageCount, docType: datum.format)
         }
-        
+    }
+    
+    public static func convertToImageVideoCells(from data: LMFeedPostDataModel) -> LMFeedPostMediaCell.ViewModel {
         return .init(
             postID: data.postId,
             userUUID: data.userDetails.userUUID,
@@ -92,5 +82,15 @@ public struct LMFeedConvertToFeedPost {
             mediaData: convertToMediaProtocol(from: data.imageVideoAttachment),
             footerData: convertToFooterViewData(from: data)
         )
+    }
+    
+    public static func convertToMediaProtocol(from data: [LMFeedPostDataModel.ImageVideoAttachment]) -> [LMFeedMediaProtocol] {
+        data.map { datum in
+            if datum.isVideo {
+                return LMFeedVideoCollectionCell.ViewModel(videoURL: datum.url)
+            } else {
+                return LMFeedImageCollectionCell.ViewModel(image: datum.url)
+            }
+        }
     }
 }

@@ -145,6 +145,16 @@ open class LMFeedTaggingTextView: LMTextView {
         message = message.trimmingCharacters(in: .whitespacesAndNewlines)
         return message != placeHolderText ? message : ""
     }
+    
+    public func setAttributedText(from content: String, prefix: String? = nil) {
+        if !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            attributedText = GetAttributedTextWithRoutes.getAttributedText(from: content, andPrefix: prefix)
+        } else {
+            text = placeHolderText
+            textColor = textAttributes[.foregroundColor] as? UIColor
+            font = textAttributes[.font] as? UIFont
+        }
+    }
 }
 
 

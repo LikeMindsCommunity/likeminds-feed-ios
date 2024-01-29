@@ -10,6 +10,7 @@ import UIKit
 @IBDesignable
 open class LMFeedNotificationView: LMTableViewCell {
     public struct ViewModel {
+        public let notificationID: String
         public let notification: String
         public let user: LMFeedUserDataModel
         public let time: String
@@ -17,7 +18,8 @@ open class LMFeedNotificationView: LMTableViewCell {
         public let mediaImage: String?
         public let route: String
         
-        public init(notification: String, user: LMFeedUserDataModel, time: String, isRead: Bool, mediaImage: String?, route: String) {
+        public init(notificationID: String, notification: String, user: LMFeedUserDataModel, time: String, isRead: Bool, mediaImage: String?, route: String) {
+            self.notificationID = notificationID
             self.notification = notification
             self.user = user
             self.time = time
@@ -34,9 +36,17 @@ open class LMFeedNotificationView: LMTableViewCell {
         return image
     }()
     
+    open private(set) lazy var mediaContainerView: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        view.backgroundColor = Appearance.shared.colors.appTintColor
+        return view
+    }()
+    
     open private(set) lazy var mediaImage: LMImageView = {
         let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
         image.clipsToBounds = true
+        image.tintColor = Appearance.shared.colors.white
+        image.contentMode = .scaleAspectFit
         return image
     }()
     
@@ -68,7 +78,7 @@ open class LMFeedNotificationView: LMTableViewCell {
     // MARK: Data Variables
     public var userImageHeight: CGFloat = 48
     public var mediaImageHeight: CGFloat = 26
-    
+    public var onTapCallback: (() -> Void)?
     
     // MARK: setupViews
     open override func setupViews() {
@@ -76,9 +86,11 @@ open class LMFeedNotificationView: LMTableViewCell {
         
         contentView.addSubview(containerView)
         
-        [userImage, mediaImage, contentStack].forEach { subview in
+        [userImage, mediaContainerView, contentStack].forEach { subview in
             containerView.addSubview(subview)
         }
+        
+        mediaContainerView.addSubview(mediaImage)
         
         contentStack.addArrangedSubview(titleLabel)
         contentStack.addArrangedSubview(timeLabel)
@@ -101,11 +113,13 @@ open class LMFeedNotificationView: LMTableViewCell {
         userImage.setHeightConstraint(with: userImageHeight)
         userImage.widthAnchor.constraint(equalTo: userImage.heightAnchor, multiplier: 1).isActive = true
         
-        mediaImage.addConstraint(trailing: (userImage.trailingAnchor, 0),
+        mediaContainerView.addConstraint(trailing: (userImage.trailingAnchor, 0),
                                  centerY: (userImage.bottomAnchor, 0))
-        mediaImage.setHeightConstraint(with: mediaImageHeight)
-        mediaImage.widthAnchor.constraint(equalTo: mediaImage.heightAnchor, multiplier: 1).isActive = true
-        mediaImage.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor, constant: -16).isActive = true
+        mediaContainerView.setHeightConstraint(with: mediaImageHeight)
+        mediaContainerView.setWidthConstraint(with: mediaImageHeight)
+        mediaContainerView.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor, constant: -16).isActive = true
+        
+        mediaContainerView.pinSubView(subView: mediaImage, padding: .init(top: 6, left: 6, bottom: -6, right: -6))
         
         contentStack.topAnchor.constraint(equalTo: userImage.topAnchor).isActive = true
         contentStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16).isActive = true
@@ -122,20 +136,33 @@ open class LMFeedNotificationView: LMTableViewCell {
     }
     
     
+    // MARK: setupActions
+    open override func setupActions() {
+        super.setupActions()
+        containerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapNotificationView)))
+    }
+    
+    @objc
+    open func didTapNotificationView() {
+        onTapCallback?()
+    }
+    
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
         
-        userImage.layer.cornerRadius = userImage.frame.height / 2
-        mediaImage.layer.cornerRadius = mediaImage.frame.height / 2
+        userImage.layer.cornerRadius = userImageHeight / 2
+        mediaContainerView.layer.cornerRadius = mediaImageHeight / 2
     }
     
     // MARK: configure
-    open func configure(with data: ViewModel) {
+    open func configure(with data: ViewModel, onTapCallback: (() -> Void)?) {
+        self.onTapCallback = onTapCallback
+        
         titleLabel.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.notification)
         timeLabel.text = data.time
         userImage.kf.setImage(with: URL(string: data.user.userProfileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.user.userName))
-        mediaImage.image = Constants.Images.loadImage(with: data.mediaImage ?? "")
+        mediaImage.image = Constants.Images.loadSystemImage(with: data.mediaImage ?? "")
         mediaImage.isHidden = data.mediaImage?.isEmpty != false
         
         containerView.backgroundColor = data.isRead ? Appearance.shared.colors.white : Appearance.shared.colors.notificationBackgroundColor

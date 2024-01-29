@@ -32,6 +32,13 @@ public extension UIViewController {
 public protocol LMBaseViewControllerProtocol: AnyObject {
     func presentAlert(with alert: UIAlertController, animated: Bool)
     func showHideLoaderView(isShow: Bool)
+    func showError(with message: String, isPopVC: Bool)
+}
+
+public extension LMBaseViewControllerProtocol {
+    func showError(with message: String, isPopVC: Bool = false) {
+        showError(with: message, isPopVC: isPopVC)
+    }
 }
 
 /// Base LM View Controller Class with LM Life Cycle Methods
@@ -59,6 +66,10 @@ open class LMViewController: UIViewController {
         super.init(coder: coder)
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     open override func loadView() {
         super.loadView()
         setupViews()
@@ -69,6 +80,7 @@ open class LMViewController: UIViewController {
         super.viewDidLoad()
         setupActions()
         setupNavigationBar()
+        setupObservers()
     }
     
     open override func viewDidLayoutSubviews() {
@@ -84,6 +96,19 @@ open class LMViewController: UIViewController {
             appearance.backgroundColor = Appearance.shared.colors.navigationBackgroundColor
             navigationController?.navigationBar.scrollEdgeAppearance = appearance
         }
+    }
+    
+    public func showError(with message: String, isPopVC: Bool) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            if isPopVC {
+                self?.navigationController?.popViewController(animated: true)
+            }
+        }
+        
+        alert.addAction(action)
+        presentAlert(with: alert)
     }
     
     open func setNavigationTitleAndSubtitle(with title: String?, subtitle: String?, alignment: UIStackView.Alignment = .leading) {
@@ -169,13 +194,16 @@ extension LMViewController: LMViewLifeCycle {
     
     /// This function handles the initialization of styles.
     open func setupAppearance() { }
+    
+    /// This function handles the initialization of observers.
+    open func setupObservers() { }
 }
 
 
 // MARK: LMBaseViewControllerProtocol
 @objc
 extension LMViewController: LMBaseViewControllerProtocol {
-    open func presentAlert(with alert: UIAlertController, animated: Bool = true) {
+    public func presentAlert(with alert: UIAlertController, animated: Bool = true) {
         present(alert, animated: animated)
     }
 }

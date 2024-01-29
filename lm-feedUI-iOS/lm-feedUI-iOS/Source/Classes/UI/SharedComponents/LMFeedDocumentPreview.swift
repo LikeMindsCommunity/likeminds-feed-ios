@@ -12,6 +12,11 @@ public protocol LMFeedDocumentPreviewProtocol: AnyObject {
     func didTapDocument(documentID: String)
 }
 
+public extension LMFeedDocumentPreviewProtocol {
+    func didTapCrossButton(documentID: String) { }
+    func didTapDocument(documentID: String) { }
+}
+
 @IBDesignable
 open class LMFeedDocumentPreview: LMView {
     public struct ViewModel {

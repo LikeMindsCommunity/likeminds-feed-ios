@@ -19,6 +19,8 @@ public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol 
     
     func showNoPostError(with message: String, isPop: Bool)
     func updateCommentStatus(isEnabled: Bool)
+    
+    func navigateToEditPost(for postID: String)
 }
 
 final public class LMFeedPostDetailViewModel {
@@ -27,18 +29,11 @@ final public class LMFeedPostDetailViewModel {
     public var pageSize: Int
     public var isFetchingData: Bool
     public var isDataAvailable: Bool
-    public var postDetail: LMFeedPostDataModel? {
-        willSet {
-            if let newValue {
-                listViewDelegate?.updatePostData(for: newValue)
-            }
-        }
-    }
+    public var postDetail: LMFeedPostDataModel?
     public var commentList: [LMFeedCommentDataModel]
     public var replyToComment:  LMFeedCommentDataModel?
     public var openCommentSection: Bool
     public weak var delegate: LMFeedPostDetailViewModelProtocol?
-    public weak var listViewDelegate: LMFeedUpdatePostDataProtocol?
     
     public init(postID: String, delegate: LMFeedPostDetailViewModelProtocol?, openCommentSection: Bool = false) {
         self.postID = postID
@@ -53,14 +48,12 @@ final public class LMFeedPostDetailViewModel {
     
     public static func createModule(
         for postID: String,
-        listViewDelegate: LMFeedUpdatePostDataProtocol?,
         openCommentSection: Bool = false
     ) -> LMFeedPostDetailViewController? {
         guard LMFeedMain.isInitialized else { return nil }
         let viewController = Components.shared.postDetailScreen.init()
         let viewModel: LMFeedPostDetailViewModel = .init(postID: postID, delegate: viewController, openCommentSection: openCommentSection)
         
-        viewModel.listViewDelegate = listViewDelegate
         viewController.viewModel = viewModel
         return viewController
     }
@@ -102,6 +95,16 @@ final public class LMFeedPostDetailViewModel {
         }
         return false
     }
+    
+    func notifyObjectChange() {
+        guard let postDetail else { return }
+        NotificationCenter.default.post(name: .LMPostUpdate, object: postDetail)
+    }
+    
+    func updatePostData(with data: LMFeedPostDataModel) {
+        postDetail = data
+        convertToViewData()
+    }
 }
 
 // MARK: Get Post Details
@@ -118,13 +121,7 @@ public extension LMFeedPostDetailViewModel {
         
         self.isFetchingData = true
         
-        let request = GetPostRequest.builder()
-            .postId(postID)
-            .page(currentPage)
-            .pageSize(pageSize)
-            .build()
-        
-        LMFeedClient.shared.getPost(request) { [weak self] response in
+        LMFeedPostOperation.shared.getPost(for: postID, currentPage: currentPage, pageSize: pageSize) { [weak self] response in
             guard let self else { return }
             self.isFetchingData = false
             guard response.success,
@@ -214,10 +211,10 @@ public extension LMFeedPostDetailViewModel {
             .commentId(commentID)
             .build()
         
-        LMFeedClient.shared.likeComment(request) { [weak self] response in
+        LMFeedPostOperation.shared.likeComment(for: postID, commentID: commentID) { [weak self] response in
             guard let self else { return }
             
-            if response.success,
+            if response,
                let commData = findCommentIndex(for: commentID, from: commentList) {
                 var comment = commData.comment
                 let commentIndex = commData.index
@@ -254,14 +251,7 @@ public extension LMFeedPostDetailViewModel {
         
         let replyCurrentPage = (parentComment.replies.count / 5) + 1
         
-        let request = GetCommentRequest.builder()
-            .postId(postID)
-            .commentId(commentId)
-            .page(replyCurrentPage)
-            .pageSize(5)
-            .build()
-        
-        LMFeedClient.shared.getComment(request) { [weak self] response in
+        LMFeedPostOperation.shared.getCommentReplies(for: postID, commentID: commentId, currentPage: replyCurrentPage) { [weak self] response in
             guard let self else { return }
             isFetchingData = false
             
@@ -361,16 +351,9 @@ public extension LMFeedPostDetailViewModel {
     }
     
     private func postReplyOnPost(with comment: String, localComment: LMFeedCommentDataModel) {
-        let request = AddCommentRequest.builder()
-            .postId(postID)
-            .text(comment)
-            .tempId("\(localComment.createdAt)")
-            .build()
-        
-        LMFeedClient.shared.addComment(request) { [weak self] response in
-            guard let self else { return }
-            
-            guard response.success,
+        LMFeedPostOperation.shared.postReplyOnPost(for: postID, with: comment, createdAt: localComment.createdAt) { [weak self] response in
+            guard let self,
+                  response.success,
                   let comment = response.data?.comment,
                   let user = response.data?.users?[comment.uuid ?? ""],
                   let newComment = LMFeedCommentDataModel.init(comment: comment, user: user) else { return }
@@ -379,22 +362,15 @@ public extension LMFeedPostDetailViewModel {
                 commentList[idx] = newComment
                 convertToViewData(for: .init(row: NSNotFound, section: idx))
                 postDetail?.commentCount += 1
+                notifyObjectChange()
             }
         }
     }
     
     private func postReplyOnComment(with comment: String, commentID: String, localComment: LMFeedCommentDataModel) {
-        let request = ReplyCommentRequest.builder()
-            .postId(postID)
-            .commentId(commentID)
-            .text(comment)
-            .tempId("\(localComment.createdAt)")
-            .build()
-        
-        LMFeedClient.shared.replyComment(request) { [weak self] response in
-            guard let self else { return }
-            
-            guard response.success,
+        LMFeedPostOperation.shared.postReplyOnComment(for: postID, with: comment, commentID: commentID, createdAt: localComment.createdAt) { [weak self] response in
+            guard let self,
+                  response.success,
                   let comment = response.data?.comment,
                   let user = response.data?.users?[comment.uuid ?? ""],
                   let newComment = LMFeedCommentDataModel.init(comment: comment, user: user) else { return }
@@ -413,17 +389,15 @@ public extension LMFeedPostDetailViewModel {
 public extension LMFeedPostDetailViewModel {
     // MARK: Like Post
     func likePost(for postId: String) {
-        let request = LikePostRequest.builder()
-            .postId(postId)
-            .build()
-        
-        LMFeedClient.shared.likePost(request) { [weak self] response in
+        LMFeedPostOperation.shared.likePost(for: postId) { [weak self] response in
             guard let self else { return }
             
-            if response.success {
-                postDetail?.isLiked.toggle()
-                postDetail?.likeCount += postDetail?.isLiked == true ? 1 : -1
-            } else if !response.success {
+            if response {
+                let newState = !(postDetail?.isLiked ?? true)
+                postDetail?.isLiked = newState
+                postDetail?.likeCount += newState ? 1 : -1
+                notifyObjectChange()
+            } else {
                 delegate?.changePostLike()
             }
         }
@@ -431,15 +405,12 @@ public extension LMFeedPostDetailViewModel {
     
     // MARK: Save Post
     func savePost(for postId: String) {
-        let request = SavePostRequest.builder()
-            .postId(postId)
-            .build()
-        
-        LMFeedClient.shared.savePost(request) { [weak self] response in
+        LMFeedPostOperation.shared.savePost(for: postId) { [weak self] response in
             guard let self else { return }
             
-            if response.success {
+            if response {
                 postDetail?.isSaved.toggle()
+                notifyObjectChange()
             } else {
                 delegate?.changePostSave()
             }
@@ -449,15 +420,13 @@ public extension LMFeedPostDetailViewModel {
     
     // MARK: Un/Pin Post
     func pinUnpinPost(postId: String) {
-        let request = PinPostRequest.builder()
-            .postId(postId)
-            .build()
-        LMFeedClient.shared.pinPost(request) {[weak self] response in
+        LMFeedPostOperation.shared.pinUnpinPost(postId: postId) { [weak self] response in
             guard let self else { return }
-            if response.success {
+            if response {
                 postDetail?.isPinned.toggle()
                 updatePinMenu()
                 convertToViewData(for: .init(row: NSNotFound, section: 0))
+                notifyObjectChange()
             }
         }
     }
@@ -497,8 +466,8 @@ public extension LMFeedPostDetailViewModel {
                     print("Report Action")
                 })
             case .editPost:
-                alert.addAction(.init(title: menu.name, style: .default) { _ in
-                    print("Edit Action")
+                alert.addAction(.init(title: menu.name, style: .default) { [weak self] _ in
+                    self?.delegate?.navigateToEditPost(for: postID)
                 })
             default:
                 break

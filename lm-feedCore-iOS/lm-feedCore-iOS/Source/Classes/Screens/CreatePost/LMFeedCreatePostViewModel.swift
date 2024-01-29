@@ -39,7 +39,7 @@ public final class LMFeedCreatePostViewModel {
     private var isShowTopicFeed: Bool
     private var debounceForDecodeLink: Timer?
     private var selectedTopics: [(topic: String, topicID: String)]
-    private var linkPreview: LMFeedLinkPreviewDataModel?
+    private var linkPreview: LMFeedPostDataModel.LinkAttachment?
     private var showLinkPreview: Bool {
         willSet {
             if !newValue {
@@ -190,7 +190,7 @@ extension LMFeedCreatePostViewModel {
             LMFeedClient.shared.decodeUrl(request) { [weak self] response in
                 if response.success,
                     let ogTags = response.data?.oGTags {
-                    self?.linkPreview = .init(url: link, imagePreview: ogTags.image, title: ogTags.title, description: ogTags.description)
+                    self?.linkPreview = .init(url: ogTags.url ?? link, title: ogTags.title, description: ogTags.description, previewImage: ogTags.image)
                 } else {
                     self?.linkPreview = nil
                 }
@@ -206,7 +206,7 @@ extension LMFeedCreatePostViewModel {
         }
         
         let linkViewModel: LMFeedLinkPreview.ViewModel = .init(
-            linkPreview: linkPreview.imagePreview,
+            linkPreview: linkPreview.previewImage,
             title: linkPreview.title,
             description: linkPreview.description,
             url: linkPreview.url
@@ -224,11 +224,13 @@ extension LMFeedCreatePostViewModel {
 // MARK: Topics Arena
 extension LMFeedCreatePostViewModel {
     func getTopics() {
+        delegate?.showHideLoaderView(isShow: true)
         let request = TopicFeedRequest.builder()
             .setEnableState(true)
             .build()
         
         LMFeedClient.shared.getTopicFeed(request) { [weak self] response in
+            self?.delegate?.showHideLoaderView(isShow: false)
             self?.isShowTopicFeed = !(response.data?.topics?.isEmpty ?? true)
             self?.setupTopicFeed()
         }

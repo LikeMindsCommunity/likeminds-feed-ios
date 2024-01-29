@@ -129,4 +129,6 @@ extension LMView: LMViewLifeCycle {
     open func setupAppearance() { }
     
     open func setupActions() { }
+    
+    open func setupObservers() { }
 }
