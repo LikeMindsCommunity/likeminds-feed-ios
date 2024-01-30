@@ -9,7 +9,6 @@ import LikeMindsFeed
 
 public final class LMFeedDeleteReviewViewModel {
     weak var delegate: LMFeedDeleteReviewViewModelProtocol?
-    var tags: [(name: String, id: Int)] = []
     var postID: String
     var commentID: String?
     
@@ -18,7 +17,6 @@ public final class LMFeedDeleteReviewViewModel {
     
     init(delegate: LMFeedDeleteReviewViewModelProtocol? = nil, postID: String, commentID: String?) {
         self.delegate = delegate
-        self.tags = []
         self.postID = postID
         self.commentID = commentID
     }
@@ -39,27 +37,28 @@ public final class LMFeedDeleteReviewViewModel {
         LMFeedClient.shared.getReportTags(request) { [weak self] response in
             guard let self else { return }
             
+            var tags: [String] = []
+            
             if response.success,
                let apiTags = response.data?.reportTags {
-                tags = apiTags.compactMap { tag -> (String, Int)? in
-                    guard let id = tag.id,
-                          let name = tag.name else { return nil }
-                    return (name, id)
+                tags = apiTags.compactMap { tag in
+                    guard let name = tag.name else { return nil }
+                    return (name)
                 }
             }
             
-            if !tags.isEmpty || !response.success {
+            if tags.isEmpty || !response.success {
                 delegate?.showError(with: response.errorMessage ?? LMStringConstants.shared.genericErrorMessage, isPopVC: true)
                 return
             }
             
-            processTags()
+            processTags(tags: tags)
         }
     }
     
-    func processTags() {
+    func processTags(tags: [String]) {
         delegate?.showTags(
-            with: tags.map({ $0.name }),
+            with: tags,
             title: String(format: popupTitle, commentID != nil ? "Comment" : "Post"),
             subtitle: String(format: popupMessage, commentID != nil ? "Comment" : "Post")
         )
@@ -67,5 +66,40 @@ public final class LMFeedDeleteReviewViewModel {
     
     func updateSelectedReason(with reason: String) {
         delegate?.setNewReason(with: reason, isShowTextField: reason.lowercased() == "others")
+    }
+    
+    func initateDeleteAction(with reason: String) {
+        if commentID != nil {
+            deleteComment(with: reason)
+        } else {
+            deletePost(with: reason)
+        }
+    }
+    
+    func deletePost(with reason: String) {
+        LMFeedPostOperation.shared.deletePost(postId: postID, reason: reason) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success():
+                NotificationCenter.default.post(name: .LMPostDeleted, object: postID)
+                delegate?.popViewController(animated: false)
+            case .failure(let error):
+                delegate?.showError(with: error.errorMessage, isPopVC: true)
+            }
+        }
+    }
+    
+    func deleteComment(with reason: String) {
+        guard let commentID else { return }
+        LMFeedPostOperation.shared.deleteComment(for: postID, having: commentID, reason: reason) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success():
+                NotificationCenter.default.post(name: .LMCommentDeleted, object: (postID, commentID))
+                delegate?.popViewController(animated: false)
+            case .failure(let error):
+                delegate?.showError(with: error.errorMessage, isPopVC: true)
+            }
+        }
     }
 }

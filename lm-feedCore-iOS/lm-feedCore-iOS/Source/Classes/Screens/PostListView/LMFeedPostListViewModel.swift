@@ -16,6 +16,7 @@ public protocol LMFeedPostListViewModelProtocol: LMBaseViewControllerProtocol {
     func showHideFooterLoader(isShow: Bool)
     func showActivityLoader()
     func navigateToEditScreen(for postID: String)
+    func navigateToDeleteScreen(for postID: String)
 }
 
 public class LMFeedPostListViewModel {
@@ -235,6 +236,8 @@ public extension LMFeedPostListViewModel {
             alert.addAction(deleteAction)
             
             delegate?.presentAlert(with: alert, animated: true)
+        } else if LocalPreferences.memberState?.state == 1 {
+            delegate?.navigateToDeleteScreen(for: postID)
         }
     }
     

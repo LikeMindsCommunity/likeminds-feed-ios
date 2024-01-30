@@ -23,8 +23,10 @@ class ViewController: UIViewController {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(endEditing)))
         
         if let apiKey = LocalPreferences.apiKey,
-           !apiKey.isEmpty {
-            LMFeedMain.shared.initiateLikeMindsFeed(apiKey: apiKey, username: "username", userId: "userId") { [weak self] result in
+           !apiKey.isEmpty,
+           let username = LocalPreferences.userObj?.name,
+           let uuid = LocalPreferences.userObj?.sdkClientInfo?.uuid {
+            LMFeedMain.shared.initiateLikeMindsFeed(apiKey: apiKey, username: username, userId: uuid) { [weak self] result in
                 switch result {
                 case .success(_):
                     guard let viewController = LMUniversalFeedViewModel.createModule() else { return }

@@ -317,6 +317,12 @@ extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
         data.removeAll()
         tableView.reloadData()
     }
+    
+    public func navigateToDeleteScreen(for postID: String) {
+        guard let viewcontroller = LMFeedDeleteReviewViewModel.createModule(postID: postID) else { return }
+        viewcontroller.modalPresentationStyle = .overFullScreen
+        present(viewcontroller, animated: false)
+    }
 }
 
 

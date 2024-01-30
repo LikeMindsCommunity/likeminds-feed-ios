@@ -90,6 +90,7 @@ open class LMFeedDeleteReviewScreen: LMViewController {
     open private(set) lazy var otherReasonTextView: LMTextView = {
         let text = LMTextView().translatesAutoresizingMaskIntoConstraints()
         text.clipsToBounds = true
+        text.delegate = self
         return text
     }()
     
@@ -110,7 +111,7 @@ open class LMFeedDeleteReviewScreen: LMViewController {
     }()
     
     open private(set) lazy var cancelButton: LMButton = {
-        let button = LMButton.createButton(with: "Cancel", image: nil, textColor: Appearance.shared.colors.blueGray, textFont: Appearance.shared.fonts.buttonFont1)
+        let button = LMButton.createButton(with: "Cancel", image: nil, textColor: Appearance.shared.colors.blueGray, textFont: Appearance.shared.fonts.buttonFont2)
         button.backgroundColor = Appearance.shared.colors.white
         button.translatesAutoresizingMaskIntoConstraints = false
         button.clipsToBounds = true
@@ -118,7 +119,7 @@ open class LMFeedDeleteReviewScreen: LMViewController {
     }()
     
     open private(set) lazy var deleteButton: LMButton = {
-        let button = LMButton.createButton(with: "Delete", image: nil, textColor: Appearance.shared.colors.red, textFont: Appearance.shared.fonts.buttonFont1)
+        let button = LMButton.createButton(with: "Delete", image: nil, textColor: Appearance.shared.colors.red, textFont: Appearance.shared.fonts.buttonFont2)
         button.backgroundColor = Appearance.shared.colors.white
         button.translatesAutoresizingMaskIntoConstraints = false
         button.clipsToBounds = true
@@ -129,6 +130,7 @@ open class LMFeedDeleteReviewScreen: LMViewController {
     // MARK: Data Variables
     public var tags: [String] = []
     public var viewmodel: LMFeedDeleteReviewViewModel?
+    public let placeholderText = "Write other reason!"
     
     
     // MARK: setupViews
@@ -232,6 +234,7 @@ open class LMFeedDeleteReviewScreen: LMViewController {
         pickerView.dataSource = self
         pickerView.delegate = self
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
+        deleteButton.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
     }
     
     @objc
@@ -241,7 +244,14 @@ open class LMFeedDeleteReviewScreen: LMViewController {
     
     @objc
     open func didTapDeleteButton() {
-        
+        if tags[pickerView.selectedRow(inComponent: 0)] == "others" {
+            if !otherReasonTextView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+               otherReasonTextView.text.trimmingCharacters(in: .whitespacesAndNewlines) != placeholderText {
+                viewmodel?.initateDeleteAction(with: otherReasonTextView.text)
+            }
+        } else {
+            viewmodel?.initateDeleteAction(with: tags[pickerView.selectedRow(inComponent: 0)])
+        }
     }
     
     // MARK: setupAppearance
@@ -262,6 +272,10 @@ open class LMFeedDeleteReviewScreen: LMViewController {
         otherReasonTextView.layer.borderColor = Appearance.shared.colors.black.cgColor
         
         otherReasonTextView.addDoneButtonOnKeyboard()
+        
+        otherReasonTextView.text = placeholderText
+        otherReasonTextView.textColor = Appearance.shared.colors.gray155
+        otherReasonTextView.font = Appearance.shared.fonts.textFont1
     }
     
     open override func viewDidLoad() {
@@ -272,6 +286,7 @@ open class LMFeedDeleteReviewScreen: LMViewController {
     }
     
     public override func showError(with message: String, isPopVC: Bool) {
+        containerView.isHidden = true
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         
         let action = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
@@ -282,6 +297,10 @@ open class LMFeedDeleteReviewScreen: LMViewController {
         
         alert.addAction(action)
         presentAlert(with: alert)
+    }
+    
+    open override func popViewController(animated: Bool) {
+        self.dismiss(animated: animated)
     }
 }
 
@@ -337,10 +356,18 @@ extension LMFeedDeleteReviewScreen: UIPickerViewDataSource, UIPickerViewDelegate
 // MARK: UITextViewDelegate
 extension LMFeedDeleteReviewScreen: UITextViewDelegate {
     open func textViewDidBeginEditing(_ textView: UITextView) {
-        
+        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) == placeholderText {
+            otherReasonTextView.text = nil
+            otherReasonTextView.textColor = Appearance.shared.colors.gray51
+            otherReasonTextView.font = Appearance.shared.fonts.textFont1
+        }
     }
     
     open func textViewDidEndEditing(_ textView: UITextView) {
-        
+        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            textView.text = placeholderText
+            textView.textColor = Appearance.shared.colors.gray155
+            textView.font = Appearance.shared.fonts.textFont1
+        }
     }
 }

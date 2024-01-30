@@ -242,6 +242,8 @@ open class LMFeedPostDetailViewController: LMViewController {
     open override func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostEdited, object: LMFeedPostDataModel.self)
         NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostEditError, object: LMFeedError.self)
+        NotificationCenter.default.addObserver(self, selector: #selector(postDeleted), name: .LMPostDeleted, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(commentDeleted), name: .LMCommentDeleted, object: nil)
     }
     
     @objc
@@ -255,6 +257,20 @@ open class LMFeedPostDetailViewController: LMViewController {
     open func postError(notification: Notification) {
         if let error = notification.object as? LMFeedError {
             showError(with: error.errorMessage)
+        }
+    }
+    
+    @objc
+    open func postDeleted(notification: Notification) {
+        if let postID = notification.object as? String {
+            viewModel?.checkIfCurrentPost(postID: postID)
+        }
+    }
+    
+    @objc
+    open func commentDeleted(notification: Notification) {
+        if let (postID, commentID) = notification.object as? (String, String) {
+            viewModel?.checkIfCurrentPost(postID: postID, commentID: commentID)
         }
     }
     
@@ -600,6 +616,13 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         inputTextView.setAttributedText(from: "")
         inputTextView.isUserInteractionEnabled = isCommentingEnabled
         sendButton.isHidden = !isCommentingEnabled
+    }
+    
+    public func navigateToDeleteScreen(for postID: String, commentID: String?) {
+        guard let viewcontroller = LMFeedDeleteReviewViewModel.createModule(postID: postID, commentID: commentID) else { return }
+        viewcontroller.modalPresentationStyle = .overFullScreen
+        viewcontroller.modalTransitionStyle = .coverVertical
+        present(viewcontroller, animated: false)
     }
 }
 

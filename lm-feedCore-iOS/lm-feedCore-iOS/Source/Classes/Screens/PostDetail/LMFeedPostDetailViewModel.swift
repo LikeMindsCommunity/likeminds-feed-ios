@@ -21,6 +21,7 @@ public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol 
     func updateCommentStatus(isEnabled: Bool)
     
     func navigateToEditPost(for postID: String)
+    func navigateToDeleteScreen(for postID: String, commentID: String?)
 }
 
 final public class LMFeedPostDetailViewModel {
@@ -392,6 +393,9 @@ public extension LMFeedPostDetailViewModel {
             alert.addAction(deleteAction)
             
             delegate?.presentAlert(with: alert, animated: true)
+        } else if LocalPreferences.memberState?.state == 1 {
+            // State 1 means its a admin
+            delegate?.navigateToDeleteScreen(for: postID, commentID: commentID)
         }
     }
     
@@ -526,6 +530,9 @@ public extension LMFeedPostDetailViewModel {
             alert.addAction(deleteAction)
             
             delegate?.presentAlert(with: alert, animated: true)
+        } else if LocalPreferences.memberState?.state == 1 {
+            // State 1 means its a admin
+            delegate?.navigateToDeleteScreen(for: postID, commentID: nil)
         }
     }
     
@@ -540,6 +547,24 @@ public extension LMFeedPostDetailViewModel {
                 delegate?.showError(with: error.errorMessage, isPopVC: false)
             }
         }
+    }
+    
+    func checkIfCurrentPost(postID: String, commentID: String? = nil) {
+        guard self.postID == postID else { return }
+        
+        if let commentID,
+           let (_, index) = findCommentIndex(for: commentID, from: commentList) {
+            if index.row == NSNotFound {
+                _ = commentList.remove(at: index.section)
+            } else {
+                _ = commentList[index.section].replies.remove(at: index.row)
+            }
+            notifyObjectChange()
+            convertToViewData()
+            return
+        }
+        
+        delegate?.popViewController(animated: false)
     }
 }
 
