@@ -464,6 +464,10 @@
 		E41DE42D48E46A6E50CAB48D7156500E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF4AB162BB88DC4C348C08A3716B53F /* Foundation.framework */; };
 		E4F1BBC16C911552F76813BBD48D1045 /* AWSInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 6440C7A89E168FE24BA4346193D9F4BA /* AWSInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E532D1DF2B67979900CAB401 /* LMFeedUIAssetsCatalog.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E51696ECC421588360DD47C4BAA0CB64 /* LMFeedUIAssetsCatalog.xcassets */; };
+		E532D1E22B67C75E00CAB401 /* LMFeedDeletePostWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E532D1E12B67C75E00CAB401 /* LMFeedDeletePostWidget.swift */; };
+		E532D1E72B68C67B00CAB401 /* LMStringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E532D1E62B68C67B00CAB401 /* LMStringConstants.swift */; };
+		E532D1EA2B68DAE300CAB401 /* LMFeedDeleteReviewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E532D1E92B68DAE300CAB401 /* LMFeedDeleteReviewScreen.swift */; };
+		E55642732B690F81001971BE /* LMFeedDeleteReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55642722B690F81001971BE /* LMFeedDeleteReviewViewModel.swift */; };
 		E5633F8968F70BE2D970789D76D5F6FA /* LMFeedLikeUserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D34BC2667816EAA625DD97529E373C8 /* LMFeedLikeUserTableCell.swift */; };
 		E5635DECB22362CA17521F7B6A752BB4 /* AWSS3Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = B9D03729E894DF03FD1341DDB039C798 /* AWSS3Resources.m */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EDB2EFA59D4CF17488D59DD6F18B29 /* SessionDelegate.swift */; };
@@ -1182,6 +1186,10 @@
 		E4319286060F9899D15805B153A5A8D9 /* Alamofire-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Alamofire-dummy.m"; sourceTree = "<group>"; };
 		E445B67D4A7F2ED36D68FA34FD877AE0 /* AWSXMLDictionary.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSXMLDictionary.m; path = AWSCore/XMLDictionary/AWSXMLDictionary.m; sourceTree = "<group>"; };
 		E51696ECC421588360DD47C4BAA0CB64 /* LMFeedUIAssetsCatalog.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = LMFeedUIAssetsCatalog.xcassets; path = "lm-feedUI-iOS/Source/Assets/LMFeedUIAssetsCatalog.xcassets"; sourceTree = "<group>"; };
+		E532D1E12B67C75E00CAB401 /* LMFeedDeletePostWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedDeletePostWidget.swift; sourceTree = "<group>"; };
+		E532D1E62B68C67B00CAB401 /* LMStringConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMStringConstants.swift; sourceTree = "<group>"; };
+		E532D1E92B68DAE300CAB401 /* LMFeedDeleteReviewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedDeleteReviewScreen.swift; sourceTree = "<group>"; };
+		E55642722B690F81001971BE /* LMFeedDeleteReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedDeleteReviewViewModel.swift; sourceTree = "<group>"; };
 		E58C401B31E4087006987350D2AA7097 /* Fabric.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Fabric.h; path = AWSCore/Fabric/Fabric.h; sourceTree = "<group>"; };
 		E5F68BB20C0E34CB2B601CD65138472D /* lm-feedUI-iOS-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "lm-feedUI-iOS-umbrella.h"; sourceTree = "<group>"; };
 		E661CC24B90A91F628112F64E7CBC04D /* AWSURLRequestRetryHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSURLRequestRetryHandler.h; path = AWSCore/Serialization/AWSURLRequestRetryHandler.h; sourceTree = "<group>"; };
@@ -1541,6 +1549,7 @@
 		4101059B54CE04184C4CD8987B06692A /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				E532D1E02B67C71A00CAB401 /* DeletePostWidget */,
 				9717AEDA9309CEDBF62F21CFE2229C9E /* CreatePostWidgets */,
 				B507C76618CC93A91D071D60FC5AC661 /* LikeUserView */,
 				D712AA29849E45596D1248A9F40F79D9 /* NotificationView */,
@@ -2079,6 +2088,7 @@
 			isa = PBXGroup;
 			children = (
 				5FC4267F83439ED8221B51F211966811 /* Components.swift */,
+				E532D1E62B68C67B00CAB401 /* LMStringConstants.swift */,
 			);
 			name = Constants;
 			path = "lm-feedCore-iOS/Source/Classes/Constants";
@@ -2248,6 +2258,7 @@
 		CD5452286571077923B61D2CCA08F1B8 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				E532D1E82B68DAC500CAB401 /* DeleteScreen */,
 				EB076EBDA99A1049B10247478506256C /* CreatePost */,
 				60B939CC44B1CD33E511C042ACAE4456 /* EditPost */,
 				3663E098B78EAE2858A0857FD4947E90 /* LikeScreen */,
@@ -2351,6 +2362,23 @@
 			);
 			name = "Support Files";
 			path = "../Target Support Files/AWSS3";
+			sourceTree = "<group>";
+		};
+		E532D1E02B67C71A00CAB401 /* DeletePostWidget */ = {
+			isa = PBXGroup;
+			children = (
+				E532D1E12B67C75E00CAB401 /* LMFeedDeletePostWidget.swift */,
+			);
+			path = DeletePostWidget;
+			sourceTree = "<group>";
+		};
+		E532D1E82B68DAC500CAB401 /* DeleteScreen */ = {
+			isa = PBXGroup;
+			children = (
+				E532D1E92B68DAE300CAB401 /* LMFeedDeleteReviewScreen.swift */,
+				E55642722B690F81001971BE /* LMFeedDeleteReviewViewModel.swift */,
+			);
+			path = DeleteScreen;
 			sourceTree = "<group>";
 		};
 		E5FEE1E89C6C73FF7CBA2B8428B3E12C /* Alamofire */ = {
@@ -3160,12 +3188,14 @@
 				BCE6E11C8AFAB2EF3A62C64B0E3F9ABB /* LMFeedConvertToFeedPost.swift in Sources */,
 				C7B0F9ABE6E82CA3F2A71A191B3F2C57 /* LMFeedCreatePostOperation.swift in Sources */,
 				02E9AA38AFD56DF4EA4CC69BA3B3A6A1 /* LMFeedCreatePostViewController.swift in Sources */,
+				E532D1EA2B68DAE300CAB401 /* LMFeedDeleteReviewScreen.swift in Sources */,
 				4FC2F314C5A6EBE3ADDA7B2763F93A9D /* LMFeedCreatePostViewModel.swift in Sources */,
 				3B13D27B5CE8946EE8C5DAC0583CBBA3 /* LMFeedEditPostOperation.swift in Sources */,
 				00DD67E5F341E1BDFF8A3141744032B6 /* LMFeedEditPostViewController.swift in Sources */,
 				3D55089F37D0ED6A9824877E607F08D0 /* LMFeedEditPostViewModel.swift in Sources */,
 				CD93FBB43EB446A4BCAF78803E700D94 /* LMFeedError.swift in Sources */,
 				4D6F018CBA8D2BBE5A02376750BCD62C /* LMFeedLikeDataModel.swift in Sources */,
+				E532D1E72B68C67B00CAB401 /* LMStringConstants.swift in Sources */,
 				D06C2401BF13A300A05F38A6A7619C47 /* LMFeedLikeViewController.swift in Sources */,
 				1BC34501D7F4EA997C00A6D2A06A1BB7 /* LMFeedLikeViewModel.swift in Sources */,
 				A7438237C9CC71765986B3CD96945632 /* LMFeedMain.swift in Sources */,
@@ -3182,6 +3212,7 @@
 				001C8F09CBEA8BBF8D0749FB3D20D776 /* LMFeedRouter.swift in Sources */,
 				951875660722251EFC76EFFE72D3BDED /* LMFeedShareUtility.swift in Sources */,
 				115B009A81FB9BB4D6AAEDBD09745FCF /* LMFeedTaggingListView.swift in Sources */,
+				E55642732B690F81001971BE /* LMFeedDeleteReviewViewModel.swift in Sources */,
 				BB30EAF253577566764A088C01A24276 /* LMFeedTaggingListViewModel.swift in Sources */,
 				496F41DFFCB294D0FD34646095EA6BA2 /* LMFeedTagListDataModel.swift in Sources */,
 				13B6563F6CD93866CBD910101D6103F8 /* LMFeedTopicSelectionDataModel.swift in Sources */,
@@ -3305,6 +3336,7 @@
 				04FFE90A8376AC7F72F49F2547FAADDD /* LMFeedPostDetailCommentCell.swift in Sources */,
 				D52E5C8F256B919A23D6EB8304004A13 /* LMFeedPostDetailCommentCellViewModel.swift in Sources */,
 				7A76A82DBA8707180A73494DD384C94A /* LMFeedPostDetailCommentHeaderView.swift in Sources */,
+				E532D1E22B67C75E00CAB401 /* LMFeedDeletePostWidget.swift in Sources */,
 				063A122E482F4E16562C1931A38B9A8A /* LMFeedPostDetailTotalCommentCell.swift in Sources */,
 				B6D771AEE28CC09BAADA5347E39CFC9C /* LMFeedPostDocumentCell.swift in Sources */,
 				6E8D8AEC4C75E260D3B50079B66EF3C4 /* LMFeedPostFooterView.swift in Sources */,

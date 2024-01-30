@@ -184,8 +184,8 @@ public extension LMFeedPostListViewModel {
         post.postMenu.forEach { menu in
             switch menu.id {
             case .deletePost:
-                let action = UIAlertAction(title: menu.name, style: .destructive) { _ in
-                    print(#function)
+                let action = UIAlertAction(title: menu.name, style: .destructive) { [weak self] _ in
+                    self?.handleDeletePost(for: postID)
                 }
                 alert.addAction(action)
             case .pinPost,
@@ -212,6 +212,48 @@ public extension LMFeedPostListViewModel {
         alert.addAction(.init(title: "Cancel", style: .default))
         
         delegate?.presentAlert(with: alert, animated: true)
+    }
+}
+
+
+// MARK: Delete Post
+public extension LMFeedPostListViewModel {
+    func handleDeletePost(for postID: String) {
+        guard let post = postList.first(where: { $0.postId == postID }) else { return }
+        
+        // Case of Self Deletion
+        if post.userDetails.userUUID == LocalPreferences.userObj?.sdkClientInfo?.uuid {
+            let alert = UIAlertController(title: "Delete Post?", message: "Are you sure you want to delete this post? This action cannot be reversed", preferredStyle: .alert)
+            
+            let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+                self?.deletePost(postID: postID, reason: nil)
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            
+            alert.addAction(cancelAction)
+            alert.addAction(deleteAction)
+            
+            delegate?.presentAlert(with: alert, animated: true)
+        }
+    }
+    
+    func deletePost(postID: String, reason: String?) {
+        LMFeedPostOperation.shared.deletePost(postId: postID, reason: reason) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success():
+                removePost(for: postID)
+            case .failure(let error):
+                delegate?.showError(with: error.errorMessage, isPopVC: false)
+            }
+        }
+    }
+    
+    func removePost(for postID: String) {
+        guard let index = postList.firstIndex(where: { $0.postId == postID }) else { return }
+        _ = postList.remove(at: index)
+        convertToViewData()
     }
 }
 

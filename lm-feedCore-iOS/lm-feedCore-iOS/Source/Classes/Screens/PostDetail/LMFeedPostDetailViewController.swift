@@ -117,9 +117,9 @@ open class LMFeedPostDetailViewController: LMViewController {
     
     
     // MARK: Data Variables
-    var postData: LMFeedPostTableCellProtocol?
-    var cellsData: [LMFeedPostCommentCellProtocol] = []
-    open private(set) var textInputMaximumHeight: CGFloat = 100
+    public var postData: LMFeedPostTableCellProtocol?
+    public var cellsData: [LMFeedPostCommentCellProtocol] = []
+    public var textInputMaximumHeight: CGFloat = 100
     public var viewModel: LMFeedPostDetailViewModel?
     public var isCommentingEnabled: Bool = LocalPreferences.memberState?.memberRights?.contains(where: { $0.state == .commentOrReplyOnPost }) ?? false
     
@@ -254,12 +254,7 @@ open class LMFeedPostDetailViewController: LMViewController {
     @objc
     open func postError(notification: Notification) {
         if let error = notification.object as? LMFeedError {
-            switch error {
-            case .postEditFailed(let errorMessage):
-                showError(with: errorMessage ?? "Something went wrong")
-            default:
-                break
-            }
+            showError(with: error.errorMessage)
         }
     }
     
@@ -270,15 +265,12 @@ open class LMFeedPostDetailViewController: LMViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
-        inputTextView.placeHolderText = "Write a Comment"
+        updateCommentStatus(isEnabled: LocalPreferences.memberState?.memberRights?.contains(where: { $0.state == .commentOrReplyOnPost }) ?? false)
+        
         replyView.isHidden = true
         viewModel?.getMemberState()
         viewModel?.getPost(isInitialFetch: true)
         showHideLoaderView(isShow: true)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -605,6 +597,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         isCommentingEnabled = isEnabled
         
         inputTextView.placeHolderText = isCommentingEnabled ? "Write a Comment" : "You do not have permission to comment."
+        inputTextView.setAttributedText(from: "")
         inputTextView.isUserInteractionEnabled = isCommentingEnabled
         sendButton.isHidden = !isCommentingEnabled
     }

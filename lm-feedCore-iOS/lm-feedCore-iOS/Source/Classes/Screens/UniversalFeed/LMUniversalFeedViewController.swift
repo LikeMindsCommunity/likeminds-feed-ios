@@ -196,8 +196,10 @@ open class LMUniversalFeedViewController: LMViewController {
     
     @objc
     open func didTapNewPostButton() {
-        guard let viewcontroller = LMFeedCreatePostViewModel.createModule() else { return }
-        navigationController?.pushViewController(viewcontroller, animated: true)
+        guard let viewcontroller = LMFeedDeleteReviewViewModel.createModule(postID: "dada") else { return }
+//        navigationController?.pushViewController(viewcontroller, animated: true)
+        viewcontroller.modalPresentationStyle = .overFullScreen
+        navigationController?.present(viewcontroller, animated: true)
     }
     
     

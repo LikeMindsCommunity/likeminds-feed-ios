@@ -16,4 +16,6 @@ public extension Notification.Name {
     static let LMPostEditError = NSNotification.Name("LMPostEditError")
     
     static let LMPostUpdate = Notification.Name("LMPostUpdate")
+    
+    static let LMPostDeleted = Notification.Name("LMPostDeleted")
 }

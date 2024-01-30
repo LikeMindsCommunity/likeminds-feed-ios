@@ -42,6 +42,7 @@ public extension Constants {
         public var planeIconFilled = loadSystemImage(with: "paperplane.fill")
         public var pencilIcon = loadSystemImage(with: "pencil")
         public var downArrow = loadSystemImage(with: "arrow.down")
+        public var downArrowFilled = loadSystemImage(with: "arrowtriangle.down.fill")
         public var menuIcon = loadSystemImage(with: "line.3.horizontal")
         public var personIcon = loadSystemImage(with: "person")
         public var checkmarkIconFilled = loadSystemImage(with: "checkmark.circle.fill")

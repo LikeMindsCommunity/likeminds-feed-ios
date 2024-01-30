@@ -6,7 +6,7 @@
 //
 
 import LikeMindsFeed
-// Keep Onyl Auth Logic
+// Keep Only Auth Logic
 public class LMFeedMain {
     
     private init() {}

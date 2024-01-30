@@ -99,7 +99,7 @@ public final class LMFeedLikeViewModel {
                 currentPage += 1
                 convertToViewData()
             } else if currentPage == 1 {
-                delegate?.showError(with: response.errorMessage ?? "Something Went Wrong", isPopVC: true)
+                delegate?.showError(with: response.errorMessage ?? LMStringConstants.shared.genericErrorMessage, isPopVC: true)
             }
         }
     }
@@ -141,7 +141,7 @@ public final class LMFeedLikeViewModel {
                 currentPage += 1
                 convertToViewData()
             } else if currentPage == 1 {
-                delegate?.showError(with: response.errorMessage ?? "Something Went Wrong")
+                delegate?.showError(with: response.errorMessage ?? LMStringConstants.shared.genericErrorMessage)
             }
         }
     }

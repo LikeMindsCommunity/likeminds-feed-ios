@@ -42,7 +42,7 @@ public final class LMFeedEditPostViewModel {
         self.documents = []
         self.media = []
         
-        self.errorMessage = "Something Went Wrong"
+        self.errorMessage = LMStringConstants.shared.genericErrorMessage
         self.isShowLinkPreview = true
         self.isShowTopicFeed = false
         self.selectedTopics = []
