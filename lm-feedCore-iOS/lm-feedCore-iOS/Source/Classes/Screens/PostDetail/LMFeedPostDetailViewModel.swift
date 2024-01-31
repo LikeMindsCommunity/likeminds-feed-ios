@@ -21,6 +21,7 @@ public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol 
     func updateCommentStatus(isEnabled: Bool)
     
     func navigateToEditPost(for postID: String)
+    func navigateToDeleteScreen(for postID: String, commentID: String?)
 }
 
 final public class LMFeedPostDetailViewModel {
@@ -127,7 +128,7 @@ public extension LMFeedPostDetailViewModel {
             guard response.success,
                   let post = response.data?.post,
                   let users = response.data?.users else {
-                delegate?.showNoPostError(with: response.errorMessage ?? "Something Went Wrong", isPop: postDetail == nil)
+                delegate?.showNoPostError(with: response.errorMessage ?? LMStringConstants.shared.genericErrorMessage, isPop: postDetail == nil)
                 return
             }
             
@@ -204,13 +205,6 @@ public extension LMFeedPostDetailViewModel {
 // MARK: Comment Shenanigans
 public extension LMFeedPostDetailViewModel {
     func likeComment(for commentID: String, indexPath: IndexPath) {
-        guard let postID = postDetail?.postId else { return }
-        let request = LikeCommentRequest
-            .builder()
-            .postId(postID)
-            .commentId(commentID)
-            .build()
-        
         LMFeedPostOperation.shared.likeComment(for: postID, commentID: commentID) { [weak self] response in
             guard let self else { return }
             
@@ -245,7 +239,6 @@ public extension LMFeedPostDetailViewModel {
         }
         
         guard !isFetchingData,
-              let postID = postDetail?.postId,
               let (parentComment, parentIndex) = findCommentIndex(for: commentId, from: commentList) else { return }
         self.isFetchingData = true
         
@@ -281,8 +274,8 @@ public extension LMFeedPostDetailViewModel {
         comment.menuItems.forEach { menu in
             switch menu.id {
             case .deleteComment:
-                alert.addAction(.init(title: menu.name, style: .destructive) { _ in
-                    print("Delete Action")
+                alert.addAction(.init(title: menu.name, style: .destructive) { [weak self] _ in
+                    self?.handleDeleteComment(for: commentID)
                 })
             case .reportComment:
                 alert.addAction(.init(title: menu.name, style: .destructive) { _ in
@@ -382,6 +375,42 @@ public extension LMFeedPostDetailViewModel {
             }
         }
     }
+    
+    func handleDeleteComment(for commentID: String) {
+        guard let (comment, index) = findCommentIndex(for: commentID, from: commentList) else { return }
+        
+        // Case of Self Deletion
+        if comment.userDetail.userUUID == LocalPreferences.userObj?.sdkClientInfo?.uuid {
+            let alert = UIAlertController(title: "Delete Comment?", message: "Are you sure you want to delete this comment? This action cannot be reversed", preferredStyle: .alert)
+            
+            let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+                self?.deleteComment(for: commentID, index: index, reason: nil)
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            
+            alert.addAction(cancelAction)
+            alert.addAction(deleteAction)
+            
+            delegate?.presentAlert(with: alert, animated: true)
+        } else if LocalPreferences.memberState?.state == 1 {
+            // State 1 means its a admin
+            delegate?.navigateToDeleteScreen(for: postID, commentID: commentID)
+        }
+    }
+    
+    func deleteComment(for commentID: String, index: IndexPath, reason: String?) {
+        LMFeedPostOperation.shared.deleteComment(for: postID, having: commentID, reason: reason) { [weak self] response in
+            guard let self else { return }
+            
+            switch response {
+            case .success():
+                checkIfCurrentPost(postID: postID, commentID: commentID)
+            case .failure(let error):
+                delegate?.showError(with: error.errorMessage, isPopVC: false)
+            }
+        }
+    }
 }
 
 
@@ -450,8 +479,8 @@ public extension LMFeedPostDetailViewModel {
         postDetail.postMenu.forEach { menu in
             switch menu.id {
             case .deletePost:
-                alert.addAction(.init(title: menu.name, style: .destructive) { _ in
-                    print("Delete Action")
+                alert.addAction(.init(title: menu.name, style: .destructive) { [weak self] _ in
+                    self?.handleDeletePost()
                 })
             case .pinPost:
                 alert.addAction(.init(title: menu.name, style: .default) { [weak self] _ in
@@ -477,6 +506,60 @@ public extension LMFeedPostDetailViewModel {
         alert.addAction(.init(title: "Cancel", style: .cancel))
         
         delegate?.presentAlert(with: alert, animated: true)
+    }
+    
+    func handleDeletePost() {
+        // Case of Self Deletion
+        if postDetail?.userDetails.userUUID == LocalPreferences.userObj?.sdkClientInfo?.uuid {
+            let alert = UIAlertController(title: "Delete Post?", message: "Are you sure you want to delete this post? This action cannot be reversed", preferredStyle: .alert)
+            
+            let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+                self?.deletePost(reason: nil)
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            
+            alert.addAction(cancelAction)
+            alert.addAction(deleteAction)
+            
+            delegate?.presentAlert(with: alert, animated: true)
+        } else if LocalPreferences.memberState?.state == 1 {
+            // State 1 means its a admin
+            delegate?.navigateToDeleteScreen(for: postID, commentID: nil)
+        }
+    }
+    
+    func deletePost(reason: String?) {
+        LMFeedPostOperation.shared.deletePost(postId: postID, reason: reason) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success():
+                NotificationCenter.default.post(name: .LMPostDeleted, object: postID)
+                delegate?.popViewController()
+            case .failure(let error):
+                delegate?.showError(with: error.errorMessage, isPopVC: false)
+            }
+        }
+    }
+    
+    func checkIfCurrentPost(postID: String, commentID: String? = nil) {
+        guard self.postID == postID else { return }
+        
+        if let commentID,
+           let (_, index) = findCommentIndex(for: commentID, from: commentList) {
+            if index.row == NSNotFound {
+                _ = commentList.remove(at: index.section)
+                postDetail?.commentCount -= 1
+            } else {
+                commentList[index.section].replies.removeAll(keepingCapacity: true)
+                commentList[index.section].totalRepliesCount -= 1
+            }
+            notifyObjectChange()
+            convertToViewData()
+            return
+        }
+        
+        delegate?.popViewController(animated: false)
     }
 }
 

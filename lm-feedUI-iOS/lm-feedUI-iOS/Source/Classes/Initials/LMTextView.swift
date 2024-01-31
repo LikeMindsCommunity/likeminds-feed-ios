@@ -11,7 +11,7 @@ import UIKit
 open class LMTextView: UITextView {
     open var placeHolderText: String = "" {
         didSet {
-            if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 text = placeHolderText
             }
         }

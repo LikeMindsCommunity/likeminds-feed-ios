@@ -33,11 +33,16 @@ public protocol LMBaseViewControllerProtocol: AnyObject {
     func presentAlert(with alert: UIAlertController, animated: Bool)
     func showHideLoaderView(isShow: Bool)
     func showError(with message: String, isPopVC: Bool)
+    func popViewController(animated: Bool)
 }
 
 public extension LMBaseViewControllerProtocol {
     func showError(with message: String, isPopVC: Bool = false) {
         showError(with: message, isPopVC: isPopVC)
+    }
+    
+    func popViewController(animated: Bool = true) {
+        popViewController(animated: animated)
     }
 }
 
@@ -98,19 +103,6 @@ open class LMViewController: UIViewController {
         }
     }
     
-    public func showError(with message: String, isPopVC: Bool) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
-            if isPopVC {
-                self?.navigationController?.popViewController(animated: true)
-            }
-        }
-        
-        alert.addAction(action)
-        presentAlert(with: alert)
-    }
-    
     open func setNavigationTitleAndSubtitle(with title: String?, subtitle: String?, alignment: UIStackView.Alignment = .leading) {
         let titleView = LMView().translatesAutoresizingMaskIntoConstraints()
         let widthConstraint = NSLayoutConstraint.init(item: titleView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: UIScreen.main.bounds.width)
@@ -152,6 +144,47 @@ open class LMViewController: UIViewController {
         
         navigationItem.titleView = titleView
     }
+}
+
+
+// MARK: LMViewLifeCycle
+extension LMViewController: LMViewLifeCycle {
+    /// This function handles the initialization of views.
+    open func setupViews() { }
+    
+    /// This function handles the initialization of autolayouts.
+    open func setupLayouts() { }
+    
+    /// This function handles the initialization of actions.
+    open func setupActions() { }
+    
+    /// This function handles the initialization of styles.
+    open func setupAppearance() { }
+    
+    /// This function handles the initialization of observers.
+    open func setupObservers() { }
+}
+
+
+// MARK: LMBaseViewControllerProtocol
+@objc
+extension LMViewController: LMBaseViewControllerProtocol {
+    open func presentAlert(with alert: UIAlertController, animated: Bool = true) {
+        present(alert, animated: animated)
+    }
+    
+    open func showError(with message: String, isPopVC: Bool) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            if isPopVC {
+                self?.navigationController?.popViewController(animated: true)
+            }
+        }
+        
+        alert.addAction(action)
+        presentAlert(with: alert)
+    }
     
     open func showHideLoaderView(isShow: Bool) {
         if isShow {
@@ -178,32 +211,8 @@ open class LMViewController: UIViewController {
             loaderScreen.removeFromSuperview()
         }
     }
-}
-
-
-// MARK: LMViewLifeCycle
-extension LMViewController: LMViewLifeCycle {
-    /// This function handles the initialization of views.
-    open func setupViews() { }
     
-    /// This function handles the initialization of autolayouts.
-    open func setupLayouts() { }
-    
-    /// This function handles the initialization of actions.
-    open func setupActions() { }
-    
-    /// This function handles the initialization of styles.
-    open func setupAppearance() { }
-    
-    /// This function handles the initialization of observers.
-    open func setupObservers() { }
-}
-
-
-// MARK: LMBaseViewControllerProtocol
-@objc
-extension LMViewController: LMBaseViewControllerProtocol {
-    public func presentAlert(with alert: UIAlertController, animated: Bool = true) {
-        present(alert, animated: animated)
+    open func popViewController(animated: Bool) {
+        navigationController?.popViewController(animated: animated)
     }
 }

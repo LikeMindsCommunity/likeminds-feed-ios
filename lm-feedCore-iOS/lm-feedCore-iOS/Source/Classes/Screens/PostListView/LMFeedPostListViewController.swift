@@ -96,8 +96,9 @@ open class LMFeedPostListViewController: LMViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostUpdate, object: nil)
 //        NotificationCenter.default.addObserver(self, selector: <#T##Selector#>, name: .LMPostCreationStarted, object: nil)
 //        NotificationCenter.default.addObserver(self, selector: <#T##Selector#>, name: .LMPostCreated, object: <#T##Any?#>)
-        NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostEditError, object: LMFeedError.self)
-        NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostCreateError, object: LMFeedError.self)
+        NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostEditError, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostCreateError, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postDelete), name: .LMPostDeleted, object: nil)
     }
     
     @objc 
@@ -110,13 +111,14 @@ open class LMFeedPostListViewController: LMViewController {
     @objc
     open func postError(notification: Notification) {
         if let error = notification.object as? LMFeedError {
-            switch error {
-            case .postEditFailed(let errorMessage),
-                    .postCreationFailed(let errorMessage):
-                showError(with: errorMessage ?? "Something went wrong")
-            default:
-                break
-            }
+            showError(with: error.errorMessage)
+        }
+    }
+    
+    @objc
+    open func postDelete(notification: Notification) {
+        if let postID = notification.object as? String {
+            viewModel?.removePost(for: postID)
         }
     }
     
@@ -250,6 +252,11 @@ extension LMFeedPostListViewController: LMFeedPostDocumentCellProtocol {
             tableView.reloadRows(at: [indexPath], with: .none)
         }
     }
+    
+    open func didTapDocument(with url: String) {
+        guard let url = URL(string: url) else { return }
+        UIApplication.shared.open(url)
+    }
 }
 
 
@@ -309,6 +316,12 @@ extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
     public func showActivityLoader() {
         data.removeAll()
         tableView.reloadData()
+    }
+    
+    public func navigateToDeleteScreen(for postID: String) {
+        guard let viewcontroller = LMFeedDeleteReviewViewModel.createModule(postID: postID) else { return }
+        viewcontroller.modalPresentationStyle = .overFullScreen
+        present(viewcontroller, animated: false)
     }
 }
 

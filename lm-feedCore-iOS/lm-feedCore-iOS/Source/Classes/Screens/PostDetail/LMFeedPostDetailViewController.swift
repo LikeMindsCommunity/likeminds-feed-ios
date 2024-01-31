@@ -117,9 +117,9 @@ open class LMFeedPostDetailViewController: LMViewController {
     
     
     // MARK: Data Variables
-    var postData: LMFeedPostTableCellProtocol?
-    var cellsData: [LMFeedPostCommentCellProtocol] = []
-    open private(set) var textInputMaximumHeight: CGFloat = 100
+    public var postData: LMFeedPostTableCellProtocol?
+    public var cellsData: [LMFeedPostCommentCellProtocol] = []
+    public var textInputMaximumHeight: CGFloat = 100
     public var viewModel: LMFeedPostDetailViewModel?
     public var isCommentingEnabled: Bool = LocalPreferences.memberState?.memberRights?.contains(where: { $0.state == .commentOrReplyOnPost }) ?? false
     
@@ -242,6 +242,8 @@ open class LMFeedPostDetailViewController: LMViewController {
     open override func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostEdited, object: LMFeedPostDataModel.self)
         NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostEditError, object: LMFeedError.self)
+        NotificationCenter.default.addObserver(self, selector: #selector(postDeleted), name: .LMPostDeleted, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(commentDeleted), name: .LMCommentDeleted, object: nil)
     }
     
     @objc
@@ -254,12 +256,21 @@ open class LMFeedPostDetailViewController: LMViewController {
     @objc
     open func postError(notification: Notification) {
         if let error = notification.object as? LMFeedError {
-            switch error {
-            case .postEditFailed(let errorMessage):
-                showError(with: errorMessage ?? "Something went wrong")
-            default:
-                break
-            }
+            showError(with: error.errorMessage)
+        }
+    }
+    
+    @objc
+    open func postDeleted(notification: Notification) {
+        if let postID = notification.object as? String {
+            viewModel?.checkIfCurrentPost(postID: postID)
+        }
+    }
+    
+    @objc
+    open func commentDeleted(notification: Notification) {
+        if let (postID, commentID) = notification.object as? (String, String) {
+            viewModel?.checkIfCurrentPost(postID: postID, commentID: commentID)
         }
     }
     
@@ -270,15 +281,12 @@ open class LMFeedPostDetailViewController: LMViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
-        inputTextView.placeHolderText = "Write a Comment"
+        updateCommentStatus(isEnabled: LocalPreferences.memberState?.memberRights?.contains(where: { $0.state == .commentOrReplyOnPost }) ?? false)
+        
         replyView.isHidden = true
         viewModel?.getMemberState()
         viewModel?.getPost(isInitialFetch: true)
         showHideLoaderView(isShow: true)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -396,6 +404,11 @@ extension LMFeedPostDetailViewController: LMFeedPostDocumentCellProtocol {
             data.isShowAllDocuments.toggle()
             tableView.reloadRows(at: [.init(row: 0, section: 0)], with: .automatic)
         }
+    }
+    
+    open func didTapDocument(with url: String) {
+        guard let url = URL(string: url) else { return }
+        UIApplication.shared.open(url)
     }
 }
 
@@ -600,8 +613,16 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         isCommentingEnabled = isEnabled
         
         inputTextView.placeHolderText = isCommentingEnabled ? "Write a Comment" : "You do not have permission to comment."
+        inputTextView.setAttributedText(from: "")
         inputTextView.isUserInteractionEnabled = isCommentingEnabled
         sendButton.isHidden = !isCommentingEnabled
+    }
+    
+    public func navigateToDeleteScreen(for postID: String, commentID: String?) {
+        guard let viewcontroller = LMFeedDeleteReviewViewModel.createModule(postID: postID, commentID: commentID) else { return }
+        viewcontroller.modalPresentationStyle = .overFullScreen
+        viewcontroller.modalTransitionStyle = .coverVertical
+        present(viewcontroller, animated: false)
     }
 }
 

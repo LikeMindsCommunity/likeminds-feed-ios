@@ -9,6 +9,7 @@ import UIKit
 
 public protocol LMFeedPostDocumentCellProtocol: AnyObject {
     func didTapShowMoreDocuments(for indexPath: IndexPath)
+    func didTapDocument(with url: String)
 }
 
 @IBDesignable
@@ -196,6 +197,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
 // MARK: LMFeedDocumentPreviewProtocol
 @objc
 extension LMFeedPostDocumentCell: LMFeedDocumentPreviewProtocol {
-    open func didTapCrossButton(documentID: String) { print(#function) }
-    open func didTapDocument(documentID: String) { print(#function) }
+    open func didTapDocument(documentID: String) {
+        delegate?.didTapDocument(with: documentID)
+    }
 }

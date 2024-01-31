@@ -27,6 +27,18 @@ final public class LMFeedPostOperation {
         }
     }
     
+    func getPost(for postID: String, currentPage: Int, pageSize: Int, completion: ((LMResponse<GetPostResponse>) -> Void)?) {
+        let request = GetPostRequest.builder()
+            .postId(postID)
+            .page(currentPage)
+            .pageSize(pageSize)
+            .build()
+        
+        LMFeedClient.shared.getPost(request) { response in
+            completion?(response)
+        }
+    }
+    
     func likePost(for postId: String, completion: ((Bool) -> Void)?) {
         let request = LikePostRequest.builder()
             .postId(postId)
@@ -57,18 +69,24 @@ final public class LMFeedPostOperation {
         }
     }
     
-    func getPost(for postID: String, currentPage: Int, pageSize: Int, completion: ((LMResponse<GetPostResponse>) -> Void)?) {
-        let request = GetPostRequest.builder()
-            .postId(postID)
-            .page(currentPage)
-            .pageSize(pageSize)
+    func deletePost(postId: String, reason: String?, completion: ((Result<Void, LMFeedError>) -> Void)?) {
+        let request = DeletePostRequest.builder()
+            .postId(postId)
+            .deleteReason(reason)
             .build()
-        
-        LMFeedClient.shared.getPost(request) { response in
-            completion?(response)
+        LMFeedClient.shared.deletePost(request) { response in
+            if response.success {
+                completion?(.success(()))
+            } else {
+                completion?(.failure(.postDeleteFailed(error: response.errorMessage)))
+            }
         }
     }
-    
+}
+
+
+// MARK: Comment Arena
+public extension LMFeedPostOperation {
     func postReplyOnPost(for postID: String, with comment: String, createdAt: Int, completion: ((LMResponse<GetCommentResponse>) -> Void)?) {
         let request = AddCommentRequest.builder()
             .postId(postID)
@@ -116,6 +134,22 @@ final public class LMFeedPostOperation {
         
         LMFeedClient.shared.likeComment(request) { response in
             completion?(response.success)
+        }
+    }
+    
+    func deleteComment(for postID: String, having commentID: String, reason: String?, completion: ((Result<Void, LMFeedError>) -> Void)?) {
+        let request = DeleteCommentRequest.builder()
+            .postId(postID)
+            .commentId(commentID)
+            .deleteReason(reason)
+            .build()
+        
+        LMFeedClient.shared.deleteComment(request) { response in
+            if response.success {
+                completion?(.success(()))
+            } else {
+                completion?(.failure(.commentDeleteFailed(error: response.errorMessage)))
+            }
         }
     }
 }

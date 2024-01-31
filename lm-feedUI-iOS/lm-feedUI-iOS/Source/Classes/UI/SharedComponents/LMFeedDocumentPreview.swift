@@ -213,13 +213,11 @@ open class LMFeedDocumentPreview: LMView {
                 subtitle.append(" • ")
             }
             
-            if size < 1024 {
-                subtitle.append("\(size) Kb")
-            } else if size < 1024 * 1024 {
-                subtitle.append("\(size / 1024) Mb")
-            } else {
-                subtitle.append("\(size / (1024 * 1024)) Gb")
-            }
+            let formatter = ByteCountFormatter()
+            formatter.allowedUnits = [.useKB, .useMB, .useGB, .useTB]
+            formatter.countStyle = .file
+            
+            subtitle.append(formatter.string(fromByteCount: Int64(size)))
         }
         
         if let docType = data.docType {
