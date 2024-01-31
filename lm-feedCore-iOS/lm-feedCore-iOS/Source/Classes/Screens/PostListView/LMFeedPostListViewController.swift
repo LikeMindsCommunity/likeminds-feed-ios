@@ -111,7 +111,7 @@ open class LMFeedPostListViewController: LMViewController {
     @objc
     open func postError(notification: Notification) {
         if let error = notification.object as? LMFeedError {
-            showError(with: error.errorMessage)
+            showError(with: error.localizedDescription)
         }
     }
     

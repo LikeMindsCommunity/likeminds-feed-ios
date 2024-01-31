@@ -10,6 +10,7 @@ import Foundation
 public enum LMFeedError: Error {
     case apiInitializationFailed(error: String?)
     case appAccessFalse
+    case feedNotInitialized
     
     case commentDeleteFailed(error: String?),
          postDeleteFailed(error: String?)
@@ -18,8 +19,8 @@ public enum LMFeedError: Error {
     case postEditFailed(error: String?)
     
     case routeError(error: String?)
-    
-    public var errorMessage: String {
+        
+    public var localizedDescription: String {
         switch self {
         case .apiInitializationFailed(let error),
                 .commentDeleteFailed(let error),
@@ -30,6 +31,8 @@ public enum LMFeedError: Error {
             return error ?? LMStringConstants.shared.genericErrorMessage
         case .appAccessFalse:
             return "User does not have right access for app usage"
+        case .feedNotInitialized:
+            return "LikeMinds Feed has not been initialized"
         }
     }
 }

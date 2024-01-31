@@ -50,4 +50,7 @@ public struct LMUIComponents {
     
     // MARK: Notification Screen Components
     public var notificationTableCell: LMFeedNotificationView.Type = LMFeedNotificationView.self
+    
+    // MARK: Report Screen Components
+    public var reportCollectionCell: LMFeedReportViewCell.Type = LMFeedReportViewCell.self
 }

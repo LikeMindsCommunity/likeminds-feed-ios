@@ -248,7 +248,7 @@ public extension LMFeedPostListViewModel {
             case .success():
                 removePost(for: postID)
             case .failure(let error):
-                delegate?.showError(with: error.errorMessage, isPopVC: false)
+                delegate?.showError(with: error.localizedDescription, isPopVC: false)
             }
         }
     }

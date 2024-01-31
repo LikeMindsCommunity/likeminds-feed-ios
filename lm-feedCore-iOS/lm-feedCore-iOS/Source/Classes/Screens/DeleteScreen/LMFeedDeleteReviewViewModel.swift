@@ -84,7 +84,7 @@ public final class LMFeedDeleteReviewViewModel {
                 NotificationCenter.default.post(name: .LMPostDeleted, object: postID)
                 delegate?.popViewController(animated: false)
             case .failure(let error):
-                delegate?.showError(with: error.errorMessage, isPopVC: true)
+                delegate?.showError(with: error.localizedDescription, isPopVC: true)
             }
         }
     }
@@ -98,7 +98,7 @@ public final class LMFeedDeleteReviewViewModel {
                 NotificationCenter.default.post(name: .LMCommentDeleted, object: (postID, commentID))
                 delegate?.popViewController(animated: false)
             case .failure(let error):
-                delegate?.showError(with: error.errorMessage, isPopVC: true)
+                delegate?.showError(with: error.localizedDescription, isPopVC: true)
             }
         }
     }
