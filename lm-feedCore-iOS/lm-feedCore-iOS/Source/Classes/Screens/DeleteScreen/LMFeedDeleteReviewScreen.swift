@@ -244,19 +244,32 @@ open class LMFeedDeleteReviewScreen: LMViewController {
     
     @objc
     open func didTapDeleteButton() {
-        if tags[pickerView.selectedRow(inComponent: 0)] == "others" {
+        view.endEditing(true)
+        
+        if tags[pickerView.selectedRow(inComponent: 0)].lowercased() == "others" {
             if !otherReasonTextView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
                otherReasonTextView.text.trimmingCharacters(in: .whitespacesAndNewlines) != placeholderText {
                 viewmodel?.initateDeleteAction(with: otherReasonTextView.text)
+            } else {
+                otherReasonTextView.layer.borderColor = Appearance.shared.colors.red.cgColor
             }
         } else {
             viewmodel?.initateDeleteAction(with: tags[pickerView.selectedRow(inComponent: 0)])
         }
     }
     
-    // MARK: setupAppearance
-    open override func setupAppearance() {
-        super.setupAppearance()
+    
+    // MARK: viewDidLoad
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+        initialSetup()
+        viewmodel?.fetchReportTags(type: 0)
+    }
+    
+    open func initialSetup() {
+        containerView.isHidden = true
+        otherReasonTextView.isHidden = true
+        
         view.backgroundColor = Appearance.shared.colors.clear
         
         containerView.clipsToBounds = true
@@ -276,13 +289,6 @@ open class LMFeedDeleteReviewScreen: LMViewController {
         otherReasonTextView.text = placeholderText
         otherReasonTextView.textColor = Appearance.shared.colors.gray155
         otherReasonTextView.font = Appearance.shared.fonts.textFont1
-    }
-    
-    open override func viewDidLoad() {
-        super.viewDidLoad()
-        otherReasonTextView.isHidden = true
-        containerView.isHidden = true
-        viewmodel?.fetchReportTags(type: 0)
     }
     
     public override func showError(with message: String, isPopVC: Bool) {
@@ -361,6 +367,10 @@ extension LMFeedDeleteReviewScreen: UITextViewDelegate {
             otherReasonTextView.textColor = Appearance.shared.colors.gray51
             otherReasonTextView.font = Appearance.shared.fonts.textFont1
         }
+    }
+    
+    open func textViewDidChange(_ textView: UITextView) {
+        textView.layer.borderColor = Appearance.shared.colors.black.cgColor
     }
     
     open func textViewDidEndEditing(_ textView: UITextView) {

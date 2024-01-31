@@ -405,14 +405,7 @@ public extension LMFeedPostDetailViewModel {
             
             switch response {
             case .success():
-                if index.row == NSNotFound {
-                    _ = commentList.remove(at: index.section)
-                    postDetail?.commentCount -= 1
-                    notifyObjectChange()
-                } else {
-                    _ = commentList[index.section].replies.remove(at: index.row)
-                }
-                convertToViewData()
+                checkIfCurrentPost(postID: postID, commentID: commentID)
             case .failure(let error):
                 delegate?.showError(with: error.errorMessage, isPopVC: false)
             }
@@ -556,8 +549,10 @@ public extension LMFeedPostDetailViewModel {
            let (_, index) = findCommentIndex(for: commentID, from: commentList) {
             if index.row == NSNotFound {
                 _ = commentList.remove(at: index.section)
+                postDetail?.commentCount -= 1
             } else {
-                _ = commentList[index.section].replies.remove(at: index.row)
+                commentList[index.section].replies.removeAll(keepingCapacity: true)
+                commentList[index.section].totalRepliesCount -= 1
             }
             notifyObjectChange()
             convertToViewData()
