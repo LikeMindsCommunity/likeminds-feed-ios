@@ -44,6 +44,7 @@ final class LMAWSManager {
             fileUrl.stopAccessingSecurityScopedResource()
             
             let expression = AWSS3TransferUtilityUploadExpression()
+            expression.setValue("public-read", forRequestHeader:"x-amz-acl")
             expression.progressBlock = {(task, awsProgress) in
                 guard let uploadProgress = progress else { return }
                 DispatchQueue.main.async {
