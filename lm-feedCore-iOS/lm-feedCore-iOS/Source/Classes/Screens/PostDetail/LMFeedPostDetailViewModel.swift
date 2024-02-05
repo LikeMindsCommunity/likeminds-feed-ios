@@ -22,7 +22,7 @@ public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol 
     
     func navigateToEditPost(for postID: String)
     func navigateToDeleteScreen(for postID: String, commentID: String?)
-    func navigateToReportScreen(for entityID: String, isPost: Bool)
+    func navigateToReportScreen(for entityID: String, isPost: Bool?)
 }
 
 final public class LMFeedPostDetailViewModel {
@@ -267,7 +267,7 @@ public extension LMFeedPostDetailViewModel {
     
     // MARK: Show Comment Menu
     func showMenu(for commentID: String) {
-        guard let (comment, _) = findCommentIndex(for: commentID, from: commentList),
+        guard let (comment, idx) = findCommentIndex(for: commentID, from: commentList),
               !comment.menuItems.isEmpty else { return }
         
         let alert = UIAlertController(title: .none, message: .none, preferredStyle: .actionSheet)
@@ -280,7 +280,7 @@ public extension LMFeedPostDetailViewModel {
                 })
             case .reportComment:
                 alert.addAction(.init(title: menu.name, style: .destructive) { [weak self] _ in
-                    self?.delegate?.navigateToReportScreen(for: commentID, isPost: false)
+                    self?.delegate?.navigateToReportScreen(for: commentID, isPost: idx.row == NSNotFound ? false : nil)
                 })
             case .editComment:
                 alert.addAction(.init(title: menu.name, style: .default) { _ in

@@ -625,7 +625,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         present(viewcontroller, animated: false)
     }
     
-    public func navigateToReportScreen(for entityID: String, isPost: Bool) {
+    public func navigateToReportScreen(for entityID: String, isPost: Bool?) {
         do {
             let viewcontroller = try LMFeedReportContentViewModel.createModule(entityID: entityID, isPost: isPost)
             navigationController?.pushViewController(viewcontroller, animated: true)

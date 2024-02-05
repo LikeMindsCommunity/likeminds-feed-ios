@@ -153,3 +153,27 @@ public extension LMFeedPostOperation {
         }
     }
 }
+
+
+public extension LMFeedPostOperation {
+    func reportContent(with tagID: Int, reason: String, entityID: String, entityType: ReportEntityType, reporterUUID: String, completion: ((Result<Void, LMFeedError>) -> Void)?) {
+        let request = ReportRequest.builder()
+            .entityId(entityID)
+            .entityType(entityType)
+            .uuid(reporterUUID)
+            .tagId(tagID)
+            .reason(reason)
+            .build()
+        
+        LMFeedClient.shared.report(request) { response in
+            var result: Result<Void, LMFeedError>
+            if response.success {
+                result = .success(())
+            } else {
+                result = .failure(.reportFailed(error: response.errorMessage))
+            }
+            
+            completion?(result)
+        }
+    }
+}

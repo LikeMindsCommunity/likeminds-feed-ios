@@ -378,7 +378,6 @@
 		BBC62A0DFD1C6756C238D32D9981F824 /* AWSCognitoSyncService.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C8277AB6F57C3501B0D346341E1F215 /* AWSCognitoSyncService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BC16AFDE4BAC1CD19CDE329F20CC6EC4 /* CallbackQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB7289AF8B0C203FBE88A6418CF5B84 /* CallbackQueue.swift */; };
 		BC5A53F94EAA2F46352749E54BE69838 /* Source.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0693D096707B82DCC95A88B9604EA8DE /* Source.swift */; };
-		BC5BEA66ACF1D40D9288E9192026EBA7 /* LMFeedUIAssetsCatalog.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A8D17E412912F1822A8EA7B9499AACD /* LMFeedUIAssetsCatalog.xcassets */; };
 		BC80AE8F475F8D27F7181B7D92A93F0F /* AWSURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B778E7F037E4C5C57F10B43B5CF08D14 /* AWSURLSessionManager.m */; };
 		BCB84A384550991EE733E5928A3DBE33 /* AWSDDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C37598A54C41201E855178F6E625DC /* AWSDDAbstractDatabaseLogger.m */; };
 		BD1D04CC6924A4F5F80CB37D648B1A9E /* LMFeedCreatePostDocumentPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1905DE84F6509B8180284088A0988354 /* LMFeedCreatePostDocumentPreviewCell.swift */; };
@@ -463,6 +462,7 @@
 		E556429C2B6A6257001971BE /* LMFeedReportViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E556429B2B6A6257001971BE /* LMFeedReportViewCell.swift */; };
 		E556429E2B6A658F001971BE /* LMFeedReportContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E556429D2B6A658F001971BE /* LMFeedReportContentViewModel.swift */; };
 		E5635DECB22362CA17521F7B6A752BB4 /* AWSS3Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = B9D03729E894DF03FD1341DDB039C798 /* AWSS3Resources.m */; };
+		E580B5C62B6D2624009A2C82 /* LMFeedUIAssetsCatalog.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A8D17E412912F1822A8EA7B9499AACD /* LMFeedUIAssetsCatalog.xcassets */; };
 		E5E7BAF1206FE5161820120A99499CBB /* AWSFMDatabaseQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 813664C2DE1ADBCF0FB01FF79811DCB4 /* AWSFMDatabaseQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EDB2EFA59D4CF17488D59DD6F18B29 /* SessionDelegate.swift */; };
 		E7378F61AD6959D5538E595EA4A48AF4 /* AVAssetImageDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5906A1693E49E999036B15276B6AF9 /* AVAssetImageDataProvider.swift */; };
@@ -3026,6 +3026,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AD630E05C7ED78EE7A00086557F3564 /* lm-feedUI-iOS-lm-feedUI-iOS in Resources */,
+				E580B5C62B6D2624009A2C82 /* LMFeedUIAssetsCatalog.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3091,7 +3092,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC5BEA66ACF1D40D9288E9192026EBA7 /* LMFeedUIAssetsCatalog.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,6 +21,21 @@ open class LMFeedReportContentViewController: LMViewController {
         return view
     }()
     
+    open private(set) lazy var containerScrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        return scroll
+    }()
+    
+    open private(set) lazy var stackView: LMStackView = {
+        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.distribution = .fill
+        stack.spacing = 8
+        return stack
+    }()
+    
     open private(set) lazy var titleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Please specify the problem to continue"
@@ -38,15 +53,6 @@ open class LMFeedReportContentViewController: LMViewController {
         return label
     }()
     
-    open private(set) lazy var stackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
-        stack.axis = .vertical
-        stack.alignment = .fill
-        stack.distribution = .fill
-        stack.spacing = 8
-        return stack
-    }()
-    
     open private(set) lazy var collectionView: LMCollectionView = {
         let collection = LMFeedTopicCollectionView(frame: .zero, collectionViewLayout: TagsLayout()).translatesAutoresizingMaskIntoConstraints()
         collection.isScrollEnabled = true
@@ -60,11 +66,12 @@ open class LMFeedReportContentViewController: LMViewController {
     open private(set) lazy var otherReasonTextView: LMTextView = {
         let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
         textView.delegate = self
+        textView.addDoneButtonOnKeyboard()
         return textView
     }()
     
     open private(set) lazy var submitButton: LMButton = {
-        let button = LMButton.createButton(with: "REPORT", image: nil, textColor: .white, textFont: Appearance.shared.fonts.buttonFont3, contentSpacing: .init(top: 8, left: 16, bottom: 8, right: 16))
+        let button = LMButton.createButton(with: "REPORT", image: nil, textColor: .white, textFont: Appearance.shared.fonts.buttonFont3, contentSpacing: .init(top: 16, left: 60, bottom: 16, right: 60))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.clipsToBounds = true
         button.backgroundColor = Appearance.shared.colors.appTintColor
@@ -73,8 +80,8 @@ open class LMFeedReportContentViewController: LMViewController {
     
     
     // MARK: Data Variables
-    public var collectionHeightConstraint: NSLayoutConstraint?
     public var textViewHeightConstraint: NSLayoutConstraint?
+    public var textInputHeight: CGFloat = 100
     public var tags: [(String, Int)] = []
     public var selectedTag = -1
     public var placeholderText = "Write Description!"
@@ -87,13 +94,14 @@ open class LMFeedReportContentViewController: LMViewController {
         
         view.addSubview(containerView)
         
-        containerView.addSubview(titleLabel)
-        containerView.addSubview(subtitleLabel)
-        containerView.addSubview(stackView)
+        containerView.addSubview(containerScrollView)
         containerView.addSubview(submitButton)
         
-        stackView.addArrangedSubview(collectionView)
-        stackView.addArrangedSubview(otherReasonTextView)
+        containerScrollView.addSubview(stackView)
+        
+        [titleLabel, subtitleLabel, collectionView, otherReasonTextView].forEach { subview in
+            stackView.addArrangedSubview(subview)
+        }
     }
     
     
@@ -101,30 +109,33 @@ open class LMFeedReportContentViewController: LMViewController {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        view.pinSubView(subView: containerView)
+        view.pinSubView(subView: containerView, padding: .init(top: 16, left: 0, bottom: 0, right: 0))
         
-        titleLabel.addConstraint(top: (containerView.topAnchor, 16),
-                                 leading: (containerView.leadingAnchor, 16))
-        titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -16).isActive = true
+        containerScrollView.addConstraint(top: (containerView.topAnchor, 0),
+                                          leading: (containerView.leadingAnchor, 0),
+                                          trailing: (containerView.trailingAnchor, 0))
         
-        subtitleLabel.addConstraint(top: (titleLabel.bottomAnchor, 16),
-                                 leading: (titleLabel.leadingAnchor, 0))
-        subtitleLabel.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -16).isActive = true
-        
-        stackView.addConstraint(top: (subtitleLabel.bottomAnchor, 16),
-                                leading: (containerView.leadingAnchor, 16),
-                                trailing: (containerView.trailingAnchor, -16))
-        
-        let constraint = collectionView.heightAnchor.constraint(lessThanOrEqualTo: stackView.widthAnchor, multiplier: 0.5)
-        constraint.priority = .required
-        constraint.isActive = true
-        
-        textViewHeightConstraint = otherReasonTextView.setHeightConstraint(with: 40)
-        
-        submitButton.addConstraint(bottom: (containerView.bottomAnchor, -16),
+        submitButton.addConstraint(top: (containerScrollView.bottomAnchor, 16),
+                                   bottom: (containerView.bottomAnchor, -16),
                                    centerX: (containerView.centerXAnchor, 0))
         
-        submitButton.topAnchor.constraint(greaterThanOrEqualTo: stackView.bottomAnchor, constant: 16).isActive = true
+        containerScrollView.pinSubView(subView: stackView)
+        
+        stackView.setHeightConstraint(with: 50, priority: .defaultLow)
+        stackView.setWidthConstraint(with: containerView.widthAnchor)
+        
+        collectionView.setHeightConstraint(with: stackView.widthAnchor, relatedBy: .lessThanOrEqual, multiplier: 0.5)
+        
+        otherReasonTextView.setHeightConstraint(with: textInputHeight)
+        
+        submitButton.addConstraint(top: (containerScrollView.bottomAnchor, 16),
+                                   bottom: (containerView.bottomAnchor, -16),
+                                   centerX: (containerView.centerXAnchor, 0))
+        
+        [titleLabel, subtitleLabel, collectionView, otherReasonTextView].forEach { subview in
+            subview.addConstraint(leading: (stackView.leadingAnchor, 16),
+                                  trailing: (stackView.trailingAnchor, -16))
+        }
     }
     
     
@@ -132,7 +143,38 @@ open class LMFeedReportContentViewController: LMViewController {
     open override func setupAppearance() {
         super.setupAppearance()
         view.backgroundColor = Appearance.shared.colors.white
-//        otherReasonTextView.addBottomBorderWithColor(color: Appearance.shared.colors.appTintColor, width: 1)
+        submitButton.layer.cornerRadius = submitButton.frame.height / 2
+    }
+    
+    
+    // MARK: setupActions
+    open override func setupActions() {
+        super.setupActions()
+        submitButton.addTarget(self, action: #selector(didTapSubmitButton), for: .touchUpInside)
+    }
+    
+    @objc
+    open func didTapSubmitButton() {
+        guard selectedTag != -1 else { return }
+        
+        if selectedTag == 11 {
+            let reason = otherReasonTextView.text.trimmingCharacters(in: .whitespacesAndNewlines)
+            if !reason.isEmpty,
+               reason != placeholderText {
+                viewmodel?.reportContent(reason: otherReasonTextView.text)
+            } else {
+                showError(with: "Please Enter Valid Reason", isPopVC: false)
+            }
+        } else {
+            viewmodel?.reportContent(reason: nil)
+        }
+    }
+    
+    // MARK: setupObservers
+    open override func setupObservers() {
+        super.setupObservers()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     
@@ -140,21 +182,41 @@ open class LMFeedReportContentViewController: LMViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         
+        setNavigationTitleAndSubtitle(with: "Report Abuse", subtitle: nil, alignment: .center)
+        
         otherReasonTextView.text = placeholderText
         otherReasonTextView.textColor = Appearance.shared.colors.gray155
         otherReasonTextView.font = Appearance.shared.fonts.textFont1
-//        otherReasonTextView.isHidden = true
         
-        initialSetup(isHidden: true)
-        
+        setupButton(isEnabled: false)
         viewmodel?.fetchReportTags()
     }
     
-    open func initialSetup(isHidden: Bool) {
-        titleLabel.isHidden = isHidden
-        subtitleLabel.isHidden = isHidden
-        stackView.isHidden = isHidden
-        submitButton.isHidden = isHidden
+    open func setupButton(isEnabled: Bool) {
+        submitButton.isEnabled = isEnabled
+        if isEnabled {
+            submitButton.backgroundColor = Appearance.shared.colors.appTintColor
+        } else {
+            submitButton.backgroundColor = Appearance.shared.colors.gray4
+        }
+    }
+    
+    
+    @objc
+    open func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardFrameKey = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        
+        let keyboardFrame = view.convert(keyboardFrameKey.cgRectValue, from: nil)
+        
+        var contentInset = containerScrollView.contentInset
+        contentInset.bottom = keyboardFrame.size.height
+        containerScrollView.contentInset = contentInset
+        loadViewIfNeeded()
+    }
+
+    @objc 
+    open func keyboardWillHide(notification: NSNotification){
+        containerScrollView.contentInset.bottom = 0
     }
 }
 
@@ -206,12 +268,17 @@ extension LMFeedReportContentViewController: UITextViewDelegate {
 // MARK: LMFeedReportContentViewModelProtocol
 extension LMFeedReportContentViewController: LMFeedReportContentViewModelProtocol {
     public func updateView(with tags: [(name: String, tagID: Int)], selectedTag: Int, showTextView: Bool) {
-        initialSetup(isHidden: false)
-        
         self.tags = tags
         self.selectedTag = selectedTag
         collectionView.reloadData()
         
         otherReasonTextView.isHidden = !showTextView
+        setupButton(isEnabled: selectedTag != -1)
+        
+        if showTextView {
+            otherReasonTextView.becomeFirstResponder()
+        } else {
+            otherReasonTextView.resignFirstResponder()
+        }
     }
 }

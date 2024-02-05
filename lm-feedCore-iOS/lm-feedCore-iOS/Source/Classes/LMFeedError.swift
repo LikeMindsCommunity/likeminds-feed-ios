@@ -18,6 +18,8 @@ public enum LMFeedError: Error {
     case postCreationFailed(error: String?)
     case postEditFailed(error: String?)
     
+    case reportFailed(error: String?)
+    
     case routeError(error: String?)
         
     public var localizedDescription: String {
@@ -27,6 +29,7 @@ public enum LMFeedError: Error {
                 .postCreationFailed(let error),
                 .postDeleteFailed(let error),
                 .postEditFailed(let error),
+                .reportFailed(let error),
                 .routeError(let error):
             return error ?? LMStringConstants.shared.genericErrorMessage
         case .appAccessFalse:

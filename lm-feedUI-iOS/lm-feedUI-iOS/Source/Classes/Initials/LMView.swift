@@ -48,32 +48,48 @@ public extension UIView {
                        centerX: (anchor: NSLayoutXAxisAnchor, padding: CGFloat)? = nil,
                        centerY: (anchor: NSLayoutYAxisAnchor, padding: CGFloat)? = nil) {
         if let top {
-            topAnchor.constraint(equalTo: top.anchor, constant: top.padding).isActive = true
+            let constraint = topAnchor.constraint(equalTo: top.anchor, constant: top.padding)
+            constraint.priority = .required
+            constraint.isActive = true
         }
         
         if let bottom {
-            bottomAnchor.constraint(equalTo: bottom.anchor, constant: bottom.padding).isActive = true
+            let constraint = bottomAnchor.constraint(equalTo: bottom.anchor, constant: bottom.padding)
+            constraint.priority = .required
+            constraint.isActive = true
         }
         
         if let leading {
-            leadingAnchor.constraint(equalTo: leading.anchor, constant: leading.padding).isActive = true
+            let constraint = leadingAnchor.constraint(equalTo: leading.anchor, constant: leading.padding)
+            constraint.priority = .required
+            constraint.isActive = true
         }
         
         if let trailing {
-            trailingAnchor.constraint(equalTo: trailing.anchor, constant: trailing.padding).isActive = true
+            let constraint = trailingAnchor.constraint(equalTo: trailing.anchor, constant: trailing.padding)
+            constraint.priority = .required
+            constraint.isActive = true
         }
         
         if let centerX {
-            centerXAnchor.constraint(equalTo: centerX.anchor, constant: centerX.padding).isActive = true
+            let constraint = centerXAnchor.constraint(equalTo: centerX.anchor, constant: centerX.padding)
+            constraint.priority = .required
+            constraint.isActive = true
         }
         
         if let centerY {
-            centerYAnchor.constraint(equalTo: centerY.anchor, constant: centerY.padding).isActive = true
+            let constraint = centerYAnchor.constraint(equalTo: centerY.anchor, constant: centerY.padding)
+            constraint.priority = .required
+            constraint.isActive = true
         }
     }
     
     @discardableResult
-    func setHeightConstraint(with value: CGFloat, relatedBy: NSLayoutConstraint.Relation = .equal, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
+    func setHeightConstraint(
+        with value: CGFloat,
+        relatedBy: NSLayoutConstraint.Relation = .equal,
+        priority: UILayoutPriority = .required
+    ) -> NSLayoutConstraint {
         let heightConstraint = NSLayoutConstraint(item: self, attribute: .height, relatedBy: relatedBy, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)
         heightConstraint.priority = priority
         heightConstraint.isActive = true
@@ -82,12 +98,70 @@ public extension UIView {
     }
     
     @discardableResult
-    func setWidthConstraint(with value: CGFloat, relatedBy: NSLayoutConstraint.Relation = .equal, priority: UILayoutPriority = .defaultHigh) -> NSLayoutConstraint {
+    func setWidthConstraint(
+        with value: CGFloat,
+        relatedBy: NSLayoutConstraint.Relation = .equal,
+        priority: UILayoutPriority = .defaultHigh
+    ) -> NSLayoutConstraint {
         let widthConstraint = NSLayoutConstraint(item: self, attribute: .width, relatedBy: relatedBy, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)
         widthConstraint.priority = priority
         widthConstraint.isActive = true
         
         return widthConstraint
+    }
+    
+    @discardableResult
+    func setHeightConstraint(
+        with anchor: NSLayoutDimension,
+        relatedBy: NSLayoutConstraint.Relation = .equal,
+        priority: UILayoutPriority = .required,
+        multiplier: CGFloat = 1,
+        constant: CGFloat = .zero
+    ) -> NSLayoutConstraint {
+        switch relatedBy {
+        case .lessThanOrEqual:
+            let height = self.heightAnchor.constraint(lessThanOrEqualTo: anchor, multiplier: multiplier, constant: constant)
+            height.priority = priority
+            height.isActive = true
+            return height
+        case .greaterThanOrEqual:
+            let height = self.heightAnchor.constraint(greaterThanOrEqualTo: anchor, multiplier: multiplier, constant: constant)
+            height.priority = priority
+            height.isActive = true
+            return height
+        default:
+            let height = self.heightAnchor.constraint(equalTo: anchor, multiplier: multiplier, constant: constant)
+            height.priority = priority
+            height.isActive = true
+            return height
+        }
+    }
+    
+    @discardableResult
+    func setWidthConstraint(
+        with anchor: NSLayoutDimension,
+        relatedBy: NSLayoutConstraint.Relation = .equal,
+        priority: UILayoutPriority = .required,
+        multiplier: CGFloat = 1,
+        constant: CGFloat = .zero
+    ) -> NSLayoutConstraint {
+        switch relatedBy {
+        case .lessThanOrEqual:
+            let width = self.widthAnchor.constraint(lessThanOrEqualTo: anchor, multiplier: multiplier, constant: constant)
+            width.priority = priority
+            width.isActive = true
+            return width
+        case .greaterThanOrEqual:
+            let width = self.widthAnchor.constraint(greaterThanOrEqualTo: anchor, multiplier: multiplier, constant: constant)
+            width.priority = priority
+            width.isActive = true
+            return width
+        default:
+            let width = self.widthAnchor.constraint(equalTo: anchor, multiplier: multiplier, constant: constant)
+            width.priority = priority
+            width.isActive = true
+            return width
+        }
     }
 }
 
