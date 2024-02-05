@@ -323,6 +323,15 @@ extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
         viewcontroller.modalPresentationStyle = .overFullScreen
         present(viewcontroller, animated: false)
     }
+    
+    public func navigateToReportScreen(for postID: String) {
+        do {
+            let viewcontroller = try LMFeedReportContentViewModel.createModule(entityID: postID, isPost: true)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
 }
 
 
