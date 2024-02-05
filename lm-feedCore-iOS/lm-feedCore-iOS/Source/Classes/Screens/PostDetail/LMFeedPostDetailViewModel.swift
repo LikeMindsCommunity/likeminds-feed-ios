@@ -22,6 +22,7 @@ public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol 
     
     func navigateToEditPost(for postID: String)
     func navigateToDeleteScreen(for postID: String, commentID: String?)
+    func navigateToReportScreen(for entityID: String, isPost: Bool?)
 }
 
 final public class LMFeedPostDetailViewModel {
@@ -266,7 +267,7 @@ public extension LMFeedPostDetailViewModel {
     
     // MARK: Show Comment Menu
     func showMenu(for commentID: String) {
-        guard let (comment, _) = findCommentIndex(for: commentID, from: commentList),
+        guard let (comment, idx) = findCommentIndex(for: commentID, from: commentList),
               !comment.menuItems.isEmpty else { return }
         
         let alert = UIAlertController(title: .none, message: .none, preferredStyle: .actionSheet)
@@ -278,8 +279,8 @@ public extension LMFeedPostDetailViewModel {
                     self?.handleDeleteComment(for: commentID)
                 })
             case .reportComment:
-                alert.addAction(.init(title: menu.name, style: .destructive) { _ in
-                    print("Report Action")
+                alert.addAction(.init(title: menu.name, style: .destructive) { [weak self] _ in
+                    self?.delegate?.navigateToReportScreen(for: commentID, isPost: idx.row == NSNotFound ? false : nil)
                 })
             case .editComment:
                 alert.addAction(.init(title: menu.name, style: .default) { _ in
@@ -407,7 +408,7 @@ public extension LMFeedPostDetailViewModel {
             case .success():
                 checkIfCurrentPost(postID: postID, commentID: commentID)
             case .failure(let error):
-                delegate?.showError(with: error.errorMessage, isPopVC: false)
+                delegate?.showError(with: error.localizedDescription, isPopVC: false)
             }
         }
     }
@@ -491,8 +492,8 @@ public extension LMFeedPostDetailViewModel {
                     self?.pinUnpinPost(postId: postID)
                 })
             case .reportPost:
-                alert.addAction(.init(title: menu.name, style: .destructive) { _ in
-                    print("Report Action")
+                alert.addAction(.init(title: menu.name, style: .destructive) { [weak self] _ in
+                    self?.delegate?.navigateToReportScreen(for: postID, isPost: true)
                 })
             case .editPost:
                 alert.addAction(.init(title: menu.name, style: .default) { [weak self] _ in
@@ -537,7 +538,7 @@ public extension LMFeedPostDetailViewModel {
                 NotificationCenter.default.post(name: .LMPostDeleted, object: postID)
                 delegate?.popViewController()
             case .failure(let error):
-                delegate?.showError(with: error.errorMessage, isPopVC: false)
+                delegate?.showError(with: error.localizedDescription, isPopVC: false)
             }
         }
     }

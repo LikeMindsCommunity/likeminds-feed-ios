@@ -73,3 +73,11 @@ class ViewController: UIViewController {
         view.endEditing(true)
     }
 }
+
+
+
+class vcfj: LMFeedPostListViewController {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 4
+    }
+}

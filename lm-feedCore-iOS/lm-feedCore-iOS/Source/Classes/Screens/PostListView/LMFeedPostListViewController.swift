@@ -111,7 +111,7 @@ open class LMFeedPostListViewController: LMViewController {
     @objc
     open func postError(notification: Notification) {
         if let error = notification.object as? LMFeedError {
-            showError(with: error.errorMessage)
+            showError(with: error.localizedDescription)
         }
     }
     
@@ -322,6 +322,15 @@ extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
         guard let viewcontroller = LMFeedDeleteReviewViewModel.createModule(postID: postID) else { return }
         viewcontroller.modalPresentationStyle = .overFullScreen
         present(viewcontroller, animated: false)
+    }
+    
+    public func navigateToReportScreen(for postID: String) {
+        do {
+            let viewcontroller = try LMFeedReportContentViewModel.createModule(entityID: postID, isPost: true)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
 }
 

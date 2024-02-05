@@ -24,6 +24,7 @@ public extension Appearance {
         public var textFont2: UIFont = .systemFont(ofSize: 14)
         public var buttonFont1: UIFont = .systemFont(ofSize: 14)
         public var buttonFont2: UIFont = .systemFont(ofSize: 16)
+        public var buttonFont3: UIFont = .systemFont(ofSize: 12, weight: .bold)
         public var navigationTitleFont: UIFont = .systemFont(ofSize: 18, weight: .bold)
         public var navigationSubtitleFont: UIFont = .systemFont(ofSize: 14)
     }

@@ -17,6 +17,7 @@ public protocol LMFeedPostListViewModelProtocol: LMBaseViewControllerProtocol {
     func showActivityLoader()
     func navigateToEditScreen(for postID: String)
     func navigateToDeleteScreen(for postID: String)
+    func navigateToReportScreen(for postID: String)
 }
 
 public class LMFeedPostListViewModel {
@@ -196,8 +197,8 @@ public extension LMFeedPostListViewModel {
                 }
                 alert.addAction(action)
             case .reportPost:
-                let action = UIAlertAction(title: menu.name, style: .destructive) { _ in
-                    print(#function)
+                let action = UIAlertAction(title: menu.name, style: .destructive) { [weak self] _ in
+                    self?.delegate?.navigateToReportScreen(for: postID)
                 }
                 alert.addAction(action)
             case .editPost:
@@ -248,7 +249,7 @@ public extension LMFeedPostListViewModel {
             case .success():
                 removePost(for: postID)
             case .failure(let error):
-                delegate?.showError(with: error.errorMessage, isPopVC: false)
+                delegate?.showError(with: error.localizedDescription, isPopVC: false)
             }
         }
     }
