@@ -127,6 +127,9 @@ open class LMFeedPostListViewController: LMViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         viewModel?.getFeed()
+        
+        // Analytics
+        LMFeedMain.analytics.trackEvent(for: .feedOpened, eventProperties: ["feed_type": "universal_feed"])
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
@@ -202,9 +205,12 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
     }
     
     open func didTapLikeTextButton(for postID: String) {
-        if viewModel?.allowPostLikeView(for: postID) == true {
-            let viewcontroller = LMFeedLikeViewModel.createModule(postID: postID)
+        guard viewModel?.allowPostLikeView(for: postID) == true else { return }
+        do {
+            let viewcontroller = try LMFeedLikeViewModel.createModule(postID: postID)
             navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
         }
     }
     
@@ -324,9 +330,9 @@ extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
         present(viewcontroller, animated: false)
     }
     
-    public func navigateToReportScreen(for postID: String) {
+    public func navigateToReportScreen(for postID: String, creatorUUID: String) {
         do {
-            let viewcontroller = try LMFeedReportContentViewModel.createModule(entityID: postID, isPost: true)
+            let viewcontroller = try LMFeedReportContentViewModel.createModule(creatorUUID: creatorUUID, postID: postID)
             navigationController?.pushViewController(viewcontroller, animated: true)
         } catch let error {
             print(error.localizedDescription)

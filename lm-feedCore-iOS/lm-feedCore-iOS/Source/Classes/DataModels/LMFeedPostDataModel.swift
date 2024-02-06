@@ -213,3 +213,17 @@ public extension LMFeedPostDataModel {
         }
     }
 }
+
+public extension LMFeedPostDataModel {
+    func getPostType() -> String {
+        if self.linkAttachment != nil {
+            return "link"
+        } else if !self.documentAttachment.isEmpty {
+            return "document"
+        } else if self.imageVideoAttachment.isEmpty {
+            return "text"
+        }
+        
+        return self.imageVideoAttachment.first?.isVideo == true ? "video" : "image"
+    }
+}

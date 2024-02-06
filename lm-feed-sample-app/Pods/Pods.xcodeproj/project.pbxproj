@@ -458,6 +458,7 @@
 		E2EFDFEDEEEE11D665EA64FC86E758A6 /* AWSCognitoRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A753574F2FC14294581C556ACCE8E97 /* AWSCognitoRecord.m */; };
 		E3504362E0CAD44D268DB3CFCA77CDA1 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C935FFF1A53099402B24570FA478E3 /* UIColor+Extension.swift */; };
 		E463D33C469241088C26B333E06D59E7 /* AWSURLRequestRetryHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = E661CC24B90A91F628112F64E7CBC04D /* AWSURLRequestRetryHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E528682A2B71225800C72813 /* LMFeedAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52868292B71225700C72813 /* LMFeedAnalytics.swift */; };
 		E55642992B6A5211001971BE /* LMFeedReportContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55642982B6A5211001971BE /* LMFeedReportContentViewController.swift */; };
 		E556429C2B6A6257001971BE /* LMFeedReportViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E556429B2B6A6257001971BE /* LMFeedReportViewCell.swift */; };
 		E556429E2B6A658F001971BE /* LMFeedReportContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E556429D2B6A658F001971BE /* LMFeedReportContentViewModel.swift */; };
@@ -1192,6 +1193,7 @@
 		E445B67D4A7F2ED36D68FA34FD877AE0 /* AWSXMLDictionary.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSXMLDictionary.m; path = AWSCore/XMLDictionary/AWSXMLDictionary.m; sourceTree = "<group>"; };
 		E449FEF6A3DA07991E04BE040A0B9E09 /* LMFeedError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMFeedError.swift; path = "lm-feedCore-iOS/Source/Classes/LMFeedError.swift"; sourceTree = "<group>"; };
 		E50691CEDDF11EB579BB9A152150BE36 /* LMFeedNotificationViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedNotificationViewModel.swift; sourceTree = "<group>"; };
+		E52868292B71225700C72813 /* LMFeedAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LMFeedAnalytics.swift; path = "lm-feedCore-iOS/Source/Classes/LMFeedAnalytics.swift"; sourceTree = "<group>"; };
 		E55642982B6A5211001971BE /* LMFeedReportContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedReportContentViewController.swift; sourceTree = "<group>"; };
 		E556429B2B6A6257001971BE /* LMFeedReportViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedReportViewCell.swift; sourceTree = "<group>"; };
 		E556429D2B6A658F001971BE /* LMFeedReportContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedReportContentViewModel.swift; sourceTree = "<group>"; };
@@ -1545,6 +1547,7 @@
 		48827637250F2098122A78684B9EB47E /* lm-feedCore-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				E52868292B71225700C72813 /* LMFeedAnalytics.swift */,
 				E449FEF6A3DA07991E04BE040A0B9E09 /* LMFeedError.swift */,
 				8745BACDDB8AA113542857CFB541D046 /* LMFeedMain.swift */,
 				0B68E22F917CE1B6EC20077E6FDBEC85 /* LMFeedRouter.swift */,
@@ -3456,6 +3459,7 @@
 				628F5923A948F3677733EFFD1211D08B /* Components.swift in Sources */,
 				92122AF3BF3232C3A76CC943F61467B2 /* Date+Extension.swift in Sources */,
 				1BC1DF72F7AA127191221FD7015BA40B /* DateUtility.swift in Sources */,
+				E528682A2B71225800C72813 /* LMFeedAnalytics.swift in Sources */,
 				EE040FFB05BE566FB15ABE07CC24F300 /* lm-feedCore-iOS-dummy.m in Sources */,
 				515FFC453BEA71214C9A750FE6002D37 /* LMAWSManager.swift in Sources */,
 				181B0B16565545B75E2E83473C8B4FF3 /* LMFeedCommentDataModel.swift in Sources */,

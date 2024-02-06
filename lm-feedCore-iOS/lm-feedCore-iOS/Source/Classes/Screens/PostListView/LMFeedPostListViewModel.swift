@@ -17,7 +17,7 @@ public protocol LMFeedPostListViewModelProtocol: LMBaseViewControllerProtocol {
     func showActivityLoader()
     func navigateToEditScreen(for postID: String)
     func navigateToDeleteScreen(for postID: String)
-    func navigateToReportScreen(for postID: String)
+    func navigateToReportScreen(for postID: String, creatorUUID: String)
 }
 
 public class LMFeedPostListViewModel {
@@ -159,7 +159,7 @@ public extension LMFeedPostListViewModel {
 }
 
 
-// MARK: Show Menu
+// MARK: Toggle Post Pin
 public extension LMFeedPostListViewModel {
     func togglePostPin(for postID: String) {
         LMFeedPostOperation.shared.pinUnpinPost(postId: postID) { [weak self] response in
@@ -187,23 +187,34 @@ public extension LMFeedPostListViewModel {
             switch menu.id {
             case .deletePost:
                 let action = UIAlertAction(title: menu.name, style: .destructive) { [weak self] _ in
-                    self?.handleDeletePost(for: postID)
+                    self?.handleDeletePost(for: post)
                 }
                 alert.addAction(action)
             case .pinPost,
                     .unpinPost:
                 let action = UIAlertAction(title: menu.name, style: .default) { [weak self] _ in
                     self?.togglePostPin(for: postID)
+                    
+                    LMFeedMain.analytics.trackEvent(for: post.isPinned ? .postUnpinned : .postPinned, eventProperties: [
+                        "created_by_id": post.userDetails.userUUID,
+                        "post_id": postID,
+                        "post_type": post.getPostType()
+                    ])
                 }
                 alert.addAction(action)
             case .reportPost:
                 let action = UIAlertAction(title: menu.name, style: .destructive) { [weak self] _ in
-                    self?.delegate?.navigateToReportScreen(for: postID)
+                    self?.delegate?.navigateToReportScreen(for: postID, creatorUUID: post.userDetails.userUUID)
                 }
                 alert.addAction(action)
             case .editPost:
                 let action = UIAlertAction(title: menu.name, style: .default) { [weak self] _ in
                     self?.delegate?.navigateToEditScreen(for: postID)
+                    
+                    LMFeedMain.analytics.trackEvent(for: .postEdited, eventProperties: [
+                        "post_id": postID,
+                        "post_type": post.getPostType()
+                    ])
                 }
                 alert.addAction(action)
             default:
@@ -220,15 +231,13 @@ public extension LMFeedPostListViewModel {
 
 // MARK: Delete Post
 public extension LMFeedPostListViewModel {
-    func handleDeletePost(for postID: String) {
-        guard let post = postList.first(where: { $0.postId == postID }) else { return }
-        
+    func handleDeletePost(for post: LMFeedPostDataModel) {
         // Case of Self Deletion
         if post.userDetails.userUUID == LocalPreferences.userObj?.sdkClientInfo?.uuid {
             let alert = UIAlertController(title: "Delete Post?", message: "Are you sure you want to delete this post? This action cannot be reversed", preferredStyle: .alert)
             
             let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
-                self?.deletePost(postID: postID, reason: nil)
+                self?.deletePost(postID: post.postId, reason: nil)
             }
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
@@ -237,8 +246,22 @@ public extension LMFeedPostListViewModel {
             alert.addAction(deleteAction)
             
             delegate?.presentAlert(with: alert, animated: true)
+            
+            LMFeedMain.analytics.trackEvent(for: .postDeleted, eventProperties: [
+                "user_state": "member",
+                "user_id": post.userDetails.userUUID,
+                "post_id": post.postId,
+                "post_type": post.getPostType()
+            ])
         } else if LocalPreferences.memberState?.state == 1 {
-            delegate?.navigateToDeleteScreen(for: postID)
+            delegate?.navigateToDeleteScreen(for: post.postId)
+            
+            LMFeedMain.analytics.trackEvent(for: .postDeleted, eventProperties: [
+                "user_state": "CM",
+                "user_id": post.userDetails.userUUID,
+                "post_id": post.postId,
+                "post_type": post.getPostType()
+            ])
         }
     }
     

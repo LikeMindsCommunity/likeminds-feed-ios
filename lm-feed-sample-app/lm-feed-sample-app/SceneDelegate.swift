@@ -5,7 +5,6 @@
 //  Created by Devansh Mohata on 04/01/24.
 //
 
-import lm_feedUI_iOS
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -18,7 +17,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
-        Appearance.shared.colors.appTintColor = .blue
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

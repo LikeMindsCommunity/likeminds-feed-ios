@@ -178,20 +178,18 @@ open class LMFeedPostDetailViewController: LMViewController {
         inputTextView.addConstraint(top: (stackView.topAnchor, 0),
                                     bottom: (stackView.bottomAnchor, 0))
                 
+        sendButton.setWidthConstraint(with: sendButton.heightAnchor)
+        
         NSLayoutConstraint.activate([
             sendButton.topAnchor.constraint(greaterThanOrEqualTo: stackView.topAnchor),
-            sendButton.bottomAnchor.constraint(lessThanOrEqualTo: stackView.bottomAnchor),
-            sendButton.widthAnchor.constraint(equalTo: sendButton.heightAnchor, multiplier: 1)
+            sendButton.bottomAnchor.constraint(lessThanOrEqualTo: stackView.bottomAnchor)
         ])
         
         inputTextViewBottomConstraint = NSLayoutConstraint(item: containerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
         inputTextViewBottomConstraint?.isActive = true
         
-        inputTextViewHeightConstraint = NSLayoutConstraint(item: inputTextView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
-        inputTextViewHeightConstraint?.isActive = true
-        
-        tagsTableViewHeightConstraint = NSLayoutConstraint(item: taggingView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
-        tagsTableViewHeightConstraint?.isActive = true
+        inputTextViewHeightConstraint = inputTextView.setHeightConstraint(with: 40)
+        tagsTableViewHeightConstraint = taggingView.setHeightConstraint(with: 0)
     }
     
     
@@ -428,10 +426,13 @@ extension LMFeedPostDetailViewController: LMChatPostCommentProtocol {
     }
     
     open func didTapLikeCountButton(for commentId: String) {
-        if let viewModel,
-           viewModel.allowCommentLikeView(for: commentId) {
-            let viewcontroller = LMFeedLikeViewModel.createModule(postID: viewModel.postID, commentID: commentId)
+        guard let viewModel,
+            viewModel.allowCommentLikeView(for: commentId) else { return }
+        do {
+            let viewcontroller = try LMFeedLikeViewModel.createModule(postID: viewModel.postID, commentID: commentId)
             navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
         }
     }
     
@@ -456,10 +457,14 @@ extension LMFeedPostDetailViewController: LMFeedTableCellToViewControllerProtoco
     
     open func didTapProfilePicture(for uuid: String) { }
     
-    open func didTapLikeTextButton(for postID: String) { 
-        if viewModel?.allowPostLikeView() == true {
-            let viewcontroller = LMFeedLikeViewModel.createModule(postID: postID)
+    open func didTapLikeTextButton(for postID: String) {
+        guard viewModel?.allowPostLikeView() == true else { return }
+        
+        do {
+            let viewcontroller = try LMFeedLikeViewModel.createModule(postID: postID)
             navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
         }
     }
     
@@ -548,7 +553,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         }
         
         if openCommentSection,
-           isCommentingEnabled{
+           isCommentingEnabled {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 self?.inputTextView.becomeFirstResponder()
             }
@@ -625,9 +630,9 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         present(viewcontroller, animated: false)
     }
     
-    public func navigateToReportScreen(for entityID: String, isPost: Bool?) {
+    public func navigateToReportScreen(for postID: String, creatorUUID: String, commentID: String?, replyCommentID: String?) {
         do {
-            let viewcontroller = try LMFeedReportContentViewModel.createModule(entityID: entityID, isPost: isPost)
+            let viewcontroller = try LMFeedReportContentViewModel.createModule(creatorUUID: creatorUUID, postID: postID, commentID: commentID, replyCommentID: replyCommentID)
             navigationController?.pushViewController(viewcontroller, animated: true)
         } catch let error {
             print(error.localizedDescription)

@@ -9,32 +9,43 @@ import LikeMindsFeed
 
 public final class LMFeedReportContentViewModel {
     weak var delegate: LMFeedReportContentViewModelProtocol?
-    var entityID: String
-    var contentType: ReportEntityType
+    let postID: String
+    let commentID: String?
+    let replyCommentID: String?
+    let contentType: ReportEntityType
+    let creatorUUID: String
     var reportTags: [(String, Int)]
     var selectedTag: Int
     let otherTagID: Int
     
-    init(delegate: LMFeedReportContentViewModelProtocol?, entityID: String, contentType: Bool?) {
+    var entityID: String {
+        replyCommentID ?? commentID ?? postID
+    }
+    
+    init(delegate: LMFeedReportContentViewModelProtocol?, postID: String, commentID: String?, replyCommentID: String?, creatorUUID: String) {
         self.delegate = delegate
-        self.entityID = entityID
         self.reportTags = []
         self.selectedTag = -1
         self.otherTagID = 11
         
-        if contentType == true {
-            self.contentType = .post
-        } else if contentType == false {
+        self.postID = postID
+        self.commentID = commentID
+        self.replyCommentID = replyCommentID
+        self.creatorUUID = creatorUUID
+        
+        if replyCommentID != nil {
+            self.contentType = .reply
+        } else if commentID != nil {
             self.contentType = .comment
         } else {
-            self.contentType = .reply
+            self.contentType = .post
         }
     }
     
-    public static func createModule(entityID: String, isPost: Bool?) throws -> LMFeedReportContentViewController {
+    public static func createModule(creatorUUID: String, postID: String, commentID: String? = nil, replyCommentID: String? = nil) throws -> LMFeedReportContentViewController {
         guard LMFeedMain.isInitialized else { throw LMFeedError.feedNotInitialized }
         let viewcontroller = Components.shared.reportScreen.init()
-        let viewmodel = Self.init(delegate: viewcontroller, entityID: entityID, contentType: isPost)
+        let viewmodel = Self.init(delegate: viewcontroller, postID: postID, commentID: commentID, replyCommentID: replyCommentID, creatorUUID: creatorUUID)
         
         viewcontroller.viewmodel = viewmodel
         return viewcontroller
@@ -83,11 +94,13 @@ public final class LMFeedReportContentViewModel {
         guard let userUUID = LocalPreferences.userObj?.sdkClientInfo?.uuid,
         let tagName = reportTags.first(where: { $0.1 == selectedTag }) else { return }
         
+        let reasonName = reason ?? tagName.0
+        
         delegate?.showHideLoaderView(isShow: true)
         
         LMFeedPostOperation.shared.reportContent(
             with: selectedTag,
-            reason: reason ?? tagName.0,
+            reason: reasonName,
             entityID: entityID,
             entityType: contentType,
             reporterUUID: userUUID
@@ -97,6 +110,8 @@ public final class LMFeedReportContentViewModel {
             
             switch response {
             case .success():
+                handleTrackEvent(reason: reasonName)
+                
                 let contentTitle = contentType == .post ? "Post" : "Comment"
                 let title = "\(contentTitle) is reported for review"
                 let message = "Our team will look into your feedback and will take appropriate action on this \(contentTitle)"
@@ -111,6 +126,35 @@ public final class LMFeedReportContentViewModel {
             case .failure(let error):
                 delegate?.showError(with: error.localizedDescription, isPopVC: true)
             }
+        }
+    }
+    
+    func handleTrackEvent(reason: String) {
+        switch contentType {
+        case .post:
+            LMFeedMain.analytics.trackEvent(for: .postReported, eventProperties: [
+                "created_by_id": creatorUUID,
+                "post_id": entityID,
+                "report_reason": reason,
+                "post_type": "text"
+            ])
+        case .comment:
+            LMFeedMain.analytics.trackEvent(for: .commentReported, eventProperties: [
+                "post_id": postID,
+                "user_id": creatorUUID,
+                "comment_id": entityID,
+                "reason": reason
+            ])
+        case .reply:
+            LMFeedMain.analytics.trackEvent(for: .commentReplyReported, eventProperties: [
+                "post_id": postID,
+                "user_id": creatorUUID,
+                "comment_id": commentID ?? "",
+                "comment_reply_id": entityID,
+                "reason": reason
+            ])
+        default:
+            break
         }
     }
 }
