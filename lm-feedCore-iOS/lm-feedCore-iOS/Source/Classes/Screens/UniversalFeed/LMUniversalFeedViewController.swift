@@ -74,9 +74,13 @@ open class LMUniversalFeedViewController: LMViewController {
     }()
     
     open private(set) lazy var postList: LMFeedPostListViewController? = {
-        guard let vc = LMFeedPostListViewModel.createModule(with: self) else { return nil }
-        vc.view.translatesAutoresizingMaskIntoConstraints = false
-        return vc
+        do {
+            let vc = try LMFeedPostListViewModel.createModule(with: self)
+            return vc
+        } catch let error {
+            print(error.localizedDescription)
+            return nil
+        }
     }()
     
     open private(set) lazy var createPostButton: LMButton = {
@@ -95,10 +99,17 @@ open class LMUniversalFeedViewController: LMViewController {
         return button
     }()
     
+    open private(set) lazy var createPostLoaderView: LMFeedAddMediaPreview = {
+        let view = LMFeedAddMediaPreview().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
     
     // MARK: Data Variables
     public var data: [LMFeedPostTableCellProtocol] = []
     public var selectedTopics: [LMFeedTopicCollectionCellDataModel] = []
+    public var isShowCreatePost: Bool = false
+    public var isPostCreationInProgress: Bool = false
     public var viewModel: LMUniversalFeedViewModel?
     public weak var feedListDelegate: LMFeedPostListVCToProtocol?
     public var createPostButtonWidth: NSLayoutConstraint?
@@ -107,9 +118,9 @@ open class LMUniversalFeedViewController: LMViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        allTopicsButton.isHidden = !selectedTopics.isEmpty
-        topicCollection.isHidden = selectedTopics.isEmpty
-        clearButton.isHidden = selectedTopics.isEmpty
+        createPostLoaderView.isHidden = true
+        topicContainerView.isHidden = true
+        viewModel?.initialSetup()
     }
     
     
@@ -119,6 +130,7 @@ open class LMUniversalFeedViewController: LMViewController {
         view.addSubview(contentStack)
         view.addSubview(createPostButton)
         
+        contentStack.addArrangedSubview(createPostLoaderView)
         contentStack.addArrangedSubview(topicContainerView)
         if let postList {
             addChild(postList)
@@ -132,41 +144,39 @@ open class LMUniversalFeedViewController: LMViewController {
         topicStackView.addArrangedSubview(clearButton)
     }
     
+    
     // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
         
+        view.pinSubView(subView: contentStack)
+                
+        topicStackView.addConstraint(top: (topicContainerView.topAnchor, 0),
+                                     bottom: (topicContainerView.bottomAnchor, 0),
+                                     leading: (topicContainerView.leadingAnchor, 16))
+        
+        topicCollection.addConstraint(top: (topicStackView.topAnchor, 0),
+                                      bottom: (topicStackView.bottomAnchor, 0))
+        
+        createPostButton.addConstraint(bottom: (view.bottomAnchor, -16),
+                                       trailing: (view.trailingAnchor, -16))
         NSLayoutConstraint.activate([
-            createPostButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            createPostButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
-            createPostButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            contentStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            contentStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            contentStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            contentStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            topicContainerView.heightAnchor.constraint(equalToConstant: 50),
-            topicStackView.leadingAnchor.constraint(equalTo: topicContainerView.leadingAnchor, constant: 16),
             topicStackView.trailingAnchor.constraint(lessThanOrEqualTo: topicContainerView.trailingAnchor, constant: -16),
-            topicStackView.topAnchor.constraint(equalTo: topicContainerView.topAnchor),
-            topicStackView.bottomAnchor.constraint(equalTo: topicContainerView.bottomAnchor),
-            
-            topicCollection.topAnchor.constraint(equalTo: topicStackView.topAnchor),
-            topicCollection.bottomAnchor.constraint(equalTo: topicStackView.bottomAnchor),
-            topicCollection.widthAnchor.constraint(greaterThanOrEqualToConstant: 100)
         ])
+        
+        createPostLoaderView.setHeightConstraint(with: 64)
+        topicContainerView.setHeightConstraint(with: 50)
+        createPostButton.setHeightConstraint(with: 50)
+        topicCollection.setWidthConstraint(with: 100, relatedBy: .greaterThanOrEqual)
+        topicCollection.setWidthConstraint(with: 500, priority: .defaultLow)
+        
+        createPostButtonWidth = createPostButton.setWidthConstraint(with: createPostButton.heightAnchor)
+        createPostButtonWidth?.isActive = false
         
         allTopicsButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         clearButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-        
-        let topicWidth = NSLayoutConstraint(item: topicCollection, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 500)
-        topicWidth.priority = .defaultLow
-        topicWidth.isActive = true
-        
-        
-        createPostButtonWidth = NSLayoutConstraint(item: createPostButton, attribute: .width, relatedBy: .equal, toItem: createPostButton, attribute: .height, multiplier: 1, constant: 0)
     }
+    
     
     // MARK: setupActions
     open override func setupActions() {
@@ -185,8 +195,12 @@ open class LMUniversalFeedViewController: LMViewController {
     
     @objc
     open func didTapAllTopicsButton() {
-        let viewController = LMFeedTopicSelectionViewModel.createModule(topicEnabledState: false, isShowAllTopicsButton: true, delegate: self)
-        navigationController?.pushViewController(viewController, animated: true)
+        do {
+            let viewController = try LMFeedTopicSelectionViewModel.createModule(topicEnabledState: false, isShowAllTopicsButton: true, delegate: self)
+            navigationController?.pushViewController(viewController, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
     
     @objc
@@ -196,8 +210,49 @@ open class LMUniversalFeedViewController: LMViewController {
     
     @objc
     open func didTapNewPostButton() {
-        guard let viewcontroller = LMFeedCreatePostViewModel.createModule() else { return }
-        navigationController?.pushViewController(viewcontroller, animated: true)
+        guard isShowCreatePost,
+              !isPostCreationInProgress else { return }
+        do {
+            let viewcontroller = try LMFeedCreatePostViewModel.createModule()
+            navigationController?.pushViewController(viewcontroller, animated: true)
+            
+            LMFeedMain.analytics.trackEvent(for: .postCreationStarted, eventProperties: [:])
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
+    
+    // MARK: setupObservers
+    open override func setupObservers() {
+        super.setupObservers()
+        NotificationCenter.default.addObserver(self, selector: #selector(postCreationInProgress), name: .LMPostCreationStarted, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postCreationSuccessful), name: .LMPostCreated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostEditError, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostCreateError, object: nil)
+    }
+    
+    @objc
+    open func postCreationInProgress(notification: Notification) {
+        let image = notification.object as? String
+        createPostLoaderView.isHidden = false
+        createPostLoaderView.configure(with: image)
+    }
+    
+    @objc
+    open func postCreationSuccessful() {
+        createPostLoaderView.stopAnimating()
+        createPostLoaderView.isHidden = true
+        feedListDelegate?.loadPostsWithTopics(selectedTopics.map { $0.topicID })
+    }
+    
+    @objc
+    open func postError(notification: Notification) {
+        postCreationSuccessful()
+        
+        if let error = notification.object as? LMFeedError {
+            showError(with: error.localizedDescription)
+        }
     }
     
     
@@ -253,6 +308,19 @@ extension LMUniversalFeedViewController: UICollectionViewDataSource, UICollectio
 
 // MARK: LMUniversalFeedViewModelProtocol
 extension LMUniversalFeedViewController: LMUniversalFeedViewModelProtocol {
+    public func setupInitialView(isShowTopicFeed: Bool, isShowCreatePost: Bool) {
+        self.isShowCreatePost = isShowCreatePost
+        createPostButton.backgroundColor = isShowCreatePost ? Appearance.shared.colors.appTintColor : Appearance.shared.colors.gray51
+        
+        topicContainerView.isHidden = !isShowTopicFeed
+        
+        if isShowTopicFeed {
+            allTopicsButton.isHidden = !selectedTopics.isEmpty
+            topicCollection.isHidden = selectedTopics.isEmpty
+            clearButton.isHidden = selectedTopics.isEmpty
+        }
+    }
+    
     public func loadTopics(with topics: [LMFeedTopicCollectionCellDataModel]) {
         self.selectedTopics = topics
         feedListDelegate?.loadPostsWithTopics(selectedTopics.map { $0.topicID })

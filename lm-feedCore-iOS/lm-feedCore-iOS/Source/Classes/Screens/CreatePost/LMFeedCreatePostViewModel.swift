@@ -57,8 +57,8 @@ public final class LMFeedCreatePostViewModel {
         self.delegate = delegate
     }
     
-    public static func createModule() -> LMFeedCreatePostViewController? {
-        guard LMFeedMain.isInitialized else { return nil }
+    public static func createModule() throws -> LMFeedCreatePostViewController {
+        guard LMFeedMain.isInitialized else { throw LMFeedError.feedNotInitialized }
         let viewcontroller = Components.shared.createPostScreen.init()
         let viewModel = LMFeedCreatePostViewModel(delegate: viewcontroller)
         

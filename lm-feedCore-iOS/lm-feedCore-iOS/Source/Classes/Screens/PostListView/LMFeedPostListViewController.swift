@@ -58,13 +58,7 @@ open class LMFeedPostListViewController: LMViewController {
     // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
-        
-        NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+        view.pinSubView(subView: tableView)
     }
     
     
@@ -94,10 +88,6 @@ open class LMFeedPostListViewController: LMViewController {
     open override func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostEdited, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostUpdate, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: <#T##Selector#>, name: .LMPostCreationStarted, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: <#T##Selector#>, name: .LMPostCreated, object: <#T##Any?#>)
-        NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostEditError, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostCreateError, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(postDelete), name: .LMPostDeleted, object: nil)
     }
     
@@ -105,13 +95,6 @@ open class LMFeedPostListViewController: LMViewController {
     open func postUpdated(notification: Notification) {
         if let data = notification.object as? LMFeedPostDataModel {
             viewModel?.updatePostData(for: data)
-        }
-    }
-    
-    @objc
-    open func postError(notification: Notification) {
-        if let error = notification.object as? LMFeedError {
-            showError(with: error.localizedDescription)
         }
     }
     

@@ -46,7 +46,7 @@ final class LMFeedCreatePostOperation {
     
     
     func createPost(with content: String, topics: [String], files: [LMAWSRequestModel], linkPreview: LMFeedPostDataModel.LinkAttachment?) {
-        NotificationCenter.default.post(name: .LMPostCreationStarted, object: nil)
+        NotificationCenter.default.post(name: .LMPostCreationStarted, object: files.first?.url.absoluteString)
         if let linkPreview {
             let attachmentMeta = AttachmentMeta()
                 .ogTags(.init()
@@ -120,7 +120,7 @@ final class LMFeedCreatePostOperation {
                 self?.postMessageForCompleteCreatePost(with: response.errorMessage)
                 return
             }
-            print("Post Creation Successful")
+            NotificationCenter.default.post(name: .LMPostCreated, object: nil)
         }
     }
     
