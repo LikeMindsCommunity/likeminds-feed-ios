@@ -8,7 +8,7 @@
 import UIKit
 
 public extension UIView {
-    func roundCorners(_ corners: CACornerMask, with cornerRadius: CGFloat) {
+    func roundCorners(_ corners: CACornerMask = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner], with cornerRadius: CGFloat) {
         clipsToBounds = true
         layer.maskedCorners = corners
         layer.cornerRadius = cornerRadius
@@ -38,6 +38,15 @@ public extension UIView {
             subView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: padding.right),
             subView.topAnchor.constraint(equalTo: topAnchor, constant: padding.top),
             subView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: padding.bottom)
+        ])
+    }
+    
+    func safePinSubView(subView: UIView, padding: UIEdgeInsets = .zero) {
+        NSLayoutConstraint.activate([
+            subView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: padding.left),
+            subView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: padding.right),
+            subView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding.top),
+            subView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: padding.bottom)
         ])
     }
     

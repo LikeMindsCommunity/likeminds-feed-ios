@@ -150,7 +150,7 @@ open class LMUniversalFeedViewController: LMViewController {
         super.setupLayouts()
         
         view.pinSubView(subView: contentStack)
-                
+        
         topicStackView.addConstraint(top: (topicContainerView.topAnchor, 0),
                                      bottom: (topicContainerView.bottomAnchor, 0),
                                      leading: (topicContainerView.leadingAnchor, 16))
@@ -158,8 +158,8 @@ open class LMUniversalFeedViewController: LMViewController {
         topicCollection.addConstraint(top: (topicStackView.topAnchor, 0),
                                       bottom: (topicStackView.bottomAnchor, 0))
         
-        createPostButton.addConstraint(bottom: (view.bottomAnchor, -16),
-                                       trailing: (view.trailingAnchor, -16))
+        createPostButton.addConstraint(bottom: (view.safeAreaLayoutGuide.bottomAnchor, -16),
+                                       trailing: (view.safeAreaLayoutGuide.trailingAnchor, -16))
         NSLayoutConstraint.activate([
             topicStackView.trailingAnchor.constraint(lessThanOrEqualTo: topicContainerView.trailingAnchor, constant: -16),
         ])
@@ -236,11 +236,13 @@ open class LMUniversalFeedViewController: LMViewController {
     open func postCreationInProgress(notification: Notification) {
         let image = notification.object as? String
         createPostLoaderView.isHidden = false
+        isPostCreationInProgress = true
         createPostLoaderView.configure(with: image)
     }
     
     @objc
     open func postCreationSuccessful() {
+        isPostCreationInProgress = false
         createPostLoaderView.stopAnimating()
         createPostLoaderView.isHidden = true
         feedListDelegate?.loadPostsWithTopics(selectedTopics.map { $0.topicID })
@@ -248,13 +250,14 @@ open class LMUniversalFeedViewController: LMViewController {
     
     @objc
     open func postError(notification: Notification) {
-        postCreationSuccessful()
+        isPostCreationInProgress = false
+        createPostLoaderView.stopAnimating()
+        createPostLoaderView.isHidden = true
         
         if let error = notification.object as? LMFeedError {
             showError(with: error.localizedDescription)
         }
     }
-    
     
     // MARK: setupAppearance
     open override func setupAppearance() {
@@ -371,7 +374,7 @@ extension LMUniversalFeedViewController: LMFeedPostListVCFromProtocol {
         }
     }
     
-    open func postDataFetched() {
-        print(#function)
+    open func postDataFetched(isEmpty: Bool) {
+        createPostButton.isHidden = isEmpty
     }
 }

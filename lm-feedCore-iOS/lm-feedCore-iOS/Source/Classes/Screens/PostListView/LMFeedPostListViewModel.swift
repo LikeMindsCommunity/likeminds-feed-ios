@@ -79,6 +79,7 @@ public extension LMFeedPostListViewModel {
             guard let self else { return }
             
             isFetchingFeed = false
+            delegate?.showHideFooterLoader(isShow: false)
             
             guard response.success,
                   let posts = response.data?.posts,

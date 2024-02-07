@@ -458,6 +458,8 @@
 		E2EFDFEDEEEE11D665EA64FC86E758A6 /* AWSCognitoRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A753574F2FC14294581C556ACCE8E97 /* AWSCognitoRecord.m */; };
 		E3504362E0CAD44D268DB3CFCA77CDA1 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C935FFF1A53099402B24570FA478E3 /* UIColor+Extension.swift */; };
 		E463D33C469241088C26B333E06D59E7 /* AWSURLRequestRetryHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = E661CC24B90A91F628112F64E7CBC04D /* AWSURLRequestRetryHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E505D5182B73636A0033C947 /* LMFeedNoPostWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E505D5172B73636A0033C947 /* LMFeedNoPostWidget.swift */; };
+		E505D51A2B73A6270033C947 /* LMFeedNoCommentWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E505D5192B73A6270033C947 /* LMFeedNoCommentWidget.swift */; };
 		E525C6A22B72580200096108 /* LMFeedAddMediaPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C6A12B72580200096108 /* LMFeedAddMediaPreview.swift */; };
 		E528682A2B71225800C72813 /* LMFeedAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52868292B71225700C72813 /* LMFeedAnalytics.swift */; };
 		E55642992B6A5211001971BE /* LMFeedReportContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55642982B6A5211001971BE /* LMFeedReportContentViewController.swift */; };
@@ -1193,6 +1195,8 @@
 		E4319286060F9899D15805B153A5A8D9 /* Alamofire-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Alamofire-dummy.m"; sourceTree = "<group>"; };
 		E445B67D4A7F2ED36D68FA34FD877AE0 /* AWSXMLDictionary.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSXMLDictionary.m; path = AWSCore/XMLDictionary/AWSXMLDictionary.m; sourceTree = "<group>"; };
 		E449FEF6A3DA07991E04BE040A0B9E09 /* LMFeedError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMFeedError.swift; path = "lm-feedCore-iOS/Source/Classes/LMFeedError.swift"; sourceTree = "<group>"; };
+		E505D5172B73636A0033C947 /* LMFeedNoPostWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedNoPostWidget.swift; sourceTree = "<group>"; };
+		E505D5192B73A6270033C947 /* LMFeedNoCommentWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedNoCommentWidget.swift; sourceTree = "<group>"; };
 		E50691CEDDF11EB579BB9A152150BE36 /* LMFeedNotificationViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedNotificationViewModel.swift; sourceTree = "<group>"; };
 		E525C6A12B72580200096108 /* LMFeedAddMediaPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedAddMediaPreview.swift; sourceTree = "<group>"; };
 		E52868292B71225700C72813 /* LMFeedAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LMFeedAnalytics.swift; path = "lm-feedCore-iOS/Source/Classes/LMFeedAnalytics.swift"; sourceTree = "<group>"; };
@@ -1590,12 +1594,14 @@
 		4E99A01EF171EB74649A18EE6B4B3AA9 /* PostWidget */ = {
 			isa = PBXGroup;
 			children = (
+				E505D5172B73636A0033C947 /* LMFeedNoPostWidget.swift */,
 				514DD8C794000DBF7496D3874563EA9B /* LMPostWidgetTableViewCell.swift */,
 				7B7977A51EB6D83D4032ED9FB5DA2671 /* LMFeedPostDetailCommentCell */,
 				CC56E23CAF78DA7481B46A012F54D4A1 /* LMFeedPostDocumentCell */,
 				FAF4C89B675F0D950C2BF27C258D6D8B /* LMFeedPostHeaderFooter */,
 				11B9C073229C2D96F1FCACE9FF92CE40 /* LMFeedPostLinkCell */,
 				70BE55CC4D0E9F1CFFA65DF37CD42238 /* LMFeedPostMediaCell */,
+				E505D5192B73A6270033C947 /* LMFeedNoCommentWidget.swift */,
 			);
 			path = PostWidget;
 			sourceTree = "<group>";
@@ -3405,6 +3411,7 @@
 				0B4A27C53F50B34608568C1D683744F0 /* Constants+Strings.swift in Sources */,
 				238CBCB68987C5CD36B4015B44FE6346 /* GetAttributedTextWithRoutes.swift in Sources */,
 				12CC02B3FA298FDC3F91095B8DC2D38A /* lm-feedUI-iOS-dummy.m in Sources */,
+				E505D5182B73636A0033C947 /* LMFeedNoPostWidget.swift in Sources */,
 				DC0ECC134EB7660ABD897E43B8DD18B3 /* LMButton.swift in Sources */,
 				DDA63DC6BB81F363CDE23D5F33D1B7EE /* LMCollectionView.swift in Sources */,
 				A4A7B40FA7467A2E989062BE3C8CE7E6 /* LMCollectionViewCell.swift in Sources */,
@@ -3422,6 +3429,7 @@
 				E556429C2B6A6257001971BE /* LMFeedReportViewCell.swift in Sources */,
 				C637CAA9BCDBAD6C61D30D8B0BDB05CB /* LMFeedPostDetailCommentCellViewModel.swift in Sources */,
 				E9E3909A6A490CDEB927C9FFA06DE1AF /* LMFeedPostDetailCommentHeaderView.swift in Sources */,
+				E505D51A2B73A6270033C947 /* LMFeedNoCommentWidget.swift in Sources */,
 				D45BBDF7538AF3330F0E150FE58E5AD9 /* LMFeedPostDetailTotalCommentCell.swift in Sources */,
 				FE323733FE5C0F0161A974662E60D60C /* LMFeedPostDocumentCell.swift in Sources */,
 				8A35F58B8F6FB643B657374F5EBBCF88 /* LMFeedPostFooterView.swift in Sources */,

@@ -12,7 +12,7 @@ import lm_feedUI_iOS
 // This contains list of functions that are triggered from Child View Controller aka `LMFeedPostListViewController` to be handled by Parent View Controller
 public protocol LMFeedPostListVCFromProtocol: AnyObject {
     func tableViewScrolled(_ scrollView: UIScrollView)
-    func postDataFetched()
+    func postDataFetched(isEmpty: Bool)
 }
 
 // MARK: LMFeedPostListVCToProtocol
@@ -40,6 +40,11 @@ open class LMFeedPostListViewController: LMViewController {
     open private(set) lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         return refreshControl
+    }()
+    
+    open private(set) lazy var emptyListView: LMFeedNoPostWidget = {
+        let view = LMFeedNoPostWidget(frame: .zero).translatesAutoresizingMaskIntoConstraints()
+        return view
     }()
     
     // MARK: Data Variables
@@ -198,7 +203,7 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
     }
     
     open func didTapCommentButton(for postID: String) {
-        openPost(postID: postID)
+        openPost(postID: postID, openCommentSection: true)
     }
     
     open func didTapShareButton(for postID: String) {
@@ -224,8 +229,8 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
         openPost(postID: postID)
     }
     
-    public func openPost(postID: String) {
-        guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID) else { return }
+    public func openPost(postID: String, openCommentSection: Bool = false) {
+        guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: openCommentSection) else { return }
         navigationController?.pushViewController(viewController, animated: true)
     }
 }
@@ -273,6 +278,16 @@ extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
         } else {
             tableView.reloadData()
         }
+        
+        if self.data.isEmpty {
+            tableView.backgroundView = emptyListView
+            emptyListView.setHeightConstraint(with: tableView.heightAnchor)
+            emptyListView.setWidthConstraint(with: tableView.widthAnchor)
+        } else {
+            tableView.backgroundView = nil
+        }
+        
+        delegate?.postDataFetched(isEmpty: self.data.isEmpty)
     }
     
     public func undoLikeAction(for postID: String) {
