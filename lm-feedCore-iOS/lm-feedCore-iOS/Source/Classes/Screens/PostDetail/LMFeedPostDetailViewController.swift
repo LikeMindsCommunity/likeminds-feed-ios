@@ -214,7 +214,7 @@ open class LMFeedPostDetailViewController: LMViewController {
     @objc
     open func didTapSendCommentButton() {
         let commentText = inputTextView.getText()
-        viewModel?.postReply(with: commentText)
+        viewModel?.sendButtonTapped(with: commentText)
         inputTextView.resignFirstResponder()
         inputTextView.attributedText = nil
         inputTextView.text = nil
@@ -637,6 +637,11 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         } catch let error {
             print(error.localizedDescription)
         }
+    }
+    
+    public func setEditCommentText(with text: String) {
+        inputTextView.setAttributedText(from: text, prefix: "@")
+        inputTextView.becomeFirstResponder()
     }
 }
 

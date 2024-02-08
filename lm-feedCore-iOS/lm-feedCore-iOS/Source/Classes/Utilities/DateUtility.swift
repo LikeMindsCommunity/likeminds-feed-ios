@@ -26,7 +26,7 @@ public struct DateUtility {
     public static func timeIntervalToDate(_ time: Double) -> String? {
         let formatter = RelativeDateTimeFormatter()
         formatter.dateTimeStyle = .named
-        formatter.unitsStyle = .full
+        formatter.unitsStyle = .short
         return formatter.string(for: Date(timeIntervalSince1970: time))
     }
 }

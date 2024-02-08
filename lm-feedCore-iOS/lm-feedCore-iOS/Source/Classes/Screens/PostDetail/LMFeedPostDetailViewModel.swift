@@ -20,6 +20,8 @@ public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol 
     func showNoPostError(with message: String, isPop: Bool)
     func updateCommentStatus(isEnabled: Bool)
     
+    func setEditCommentText(with text: String) 
+    
     func navigateToEditPost(for postID: String)
     func navigateToDeleteScreen(for postID: String, commentID: String?)
     func navigateToReportScreen(for postID: String, creatorUUID: String, commentID: String?, replyCommentID: String?)
@@ -34,6 +36,7 @@ final public class LMFeedPostDetailViewModel {
     public var postDetail: LMFeedPostDataModel?
     public var commentList: [LMFeedCommentDataModel]
     public var replyToComment:  LMFeedCommentDataModel?
+    public var editCommentIndex: (commentID: String, indexPath: IndexPath)?
     public var openCommentSection: Bool
     public weak var delegate: LMFeedPostDetailViewModelProtocol?
     
@@ -190,7 +193,7 @@ public extension LMFeedPostDetailViewModel {
             commentId: comment.commentID,
             tempCommentId: comment.temporaryCommentID,
             comment: comment.commentText,
-            commentTime: comment.createdAtFormatted,
+            commentTime: comment.isEdited ? "Edited • \(comment.createdAtFormatted)" : comment.createdAtFormatted,
             likeCount: comment.likeCount,
             totalReplyCount: comment.totalRepliesCount,
             replies: replies
@@ -288,8 +291,9 @@ public extension LMFeedPostDetailViewModel {
                     }
                 })
             case .editComment:
-                alert.addAction(.init(title: menu.name, style: .default) { _ in
-                    print("Edit Action")
+                alert.addAction(.init(title: menu.name, style: .default) { [weak self] _ in
+                    self?.editCommentIndex = (commentID, idx)
+                    self?.delegate?.setEditCommentText(with: comment.commentText)
                 })
             default:
                 break
@@ -314,6 +318,40 @@ public extension LMFeedPostDetailViewModel {
     }
     
     // MARK: Send Comment Button
+    func sendButtonTapped(with comment: String) {
+        if let editCommentIndex {
+            editReply(with: comment, commentID: editCommentIndex.commentID, index: editCommentIndex.indexPath)
+            self.editCommentIndex = nil
+        } else {
+            postReply(with: comment)
+        }
+    }
+    
+    func editReply(with comment: String, commentID: String, index: IndexPath) {
+        LMFeedPostOperation.shared.editComment(for: postID, commentID: commentID, comment: comment) { [weak self] response in
+            self?.editCommentIndex = nil
+            if response.success,
+               let newCommentData = response.data?.comment,
+               let user = response.data?.users?[newCommentData.uuid ?? ""],
+               let newComment = LMFeedCommentDataModel(comment: newCommentData, user: user) {
+                
+                if self?.commentList.indices.contains(index.section) == true {
+                    if self?.commentList[index.section].replies.indices.contains(index.row) == true {
+                        self?.commentList[index.section].replies[index.row] = newComment
+                    } else {
+                        self?.commentList[index.section] = newComment
+                    }
+                }
+                
+                self?.convertToViewData()
+                return
+            }
+            
+            self?.delegate?.showError(with: response.errorMessage ?? LMStringConstants.shared.genericErrorMessage, isPopVC: false)
+        }
+    }
+    
+    
     func postReply(with commentString: String) {
         guard let userInfo = LocalPreferences.userObj,
               let userName = userInfo.name,
@@ -376,7 +414,7 @@ public extension LMFeedPostDetailViewModel {
                   let comment = response.data?.comment,
                   let user = response.data?.users?[comment.uuid ?? ""],
                   let newComment = LMFeedCommentDataModel.init(comment: comment, user: user),
-            let (parentComment, parentIndex) = findCommentIndex(for: commentID, from: commentList) else { return }
+            let (parentComment, _) = findCommentIndex(for: commentID, from: commentList) else { return }
             
             LMFeedMain.analytics.trackEvent(for: .commentReplyPosted, eventProperties: [
                 "user_id": parentComment.userDetail.userUUID,

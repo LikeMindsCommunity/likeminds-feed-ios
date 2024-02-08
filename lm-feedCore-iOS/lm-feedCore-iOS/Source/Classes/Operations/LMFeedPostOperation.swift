@@ -152,6 +152,18 @@ public extension LMFeedPostOperation {
             }
         }
     }
+    
+    func editComment(for postID: String, commentID: String, comment: String, completion: ((LMResponse<EditCommentResponse>) -> Void)?) {
+        let request = EditCommentRequest.builder()
+            .postId(postID)
+            .commentId(commentID)
+            .text(comment)
+            .build()
+        
+        LMFeedClient.shared.editComment(request) { response in
+            completion?(response)
+        }
+    }
 }
 
 
