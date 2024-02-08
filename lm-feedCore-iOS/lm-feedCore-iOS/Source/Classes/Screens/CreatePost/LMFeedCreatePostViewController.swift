@@ -250,7 +250,6 @@ open class LMFeedCreatePostViewController: LMViewController {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        taggingView.isHidden = true
     }
     
     // MARK: setupActions

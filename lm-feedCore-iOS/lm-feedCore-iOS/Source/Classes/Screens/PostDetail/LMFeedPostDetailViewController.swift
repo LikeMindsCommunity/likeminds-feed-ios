@@ -99,6 +99,7 @@ open class LMFeedPostDetailViewController: LMViewController {
         textView.textColor = Appearance.shared.colors.textColor
         textView.contentMode = .center
         textView.font = Appearance.shared.fonts.textFont1
+        textView.placeHolderText = "Write a Comment"
         return textView
     }()
     
@@ -111,7 +112,6 @@ open class LMFeedPostDetailViewController: LMViewController {
         return button
     }()
     
-    open var inputTextViewHeightConstraint: NSLayoutConstraint?
     open var inputTextViewBottomConstraint: NSLayoutConstraint?
     open var tagsTableViewHeightConstraint: NSLayoutConstraint?
     
@@ -172,6 +172,8 @@ open class LMFeedPostDetailViewController: LMViewController {
                                   trailing: (replyView.trailingAnchor, -16),
                                   centerY: (replyNameLabel.centerYAnchor, 0))
         
+        replyCross.setWidthConstraint(with: replyCross.heightAnchor)
+        
         stackView.addConstraint(leading: (containerView.leadingAnchor, 16),
                                 trailing: (containerView.trailingAnchor, -16))
         
@@ -188,7 +190,7 @@ open class LMFeedPostDetailViewController: LMViewController {
         inputTextViewBottomConstraint = NSLayoutConstraint(item: containerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
         inputTextViewBottomConstraint?.isActive = true
         
-        inputTextViewHeightConstraint = inputTextView.setHeightConstraint(with: 40)
+        
         tagsTableViewHeightConstraint = taggingView.setHeightConstraint(with: 0)
     }
     
@@ -216,8 +218,7 @@ open class LMFeedPostDetailViewController: LMViewController {
         let commentText = inputTextView.getText()
         viewModel?.sendButtonTapped(with: commentText)
         inputTextView.resignFirstResponder()
-        inputTextView.attributedText = nil
-        inputTextView.text = nil
+        inputTextView.setAttributedText(from: "")
         replyView.isHidden = true
     }
     
@@ -343,9 +344,13 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
             cell.configure(with: data)
             return cell
         } else if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.commentCell),
-                  let data = cellsData[safe: indexPath.section - 1] as? LMFeedPostDetailCommentCellViewModel {
+                  var data = cellsData[safe: indexPath.section - 1] as? LMFeedPostDetailCommentCellViewModel {
             let comment = data.replies[indexPath.row]
-            cell.configure(with: comment, delegate: self, isShowSeprator: (data.replies.count - 1) == indexPath.row, indexPath: indexPath)
+            cell.configure(with: comment, delegate: self, isShowSeprator: (data.replies.count - 1) == indexPath.row, indexPath: indexPath) { [weak self] in
+                data.replies[indexPath.row].isShowMore.toggle()
+                self?.cellsData[indexPath.section - 1] = data
+                self?.tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
             return cell
         } else if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.loadMoreReplies),
                   let data = cellsData[safe: indexPath.section - 1] as? LMFeedPostMoreRepliesCell.ViewModel {
@@ -358,8 +363,12 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
     
     open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.commentHeaderView),
-           let data = cellsData[safe: section - 1] as? LMFeedPostDetailCommentCellViewModel {
-            header.configure(with: data, delegate: self, indexPath: .init(row: NSNotFound, section: section))
+           var data = cellsData[safe: section - 1] as? LMFeedPostDetailCommentCellViewModel {
+            header.configure(with: data, delegate: self, indexPath: .init(row: NSNotFound, section: section)) { [weak self] in
+                data.isShowMore.toggle()
+                self?.cellsData[section - 1] = data
+                self?.tableView.reloadSections(IndexSet(integer: section), with: .automatic)
+            }
             return header
         }
         return nil
@@ -376,12 +385,15 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if type(of: scrollView) is UITableView.Type {
             view.endEditing(true)
-            inputTextViewHeightConstraint?.constant = 40
         }
     }
     
     open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
+    }
+    
+    open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        <#code#>
     }
 }
 
@@ -491,40 +503,6 @@ extension LMFeedPostDetailViewController: LMFeedTableCellToViewControllerProtoco
 extension LMFeedPostDetailViewController: LMFeedPostMoreRepliesCellProtocol {
     open func didTapMoreComments(for commentID: String) {
         viewModel?.getCommentReplies(commentId: commentID, isClose: false)
-    }
-}
-
-
-// MARK: UITextViewDelegate
-@objc
-extension LMFeedPostDetailViewController: UITextViewDelegate {
-    open func textViewDidChange(_ textView: UITextView) {
-        sendButton.isEnabled = !textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-        
-        textView.isScrollEnabled = false
-        
-        if textView.intrinsicContentSize.height > textInputMaximumHeight {
-            inputTextViewHeightConstraint?.constant = textInputMaximumHeight
-            textView.isScrollEnabled = true
-        } else if textView.intrinsicContentSize.height > 40 {
-            inputTextViewHeightConstraint?.constant = textView.intrinsicContentSize.height
-        } else {
-            inputTextViewHeightConstraint?.constant = 40
-        }
-        
-        UIView.animate(withDuration: 0.1) { [weak self] in
-            self?.containerView.layoutIfNeeded()
-        }
-    }
-    
-    open func textViewDidBeginEditing(_ textView: UITextView) {
-        let newPosition = textView.endOfDocument
-        textView.selectedTextRange = textView.textRange(from: newPosition, to: newPosition)
-    }
-    
-    open func textViewDidEndEditing(_ textView: UITextView) {
-        textView.text = textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
-        inputTextViewHeightConstraint?.constant = 40
     }
 }
 
@@ -663,7 +641,6 @@ extension LMFeedPostDetailViewController: LMFeedTaggingTextViewProtocol {
         let newSize = inputTextView.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
         
         inputTextView.isScrollEnabled = newSize.height > textInputMaximumHeight
-        inputTextViewHeightConstraint?.constant = min(newSize.height, textInputMaximumHeight)
         
         sendButton.isEnabled = !inputTextView.attributedText.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && inputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines) != inputTextView.placeHolderText
     }

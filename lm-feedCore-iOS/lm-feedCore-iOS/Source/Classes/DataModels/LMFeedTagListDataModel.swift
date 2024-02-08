@@ -28,7 +28,7 @@ public extension LMFeedTagListDataModel {
         
         self.username = username
         self.uuid = uuid
-        self.route = user.route ?? "customRoute"
+        self.route = "<<\(username)|route://user_profile/\(uuid)>>"
         self.userImage = user.imageUrl
     }
 }

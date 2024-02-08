@@ -64,7 +64,7 @@ public struct LMFeedPostDetailCommentCellViewModel: LMFeedPostCommentCellProtoco
         replies: [LMFeedPostDetailCommentCellViewModel],
         isEdited: Bool = false,
         isLiked: Bool = false,
-        isShowMore: Bool = false
+        isShowMore: Bool = true
     ) {
         self.author = author
         self.commentId = commentId

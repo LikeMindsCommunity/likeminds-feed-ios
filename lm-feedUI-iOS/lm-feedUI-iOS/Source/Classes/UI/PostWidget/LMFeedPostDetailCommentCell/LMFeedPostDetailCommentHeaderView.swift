@@ -43,6 +43,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
     open private(set) lazy var commentLabel: LMTextView = {
         let label = LMTextView().translatesAutoresizingMaskIntoConstraints()
         label.isScrollEnabled = false
+        label.isEditable = false
         label.textContainer.lineBreakMode = .byTruncatingTail
         label.backgroundColor = Appearance.shared.colors.clear
         label.textColor = Appearance.shared.colors.gray1
@@ -137,6 +138,8 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
     weak var delegate: LMChatPostCommentProtocol?
     public var commentId: String?
     public var indexPath: IndexPath?
+    public var seeMoreAction: (() -> Void)?
+
     
     // MARK: setupViews
     open override func setupViews() {
@@ -199,11 +202,17 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
     open override func setupActions() {
         super.setupActions()
         
+        seeMoreText.addTarget(self, action: #selector(didTapSeeMoreButton), for: .touchUpInside)
         menuButton.addTarget(self, action: #selector(didTapMenuButton), for: .touchUpInside)
         likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         likeTextButton.addTarget(self, action: #selector(didTapLikeCountButton), for: .touchUpInside)
         replyButton.addTarget(self, action: #selector(didTapReplyButton), for: .touchUpInside)
         replyCountButton.addTarget(self, action: #selector(didTapReplyCountButton), for: .touchUpInside)
+    }
+    
+    @objc
+    open func didTapSeeMoreButton() {
+        seeMoreAction?()
     }
     
     @objc
@@ -247,17 +256,20 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
     
     
     // MARK: configure
-    open func configure(with data: LMFeedPostDetailCommentCellViewModel, delegate: LMChatPostCommentProtocol, indexPath: IndexPath) {
+    open func configure(with data: LMFeedPostDetailCommentCellViewModel, delegate: LMChatPostCommentProtocol, indexPath: IndexPath, seeMoreAction: (() -> Void)? = nil) {
         commentId = data.commentId
+        
         self.delegate = delegate
         self.indexPath = indexPath
+        self.seeMoreAction = seeMoreAction
         
         authorNameLabel.text = data.authorName
         
         commentLabel.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.comment)
-        commentLabel.textContainer.maximumNumberOfLines = commentLabel.numberOfLines > 4 && data.isShowMore ? .zero : 4
         
         seeMoreText.isHidden = !(commentLabel.numberOfLines > 4 && data.isShowMore)
+        commentLabel.textContainer.maximumNumberOfLines = commentLabel.numberOfLines > 4 && !data.isShowMore ? .zero : 4
+        
         
         commentTimeLabel.text = data.commentTimeFormatted
         

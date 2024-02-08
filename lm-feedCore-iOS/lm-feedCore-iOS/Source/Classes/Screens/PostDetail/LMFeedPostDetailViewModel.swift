@@ -375,7 +375,7 @@ public extension LMFeedPostDetailViewModel {
         
         if let replyToComment,
            let commentID = replyToComment.commentID,
-           let (_, commentIndex) = findCommentIndex(for: commentString, from: commentList) {
+           let (_, commentIndex) = findCommentIndex(for: commentID, from: commentList) {
                commentList[commentIndex.section].replies.insert(localComment, at: 0)
                postReplyOnComment(with: commentString, commentID: commentID, localComment: localComment)
            } else {
@@ -400,8 +400,8 @@ public extension LMFeedPostDetailViewModel {
             
             if let idx = commentList.firstIndex(where: { $0.temporaryCommentID == localComment.temporaryCommentID }) {
                 commentList[idx] = newComment
-                convertToViewData(for: .init(row: NSNotFound, section: idx))
                 postDetail?.commentCount += 1
+                convertToViewData()
                 notifyObjectChange()
             }
         }
@@ -426,7 +426,7 @@ public extension LMFeedPostDetailViewModel {
             if let idx = commentList.firstIndex(where: { $0.commentID == commentID }),
                let tempIdx = commentList[idx].replies.firstIndex(where: { $0.temporaryCommentID == localComment.temporaryCommentID }) {
                 commentList[idx].replies[tempIdx] = newComment
-                convertToViewData(for: .init(row: tempIdx, section: idx))
+                convertToViewData()
             }
         }
     }

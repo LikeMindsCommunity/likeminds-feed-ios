@@ -196,7 +196,6 @@ open class LMFeedEditPostViewController: LMViewController {
     open override func setupAppearance() {
         super.setupAppearance()
         view.backgroundColor = Appearance.shared.colors.white
-        taggingView.isHidden = true
         topicView.isHidden = true
     }
     
