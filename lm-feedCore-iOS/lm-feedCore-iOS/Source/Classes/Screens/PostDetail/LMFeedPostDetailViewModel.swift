@@ -9,7 +9,7 @@ import lm_feedUI_iOS
 import LikeMindsFeed
 
 public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol {
-    func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostCommentCellProtocol], indexPath: IndexPath?, openCommentSection: Bool)
+    func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostDetailCommentCellViewModel], indexPath: IndexPath?, openCommentSection: Bool)
     
     func changePostLike()
     func changePostSave()
@@ -70,7 +70,9 @@ final public class LMFeedPostDetailViewModel {
             }
             
             for(innerIdx, innerComment) in comment.replies.enumerated() {
-                return (innerComment, IndexPath(row: innerIdx, section: idx))
+                if innerComment.commentID == commentID {
+                    return (innerComment, IndexPath(row: innerIdx, section: idx))
+                }
             }
         }
         
@@ -161,20 +163,10 @@ public extension LMFeedPostDetailViewModel {
         guard let postDetail else { return }
         let convertedPostDetail = LMFeedConvertToFeedPost.convertToViewModel(for: postDetail)
         
-        var convertedComments: [LMFeedPostCommentCellProtocol] = []
+        var convertedComments: [LMFeedPostDetailCommentCellViewModel] = []
         
-        if !commentList.isEmpty {
-            let totalCommentCellData: LMFeedPostDetailTotalCommentCell.ViewModel = .init(totalComments: postDetail.commentCount)
-            convertedComments.append(totalCommentCellData)
-            
-            commentList.enumerated().forEach { index, comment in
-                convertedComments.append(convertToCommentModel(from: comment))
-                
-                if !comment.replies.isEmpty,
-                   comment.totalRepliesCount > comment.replies.count {
-                    convertedComments.append(convertToShowMoreReplies(from: comment))
-                }
-            }
+        commentList.enumerated().forEach { index, comment in
+            convertedComments.append(convertToCommentModel(from: comment))
         }
         
         delegate?.showPostDetails(with: convertedPostDetail, comments: convertedComments, indexPath: indexPath, openCommentSection: openCommentSection)
@@ -198,10 +190,6 @@ public extension LMFeedPostDetailViewModel {
             totalReplyCount: comment.totalRepliesCount,
             replies: replies
         )
-    }
-    
-    func convertToShowMoreReplies(from comment: LMFeedCommentDataModel) -> LMFeedPostMoreRepliesCell.ViewModel {
-        .init(parentCommentId: comment.commentID ?? "", commentCount: comment.replies.count, totalComments: comment.totalRepliesCount)
     }
 }
 
@@ -234,19 +222,19 @@ public extension LMFeedPostDetailViewModel {
     }
     
     func getCommentReplies(commentId: String, isClose: Bool) {
-        if let index = commentList.firstIndex(where: { $0.commentID == commentId }),
-           isClose,
+        guard let index = commentList.firstIndex(where: { $0.commentID == commentId }) else { return }
+        
+        if isClose,
            !commentList[index].replies.isEmpty {
             commentList[index].replies.removeAll(keepingCapacity: true)
             convertToViewData()
             return
         }
         
-        guard !isFetchingData,
-              let (parentComment, parentIndex) = findCommentIndex(for: commentId, from: commentList) else { return }
+        guard !isFetchingData else { return }
         self.isFetchingData = true
         
-        let replyCurrentPage = (parentComment.replies.count / 5) + 1
+        let replyCurrentPage = (commentList[index].replies.count / 5) + 1
         
         LMFeedPostOperation.shared.getCommentReplies(for: postID, commentID: commentId, currentPage: replyCurrentPage) { [weak self] response in
             guard let self else { return }
@@ -262,7 +250,7 @@ public extension LMFeedPostDetailViewModel {
                 return .init(comment: comment, user: user)
             } ?? []
             
-            commentList[parentIndex.section].replies.append(contentsOf: newComments)
+            commentList[index].replies.append(contentsOf: newComments)
             self.convertToViewData()
         }
     }

@@ -22,6 +22,7 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
         public var topics: LMFeedTopicView.ViewModel
         public var mediaData: LMFeedLinkPreview.ViewModel
         public var footerData: LMFeedPostFooterView.ViewModel
+        public var totalCommentCount: Int
         
         public init(
             postID: String,
@@ -30,7 +31,8 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
             postText: String,
             topics: LMFeedTopicView.ViewModel,
             mediaData: LMFeedLinkPreview.ViewModel,
-            footerData: LMFeedPostFooterView.ViewModel
+            footerData: LMFeedPostFooterView.ViewModel,
+            totalCommentCount: Int
         ) {
             self.postID = postID
             self.userUUID = userUUID
@@ -39,6 +41,7 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
             self.topics = topics
             self.mediaData = mediaData
             self.footerData = footerData
+            self.totalCommentCount = totalCommentCount
         }
     }
     

@@ -21,6 +21,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         public var topics: LMFeedTopicView.ViewModel
         public var mediaData: [LMFeedMediaProtocol]
         public var footerData: LMFeedPostFooterView.ViewModel
+        public var totalCommentCount: Int
         
         public init(
             postID: String,
@@ -29,7 +30,8 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
             postText: String,
             topics: LMFeedTopicView.ViewModel,
             mediaData: [LMFeedMediaProtocol],
-            footerData: LMFeedPostFooterView.ViewModel
+            footerData: LMFeedPostFooterView.ViewModel,
+            totalCommentCount: Int
         ) {
             self.postID = postID
             self.userUUID = userUUID
@@ -38,6 +40,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
             self.topics = topics
             self.mediaData = mediaData
             self.footerData = footerData
+            self.totalCommentCount = totalCommentCount
         }
     }
     

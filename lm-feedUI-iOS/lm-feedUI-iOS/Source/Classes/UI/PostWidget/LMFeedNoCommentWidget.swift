@@ -48,10 +48,4 @@ open class LMFeedNoCommentWidget: LMTableViewHeaderFooterView {
                                     bottom: (containerView.bottomAnchor, -16),
                                     centerX: (titleLabel.centerXAnchor, 0))
     }
-    
-    open override func setupAppearance() {
-        super.setupAppearance()
-        
-        containerView.backgroundColor = Appearance.shared.colors.white
-    }
 }

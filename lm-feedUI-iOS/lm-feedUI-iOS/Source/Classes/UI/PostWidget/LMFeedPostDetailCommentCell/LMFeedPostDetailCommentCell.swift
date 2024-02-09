@@ -97,12 +97,6 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         return label
     }()
     
-    open private(set) lazy var bottomLine: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.gray4
-        return view
-    }()
-    
     
     // MARK: Data Variables
     weak var delegate: LMChatPostCommentProtocol?
@@ -117,7 +111,6 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         super.setupViews()
         
         contentView.addSubview(containerView)
-        contentView.addSubview(bottomLine)
         
         [authorNameLabel, commentContainerStack, actionStack, commentTimeLabel].forEach { subView in
             containerView.addSubview(subView)
@@ -135,31 +128,23 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 32),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomLine.topAnchor),
-            bottomLine.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor),
-            bottomLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            bottomLine.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            bottomLine.heightAnchor.constraint(equalToConstant: 1),
-            
-            authorNameLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
-            authorNameLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
-            authorNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -16),
-            
-            commentContainerStack.leadingAnchor.constraint(equalTo: authorNameLabel.leadingAnchor),
-            commentContainerStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
-            commentContainerStack.topAnchor.constraint(equalTo: authorNameLabel.bottomAnchor, constant: 16),
-            commentContainerStack.bottomAnchor.constraint(equalTo: actionStack.topAnchor, constant: -8),
-            
-            actionStack.leadingAnchor.constraint(equalTo: commentContainerStack.leadingAnchor),
-            actionStack.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -16),
-            commentTimeLabel.trailingAnchor.constraint(equalTo: commentContainerStack.trailingAnchor),
-            commentTimeLabel.leadingAnchor.constraint(greaterThanOrEqualTo: actionStack.trailingAnchor, constant: 16),
-            commentTimeLabel.centerYAnchor.constraint(equalTo: actionStack.centerYAnchor)
-        ])
+        contentView.pinSubView(subView: containerView, padding: .init(top: 0, left: 32, bottom: 0, right: 0))
+        authorNameLabel.addConstraint(top: (containerView.topAnchor, 16),
+                                      leading: (containerView.leadingAnchor, 16))
+        
+        commentContainerStack.addConstraint(top: (authorNameLabel.bottomAnchor, 2),
+                                            bottom: (actionStack.topAnchor, 0),
+                                            leading: (authorNameLabel.leadingAnchor, 0),
+                                            trailing: (containerView.trailingAnchor, -16))
+        
+        actionStack.addConstraint(bottom: (containerView.bottomAnchor, -8),
+                                  leading: (commentContainerStack.leadingAnchor, 0))
+        
+        commentTimeLabel.addConstraint(trailing: (commentContainerStack.trailingAnchor, 0),
+                                       centerY: (actionStack.centerYAnchor, 0))
+        
+        authorNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -16).isActive = true
+        commentTimeLabel.leadingAnchor.constraint(greaterThanOrEqualTo: actionStack.trailingAnchor, constant: 16).isActive = true
     }
     
     
@@ -237,11 +222,15 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         backgroundColor = Appearance.shared.colors.clear
         contentView.backgroundColor = Appearance.shared.colors.white
         containerView.backgroundColor = Appearance.shared.colors.clear
+        
+        commentLabel.textContainer.lineFragmentPadding = .zero
+        commentLabel.textContainerInset = .zero
+        commentLabel.contentInset = .zero
     }
     
     
     // MARK: configure
-    open func configure(with data: LMFeedPostDetailCommentCellViewModel, delegate: LMChatPostCommentProtocol, isShowSeprator: Bool, indexPath: IndexPath, seeMoreAction: (() -> Void)? = nil) {
+    open func configure(with data: LMFeedPostDetailCommentCellViewModel, delegate: LMChatPostCommentProtocol, indexPath: IndexPath, seeMoreAction: (() -> Void)? = nil) {
         commentId = data.commentId
         self.delegate = delegate
         self.userUUID = data.author.userUUID
@@ -263,7 +252,5 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         
         likeTextButton.isHidden = data.likeCount == .zero
         likeTextButton.setTitle(data.likeText, for: .normal)
-        
-        bottomLine.isHidden = !isShowSeprator
     }
 }

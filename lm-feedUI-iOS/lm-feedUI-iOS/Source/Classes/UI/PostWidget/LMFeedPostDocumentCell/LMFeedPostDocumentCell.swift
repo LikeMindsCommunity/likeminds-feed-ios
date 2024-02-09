@@ -25,6 +25,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         public let isShowFullText: Bool
         public var isShowAllDocuments: Bool
         public var footerData: LMFeedPostFooterView.ViewModel
+        public var totalCommentCount: Int
         
         public init( postID: String,
                      userUUID: String,
@@ -33,6 +34,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
                      postText: String?,
                      documents: [LMFeedDocumentPreview.ViewModel],
                      footerData: LMFeedPostFooterView.ViewModel,
+                     totalCommentCount: Int,
                      isShowFullText: Bool = false,
                      isShowAllDocuments: Bool = false) {
             self.postID = postID
@@ -42,6 +44,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
             self.topics = topics ?? .init()
             self.documents = documents
             self.footerData = footerData
+            self.totalCommentCount = totalCommentCount
             self.isShowFullText = isShowFullText
             self.isShowAllDocuments = isShowAllDocuments
         }

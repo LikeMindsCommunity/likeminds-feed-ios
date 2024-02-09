@@ -14,6 +14,7 @@ public protocol LMFeedPostTableCellProtocol {
     var postText: String { get }
     var topics: LMFeedTopicView.ViewModel { get }
     var footerData: LMFeedPostFooterView.ViewModel { get set }
+    var totalCommentCount: Int { get }
 }
 
 @IBDesignable

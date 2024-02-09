@@ -15,10 +15,8 @@ public protocol LMChatPostCommentProtocol: AnyObject {
     func didTapReplyCountButton(for commentId: String)
 }
 
-public protocol LMFeedPostCommentCellProtocol { }
-
 // MARK: LMFeedPostDetailCommentCellViewModel
-public struct LMFeedPostDetailCommentCellViewModel: LMFeedPostCommentCellProtocol {
+public struct LMFeedPostDetailCommentCellViewModel {
     public let author: LMFeedUserDataModel
     public let commentId: String?
     public let tempCommentId: String?

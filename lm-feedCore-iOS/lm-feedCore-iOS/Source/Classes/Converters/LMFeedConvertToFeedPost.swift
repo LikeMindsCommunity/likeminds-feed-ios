@@ -50,7 +50,8 @@ public struct LMFeedConvertToFeedPost {
             postText: data.postContent,
             topics: convertToTopicViewData(from: data.topics),
             mediaData: .init(linkPreview: link.previewImage, title: link.title, description: link.description, url: link.url),
-            footerData: convertToFooterViewData(from: data)
+            footerData: convertToFooterViewData(from: data), 
+            totalCommentCount: data.commentCount
         )
     }
     
@@ -62,7 +63,8 @@ public struct LMFeedConvertToFeedPost {
             topics: convertToTopicViewData(from: data.topics),
             postText: data.postContent,
             documents: convertToDocument(from: data.documentAttachment),
-            footerData: convertToFooterViewData(from: data)
+            footerData: convertToFooterViewData(from: data), 
+            totalCommentCount: data.commentCount
         )
     }
     
@@ -80,7 +82,8 @@ public struct LMFeedConvertToFeedPost {
             postText: data.postContent,
             topics: convertToTopicViewData(from: data.topics),
             mediaData: convertToMediaProtocol(from: data.imageVideoAttachment),
-            footerData: convertToFooterViewData(from: data)
+            footerData: convertToFooterViewData(from: data), 
+            totalCommentCount: data.commentCount
         )
     }
     

@@ -128,11 +128,6 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         return label
     }()
     
-    open private(set) lazy var bottomLine: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.gray4
-        return view
-    }()
     
     // MARK: Data Variables
     weak var delegate: LMChatPostCommentProtocol?
@@ -146,7 +141,6 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         super.setupViews()
         
         contentView.addSubview(containerView)
-        contentView.addSubview(bottomLine)
         
         [authorNameLabel, commentContainerStack, actionStack, commentTimeLabel].forEach { subView in
             containerView.addSubview(subView)
@@ -167,34 +161,26 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomLine.topAnchor),
-            bottomLine.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor),
-            bottomLine.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            bottomLine.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            bottomLine.heightAnchor.constraint(equalToConstant: 1),
-            
-            authorNameLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
-            authorNameLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
-            authorNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -16),
-            
-            commentContainerStack.leadingAnchor.constraint(equalTo: authorNameLabel.leadingAnchor),
-            commentContainerStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
-            commentContainerStack.topAnchor.constraint(equalTo: authorNameLabel.bottomAnchor, constant: 16),
-            commentContainerStack.bottomAnchor.constraint(equalTo: actionStack.topAnchor, constant: -8),
-            
-            actionStack.leadingAnchor.constraint(equalTo: commentContainerStack.leadingAnchor),
-            actionStack.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -16),
-            commentTimeLabel.trailingAnchor.constraint(equalTo: commentContainerStack.trailingAnchor),
-            commentTimeLabel.leadingAnchor.constraint(greaterThanOrEqualTo: actionStack.trailingAnchor, constant: 16),
-            commentTimeLabel.centerYAnchor.constraint(equalTo: actionStack.centerYAnchor),
-            
-            sepratorView.widthAnchor.constraint(equalToConstant: 1),
-            actionStack.heightAnchor.constraint(equalToConstant: 24)
-        ])
+        contentView.pinSubView(subView: containerView)
+        authorNameLabel.addConstraint(top: (containerView.topAnchor, 16),
+                                      leading: (containerView.leadingAnchor, 16))
+        
+        commentContainerStack.addConstraint(top: (authorNameLabel.bottomAnchor, 2),
+                                            bottom: (actionStack.topAnchor, 0),
+                                            leading: (authorNameLabel.leadingAnchor, 0),
+                                            trailing: (containerView.trailingAnchor, -16))
+        
+        actionStack.addConstraint(bottom: (containerView.bottomAnchor, -8),
+                                  leading: (commentContainerStack.leadingAnchor, 0))
+        
+        commentTimeLabel.addConstraint(trailing: (commentContainerStack.trailingAnchor, 0),
+                                       centerY: (actionStack.centerYAnchor, 0))
+        
+        sepratorView.setWidthConstraint(with: 1)
+        actionStack.setHeightConstraint(with: 24)
+        
+        authorNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -16).isActive = true
+        commentTimeLabel.leadingAnchor.constraint(greaterThanOrEqualTo: actionStack.trailingAnchor, constant: 16).isActive = true
     }
     
     
@@ -283,8 +269,5 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         replyButton.isEnabled = data.commentId != nil
         replyCountButton.setTitle(data.commentText, for: .normal)
         replyCountButton.isHidden = data.totalReplyCount == .zero
-        
-        
-        bottomLine.isHidden = !data.replies.isEmpty
     }
 }

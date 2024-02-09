@@ -72,6 +72,7 @@ open class LMViewController: UIViewController {
     }
     
     deinit {
+        print("=== Deinit \(#file)")
         NotificationCenter.default.removeObserver(self)
     }
     
