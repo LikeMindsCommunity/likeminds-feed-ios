@@ -24,10 +24,16 @@ public struct NameWithRoute {
 
 // MARK: GetAttributedTextWithRoutes
 public struct GetAttributedTextWithRoutes {
-    static func getAttributedText(from text: String, andPrefix: String? = nil) -> NSMutableAttributedString {
+    static func getAttributedText(from text: String, andPrefix: String? = nil, allowLink: Bool = true, allowHashtags: Bool = true) -> NSMutableAttributedString {
         var attributedString = replaceRouteToName(with: text, andPrefix: andPrefix)
-        attributedString = detectAndHighlightURLs(in: attributedString)
-        attributedString = detectAndHighlightHashtags(in: attributedString)
+        
+        if allowLink {
+            attributedString = detectAndHighlightURLs(in: attributedString)
+        }
+        
+        if allowHashtags {
+            attributedString = detectAndHighlightHashtags(in: attributedString)
+        }
         
         return attributedString
     }
@@ -39,7 +45,8 @@ public struct GetAttributedTextWithRoutes {
             let matches = detector.matches(in: text, options: [], range: NSRange(location: 0, length: text.count))
             
             for match in matches {
-                if let url = match.url {
+                if let url = match.url,
+                   !attributedString.containsAttribute(.route, in: match.range) {
                     let range = match.range
                     attributedString.addAttribute(.foregroundColor, value: Appearance.shared.colors.linkColor, range: range)
                     attributedString.addAttribute(.link, value: url, range: range)
@@ -59,7 +66,9 @@ public struct GetAttributedTextWithRoutes {
             let matches = detector.matches(in: text, options: [], range: NSRange(location: 0, length: text.count))
             
             for match in matches {
-                if let range = Range(match.range(at: 1), in: text) {
+                if let range = Range(match.range(at: 1), in: text),
+                   !attributedString.containsAttribute(.route, in: match.range),
+                   !attributedString.containsAttribute(.link, in: match.range) {
                     let hashtag = String(text[range])
                     
                     attributedString.addAttribute(.hashtags, value: hashtag, range: match.range)
@@ -108,7 +117,7 @@ public struct GetAttributedTextWithRoutes {
             let replaceAttributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: Appearance.shared.colors.userProfileColor,
                 .font: Appearance.shared.fonts.textFont1,
-                .route: nameWithRoute.route
+                .route: routeString
             ]
             
             let newAttributedString = NSAttributedString(string: replaceString, attributes: replaceAttributes)

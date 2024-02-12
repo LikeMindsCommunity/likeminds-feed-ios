@@ -22,6 +22,17 @@ public extension NSAttributedString {
             return nil
         }
     }
+    
+    func containsAttribute(_ attribute: NSAttributedString.Key, in range: NSRange) -> Bool {
+        var isContains: Bool = false
+        self.enumerateAttributes(in: range) { attr, range, _ in
+            if attr.contains(where: { $0.key == attribute }) {
+                isContains = true
+            }
+        }
+        
+        return isContains
+    }
 }
 
 public extension NSAttributedString.Key {

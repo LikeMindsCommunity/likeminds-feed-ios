@@ -170,7 +170,7 @@ open class LMFeedDocumentPreview: LMView {
         
         containerView.layer.cornerRadius = 8
         containerView.layer.borderWidth = 1
-        containerView.layer.borderColor = Appearance.shared.colors.gray102.cgColor
+        containerView.layer.borderColor = Appearance.shared.colors.sepratorColor.cgColor
     }
     
     

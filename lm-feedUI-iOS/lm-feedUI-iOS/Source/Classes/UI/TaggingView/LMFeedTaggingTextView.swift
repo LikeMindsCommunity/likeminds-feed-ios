@@ -55,7 +55,7 @@ open class LMFeedTaggingTextView: LMTextView {
         var taggingText = ""
         
         attributedText.enumerateAttributes(in: NSRange(location: 0, length: selectedLocation), options: .reverse) {attr, range, _ in
-            if attr.contains(where: { $0.key == .route }) {
+            if attr.contains(where: { $0.key == .route || $0.key == .link }) {
                 encounteredRoute = true
             } else if !encounteredRoute {
                 taggingText.append(attributedText.attributedSubstring(from: range).string)
@@ -148,7 +148,7 @@ open class LMFeedTaggingTextView: LMTextView {
     
     public func setAttributedText(from content: String, prefix: String? = nil) {
         if !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            attributedText = GetAttributedTextWithRoutes.getAttributedText(from: content, andPrefix: prefix)
+            attributedText = GetAttributedTextWithRoutes.getAttributedText(from: content, andPrefix: prefix, allowLink: false, allowHashtags: false)
         } else {
             text = placeHolderText
             textColor = textAttributes[.foregroundColor] as? UIColor

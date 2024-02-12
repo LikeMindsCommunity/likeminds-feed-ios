@@ -30,7 +30,7 @@ open class LMFeedCreatePostAddMediaView: LMView {
     
     open private(set) lazy var sepratorView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.gray4
+        view.backgroundColor = Appearance.shared.colors.sepratorColor
         return view
     }()
     

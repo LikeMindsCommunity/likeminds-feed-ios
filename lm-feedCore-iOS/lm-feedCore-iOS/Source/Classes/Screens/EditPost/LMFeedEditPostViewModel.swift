@@ -165,9 +165,14 @@ public final class LMFeedEditPostViewModel {
 // MARK: Link Preview Handling
 extension LMFeedEditPostViewModel {
     func handleLinkDetection(in text: String) {
+        guard let link = text.detectLink() else {
+            linkPreview = nil
+            delegate?.setupLinkPreview(with: nil)
+            return
+        }
+        
         guard isShowLinkPreview,
-              linkPreview == nil,
-              let link = text.detectLink() else { return }
+              linkPreview == nil else { return }
         
         debounceForDecodeLink?.invalidate()
         

@@ -114,7 +114,7 @@ open class LMFeedPostDetailViewController: LMViewController {
     
     open private(set) lazy var replySepratorView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.gray1
+        view.backgroundColor = Appearance.shared.colors.sepratorColor
         return view
     }()
     

@@ -51,7 +51,6 @@ open class LMFeedEditPostViewController: LMViewController {
     
     open private(set) lazy var inputTextView: LMFeedTaggingTextView = {
         let textView = LMFeedTaggingTextView().translatesAutoresizingMaskIntoConstraints()
-        textView.dataDetectorTypes = [.link]
         textView.mentionDelegate = self
         textView.isScrollEnabled = false
         textView.isEditable = true
@@ -152,22 +151,17 @@ open class LMFeedEditPostViewController: LMViewController {
         
         scrollStackView.setHeightConstraint(with: 1000, priority: .defaultLow)
         headerView.setHeightConstraint(with: 64)
-        topicView.setHeightConstraint(with: 2, priority: .defaultLow)
-        linkPreview.setHeightConstraint(with: 1000, priority: .defaultLow)
         
         inputTextViewHeightConstraint = inputTextView.setHeightConstraint(with: 40)
         
         taggingView.addConstraint(top: (inputTextView.bottomAnchor, 0),
                                   leading: (inputTextView.leadingAnchor, 0),
                                   trailing: (inputTextView.trailingAnchor, 0))
-        taggingView.bottomAnchor.constraint(lessThanOrEqualTo: scrollStackView.bottomAnchor, constant: -16).isActive = true
-        taggingUserViewHeightConstraint = taggingView.setHeightConstraint(with: 10)
+        taggingUserViewHeightConstraint = taggingView.setHeightConstraint(with: 10, priority: .defaultLow)
         
-        NSLayoutConstraint.activate([
-            scrollView.widthAnchor.constraint(equalTo: containerView.widthAnchor),
-            scrollStackView.widthAnchor.constraint(equalTo: containerView.widthAnchor),
-            mediaCollectionView.heightAnchor.constraint(equalTo: mediaCollectionView.widthAnchor)
-        ])
+        scrollView.setWidthConstraint(with: containerView.widthAnchor)
+        scrollStackView.setWidthConstraint(with: containerView.widthAnchor)
+        mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
         
         scrollStackView.subviews.forEach { subView in
             NSLayoutConstraint.activate([
@@ -312,6 +306,7 @@ extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {
     public func setupData(with userData: LMFeedCreatePostHeaderView.ViewDataModel, text: String) {
         headerView.configure(with: userData)
         inputTextView.setAttributedText(from: text, prefix: "@")
+        contentHeightChanged()
     }
     
     public func setupDocumentPreview(with data: [LMFeedDocumentPreview.ViewModel]) {
@@ -322,7 +317,7 @@ extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {
     }
     
     public func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?) {
-        linkPreview.isHidden = data != nil
+        linkPreview.isHidden = data == nil
         
         if let data {
             linkPreview.configure(with: data) { [weak self] in

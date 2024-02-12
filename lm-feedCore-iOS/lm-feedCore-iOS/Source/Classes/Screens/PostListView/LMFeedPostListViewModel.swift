@@ -21,8 +21,8 @@ public protocol LMFeedPostListViewModelProtocol: LMBaseViewControllerProtocol {
 }
 
 public class LMFeedPostListViewModel {
-    public var currentPage: Int = 1
-    public var pageSize: Int = 10
+    public var currentPage: Int
+    public var pageSize: Int
     public var selectedTopics: [String] = []
     public var isLastPostReached: Bool = false
     public var isFetchingFeed: Bool = false
@@ -30,7 +30,7 @@ public class LMFeedPostListViewModel {
     
     public weak var delegate: LMFeedPostListViewModelProtocol?
     
-    init(delegate: LMFeedPostListViewModelProtocol? = nil) {
+    init(delegate: LMFeedPostListViewModelProtocol) {
         self.currentPage = 1
         self.pageSize = 10
         self.selectedTopics = []

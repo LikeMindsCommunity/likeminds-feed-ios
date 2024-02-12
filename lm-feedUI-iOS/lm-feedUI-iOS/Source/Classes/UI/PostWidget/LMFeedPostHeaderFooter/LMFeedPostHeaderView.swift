@@ -180,33 +180,34 @@ open class LMFeedPostHeaderView: LMView {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        pinSubView(subView: contentContainerView, padding: .init(top: 4, left: 0, bottom: -4, right: 0))
+//        pinSubView(subView: contentContainerView, padding: .init(top: 4, left: 0, bottom: -4, right: 0))
+        contentContainerView.addConstraint(top: (topAnchor, 4),
+                                           leading: (leadingAnchor, 0),
+                                           trailing: (trailingAnchor, 0))
+        contentContainerView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -4).isActive = true
         
+        imageView.addConstraint(top: (contentContainerView.topAnchor, 8),
+                                bottom: (contentContainerView.bottomAnchor, -8),
+                                leading: (contentContainerView.leadingAnchor, 16),
+                                centerY: (outerStackView.centerYAnchor, 0))
+        imageView.setHeightConstraint(with: 48)
+        imageView.setWidthConstraint(with: imageView.heightAnchor)
         
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: contentContainerView.topAnchor, constant: 8),
-            imageView.bottomAnchor.constraint(equalTo: contentContainerView.bottomAnchor, constant: -8),
-            imageView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor, constant: 16),
-            imageView.centerYAnchor.constraint(equalTo: outerStackView.centerYAnchor),
-            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 1),
-            imageView.heightAnchor.constraint(equalToConstant: Constants.shared.number.imageSize),
-            
-            outerStackView.bottomAnchor.constraint(lessThanOrEqualTo: imageView.bottomAnchor),
-            outerStackView.topAnchor.constraint(greaterThanOrEqualTo: imageView.topAnchor),
-            outerStackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16),
-            outerStackView.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor, constant: -16),
-            
-            innerStackView.topAnchor.constraint(greaterThanOrEqualTo: outerStackView.topAnchor),
-            innerStackView.bottomAnchor.constraint(greaterThanOrEqualTo: outerStackView.bottomAnchor),
-            
-            menuButton.widthAnchor.constraint(equalToConstant: 24),
-            menuButton.topAnchor.constraint(equalTo: outerStackView.topAnchor),
-            menuButton.bottomAnchor.constraint(equalTo: outerStackView.bottomAnchor),
-            
-            pinButton.widthAnchor.constraint(equalToConstant: 24),
-            pinButton.topAnchor.constraint(equalTo: outerStackView.topAnchor),
-            pinButton.bottomAnchor.constraint(equalTo: outerStackView.bottomAnchor)
-        ])
+        outerStackView.addConstraint(top: (imageView.topAnchor, 0),
+                                     bottom: (imageView.bottomAnchor, 0),
+                                     leading: (imageView.trailingAnchor, 16),
+                                     trailing: (contentContainerView.trailingAnchor, -16))
+        
+        innerStackView.addConstraint(top: (outerStackView.topAnchor, 0),
+                                     bottom: (outerStackView.bottomAnchor, 0))
+        
+        menuButton.setWidthConstraint(with: 24)
+        menuButton.addConstraint(top: (outerStackView.topAnchor, 0),
+                                     bottom: (outerStackView.bottomAnchor, 0))
+        
+        pinButton.setWidthConstraint(with: 24)
+        pinButton.addConstraint(top: (outerStackView.topAnchor, 0),
+                                     bottom: (outerStackView.bottomAnchor, 0))
         
         pinButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         menuButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -214,9 +215,7 @@ open class LMFeedPostHeaderView: LMView {
         authorNameLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         authorTagLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         
-        let tagLabelWidthConstraint = NSLayoutConstraint(item: authorTagLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
-        tagLabelWidthConstraint.priority = .defaultLow
-        tagLabelWidthConstraint.isActive = true
+        authorTagLabel.setWidthConstraint(with: 0, priority: .defaultLow)
     }
     
     // MARK: Actions
@@ -233,7 +232,7 @@ open class LMFeedPostHeaderView: LMView {
         
         backgroundColor = .clear
         contentContainerView.backgroundColor = .white
-        imageView.layer.cornerRadius = Constants.shared.number.imageSize / 2
+        imageView.layer.cornerRadius = 48 / 2
     }
     
     open func configure(with data: ViewModel) {
