@@ -55,18 +55,8 @@ open class LMFeedTaggingListView: LMView {
     // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
-        
-        NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            
-            tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-        ])
+        pinSubView(subView: containerView)
+        containerView.pinSubView(subView: tableView)
     }
     
     
@@ -74,11 +64,11 @@ open class LMFeedTaggingListView: LMView {
     open override func setupAppearance() {
         super.setupAppearance()
         backgroundColor = Appearance.shared.colors.clear
-        containerView.backgroundColor = Appearance.shared.colors.white
+        containerView.backgroundColor = Appearance.shared.colors.clear
         containerView.layer.borderColor = Appearance.shared.colors.gray4.cgColor
         containerView.layer.borderWidth = 1
         containerView.roundCornerWithShadow(cornerRadius: 16, shadowRadius: .zero, offsetX: .zero, offsetY: .zero, colour: .black, opacity: 0.1, corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner])
-        tableView.backgroundColor = Appearance.shared.colors.clear
+        tableView.backgroundColor = Appearance.shared.colors.white
     }
     
     

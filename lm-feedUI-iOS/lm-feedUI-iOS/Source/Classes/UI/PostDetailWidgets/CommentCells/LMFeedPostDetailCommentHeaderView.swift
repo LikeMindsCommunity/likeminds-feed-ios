@@ -181,6 +181,8 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         
         authorNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -16).isActive = true
         commentTimeLabel.leadingAnchor.constraint(greaterThanOrEqualTo: actionStack.trailingAnchor, constant: 16).isActive = true
+        
+        seeMoreText.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
     }
     
     
@@ -238,6 +240,10 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         super.setupAppearance()
         contentView.backgroundColor = Appearance.shared.colors.white
         containerView.backgroundColor = Appearance.shared.colors.clear
+        
+        commentLabel.textContainer.lineFragmentPadding = .zero
+        commentLabel.textContainerInset = .zero
+        commentLabel.contentInset = .zero
     }
     
     

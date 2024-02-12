@@ -29,8 +29,12 @@ public struct LMUIComponents {
     public var commentCell: LMFeedPostDetailCommentCell.Type = LMFeedPostDetailCommentCell.self
     public var commentHeaderView: LMFeedPostDetailCommentHeaderView.Type = LMFeedPostDetailCommentHeaderView.self
     public var loadMoreReplies: LMFeedPostMoreRepliesCell.Type = LMFeedPostMoreRepliesCell.self
-    public var totalCommentFooter: LMFeedPostDetailTotalCommentCell.Type = LMFeedPostDetailTotalCommentCell.self
     public var noCommentFooter: LMFeedNoCommentWidget.Type = LMFeedNoCommentWidget.self
+    public var postDetailDocumentCell: LMFeedPostDetailDocumentCell.Type = LMFeedPostDetailDocumentCell.self
+    public var postDetailLinkCell: LMFeedPostDetailLinkCell.Type = LMFeedPostDetailLinkCell.self
+    public var postDetailMediaCell: LMFeedPostDetailMediaCell.Type = LMFeedPostDetailMediaCell.self
+    public var totalCommentFooter: LMFeedPostDetailTotalCommentCell.Type = LMFeedPostDetailTotalCommentCell.self
+    
     
     // MARK: Topic Feed Components
     public var topicFeed: LMFeedTopicView.Type = LMFeedTopicView.self

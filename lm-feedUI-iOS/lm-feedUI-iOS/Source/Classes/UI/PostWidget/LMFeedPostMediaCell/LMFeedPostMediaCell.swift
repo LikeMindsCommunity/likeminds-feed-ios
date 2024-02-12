@@ -120,7 +120,6 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         
         pageControl.addConstraint(leading: (contentStack.leadingAnchor, 0), trailing: (contentStack.trailingAnchor, 0))
         
-        footerView.setHeightConstraint(with: Constants.shared.number.postFooterSize)
         footerView.addConstraint(
             top: (contentStack.bottomAnchor, 0),
             bottom: (containerView.bottomAnchor, 0),

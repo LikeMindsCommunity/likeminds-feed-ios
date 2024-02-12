@@ -200,12 +200,7 @@ open class LMFeedPostFooterView: LMView {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: self.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-        ])
+        pinSubView(subView: stackView, padding: .init(top: 8, left: 0, bottom: -8, right: 0))
         
         [likeButton, likeTextButton, commentButton, spacer, saveButton, shareButton].forEach { btn in
             NSLayoutConstraint.activate([

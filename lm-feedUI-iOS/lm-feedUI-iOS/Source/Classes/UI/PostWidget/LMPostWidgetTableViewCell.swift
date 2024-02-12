@@ -60,6 +60,12 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
         return textView
     }()
     
+    open private(set) lazy var seeMoreButton: LMButton = {
+        let button = LMButton.createButton(with: "See More", image: nil, textColor: Appearance.shared.colors.textColor, textFont: Appearance.shared.fonts.textFont1)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     
     // MARK: Data Variables
     weak var actionDelegate: LMFeedTableCellToViewControllerProtocol?
@@ -71,13 +77,8 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        let topicHeight = NSLayoutConstraint(item: topicFeed, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 10)
-        topicHeight.priority = .defaultLow
-        topicHeight.isActive = true
-        
-        let postTextHeight = NSLayoutConstraint(item: postText, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 10)
-        postTextHeight.priority = .defaultLow
-        postTextHeight.isActive = true
+        topicFeed.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        postText.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
     }
     
     

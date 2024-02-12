@@ -17,6 +17,7 @@
 				7BF7956FCB60997B326EE275C3CCCE41 /* PBXTargetDependency */,
 			);
 			name = LikeMindsFeed;
+			productName = LikeMindsFeed;
 		};
 /* End PBXAggregateTarget section */
 
@@ -120,7 +121,6 @@
 		2E87E32D4F8B8CDDEAC16B2E8B978B10 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88DF812054901752499C4529DDFDCD2C /* CoreGraphics.framework */; };
 		2E957E6D91CCF6E4D635398A9227F18E /* CGSize+Scale.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4ADCAE3886A9247AA1BD87F77B16423 /* CGSize+Scale.swift */; };
 		2F193EB8C80FF7E786DC1C8C27EF4623 /* CollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85838EED3AA6608DC0B8FD5C3235352D /* CollectionView+Extension.swift */; };
-		2F31835317DEE61A6153E7A9A5931DB3 /* LMFeedUIAssetsCatalog.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C29836920FE73D60DC91D80A2473897 /* LMFeedUIAssetsCatalog.xcassets */; };
 		2F62E487567094589F4F299520422441 /* AWSS3RequestRetryHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = BAA6DC55820D56111D2CFF9979C3BF12 /* AWSS3RequestRetryHandler.m */; };
 		2FD10943C0C07BECA653186C2E7AA18F /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3858AEDAFA47E800306EAF5F04863121 /* String+Extension.swift */; };
 		3113CF09DE97800E8EF71B91A2B1096A /* LMFeedPostMoreRepliesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FD8418211D0A47B7B9AB77F7A772E7 /* LMFeedPostMoreRepliesCell.swift */; };
@@ -475,6 +475,10 @@
 		E2EFDFEDEEEE11D665EA64FC86E758A6 /* AWSCognitoRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A753574F2FC14294581C556ACCE8E97 /* AWSCognitoRecord.m */; };
 		E3C159B8307184F43CB71806833D6117 /* AWSSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = FEEBDB6908448A168F021DEF9802FE43 /* AWSSignature.m */; };
 		E3F60C7B7ADD6F5CD80A1FA6C6B8B410 /* AWSMTLManagedObjectAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E33C3DE664D930D245CA86C15C9F162 /* AWSMTLManagedObjectAdapter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E505D51E2B78F3680033C947 /* LMFeedUIAssetsCatalog.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C29836920FE73D60DC91D80A2473897 /* LMFeedUIAssetsCatalog.xcassets */; };
+		E505D5222B79F5C70033C947 /* LMFeedPostDetailDocumentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E505D5212B79F5C70033C947 /* LMFeedPostDetailDocumentCell.swift */; };
+		E505D5252B79F61D0033C947 /* LMFeedPostDetailLinkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E505D5242B79F61D0033C947 /* LMFeedPostDetailLinkCell.swift */; };
+		E505D5282B79F64D0033C947 /* LMFeedPostDetailMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E505D5272B79F64D0033C947 /* LMFeedPostDetailMediaCell.swift */; };
 		E52480B6D8977B2033FEC4B84BDA1626 /* AWSClientContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EFADD217049135838A555B465CBF278 /* AWSClientContext.m */; };
 		E5635DECB22362CA17521F7B6A752BB4 /* AWSS3Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = B9D03729E894DF03FD1341DDB039C798 /* AWSS3Resources.m */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EDB2EFA59D4CF17488D59DD6F18B29 /* SessionDelegate.swift */; };
@@ -765,7 +769,7 @@
 		234E7DC88D107D0030381B5C6572704A /* NSError+AWSMTLModelException.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSError+AWSMTLModelException.h"; path = "AWSCore/Mantle/NSError+AWSMTLModelException.h"; sourceTree = "<group>"; };
 		23585541833B0587D82B509E9BB4A0ED /* NSValueTransformer+AWSMTLInversionAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSValueTransformer+AWSMTLInversionAdditions.h"; path = "AWSCore/Mantle/NSValueTransformer+AWSMTLInversionAdditions.h"; sourceTree = "<group>"; };
 		23E0CCAF00253E455A38CBFEE68F66AB /* AWSDDLog.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSDDLog.m; path = AWSCore/Logging/AWSDDLog.m; sourceTree = "<group>"; };
-		24344764C128D693E6BB64C1A7504147 /* LikeMindsFeed.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = LikeMindsFeed.xcframework; sourceTree = "<group>"; };
+		24344764C128D693E6BB64C1A7504147 /* LikeMindsFeed.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; path = LikeMindsFeed.xcframework; sourceTree = "<group>"; };
 		25339F66C92B00614780C7189F696F39 /* AWSCognito-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AWSCognito-dummy.m"; sourceTree = "<group>"; };
 		259763E074E4FE755F86F823F43FDA3D /* LMFeedVideoCollectionCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedVideoCollectionCell.swift; sourceTree = "<group>"; };
 		263B930220C847D82CB654B3F3EB0903 /* AWSTMMemoryCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSTMMemoryCache.h; path = AWSCore/TMCache/AWSTMMemoryCache.h; sourceTree = "<group>"; };
@@ -775,7 +779,7 @@
 		2895B719BB991DFDA37508C8D2DC2E9C /* UIColor+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		289CF283E65FF33BED2475A407E3716B /* LMFeedRouter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMFeedRouter.swift; path = "lm-feedCore-iOS/Source/Classes/LMFeedRouter.swift"; sourceTree = "<group>"; };
 		29EDB2EFA59D4CF17488D59DD6F18B29 /* SessionDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionDelegate.swift; path = Source/SessionDelegate.swift; sourceTree = "<group>"; };
-		2AA25D5D54B3598DC9009E0E1CF4CE9A /* lm-feedCore-iOS.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = "lm-feedCore-iOS.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		2AA25D5D54B3598DC9009E0E1CF4CE9A /* lm-feedCore-iOS.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = "lm-feedCore-iOS.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		2AF8B0192B6C7793CCB7847CCC5CE444 /* Kingfisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Kingfisher.swift; path = Sources/General/Kingfisher.swift; sourceTree = "<group>"; };
 		2B8888571D682CC179B4C1AF5C0D38BF /* ImageFormat.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageFormat.swift; path = Sources/Image/ImageFormat.swift; sourceTree = "<group>"; };
 		2C05454DBFFB51D80746EC56DAEFFAD6 /* AWSCancellationToken.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCancellationToken.h; path = AWSCore/Bolts/AWSCancellationToken.h; sourceTree = "<group>"; };
@@ -983,9 +987,9 @@
 		849966C0251B169AF52459ED3D279F76 /* LMFeedTopicSelectionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedTopicSelectionViewModel.swift; sourceTree = "<group>"; };
 		85838EED3AA6608DC0B8FD5C3235352D /* CollectionView+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "CollectionView+Extension.swift"; sourceTree = "<group>"; };
 		8672652A2FEA6B76711116F6331A95D2 /* Pods-lm-feed-sample-app-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-lm-feed-sample-app-umbrella.h"; sourceTree = "<group>"; };
-		86E318DEAD78E65B05A7130B35FD2B2B /* lm-feedUI-iOS.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = "lm-feedUI-iOS.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		86E318DEAD78E65B05A7130B35FD2B2B /* lm-feedUI-iOS.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = "lm-feedUI-iOS.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		881031F4E86B08965AA171ED91DCBB93 /* ResourceBundle-lm-feedCore-iOS-lm-feedCore-iOS-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-lm-feedCore-iOS-lm-feedCore-iOS-Info.plist"; sourceTree = "<group>"; };
-		882822E820480994975390BC4B2A93C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = Sources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		882822E820480994975390BC4B2A93C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Sources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		88DF812054901752499C4529DDFDCD2C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		890D035661D038113F14EFDCA0837246 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		893BF292B6D08A434AC49EF015FB6998 /* ImageModifier.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageModifier.swift; path = Sources/Networking/ImageModifier.swift; sourceTree = "<group>"; };
@@ -1034,7 +1038,7 @@
 		9BFF396F12AFD230328071B167022429 /* AWSDDOSLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSDDOSLogger.m; path = AWSCore/Logging/AWSDDOSLogger.m; sourceTree = "<group>"; };
 		9C45AB0CA4F01149A9F266645DD6BFE5 /* AssetsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AssetsViewController.swift; path = Sources/Scene/Assets/AssetsViewController.swift; sourceTree = "<group>"; };
 		9C68C2AB254B43BCEDC7521BA05DD27F /* AWSCancellationToken.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSCancellationToken.m; path = AWSCore/Bolts/AWSCancellationToken.m; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9E11C9013C67EAE0FC69C28182E69CC4 /* LMFeedPostDetailCommentHeaderView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailCommentHeaderView.swift; sourceTree = "<group>"; };
 		9F4E1BC0043679F8C351D4BB97499CC5 /* Alamofire-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Alamofire-Info.plist"; sourceTree = "<group>"; };
 		9FCDE3BB996FFB59493551E35BBD70E8 /* FormatIndicatedCacheSerializer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FormatIndicatedCacheSerializer.swift; path = Sources/Cache/FormatIndicatedCacheSerializer.swift; sourceTree = "<group>"; };
@@ -1167,7 +1171,7 @@
 		D69B2753BC9393F363C278D705FC9C37 /* AlbumCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AlbumCell.swift; path = Sources/Scene/Albums/AlbumCell.swift; sourceTree = "<group>"; };
 		D89BDD6179CF1A44288397AE9A3C3C5C /* AWSCognitoHandlers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCognitoHandlers.h; path = AWSCognito/AWSCognitoHandlers.h; sourceTree = "<group>"; };
 		D952737BBEFD6AEEB8372A6A614E080D /* AWSCognito.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCognito.h; path = AWSCognito/AWSCognito.h; sourceTree = "<group>"; };
-		DA06B839DFA7AD8DC098043B490A7ACB /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		DA06B839DFA7AD8DC098043B490A7ACB /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		DA5BB9D1AA75CFB96CCD1AB38EC7C1ED /* AWSFMDB+AWSHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "AWSFMDB+AWSHelpers.h"; path = "AWSCore/FMDB/AWSFMDB+AWSHelpers.h"; sourceTree = "<group>"; };
 		DA6C846DECA02743FD502B76DCA87EC6 /* AWSCognitoIdentityResources.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSCognitoIdentityResources.m; path = AWSCore/CognitoIdentity/AWSCognitoIdentityResources.m; sourceTree = "<group>"; };
 		DA94B6EB1AADCC40DF867A02CF97D30E /* LMFeedPostListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostListViewModel.swift; sourceTree = "<group>"; };
@@ -1193,6 +1197,9 @@
 		E4319286060F9899D15805B153A5A8D9 /* Alamofire-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Alamofire-dummy.m"; sourceTree = "<group>"; };
 		E445B67D4A7F2ED36D68FA34FD877AE0 /* AWSXMLDictionary.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSXMLDictionary.m; path = AWSCore/XMLDictionary/AWSXMLDictionary.m; sourceTree = "<group>"; };
 		E4F7F00F5E511E62A225D9E1F0F43445 /* LMFeedReportContentViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedReportContentViewModel.swift; sourceTree = "<group>"; };
+		E505D5212B79F5C70033C947 /* LMFeedPostDetailDocumentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailDocumentCell.swift; sourceTree = "<group>"; };
+		E505D5242B79F61D0033C947 /* LMFeedPostDetailLinkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailLinkCell.swift; sourceTree = "<group>"; };
+		E505D5272B79F64D0033C947 /* LMFeedPostDetailMediaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailMediaCell.swift; sourceTree = "<group>"; };
 		E58C401B31E4087006987350D2AA7097 /* Fabric.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Fabric.h; path = AWSCore/Fabric/Fabric.h; sourceTree = "<group>"; };
 		E653333A51E7584854B6BAE9C9C10352 /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extension.swift"; sourceTree = "<group>"; };
 		E661CC24B90A91F628112F64E7CBC04D /* AWSURLRequestRetryHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSURLRequestRetryHandler.h; path = AWSCore/Serialization/AWSURLRequestRetryHandler.h; sourceTree = "<group>"; };
@@ -1369,7 +1376,6 @@
 			children = (
 				4ACFB249185060018D5A4B7CEF4B550E /* LMFeedCreatePostDocumentPreviewCell.swift */,
 			);
-			name = DocumentPreviewTableCell;
 			path = DocumentPreviewTableCell;
 			sourceTree = "<group>";
 		};
@@ -1418,7 +1424,6 @@
 				5699D50C3CBF8FAC73163B2558BA31C5 /* ZoomTransitionDelegate.swift */,
 				623C2C54BB9AC195AF35C20896717F7F /* Support Files */,
 			);
-			name = BSImagePicker;
 			path = BSImagePicker;
 			sourceTree = "<group>";
 		};
@@ -1427,7 +1432,6 @@
 			children = (
 				AEE4DFF39F39E2DE5BBC55E1CFC15C5F /* LMFeedTopicSelectionView.swift */,
 			);
-			name = LMFeedTopicSelectionView;
 			path = LMFeedTopicSelectionView;
 			sourceTree = "<group>";
 		};
@@ -1458,7 +1462,6 @@
 				E7307EC02AE3E2693E2F67161F03B9F4 /* LMFeedLinkPreview.swift */,
 				259763E074E4FE755F86F823F43FDA3D /* LMFeedVideoCollectionCell.swift */,
 			);
-			name = SharedComponents;
 			path = SharedComponents;
 			sourceTree = "<group>";
 		};
@@ -1470,7 +1473,6 @@
 				2699B62E99FCB1355CBEA20EA4136603 /* LMFeedTopicEditViewCell.swift */,
 				0F7166814032404D87283DFBE52DA977 /* LMFeedTopicViewCell.swift */,
 			);
-			name = CollectionCells;
 			path = CollectionCells;
 			sourceTree = "<group>";
 		};
@@ -1501,7 +1503,6 @@
 				000460EB62B35C7D62E2E04C45781323 /* LMFeedPostListViewController.swift */,
 				DA94B6EB1AADCC40DF867A02CF97D30E /* LMFeedPostListViewModel.swift */,
 			);
-			name = PostListView;
 			path = PostListView;
 			sourceTree = "<group>";
 		};
@@ -1511,7 +1512,6 @@
 				48545BD2A8B69C620221F9351EF25BE7 /* LMFeedPostFooterView.swift */,
 				3859CF86EA010A9F23237372B65761E0 /* LMFeedPostHeaderView.swift */,
 			);
-			name = LMFeedPostHeaderFooter;
 			path = LMFeedPostHeaderFooter;
 			sourceTree = "<group>";
 		};
@@ -1520,7 +1520,6 @@
 			children = (
 				AD07B2324905F23512DBC558AAA0EFF0 /* LMFeedPostMediaCell.swift */,
 			);
-			name = LMFeedPostMediaCell;
 			path = LMFeedPostMediaCell;
 			sourceTree = "<group>";
 		};
@@ -1544,7 +1543,6 @@
 			children = (
 				BB30038935818D5A3D150C7D76544837 /* LMFeedCreatePostHeaderView.swift */,
 			);
-			name = HeaderView;
 			path = HeaderView;
 			sourceTree = "<group>";
 		};
@@ -1564,7 +1562,6 @@
 				1B75DCF431D420546E72E820F3E57D72 /* LMFeedNotificationViewController.swift */,
 				6E7CF6827402457FAA95F7702873784B /* LMFeedNotificationViewModel.swift */,
 			);
-			name = NotificationScreen;
 			path = NotificationScreen;
 			sourceTree = "<group>";
 		};
@@ -1576,7 +1573,6 @@
 				030C83E85E0EE6003DE7705914AFDF9B /* DocumentPreviewTableCell */,
 				3CE2F93E70B9A38BD3635230EDA84705 /* HeaderView */,
 			);
-			name = CreatePostWidgets;
 			path = CreatePostWidgets;
 			sourceTree = "<group>";
 		};
@@ -1585,7 +1581,6 @@
 			children = (
 				E0B086E341BF14F46782A2737F59B2A1 /* LMFeedCreatePostAddMediaView.swift */,
 			);
-			name = AddMediaView;
 			path = AddMediaView;
 			sourceTree = "<group>";
 		};
@@ -1656,7 +1651,6 @@
 				B3F2AFD8B105638F9DC47A6A628C84EA /* Resources */,
 				8F7B4D4BD116287C6440DDF5ECD08945 /* Support Files */,
 			);
-			name = Kingfisher;
 			path = Kingfisher;
 			sourceTree = "<group>";
 		};
@@ -1690,7 +1684,6 @@
 				ED4903B8B607A844C87149E28CFE81F3 /* AWSCognitoUtil.m */,
 				8723624AAC155A91432A73581068282D /* Support Files */,
 			);
-			name = AWSCognito;
 			path = AWSCognito;
 			sourceTree = "<group>";
 		};
@@ -1699,7 +1692,6 @@
 			children = (
 				6DBB7C6245173F7AAE62F183837B9B2A /* LMFeedAddMediaPreview.swift */,
 			);
-			name = AddMediaPreview;
 			path = AddMediaPreview;
 			sourceTree = "<group>";
 		};
@@ -1708,7 +1700,6 @@
 			children = (
 				C75E86807F8AA8832BC8BC77ADCEC86F /* LMFeedTopicSelectionDataModel.swift */,
 			);
-			name = ViewDataModel;
 			path = ViewDataModel;
 			sourceTree = "<group>";
 		};
@@ -1718,7 +1709,6 @@
 				449F19DBA5953BF6CA13B4FA670EF1B6 /* LMFeedTaggingListView.swift */,
 				4539253144477207F0787768143E2A9C /* LMFeedTaggingListViewModel.swift */,
 			);
-			name = TaggingListView;
 			path = TaggingListView;
 			sourceTree = "<group>";
 		};
@@ -1743,7 +1733,6 @@
 				D016657A5E8965DDED47ED67FDEC3421 /* LMUniversalFeedViewController.swift */,
 				F1E9EDABF68C9CA0324C79DD036D12A7 /* LMUniversalFeedViewModel.swift */,
 			);
-			name = UniversalFeed;
 			path = UniversalFeed;
 			sourceTree = "<group>";
 		};
@@ -1753,7 +1742,6 @@
 				7C0C8AB9C856D5413425152A21766352 /* LMFeedCreatePostViewController.swift */,
 				FA43676B23B24905EF952E9A1A666FE0 /* LMFeedCreatePostViewModel.swift */,
 			);
-			name = CreatePost;
 			path = CreatePost;
 			sourceTree = "<group>";
 		};
@@ -1771,7 +1759,6 @@
 			children = (
 				2DC3B7E541B65578D843786D9C77767B /* LMFeedLikeUserTableCell.swift */,
 			);
-			name = LikeUserView;
 			path = LikeUserView;
 			sourceTree = "<group>";
 		};
@@ -1790,7 +1777,6 @@
 				70EB5F45ED7E9F4D96D77A736D50A9A0 /* LMFeedDeleteReviewScreen.swift */,
 				98A3137EDBBBBC7648C42EACA2B1908E /* LMFeedDeleteReviewViewModel.swift */,
 			);
-			name = DeleteScreen;
 			path = DeleteScreen;
 			sourceTree = "<group>";
 		};
@@ -1807,7 +1793,6 @@
 			children = (
 				FA146B045816A95F3CA63D701967AA9E /* LMFeedPostDocumentCell.swift */,
 			);
-			name = LMFeedPostDocumentCell;
 			path = LMFeedPostDocumentCell;
 			sourceTree = "<group>";
 		};
@@ -1817,7 +1802,6 @@
 				F1C9C5ABCE34481F2548EE612637C6E4 /* LMFeedTopicView.swift */,
 				1490C863F9145C1E214F5B29A3A3E050 /* CollectionCells */,
 			);
-			name = DisplayScreen;
 			path = DisplayScreen;
 			sourceTree = "<group>";
 		};
@@ -1837,7 +1821,6 @@
 			children = (
 				B349182597BE25492C915868DEA1D037 /* LMFeedPostLinkCell.swift */,
 			);
-			name = LMFeedPostLinkCell;
 			path = LMFeedPostLinkCell;
 			sourceTree = "<group>";
 		};
@@ -1864,7 +1847,6 @@
 				2D1E536401CED3DD921928231528E90D /* LMFeedTopicSelectionCell.swift */,
 				0CF285C3D847DFB0FD9C74C0A8D44F2A /* LMFeedTopicSelectionView */,
 			);
-			name = SelectionScreen;
 			path = SelectionScreen;
 			sourceTree = "<group>";
 		};
@@ -2067,7 +2049,6 @@
 				1738283900E5898FF3340AB73593EE59 /* NSValueTransformer+AWSMTLPredefinedTransformerAdditions.m */,
 				93669B3479F7727A0801BA38B26EE717 /* Support Files */,
 			);
-			name = AWSCore;
 			path = AWSCore;
 			sourceTree = "<group>";
 		};
@@ -2093,7 +2074,6 @@
 				6193C27D0DAA21872846A704FB0A4EDB /* LMFeedLikeViewController.swift */,
 				DFB53FEA05F72F30E669F46BACA40239 /* LMFeedLikeViewModel.swift */,
 			);
-			name = LikeScreen;
 			path = LikeScreen;
 			sourceTree = "<group>";
 		};
@@ -2102,7 +2082,6 @@
 			children = (
 				0BA6C1654244003E7836D254C469E597 /* LMFeedReportViewCell.swift */,
 			);
-			name = ReportWidgets;
 			path = ReportWidgets;
 			sourceTree = "<group>";
 		};
@@ -2111,7 +2090,6 @@
 			children = (
 				6648FD3EB1ED2454E241D06D2AC91054 /* LMFeedDeletePostWidget.swift */,
 			);
-			name = DeletePostWidget;
 			path = DeletePostWidget;
 			sourceTree = "<group>";
 		};
@@ -2137,7 +2115,6 @@
 				B183509FA5D86C599DECD2050C2774A4 /* LMFeedPostDetailViewController.swift */,
 				3B545A694BC6142265302628F2377C48 /* LMFeedPostDetailViewModel.swift */,
 			);
-			name = PostDetail;
 			path = PostDetail;
 			sourceTree = "<group>";
 		};
@@ -2204,7 +2181,6 @@
 				DD791DDF461C826083ADB59CF5D68A3B /* AWSS3TransferUtilityTasks.m */,
 				E0DD32058DC32D8064BD6B5CE69D7E36 /* Support Files */,
 			);
-			name = AWSS3;
 			path = AWSS3;
 			sourceTree = "<group>";
 		};
@@ -2214,7 +2190,6 @@
 				B8B01F530607F857B87072D778C7DE17 /* LMFeedEditPostViewController.swift */,
 				8DB133DD9347D306374E4F15F99029D3 /* LMFeedEditPostViewModel.swift */,
 			);
-			name = EditPost;
 			path = EditPost;
 			sourceTree = "<group>";
 		};
@@ -2253,7 +2228,6 @@
 				1F04A1D03F4268E50BF20A1383C277E7 /* Frameworks */,
 				E807E7E03EAB5EA33BECACA9D95151FB /* Support Files */,
 			);
-			name = LikeMindsFeed;
 			path = LikeMindsFeed;
 			sourceTree = "<group>";
 		};
@@ -2263,7 +2237,6 @@
 				F39B8A5CF0CBB4E6D9A99E49D9A4E60D /* LMFeedEmptyNotificationView.swift */,
 				54AA9B2592EA4BF5891E97171388CDCD /* LMFeedNotificationView.swift */,
 			);
-			name = NotificationView;
 			path = NotificationView;
 			sourceTree = "<group>";
 		};
@@ -2273,7 +2246,6 @@
 				D4D769BF2098479E30B85C4922B6794E /* LMFeedTaggingTextView.swift */,
 				FF22B08106557ACF3578D393B9407D5B /* LMFeedTaggingUserTableCell.swift */,
 			);
-			name = TaggingView;
 			path = TaggingView;
 			sourceTree = "<group>";
 		};
@@ -2292,13 +2264,11 @@
 				AF91FDFF6C15731723F7EF60AD8B5C24 /* LMFeedNoCommentWidget.swift */,
 				D415CD4268B6C44E7C85F4A4A8D986CE /* LMFeedNoPostWidget.swift */,
 				0513A929EF623C4B5C9E14F0659399F1 /* LMPostWidgetTableViewCell.swift */,
-				AF35DB7AF9131109FD45077FA9566A40 /* LMFeedPostDetailCommentCell */,
 				71734E434D902B0B8CBA354BC512481A /* LMFeedPostDocumentCell */,
 				31CA2F5FFDE2D36072B991194799F87B /* LMFeedPostHeaderFooter */,
 				7B6E6010F297CEA840A4568AB8354211 /* LMFeedPostLinkCell */,
 				368C8F65239324A57D5865E034A444FD /* LMFeedPostMediaCell */,
 			);
-			name = PostWidget;
 			path = PostWidget;
 			sourceTree = "<group>";
 		};
@@ -2310,7 +2280,7 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		AF35DB7AF9131109FD45077FA9566A40 /* LMFeedPostDetailCommentCell */ = {
+		AF35DB7AF9131109FD45077FA9566A40 /* CommentCells */ = {
 			isa = PBXGroup;
 			children = (
 				FE37C155C6625204C5C1833FA2FD613E /* LMFeedPostDetailCommentCell.swift */,
@@ -2319,8 +2289,7 @@
 				73DEAE0350FFAC04717E04058E595C72 /* LMFeedPostDetailTotalCommentCell.swift */,
 				F7FD8418211D0A47B7B9AB77F7A772E7 /* LMFeedPostMoreRepliesCell.swift */,
 			);
-			name = LMFeedPostDetailCommentCell;
-			path = LMFeedPostDetailCommentCell;
+			path = CommentCells;
 			sourceTree = "<group>";
 		};
 		B17A1CAE4846F7E4874CB9E670C84135 /* UI */ = {
@@ -2330,6 +2299,7 @@
 				8E6C8D50B8E30E74C9B9BDECFDE5B1C3 /* DeletePostWidget */,
 				6A4E584993802E40F40112D4F3E67BB0 /* LikeUserView */,
 				A44CD5ACBEAE6B6E811D51067A1FC7C7 /* NotificationView */,
+				E505D51F2B79F5440033C947 /* PostDetailWidgets */,
 				AAFD1EEC20534F97EB2D0241F2A036EE /* PostWidget */,
 				8C6F0995A1B1C7B942D1805D0C0E5F6F /* ReportWidgets */,
 				14796D60674DD9BFD2A30C252A74FE7E /* SharedComponents */,
@@ -2346,7 +2316,6 @@
 				71EA2F8D9456DC03EFFE36F1DE362B1B /* DisplayScreen */,
 				827E73B8048B7363F7FF0528053C8A21 /* SelectionScreen */,
 			);
-			name = TopicFeed;
 			path = TopicFeed;
 			sourceTree = "<group>";
 		};
@@ -2414,7 +2383,6 @@
 				849966C0251B169AF52459ED3D279F76 /* LMFeedTopicSelectionViewModel.swift */,
 				5AF9DBE9E93469E67C3EFA11E0877486 /* ViewDataModel */,
 			);
-			name = TopicSelection;
 			path = TopicSelection;
 			sourceTree = "<group>";
 		};
@@ -2462,7 +2430,6 @@
 				E025DB21458B6DEA435228ECAFEE3EA8 /* LMFeedReportContentViewController.swift */,
 				E4F7F00F5E511E62A225D9E1F0F43445 /* LMFeedReportContentViewModel.swift */,
 			);
-			name = ReportPost;
 			path = ReportPost;
 			sourceTree = "<group>";
 		};
@@ -2513,6 +2480,41 @@
 			path = "lm-feedUI-iOS/Source/Classes/Constants";
 			sourceTree = "<group>";
 		};
+		E505D51F2B79F5440033C947 /* PostDetailWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				AF35DB7AF9131109FD45077FA9566A40 /* CommentCells */,
+				E505D5202B79F59C0033C947 /* DocumentCell */,
+				E505D5232B79F5FC0033C947 /* LinkCell */,
+				E505D5262B79F6330033C947 /* MediaCell */,
+			);
+			path = PostDetailWidgets;
+			sourceTree = "<group>";
+		};
+		E505D5202B79F59C0033C947 /* DocumentCell */ = {
+			isa = PBXGroup;
+			children = (
+				E505D5212B79F5C70033C947 /* LMFeedPostDetailDocumentCell.swift */,
+			);
+			path = DocumentCell;
+			sourceTree = "<group>";
+		};
+		E505D5232B79F5FC0033C947 /* LinkCell */ = {
+			isa = PBXGroup;
+			children = (
+				E505D5242B79F61D0033C947 /* LMFeedPostDetailLinkCell.swift */,
+			);
+			path = LinkCell;
+			sourceTree = "<group>";
+		};
+		E505D5262B79F6330033C947 /* MediaCell */ = {
+			isa = PBXGroup;
+			children = (
+				E505D5272B79F64D0033C947 /* LMFeedPostDetailMediaCell.swift */,
+			);
+			path = MediaCell;
+			sourceTree = "<group>";
+		};
 		E5FEE1E89C6C73FF7CBA2B8428B3E12C /* Alamofire */ = {
 			isa = PBXGroup;
 			children = (
@@ -2555,7 +2557,6 @@
 				4E47200ADEEBD600346E0099F69E3CCF /* Validation.swift */,
 				864F57605D31D4EE6E9266CDE6B0412D /* Support Files */,
 			);
-			name = Alamofire;
 			path = Alamofire;
 			sourceTree = "<group>";
 		};
@@ -3085,7 +3086,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F31835317DEE61A6153E7A9A5931DB3 /* LMFeedUIAssetsCatalog.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3160,6 +3160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F88D788017300B65B566571E51EEA12 /* lm-feedUI-iOS-lm-feedUI-iOS in Resources */,
+				E505D51E2B78F3680033C947 /* LMFeedUIAssetsCatalog.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3511,8 +3512,10 @@
 				E0BDA17E692C63ED214B41EA3605C1DB /* LMFeedCreatePostDocumentPreviewCell.swift in Sources */,
 				229A04BB6EF2205DC455F7798B2AB02B /* LMFeedCreatePostHeaderView.swift in Sources */,
 				88BCDCDD12A0DB13C6E7572BD174C9E9 /* LMFeedDeletePostWidget.swift in Sources */,
+				E505D5252B79F61D0033C947 /* LMFeedPostDetailLinkCell.swift in Sources */,
 				428200AA069D3890749370223602CD2C /* LMFeedDocumentPreview.swift in Sources */,
 				77DA743FBF6B62DA021D411850AAE276 /* LMFeedEmptyNotificationView.swift in Sources */,
+				E505D5282B79F64D0033C947 /* LMFeedPostDetailMediaCell.swift in Sources */,
 				215ADE3F94D98015E6984AD589070966 /* LMFeedImageCollectionCell.swift in Sources */,
 				2DEFE06BDDFD013BCA7F23F3A33567E8 /* LMFeedLikeUserTableCell.swift in Sources */,
 				EAB98E5D766245CE9326CC073D45B66F /* LMFeedLinkPreview.swift in Sources */,
@@ -3537,6 +3540,7 @@
 				48FE7FE7635D180F8E0E38220226E481 /* LMFeedTopicEditIconViewCell.swift in Sources */,
 				0BE6E1831B305C0193F0886B0D19802A /* LMFeedTopicEditViewCell.swift in Sources */,
 				9EEC989847123A3BA1C9D8E3C3035284 /* LMFeedTopicSelectionCell.swift in Sources */,
+				E505D5222B79F5C70033C947 /* LMFeedPostDetailDocumentCell.swift in Sources */,
 				8A3EDC9D65E3CC3A93CFE0840E0F87D7 /* LMFeedTopicSelectionView.swift in Sources */,
 				2A3D8B6AAD58260BC41213877239D2CF /* LMFeedTopicView.swift in Sources */,
 				17A8727946C2D8AEF30CC5F51E7B24E9 /* LMFeedTopicViewCell.swift in Sources */,

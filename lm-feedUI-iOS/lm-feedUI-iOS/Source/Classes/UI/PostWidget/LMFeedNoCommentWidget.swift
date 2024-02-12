@@ -16,14 +16,14 @@ open class LMFeedNoCommentWidget: LMTableViewHeaderFooterView {
     
     open private(set) lazy var titleLabel: LMLabel = {
         let label =  LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.text = "Hello"
+        label.text = "No Comments Found"
         label.textColor = Appearance.shared.colors.gray1
         return label
     }()
     
     open private(set) lazy var subtitleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.text = "No Way"
+        label.text = "Be the first one to comment"
         label.textColor = Appearance.shared.colors.gray51
         return label
     }()

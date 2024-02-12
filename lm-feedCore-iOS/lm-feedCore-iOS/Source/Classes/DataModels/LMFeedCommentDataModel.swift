@@ -31,7 +31,7 @@ public extension LMFeedCommentDataModel {
         guard let commentID = comment.id,
               let userUUID = user.sdkClientInfo?.uuid,
               let userName = user.name,
-        let commentText = comment.text,
+              let commentText = comment.text?.trimmingCharacters(in: .whitespacesAndNewlines),
         !commentText.isEmpty else { return nil }
         
         self.commentID = commentID

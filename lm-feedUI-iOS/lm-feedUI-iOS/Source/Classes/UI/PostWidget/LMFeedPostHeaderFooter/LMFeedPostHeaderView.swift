@@ -180,6 +180,9 @@ open class LMFeedPostHeaderView: LMView {
     open override func setupLayouts() {
         super.setupLayouts()
         
+        pinSubView(subView: contentContainerView, padding: .init(top: 4, left: 0, bottom: -4, right: 0))
+        
+        
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: contentContainerView.topAnchor, constant: 8),
             imageView.bottomAnchor.constraint(equalTo: contentContainerView.bottomAnchor, constant: -8),
@@ -188,7 +191,7 @@ open class LMFeedPostHeaderView: LMView {
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 1),
             imageView.heightAnchor.constraint(equalToConstant: Constants.shared.number.imageSize),
             
-            outerStackView.bottomAnchor.constraint(greaterThanOrEqualTo: imageView.bottomAnchor),
+            outerStackView.bottomAnchor.constraint(lessThanOrEqualTo: imageView.bottomAnchor),
             outerStackView.topAnchor.constraint(greaterThanOrEqualTo: imageView.topAnchor),
             outerStackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16),
             outerStackView.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor, constant: -16),
@@ -202,12 +205,7 @@ open class LMFeedPostHeaderView: LMView {
             
             pinButton.widthAnchor.constraint(equalToConstant: 24),
             pinButton.topAnchor.constraint(equalTo: outerStackView.topAnchor),
-            pinButton.bottomAnchor.constraint(equalTo: outerStackView.bottomAnchor),
-            
-            contentContainerView.topAnchor.constraint(equalTo: topAnchor),
-            contentContainerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            contentContainerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            contentContainerView.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor)
+            pinButton.bottomAnchor.constraint(equalTo: outerStackView.bottomAnchor)
         ])
         
         pinButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
