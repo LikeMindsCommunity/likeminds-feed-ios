@@ -212,6 +212,12 @@ open class LMFeedCreatePostViewController: LMViewController {
         super.setupLayouts()
         
         view.pinSubView(subView: containerView)
+        
+        containerView.addConstraint(top: (view.safeAreaLayoutGuide.topAnchor, 0),
+                                    bottom: (view.safeAreaLayoutGuide.bottomAnchor, 0),
+                                    leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
+                                    trailing: (view.safeAreaLayoutGuide.trailingAnchor, 0))
+        
         containerView.pinSubView(subView: containerStackView)
         scrollView.pinSubView(subView: scrollStackView)
         headerView.setHeightConstraint(with: 64)
@@ -296,6 +302,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
+        setNavigationTitleAndSubtitle(with: "Create a Post", subtitle: nil)
         setupAddMedia()
         setupInitialView()
         setupProfileData()

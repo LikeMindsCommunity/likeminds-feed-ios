@@ -64,8 +64,8 @@ public extension LMFeedPostListViewModel {
             isLastPostReached = false
             isFetchingFeed = false
             currentPage = 1
-            postList.removeAll()
-            delegate?.showActivityLoader()
+            postList.removeAll(keepingCapacity: true)
+//            delegate?.showActivityLoader()
         } else {
             delegate?.showHideFooterLoader(isShow: true)
         }
@@ -84,7 +84,7 @@ public extension LMFeedPostListViewModel {
             guard response.success,
                   let posts = response.data?.posts,
                   let users = response.data?.users else {
-                // TODO: Error
+                convertToViewData()
                 return
             }
             

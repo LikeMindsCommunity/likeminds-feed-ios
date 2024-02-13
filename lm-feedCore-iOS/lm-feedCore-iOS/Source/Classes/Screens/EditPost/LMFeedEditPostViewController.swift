@@ -152,7 +152,7 @@ open class LMFeedEditPostViewController: LMViewController {
         scrollStackView.setHeightConstraint(with: 1000, priority: .defaultLow)
         headerView.setHeightConstraint(with: 64)
         
-        inputTextViewHeightConstraint = inputTextView.setHeightConstraint(with: 40)
+        inputTextViewHeightConstraint = inputTextView.setHeightConstraint(with: 80)
         
         taggingView.addConstraint(top: (inputTextView.bottomAnchor, 0),
                                   leading: (inputTextView.leadingAnchor, 0),
@@ -190,7 +190,6 @@ open class LMFeedEditPostViewController: LMViewController {
     open override func setupAppearance() {
         super.setupAppearance()
         view.backgroundColor = Appearance.shared.colors.white
-        topicView.isHidden = true
     }
     
     
@@ -293,7 +292,7 @@ extension LMFeedEditPostViewController: LMFeedTaggingTextViewProtocol {
         let newSize = inputTextView.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
         
         inputTextView.isScrollEnabled = newSize.height > textInputMaximumHeight
-        inputTextViewHeightConstraint?.constant = min(newSize.height, textInputMaximumHeight)
+        inputTextViewHeightConstraint?.constant = min(max(newSize.height, 80), textInputMaximumHeight)
         
         viewmodel?.handleLinkDetection(in: inputTextView.text)
         saveButton.isEnabled = !inputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !documentCells.isEmpty || !mediaCells.isEmpty
@@ -350,7 +349,7 @@ extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {
     
     public func navigateToTopicView(with topics: [String]) {
         do {
-            let viewcontroller = try LMFeedTopicSelectionViewModel.createModule(topicEnabledState: false, isShowAllTopicsButton: false, delegate: self)
+            let viewcontroller = try LMFeedTopicSelectionViewModel.createModule(topicEnabledState: false, isShowAllTopicsButton: false, selectedTopicIds: topics, delegate: self)
             navigationController?.pushViewController(viewcontroller, animated: true)
         } catch let error {
             print(error.localizedDescription)

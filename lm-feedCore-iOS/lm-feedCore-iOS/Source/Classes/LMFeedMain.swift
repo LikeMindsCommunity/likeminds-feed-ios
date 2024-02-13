@@ -13,8 +13,8 @@ public class LMFeedMain {
     private init() {}
     
     public static var shared: LMFeedMain = .init()
-    public static var analytics: LMFeedAnalyticsProtocol = LMFeedAnalyticsTracker()
-    public static private(set) var isInitialized: Bool = false
+    static var analytics: LMFeedAnalyticsProtocol = LMFeedAnalyticsTracker()
+    static private(set) var isInitialized: Bool = false
     
     public func initiateLikeMindsFeed(apiKey: String, username: String, userId: String, completionHandler: ((Result<Bool, LMFeedError>) -> Void)?) {
         let request = InitiateUserRequest.builder()

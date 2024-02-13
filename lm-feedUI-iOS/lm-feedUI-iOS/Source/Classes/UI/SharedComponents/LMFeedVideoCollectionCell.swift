@@ -33,7 +33,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     
     
     // MARK: Data Variables
-    private var videoPlayer: AVPlayerViewController?
+    private weak var videoPlayer: AVPlayerViewController?
     public var crossButtonAction: ((String) -> Void)?
     public var videoURL: String?
     
@@ -59,17 +59,11 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
-            crossButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
-            crossButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
-            crossButton.heightAnchor.constraint(equalToConstant: 24),
-            crossButton.widthAnchor.constraint(equalTo: crossButton.heightAnchor)
-        ])
+        contentView.pinSubView(subView: containerView)
+        crossButton.addConstraint(top: (containerView.topAnchor, 16),
+                                  trailing: (containerView.trailingAnchor, -16))
+        crossButton.setHeightConstraint(with: 24)
+        crossButton.setWidthConstraint(with: crossButton.heightAnchor)
     }
     
     
@@ -98,17 +92,16 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         self.videoPlayer = videoPlayer
         self.videoPlayer?.showsPlaybackControls = false
         self.videoPlayer?.allowsPictureInPicturePlayback = false
-        self.crossButtonAction = crossButtonAction
         videoURL = data.videoURL
         
-        containerView.addSubview(videoPlayer.view)
+        self.crossButtonAction = crossButtonAction
+        crossButton.isHidden = crossButtonAction == nil
+        if crossButtonAction != nil {
+            containerView.bringSubviewToFront(crossButton)
+        }
         
-        NSLayoutConstraint.activate([
-            videoPlayer.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            videoPlayer.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            videoPlayer.view.topAnchor.constraint(equalTo: containerView.topAnchor),
-            videoPlayer.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-        ])
+        containerView.addSubview(videoPlayer.view)
+        containerView.pinSubView(subView: videoPlayer.view)
         
         guard let url = URL(string: data.videoURL) else { return }
         DispatchQueue.global(qos: .background).async {
@@ -118,12 +111,6 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
                 self?.videoPlayer?.player = player
                 self?.playVideo()
             }
-        }
-        
-        self.crossButtonAction = crossButtonAction
-        crossButton.isHidden = crossButtonAction == nil
-        if crossButtonAction != nil {
-            containerView.bringSubviewToFront(crossButton)
         }
     }
     

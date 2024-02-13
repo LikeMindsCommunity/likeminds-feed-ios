@@ -52,10 +52,10 @@ open class LMFeedPostListViewController: LMViewController {
     public var viewModel: LMFeedPostListViewModel?
     public weak var delegate: LMFeedPostListVCFromProtocol?
     
+    
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
-        
         view.addSubview(tableView)
     }
     
@@ -123,7 +123,7 @@ open class LMFeedPostListViewController: LMViewController {
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tableView.visibleCells.forEach { cell in
-            (cell as? LMFeedPostMediaCell)?.resetPlayerInstance()
+            (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
         }
     }
 }
@@ -161,6 +161,9 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         delegate?.tableViewScrolled(scrollView)
+        tableView.visibleCells.forEach { cell in
+            (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
+        }
     }
 }
 

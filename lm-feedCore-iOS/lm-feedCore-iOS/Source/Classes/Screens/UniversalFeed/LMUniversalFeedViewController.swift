@@ -272,7 +272,7 @@ open class LMUniversalFeedViewController: LMViewController {
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: Constants.shared.images.menuIcon, style: .plain, target: self, action: #selector(didTapNavigationMenuButton))
         navigationController?.navigationBar.backgroundColor = Appearance.shared.colors.navigationBackgroundColor
-        setNavigationTitleAndSubtitle(with: Constants.shared.strings.communityHood, subtitle: nil)
+        setNavigationTitleAndSubtitle(with: "Sample App", subtitle: nil, alignment: .leading)
         
         navigationItem.rightBarButtonItems = [UIBarButtonItem(image: Constants.shared.images.personIcon, style: .plain, target: nil, action: nil),
                                               UIBarButtonItem(image: Constants.shared.images.notificationBell, style: .plain, target: self, action: #selector(didTapNotificationButton))]

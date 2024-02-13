@@ -154,18 +154,9 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         mediaCollectionView.scrollToItem(at: .init(row: sender.currentPage, section: .zero), at: .centeredHorizontally, animated: true)
     }
     
-    open func tableViewScrolled(isPlay: Bool) {
+    open func tableViewScrolled() {
         for case let cell as LMFeedVideoCollectionCell in mediaCollectionView.visibleCells {
-            if let indexPath = mediaCollectionView.indexPath(for: cell),
-               let itemRect = mediaCollectionView.layoutAttributesForItem(at: indexPath)?.frame{
-                let convertedRect = mediaCollectionView.convert(itemRect, to: mediaCollectionView.superview)
-                
-                if mediaCollectionView.bounds.contains(convertedRect) {
-                    cell.playVideo()
-                } else {
-                    cell.pauseVideo()
-                }
-            }
+            cell.pauseVideo()
         }
     }
     
@@ -200,11 +191,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     // MARK: Reset Player
     open override func prepareForReuse() {
         super.prepareForReuse()
-        resetPlayerInstance()
-    }
-    
-    open func resetPlayerInstance() {
-        videoPlayer.player = nil
+        tableViewScrolled()
     }
 }
 

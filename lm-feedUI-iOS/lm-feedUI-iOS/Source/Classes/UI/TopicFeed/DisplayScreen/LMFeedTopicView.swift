@@ -91,24 +91,9 @@ open class LMFeedTopicView: LMView {
     
     open override func setupLayouts() {
         super.setupLayouts()
-        
-        NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            
-            stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
-            stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            
-            sepratorView.heightAnchor.constraint(equalToConstant: 1)
-        ])
-        
-        let heightConstraint = NSLayoutConstraint(item: collectionView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 10)
-        heightConstraint.priority = .defaultLow
-        heightConstraint.isActive = true
+        pinSubView(subView: containerView)
+        containerView.pinSubView(subView: stackView, padding: .init(top: 8, left: 0, bottom: 0, right: 0))
+        sepratorView.setHeightConstraint(with: 1)
     }
     
     

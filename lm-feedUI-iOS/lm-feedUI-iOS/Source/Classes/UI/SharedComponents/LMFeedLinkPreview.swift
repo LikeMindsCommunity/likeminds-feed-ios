@@ -158,8 +158,8 @@ open class LMFeedLinkPreview: LMView {
         super.setupAppearance()
         containerView.layer.cornerRadius = 16
         containerView.layer.borderWidth = 1
-        containerView.layer.borderColor = Appearance.shared.colors.gray102.cgColor
-        sepratorView.backgroundColor = Appearance.shared.colors.gray102
+        containerView.layer.borderColor = Appearance.shared.colors.sepratorColor.cgColor
+        sepratorView.backgroundColor = Appearance.shared.colors.sepratorColor
         crossButton.layer.cornerRadius = crossButton.frame.height / 2
     }
     
