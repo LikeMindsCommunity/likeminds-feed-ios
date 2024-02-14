@@ -117,7 +117,7 @@ open class LMFeedPostListViewController: LMViewController {
         viewModel?.getFeed()
         
         // Analytics
-        LMFeedMain.analytics.trackEvent(for: .feedOpened, eventProperties: ["feed_type": "universal_feed"])
+        LMFeedMain.analytics?.trackEvent(for: .feedOpened, eventProperties: ["feed_type": "universal_feed"])
     }
     
     open override func viewWillDisappear(_ animated: Bool) {

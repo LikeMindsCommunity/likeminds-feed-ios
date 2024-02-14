@@ -12,7 +12,7 @@
   },
   "source": {
     "git": "git@github.com:LikeMindsCommunity/likeminds-feed-ios.git",
-    "tag": "MyAmazingFramework_v0.1.0"
+    "tag": "v0.1.0"
   },
   "source_files": "lm-feedUI-iOS/Source/Classes/**/*.swift",
   "resource_bundles": {

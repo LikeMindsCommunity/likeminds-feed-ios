@@ -26,7 +26,8 @@ class ViewController: UIViewController {
            !apiKey.isEmpty,
            let username = LocalPreferences.userObj?.name,
            let uuid = LocalPreferences.userObj?.sdkClientInfo?.uuid {
-            LMFeedMain.shared.initiateLikeMindsFeed(apiKey: apiKey, username: username, userId: uuid) { [weak self] result in
+            LMFeedMain.shared.setupLikeMindsFeed(apiKey: apiKey, analytics: DummyAnalytics())
+            LMFeedMain.shared.initiateLikeMindsFeed(username: username, userId: uuid) { [weak self] result in
                 switch result {
                 case .success(_):
                     guard let viewController = LMUniversalFeedViewModel.createModule() else { return }
@@ -57,7 +58,7 @@ class ViewController: UIViewController {
             userId = "userId"
         }
         
-        LMFeedMain.shared.initiateLikeMindsFeed(apiKey: apiKey, username: username, userId: userId) { [weak self] result in
+        LMFeedMain.shared.initiateLikeMindsFeed(username: username, userId: userId) { [weak self] result in
             switch result {
             case .success(_):
                 guard let viewController = LMUniversalFeedViewModel.createModule() else { return }

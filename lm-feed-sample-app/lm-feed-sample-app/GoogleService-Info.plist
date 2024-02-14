@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDvMaW9c8XJpYqQx4dVjirJTSG7b04_y8o</string>
+	<key>GCM_SENDER_ID</key>
+	<string>38533399823</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.likeminds.lm-feed-sample-app</string>
+	<key>PROJECT_ID</key>
+	<string>feed-sample-ios</string>
+	<key>STORAGE_BUCKET</key>
+	<string>feed-sample-ios.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<true/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:38533399823:ios:1bd0c525cc0a06a69baa7a</string>
+</dict>
+</plist>

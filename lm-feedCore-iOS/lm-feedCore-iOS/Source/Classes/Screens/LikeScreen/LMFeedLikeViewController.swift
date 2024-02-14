@@ -55,7 +55,7 @@ open class LMFeedLikeViewController: LMViewController {
         setNavigationTitleAndSubtitle(with: "Likes", subtitle: "0 Likes")
         
         // Analytics
-        LMFeedMain.analytics.trackEvent(for: .postLikeListOpened, eventProperties: ["post_id": viewModel?.postID ?? ""])
+        LMFeedMain.analytics?.trackEvent(for: .postLikeListOpened, eventProperties: ["post_id": viewModel?.postID ?? ""])
     }
     
     open func didTapUser(uuid: String) {
