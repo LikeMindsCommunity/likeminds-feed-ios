@@ -1,0 +1,49 @@
+{
+  "name": "lm-feedCore-iOS",
+  "summary": "Masterpiece in Making",
+  "homepage": "https://likeminds.community/",
+  "version": "0.1.0",
+  "license": {
+    "type": "MIT",
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "Devansh Mohata": "devansh.mohata@likeminds.community"
+  },
+  "source": {
+    "git": "git@github.com:LikeMindsCommunity/likeminds-feed-ios.git",
+    "tag": "MyAmazingFramework_v0.1.0"
+  },
+  "source_files": "lm-feedCore-iOS/Source/**/*.swift",
+  "resource_bundles": {
+    "lm-feedCore-iOS": [
+      "lm-feedCore-iOS/Source/**/*.{xcassets}"
+    ]
+  },
+  "platforms": {
+    "ios": "13.0"
+  },
+  "swift_versions": "5.0",
+  "requires_arc": true,
+  "dependencies": {
+    "AWSCore": [
+
+    ],
+    "AWSCognito": [
+
+    ],
+    "AWSS3": [
+
+    ],
+    "lm-feedUI-iOS": [
+
+    ],
+    "BSImagePicker": [
+
+    ],
+    "LikeMindsFeed": [
+
+    ]
+  },
+  "swift_version": "5.0"
+}

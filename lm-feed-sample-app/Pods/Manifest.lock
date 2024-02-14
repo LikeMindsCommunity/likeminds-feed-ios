@@ -1,0 +1,55 @@
+PODS:
+  - Alamofire (5.7.1)
+  - AWSCognito (2.19.1):
+    - AWSCore (= 2.19.1)
+  - AWSCore (2.19.1)
+  - AWSS3 (2.19.1):
+    - AWSCore (= 2.19.1)
+  - BSImagePicker (3.3.1)
+  - Kingfisher (7.10.1)
+  - LikeMindsFeed (1.7.0):
+    - Alamofire (~> 5.7.1)
+  - lm-feedCore-iOS (0.1.0):
+    - AWSCognito
+    - AWSCore
+    - AWSS3
+    - BSImagePicker
+    - LikeMindsFeed
+    - lm-feedUI-iOS
+  - lm-feedUI-iOS (0.1.0):
+    - Kingfisher (~> 7.0)
+
+DEPENDENCIES:
+  - lm-feedCore-iOS (from `../lm-feedCore-iOS`)
+  - lm-feedUI-iOS (from `../lm-feedUI-iOS`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - AWSCognito
+    - AWSCore
+    - AWSS3
+    - BSImagePicker
+    - Kingfisher
+    - LikeMindsFeed
+
+EXTERNAL SOURCES:
+  lm-feedCore-iOS:
+    :path: "../lm-feedCore-iOS"
+  lm-feedUI-iOS:
+    :path: "../lm-feedUI-iOS"
+
+SPEC CHECKSUMS:
+  Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
+  AWSCognito: f50de600804941d083af37a7568905f31a774727
+  AWSCore: 55c154ae27efc5c98bdc30a0eeea5a35d10a2ab5
+  AWSS3: 2272253b098d07803af8dd20ce6ce7302bcffb47
+  BSImagePicker: 0fe04b574d4d6b81093785d2af6c26227efc8428
+  Kingfisher: bc5abe80a8e0144537ef1dd5a0b2621b04f7f439
+  LikeMindsFeed: 2980dfc0439a131109d9be4c29aa92254dd10b33
+  lm-feedCore-iOS: 2241faa21bbad1fe2e133ea49806a3942e9feeac
+  lm-feedUI-iOS: 5565c8f34ce1032e23907397359d31c633270f44
+
+PODFILE CHECKSUM: 0f67f931bcc06886edef9f2324baa19e7e6b1a64
+
+COCOAPODS: 1.15.2

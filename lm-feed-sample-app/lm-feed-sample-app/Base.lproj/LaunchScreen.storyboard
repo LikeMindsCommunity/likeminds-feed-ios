@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z4h-0z-Mhk">
+                                <rect key="frame" x="16" y="267" width="361" height="198"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LM_Logo" translatesAutoresizingMaskIntoConstraints="NO" id="GZ9-AN-chr">
+                                        <rect key="frame" x="0.0" y="0.0" width="361" height="131"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Feed Sample App" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ouK-29-TjC">
+                                        <rect key="frame" x="38.333333333333343" y="155" width="284.33333333333326" height="43"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="36"/>
+                                        <color key="textColor" name="AccentColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="ouK-29-TjC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Z4h-0z-Mhk" secondAttribute="leading" constant="16" id="3pc-v0-cgi"/>
+                                    <constraint firstAttribute="trailing" secondItem="GZ9-AN-chr" secondAttribute="trailing" id="FGo-ah-aw1"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ouK-29-TjC" secondAttribute="trailing" constant="16" id="HM1-gN-p5f"/>
+                                    <constraint firstAttribute="bottom" secondItem="ouK-29-TjC" secondAttribute="bottom" id="KKP-AO-rb0"/>
+                                    <constraint firstItem="ouK-29-TjC" firstAttribute="top" secondItem="GZ9-AN-chr" secondAttribute="bottom" constant="24" id="MkX-Ev-ZHw"/>
+                                    <constraint firstItem="GZ9-AN-chr" firstAttribute="leading" secondItem="Z4h-0z-Mhk" secondAttribute="leading" id="jP4-ar-Rvh"/>
+                                    <constraint firstItem="ouK-29-TjC" firstAttribute="centerX" secondItem="Z4h-0z-Mhk" secondAttribute="centerX" id="sph-Vf-pwS"/>
+                                    <constraint firstItem="GZ9-AN-chr" firstAttribute="top" secondItem="Z4h-0z-Mhk" secondAttribute="top" id="vHT-fD-o4t"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Z4h-0z-Mhk" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="16" id="RHM-LL-S8L"/>
+                            <constraint firstAttribute="trailing" secondItem="Z4h-0z-Mhk" secondAttribute="trailing" constant="16" id="Wmx-he-69z"/>
+                            <constraint firstItem="Z4h-0z-Mhk" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="v6a-z4-LXk"/>
+                            <constraint firstItem="Z4h-0z-Mhk" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-60" id="wHG-yp-arx"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="LM_Logo" width="500" height="131"/>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.5372549295425415" blue="0.48235297203063965" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

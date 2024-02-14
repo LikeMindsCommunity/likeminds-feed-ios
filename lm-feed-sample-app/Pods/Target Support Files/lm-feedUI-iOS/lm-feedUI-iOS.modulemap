@@ -1,0 +1,6 @@
+framework module lm_feedUI_iOS {
+  umbrella header "lm-feedUI-iOS-umbrella.h"
+
+  export *
+  module * { export * }
+}
