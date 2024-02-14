@@ -5,7 +5,7 @@ Pod::Spec.new do |spec|
   spec.version      = '0.1.0'
   spec.license      = { :type => 'MIT', :file => '../LICENSE' }
   spec.authors      = { 'Devansh Mohata' => 'devansh.mohata@likeminds.community' }
-  spec.source       = { :git => 'git@github.com:LikeMindsCommunity/likeminds-feed-ios.git', :tag => "MyAmazingFramework_v#{spec.version}" }
+  spec.source       = { :git => 'git@github.com:LikeMindsCommunity/likeminds-feed-ios.git', :tag => "v#{spec.version}" }
   spec.source_files = 'lm-feedUI-iOS/Source/Classes/**/*.swift'
   spec.resource_bundles = {
      'lm-feedUI-iOS' => ['lm-feedUI-iOS/Source/Assets/*.{xcassets}']

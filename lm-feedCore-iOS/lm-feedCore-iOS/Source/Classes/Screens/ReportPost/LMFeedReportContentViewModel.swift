@@ -132,21 +132,21 @@ public final class LMFeedReportContentViewModel {
     func handleTrackEvent(reason: String) {
         switch contentType {
         case .post:
-            LMFeedMain.analytics.trackEvent(for: .postReported, eventProperties: [
+            LMFeedMain.analytics?.trackEvent(for: .postReported, eventProperties: [
                 "created_by_id": creatorUUID,
                 "post_id": entityID,
                 "report_reason": reason,
                 "post_type": "text"
             ])
         case .comment:
-            LMFeedMain.analytics.trackEvent(for: .commentReported, eventProperties: [
+            LMFeedMain.analytics?.trackEvent(for: .commentReported, eventProperties: [
                 "post_id": postID,
                 "user_id": creatorUUID,
                 "comment_id": entityID,
                 "reason": reason
             ])
         case .reply:
-            LMFeedMain.analytics.trackEvent(for: .commentReplyReported, eventProperties: [
+            LMFeedMain.analytics?.trackEvent(for: .commentReplyReported, eventProperties: [
                 "post_id": postID,
                 "user_id": creatorUUID,
                 "comment_id": commentID ?? "",

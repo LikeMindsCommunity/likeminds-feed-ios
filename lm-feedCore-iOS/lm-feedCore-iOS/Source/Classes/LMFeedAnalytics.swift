@@ -111,15 +111,3 @@ public enum LMFeedAnalyticsEventName: CustomStringConvertible {
 public protocol LMFeedAnalyticsProtocol {
     func trackEvent(for eventName: LMFeedAnalyticsEventName, eventProperties: [String: AnyHashable])
 }
-
-final class LMFeedAnalyticsTracker: LMFeedAnalyticsProtocol {
-    public func trackEvent(for eventName: LMFeedAnalyticsEventName, eventProperties: [String : AnyHashable]) {
-        let track = """
-            ========Event Tracker========
-        Event Name: \(eventName.description)
-        Event Properties: \(eventProperties)
-            =============================
-        """
-        print(track)
-    }
-}

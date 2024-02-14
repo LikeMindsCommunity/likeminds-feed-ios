@@ -5,11 +5,26 @@
 //  Created by Devansh Mohata on 04/01/24.
 //
 
+import FirebaseCore
+import FirebaseMessaging
+import lm_feedCore_iOS
 import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .sound, .alert], completionHandler: {(granted, error) in
+            if granted {
+                DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+            } else{
+                print("Notification permissions not granted")
+            }
+        })
         return true
     }
 
@@ -19,4 +34,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) { }
+}
+
+
+// MARK: UNUserNotificationCenterDelegate
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+        LMFeedMain.shared.didReceiveNotification(response.notification.request) { result in 
+            print(result)
+        }
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
+        LMFeedMain.shared.didReceiveNotification(notification.request) { result in
+            print(result)
+        }
+        
+        return .badge
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let token = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+        print(token)
+    }
+}
+
+
+// MARK: Message
+extension AppDelegate: MessagingDelegate {
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        print("FCM Token: \(fcmToken ?? "")")
+    }
 }

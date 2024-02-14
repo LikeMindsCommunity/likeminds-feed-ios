@@ -5,7 +5,7 @@ Pod::Spec.new do |spec|
   spec.version      = '0.1.0'
   spec.license      = { :type => 'MIT', :file => '../LICENSE' }
   spec.authors      = { 'Devansh Mohata' => 'devansh.mohata@likeminds.community' }
-  spec.source       = { :git => 'git@github.com:LikeMindsCommunity/likeminds-feed-ios.git', :tag => "MyAmazingFramework_v#{spec.version}" }
+  spec.source       = { :git => 'git@github.com:LikeMindsCommunity/likeminds-feed-ios.git', :tag => "v#{spec.version}" }
   spec.source_files = 'lm-feedCore-iOS/Source/**/*.swift'
   spec.resource_bundles = {
      'lm-feedCore-iOS' => ['lm-feedCore-iOS/Source/**/*.{xcassets}']
@@ -17,7 +17,9 @@ Pod::Spec.new do |spec|
   spec.dependency "AWSCore"
   spec.dependency "AWSCognito"
   spec.dependency "AWSS3"
-  spec.dependency 'lm-feedUI-iOS'
   spec.dependency 'BSImagePicker'
+  spec.dependency "FirebaseCore"
+  spec.dependency "FirebaseMessaging"
   spec.dependency 'LikeMindsFeed'
+  spec.dependency 'lm-feedUI-iOS'
 end
