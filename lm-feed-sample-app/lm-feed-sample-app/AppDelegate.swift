@@ -13,18 +13,7 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        FirebaseApp.configure()
-        Messaging.messaging().delegate = self
-        UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .sound, .alert], completionHandler: {(granted, error) in
-            if granted {
-                DispatchQueue.main.async {
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
-            } else{
-                print("Notification permissions not granted")
-            }
-        })
+        initateNotifications()
         return true
     }
 
@@ -67,6 +56,33 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                 print("Error in Notification Navigation: \(error)")
             }
         }
+    }
+    
+    func initateNotifications() {
+        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
+        UNUserNotificationCenter.current().delegate = self
+        
+        UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
+            switch settings.authorizationStatus {
+            case .notDetermined:
+                self?.askForNotificationAllowance()
+            default:
+                break
+            }
+        }
+    }
+    
+    func askForNotificationAllowance() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .sound, .alert], completionHandler: {(granted, error) in
+            if granted {
+                DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+            } else{
+                print("Notification permissions not granted")
+            }
+        })
     }
 }
 

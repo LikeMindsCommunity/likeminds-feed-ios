@@ -56,26 +56,27 @@ open class LMFeedTaggingUserTableCell: LMTableViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
-            userImage.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
-            userImage.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
-            userImage.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12),
-            userImage.widthAnchor.constraint(equalTo: userImage.heightAnchor),
-            
-            userNameLabel.centerYAnchor.constraint(equalTo: userImage.centerYAnchor),
-            userNameLabel.leadingAnchor.constraint(equalTo: userImage.trailingAnchor, constant: 12),
-            userNameLabel.trailingAnchor.constraint(greaterThanOrEqualTo: containerView.trailingAnchor, constant: -12),
-            
-            sepratorView.leadingAnchor.constraint(equalTo: userNameLabel.leadingAnchor),
-            sepratorView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
-            sepratorView.bottomAnchor.constraint(equalTo: userImage.bottomAnchor),
-            sepratorView.heightAnchor.constraint(equalToConstant: 1)
-        ])
+//        contentView.pinSubView(subView: containerView)
+        containerView.addConstraint(top: (contentView.topAnchor, 0),
+                                    leading: (contentView.leadingAnchor, 0),
+                                    trailing: (contentView.trailingAnchor, 0))
+        containerView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor).isActive = true
+        
+        userImage.addConstraint(top: (containerView.topAnchor, 8),
+                                leading: (containerView.leadingAnchor, 16))
+        userImage.setHeightConstraint(with: 36)
+        userImage.setWidthConstraint(with: userImage.heightAnchor)
+        
+        
+        userNameLabel.addConstraint(leading: (userImage.trailingAnchor, 8),
+                                    trailing: (containerView.trailingAnchor, 8),
+                                    centerY: (userImage.centerYAnchor, 0))
+        
+        sepratorView.addConstraint( top: (userImage.bottomAnchor, 12),
+                                    bottom: (containerView.bottomAnchor, 0),
+                                    leading: (userNameLabel.leadingAnchor, 0),
+                                    trailing: (userNameLabel.trailingAnchor, 0))
+        sepratorView.setHeightConstraint(with: 1)
     }
     
     

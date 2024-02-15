@@ -96,7 +96,7 @@ public final class LMFeedReportContentViewModel {
         
         let reasonName = reason ?? tagName.0
         
-        delegate?.showHideLoaderView(isShow: true)
+        delegate?.showHideLoaderView(isShow: true, backgroundColor: .clear)
         
         LMFeedPostOperation.shared.reportContent(
             with: selectedTag,

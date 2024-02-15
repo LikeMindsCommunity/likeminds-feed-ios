@@ -44,6 +44,9 @@ open class LMFeedLinkPreview: LMView {
     open private(set) lazy var crossButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
+        button.contentMode = .scaleToFill
+        button.contentHorizontalAlignment = .fill
+        button.contentVerticalAlignment = .fill
         button.setImage(Constants.shared.images.crossIcon, for: .normal)
         button.tintColor = Appearance.shared.colors.gray51
         button.backgroundColor = Appearance.shared.colors.white
@@ -52,7 +55,7 @@ open class LMFeedLinkPreview: LMView {
     
     open private(set) lazy var imageView: LMImageView = {
         let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
-        image.contentMode = .scaleToFill
+        image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         image.layer.masksToBounds = true
         return image
@@ -138,18 +141,16 @@ open class LMFeedLinkPreview: LMView {
         metaDataStackView.setHeightConstraint(with: 10, priority: .defaultLow)
         sepratorView.setHeightConstraint(with: 1)
         
-        NSLayoutConstraint.activate([
-            crossButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
-            crossButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
-            crossButton.heightAnchor.constraint(equalToConstant: 24),
-            crossButton.widthAnchor.constraint(equalTo: crossButton.heightAnchor),
-            
-            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 3/2),
-            
-            sepratorView.leadingAnchor.constraint(equalTo: metaDataContainerView.leadingAnchor),
-            sepratorView.trailingAnchor.constraint(equalTo: metaDataContainerView.trailingAnchor),
-            sepratorView.topAnchor.constraint(equalTo: metaDataContainerView.topAnchor),
-        ])
+        crossButton.addConstraint(top: (containerView.topAnchor, 16),
+                                  trailing: (containerView.trailingAnchor, -16))
+        crossButton.setHeightConstraint(with: 24)
+        crossButton.setWidthConstraint(with: crossButton.heightAnchor)
+        
+        imageView.setWidthConstraint(with: imageView.heightAnchor, multiplier: 3/2)
+        
+        sepratorView.addConstraint(top: (metaDataContainerView.topAnchor, 0),
+                                   leading: (metaDataContainerView.leadingAnchor, 0),
+                                   trailing: (metaDataContainerView.trailingAnchor, 0))
     }
     
     

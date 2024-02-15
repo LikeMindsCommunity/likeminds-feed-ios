@@ -14,23 +14,29 @@ public extension UIView {
         layer.cornerRadius = cornerRadius
     }
     
-    func roundCornerWithShadow(cornerRadius: CGFloat, shadowRadius: CGFloat, offsetX: CGFloat, offsetY: CGFloat, colour: UIColor, opacity: Float, corners: CACornerMask = [.layerMinXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]) {
-        self.clipsToBounds = false
-        
-        let layer = self.layer
+    func dropShadow(scale: Bool = true) {
         layer.masksToBounds = false
-        layer.cornerRadius = cornerRadius
-        layer.maskedCorners = corners
-        layer.shadowOffset = CGSize(width: offsetX, height: offsetY);
-        layer.shadowColor = colour.cgColor
-        layer.shadowRadius = shadowRadius
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.5
+        layer.shadowOffset = CGSize(width: -1, height: 1)
+        layer.shadowRadius = 1
+
+        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
+        layer.shouldRasterize = true
+        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+      }
+
+      func dropShadow(color: UIColor, opacity: Float = 1, offSet: CGSize, radius: CGFloat = 1, scale: Bool = true) {
+        layer.masksToBounds = false
+        layer.shadowColor = color.cgColor
         layer.shadowOpacity = opacity
-        layer.shadowPath = UIBezierPath(roundedRect: layer.bounds, cornerRadius: layer.cornerRadius).cgPath
-        
-        let bColour = self.backgroundColor
-        self.backgroundColor = nil
-        layer.backgroundColor = bColour?.cgColor
-    }
+        layer.shadowOffset = offSet
+        layer.shadowRadius = radius
+
+        layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+        layer.shouldRasterize = true
+        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+      }
     
     func pinSubView(subView: UIView, padding: UIEdgeInsets = .zero) {
         NSLayoutConstraint.activate([

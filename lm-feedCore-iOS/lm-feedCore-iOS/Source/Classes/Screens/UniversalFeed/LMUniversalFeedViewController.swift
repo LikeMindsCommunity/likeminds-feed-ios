@@ -95,7 +95,6 @@ open class LMUniversalFeedViewController: LMViewController {
         button.tintColor = Appearance.shared.colors.appTintColor
         button.backgroundColor = Appearance.shared.colors.appTintColor
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 8
         return button
     }()
     
@@ -122,7 +121,6 @@ open class LMUniversalFeedViewController: LMViewController {
         topicContainerView.isHidden = true
         viewModel?.initialSetup()
     }
-    
     
     // MARK: setupViews
     open override func setupViews() {
@@ -263,6 +261,7 @@ open class LMUniversalFeedViewController: LMViewController {
     open override func setupAppearance() {
         super.setupAppearance()
         view.backgroundColor = Appearance.shared.colors.backgroundColor
+        createPostButton.layer.cornerRadius = createPostButton.frame.height / 2
     }
     
     

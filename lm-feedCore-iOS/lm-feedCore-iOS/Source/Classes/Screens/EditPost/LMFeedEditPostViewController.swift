@@ -163,12 +163,16 @@ open class LMFeedEditPostViewController: LMViewController {
         scrollStackView.setWidthConstraint(with: containerView.widthAnchor)
         mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
         
-        scrollStackView.subviews.forEach { subView in
+        
+        [headerView, topicView, inputTextView, mediaCollectionView, mediaPageControl, documentTableView].forEach { subView in
             NSLayoutConstraint.activate([
                 subView.leadingAnchor.constraint(equalTo: scrollStackView.leadingAnchor, constant: 16),
                 subView.trailingAnchor.constraint(equalTo: scrollStackView.trailingAnchor, constant: -16)
             ])
         }
+        
+        linkPreview.addConstraint(leading: (scrollStackView.leadingAnchor, 0),
+                                  trailing: (scrollStackView.trailingAnchor, 0))
     }
     
     

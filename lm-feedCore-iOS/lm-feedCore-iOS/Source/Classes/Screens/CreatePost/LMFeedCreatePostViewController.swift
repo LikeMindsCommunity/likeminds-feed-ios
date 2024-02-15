@@ -104,7 +104,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     }()
     
     open private(set) lazy var addMoreButton: LMButton = {
-        let button = LMButton.createButton(with: "Add More", image: Constants.shared.images.plusIcon, textColor: Appearance.shared.colors.appTintColor, textFont: Appearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 4, left: 8, bottom: 4, right: 8))
+        let button = LMButton.createButton(with: LMStringConstants.shared.addMoreText, image: Constants.shared.images.plusIcon, textColor: Appearance.shared.colors.appTintColor, textFont: Appearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 4, left: 8, bottom: 4, right: 8))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = Appearance.shared.colors.appTintColor
         button.layer.borderColor = Appearance.shared.colors.appTintColor.cgColor
@@ -154,7 +154,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     }()
     
     open private(set) lazy var createPostButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(title: "Create", style: .plain, target: self, action: #selector(didTapCreateButton))
+        let button = UIBarButtonItem(title: LMStringConstants.shared.doneText, style: .plain, target: self, action: #selector(didTapCreateButton))
         button.tintColor = Appearance.shared.colors.appTintColor
         return button
     }()
@@ -237,11 +237,9 @@ open class LMFeedCreatePostViewController: LMViewController {
         
         documenTableHeight = documentTableView.setHeightConstraint(with: Constants.shared.number.documentPreviewSize)
         
-        NSLayoutConstraint.activate([
-            scrollView.widthAnchor.constraint(equalTo: containerStackView.widthAnchor),
-            scrollStackView.widthAnchor.constraint(equalTo: containerStackView.widthAnchor),
-            mediaCollectionView.heightAnchor.constraint(equalTo: mediaCollectionView.widthAnchor)
-        ])
+        scrollView.setWidthConstraint(with: containerStackView.widthAnchor)
+        scrollStackView.setWidthConstraint(with: containerStackView.widthAnchor)
+        mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
         
         scrollStackView.subviews.forEach { subView in
             if subView != addMoreButton {
@@ -257,6 +255,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
+        taggingView.dropShadow(color: .red, offSet: .init(width: 1, height: 1))
     }
     
     // MARK: setupActions
@@ -302,7 +301,8 @@ open class LMFeedCreatePostViewController: LMViewController {
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
-        setNavigationTitleAndSubtitle(with: "Create a Post", subtitle: nil)
+        view.backgroundColor = Appearance.shared.colors.white
+        setNavigationTitleAndSubtitle(with: LMStringConstants.shared.createPostNavTitle, subtitle: nil, alignment: .center)
         inputTextView.setAttributedText(from: "")
         setupAddMedia()
         setupInitialView()
@@ -311,9 +311,9 @@ open class LMFeedCreatePostViewController: LMViewController {
     }
     
     open func setupAddMedia() {
-        addPhotosTab.configure(with: "Add Photo", image: Constants.shared.images.galleryIcon.withTintColor(.orange))
-        addVideoTab.configure(with: "Add Video", image: Constants.shared.images.videoIcon)
-        addDocumentsTab.configure(with: "Attach Files", image: Constants.shared.images.paperclipIcon)
+        addPhotosTab.configure(with: LMStringConstants.shared.addPhotoText, image: Constants.shared.images.galleryIcon.withTintColor(.orange))
+        addVideoTab.configure(with: LMStringConstants.shared.addVideoText, image: Constants.shared.images.videoIcon)
+        addDocumentsTab.configure(with: LMStringConstants.shared.attachFiles, image: Constants.shared.images.paperclipIcon)
         taggingView.isHidden = true
     }
     
@@ -327,11 +327,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     }
     
     open func setupProfileData() {
-        guard let user = LocalPreferences.userObj else {
-            headerView.configure(with: .init(profileImage: nil, username: "user_name"))
-            return
-        }
-        headerView.configure(with: .init(profileImage: user.imageUrl, username: user.name ?? "user_name"))
+        headerView.configure(with: .init(profileImage: LocalPreferences.userObj?.imageUrl, username: LocalPreferences.userObj?.name ?? "User"))
     }
     
     open func observeCreateButton() {
@@ -451,20 +447,40 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
         documentCellData.removeAll(keepingCapacity: true)
     }
     
-    public func showAddMediaView() {
-        
-    }
-    
     public func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int) {
         switch mediaType {
         case .image:
-            openImagePicker(.image, isFirstTime: isFirstPick, maxSelection: allowedNumber)
+            checkPhotoLibraryPermission { [weak self] in
+                self?.openImagePicker(.image, isFirstTime: isFirstPick, maxSelection: allowedNumber)
+            }
         case .video:
-            openImagePicker(.video, isFirstTime: isFirstPick, maxSelection: allowedNumber)
+            checkPhotoLibraryPermission { [weak self] in
+                self?.openImagePicker(.video, isFirstTime: isFirstPick, maxSelection: allowedNumber)
+            }
         case .document:
             openDocumentPicker()
         case .none:
             break
+        }
+    }
+    
+    public func checkPhotoLibraryPermission(callback: (() -> Void)?) {
+        let status = PHPhotoLibrary.authorizationStatus()
+        switch status {
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization { newStatus in
+                switch newStatus {
+                case .authorized, .restricted:
+                    callback?()
+                default:
+                    break
+                }
+            }
+        case .denied:
+            // TODO: Get Proper Message from Product
+            showError(with: "Please Allow Media Access.\nSettings -> Privacy -> Photos -> \(LMStringConstants.shared.appName) -> All Photos", isPopVC: false)
+        default:
+            callback?()
         }
     }
 }

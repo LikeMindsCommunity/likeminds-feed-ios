@@ -32,6 +32,7 @@ open class LMFeedTaggingListView: LMView {
         table.showsVerticalScrollIndicator = false
         table.clipsToBounds = true
         table.separatorStyle = .none
+        table.rowHeight = UITableView.automaticDimension
         table.register(LMUIComponents.shared.taggingTableViewCell)
         return table
     }()
@@ -67,7 +68,6 @@ open class LMFeedTaggingListView: LMView {
         containerView.backgroundColor = Appearance.shared.colors.clear
         containerView.layer.borderColor = Appearance.shared.colors.gray4.cgColor
         containerView.layer.borderWidth = 1
-        containerView.roundCornerWithShadow(cornerRadius: 16, shadowRadius: .zero, offsetX: .zero, offsetY: .zero, colour: .black, opacity: 0.1, corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner])
         tableView.backgroundColor = Appearance.shared.colors.white
     }
     
@@ -121,7 +121,7 @@ extension LMFeedTaggingListView: LMFeedTaggingListViewModelProtocol {
         taggingCellsData.removeAll(keepingCapacity: true)
         taggingCellsData.append(contentsOf: users)
         tableView.reloadData()
-        delegate?.updateHeight(with: min(tableView.tableViewHeight, cellHeight * 2))
+        delegate?.updateHeight(with: min(tableView.tableViewHeight, cellHeight * 4))
     }
 }
 

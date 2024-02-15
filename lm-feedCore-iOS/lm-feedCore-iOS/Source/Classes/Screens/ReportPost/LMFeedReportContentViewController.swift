@@ -74,7 +74,7 @@ open class LMFeedReportContentViewController: LMViewController {
         let button = LMButton.createButton(with: "REPORT", image: nil, textColor: .white, textFont: Appearance.shared.fonts.buttonFont3, contentSpacing: .init(top: 16, left: 60, bottom: 16, right: 60))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.clipsToBounds = true
-        button.backgroundColor = Appearance.shared.colors.appTintColor
+        button.backgroundColor = Appearance.shared.colors.red
         return button
     }()
     
@@ -194,11 +194,7 @@ open class LMFeedReportContentViewController: LMViewController {
     
     open func setupButton(isEnabled: Bool) {
         submitButton.isEnabled = isEnabled
-        if isEnabled {
-            submitButton.backgroundColor = Appearance.shared.colors.appTintColor
-        } else {
-            submitButton.backgroundColor = Appearance.shared.colors.gray4
-        }
+        submitButton.backgroundColor = isEnabled ? Appearance.shared.colors.red : Appearance.shared.colors.gray4
     }
     
     

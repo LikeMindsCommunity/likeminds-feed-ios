@@ -372,6 +372,7 @@ public extension LMFeedPostDetailViewModel {
             commentList[commentIndex.section].totalRepliesCount += 1
             postReplyOnComment(with: commentString, commentID: commentID, localComment: localComment)
         } else {
+            postDetail?.commentCount += 1
             commentList.insert(localComment, at: 0)
             postReplyOnPost(with: commentString, localComment: localComment)
         }
@@ -393,7 +394,6 @@ public extension LMFeedPostDetailViewModel {
             
             if let idx = commentList.firstIndex(where: { $0.temporaryCommentID == localComment.temporaryCommentID }) {
                 commentList[idx] = newComment
-                postDetail?.commentCount += 1
                 convertToViewData()
                 notifyObjectChange()
             }

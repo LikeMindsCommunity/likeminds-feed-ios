@@ -31,12 +31,16 @@ public extension UIViewController {
 
 public protocol LMBaseViewControllerProtocol: AnyObject {
     func presentAlert(with alert: UIAlertController, animated: Bool)
-    func showHideLoaderView(isShow: Bool)
+    func showHideLoaderView(isShow: Bool, backgroundColor: UIColor)
     func showError(with message: String, isPopVC: Bool)
     func popViewController(animated: Bool)
 }
 
 public extension LMBaseViewControllerProtocol {
+    func showHideLoaderView(isShow: Bool, backgroundColor: UIColor = .white) {
+        showHideLoaderView(isShow: isShow, backgroundColor: backgroundColor)
+    }
+    
     func showError(with message: String, isPopVC: Bool = false) {
         showError(with: message, isPopVC: isPopVC)
     }
@@ -187,9 +191,10 @@ extension LMViewController: LMBaseViewControllerProtocol {
         presentAlert(with: alert)
     }
     
-    open func showHideLoaderView(isShow: Bool) {
+    open func showHideLoaderView(isShow: Bool, backgroundColor: UIColor) {
         if isShow {
             view.addSubview(loaderScreen)
+            loaderScreen.backgroundColor = backgroundColor
             loaderScreen.addSubview(loaderView)
             
             NSLayoutConstraint.activate([

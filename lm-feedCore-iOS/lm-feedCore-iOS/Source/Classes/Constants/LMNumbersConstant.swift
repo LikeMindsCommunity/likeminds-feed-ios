@@ -12,6 +12,7 @@ public struct LMNumbersConstant {
     
     public static var shared = Self()
     
+    public var maxFilesToUpload: Int = 10
     public var maxFileSizeInMB: Int = 100
     
     var maxFileSizeInBytes: Int {

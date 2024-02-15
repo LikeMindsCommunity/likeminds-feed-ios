@@ -171,8 +171,7 @@ extension LMFeedEditPostViewModel {
             return
         }
         
-        guard isShowLinkPreview,
-              linkPreview == nil else { return }
+        guard isShowLinkPreview else { return }
         
         debounceForDecodeLink?.invalidate()
         
@@ -184,7 +183,7 @@ extension LMFeedEditPostViewModel {
             LMFeedClient.shared.decodeUrl(request) { [weak self] response in
                 if response.success,
                     let ogTags = response.data?.oGTags {
-                    self?.linkPreview = .init(url: ogTags.url ?? link, title: ogTags.title, description: ogTags.description, previewImage: ogTags.image)
+                    self?.linkPreview = .init(url: ogTags.url?.lowercased() ?? link.lowercased(), title: ogTags.title, description: ogTags.description, previewImage: ogTags.image)
                 } else {
                     self?.linkPreview = nil
                 }

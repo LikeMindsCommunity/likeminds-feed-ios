@@ -37,13 +37,14 @@ open class LMFeedPostFooterView: LMView {
         let stack = LMStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
-        stack.spacing = 0
+        stack.spacing = 4
         stack.alignment = .center
         stack.distribution = .fill
         return stack
     }()
     
     open private(set) lazy var likeButton: LMButton = {
+//        let button = LMButton.createButton(with: <#T##String?#>, image: <#T##UIImage?#>, textColor: <#T##UIColor?#>, textFont: <#T##UIFont?#>)
         if #available(iOS 15.0, *) {
             var btnConfig = UIButton.Configuration.plain()
             btnConfig.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 4)
@@ -251,7 +252,7 @@ open class LMFeedPostFooterView: LMView {
     
     open func getCommentText(for commentCount: Int) -> String {
         if commentCount == .zero {
-            return "Comment"
+            return "Add Comment"
         } else if commentCount == 1 {
             return "1 Comment"
         }

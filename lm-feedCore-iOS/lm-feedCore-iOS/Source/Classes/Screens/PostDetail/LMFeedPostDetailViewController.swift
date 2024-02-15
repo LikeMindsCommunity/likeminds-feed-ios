@@ -244,8 +244,8 @@ open class LMFeedPostDetailViewController: LMViewController {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        tableView.backgroundColor = Appearance.shared.colors.clear
-        view.backgroundColor = Appearance.shared.colors.backgroundColor
+        tableView.backgroundColor = Appearance.shared.colors.backgroundColor
+        view.backgroundColor = Appearance.shared.colors.white
     }
     
     
@@ -357,7 +357,7 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
             cell.configure(with: comment, delegate: self, indexPath: indexPath) { [weak self] in
                 data.replies[indexPath.row].isShowMore.toggle()
                 self?.cellsData[indexPath.section - 1] = data
-                self?.tableView.reloadRows(at: [indexPath], with: .automatic)
+                self?.tableView.reloadTable(for: indexPath)
             }
             return cell
         }
@@ -371,7 +371,7 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
             header.configure(with: data, delegate: self, indexPath: .init(row: NSNotFound, section: section)) { [weak self] in
                 data.isShowMore.toggle()
                 self?.cellsData[section - 1] = data
-                self?.tableView.reloadSections(IndexSet(integer: section), with: .automatic)
+                self?.tableView.reloadTable(for: IndexPath(row: NSNotFound, section: section))
             }
             return header
         }
@@ -452,9 +452,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDocumentCellProtocol {
         if var data = postData as? LMFeedPostDocumentCell.ViewModel {
             data.isShowAllDocuments.toggle()
             self.postData = data
-            UIView.performWithoutAnimation { [weak self] in
-                self?.tableView.reloadSections(IndexSet(integer: 0), with: .none)
-            }
+            tableView.reloadTable(for: IndexPath(row: NSNotFound, section: 0))
         }
     }
     
@@ -506,7 +504,7 @@ extension LMFeedPostDetailViewController: LMChatPostCommentProtocol {
 extension LMFeedPostDetailViewController: LMFeedTableCellToViewControllerProtocol {
     open func didTapSeeMoreButton(for postID: String) {
         postData?.isShowMore.toggle()
-        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        tableView.reloadTable(for: IndexPath(row: 0, section: 0))
     }
     
     open func didTapRoute(route: String) {
@@ -564,15 +562,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         self.postData = post
         self.cellsData = comments
         
-        if let indexPath {
-            if indexPath.row == NSNotFound {
-                tableView.reloadSections(.init(integer: indexPath.section), with: .automatic)
-            } else {
-                tableView.reloadRows(at: [indexPath], with: .none)
-            }
-        } else {
-            tableView.reloadData()
-        }
+        tableView.reloadTable(for: indexPath)
         
         if openCommentSection,
            isCommentingEnabled {
@@ -591,12 +581,12 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         let isLiked = postData?.footerData.isLiked ?? true
         postData?.footerData.isLiked = !isLiked
         postData?.footerData.likeCount += !isLiked ? 1 : -1
-        tableView.reloadRows(at: [.init(row: 0, section: 0)], with: .none)
+        tableView.reloadTable(for: IndexPath(row: 0, section: 0))
     }
     
     public func changePostSave() {
         postData?.footerData.isSaved.toggle()
-        tableView.reloadRows(at: [.init(row: 0, section: 0)], with: .none)
+        tableView.reloadTable(for: IndexPath(row: 0, section: 0))
     }
     
     public func changeCommentLike(for indexPath: IndexPath) {
@@ -613,9 +603,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
             }
             
             cellsData[indexPath.section - 1] = sectionData
-            UIView.performWithoutAnimation { [weak self] in
-                self?.tableView.reloadRows(at: [indexPath], with: .none)
-            }
+            tableView.reloadTable(for: indexPath)
         }
     }
     

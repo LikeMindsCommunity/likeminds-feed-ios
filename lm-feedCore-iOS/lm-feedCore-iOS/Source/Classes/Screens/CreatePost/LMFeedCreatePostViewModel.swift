@@ -35,7 +35,7 @@ public final class LMFeedCreatePostViewModel {
     public weak var delegate: LMFeedCreatePostViewModelProtocol?
     private var media: [Attachment]
     private var currentMediaSelectionType: PostCreationAttachmentType
-    public var maxMedia = 10
+    public let maxMedia: Int
     private var isShowTopicFeed: Bool
     private var debounceForDecodeLink: Timer?
     private var selectedTopics: [(topic: String, topicID: String)]
@@ -54,6 +54,7 @@ public final class LMFeedCreatePostViewModel {
         isShowTopicFeed = false
         selectedTopics = []
         showLinkPreview = true
+        maxMedia = LMNumbersConstant.shared.maxFilesToUpload
         self.delegate = delegate
     }
     
