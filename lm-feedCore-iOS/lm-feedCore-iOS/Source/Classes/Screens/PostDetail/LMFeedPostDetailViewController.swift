@@ -251,8 +251,8 @@ open class LMFeedPostDetailViewController: LMViewController {
     
     // MARK: setupObservers
     open override func setupObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostEdited, object: LMFeedPostDataModel.self)
-        NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostEditError, object: LMFeedError.self)
+        NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostEdited, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostEditError, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(postDeleted), name: .LMPostDeleted, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(commentDeleted), name: .LMCommentDeleted, object: nil)
     }
@@ -379,7 +379,7 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
     }
     
     open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if ((cellsData[safe: section - 1]) != nil) {
+        if (cellsData[safe: section - 1]) != nil {
             return UITableView.automaticDimension
         }
         return .leastNormalMagnitude
@@ -451,7 +451,10 @@ extension LMFeedPostDetailViewController: LMFeedPostDocumentCellProtocol {
     open func didTapShowMoreDocuments(for indexPath: IndexPath) {
         if var data = postData as? LMFeedPostDocumentCell.ViewModel {
             data.isShowAllDocuments.toggle()
-            tableView.reloadRows(at: [.init(row: 0, section: 0)], with: .automatic)
+            self.postData = data
+            UIView.performWithoutAnimation { [weak self] in
+                self?.tableView.reloadSections(IndexSet(integer: 0), with: .none)
+            }
         }
     }
     
@@ -501,6 +504,15 @@ extension LMFeedPostDetailViewController: LMChatPostCommentProtocol {
 // MARK: LMFeedTableCellToViewControllerProtocol
 @objc
 extension LMFeedPostDetailViewController: LMFeedTableCellToViewControllerProtocol {
+    open func didTapSeeMoreButton(for postID: String) {
+        postData?.isShowMore.toggle()
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+    }
+    
+    open func didTapRoute(route: String) {
+        showError(with: "Tapped Route: \(route)", isPopVC: false)
+    }
+    
     open func didTapLikeButton(for postID: String) {
         changePostLike()
         viewModel?.likePost(for: postID)
@@ -546,7 +558,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         navigationController?.pushViewController(viewcontroller, animated: true)
     }
     
-    public func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostDetailCommentCellViewModel], indexPath: IndexPath?, openCommentSection: Bool) {
+    public func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostDetailCommentCellViewModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool) {
         showHideLoaderView(isShow: false)
         
         self.postData = post
@@ -567,6 +579,11 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 self?.inputTextView.becomeFirstResponder()
             }
+        }
+        
+        if tableView.numberOfSections >= 1,
+           scrollToCommentSection {
+            tableView.scrollToRow(at: IndexPath(row: NSNotFound, section: 1), at: .bottom, animated: true)
         }
     }
     
@@ -596,7 +613,9 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
             }
             
             cellsData[indexPath.section - 1] = sectionData
-            tableView.reloadRows(at: [indexPath], with: .none)
+            UIView.performWithoutAnimation { [weak self] in
+                self?.tableView.reloadRows(at: [indexPath], with: .none)
+            }
         }
     }
     

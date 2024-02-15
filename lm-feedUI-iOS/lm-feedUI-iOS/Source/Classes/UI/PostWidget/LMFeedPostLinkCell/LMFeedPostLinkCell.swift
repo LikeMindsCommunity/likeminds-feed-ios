@@ -19,6 +19,7 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
         public var userUUID: String
         public var headerData: LMFeedPostHeaderView.ViewModel
         public var postText: String
+        public var isShowMore: Bool
         public var topics: LMFeedTopicView.ViewModel
         public var mediaData: LMFeedLinkPreview.ViewModel
         public var footerData: LMFeedPostFooterView.ViewModel
@@ -32,7 +33,8 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
             topics: LMFeedTopicView.ViewModel,
             mediaData: LMFeedLinkPreview.ViewModel,
             footerData: LMFeedPostFooterView.ViewModel,
-            totalCommentCount: Int
+            totalCommentCount: Int,
+            isShowMore: Bool = true
         ) {
             self.postID = postID
             self.userUUID = userUUID
@@ -42,6 +44,7 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
             self.mediaData = mediaData
             self.footerData = footerData
             self.totalCommentCount = totalCommentCount
+            self.isShowMore = isShowMore
         }
     }
     
@@ -68,7 +71,7 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
             containerView.addSubview(subView)
         }
         
-        [topicFeed, postText].forEach { subView in
+        [topicFeed, postText, seeMoreButton].forEach { subView in
             contentStack.addArrangedSubview(subView)
         }
     }
@@ -78,12 +81,15 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        contentView.pinSubView(subView: containerView, padding: .init(top: .zero, left: .zero, bottom: -16, right: .zero))
+        containerView.addConstraint(top: (contentView.topAnchor, 0),
+                                    leading: (contentView.leadingAnchor, 0),
+                                    trailing: (contentView.trailingAnchor, 0))
+        containerView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -16).isActive = true
         
         headerView.setHeightConstraint(with: Constants.shared.number.postHeaderSize)
         headerView.addConstraint(
             top: (containerView.topAnchor, 0),
-            bottom: (contentStack.topAnchor, 0),
+            bottom: (contentStack.topAnchor, -8),
             leading: (containerView.leadingAnchor, 0),
             trailing: (containerView.trailingAnchor, 0)
         )
@@ -140,8 +146,7 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
         topicFeed.configure(with: data.topics)
         topicFeed.isHidden = data.topics.topics.isEmpty
         
-        postText.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.postText)
-        postText.isHidden = data.postText.isEmpty
+        setupPostText(text: data.postText, showMore: data.isShowMore)
         
         linkPreveiw.configure(with: data.mediaData)
         contentStack.addArrangedSubview(linkPreveiw)

@@ -22,7 +22,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         public var postText: String
         public var topics: LMFeedTopicView.ViewModel
         public let documents: [LMFeedDocumentPreview.ViewModel]
-        public let isShowFullText: Bool
+        public var isShowMore: Bool
         public var isShowAllDocuments: Bool
         public var footerData: LMFeedPostFooterView.ViewModel
         public var totalCommentCount: Int
@@ -35,7 +35,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
                      documents: [LMFeedDocumentPreview.ViewModel],
                      footerData: LMFeedPostFooterView.ViewModel,
                      totalCommentCount: Int,
-                     isShowFullText: Bool = false,
+                     isShowMore: Bool = true,
                      isShowAllDocuments: Bool = false) {
             self.postID = postID
             self.userUUID = userUUID
@@ -45,7 +45,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
             self.documents = documents
             self.footerData = footerData
             self.totalCommentCount = totalCommentCount
-            self.isShowFullText = isShowFullText
+            self.isShowMore = isShowMore
             self.isShowAllDocuments = isShowAllDocuments
         }
     }
@@ -92,7 +92,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         containerView.addSubview(contentStack)
         containerView.addSubview(footerView)
         
-        [topicFeed, postText, documentContainerStack].forEach { subView in
+        [topicFeed, postText, seeMoreButton, documentContainerStack].forEach { subView in
             contentStack.addArrangedSubview(subView)
         }
     }
@@ -101,12 +101,16 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
     // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
+                
+        containerView.addConstraint(top: (contentView.topAnchor, 0),
+                                    leading: (contentView.leadingAnchor, 0),
+                                    trailing: (contentView.trailingAnchor, 0))
+        containerView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -16).isActive = true
         
-        contentView.pinSubView(subView: containerView, padding: .init(top: .zero, left: .zero, bottom: -16, right: .zero))
         headerView.setHeightConstraint(with: Constants.shared.number.postHeaderSize)
         headerView.addConstraint(
             top: (containerView.topAnchor, 0),
-            bottom: (contentStack.topAnchor, 0),
+            bottom: (contentStack.topAnchor, -8),
             leading: (containerView.leadingAnchor, 0),
             trailing: (containerView.trailingAnchor, 0)
         )
@@ -158,8 +162,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         
         headerView.configure(with: data.headerData)
         
-        postText.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.postText)
-        postText.isHidden = data.postText.isEmpty
+        setupPostText(text: data.postText, showMore: data.isShowMore)
         
         topicFeed.configure(with: data.topics)
         topicFeed.isHidden = data.topics.topics.isEmpty
@@ -169,7 +172,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         documentContainerStack.removeAllArrangedSubviews()
         
         data.documents.enumerated().forEach { index, document in
-            guard index < 2 || data.isShowAllDocuments else { return }
+            guard index < Constants.shared.number.maxDocumentView || data.isShowAllDocuments else { return }
             let documentView = LMUIComponents.shared.documentPreview.init()
             
             documentView.setHeightConstraint(with: Constants.shared.number.documentPreviewSize)
@@ -183,7 +186,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
             ])
         }
         
-        if data.documents.count > 2 && !data.isShowAllDocuments {
+        if data.documents.count > Constants.shared.number.maxDocumentView && !data.isShowAllDocuments {
             seeMoreDocumentsButton.setTitle("+\(data.documents.count - 2) more", for: .normal)
             seeMoreDocumentsButton.setImage(nil, for: .normal)
             

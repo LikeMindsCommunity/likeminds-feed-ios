@@ -18,6 +18,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         public var userUUID: String
         public var headerData: LMFeedPostHeaderView.ViewModel
         public var postText: String
+        public var isShowMore: Bool
         public var topics: LMFeedTopicView.ViewModel
         public var mediaData: [LMFeedMediaProtocol]
         public var footerData: LMFeedPostFooterView.ViewModel
@@ -31,7 +32,8 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
             topics: LMFeedTopicView.ViewModel,
             mediaData: [LMFeedMediaProtocol],
             footerData: LMFeedPostFooterView.ViewModel,
-            totalCommentCount: Int
+            totalCommentCount: Int,
+            isShowMore: Bool = true
         ) {
             self.postID = postID
             self.userUUID = userUUID
@@ -41,6 +43,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
             self.mediaData = mediaData
             self.footerData = footerData
             self.totalCommentCount = totalCommentCount
+            self.isShowMore = isShowMore
         }
     }
     
@@ -94,6 +97,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         
         contentStack.addArrangedSubview(topicFeed)
         contentStack.addArrangedSubview(postText)
+        contentStack.addArrangedSubview(seeMoreButton)
         contentStack.addArrangedSubview(mediaCollectionView)
         contentStack.addArrangedSubview(pageControl)
     }
@@ -102,11 +106,15 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        contentView.pinSubView(subView: containerView, padding: .init(top: .zero, left: .zero, bottom: -16, right: .zero))
+        containerView.addConstraint(top: (contentView.topAnchor, 0),
+                                    leading: (contentView.leadingAnchor, 0),
+                                    trailing: (contentView.trailingAnchor, 0))
+        containerView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -16).isActive = true
+        
         headerView.setHeightConstraint(with: Constants.shared.number.postHeaderSize)
         headerView.addConstraint(
             top: (containerView.topAnchor, 0),
-            bottom: (contentStack.topAnchor, 0),
+            bottom: (contentStack.topAnchor, -8),
             leading: (containerView.leadingAnchor, 0),
             trailing: (containerView.trailingAnchor, 0)
         )
@@ -126,6 +134,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
             leading: (contentStack.leadingAnchor, 16),
             trailing: (contentStack.trailingAnchor, -16)
         )
+        footerView.setHeightConstraint(with: 50)
     }
     
     open override func setupActions() {
@@ -167,8 +176,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         userUUID = data.userUUID
         
         headerView.configure(with: data.headerData)
-        postText.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.postText)
-        postText.isHidden = data.postText.isEmpty
+        setupPostText(text: data.postText, showMore: data.isShowMore)
         
         topicFeed.configure(with: data.topics)
         topicFeed.isHidden = data.topics.topics.isEmpty
@@ -241,4 +249,6 @@ extension LMFeedPostMediaCell: UICollectionViewDataSource,
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         8
     }
+    
+    open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) { }
 }

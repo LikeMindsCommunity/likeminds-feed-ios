@@ -40,22 +40,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 // MARK: UNUserNotificationCenterDelegate
 extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
-        LMFeedMain.shared.didReceiveNotification(response.notification.request) { result in 
-            print(result)
-        }
+        handleNotification(notification: response.notification.request)
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
-        LMFeedMain.shared.didReceiveNotification(notification.request) { result in
-            print(result)
-        }
+        handleNotification(notification: notification.request)
         
-        return .badge
+        if #available(iOS 14.0, *) {
+            return .banner
+        } else {
+            return .alert
+        }
     }
     
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let token = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
-        print(token)
+    func handleNotification(notification: UNNotificationRequest) {
+        LMFeedMain.shared.didReceiveNotification(notification) { result in
+            switch result {
+            case .success(let lmVC):
+                if let vc = UIApplication.shared.topMostViewController() {
+                    lmVC.modalPresentationStyle = .overCurrentContext
+                    vc.present(lmVC, animated: true)
+                } else {
+                    print("Cannot find Top View Controller")
+                }
+            case .failure(let error):
+                print("Error in Notification Navigation: \(error)")
+            }
+        }
     }
 }
 
@@ -64,5 +75,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("FCM Token: \(fcmToken ?? "")")
+    }
+}
+
+
+extension UIApplication {
+    func topMostViewController() -> UIViewController? {
+        return UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.rootViewController?.topMostViewController()
     }
 }

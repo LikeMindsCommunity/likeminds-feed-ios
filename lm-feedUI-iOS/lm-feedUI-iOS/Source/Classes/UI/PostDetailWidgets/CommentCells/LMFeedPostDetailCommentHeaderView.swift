@@ -257,10 +257,10 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         
         authorNameLabel.text = data.authorName
         
-        commentLabel.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.comment)
+        commentLabel.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.comment.trimmingCharacters(in: .whitespacesAndNewlines))
         
-        seeMoreText.isHidden = !(commentLabel.numberOfLines > 4 && data.isShowMore)
-        commentLabel.textContainer.maximumNumberOfLines = commentLabel.numberOfLines > 4 && !data.isShowMore ? .zero : 4
+        seeMoreText.isHidden = true // !(commentLabel.numberOfLines > 4 && data.isShowMore)
+        commentLabel.textContainer.maximumNumberOfLines = 0 // commentLabel.numberOfLines > 4 && !data.isShowMore ? .zero : 4
         
         
         commentTimeLabel.text = data.commentTimeFormatted

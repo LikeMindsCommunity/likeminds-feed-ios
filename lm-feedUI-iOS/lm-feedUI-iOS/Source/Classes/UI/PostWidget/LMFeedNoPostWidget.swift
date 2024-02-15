@@ -69,6 +69,10 @@ open class LMFeedNoPostWidget: LMView {
     }()
     
     
+    public var createAction: (() -> Void)?
+    
+    
+    // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
         addSubview(containerView)
@@ -80,6 +84,8 @@ open class LMFeedNoPostWidget: LMView {
         stackView.addArrangedSubview(createPostButton)
     }
     
+    
+    // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
         
@@ -94,8 +100,28 @@ open class LMFeedNoPostWidget: LMView {
         emptyImageView.setWidthConstraint(with: emptyImageView.heightAnchor)
     }
     
+    
+    
+    // MARK: setupActions
+    open override func setupActions() {
+        super.setupActions()
+        createPostButton.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
+    }
+    
+    @objc
+    open func didTapCreateButton() {
+        createAction?()
+    }
+    
+    // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
         createPostButton.roundCorners(with: 8)
+    }
+    
+    
+    // MARK: configure
+    open func configure(_ createAction: (() -> Void)?) {
+        self.createAction = createAction
     }
 }

@@ -180,17 +180,17 @@ open class LMFeedPostHeaderView: LMView {
     open override func setupLayouts() {
         super.setupLayouts()
         
-//        pinSubView(subView: contentContainerView, padding: .init(top: 4, left: 0, bottom: -4, right: 0))
-        contentContainerView.addConstraint(top: (topAnchor, 4),
-                                           leading: (leadingAnchor, 0),
-                                           trailing: (trailingAnchor, 0))
-        contentContainerView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -4).isActive = true
+        pinSubView(subView: contentContainerView, padding: .init(top: 4, left: 0, bottom: -4, right: 0))
+//        contentContainerView.addConstraint(top: (topAnchor, 4),
+//                                           leading: (leadingAnchor, 0),
+//                                           trailing: (trailingAnchor, 0))
+//        contentContainerView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -4).isActive = true
         
         imageView.addConstraint(top: (contentContainerView.topAnchor, 8),
                                 bottom: (contentContainerView.bottomAnchor, -8),
                                 leading: (contentContainerView.leadingAnchor, 16),
                                 centerY: (outerStackView.centerYAnchor, 0))
-        imageView.setHeightConstraint(with: 48)
+//        imageView.setHeightConstraint(with: 48)
         imageView.setWidthConstraint(with: imageView.heightAnchor)
         
         outerStackView.addConstraint(top: (imageView.topAnchor, 0),

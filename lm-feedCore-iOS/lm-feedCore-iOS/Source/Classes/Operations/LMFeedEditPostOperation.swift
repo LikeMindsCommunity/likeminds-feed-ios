@@ -74,7 +74,7 @@ final class LMFeedEditPostOperation {
                 .format(document.format ?? ".pdf")
             
             let attachment = Attachment()
-                .attachmentType(.image)
+                .attachmentType(.doc)
                 .attachmentMeta(attachmentMeta)
             
             attachments.append(attachment)

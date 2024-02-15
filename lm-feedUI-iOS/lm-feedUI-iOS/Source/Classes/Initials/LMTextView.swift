@@ -9,7 +9,7 @@ import UIKit
 
 @IBDesignable
 open class LMTextView: UITextView {
-    open var placeHolderText: String = "" {
+    public var placeHolderText: String = "" {
         didSet {
             if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 text = placeHolderText
@@ -17,12 +17,27 @@ open class LMTextView: UITextView {
         }
     }
     
-    open var numberOfLines: Int {
-        invalidateIntrinsicContentSize()
-        if let font {
-            return Int(intrinsicContentSize.height / font.lineHeight)
+    public var numberOfLines: Int {
+        let numberOfGlyphs = layoutManager.numberOfGlyphs
+        var index : Int = 0
+        var lineRange = NSRange(location: NSNotFound, length: 0)
+        var currentNumOfLines : Int = 0
+        var numberOfParagraphJump : Int = 0
+        
+        while index < numberOfGlyphs {
+            layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
+            index = NSMaxRange(lineRange)
+            currentNumOfLines += 1
+            
+            // Observing whether user went to line and if it's the first such line break, accounting for it.
+            if text.last == "\n", numberOfParagraphJump == 0 {
+                numberOfParagraphJump = 1
+            }
         }
-        return .zero
+        
+        currentNumOfLines += numberOfParagraphJump
+        
+        return currentNumOfLines
     }
     
     open func translatesAutoresizingMaskIntoConstraints() -> Self {

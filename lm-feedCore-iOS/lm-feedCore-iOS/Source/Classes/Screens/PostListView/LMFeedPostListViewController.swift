@@ -171,8 +171,19 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
 // MARK: LMFeedTableCellToViewControllerProtocol
 @objc
 extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol {
+    open func didTapSeeMoreButton(for postID: String) {
+        if let index = data.firstIndex(where: { $0.postID == postID }) {
+            data[index].isShowMore.toggle()
+            tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+        }
+    }
+    
     open func didTapProfilePicture(for uuid: String) {
-        print(#function)
+        showError(with: "Tapped User Profile having uuid: \(uuid)", isPopVC: false)
+    }
+    
+    open func didTapRoute(route: String) {
+        showError(with: "Tapped Route: \(route)", isPopVC: false)
     }
     
     open func didTapMenuButton(postID: String) {
@@ -283,6 +294,15 @@ extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
         }
         
         if self.data.isEmpty {
+            emptyListView.configure { [weak self] in
+                do {
+                    let viewcontroller = try LMFeedCreatePostViewModel.createModule()
+                    self?.navigationController?.pushViewController(viewcontroller, animated: true)
+                } catch let error {
+                    print(error.localizedDescription)
+                }
+            }
+            
             tableView.backgroundView = emptyListView
             emptyListView.setHeightConstraint(with: tableView.heightAnchor)
             emptyListView.setWidthConstraint(with: tableView.widthAnchor)

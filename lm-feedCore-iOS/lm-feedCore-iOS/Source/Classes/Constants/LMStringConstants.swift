@@ -13,4 +13,5 @@ public struct LMStringConstants {
     public static var shared = Self()
     
     public var genericErrorMessage = "Something went wrong!"
+    public var maxUploadSizeErrorMessage = "Max Upload Size is %d"
 }

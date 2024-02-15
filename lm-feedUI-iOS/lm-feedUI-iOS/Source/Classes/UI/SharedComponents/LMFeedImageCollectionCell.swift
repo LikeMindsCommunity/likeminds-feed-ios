@@ -55,22 +55,13 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
     
     // MARK: setupLayouts
     public override func setupLayouts() {
-        NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
-            imageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            imageView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            
-            crossButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
-            crossButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
-            crossButton.heightAnchor.constraint(equalToConstant: 24),
-            crossButton.widthAnchor.constraint(equalTo: crossButton.heightAnchor)
-        ])
+        contentView.pinSubView(subView: containerView)
+        containerView.pinSubView(subView: imageView)
+        
+        crossButton.addConstraint(top: (containerView.topAnchor, 16),
+                                  trailing: (containerView.trailingAnchor, -16))
+        crossButton.setHeightConstraint(with: 24)
+        crossButton.setWidthConstraint(with: crossButton.heightAnchor)
     }
     
     

@@ -15,15 +15,18 @@ public extension URL {
         }
     }
     
-    func getFileSize() -> Int? {
-        guard isFileURL else { return nil }
+    func getFileSize() -> Int {
+        guard isFileURL else { return 0 }
         
         do {
-            return try resourceValues(forKeys: [.fileSizeKey]).fileSize
+            _ = self.startAccessingSecurityScopedResource()
+            let size = try resourceValues(forKeys: [.fileSizeKey]).fileSize
+            self.stopAccessingSecurityScopedResource()
+            return size ?? 0
         } catch {
             print("File Size Failed")
         }
         
-        return nil
+        return 0
     }
 }

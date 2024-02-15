@@ -15,6 +15,7 @@ open class LMFeedLikeViewController: LMViewController {
         let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
         table.dataSource = self
         table.delegate = self
+        table.backgroundColor = Appearance.shared.colors.clear
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.bounces = false
@@ -27,11 +28,7 @@ open class LMFeedLikeViewController: LMViewController {
     public var viewModel: LMFeedLikeViewModel?
     public var cellsData: [LMFeedLikeUserTableCell.ViewModel] = []
     public var cellHeight: CGFloat = 72
-    public var totalLikes: Int = 0 {
-        didSet {
-            setNavigationTitleAndSubtitle(with: "Likes", subtitle: "\(totalLikes) Likes")
-        }
-    }
+    public var totalLikes: Int = 0
     
     
     // MARK: setupViews
@@ -54,12 +51,14 @@ open class LMFeedLikeViewController: LMViewController {
         viewModel?.getLikes()
         setNavigationTitleAndSubtitle(with: "Likes", subtitle: "0 Likes")
         
+        view.backgroundColor = Appearance.shared.colors.white
+        
         // Analytics
         LMFeedMain.analytics?.trackEvent(for: .postLikeListOpened, eventProperties: ["post_id": viewModel?.postID ?? ""])
     }
     
     open func didTapUser(uuid: String) {
-        print(uuid)
+        showError(with: "Tapped user with uuid: \(uuid)", isPopVC: false)
     }
 }
 
@@ -97,6 +96,8 @@ extension LMFeedLikeViewController: LMFeedLikeViewModelProtocol {
         cellsData = data
         tableView.reloadData()
         totalLikes = totalCount
+        setNavigationTitleAndSubtitle(with: "Likes",
+                                      subtitle: "\(totalLikes) Like\(totalLikes == 1 ? "" : "s")")
     }
     
     public func showHideTableLoader(isShow: Bool) {

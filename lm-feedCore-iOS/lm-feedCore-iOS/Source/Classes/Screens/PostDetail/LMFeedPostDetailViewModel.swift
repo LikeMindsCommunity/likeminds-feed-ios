@@ -9,7 +9,7 @@ import lm_feedUI_iOS
 import LikeMindsFeed
 
 public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol {
-    func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostDetailCommentCellViewModel], indexPath: IndexPath?, openCommentSection: Bool)
+    func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostDetailCommentCellViewModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool)
     
     func changePostLike()
     func changePostSave()
@@ -38,9 +38,10 @@ final public class LMFeedPostDetailViewModel {
     public var replyToComment:  LMFeedCommentDataModel?
     public var editCommentIndex: (commentID: String, indexPath: IndexPath)?
     public var openCommentSection: Bool
+    public var scrollToCommentSection: Bool
     public weak var delegate: LMFeedPostDetailViewModelProtocol?
     
-    public init(postID: String, delegate: LMFeedPostDetailViewModelProtocol?, openCommentSection: Bool = false) {
+    public init(postID: String, delegate: LMFeedPostDetailViewModelProtocol?, openCommentSection: Bool, scrollToCommentSection: Bool) {
         self.postID = postID
         self.commentList = []
         self.currentPage = 1
@@ -48,16 +49,18 @@ final public class LMFeedPostDetailViewModel {
         self.isFetchingData = false
         self.isDataAvailable = true
         self.openCommentSection = openCommentSection
+        self.scrollToCommentSection = scrollToCommentSection
         self.delegate = delegate
     }
     
     public static func createModule(
         for postID: String,
-        openCommentSection: Bool = false
+        openCommentSection: Bool = false,
+        scrollToCommentSection: Bool = false
     ) -> LMFeedPostDetailViewController? {
         guard LMFeedMain.isInitialized else { return nil }
         let viewController = Components.shared.postDetailScreen.init()
-        let viewModel: LMFeedPostDetailViewModel = .init(postID: postID, delegate: viewController, openCommentSection: openCommentSection)
+        let viewModel: LMFeedPostDetailViewModel = .init(postID: postID, delegate: viewController, openCommentSection: openCommentSection, scrollToCommentSection: scrollToCommentSection)
         
         viewController.viewModel = viewModel
         return viewController
@@ -169,8 +172,9 @@ public extension LMFeedPostDetailViewModel {
             convertedComments.append(convertToCommentModel(from: comment))
         }
         
-        delegate?.showPostDetails(with: convertedPostDetail, comments: convertedComments, indexPath: indexPath, openCommentSection: openCommentSection)
+        delegate?.showPostDetails(with: convertedPostDetail, comments: convertedComments, indexPath: indexPath, openCommentSection: openCommentSection, scrollToCommentSection: scrollToCommentSection)
         openCommentSection = false
+        scrollToCommentSection = false
     }
     
     func convertToCommentModel(from comment: LMFeedCommentDataModel) -> LMFeedPostDetailCommentCellViewModel {
@@ -364,12 +368,13 @@ public extension LMFeedPostDetailViewModel {
         if let replyToComment,
            let commentID = replyToComment.commentID,
            let (_, commentIndex) = findCommentIndex(for: commentID, from: commentList) {
-               commentList[commentIndex.section].replies.insert(localComment, at: 0)
-               postReplyOnComment(with: commentString, commentID: commentID, localComment: localComment)
-           } else {
-               commentList.insert(localComment, at: 0)
-               postReplyOnPost(with: commentString, localComment: localComment)
-           }
+            commentList[commentIndex.section].replies.insert(localComment, at: 0)
+            commentList[commentIndex.section].totalRepliesCount += 1
+            postReplyOnComment(with: commentString, commentID: commentID, localComment: localComment)
+        } else {
+            commentList.insert(localComment, at: 0)
+            postReplyOnPost(with: commentString, localComment: localComment)
+        }
         
         replyToComment = nil
         convertToViewData()

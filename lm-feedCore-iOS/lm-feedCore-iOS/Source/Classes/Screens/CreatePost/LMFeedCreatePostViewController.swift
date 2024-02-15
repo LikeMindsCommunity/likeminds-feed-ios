@@ -63,6 +63,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         let textView = LMFeedTaggingTextView().translatesAutoresizingMaskIntoConstraints()
         textView.dataDetectorTypes = [.link]
         textView.mentionDelegate = self
+        textView.backgroundColor = Appearance.shared.colors.clear
         textView.isScrollEnabled = false
         textView.isEditable = true
         textView.placeHolderText = "Write Something here..."
@@ -295,7 +296,6 @@ open class LMFeedCreatePostViewController: LMViewController {
     @objc
     open func didTapCreateButton() {
         viewModel?.createPost(with: inputTextView.getText())
-        navigationController?.popViewController(animated: true)
     }
     
     
@@ -303,6 +303,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationTitleAndSubtitle(with: "Create a Post", subtitle: nil)
+        inputTextView.setAttributedText(from: "")
         setupAddMedia()
         setupInitialView()
         setupProfileData()

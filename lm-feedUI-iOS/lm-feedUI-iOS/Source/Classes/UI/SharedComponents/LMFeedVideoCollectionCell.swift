@@ -90,7 +90,8 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     // MARK: configure
     open func configure(with data: ViewModel, videoPlayer: AVPlayerViewController, crossButtonAction: ((String) -> Void)? = nil) {
         self.videoPlayer = videoPlayer
-        self.videoPlayer?.showsPlaybackControls = false
+        self.videoPlayer?.showsPlaybackControls = true
+        self.videoPlayer?.requiresLinearPlayback = false
         self.videoPlayer?.allowsPictureInPicturePlayback = false
         videoURL = data.videoURL
         

@@ -28,7 +28,7 @@ public final class LMFeedRouter {
                 .routeToPostDetail:
             let params = fetchPostID(from: url)
             guard let postID = params.postID,
-                  let viewcontroller = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: params.commentID != nil) else {
+                  let viewcontroller = LMFeedPostDetailViewModel.createModule(for: postID, scrollToCommentSection: params.commentID != nil) else {
                 completion(.failure(.routeError(error: "Can't extract `post_id` from the route")))
                 return
             }

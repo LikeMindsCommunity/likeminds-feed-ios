@@ -12,6 +12,7 @@ public protocol LMFeedPostTableCellProtocol {
     var userUUID: String { get }
     var headerData: LMFeedPostHeaderView.ViewModel { get }
     var postText: String { get }
+    var isShowMore: Bool { get set }
     var topics: LMFeedTopicView.ViewModel { get }
     var footerData: LMFeedPostFooterView.ViewModel { get set }
     var totalCommentCount: Int { get }
@@ -35,7 +36,7 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     open private(set) lazy var contentStack: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
-        stack.alignment = .center
+        stack.alignment = .leading
         stack.distribution = .fill
         stack.spacing = 8
         return stack
@@ -68,9 +69,9 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     
     
     // MARK: Data Variables
-    weak var actionDelegate: LMFeedTableCellToViewControllerProtocol?
-    var userUUID: String?
-    var postID: String?
+    public weak var actionDelegate: LMFeedTableCellToViewControllerProtocol?
+    public var userUUID: String?
+    public var postID: String?
     
     
     // MARK: setupLayouts
@@ -79,6 +80,7 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
         
         topicFeed.setContentHuggingPriority(.defaultHigh, for: .vertical)
         postText.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        seeMoreButton.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
     }
     
     
@@ -90,6 +92,7 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
         footerView.delegate = self
         postText.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedTextView)))
         containerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapPost)))
+        seeMoreButton.addTarget(self, action: #selector(didTapSeeMoreButton), for: .touchUpInside)
     }
     
     @objc
@@ -114,12 +117,28 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     
     open func didTapHashTag(hashtag: String) { }
     
-    open func didTapRoute(route: String) { }
+    open func didTapRoute(route: String) { 
+        actionDelegate?.didTapRoute(route: route)
+    }
     
     @objc
     open func didTapPost() {
         guard let postID else { return }
         actionDelegate?.didTapPost(postID: postID)
+    }
+    
+    @objc
+    open func didTapSeeMoreButton() {
+        guard let postID else { return }
+        actionDelegate?.didTapSeeMoreButton(for: postID)
+    }
+    
+    open func setupPostText(text: String, showMore: Bool) {
+        postText.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: text.trimmingCharacters(in: .whitespacesAndNewlines))
+        postText.isHidden = text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        
+        seeMoreButton.isHidden = true // !(postText.numberOfLines > 4 && showMore)
+        postText.textContainer.maximumNumberOfLines = 0 // postText.numberOfLines > 4 && !showMore ? .zero : 4
     }
 }
 
@@ -169,13 +188,6 @@ extension LMPostWidgetTableViewCell: LMFeedPostFooterViewProtocol {
 }
 
 
-// MARK: LMTappableLabelDelegate
-@objc
-extension LMPostWidgetTableViewCell: LMTappableLabelDelegate {
-    func didTapOnLink(_ link: String, linkType: NSAttributedString.Key) { }
-}
-
-
 // MARK: LMTableCellToViewController
 public protocol LMFeedTableCellToViewControllerProtocol: AnyObject {
     func didTapProfilePicture(for uuid: String)
@@ -186,6 +198,8 @@ public protocol LMFeedTableCellToViewControllerProtocol: AnyObject {
     func didTapShareButton(for postID: String)
     func didTapSaveButton(for postID: String)
     func didTapPost(postID: String)
+    func didTapRoute(route: String)
+    func didTapSeeMoreButton(for postID: String)
 }
 
 public extension LMFeedTableCellToViewControllerProtocol {

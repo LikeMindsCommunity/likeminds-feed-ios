@@ -71,10 +71,16 @@ public final class LMFeedCreatePostViewModel {
         let filePath = "files/post/\(LocalPreferences.userObj?.clientUUID ?? "user")/\(Int(Date().timeIntervalSince1970))/"
         
         media.forEach { medium in
+            if medium.url.getFileSize() > LMNumbersConstant.shared.maxFileSizeInBytes {
+                delegate?.showError(with: String(format: LMStringConstants.shared.maxUploadSizeErrorMessage, LMNumbersConstant.shared.maxFileSizeInBytes), isPopVC: false)
+                return
+            }
+            
             attachments.append(.init(url: medium.url, fileName: medium.url.lastPathComponent, awsFilePath: filePath, contentType: medium.mediaType))
         }
         
         LMFeedCreatePostOperation.shared.createPost(with: text, topics: selectedTopics.map({ $0.topicID }), files: attachments, linkPreview: linkPreview)
+        delegate?.popViewController(animated: true)
     }
 }
 

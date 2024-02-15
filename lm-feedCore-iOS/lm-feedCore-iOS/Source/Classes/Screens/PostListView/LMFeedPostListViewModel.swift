@@ -65,13 +65,14 @@ public extension LMFeedPostListViewModel {
             isFetchingFeed = false
             currentPage = 1
             postList.removeAll(keepingCapacity: true)
-//            delegate?.showActivityLoader()
-        } else {
-            delegate?.showHideFooterLoader(isShow: true)
         }
         
         guard !isLastPostReached,
               !isFetchingFeed else { return }
+        
+        if currentPage != 1 {
+            delegate?.showHideFooterLoader(isShow: true)
+        }
         
         isFetchingFeed = true
         
@@ -91,18 +92,18 @@ public extension LMFeedPostListViewModel {
             self.isLastPostReached = posts.isEmpty
             self.currentPage += 1
             
-            if !posts.isEmpty {
-                let topics: [TopicFeedResponse.TopicResponse] = response.data?.topics?.compactMap {
-                    $0.value
-                } ?? []
-                
-                let convertedData: [LMFeedPostDataModel] = posts.compactMap { post in
-                    return .init(post: post, users: users, allTopics: topics)
-                }
-                
-                self.postList.append(contentsOf: convertedData)
-                self.convertToViewData()
+            
+            let topics: [TopicFeedResponse.TopicResponse] = response.data?.topics?.compactMap {
+                $0.value
+            } ?? []
+            
+            let convertedData: [LMFeedPostDataModel] = posts.compactMap { post in
+                return .init(post: post, users: users, allTopics: topics)
             }
+            
+            self.postList.append(contentsOf: convertedData)
+            self.convertToViewData()
+            
         }
     }
     

@@ -26,16 +26,7 @@ class ViewController: UIViewController {
            !apiKey.isEmpty,
            let username = LocalPreferences.userObj?.name,
            let uuid = LocalPreferences.userObj?.sdkClientInfo?.uuid {
-            LMFeedMain.shared.setupLikeMindsFeed(apiKey: apiKey, analytics: DummyAnalytics())
-            LMFeedMain.shared.initiateLikeMindsFeed(username: username, userId: uuid) { [weak self] result in
-                switch result {
-                case .success(_):
-                    guard let viewController = LMUniversalFeedViewModel.createModule() else { return }
-                    self?.navigationController?.pushViewController(viewController, animated: true)
-                case .failure(let error):
-                    dump(error)
-                }
-            }
+            initateAPI(apiKey: apiKey, username: username, userId: uuid)
         }
     }
     
@@ -58,20 +49,28 @@ class ViewController: UIViewController {
             userId = "userId"
         }
         
-        LMFeedMain.shared.setupLikeMindsFeed(apiKey: apiKey, analytics: DummyAnalytics())
-        LMFeedMain.shared.initiateLikeMindsFeed(username: username, userId: userId) { [weak self] result in
-            switch result {
-            case .success(_):
-                guard let viewController = LMUniversalFeedViewModel.createModule() else { return }
-                self?.navigationController?.pushViewController(viewController, animated: true)
-            case .failure(let error):
-                dump(error)
-            }
-        }
+        initateAPI(apiKey: apiKey, username: username, userId: userId)
     }
     
     @objc
     private func endEditing() {
         view.endEditing(true)
+    }
+    
+    
+    func initateAPI(apiKey: String, username: String, userId: String) {
+        LMFeedMain.shared.setupLikeMindsFeed(apiKey: apiKey, analytics: DummyAnalytics())
+        LMFeedMain.shared.initiateLikeMindsFeed(username: username, userId: userId) { [weak self] result in
+            switch result {
+            case .success(_):
+                guard let viewController = LMUniversalFeedViewModel.createModule() else { return }
+                UIApplication.shared.windows.first?.rootViewController = UINavigationController(rootViewController: viewController)
+                UIApplication.shared.windows.first?.makeKeyAndVisible()
+            case .failure(let error):
+                let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                alert.addAction(.init(title: "OK", style: .default))
+                self?.present(alert, animated: true)
+            }
+        }
     }
 }

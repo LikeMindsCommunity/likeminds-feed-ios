@@ -58,7 +58,7 @@ open class LMFeedLikeUserTableCell: LMTableViewCell {
         contentView.pinSubView(subView: containerView)
         
         userImage.addConstraint(top: (containerView.topAnchor, 16),
-                                bottom: (containerView.bottomAnchor, -16),
+                                bottom: (containerView.bottomAnchor, 0),
                                 leading: (containerView.leadingAnchor, 16),
                                 trailing: (userTitleLabel.leadingAnchor, -16))
         userImage.widthAnchor.constraint(equalTo: userImage.heightAnchor, multiplier: 1).isActive = true
