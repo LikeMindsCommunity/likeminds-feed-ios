@@ -370,8 +370,8 @@ extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {
 // MARK: LMFeedDocumentPreviewProtocol
 extension LMFeedEditPostViewController: LMFeedDocumentPreviewProtocol {
     public func didTapDocument(documentID: String) {
-        guard let url = URL(string: documentID) else { return }
-        UIApplication.shared.open(url)
+        guard let url = documentID.convertIntoURL() else { return }
+        openURL(with: url)
     }
 }
 

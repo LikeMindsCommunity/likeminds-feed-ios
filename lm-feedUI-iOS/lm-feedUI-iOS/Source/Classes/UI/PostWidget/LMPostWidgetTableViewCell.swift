@@ -112,7 +112,7 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     }
     
     open func didTapURL(url: URL) {
-        UIApplication.shared.open(url)
+        actionDelegate?.didTapURL(url: url)
     }
     
     open func didTapHashTag(hashtag: String) { }
@@ -198,6 +198,7 @@ public protocol LMFeedTableCellToViewControllerProtocol: AnyObject {
     func didTapShareButton(for postID: String)
     func didTapSaveButton(for postID: String)
     func didTapPost(postID: String)
+    func didTapURL(url: URL)
     func didTapRoute(route: String)
     func didTapSeeMoreButton(for postID: String)
 }

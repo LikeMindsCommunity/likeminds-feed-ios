@@ -243,6 +243,10 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
         openPost(postID: postID)
     }
     
+    open func didTapURL(url: URL) {
+        openURL(with: url)
+    }
+    
     public func openPost(postID: String, openCommentSection: Bool = false) {
         guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: openCommentSection) else { return }
         navigationController?.pushViewController(viewController, animated: true)
@@ -262,8 +266,8 @@ extension LMFeedPostListViewController: LMFeedPostDocumentCellProtocol {
     }
     
     open func didTapDocument(with url: String) {
-        guard let url = URL(string: url) else { return }
-        UIApplication.shared.open(url)
+        guard let urlLink = url.convertIntoURL() else { return }
+        openURL(with: urlLink)
     }
 }
 
@@ -272,8 +276,8 @@ extension LMFeedPostListViewController: LMFeedPostDocumentCellProtocol {
 @objc
 extension LMFeedPostListViewController: LMChatLinkProtocol {
     open func didTapLinkPreview(with url: String) {
-        guard let urlLink = URL(string: url) else { return }
-        UIApplication.shared.open(urlLink)
+        guard let urlLink = url.convertIntoURL() else { return }
+        openURL(with: urlLink)
     }
 }
 

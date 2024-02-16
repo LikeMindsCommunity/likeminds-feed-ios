@@ -33,7 +33,8 @@ open class LMCollectionView: UICollectionView {
     public static func mediaFlowLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 4
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
         return layout
     }
 }

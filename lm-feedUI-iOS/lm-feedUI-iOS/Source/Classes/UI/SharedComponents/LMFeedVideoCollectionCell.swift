@@ -70,7 +70,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        backgroundColor = .clear
+        backgroundColor = .red
         crossButton.layer.cornerRadius = crossButton.frame.height / 2
     }
     

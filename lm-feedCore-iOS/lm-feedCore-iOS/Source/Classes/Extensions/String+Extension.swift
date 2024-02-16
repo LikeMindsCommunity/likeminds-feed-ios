@@ -24,4 +24,16 @@ public extension String {
         
         return nil
     }
+    
+    // TODO: Handle It
+    func convertIntoURL() -> URL? {
+        guard let url = URL(string: self) else { return nil }
+        
+        if url.scheme == nil {
+            var newURLString = "https://\(url.absoluteString)"
+            return URL(string: newURLString)
+        }
+        
+        return url
+    }
 }

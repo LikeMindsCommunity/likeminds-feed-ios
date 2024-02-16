@@ -299,6 +299,13 @@ open class LMFeedPostDetailViewController: LMViewController {
         viewModel?.getPost(isInitialFetch: true)
         showHideLoaderView(isShow: true)
     }
+    
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tableView.visibleCells.forEach { cell in
+            (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
+        }
+    }
 }
 
 // MARK: Keyboard Extension
@@ -441,7 +448,8 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
 @objc
 extension LMFeedPostDetailViewController: LMChatLinkProtocol {
     open func didTapLinkPreview(with url: String) {
-        UIApplication.shared.open(URL(string: url)!)
+        guard let urlLink = url.convertIntoURL() else { return }
+        openURL(with: urlLink)
     }
 }
 
@@ -457,8 +465,8 @@ extension LMFeedPostDetailViewController: LMFeedPostDocumentCellProtocol {
     }
     
     open func didTapDocument(with url: String) {
-        guard let url = URL(string: url) else { return }
-        UIApplication.shared.open(url)
+        guard let urlLink = url.convertIntoURL() else { return }
+        openURL(with: urlLink)
     }
 }
 
@@ -466,7 +474,9 @@ extension LMFeedPostDetailViewController: LMFeedPostDocumentCellProtocol {
 // MARK: LMChatPostCommentProtocol
 @objc
 extension LMFeedPostDetailViewController: LMChatPostCommentProtocol {
-    open func didTapUserName(for uuid: String) { }
+    open func didTapUserName(for uuid: String) { 
+        showError(with: "Tapped User with uuid: \(uuid)", isPopVC: false)
+    }
     
     open func didTapMenuButton(for commentId: String) {
         viewModel?.showMenu(for: commentId)
@@ -509,6 +519,10 @@ extension LMFeedPostDetailViewController: LMFeedTableCellToViewControllerProtoco
     
     open func didTapRoute(route: String) {
         showError(with: "Tapped Route: \(route)", isPopVC: false)
+    }
+    
+    open func didTapURL(url: URL) {
+        openURL(with: url)
     }
     
     open func didTapLikeButton(for postID: String) {
@@ -557,6 +571,9 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
     }
     
     public func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostDetailCommentCellViewModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool) {
+        setNavigationTitleAndSubtitle(with: "Post",
+                                      subtitle: "\(comments.count) comment\(comments.count == 1 ? "" : "s")",
+                                      alignment: .center)
         showHideLoaderView(isShow: false)
         
         self.postData = post

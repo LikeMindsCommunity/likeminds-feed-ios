@@ -13,6 +13,7 @@ public protocol LMChatPostCommentProtocol: AnyObject {
     func didTapLikeCountButton(for commentId: String)
     func didTapReplyButton(for commentId: String)
     func didTapReplyCountButton(for commentId: String)
+    func didTapURL(url: URL)
 }
 
 // MARK: LMFeedPostDetailCommentCellViewModel

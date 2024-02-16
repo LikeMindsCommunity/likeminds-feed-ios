@@ -5,6 +5,7 @@
 //  Created by Devansh Mohata on 24/11/23.
 //
 
+import SafariServices
 import UIKit
 
 public extension UIViewController {
@@ -148,6 +149,15 @@ open class LMViewController: UIViewController {
         }
         
         navigationItem.titleView = titleView
+    }
+    
+    open func openURL(with url: URL) {
+        if ["http", "https"].contains(url.scheme?.lowercased() ?? "") {
+            let safariController = SFSafariViewController(url: url)
+            present(safariController, animated: true)
+        } else {
+            UIApplication.shared.open(url)
+        }
     }
 }
 

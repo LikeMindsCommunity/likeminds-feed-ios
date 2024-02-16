@@ -166,7 +166,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
                                       leading: (containerView.leadingAnchor, 16))
         
         commentContainerStack.addConstraint(top: (authorNameLabel.bottomAnchor, 2),
-                                            bottom: (actionStack.topAnchor, 0),
+                                            bottom: (actionStack.topAnchor, -8),
                                             leading: (authorNameLabel.leadingAnchor, 0),
                                             trailing: (containerView.trailingAnchor, -16))
         
@@ -177,7 +177,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
                                        centerY: (actionStack.centerYAnchor, 0))
         
         sepratorView.setWidthConstraint(with: 1)
-        actionStack.setHeightConstraint(with: 24)
+        actionStack.setHeightConstraint(with: 34)
         
         authorNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -16).isActive = true
         commentTimeLabel.leadingAnchor.constraint(greaterThanOrEqualTo: actionStack.trailingAnchor, constant: 16).isActive = true
@@ -234,6 +234,29 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         delegate?.didTapReplyCountButton(for: commentId)
     }
     
+    @objc
+    open func tappedTextView(tapGesture: UITapGestureRecognizer) {
+        guard let textView = tapGesture.view as? LMTextView,
+              let position = textView.closestPosition(to: tapGesture.location(in: textView)),
+              let text = textView.textStyling(at: position, in: .forward) else { return }
+        if let url = text[.link] as? URL {
+            didTapURL(url: url)
+        } else if let hashtag = text[.hashtags] as? String {
+            didTapHashTag(hashtag: hashtag)
+        } else if let route = text[.route] as? String {
+            didTapRoute(route: route)
+        }
+    }
+    
+    open func didTapURL(url: URL) { 
+        delegate?.didTapURL(url: url)
+    }
+    
+    open func didTapHashTag(hashtag: String) { }
+    
+    open func didTapRoute(route: String) {
+        delegate?.didTapUserName(for: route)
+    }
     
     // MARK: setupAppearance
     open override func setupAppearance() {

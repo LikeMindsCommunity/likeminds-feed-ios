@@ -133,7 +133,7 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
                                       leading: (containerView.leadingAnchor, 16))
         
         commentContainerStack.addConstraint(top: (authorNameLabel.bottomAnchor, 2),
-                                            bottom: (actionStack.topAnchor, 0),
+                                            bottom: (actionStack.topAnchor, -8),
                                             leading: (authorNameLabel.leadingAnchor, 0),
                                             trailing: (containerView.trailingAnchor, -16))
         
@@ -200,20 +200,18 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
             didTapHashTag(hashtag: hashtag)
         } else if let route = text[.route] as? String {
             didTapRoute(route: route)
-        } else {
-            didTapPostText()
         }
     }
     
-    open func didTapURL(url: URL) {
-        UIApplication.shared.open(url)
+    open func didTapURL(url: URL) { 
+        delegate?.didTapURL(url: url)
     }
     
     open func didTapHashTag(hashtag: String) { }
     
-    open func didTapRoute(route: String) { }
-    
-    open func didTapPostText() { }
+    open func didTapRoute(route: String) { 
+        delegate?.didTapUserName(for: route)
+    }
     
     // MARK: setupAppearance
     open override func setupAppearance() {
