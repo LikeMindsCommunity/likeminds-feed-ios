@@ -300,11 +300,21 @@ open class LMFeedPostDetailViewController: LMViewController {
         showHideLoaderView(isShow: true)
     }
     
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        scrollingFinished()
+    }
+    
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tableView.visibleCells.forEach { cell in
             (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
         }
+    }
+    
+    open func reloadTable(for index: IndexPath? = nil) {
+        tableView.reloadTable(for: index)
+        scrollingFinished()
     }
 }
 
@@ -364,7 +374,7 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
             cell.configure(with: comment, delegate: self, indexPath: indexPath) { [weak self] in
                 data.replies[indexPath.row].isShowMore.toggle()
                 self?.cellsData[indexPath.section - 1] = data
-                self?.tableView.reloadTable(for: indexPath)
+                self?.reloadTable(for: indexPath)
             }
             return cell
         }
@@ -378,7 +388,7 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
             header.configure(with: data, delegate: self, indexPath: .init(row: NSNotFound, section: section)) { [weak self] in
                 data.isShowMore.toggle()
                 self?.cellsData[section - 1] = data
-                self?.tableView.reloadTable(for: IndexPath(row: NSNotFound, section: section))
+                self?.reloadTable(for: IndexPath(row: NSNotFound, section: section))
             }
             return header
         }
@@ -441,6 +451,25 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
             viewModel?.getPost(isInitialFetch: false)
         }
     }
+    
+    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if decelerate {
+            scrollingFinished()
+        }
+    }
+
+    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        scrollingFinished()
+    }
+
+    func scrollingFinished() {
+        tableView.visibleCells.forEach { cell in
+            if type(of: cell) == LMFeedPostMediaCell.self,
+               tableView.percentVisibility(of: cell) == 1 {
+                (cell as? LMFeedPostMediaCell)?.tableViewScrolled(isPlay: true)
+            }
+        }
+    }
 }
 
 
@@ -460,7 +489,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDocumentCellProtocol {
         if var data = postData as? LMFeedPostDocumentCell.ViewModel {
             data.isShowAllDocuments.toggle()
             self.postData = data
-            tableView.reloadTable(for: IndexPath(row: NSNotFound, section: 0))
+            reloadTable(for: IndexPath(row: NSNotFound, section: 0))
         }
     }
     
@@ -514,7 +543,7 @@ extension LMFeedPostDetailViewController: LMChatPostCommentProtocol {
 extension LMFeedPostDetailViewController: LMFeedTableCellToViewControllerProtocol {
     open func didTapSeeMoreButton(for postID: String) {
         postData?.isShowMore.toggle()
-        tableView.reloadTable(for: IndexPath(row: 0, section: 0))
+        reloadTable(for: IndexPath(row: 0, section: 0))
     }
     
     open func didTapRoute(route: String) {
@@ -579,7 +608,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         self.postData = post
         self.cellsData = comments
         
-        tableView.reloadTable(for: indexPath)
+        reloadTable(for: indexPath)
         
         if openCommentSection,
            isCommentingEnabled {
@@ -598,12 +627,12 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         let isLiked = postData?.footerData.isLiked ?? true
         postData?.footerData.isLiked = !isLiked
         postData?.footerData.likeCount += !isLiked ? 1 : -1
-        tableView.reloadTable(for: IndexPath(row: 0, section: 0))
+        reloadTable(for: IndexPath(row: 0, section: 0))
     }
     
     public func changePostSave() {
         postData?.footerData.isSaved.toggle()
-        tableView.reloadTable(for: IndexPath(row: 0, section: 0))
+        reloadTable(for: IndexPath(row: 0, section: 0))
     }
     
     public func changeCommentLike(for indexPath: IndexPath) {
@@ -620,7 +649,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
             }
             
             cellsData[indexPath.section - 1] = sectionData
-            tableView.reloadTable(for: indexPath)
+            reloadTable(for: indexPath)
         }
     }
     

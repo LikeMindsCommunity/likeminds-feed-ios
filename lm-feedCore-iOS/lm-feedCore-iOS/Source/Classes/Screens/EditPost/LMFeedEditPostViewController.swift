@@ -74,6 +74,7 @@ open class LMFeedEditPostViewController: LMViewController {
         collection.showsHorizontalScrollIndicator = false
         collection.dataSource = self
         collection.delegate = self
+        collection.isPagingEnabled = true
         return collection
     }()
     
@@ -201,7 +202,15 @@ open class LMFeedEditPostViewController: LMViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         setupInitialView()
+        setNavigationTitleAndSubtitle(with: "Edit Post", subtitle: nil, alignment: .center)
         viewmodel?.getInitalData()
+    }
+    
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        mediaCollectionView.visibleCells.forEach { cell in
+            (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
+        }
     }
     
     open func setupInitialView() {
@@ -244,7 +253,7 @@ extension LMFeedEditPostViewController: UICollectionViewDataSource, UICollection
             return cell
         } else if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath),
                   let data = mediaCells[safe: indexPath.row] as? LMFeedVideoCollectionCell.ViewModel {
-            cell.configure(with: data, videoPlayer: videoPlayer)
+            cell.configure(with: data)
             return cell
         }
         return UICollectionViewCell()
@@ -254,13 +263,27 @@ extension LMFeedEditPostViewController: UICollectionViewDataSource, UICollection
         collectionView.frame.size
     }
     
-    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        mediaPageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.width)
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        mediaCollectionView.visibleCells.forEach { cell in
+            (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
+        }
     }
     
     open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-            mediaPageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.width)
+        if decelerate {
+            scrollingFinished()
+        }
+    }
+
+    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        scrollingFinished()
+    }
+
+    public func scrollingFinished() {
+        mediaPageControl.currentPage = Int(mediaCollectionView.contentOffset.x / mediaCollectionView.frame.width)
+        
+        if mediaCollectionView.visibleCells.count == 1 {
+            (mediaCollectionView.visibleCells.first as? LMFeedVideoCollectionCell)?.playVideo()
         }
     }
 }
@@ -316,7 +339,7 @@ extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {
         self.documentCells = data
         
         documentTableView.isHidden = false
-        documentTableView.reloadData()
+        documentTableView.reloadTable()
     }
     
     public func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?) {
@@ -335,7 +358,7 @@ extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {
         
         mediaCollectionView.isHidden = false
         mediaCollectionView.reloadData()
-
+        scrollingFinished()
         mediaPageControl.isHidden = false
         mediaPageControl.numberOfPages = mediaCells.count
         mediaPageControl.currentPage = 0

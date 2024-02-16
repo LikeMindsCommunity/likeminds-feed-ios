@@ -120,6 +120,11 @@ open class LMFeedPostListViewController: LMViewController {
         LMFeedMain.analytics?.trackEvent(for: .feedOpened, eventProperties: ["feed_type": "universal_feed"])
     }
     
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        scrollingFinished()
+    }
+    
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tableView.visibleCells.forEach { cell in
@@ -159,10 +164,32 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
         }
     }
     
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         delegate?.tableViewScrolled(scrollView)
+    }
+    
+    open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         tableView.visibleCells.forEach { cell in
             (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
+        }
+    }
+    
+    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if decelerate {
+            scrollingFinished()
+        }
+    }
+
+    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        scrollingFinished()
+    }
+
+    func scrollingFinished() {
+        tableView.visibleCells.forEach { cell in
+            if type(of: cell) == LMFeedPostMediaCell.self,
+               tableView.percentVisibility(of: cell) == 1 {
+                (cell as? LMFeedPostMediaCell)?.tableViewScrolled(isPlay: true)
+            }
         }
     }
 }
@@ -174,7 +201,7 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
     open func didTapSeeMoreButton(for postID: String) {
         if let index = data.firstIndex(where: { $0.postID == postID }) {
             data[index].isShowMore.toggle()
-            tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+            reloadTable(for: IndexPath(row: index, section: 0))
         }
     }
     
@@ -203,7 +230,7 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
         
         data[index] = tempData
         
-        tableView.reloadRows(at: [.init(row: index, section: 0)], with: .none)
+        reloadTable(for: IndexPath(row: index, section: 0))
     }
     
     open func didTapLikeTextButton(for postID: String) {
@@ -236,7 +263,7 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
         
         data[index] = tempData
         
-        tableView.reloadRows(at: [.init(row: index, section: 0)], with: .none)
+        reloadTable(for: IndexPath(row: index, section: 0))
     }
     
     open func didTapPost(postID: String) {
@@ -251,6 +278,11 @@ extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol 
         guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: openCommentSection) else { return }
         navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    open func reloadTable(for index: IndexPath? = nil) {
+        tableView.reloadTable(for: index)
+        scrollingFinished()
+    }
 }
 
 
@@ -261,7 +293,7 @@ extension LMFeedPostListViewController: LMFeedPostDocumentCellProtocol {
         if var docData = data[safe: indexPath.row] as? LMFeedPostDocumentCell.ViewModel {
             docData.isShowAllDocuments.toggle()
             data[indexPath.row] = docData
-            tableView.reloadRows(at: [indexPath], with: .none)
+            reloadTable(for: indexPath)
         }
     }
     
@@ -291,11 +323,7 @@ extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
     
     public func loadPosts(with data: [LMFeedPostTableCellProtocol], for index: IndexPath?) {
         self.data = data
-        if let index {
-            tableView.reloadRows(at: [index], with: .none)
-        } else {
-            tableView.reloadData()
-        }
+        reloadTable(for: index)
         
         if self.data.isEmpty {
             emptyListView.configure { [weak self] in
@@ -326,7 +354,7 @@ extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
         
         data[index].footerData = tempData
         
-        tableView.reloadRows(at: [.init(row: index, section: 0)], with: .none)
+        reloadTable(for: IndexPath(row: index, section: 0))
     }
     
     public func undoSaveAction(for postID: String) {
@@ -337,7 +365,7 @@ extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
         
         data[index].footerData = tempData
         
-        tableView.reloadRows(at: [.init(row: index, section: 0)], with: .none)
+        reloadTable(for: IndexPath(row: index, section: 0))
     }
     
     public func showHideFooterLoader(isShow: Bool) {
@@ -346,7 +374,7 @@ extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
     
     public func showActivityLoader() {
         data.removeAll()
-        tableView.reloadData()
+        reloadTable()
     }
     
     public func navigateToDeleteScreen(for postID: String) {

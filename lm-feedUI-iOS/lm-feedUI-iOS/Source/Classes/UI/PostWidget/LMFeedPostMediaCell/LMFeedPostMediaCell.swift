@@ -65,18 +65,11 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         let pageControl = UIPageControl()
         pageControl.isEnabled = false
         pageControl.numberOfPages = mediaCellsData.count
-        pageControl.currentPageIndicatorTintColor = .gray
-        pageControl.pageIndicatorTintColor = .purple
+        pageControl.currentPageIndicatorTintColor = Appearance.shared.colors.appTintColor
+        pageControl.pageIndicatorTintColor = Appearance.shared.colors.gray155
         pageControl.hidesForSinglePage = true
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
-    }()
-    
-    open private(set) lazy var videoPlayer: AVPlayerViewController = {
-        let player = AVPlayerViewController()
-        player.view.translatesAutoresizingMaskIntoConstraints = false
-        player.showsPlaybackControls = true
-        return player
     }()
     
     
@@ -163,9 +156,14 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         mediaCollectionView.scrollToItem(at: .init(row: sender.currentPage, section: .zero), at: .centeredHorizontally, animated: true)
     }
     
-    open func tableViewScrolled() {
+    open func tableViewScrolled(isPlay: Bool = false) {
         for case let cell as LMFeedVideoCollectionCell in mediaCollectionView.visibleCells {
             cell.pauseVideo()
+        }
+        
+        if isPlay,
+           mediaCollectionView.visibleCells.count == 1 {
+            (mediaCollectionView.visibleCells.first as? LMFeedVideoCollectionCell)?.playVideo()
         }
     }
     
@@ -220,7 +218,7 @@ extension LMFeedPostMediaCell: UICollectionViewDataSource,
             return cell
         } else if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath),
                   let data = mediaCellsData[indexPath.row] as? LMFeedVideoCollectionCell.ViewModel {
-            cell.configure(with: data, videoPlayer: videoPlayer)
+            cell.configure(with: data)
             return cell
         }
         
@@ -233,22 +231,23 @@ extension LMFeedPostMediaCell: UICollectionViewDataSource,
     
     open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         pageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.width)
+        scrollingFinished()
     }
     
     open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             pageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.width)
         }
+        scrollingFinished()
     }
     
-    open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let cell = cell as? LMFeedVideoCollectionCell else { return }
-        cell.pauseVideo()
+    open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        tableViewScrolled()
     }
     
-    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        0
+    public func scrollingFinished() {
+        if mediaCollectionView.visibleCells.count == 1 {
+            (mediaCollectionView.visibleCells.first as? LMFeedVideoCollectionCell)?.playVideo()
+        }
     }
-    
-    open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) { }
 }

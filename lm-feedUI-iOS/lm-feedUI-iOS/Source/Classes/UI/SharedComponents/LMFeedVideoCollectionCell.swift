@@ -22,6 +22,12 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     
     
     // MARK: UI Elements
+    open private(set) lazy var videoPlayer: LMFeedLoopedVideoPlayer = {
+        let player = LMFeedLoopedVideoPlayer()
+        player.translatesAutoresizingMaskIntoConstraints = false
+        return player
+    }()
+    
     open private(set) lazy var crossButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
@@ -33,7 +39,6 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     
     
     // MARK: Data Variables
-    private weak var videoPlayer: AVPlayerViewController?
     public var crossButtonAction: ((String) -> Void)?
     public var videoURL: String?
     
@@ -42,7 +47,6 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     open override func prepareForReuse() {
         super.prepareForReuse()
         pauseVideo()
-        videoPlayer = nil
     }
     
     
@@ -51,6 +55,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         super.setupViews()
         
         contentView.addSubview(containerView)
+        containerView.addSubview(videoPlayer)
         containerView.addSubview(crossButton)
     }
     
@@ -60,6 +65,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         super.setupLayouts()
         
         contentView.pinSubView(subView: containerView)
+        containerView.pinSubView(subView: videoPlayer)
         crossButton.addConstraint(top: (containerView.topAnchor, 16),
                                   trailing: (containerView.trailingAnchor, -16))
         crossButton.setHeightConstraint(with: 24)
@@ -71,7 +77,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     open override func setupAppearance() {
         super.setupAppearance()
         backgroundColor = .red
-        crossButton.layer.cornerRadius = crossButton.frame.height / 2
+        crossButton.layer.cornerRadius = 12
     }
     
     
@@ -88,38 +94,23 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     }
     
     // MARK: configure
-    open func configure(with data: ViewModel, videoPlayer: AVPlayerViewController, crossButtonAction: ((String) -> Void)? = nil) {
-        self.videoPlayer = videoPlayer
-        self.videoPlayer?.showsPlaybackControls = true
-        self.videoPlayer?.requiresLinearPlayback = false
-        self.videoPlayer?.allowsPictureInPicturePlayback = false
+    open func configure(with data: ViewModel, crossButtonAction: ((String) -> Void)? = nil) {
+        guard let url = URL(string: data.videoURL) else { return }
         videoURL = data.videoURL
         
+        videoPlayer.prepareVideo(url)
         self.crossButtonAction = crossButtonAction
         crossButton.isHidden = crossButtonAction == nil
         if crossButtonAction != nil {
             containerView.bringSubviewToFront(crossButton)
         }
-        
-        containerView.addSubview(videoPlayer.view)
-        containerView.pinSubView(subView: videoPlayer.view)
-        
-        guard let url = URL(string: data.videoURL) else { return }
-        DispatchQueue.global(qos: .background).async {
-            let player = AVPlayer(url: url)
-            
-            DispatchQueue.main.async { [weak self] in
-                self?.videoPlayer?.player = player
-                self?.playVideo()
-            }
-        }
     }
     
     open func playVideo() {
-        videoPlayer?.player?.play()
+        videoPlayer.play()
     }
     
     open func pauseVideo() {
-        videoPlayer?.player?.pause()
+        videoPlayer.pause()
     }
 }

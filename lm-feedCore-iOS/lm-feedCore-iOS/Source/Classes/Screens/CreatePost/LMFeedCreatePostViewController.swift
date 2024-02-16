@@ -84,6 +84,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         collection.registerCell(type: LMUIComponents.shared.videoPreviewCell)
         collection.showsVerticalScrollIndicator = false
         collection.showsHorizontalScrollIndicator = false
+        collection.isPagingEnabled = true
         collection.dataSource = self
         collection.delegate = self
         return collection
@@ -310,8 +311,15 @@ open class LMFeedCreatePostViewController: LMViewController {
         viewModel?.getTopics()
     }
     
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        mediaCollectionView.visibleCells.forEach { cell in
+            (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
+        }
+    }
+    
     open func setupAddMedia() {
-        addPhotosTab.configure(with: LMStringConstants.shared.addPhotoText, image: Constants.shared.images.galleryIcon.withTintColor(.orange))
+        addPhotosTab.configure(with: LMStringConstants.shared.addPhotoText, image: Constants.shared.images.galleryIcon)
         addVideoTab.configure(with: LMStringConstants.shared.addVideoText, image: Constants.shared.images.videoIcon)
         addDocumentsTab.configure(with: LMStringConstants.shared.attachFiles, image: Constants.shared.images.paperclipIcon)
         taggingView.isHidden = true
@@ -374,7 +382,7 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
             return cell
         } else if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath),
                   let data = mediaCellData[indexPath.row] as? LMFeedVideoCollectionCell.ViewModel {
-            cell.configure(with: data, videoPlayer: videoPlayer) { [weak self] videoID in
+            cell.configure(with: data) { [weak self] videoID in
                 guard let self else { return }
                 viewModel?.removeAsset(url: videoID)
             }
@@ -386,6 +394,28 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: collectionView.frame.width, height: collectionView.frame.width)
+    }
+    
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        mediaCollectionView.visibleCells.forEach { cell in
+            (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
+        }
+    }
+    
+    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if decelerate {
+            scrollingFinished()
+        }
+    }
+
+    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        scrollingFinished()
+    }
+
+    public func scrollingFinished() {
+        if mediaCollectionView.visibleCells.count == 1 {
+            (mediaCollectionView.visibleCells.first as? LMFeedVideoCollectionCell)?.playVideo()
+        }
     }
 }
 
@@ -433,6 +463,7 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
         mediaCollectionView.isHidden = media.isEmpty
         mediaCellData.append(contentsOf: media)
         mediaCollectionView.reloadData()
+        scrollingFinished()
         addMoreButton.isHidden = !isShowAddMore
         addMediaStack.isHidden = !isShowBottomTab
         

@@ -828,6 +828,7 @@
 		E4177489C7BAAC5F9DA242DB6F1B0DAF /* FIRMessagingTokenDeleteOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7757268CAD3C1F8C6CA0031D1FE7D70 /* FIRMessagingTokenDeleteOperation.m */; };
 		E4432DED404517FC10586A79D4115ACD /* GDTCCTUploader.h in Headers */ = {isa = PBXBuildFile; fileRef = 951F6FB6A41C52117B4A3B8281060511 /* GDTCCTUploader.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E451CD349D01B61FE51018521338E544 /* GDTCCTNanopbHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 30C4B4A52FDC1DFF5C63F3213FFB385B /* GDTCCTNanopbHelpers.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		E53F892F2B7F5B5C00AD3403 /* LMFeedLoopedVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F892E2B7F5B5B00AD3403 /* LMFeedLoopedVideoPlayer.swift */; };
 		E5635DECB22362CA17521F7B6A752BB4 /* AWSS3Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = B2881072FA98B43A2B029FD85DAAC89A /* AWSS3Resources.m */; };
 		E5A1A77B7E0A1ECA064C715AEE6C8E5A /* AWSSTSModel.h in Headers */ = {isa = PBXBuildFile; fileRef = B8C3808767F890707DA30CBCF8DAE6C4 /* AWSSTSModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5A79F372B7CE53100A9F7B3 /* LMFeedUIAssetsCatalog.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDF54BEBC9F9E01C90C00D2BE7B936A4 /* LMFeedUIAssetsCatalog.xcassets */; };
@@ -2145,6 +2146,7 @@
 		E44FEE7CF5186A4CEABA671401D8DEC8 /* ImageDrawing.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageDrawing.swift; path = Sources/Image/ImageDrawing.swift; sourceTree = "<group>"; };
 		E4BCDD953331E081887010D0D0944FB9 /* LMFeedLinkPreview.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedLinkPreview.swift; sourceTree = "<group>"; };
 		E4F7F00F5E511E62A225D9E1F0F43445 /* LMFeedReportContentViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedReportContentViewModel.swift; sourceTree = "<group>"; };
+		E53F892E2B7F5B5B00AD3403 /* LMFeedLoopedVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedLoopedVideoPlayer.swift; sourceTree = "<group>"; };
 		E53FAA4B44647E3F0E5FF0EA3766726E /* AWSFMDB+AWSHelpers.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "AWSFMDB+AWSHelpers.m"; path = "AWSCore/FMDB/AWSFMDB+AWSHelpers.m"; sourceTree = "<group>"; };
 		E54BCB4944AC843D6609C59E494346E9 /* GoogleUtilities-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "GoogleUtilities-umbrella.h"; sourceTree = "<group>"; };
 		E56BC90424E96ACF0CDB63B8D511E83C /* HeartbeatController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HeartbeatController.swift; path = FirebaseCore/Internal/Sources/HeartbeatLogging/HeartbeatController.swift; sourceTree = "<group>"; };
@@ -3277,6 +3279,7 @@
 				3FDB3A7FCDDAA69386EB1FE5549A35AD /* LMFeedImageCollectionCell.swift */,
 				E4BCDD953331E081887010D0D0944FB9 /* LMFeedLinkPreview.swift */,
 				1CC67D293B1AB16CB64A634A16FEAD96 /* LMFeedVideoCollectionCell.swift */,
+				E53F892E2B7F5B5B00AD3403 /* LMFeedLoopedVideoPlayer.swift */,
 			);
 			path = SharedComponents;
 			sourceTree = "<group>";
@@ -5822,6 +5825,7 @@
 				6FA7F804BF4D586C8806C9F138754F19 /* LMFeedPostLinkCell.swift in Sources */,
 				1EADE76BE0C658ACD61C8CAE004EB699 /* LMFeedPostMediaCell.swift in Sources */,
 				800825F5099B12063A6469CCEDCAF5E6 /* LMFeedPostMoreRepliesCell.swift in Sources */,
+				E53F892F2B7F5B5C00AD3403 /* LMFeedLoopedVideoPlayer.swift in Sources */,
 				B71FDE8542E4565ABADE95030F9262FD /* LMFeedReportViewCell.swift in Sources */,
 				C426450CB623ED1B6FEC59F24E1C2949 /* LMFeedSelectTopicViewCell.swift in Sources */,
 				7CB4D4A68FE2876ACD402AA48DDB35AD /* LMFeedTaggingTextView.swift in Sources */,
