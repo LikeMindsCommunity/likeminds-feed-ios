@@ -24,7 +24,8 @@ public protocol LMFeedPostListVCToProtocol: AnyObject {
 @IBDesignable
 open class LMFeedPostListViewController: LMViewController {
     open private(set) lazy var tableView: LMTableView = {
-        let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
+        let table = LMTableView(frame: .zero, style: .grouped)
+        table.translatesAutoresizingMaskIntoConstraints = false
         table.dataSource = self
         table.delegate = self
         table.separatorStyle = .none
@@ -34,6 +35,8 @@ open class LMFeedPostListViewController: LMViewController {
         table.register(LMUIComponents.shared.postCell)
         table.register(LMUIComponents.shared.documentCell)
         table.register(LMUIComponents.shared.linkCell)
+        table.registerHeaderFooter(LMUIComponents.shared.headerView)
+        table.registerHeaderFooter(LMUIComponents.shared.footerView)
         return table
     }()
     
@@ -131,26 +134,35 @@ open class LMFeedPostListViewController: LMViewController {
             (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
         }
     }
+    
+    open func reloadTable(for index: IndexPath? = nil) {
+        tableView.reloadTable(for: index)
+        scrollingFinished()
+    }
 }
 
 // MARK: UITableView
 @objc
 extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelegate {
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open func numberOfSections(in tableView: UITableView) -> Int {
         data.count
+    }
+    
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        1
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell),
-           let cellData = data[indexPath.row] as? LMFeedPostMediaCell.ViewModel {
+           let cellData = data[indexPath.section] as? LMFeedPostMediaCell.ViewModel {
             cell.configure(with: cellData, delegate: self)
             return cell
         } else if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.documentCell),
-                  let cellData = data[indexPath.row] as? LMFeedPostDocumentCell.ViewModel {
+                  let cellData = data[indexPath.section] as? LMFeedPostDocumentCell.ViewModel {
             cell.configure(for: indexPath, with: cellData, delegate: self)
             return cell
         } else if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.linkCell),
-                  let cellData = data[indexPath.row] as? LMFeedPostLinkCell.ViewModel {
+                  let cellData = data[indexPath.section] as? LMFeedPostLinkCell.ViewModel {
             cell.configure(with: cellData, delegate: self)
             return cell
         }
@@ -159,9 +171,35 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
     }
     
     open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if data.count == indexPath.row + 1 {
+        if data.count == indexPath.section + 1 {
             viewModel?.getFeed()
         }
+    }
+    
+    open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.headerView),
+           let cellData = data[safe: section] {
+            header.configure(with: cellData.headerData, postID: cellData.postID, userUUID: cellData.userUUID, delegate: self)
+            return header
+        }
+        return nil
+    }
+    
+    open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        Constants.shared.number.postHeaderSize
+    }
+    
+    open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.footerView),
+           let cellData = data[safe: section] {
+            footer.configure(with: cellData.footerData, postID: cellData.postID, delegate: self)
+            return footer
+        }
+        return nil
+    }
+    
+    open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        UITableView.automaticDimension
     }
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -191,125 +229,6 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
                 (cell as? LMFeedPostMediaCell)?.tableViewScrolled(isPlay: true)
             }
         }
-    }
-}
-
-
-// MARK: LMFeedTableCellToViewControllerProtocol
-@objc
-extension LMFeedPostListViewController: LMFeedTableCellToViewControllerProtocol {
-    open func didTapSeeMoreButton(for postID: String) {
-        if let index = data.firstIndex(where: { $0.postID == postID }) {
-            data[index].isShowMore.toggle()
-            reloadTable(for: IndexPath(row: index, section: 0))
-        }
-    }
-    
-    open func didTapProfilePicture(for uuid: String) {
-        showError(with: "Tapped User Profile having uuid: \(uuid)", isPopVC: false)
-    }
-    
-    open func didTapRoute(route: String) {
-        showError(with: "Tapped Route: \(route)", isPopVC: false)
-    }
-    
-    open func didTapMenuButton(postID: String) {
-        viewModel?.showMenu(for: postID)
-    }
-    
-    open func didTapLikeButton(for postID: String) {
-        guard let index = data.firstIndex(where: { $0.postID == postID }) else { return }
-        viewModel?.likePost(for: postID)
-        
-        var tempData = data[index]
-        var tempFooterData = tempData.footerData
-        tempFooterData.isLiked.toggle()
-        tempFooterData.likeCount += tempFooterData.isLiked ? 1 : -1
-        
-        tempData.footerData = tempFooterData
-        
-        data[index] = tempData
-        
-        reloadTable(for: IndexPath(row: index, section: 0))
-    }
-    
-    open func didTapLikeTextButton(for postID: String) {
-        guard viewModel?.allowPostLikeView(for: postID) == true else { return }
-        do {
-            let viewcontroller = try LMFeedLikeViewModel.createModule(postID: postID)
-            navigationController?.pushViewController(viewcontroller, animated: true)
-        } catch let error {
-            print(error.localizedDescription)
-        }
-    }
-    
-    open func didTapCommentButton(for postID: String) {
-        openPost(postID: postID, openCommentSection: true)
-    }
-    
-    open func didTapShareButton(for postID: String) {
-        LMFeedShareUtility.sharePost(from: self, postID: postID)
-    }
-    
-    open func didTapSaveButton(for postID: String) {
-        guard let index = data.firstIndex(where: { $0.postID == postID }) else { return }
-        viewModel?.savePost(for: postID)
-        
-        var tempData = data[index]
-        var tempFooterData = tempData.footerData
-        tempFooterData.isSaved.toggle()
-        
-        tempData.footerData = tempFooterData
-        
-        data[index] = tempData
-        
-        reloadTable(for: IndexPath(row: index, section: 0))
-    }
-    
-    open func didTapPost(postID: String) {
-        openPost(postID: postID)
-    }
-    
-    open func didTapURL(url: URL) {
-        openURL(with: url)
-    }
-    
-    public func openPost(postID: String, openCommentSection: Bool = false) {
-        guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: openCommentSection) else { return }
-        navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    open func reloadTable(for index: IndexPath? = nil) {
-        tableView.reloadTable(for: index)
-        scrollingFinished()
-    }
-}
-
-
-// MARK: LMFeedPostDocumentCellProtocol
-@objc
-extension LMFeedPostListViewController: LMFeedPostDocumentCellProtocol {
-    open func didTapShowMoreDocuments(for indexPath: IndexPath) {
-        if var docData = data[safe: indexPath.row] as? LMFeedPostDocumentCell.ViewModel {
-            docData.isShowAllDocuments.toggle()
-            data[indexPath.row] = docData
-            reloadTable(for: indexPath)
-        }
-    }
-    
-    open func didTapDocument(with url: String) {
-        guard let urlLink = url.convertIntoURL() else { return }
-        openURL(with: urlLink)
-    }
-}
-
-
-// MARK: LMChatLinkProtocol
-@objc
-extension LMFeedPostListViewController: LMChatLinkProtocol {
-    open func didTapLinkPreview(with url: String) {
-        guard let urlLink = url.convertIntoURL() else { return }
-        openURL(with: urlLink)
     }
 }
 
@@ -399,5 +318,86 @@ extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
 extension LMFeedPostListViewController: LMFeedPostListVCToProtocol {
     open func loadPostsWithTopics(_ topics: [String]) {
         viewModel?.updateTopics(with: topics)
+    }
+}
+
+
+@objc
+extension LMFeedPostListViewController: LMFeedPostHeaderViewProtocol {
+    open func didTapProfilePicture(having uuid: String) {
+        showError(with: "User Profile Tapped having UUID: \(uuid)", isPopVC: false)
+    }
+    
+    open func didTapMenuButton(for postID: String) {
+        viewModel?.showMenu(for: postID)
+    }
+}
+
+// MARK: LMFeedPostFooterViewProtocol
+@objc
+extension LMFeedPostListViewController: LMFeedPostFooterViewProtocol {
+    open func didTapLikeButton(for postID: String) {
+        viewModel?.likePost(for: postID)
+    }
+    
+    open func didTapLikeTextButton(for postID: String) {
+        guard viewModel?.allowPostLikeView(for: postID) == true else { return }
+        do {
+            let viewcontroller = try LMFeedLikeViewModel.createModule(postID: postID)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
+    open func didTapCommentButton(for postID: String) {
+        guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: true) else { return }
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    open func didTapShareButton(for postID: String) {
+        LMFeedShareUtility.sharePost(from: self, postID: postID)
+    }
+    
+    open func didTapSaveButton(for postID: String) {
+        viewModel?.savePost(for: postID)
+    }
+}
+
+
+// MARK: LMPostWidgetTableViewCellProtocol, LMChatLinkProtocol, LMFeedPostDocumentCellProtocol
+@objc
+extension LMFeedPostListViewController: LMChatLinkProtocol, LMFeedPostDocumentCellProtocol {
+    open func didTapPost(postID: String) {
+        guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: false) else { return }
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    open func didTapURL(url: URL) {
+        openURL(with: url)
+    }
+    
+    open func didTapRoute(route: String) {
+        showError(with: "Tapped User Route with route: \(route)", isPopVC: false)
+    }
+    
+    open func didTapSeeMoreButton(for postID: String) { }
+    
+    open func didTapLinkPreview(with url: String) {
+        guard let urlLink = url.convertIntoURL() else { return }
+        openURL(with: urlLink)
+    }
+    
+    open func didTapShowMoreDocuments(for indexPath: IndexPath) {
+        if var docData = data[safe: indexPath.row] as? LMFeedPostDocumentCell.ViewModel {
+            docData.isShowAllDocuments.toggle()
+            data[indexPath.row] = docData
+            reloadTable(for: indexPath)
+        }
+    }
+    
+    open func didTapDocument(with url: String) {
+        guard let urlLink = url.convertIntoURL() else { return }
+        openURL(with: urlLink)
     }
 }

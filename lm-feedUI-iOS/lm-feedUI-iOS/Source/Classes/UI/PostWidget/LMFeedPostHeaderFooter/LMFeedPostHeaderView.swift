@@ -9,12 +9,13 @@ import Kingfisher
 import UIKit
 
 public protocol LMFeedPostHeaderViewProtocol: AnyObject {
-    func didTapProfilePicture()
-    func didTapMenuButton()
+    func didTapProfilePicture(having uuid: String)
+    func didTapMenuButton(for postID: String)
+    func didTapPost(postID: String)
 }
 
 @IBDesignable
-open class LMFeedPostHeaderView: LMView {
+open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
     public struct ViewModel {
         let profileImage: String?
         let authorName: String
@@ -126,6 +127,7 @@ open class LMFeedPostHeaderView: LMView {
         label.lineBreakMode = .byTruncatingTail
         label.font = Appearance.shared.fonts.headingFont1
         label.textColor = Appearance.shared.colors.gray1
+        label.isUserInteractionEnabled = true
         return label
     }()
 
@@ -155,6 +157,8 @@ open class LMFeedPostHeaderView: LMView {
 
     // MARK: Data Variables
     public weak var delegate: LMFeedPostHeaderViewProtocol?
+    public var userUUID: String?
+    public var postID: String?
     
     // MARK: View Hierachy
     open override func setupViews() {
@@ -180,7 +184,7 @@ open class LMFeedPostHeaderView: LMView {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        pinSubView(subView: contentContainerView, padding: .init(top: 4, left: 0, bottom: -4, right: 0))
+        pinSubView(subView: contentContainerView, padding: .init(top: 4, left: 0, bottom: 0, right: 0))
         
         imageView.addConstraint(top: (contentContainerView.topAnchor, 8),
                                 bottom: (contentContainerView.bottomAnchor, -8),
@@ -219,7 +223,9 @@ open class LMFeedPostHeaderView: LMView {
         super.setupActions()
         
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapProfilePicture)))
+        authorNameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapProfilePicture)))
         menuButton.addTarget(self, action: #selector(didTapMenuButton), for: .touchUpInside)
+        contentContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapPost)))
     }
     
     // MARK: Appearance
@@ -231,7 +237,11 @@ open class LMFeedPostHeaderView: LMView {
         imageView.layer.cornerRadius = 48 / 2
     }
     
-    open func configure(with data: ViewModel) {
+    open func configure(with data: ViewModel, postID: String, userUUID: String, delegate: LMFeedPostHeaderViewProtocol?) {
+        self.postID = postID
+        self.userUUID = userUUID
+        self.delegate = delegate
+        
         imageView.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.authorName))
         
         authorNameLabel.text = data.authorName
@@ -250,10 +260,17 @@ open class LMFeedPostHeaderView: LMView {
 @objc
 extension LMFeedPostHeaderView {
     open func didTapProfilePicture() {
-        delegate?.didTapProfilePicture()
+        guard let userUUID else { return }
+        delegate?.didTapProfilePicture(having: userUUID)
     }
     
     open func didTapMenuButton() { 
-        delegate?.didTapMenuButton()
+        guard let postID else { return }
+        delegate?.didTapMenuButton(for: postID)
+    }
+    
+    open func didTapPost() {
+        guard let postID else { return }
+        delegate?.didTapPost(postID: postID)
     }
 }

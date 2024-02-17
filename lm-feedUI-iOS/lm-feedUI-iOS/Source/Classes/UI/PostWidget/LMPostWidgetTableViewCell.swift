@@ -7,6 +7,7 @@
 
 import UIKit
 
+// MARK: LMFeedPostTableCellProtocol
 public protocol LMFeedPostTableCellProtocol {
     var postID: String { get }
     var userUUID: String { get }
@@ -18,21 +19,23 @@ public protocol LMFeedPostTableCellProtocol {
     var totalCommentCount: Int { get }
 }
 
+// MARK: LMPostWidgetTableViewCellProtocol
+public protocol LMPostWidgetTableViewCellProtocol: AnyObject {
+    func didTapPost(postID: String)
+    func didTapURL(url: URL)
+    func didTapRoute(route: String)
+    func didTapSeeMoreButton(for postID: String)
+}
+
+public extension LMPostWidgetTableViewCellProtocol {
+    func didTapPost(postID: String) { }
+    func didTapSeeMoreButton(for postID: String) { }
+}
+
+
 @IBDesignable
 open class LMPostWidgetTableViewCell: LMTableViewCell {
     // MARK: UI Elements
-    open private(set) lazy var headerView: LMFeedPostHeaderView = {
-        let view = LMUIComponents.shared.headerCell.init()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    open private(set) lazy var footerView: LMFeedPostFooterView = {
-        let view = LMUIComponents.shared.footerCell.init()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     open private(set) lazy var contentStack: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
@@ -69,7 +72,7 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     
     
     // MARK: Data Variables
-    public weak var actionDelegate: LMFeedTableCellToViewControllerProtocol?
+    public weak var actionDelegate: LMPostWidgetTableViewCellProtocol?
     public var userUUID: String?
     public var postID: String?
     
@@ -79,7 +82,9 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
         super.setupLayouts()
         
         topicFeed.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        topicFeed.setHeightConstraint(with: 10, priority: .defaultLow)
         postText.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        postText.setHeightConstraint(with: 10, priority: .defaultLow)
         seeMoreButton.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
     }
     
@@ -88,8 +93,6 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     open override func setupActions() {
         super.setupActions()
         containerView.isUserInteractionEnabled = true
-        headerView.delegate = self
-        footerView.delegate = self
         postText.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedTextView)))
         containerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapPost)))
         seeMoreButton.addTarget(self, action: #selector(didTapSeeMoreButton), for: .touchUpInside)
@@ -140,69 +143,4 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
         seeMoreButton.isHidden = true // !(postText.numberOfLines > 4 && showMore)
         postText.textContainer.maximumNumberOfLines = 0 // postText.numberOfLines > 4 && !showMore ? .zero : 4
     }
-}
-
-
-// MARK: LMFeedPostHeaderViewProtocol
-@objc
-extension LMPostWidgetTableViewCell: LMFeedPostHeaderViewProtocol {
-    open func didTapProfilePicture() { 
-        guard let userUUID else { return }
-        actionDelegate?.didTapProfilePicture(for: userUUID)
-    }
-    
-    open func didTapMenuButton() {
-        guard let postID else { return }
-        actionDelegate?.didTapMenuButton(postID: postID)
-    }
-}
-
-
-// MARK: LMFeedPostFooterViewProtocol
-@objc
-extension LMPostWidgetTableViewCell: LMFeedPostFooterViewProtocol {
-    open func didTapLikeButton() {
-        guard let postID else { return }
-        actionDelegate?.didTapLikeButton(for: postID)
-    }
-    
-    open func didTapLikeTextButton() {
-        guard let postID else { return }
-        actionDelegate?.didTapLikeTextButton(for: postID)
-    }
-    
-    open func didTapCommentButton() { 
-        guard let postID else { return }
-        actionDelegate?.didTapCommentButton(for: postID)
-    }
-    
-    open func didTapShareButton() {
-        guard let postID else { return }
-        actionDelegate?.didTapShareButton(for: postID)
-    }
-    
-    open func didTapSaveButton() { 
-        guard let postID else { return }
-        actionDelegate?.didTapSaveButton(for: postID)
-    }
-}
-
-
-// MARK: LMTableCellToViewController
-public protocol LMFeedTableCellToViewControllerProtocol: AnyObject {
-    func didTapProfilePicture(for uuid: String)
-    func didTapMenuButton(postID: String)
-    func didTapLikeButton(for postID: String)
-    func didTapLikeTextButton(for postID: String)
-    func didTapCommentButton(for postID: String)
-    func didTapShareButton(for postID: String)
-    func didTapSaveButton(for postID: String)
-    func didTapPost(postID: String)
-    func didTapURL(url: URL)
-    func didTapRoute(route: String)
-    func didTapSeeMoreButton(for postID: String)
-}
-
-public extension LMFeedTableCellToViewControllerProtocol {
-    func didTapPost(postID: String) { }
 }

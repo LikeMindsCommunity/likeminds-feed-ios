@@ -17,7 +17,6 @@ public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol 
     func changeCommentLike(for indexPath: IndexPath)
     func replyToComment(userName: String)
     
-    func showNoPostError(with message: String, isPop: Bool)
     func updateCommentStatus(isEnabled: Bool)
     
     func setEditCommentText(with text: String) 
@@ -137,7 +136,9 @@ public extension LMFeedPostDetailViewModel {
             guard response.success,
                   let post = response.data?.post,
                   let users = response.data?.users else {
-                delegate?.showNoPostError(with: response.errorMessage ?? LMStringConstants.shared.genericErrorMessage, isPop: postDetail == nil)
+                if postDetail == nil {
+                    delegate?.showError(with: response.errorMessage ?? LMStringConstants.shared.genericErrorMessage, isPopVC: true)
+                }
                 return
             }
             

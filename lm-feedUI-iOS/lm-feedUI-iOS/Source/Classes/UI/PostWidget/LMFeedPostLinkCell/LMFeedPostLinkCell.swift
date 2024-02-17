@@ -7,7 +7,7 @@
 
 import UIKit
 
-public protocol LMChatLinkProtocol: AnyObject {
+public protocol LMChatLinkProtocol: LMPostWidgetTableViewCellProtocol {
     func didTapLinkPreview(with url: String)
 }
 
@@ -66,10 +66,7 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
         super.setupViews()
         
         contentView.addSubview(containerView)
-        
-        [headerView, contentStack, footerView].forEach { subView in
-            containerView.addSubview(subView)
-        }
+        containerView.addSubview(contentStack)
         
         [topicFeed, postText, seeMoreButton].forEach { subView in
             contentStack.addArrangedSubview(subView)
@@ -81,30 +78,11 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        containerView.addConstraint(top: (contentView.topAnchor, 0),
-                                    leading: (contentView.leadingAnchor, 0),
-                                    trailing: (contentView.trailingAnchor, 0))
-        containerView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -16).isActive = true
-        
-        headerView.setHeightConstraint(with: Constants.shared.number.postHeaderSize)
-        headerView.addConstraint(
-            top: (containerView.topAnchor, 0),
-            bottom: (contentStack.topAnchor, -8),
-            leading: (containerView.leadingAnchor, 0),
-            trailing: (containerView.trailingAnchor, 0)
-        )
-        
-        contentStack.addConstraint(leading: (headerView.leadingAnchor, 0), trailing: (headerView.trailingAnchor, 0))
+        contentView.pinSubView(subView: containerView)
+        containerView.pinSubView(subView: contentStack)
+
         topicFeed.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         postText.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
-        
-        footerView.setHeightConstraint(with: Constants.shared.number.postFooterSize)
-        footerView.addConstraint(
-            top: (contentStack.bottomAnchor, 0),
-            bottom: (containerView.bottomAnchor, 0),
-            leading: (contentStack.leadingAnchor, 16),
-            trailing: (contentStack.trailingAnchor, -16)
-        )
         
         linkPreveiw.setHeightConstraint(with: 1000, priority: .defaultLow)
         linkPreveiw.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
@@ -133,15 +111,13 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
     
     
     // MARK: configure
-    open func configure(with data: ViewModel, delegate: (LMChatLinkProtocol & LMFeedTableCellToViewControllerProtocol)?) {
+    open func configure(with data: ViewModel, delegate: LMChatLinkProtocol?) {
         postID = data.postID
         userUUID = data.userUUID
         
         self.delegate = delegate
         self.actionDelegate = delegate
         postURL = data.mediaData.url
-        
-        headerView.configure(with: data.headerData)
         
         topicFeed.configure(with: data.topics)
         topicFeed.isHidden = data.topics.topics.isEmpty
@@ -155,7 +131,5 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
             linkPreveiw.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor, constant: 16),
             linkPreveiw.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor, constant: -16)
         ])
-        
-        footerView.configure(with: data.footerData)
     }
 }

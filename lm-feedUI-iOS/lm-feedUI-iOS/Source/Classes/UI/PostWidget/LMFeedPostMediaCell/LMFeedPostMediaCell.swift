@@ -85,9 +85,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         
         contentView.addSubview(containerView)
         
-        containerView.addSubview(headerView)
         containerView.addSubview(contentStack)
-        containerView.addSubview(footerView)
         containerView.addSubview(postText)
         
         contentStack.addArrangedSubview(topicFeed)
@@ -101,20 +99,9 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        containerView.addConstraint(top: (contentView.topAnchor, 0),
-                                    leading: (contentView.leadingAnchor, 0),
-                                    trailing: (contentView.trailingAnchor, 0))
-        containerView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -16).isActive = true
+        contentView.pinSubView(subView: containerView)
+        containerView.pinSubView(subView: contentStack)
         
-        headerView.setHeightConstraint(with: Constants.shared.number.postHeaderSize)
-        headerView.addConstraint(
-            top: (containerView.topAnchor, 0),
-            bottom: (contentStack.topAnchor, -8),
-            leading: (containerView.leadingAnchor, 0),
-            trailing: (containerView.trailingAnchor, 0)
-        )
-        
-        contentStack.addConstraint(leading: (headerView.leadingAnchor, 0), trailing: (headerView.trailingAnchor, 0))
         topicFeed.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         postText.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         
@@ -122,14 +109,6 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor, multiplier: 2/3)
         
         pageControl.addConstraint(leading: (contentStack.leadingAnchor, 0), trailing: (contentStack.trailingAnchor, 0))
-        
-        footerView.addConstraint(
-            top: (contentStack.bottomAnchor, 0),
-            bottom: (containerView.bottomAnchor, 0),
-            leading: (contentStack.leadingAnchor, 16),
-            trailing: (contentStack.trailingAnchor, -16)
-        )
-        footerView.setHeightConstraint(with: 50)
     }
     
     open override func setupActions() {
@@ -165,12 +144,11 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     }
     
     // MARK: Configure Function
-    open func configure(with data: ViewModel, delegate: LMFeedTableCellToViewControllerProtocol?) {
+    open func configure(with data: ViewModel, delegate: LMPostWidgetTableViewCellProtocol?) {
         actionDelegate = delegate
         postID = data.postID
         userUUID = data.userUUID
         
-        headerView.configure(with: data.headerData)
         setupPostText(text: data.postText, showMore: data.isShowMore)
         
         topicFeed.configure(with: data.topics)
@@ -178,8 +156,6 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         
         mediaCellsData = data.mediaData
         setupMediaCells()
-        
-        footerView.configure(with: data.footerData)
     }
     
     open func setupMediaCells() {
