@@ -107,7 +107,7 @@ open class LMFeedDocumentPreview: LMView {
     
     
     // MARK: Data Variables
-    public var delegate: LMFeedDocumentPreviewProtocol?
+    public weak var delegate: LMFeedDocumentPreviewProtocol?
     public var documentID: String?
     
     

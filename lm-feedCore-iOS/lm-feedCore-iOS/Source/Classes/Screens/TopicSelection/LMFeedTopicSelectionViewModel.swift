@@ -10,7 +10,7 @@ import LikeMindsFeed
 
 public protocol LMFeedTopicSelectionViewModelProtocol: LMBaseViewControllerProtocol {
     func updateTopicList(with data: [[LMFeedTopicSelectionCell.ViewModel]], selectedCount: Int)
-    func updateTopicFeed(with topics: [(topicName: String, topicID: String)])
+    func updateTopicFeed(with topics: [LMFeedTopicDataModel])
 }
 
 public class LMFeedTopicSelectionViewModel {
@@ -23,7 +23,7 @@ public class LMFeedTopicSelectionViewModel {
     public var isLastTopicReached: Bool
     public var selectedTopicIds: [String]
     public var searchString: String?
-    public var topicList: [LMFeedTopicSelectionDataModel]
+    public var topicList: [LMFeedTopicDataModel]
     public weak var delegate: LMFeedTopicSelectionViewModelProtocol?
     
     init(showOnlyEnabledTopics: Bool, isShowAllTopicsButton: Bool, selectedTopicIds: [String], delegate: LMFeedTopicSelectionViewModelProtocol?) {
@@ -90,18 +90,16 @@ public class LMFeedTopicSelectionViewModel {
             
             guard response.success,
             let topics = response.data?.topics else {
-                // TODO: Error Logic
                 return
             }
             
             self.currentPage += 1
             self.isLastTopicReached = topics.isEmpty
             
-            let tempData: [LMFeedTopicSelectionDataModel] = topics.compactMap { topic in
+            let tempData: [LMFeedTopicDataModel] = topics.compactMap { topic in
                 guard let id = topic.id,
                       let name = topic.name else { return nil }
-                
-                return .init(topicID: id, topicName: name)
+                return .init(topicName: name, topicID: id, isEnabled: topic.isEnabled ?? false)
             }
             
             self.topicList.append(contentsOf: tempData)
@@ -146,6 +144,6 @@ public class LMFeedTopicSelectionViewModel {
             selectedTopicIds.contains(where: { $0 == topic.topicID })
         }
         
-        delegate?.updateTopicFeed(with: filteredTopics.map { ($0.topicName, $0.topicID) })
+        delegate?.updateTopicFeed(with: filteredTopics)
     }
 }

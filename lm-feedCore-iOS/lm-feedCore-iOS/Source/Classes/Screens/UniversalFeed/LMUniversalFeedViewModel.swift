@@ -17,7 +17,7 @@ public protocol LMUniversalFeedViewModelProtocol: LMBaseViewControllerProtocol {
 public class LMUniversalFeedViewModel {
     public var isShowTopicFeed: Bool
     public var isShowCreatePostButton: Bool
-    public var selectedTopics: [(topicName: String, topicID: String)] = []
+    public var selectedTopics: [LMFeedTopicDataModel]
     public let dispatchGroup: DispatchGroup
     public weak var delegate: LMUniversalFeedViewModelProtocol?
     
@@ -38,7 +38,7 @@ public class LMUniversalFeedViewModel {
         return viewController
     }
     
-    func updateSelectedTopics(with selectedTopics: [(topicName: String, topicID: String)]) {
+    func updateSelectedTopics(with selectedTopics: [LMFeedTopicDataModel]) {
         self.selectedTopics = selectedTopics
         delegate?.loadTopics(with: selectedTopics.map { .init(topic: $0.topicName, topicID: $0.topicID) })
     }

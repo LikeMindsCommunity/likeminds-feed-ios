@@ -61,8 +61,8 @@ public struct LMFeedPostDetailCommentCellViewModel {
         likeCount: Int,
         totalReplyCount: Int,
         replies: [LMFeedPostDetailCommentCellViewModel],
-        isEdited: Bool = false,
-        isLiked: Bool = false,
+        isEdited: Bool,
+        isLiked: Bool,
         isShowMore: Bool = true
     ) {
         self.author = author

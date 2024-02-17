@@ -364,7 +364,10 @@ extension LMFeedCreatePostViewController: LMFeedDocumentPreviewProtocol {
         viewModel?.removeAsset(url: documentID)
     }
     
-    public func didTapDocument(documentID: String) { }
+    public func didTapDocument(documentID: String) { 
+        guard let url = URL(string: documentID) else { return }
+        openURL(with: url)
+    }
 }
 
 
@@ -615,7 +618,7 @@ extension LMFeedCreatePostViewController: LMFeedTopicViewCellProtocol {
 
 // MARK: LMFeedTopicSelectionViewProtocol
 extension LMFeedCreatePostViewController: LMFeedTopicSelectionViewProtocol {
-    public func updateTopicFeed(with topics: [(topicName: String, topicID: String)]) {
+    public func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         viewModel?.updateTopicFeed(with: topics)
     }
 }

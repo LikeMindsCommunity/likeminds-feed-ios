@@ -24,7 +24,7 @@ public struct NameWithRoute {
 
 // MARK: GetAttributedTextWithRoutes
 public struct GetAttributedTextWithRoutes {
-    static func getAttributedText(from text: String, andPrefix: String? = nil, allowLink: Bool = true, allowHashtags: Bool = true) -> NSMutableAttributedString {
+    static func getAttributedText(from text: String, andPrefix: Character? = nil, allowLink: Bool = true, allowHashtags: Bool = true) -> NSMutableAttributedString {
         var attributedString = replaceRouteToName(with: text, andPrefix: andPrefix)
         
         if allowLink {
@@ -101,7 +101,7 @@ public struct GetAttributedTextWithRoutes {
     
     static func replaceRouteToName(
         with answer: String,
-        andPrefix prefix: String? = nil
+        andPrefix prefix: Character? = nil
     ) -> NSMutableAttributedString {
         let nameWithRoutes = getUserNames(in: answer)
         
@@ -112,7 +112,12 @@ public struct GetAttributedTextWithRoutes {
         
         for nameWithRoute in nameWithRoutes {
             let routeString = "<<\(nameWithRoute.name.replacingOccurrences(of: "<<", with: ""))|\(nameWithRoute.route)>>"
-            let replaceString = "\(prefix ?? "")\(nameWithRoute.name)"
+            
+            var replaceString = nameWithRoute.name
+            
+            if let prefix {
+                replaceString = "\(prefix)\(replaceString)"
+            }
             
             let replaceAttributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: Appearance.shared.colors.userProfileColor,

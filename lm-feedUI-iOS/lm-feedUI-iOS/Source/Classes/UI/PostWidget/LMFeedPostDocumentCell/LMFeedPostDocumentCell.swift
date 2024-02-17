@@ -78,7 +78,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
     
     
     // MARK: Variables
-    open var delegate: LMFeedPostDocumentCellProtocol?
+    public weak var delegate: LMFeedPostDocumentCellProtocol?
     var indexPath: IndexPath?
     
     

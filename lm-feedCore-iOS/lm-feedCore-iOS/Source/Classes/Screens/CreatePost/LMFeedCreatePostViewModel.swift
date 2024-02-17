@@ -38,7 +38,7 @@ public final class LMFeedCreatePostViewModel {
     public let maxMedia: Int
     private var isShowTopicFeed: Bool
     private var debounceForDecodeLink: Timer?
-    private var selectedTopics: [(topic: String, topicID: String)]
+    private var selectedTopics: [LMFeedTopicDataModel]
     private var linkPreview: LMFeedPostDataModel.LinkAttachment?
     private var showLinkPreview: Bool {
         willSet {
@@ -245,7 +245,7 @@ extension LMFeedCreatePostViewModel {
     
     func setupTopicFeed() {
         if isShowTopicFeed {
-            let data: LMFeedTopicView.ViewModel = .init(topics: selectedTopics.map({ .init(topic: $0.topic, topicID: $0.topicID) }),
+            let data: LMFeedTopicView.ViewModel = .init(topics: selectedTopics.map({ .init(topic: $0.topicName, topicID: $0.topicID) }),
                                                         isSelectFlow: selectedTopics.isEmpty,
                                                         isEditFlow: !selectedTopics.isEmpty,
                                                         isSepratorShown: true)
@@ -259,7 +259,7 @@ extension LMFeedCreatePostViewModel {
         delegate?.navigateToTopicView(with: currentTopics)
     }
     
-    func updateTopicFeed(with topics: [(String, String)]) {
+    func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         self.selectedTopics = topics
         setupTopicFeed()
     }

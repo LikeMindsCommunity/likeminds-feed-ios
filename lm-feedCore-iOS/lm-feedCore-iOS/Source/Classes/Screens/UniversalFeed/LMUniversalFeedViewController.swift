@@ -338,7 +338,7 @@ extension LMUniversalFeedViewController: LMUniversalFeedViewModelProtocol {
 
 // MARK: LMFeedTopicSelectionViewProtocol
 extension LMUniversalFeedViewController: LMFeedTopicSelectionViewProtocol {
-    public func updateTopicFeed(with topics: [(topicName: String, topicID: String)]) {
+    public func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         viewModel?.updateSelectedTopics(with: topics)
     }
 }

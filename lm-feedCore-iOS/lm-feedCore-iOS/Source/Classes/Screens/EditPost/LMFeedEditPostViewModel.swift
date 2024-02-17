@@ -15,7 +15,6 @@ public protocol LMFeedEditPostViewModelProtocol: LMBaseViewControllerProtocol {
     func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?)
     func setupMediaPreview(with mediaCells: [LMFeedMediaProtocol])
     func setupTopicFeed(with data: LMFeedTopicView.ViewModel)
-    func showErrorMessage(with message: String)
 }
 
 public final class LMFeedEditPostViewModel {
@@ -31,7 +30,7 @@ public final class LMFeedEditPostViewModel {
     private var isShowLinkPreview: Bool
     private var isShowTopicFeed: Bool
     private var postDetail: LMFeedPostDataModel?
-    private var selectedTopics: [(topic: String, topicID: String)]
+    private var selectedTopics: [LMFeedTopicDataModel]
     
     private weak var delegate: LMFeedEditPostViewModelProtocol?
     
@@ -116,18 +115,18 @@ public final class LMFeedEditPostViewModel {
         delegate?.navigateToTopicView(with: currentTopics)
     }
     
-    func updateTopicFeed(with topics: [(String, String)]) {
+    func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         self.selectedTopics = topics
         setupTopicFeed()
     }
     
     private func convertToViewModel() {
         guard let postDetail else {
-            self.delegate?.showErrorMessage(with: errorMessage)
+            self.delegate?.showError(with: errorMessage, isPopVC: true)
             return
         }
         
-        selectedTopics = postDetail.topics.map { ($0.topic, $0.topicId) }
+        selectedTopics = postDetail.topics
         documents = postDetail.documentAttachment
         media = postDetail.imageVideoAttachment
         
@@ -155,7 +154,7 @@ public final class LMFeedEditPostViewModel {
     }
     
     private func setupTopicFeed() {
-        let topics: [LMFeedTopicCollectionCellDataModel] = selectedTopics.map({ .init(topic: $0.topic, topicID: $0.topicID) })
+        let topics: [LMFeedTopicCollectionCellDataModel] = selectedTopics.map({ .init(topic: $0.topicName, topicID: $00.topicID) })
         let topicData: LMFeedTopicView.ViewModel = .init(topics: topics, isSelectFlow: isShowTopicFeed && topics.isEmpty, isEditFlow: isShowTopicFeed && !topics.isEmpty, isSepratorShown: true)
         delegate?.setupTopicFeed(with: topicData)
     }
@@ -183,7 +182,7 @@ extension LMFeedEditPostViewModel {
             LMFeedClient.shared.decodeUrl(request) { [weak self] response in
                 if response.success,
                     let ogTags = response.data?.oGTags {
-                    self?.linkPreview = .init(url: ogTags.url?.lowercased() ?? link.lowercased(), title: ogTags.title, description: ogTags.description, previewImage: ogTags.image)
+                    self?.linkPreview = .init(url: ogTags.url ?? link, title: ogTags.title, description: ogTags.description, previewImage: ogTags.image)
                 } else {
                     self?.linkPreview = nil
                 }
@@ -217,6 +216,13 @@ extension LMFeedEditPostViewModel {
 // MARK: Update Post
 extension LMFeedEditPostViewModel {
     func updatePost(with text: String) {
+        let disabledTopics = selectedTopics.filter({ !$0.isEnabled }).map({ $0.topicName })
+        
+        guard disabledTopics.isEmpty else {
+            delegate?.showError(with: "Following Topics are disabled - \(disabledTopics.joined(separator: ", "))", isPopVC: false)
+            return
+        }
+        
         LMFeedEditPostOperation.shared.editPostWithAttachments(postID: postID, postCaption: text, topics: selectedTopics.map({ $0.topicID }), documents: documents, media: media, linkAttachment: linkPreview)
     }
 }

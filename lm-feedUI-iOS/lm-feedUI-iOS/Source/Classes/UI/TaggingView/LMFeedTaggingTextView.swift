@@ -29,6 +29,7 @@ open class LMFeedTaggingTextView: LMTextView {
     }
     public var spaceChar: Character = " "
     public var newLineChar: Character = "\n"
+    public var taggingCharacter: Character = Constants.shared.strings.taggingCharacter
     public var isSpaceAdded: Bool = false
     public var startIndex: Int?
     public var characters: [Character] = []
@@ -69,7 +70,7 @@ open class LMFeedTaggingTextView: LMTextView {
         startIndex = nil
         
         for (idx, char) in Array(taggingText).reversed().enumerated() {
-            if char == "@" {
+            if char == taggingCharacter {
                 startIndex = selectedLocation - idx - 1
                 isMentioning = true
                 break
@@ -99,7 +100,7 @@ open class LMFeedTaggingTextView: LMTextView {
             let partOneString = NSMutableAttributedString(attributedString: attributedText.attributedSubstring(from: NSRange(location: 0, length: startIndex)))
             let partTwoString = NSMutableAttributedString(attributedString: attributedText.attributedSubstring(from: NSRange(location: startIndex + 1 + characters.count, length: attributedText.length - startIndex - 1 - characters.count)))
             
-            let attrName = NSAttributedString(string: "@\(username.trimmingCharacters(in: .whitespacesAndNewlines))", attributes: [
+            let attrName = NSAttributedString(string: "\(taggingCharacter)\(username.trimmingCharacters(in: .whitespacesAndNewlines))", attributes: [
                 .font: Appearance.shared.fonts.textFont1,
                 .foregroundColor: Appearance.shared.colors.linkColor,
                 .route: route
@@ -146,7 +147,7 @@ open class LMFeedTaggingTextView: LMTextView {
         return message != placeHolderText ? message : ""
     }
     
-    public func setAttributedText(from content: String, prefix: String? = nil) {
+    public func setAttributedText(from content: String, prefix: Character? = nil) {
         if !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             attributedText = GetAttributedTextWithRoutes.getAttributedText(from: content, andPrefix: prefix, allowLink: false, allowHashtags: false)
         } else {

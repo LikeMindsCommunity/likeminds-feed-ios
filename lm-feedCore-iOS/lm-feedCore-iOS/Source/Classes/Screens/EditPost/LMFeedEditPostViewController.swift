@@ -187,7 +187,6 @@ open class LMFeedEditPostViewController: LMViewController {
     @objc
     open func didTapSaveButton() {
         viewmodel?.updatePost(with: inputTextView.getText())
-        navigationController?.popViewController(animated: true)
     }
     
     
@@ -328,7 +327,7 @@ extension LMFeedEditPostViewController: LMFeedTaggingTextViewProtocol {
 
 
 // MARK: LMFeedEditPostViewModelProtocol
-extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {
+extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {    
     public func setupData(with userData: LMFeedCreatePostHeaderView.ViewDataModel, text: String) {
         headerView.configure(with: userData)
         inputTextView.setAttributedText(from: text, prefix: "@")
@@ -364,19 +363,9 @@ extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {
         mediaPageControl.currentPage = 0
     }
     
-    public func showErrorMessage(with message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
-            self?.navigationController?.popViewController(animated: true)
-        })
-        
-        presentAlert(with: alert)
-    }
-    
     public func navigateToTopicView(with topics: [String]) {
         do {
-            let viewcontroller = try LMFeedTopicSelectionViewModel.createModule(topicEnabledState: false, isShowAllTopicsButton: false, selectedTopicIds: topics, delegate: self)
+            let viewcontroller = try LMFeedTopicSelectionViewModel.createModule(topicEnabledState: true, isShowAllTopicsButton: false, selectedTopicIds: topics, delegate: self)
             navigationController?.pushViewController(viewcontroller, animated: true)
         } catch let error {
             print(error.localizedDescription)
@@ -413,7 +402,7 @@ extension LMFeedEditPostViewController: LMFeedTaggedUserFoundProtocol {
 
 // MARK: LMFeedTopicSelectionViewModelProtocol
 extension LMFeedEditPostViewController: LMFeedTopicSelectionViewProtocol {
-    public func updateTopicFeed(with topics: [(topicName: String, topicID: String)]) {
+    public func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         viewmodel?.updateTopicFeed(with: topics)
     }
 }

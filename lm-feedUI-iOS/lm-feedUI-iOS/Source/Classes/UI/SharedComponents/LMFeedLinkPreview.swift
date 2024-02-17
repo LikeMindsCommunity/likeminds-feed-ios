@@ -41,16 +41,25 @@ open class LMFeedLinkPreview: LMView {
         return stack
     }()
     
-    open private(set) lazy var crossButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
-        button.setTitle(nil, for: .normal)
-        button.contentMode = .scaleToFill
-        button.contentHorizontalAlignment = .fill
-        button.contentVerticalAlignment = .fill
-        button.setImage(Constants.shared.images.crossIcon, for: .normal)
-        button.tintColor = Appearance.shared.colors.gray51
-        button.backgroundColor = Appearance.shared.colors.white
-        return button
+//    open private(set) lazy var crossButton: LMButton = {
+//        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+//        button.setTitle(nil, for: .normal)
+////        button.contentMode = .scaleAspectFill
+//        button.contentHorizontalAlignment = .fill
+//        button.contentVerticalAlignment = .fill
+//        button.setImage(Constants.shared.images.crossIcon, for: .normal)
+//        button.tintColor = Appearance.shared.colors.gray51
+//        button.backgroundColor = Appearance.shared.colors.white
+//        return button
+//    }()
+    
+    open private(set) lazy var crossButton: LMImageView = {
+        let image = LMImageView(image: Constants.shared.images.crossIcon)
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.backgroundColor = Appearance.shared.colors.white
+        image.tintColor = Appearance.shared.colors.gray51
+        image.contentMode = .scaleToFill
+        return image
     }()
     
     open private(set) lazy var imageView: LMImageView = {
@@ -109,6 +118,8 @@ open class LMFeedLinkPreview: LMView {
     }()
     
     
+    public var crossButtonSize: CGFloat = 24
+    
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
@@ -143,7 +154,7 @@ open class LMFeedLinkPreview: LMView {
         
         crossButton.addConstraint(top: (containerView.topAnchor, 16),
                                   trailing: (containerView.trailingAnchor, -16))
-        crossButton.setHeightConstraint(with: 24)
+        crossButton.setHeightConstraint(with: crossButtonSize)
         crossButton.setWidthConstraint(with: crossButton.heightAnchor)
         
         imageView.setWidthConstraint(with: imageView.heightAnchor, multiplier: 3/2)
@@ -161,14 +172,14 @@ open class LMFeedLinkPreview: LMView {
         containerView.layer.borderWidth = 1
         containerView.layer.borderColor = Appearance.shared.colors.sepratorColor.cgColor
         sepratorView.backgroundColor = Appearance.shared.colors.sepratorColor
-        crossButton.layer.cornerRadius = crossButton.frame.height / 2
+        crossButton.layer.cornerRadius = crossButtonSize / 2
     }
     
     
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
-        crossButton.addTarget(self, action: #selector(didTapCrossButton), for: .touchUpInside)
+        crossButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCrossButton)))
     }
     
     @objc
@@ -186,7 +197,7 @@ open class LMFeedLinkPreview: LMView {
         imageView.kf.setImage(with: URL(string: data.linkPreview ?? "")) { [weak self] result in
             switch result {
             case .success(_):
-                break
+                self?.imageView.isHidden = false
             case .failure(_):
                 self?.imageView.isHidden = true
             }
@@ -198,6 +209,6 @@ open class LMFeedLinkPreview: LMView {
         descriptionLabel.text = data.description
         descriptionLabel.isHidden = data.description?.isEmpty != false
         
-        urlLabel.text = data.url
+        urlLabel.text = data.url.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
     }
 }

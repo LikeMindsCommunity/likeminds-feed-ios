@@ -440,6 +440,9 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
         if type(of: scrollView) is UITableView.Type {
             view.endEditing(true)
         }
+        for case let cell as LMFeedPostMediaCell in tableView.visibleCells {
+            cell.tableViewScrolled()
+        }
     }
     
     open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

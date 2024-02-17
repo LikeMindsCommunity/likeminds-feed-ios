@@ -189,10 +189,12 @@ public extension LMFeedPostDetailViewModel {
             commentId: comment.commentID,
             tempCommentId: comment.temporaryCommentID,
             comment: comment.commentText,
-            commentTime: comment.isEdited ? "Edited • \(comment.createdAtFormatted)" : comment.createdAtFormatted,
+            commentTime: comment.createdAtFormatted,
             likeCount: comment.likeCount,
             totalReplyCount: comment.totalRepliesCount,
-            replies: replies
+            replies: replies,
+            isEdited: comment.isEdited,
+            isLiked: comment.isLiked
         )
     }
 }
@@ -205,10 +207,7 @@ public extension LMFeedPostDetailViewModel {
             guard let self else { return }
             
             if response,
-               let commData = findCommentIndex(for: commentID, from: commentList) {
-                var comment = commData.comment
-                let commentIndex = commData.index
-                
+               var (comment, commentIndex) = findCommentIndex(for: commentID, from: commentList) {
                 let isLiked = comment.isLiked
                 comment.isLiked = !isLiked
                 comment.likeCount += !isLiked ? 1 : -1

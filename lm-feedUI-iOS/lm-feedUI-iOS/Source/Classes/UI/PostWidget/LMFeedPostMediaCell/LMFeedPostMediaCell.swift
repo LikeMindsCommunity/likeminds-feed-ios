@@ -58,6 +58,8 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         collection.showsVerticalScrollIndicator = false
         collection.bounces = false
         collection.backgroundColor = Appearance.shared.colors.clear
+        collection.registerCell(type: LMUIComponents.shared.imagePreviewCell)
+        collection.registerCell(type: LMUIComponents.shared.videoPreviewCell)
         return collection
     }()
     
@@ -133,12 +135,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     open override func setupActions() {
         super.setupActions()
         
-        headerView.delegate = self
-        footerView.delegate = self
         pageControl.addTarget(self, action: #selector(didChangePageControl), for: .primaryActionTriggered)
-        
-        mediaCollectionView.registerCell(type: LMUIComponents.shared.imagePreviewCell)
-        mediaCollectionView.registerCell(type: LMUIComponents.shared.videoPreviewCell)
     }
     
     // MARK: Appearance

@@ -20,7 +20,7 @@ public struct LMFeedPostDataModel {
     public var isEdited: Bool
     public var postMenu: [LMFeedMenuDataModel]
     public let userDetails: LMFeedUserDataModel
-    public let topics: [TopicModel]
+    public let topics: [LMFeedTopicDataModel]
     public var imageVideoAttachment: [ImageVideoAttachment] = []
     public var documentAttachment: [DocumentAttachment] = []
     public var linkAttachment: LinkAttachment? = .none
@@ -39,7 +39,7 @@ public struct LMFeedPostDataModel {
         isEdited: Bool,
         postMenu: [LMFeedMenuDataModel],
         userDetails: LMFeedUserDataModel,
-        topics: [LMFeedPostDataModel.TopicModel],
+        topics: [LMFeedTopicDataModel],
         imageVideoAttachment: [LMFeedPostDataModel.ImageVideoAttachment] = [],
         documentAttachment: [LMFeedPostDataModel.DocumentAttachment] = [],
         linkAttachment: LMFeedPostDataModel.LinkAttachment? = .none, 
@@ -96,7 +96,7 @@ extension LMFeedPostDataModel {
         self.topics = post.topics?.compactMap { topicID in
             guard let topic = allTopics.first(where: { $0.id == topicID }),
                   let name = topic.name else { return nil }
-            return .init(topicId: topicID, topic: name)
+            return .init(topicName: name, topicID: topicID, isEnabled: topic.isEnabled ?? false)
         } ?? []
         
         let attachments = handleAttachments(with: post.attachments ?? [])
@@ -200,19 +200,6 @@ public extension LMFeedPostDataModel {
     }
 }
 
-
-// MARK: LMFeedPostDataModel+TopicModel
-public extension LMFeedPostDataModel {
-    struct TopicModel {
-        public let topicId: String
-        public let topic: String
-        
-        public init(topicId: String, topic: String) {
-            self.topicId = topicId
-            self.topic = topic
-        }
-    }
-}
 
 public extension LMFeedPostDataModel {
     func getPostType() -> String {

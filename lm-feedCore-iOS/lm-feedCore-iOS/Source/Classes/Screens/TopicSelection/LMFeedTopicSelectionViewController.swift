@@ -9,7 +9,7 @@ import UIKit
 import lm_feedUI_iOS
 
 public protocol LMFeedTopicSelectionViewProtocol: AnyObject {
-    func updateTopicFeed(with topics: [(topicName: String, topicID: String)])
+    func updateTopicFeed(with topics: [LMFeedTopicDataModel])
 }
 
 @IBDesignable
@@ -76,17 +76,11 @@ open class LMFeedTopicSelectionViewController: LMViewController {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-        ])
+        containerView.addConstraint(top: (view.safeAreaLayoutGuide.topAnchor, 0),
+                                    bottom: (view.safeAreaLayoutGuide.bottomAnchor, 0),
+                                    leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
+                                    trailing: (view.safeAreaLayoutGuide.trailingAnchor, 0))
+        containerView.pinSubView(subView: tableView)
     }
     
     
@@ -163,7 +157,7 @@ extension LMFeedTopicSelectionViewController: LMFeedTopicSelectionViewModelProto
         }
     }
     
-    public func updateTopicFeed(with topics: [(topicName: String, topicID: String)]) {
+    public func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         delegate?.updateTopicFeed(with: topics)
         navigationController?.popViewController(animated: true)
     }

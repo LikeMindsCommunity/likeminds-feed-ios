@@ -19,9 +19,9 @@ public struct LMFeedConvertToFeedPost {
         }
     }
     
-    private static func convertToTopicViewData(from topics: [LMFeedPostDataModel.TopicModel]) -> LMFeedTopicView.ViewModel {
+    private static func convertToTopicViewData(from topics: [LMFeedTopicDataModel]) -> LMFeedTopicView.ViewModel {
         let mappedTopics: [LMFeedTopicCollectionCellDataModel] = topics.map {
-            .init(topic: $0.topic, topicID: $0.topicId)
+            .init(topic: $0.topicName, topicID: $0.topicID)
         }
         
         return .init(topics: mappedTopics)

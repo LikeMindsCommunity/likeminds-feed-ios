@@ -14,6 +14,8 @@ public extension Constants {
         // Shared Instance
         public static var shared = Strings()
         
+        public var taggingCharacter: Character = "@"
+        
         public var like = "Like"
         public var likes = "Likes"
         public var reply = "Reply"

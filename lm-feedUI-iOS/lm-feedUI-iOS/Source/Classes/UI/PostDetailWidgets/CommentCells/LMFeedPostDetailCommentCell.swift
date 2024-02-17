@@ -237,7 +237,7 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         
         authorNameLabel.text = data.authorName
         
-        commentLabel.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.comment.trimmingCharacters(in: .whitespacesAndNewlines))
+        commentLabel.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.comment.trimmingCharacters(in: .whitespacesAndNewlines), andPrefix: Constants.shared.strings.taggingCharacter)
         
         seeMoreText.isHidden = true // !(commentLabel.numberOfLines > 4 && data.isShowMore)
         commentLabel.textContainer.maximumNumberOfLines = 0 // commentLabel.numberOfLines > 4 && !data.isShowMore ? .zero : 4
