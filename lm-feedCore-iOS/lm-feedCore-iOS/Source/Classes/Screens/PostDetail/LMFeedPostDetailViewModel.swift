@@ -208,11 +208,12 @@ public extension LMFeedPostDetailViewModel {
             guard let self else { return }
             
             if response,
-               var (comment, commentIndex) = findCommentIndex(for: commentID, from: commentList) {
+               let answer = findCommentIndex(for: commentID, from: commentList) {
+                var comment = answer.comment
+                let commentIndex = answer.index
                 let isLiked = comment.isLiked
                 comment.isLiked = !isLiked
                 comment.likeCount += !isLiked ? 1 : -1
-                
                 
                 if commentIndex.row == NSNotFound {
                     commentList[commentIndex.section] = comment
@@ -254,7 +255,12 @@ public extension LMFeedPostDetailViewModel {
                 return .init(comment: comment, user: user)
             } ?? []
             
-            commentList[index].replies.append(contentsOf: newComments)
+            newComments.forEach { newComment in
+                if !self.commentList[index].replies.contains(where: { $0.commentID == newComment.commentID }) {
+                    self.commentList[index].replies.append(newComment)
+                }
+            }
+            
             self.convertToViewData()
         }
     }
@@ -636,7 +642,7 @@ public extension LMFeedPostDetailViewModel {
                 _ = commentList.remove(at: index.section)
                 postDetail?.commentCount -= 1
             } else {
-                commentList[index.section].replies.removeAll(keepingCapacity: true)
+                commentList[index.section].replies.remove(at: index.row)
                 commentList[index.section].totalRepliesCount -= 1
             }
             notifyObjectChange()

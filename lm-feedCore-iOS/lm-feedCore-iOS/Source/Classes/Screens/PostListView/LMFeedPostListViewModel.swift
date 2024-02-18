@@ -10,14 +10,13 @@ import LikeMindsFeed
 
 // MARK: LMUniversalFeedViewModelProtocol
 public protocol LMFeedPostListViewModelProtocol: LMBaseViewControllerProtocol {
-    func loadPosts(with data: [LMFeedPostTableCellProtocol], for index: IndexPath?)
-    func undoLikeAction(for postID: String)
-    func undoSaveAction(for postID: String)
+    func loadPosts(with data: [LMFeedPostTableCellProtocol], index: IndexSet?, reloadNow: Bool)
     func showHideFooterLoader(isShow: Bool)
     func showActivityLoader()
     func navigateToEditScreen(for postID: String)
     func navigateToDeleteScreen(for postID: String)
     func navigateToReportScreen(for postID: String, creatorUUID: String)
+    func updateHeader(with data: [LMFeedPostTableCellProtocol], section: Int)
 }
 
 public class LMFeedPostListViewModel {
@@ -107,14 +106,14 @@ public extension LMFeedPostListViewModel {
         }
     }
     
-    func convertToViewData(for index: IndexPath? = nil) {
+    func convertToViewData(for section: IndexSet? = nil, reloadNow: Bool = true) {
         var convertedViewData: [LMFeedPostTableCellProtocol] = []
         
         postList.forEach { post in
             convertedViewData.append(LMFeedConvertToFeedPost.convertToViewModel(for: post))
         }
         
-        delegate?.loadPosts(with: convertedViewData, for: index)
+        delegate?.loadPosts(with: convertedViewData, index: section, reloadNow: reloadNow)
     }
 }
 
@@ -132,7 +131,7 @@ public extension LMFeedPostListViewModel {
                 feed.likeCount += feed.isLiked ? 1 : -1
                 postList[index] = feed
             } else {
-                convertToViewData(for: IndexPath(row: index, section: 0))
+                convertToViewData(for: IndexSet(integer: index), reloadNow: false)
             }
         }
     }
@@ -155,7 +154,7 @@ public extension LMFeedPostListViewModel {
                 feed.isSaved.toggle()
                 postList[index] = feed
             } else {
-                convertToViewData(for: IndexPath(row: index, section: 0))
+                convertToViewData(for: IndexSet(integer: index), reloadNow: false)
             }
         }
     }
@@ -173,7 +172,15 @@ public extension LMFeedPostListViewModel {
                 var feed = postList[index]
                 feed.isPinned.toggle()
                 postList[index] = feed
-                convertToViewData(for: IndexPath(row: index, section: 0))
+//                convertToViewData(for: .init(integer: index))
+                
+                var convertedViewData: [LMFeedPostTableCellProtocol] = []
+                
+                postList.forEach { post in
+                    convertedViewData.append(LMFeedConvertToFeedPost.convertToViewModel(for: post))
+                }
+                
+                delegate?.updateHeader(with: convertedViewData, section: index)
             }
         }
     }
@@ -292,6 +299,6 @@ public extension LMFeedPostListViewModel {
     func updatePostData(for post: LMFeedPostDataModel) {
         guard let index = postList.firstIndex(where: { $0.postId == post.postId }) else { return }
         postList[index] = post
-        convertToViewData(for: IndexPath(row: index, section: 0))
+        convertToViewData(for: .init(integer: index))
     }
 }

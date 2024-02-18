@@ -53,6 +53,13 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
     open override func setupViews() {
         super.setupViews()
         contentView.addSubview(commentStackView)
+        
+        noCommentContainerView.addSubview(noCommenTitleLabel)
+        noCommentContainerView.addSubview(noCommentSubtitleLabel)
+        commentStackView.addArrangedSubview(noCommentContainerView)
+        
+        commentContainerView.addSubview(totalCommentLabel)
+        commentStackView.addArrangedSubview(commentContainerView)
     }
     
     
@@ -61,27 +68,12 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
                                     leading: (contentView.leadingAnchor, 0),
                                     trailing: (contentView.trailingAnchor, 0))
         
-        containerView.pinSubView(subView: actionStackView, padding: .init(top: 8, left: 16, bottom: 0, right: -16))
+        containerView.pinSubView(subView: actionStackView, padding: .init(top: 8, left: 16, bottom: -8, right: -16))
         
         commentStackView.addConstraint(top: (containerView.bottomAnchor, 16),
                                            bottom: (contentView.bottomAnchor, 0),
                                            leading: (contentView.leadingAnchor, 0),
                                            trailing: (contentView.trailingAnchor, 0))
-    }
-    
-    open func configure(with data: LMFeedPostFooterView.ViewModel, postID: String, delegate: LMFeedPostFooterViewProtocol, commentCount: Int) {
-        super.configure(with: data, postID: postID, delegate: delegate)
-        
-        if commentCount == 0 {
-            setupNoCommentView()
-        } else {
-            setupTotalCommentView(count: commentCount)
-        }
-    }
-    
-    open func setupNoCommentView() {
-        noCommentContainerView.addSubview(noCommenTitleLabel)
-        noCommentContainerView.addSubview(noCommentSubtitleLabel)
         
         noCommenTitleLabel.addConstraint(top: (noCommentContainerView.topAnchor, 16),
                                  centerX: (noCommentContainerView.centerXAnchor, 0))
@@ -89,19 +81,26 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
         noCommentSubtitleLabel.addConstraint(top: (noCommenTitleLabel.bottomAnchor, 4),
                                     bottom: (noCommentContainerView.bottomAnchor, -16),
                                     centerX: (noCommenTitleLabel.centerXAnchor, 0))
-        commentStackView.addArrangedSubview(noCommentContainerView)
-    }
-    
-    open func setupTotalCommentView(count: Int) {
-        commentContainerView.addSubview(totalCommentLabel)
+        
         totalCommentLabel.addConstraint(top: (commentContainerView.topAnchor, 16),
                                         bottom: (commentContainerView.bottomAnchor, -8),
                                         leading: (commentContainerView.leadingAnchor, 16))
         totalCommentLabel.trailingAnchor.constraint(lessThanOrEqualTo: commentContainerView.trailingAnchor, constant: -16).isActive = true
-        commentStackView.addArrangedSubview(commentContainerView)
-        
+    }
+    
+    
+    open override func setupAppearance() {
+        super.setupAppearance()
         commentContainerView.backgroundColor = Appearance.shared.colors.white
-        let commentText = count == 1 ? Constants.shared.strings.comment : Constants.shared.strings.comments
-        totalCommentLabel.text = "\(count) \(commentText)"
+    }
+    
+    open func configure(with data: LMFeedPostFooterView.ViewModel, postID: String, delegate: LMFeedPostFooterViewProtocol, commentCount: Int) {
+        super.configure(with: data, postID: postID, delegate: delegate)
+        
+        noCommentContainerView.isHidden = commentCount != 0
+        commentContainerView.isHidden = commentCount == 0
+        
+        let commentText = commentCount == 1 ? Constants.shared.strings.comment : Constants.shared.strings.comments
+        totalCommentLabel.text = "\(commentCount) \(commentText)"
     }
 }

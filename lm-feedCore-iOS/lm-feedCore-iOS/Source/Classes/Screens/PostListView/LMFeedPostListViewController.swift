@@ -1,5 +1,5 @@
 //
-//  KFN.swift
+//  LMFeedPostListViewController.swift
 //  likeminds-feed-iOS
 //
 //  Created by Devansh Mohata on 02/01/24.
@@ -22,7 +22,7 @@ public protocol LMFeedPostListVCToProtocol: AnyObject {
 }
 
 @IBDesignable
-open class LMFeedPostListViewController: LMViewController {
+open class LMFeedPostListViewController: LMViewController, LMFeedPostListViewModelProtocol {
     open private(set) lazy var tableView: LMTableView = {
         let table = LMTableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -135,22 +135,80 @@ open class LMFeedPostListViewController: LMViewController {
         }
     }
     
-    open func reloadTable(for index: IndexPath? = nil) {
-        tableView.reloadTable(for: index)
+    open func reloadTable(for index: IndexSet? = nil) {
+        tableView.reloadTableForSection(for: index)
         scrollingFinished()
+    }
+    
+    
+    // MARK: LMFeedPostListViewModelProtocol
+    open func updateHeader(with data: [LMFeedPostTableCellProtocol], section: Int) {
+        self.data = data
+        (tableView.headerView(forSection: section) as? LMFeedPostHeaderView)?.pinButton.isHidden.toggle()
+    }
+    
+    open func navigateToEditScreen(for postID: String) {
+        guard let viewcontroller = LMFeedEditPostViewModel.createModule(for: postID) else { return }
+        navigationController?.pushViewController(viewcontroller, animated: true)
+    }
+    
+    open func loadPosts(with data: [LMFeedPostTableCellProtocol], index: IndexSet?, reloadNow: Bool) {
+        self.data = data
+        
+        if self.data.isEmpty {
+            emptyListView.configure { [weak self] in
+                do {
+                    let viewcontroller = try LMFeedCreatePostViewModel.createModule()
+                    self?.navigationController?.pushViewController(viewcontroller, animated: true)
+                } catch let error {
+                    print(error.localizedDescription)
+                }
+            }
+            
+            tableView.backgroundView = emptyListView
+            emptyListView.setHeightConstraint(with: tableView.heightAnchor)
+            emptyListView.setWidthConstraint(with: tableView.widthAnchor)
+        } else {
+            tableView.backgroundView = nil
+        }
+        
+        guard reloadNow else { return }
+        
+        reloadTable(for: index)
+        delegate?.postDataFetched(isEmpty: self.data.isEmpty)
+    }
+    
+    open func showHideFooterLoader(isShow: Bool) {
+        tableView.showHideFooterLoader(isShow: isShow)
+    }
+    
+    open func showActivityLoader() {
+        data.removeAll()
+        reloadTable()
+    }
+    
+    open func navigateToDeleteScreen(for postID: String) {
+        guard let viewcontroller = LMFeedDeleteReviewViewModel.createModule(postID: postID) else { return }
+        viewcontroller.modalPresentationStyle = .overFullScreen
+        present(viewcontroller, animated: false)
+    }
+    
+    open func navigateToReportScreen(for postID: String, creatorUUID: String) {
+        do {
+            let viewcontroller = try LMFeedReportContentViewModel.createModule(creatorUUID: creatorUUID, postID: postID)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
 }
 
 // MARK: UITableView
 @objc
 extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelegate {
-    open func numberOfSections(in tableView: UITableView) -> Int {
-        data.count
-    }
+    open func numberOfSections(in tableView: UITableView) -> Int { data.count }
     
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
-    }
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1 }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell),
@@ -170,8 +228,8 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
         return UITableViewCell()
     }
     
-    open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if data.count == indexPath.section + 1 {
+    open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if data.count == section - 1 {
             viewModel?.getFeed()
         }
     }
@@ -233,86 +291,6 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
 }
 
 
-// MARK: LMFeedPostListViewModelProtocol
-extension LMFeedPostListViewController: LMFeedPostListViewModelProtocol {
-    public func navigateToEditScreen(for postID: String) {
-        guard let viewcontroller = LMFeedEditPostViewModel.createModule(for: postID) else { return }
-        navigationController?.pushViewController(viewcontroller, animated: true)
-    }
-    
-    public func loadPosts(with data: [LMFeedPostTableCellProtocol], for index: IndexPath?) {
-        self.data = data
-        reloadTable(for: index)
-        
-        if self.data.isEmpty {
-            emptyListView.configure { [weak self] in
-                do {
-                    let viewcontroller = try LMFeedCreatePostViewModel.createModule()
-                    self?.navigationController?.pushViewController(viewcontroller, animated: true)
-                } catch let error {
-                    print(error.localizedDescription)
-                }
-            }
-            
-            tableView.backgroundView = emptyListView
-            emptyListView.setHeightConstraint(with: tableView.heightAnchor)
-            emptyListView.setWidthConstraint(with: tableView.widthAnchor)
-        } else {
-            tableView.backgroundView = nil
-        }
-        
-        delegate?.postDataFetched(isEmpty: self.data.isEmpty)
-    }
-    
-    public func undoLikeAction(for postID: String) {
-        guard let index = data.firstIndex(where: { $0.postID == postID }) else { return }
-        var tempData = data[index].footerData
-        
-        tempData.isLiked.toggle()
-        tempData.likeCount += tempData.isLiked ? 1 : -1
-        
-        data[index].footerData = tempData
-        
-        reloadTable(for: IndexPath(row: index, section: 0))
-    }
-    
-    public func undoSaveAction(for postID: String) {
-        guard let index = data.firstIndex(where: { $0.postID == postID }) else { return }
-        var tempData = data[index].footerData
-        
-        tempData.isSaved.toggle()
-        
-        data[index].footerData = tempData
-        
-        reloadTable(for: IndexPath(row: index, section: 0))
-    }
-    
-    public func showHideFooterLoader(isShow: Bool) {
-        tableView.showHideFooterLoader(isShow: isShow)
-    }
-    
-    public func showActivityLoader() {
-        data.removeAll()
-        reloadTable()
-    }
-    
-    public func navigateToDeleteScreen(for postID: String) {
-        guard let viewcontroller = LMFeedDeleteReviewViewModel.createModule(postID: postID) else { return }
-        viewcontroller.modalPresentationStyle = .overFullScreen
-        present(viewcontroller, animated: false)
-    }
-    
-    public func navigateToReportScreen(for postID: String, creatorUUID: String) {
-        do {
-            let viewcontroller = try LMFeedReportContentViewModel.createModule(creatorUUID: creatorUUID, postID: postID)
-            navigationController?.pushViewController(viewcontroller, animated: true)
-        } catch let error {
-            print(error.localizedDescription)
-        }
-    }
-}
-
-
 // MARK: LMFeedPostListVCToProtocol
 @objc
 extension LMFeedPostListViewController: LMFeedPostListVCToProtocol {
@@ -328,7 +306,7 @@ extension LMFeedPostListViewController: LMFeedPostHeaderViewProtocol {
         showError(with: "User Profile Tapped having UUID: \(uuid)", isPopVC: false)
     }
     
-    open func didTapMenuButton(for postID: String) {
+    open func didTapPostMenuButton(for postID: String) {
         viewModel?.showMenu(for: postID)
     }
 }
@@ -337,7 +315,12 @@ extension LMFeedPostListViewController: LMFeedPostHeaderViewProtocol {
 @objc
 extension LMFeedPostListViewController: LMFeedPostFooterViewProtocol {
     open func didTapLikeButton(for postID: String) {
-        viewModel?.likePost(for: postID)
+        if let index = data.firstIndex(where: { $0.postID == postID }) {
+            data[index].footerData.isLiked.toggle()
+            let isLiked = data[index].footerData.isLiked
+            data[index].footerData.likeCount += isLiked ? 1 : -1
+            viewModel?.likePost(for: postID)
+        }
     }
     
     open func didTapLikeTextButton(for postID: String) {
@@ -360,7 +343,10 @@ extension LMFeedPostListViewController: LMFeedPostFooterViewProtocol {
     }
     
     open func didTapSaveButton(for postID: String) {
-        viewModel?.savePost(for: postID)
+        if let index = data.firstIndex(where: { $0.postID == postID }) {
+            data[index].footerData.isSaved.toggle()
+            viewModel?.savePost(for: postID)
+        }
     }
 }
 
@@ -389,10 +375,10 @@ extension LMFeedPostListViewController: LMChatLinkProtocol, LMFeedPostDocumentCe
     }
     
     open func didTapShowMoreDocuments(for indexPath: IndexPath) {
-        if var docData = data[safe: indexPath.row] as? LMFeedPostDocumentCell.ViewModel {
+        if var docData = data[safe: indexPath.section] as? LMFeedPostDocumentCell.ViewModel {
             docData.isShowAllDocuments.toggle()
-            data[indexPath.row] = docData
-            reloadTable(for: indexPath)
+            data[indexPath.section] = docData
+            reloadTable(for: .init(integer: indexPath.section))
         }
     }
     

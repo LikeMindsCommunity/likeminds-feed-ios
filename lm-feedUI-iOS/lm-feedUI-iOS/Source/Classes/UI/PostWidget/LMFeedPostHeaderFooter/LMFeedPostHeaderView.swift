@@ -10,7 +10,7 @@ import UIKit
 
 public protocol LMFeedPostHeaderViewProtocol: AnyObject {
     func didTapProfilePicture(having uuid: String)
-    func didTapMenuButton(for postID: String)
+    func didTapPostMenuButton(for postID: String)
     func didTapPost(postID: String)
 }
 
@@ -266,7 +266,7 @@ extension LMFeedPostHeaderView {
     
     open func didTapMenuButton() { 
         guard let postID else { return }
-        delegate?.didTapMenuButton(for: postID)
+        delegate?.didTapPostMenuButton(for: postID)
     }
     
     open func didTapPost() {

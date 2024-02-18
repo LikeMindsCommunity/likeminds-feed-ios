@@ -74,7 +74,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
     open private(set) lazy var actionStack: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .horizontal
-        stack.alignment = .fill
+        stack.alignment = .center
         stack.distribution = .fill
         stack.spacing = 8
         return stack
@@ -84,6 +84,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(Constants.shared.images.heart, for: .normal)
+        button.setImage(Constants.shared.images.heartFilled, for: .selected)
         button.tintColor = Appearance.shared.colors.gray3
         return button
     }()
@@ -133,6 +134,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
     weak var delegate: LMChatPostCommentProtocol?
     public var commentId: String?
     public var indexPath: IndexPath?
+    public var likeCount: Int = 0
     public var seeMoreAction: (() -> Void)?
 
     
@@ -177,6 +179,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
                                        centerY: (actionStack.centerYAnchor, 0))
         
         sepratorView.setWidthConstraint(with: 1)
+        sepratorView.setHeightConstraint(with: 24)
         actionStack.setHeightConstraint(with: 34)
         
         authorNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -16).isActive = true
@@ -206,13 +209,26 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
     @objc
     open func didTapMenuButton() {
         guard let commentId else { return }
-        delegate?.didTapMenuButton(for: commentId)
+        delegate?.didTapCommentMenuButton(for: commentId)
     }
     
     @objc
     open func didTapLikeButton() {
         guard let commentId,
               let indexPath else { return }
+        likeButton.isSelected.toggle()
+        likeButton.tintColor = likeButton.isSelected ? Appearance.shared.colors.red : Appearance.shared.colors.gray3
+        likeCount += likeButton.isSelected ? 1 : -1
+        
+        likeTextButton.isHidden = likeCount == 0
+        if likeCount == 0 {
+            likeTextButton.setTitle(Constants.shared.strings.like, for: .normal)
+        } else if likeCount == 1 {
+            likeTextButton.setTitle("1 \(Constants.shared.strings.like)", for: .normal)
+        } else {
+            likeTextButton.setTitle("\(likeCount) \(Constants.shared.strings.likes)", for: .normal)
+        }
+        
         delegate?.didTapLikeButton(for: commentId, indexPath: indexPath)
     }
     
@@ -276,6 +292,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         
         self.delegate = delegate
         self.indexPath = indexPath
+        self.likeCount = data.likeCount
         self.seeMoreAction = seeMoreAction
         
         authorNameLabel.text = data.authorName
@@ -288,7 +305,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         
         commentTimeLabel.text = data.commentTimeFormatted
         
-        likeButton.setImage(data.isLiked ? Constants.shared.images.heartFilled : Constants.shared.images.heart, for: .normal)
+        likeButton.isSelected = data.isLiked
         likeButton.tintColor = data.isLiked ? Appearance.shared.colors.red : Appearance.shared.colors.gray3
         likeButton.isEnabled = data.commentId != nil
         
