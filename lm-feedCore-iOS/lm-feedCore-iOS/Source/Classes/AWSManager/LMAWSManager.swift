@@ -19,7 +19,7 @@ public protocol LMCDNProtocol: AnyObject {
 final class LMAWSManager {
     private init() { }
     
-    public static var shared = LMAWSManager()
+    public static let shared = LMAWSManager()
     
     typealias progressBlock = (_ progress: Double) -> Void
     typealias completionBlock = (_ response: String?, _ error: Error?) -> Void

@@ -46,7 +46,8 @@ final class LMFeedCreatePostOperation {
     
     
     func createPost(with content: String, topics: [String], files: [LMAWSRequestModel], linkPreview: LMFeedPostDataModel.LinkAttachment?) {
-        NotificationCenter.default.post(name: .LMPostCreationStarted, object: files.first?.url.absoluteString)
+        postMessageForPostCreationStart(files.first)
+        
         if let linkPreview {
             let attachmentMeta = AttachmentMeta()
                 .ogTags(.init()
@@ -205,5 +206,46 @@ final class LMFeedCreatePostOperation {
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: .LMPostCreateError, object: LMFeedError.postCreationFailed(error: error))
         }
+    }
+    
+    func postMessageForPostCreationStart(_ file: LMAWSRequestModel?) {
+        var image: UIImage?
+        
+        if let file {
+            switch file.contentType {
+            case .image:
+                do {
+                    let data = try Data(contentsOf: file.url)
+                    image = UIImage(data: data)
+                } catch { }
+            case .video:
+                do {
+                    let asset = AVAsset(url: file.url)
+                    let imgGenerator = AVAssetImageGenerator(asset: asset)
+                    imgGenerator.appliesPreferredTrackTransform = true
+                    let cgImage = try imgGenerator.copyCGImage(at: .zero, actualTime: nil)
+                    image = UIImage(cgImage: cgImage)
+                } catch { }
+            case .document:
+                if let pdf = PDFDocument(url: file.url),
+                   let pdfPage = pdf.page(at: 0) {
+                    let pdfPageSize = pdfPage.bounds(for: .mediaBox)
+                    let renderer = UIGraphicsImageRenderer(size: pdfPageSize.size)
+                    
+                    image = renderer.image { ctx in
+                        UIColor.white.set()
+                        ctx.fill(pdfPageSize)
+                        ctx.cgContext.translateBy(x: 0.0, y: pdfPageSize.size.height)
+                        ctx.cgContext.scaleBy(x: 1.0, y: -1.0)
+                        
+                        pdfPage.draw(with: .mediaBox, to: ctx.cgContext)
+                    }
+                }
+            case .none:
+                break
+            }
+        }
+        
+        NotificationCenter.default.post(name: .LMPostCreationStarted, object: image)
     }
 }

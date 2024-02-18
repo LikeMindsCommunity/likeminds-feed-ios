@@ -90,6 +90,16 @@ open class LMFeedCreatePostViewController: LMViewController {
         return collection
     }()
     
+    open private(set) lazy var mediaPageControl: UIPageControl = {
+        let pageControl = UIPageControl()
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.hidesForSinglePage = true
+        pageControl.tintColor = Appearance.shared.colors.appTintColor
+        pageControl.currentPageIndicatorTintColor = Appearance.shared.colors.appTintColor
+        pageControl.pageIndicatorTintColor = Appearance.shared.colors.gray155
+        return pageControl
+    }()
+    
     open private(set) lazy var documentTableView: LMTableView = {
         let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
         table.showsVerticalScrollIndicator = false
@@ -199,7 +209,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         
         scrollView.addSubview(scrollStackView)
         
-        [headerView, topicView, inputTextView, linkPreview, mediaCollectionView, documentTableView, addMoreButton].forEach { subView in
+        [headerView, topicView, inputTextView, linkPreview, mediaCollectionView, mediaPageControl ,documentTableView, addMoreButton].forEach { subView in
             scrollStackView.addArrangedSubview(subView)
         }
         
@@ -328,6 +338,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     open func setupInitialView() {
         linkPreview.isHidden = true
         mediaCollectionView.isHidden = true
+        mediaPageControl.isHidden = true
         documentTableView.isHidden = true
         addMoreButton.isHidden = true
         topicView.isHidden = true
@@ -416,6 +427,8 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
     }
 
     public func scrollingFinished() {
+        mediaPageControl.currentPage = Int(mediaCollectionView.contentOffset.x / mediaCollectionView.frame.width)
+        
         if mediaCollectionView.visibleCells.count == 1 {
             (mediaCollectionView.visibleCells.first as? LMFeedVideoCollectionCell)?.playVideo()
         }
@@ -464,6 +477,8 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
     public func showMedia(media: [LMFeedMediaProtocol], isShowAddMore: Bool, isShowBottomTab: Bool) {
         linkPreview.isHidden = true
         mediaCollectionView.isHidden = media.isEmpty
+        mediaPageControl.isHidden = media.count < 1
+        mediaPageControl.numberOfPages = media.count
         mediaCellData.append(contentsOf: media)
         mediaCollectionView.reloadData()
         scrollingFinished()
@@ -475,6 +490,7 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
     
     public func resetMediaView() {
         mediaCollectionView.isHidden = true
+        mediaPageControl.isHidden = true
         documentTableView.isHidden = true
         addMoreButton.isHidden = true
         mediaCellData.removeAll(keepingCapacity: true)

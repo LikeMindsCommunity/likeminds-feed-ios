@@ -171,8 +171,13 @@ public extension LMFeedPostListViewModel {
             if response {
                 var feed = postList[index]
                 feed.isPinned.toggle()
+                if let idx = feed.postMenu.firstIndex(where: { $0.id == .pinPost }) {
+                    feed.postMenu[idx] = .init(id: .unpinPost, name: "Unpin this Post")
+                } else if let idx = feed.postMenu.firstIndex(where: { $0.id == .unpinPost }) {
+                    feed.postMenu[idx] = .init(id: .pinPost, name: "Pin this Post")
+                }
+                
                 postList[index] = feed
-//                convertToViewData(for: .init(integer: index))
                 
                 var convertedViewData: [LMFeedPostTableCellProtocol] = []
                 

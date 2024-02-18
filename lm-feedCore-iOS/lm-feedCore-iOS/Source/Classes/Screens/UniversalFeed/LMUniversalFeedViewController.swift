@@ -208,8 +208,12 @@ open class LMUniversalFeedViewController: LMViewController {
     
     @objc
     open func didTapNewPostButton() {
-        guard isShowCreatePost,
-              !isPostCreationInProgress else { return }
+        guard isShowCreatePost else { return }
+        
+        guard !isPostCreationInProgress else {
+            showError(with: "A post is already uploading!", isPopVC: false)
+            return
+        }
         do {
             let viewcontroller = try LMFeedCreatePostViewModel.createModule()
             navigationController?.pushViewController(viewcontroller, animated: true)
@@ -232,7 +236,7 @@ open class LMUniversalFeedViewController: LMViewController {
     
     @objc
     open func postCreationInProgress(notification: Notification) {
-        let image = notification.object as? String
+        let image = notification.object as? UIImage
         createPostLoaderView.isHidden = false
         isPostCreationInProgress = true
         createPostLoaderView.configure(with: image)

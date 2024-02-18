@@ -5,6 +5,9 @@
 //  Created by Devansh Mohata on 06/02/24.
 //
 
+import AVFoundation
+import Kingfisher
+import PDFKit
 import UIKit
 
 @IBDesignable
@@ -13,6 +16,15 @@ open class LMFeedAddMediaPreview: LMView {
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
         return view
+    }()
+    
+    open private(set) lazy var stackView: LMStackView = {
+        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+        stack.axis = .horizontal
+        stack.alignment = .fill
+        stack.distribution = .fill
+        stack.spacing = 8
+        return stack
     }()
     
     open private(set) lazy var contentImageView: LMImageView = {
@@ -41,8 +53,9 @@ open class LMFeedAddMediaPreview: LMView {
         super.setupViews()
         
         addSubview(containerView)
-        containerView.addSubview(contentImageView)
-        containerView.addSubview(titleLabel)
+        containerView.addSubview(stackView)
+        stackView.addArrangedSubview(contentImageView)
+        stackView.addArrangedSubview(titleLabel)
         containerView.addSubview(activityIndicator)
     }
     
@@ -53,18 +66,14 @@ open class LMFeedAddMediaPreview: LMView {
         
         pinSubView(subView: containerView)
         
-        contentImageView.addConstraint(top: (containerView.topAnchor, 8),
+        stackView.addConstraint(top: (containerView.topAnchor, 8),
                                        bottom: (containerView.bottomAnchor, -8),
                                        leading: (containerView.leadingAnchor, 16))
         
-        titleLabel.addConstraint(leading: (contentImageView.trailingAnchor, 16),
-                                 centerY: (contentImageView.centerYAnchor, 0))
-        
         activityIndicator.addConstraint(trailing: (containerView.trailingAnchor, -16),
-                                        centerY: (titleLabel.centerYAnchor, 0))
+                                        centerY: (stackView.centerYAnchor, 0))
         
-        activityIndicator.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabel.trailingAnchor, constant: 16).isActive = true
-        
+        activityIndicator.leadingAnchor.constraint(greaterThanOrEqualTo: stackView.trailingAnchor, constant: 16).isActive = true
         contentImageView.setWidthConstraint(with: contentImageView.heightAnchor)
     }
     
@@ -75,8 +84,9 @@ open class LMFeedAddMediaPreview: LMView {
         containerView.backgroundColor = Appearance.shared.colors.white
     }
     
-    open func configure(with image: String?) {
-        contentImageView.kf.setImage(with: URL(string: image ?? ""), placeholder: Constants.shared.images.placeholderImage)
+    open func configure(with image: UIImage?) {
+        contentImageView.image = image
+        contentImageView.isHidden = image == nil
         activityIndicator.startAnimating()
     }
     
