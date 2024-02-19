@@ -11,8 +11,8 @@ import LikeMindsFeed
 public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol {
     func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostDetailCommentCellViewModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool)
     
-    func changePostLike()
-    func changePostSave()
+    func resetHeaderData()
+    func resetFooterData(isSaved: Bool, isLiked: Bool)
     
     func changeCommentLike(for indexPath: IndexPath)
     func replyToComment(userName: String)
@@ -495,7 +495,7 @@ public extension LMFeedPostDetailViewModel {
                 postDetail?.likeCount += newState ? 1 : -1
                 notifyObjectChange()
             } else {
-                delegate?.changePostLike()
+                delegate?.resetFooterData(isSaved: false, isLiked: true)
             }
         }
     }
@@ -509,7 +509,7 @@ public extension LMFeedPostDetailViewModel {
                 postDetail?.isSaved.toggle()
                 notifyObjectChange()
             } else {
-                delegate?.changePostSave()
+                delegate?.resetFooterData(isSaved: true, isLiked: false)
             }
         }
     }
@@ -522,8 +522,8 @@ public extension LMFeedPostDetailViewModel {
             if response {
                 postDetail?.isPinned.toggle()
                 updatePinMenu()
-                convertToViewData(for: .init(row: NSNotFound, section: 0))
                 notifyObjectChange()
+                delegate?.resetHeaderData()
             }
         }
     }

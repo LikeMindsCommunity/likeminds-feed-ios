@@ -17,12 +17,12 @@ public protocol LMFeedPostHeaderViewProtocol: AnyObject {
 @IBDesignable
 open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
     public struct ViewModel {
-        let profileImage: String?
-        let authorName: String
-        let authorTag: String?
-        let subtitle: String?
-        let isPinned: Bool
-        let showMenu: Bool
+        public let profileImage: String?
+        public let authorName: String
+        public let authorTag: String?
+        public let subtitle: String?
+        public var isPinned: Bool
+        public let showMenu: Bool
         
         public init(profileImage: String?, authorName: String, authorTag: String?, subtitle: String?, isPinned: Bool, showMenu: Bool) {
             self.profileImage = profileImage
@@ -253,6 +253,10 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         
         pinButton.isHidden = !data.isPinned
         menuButton.isHidden = !data.showMenu
+    }
+    
+    open func togglePinStatus() {
+        pinButton.isHidden.toggle()
     }
 }
 

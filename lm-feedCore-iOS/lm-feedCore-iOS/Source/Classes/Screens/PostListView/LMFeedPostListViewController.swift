@@ -31,7 +31,6 @@ open class LMFeedPostListViewController: LMViewController, LMFeedPostListViewMod
         table.separatorStyle = .none
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
-        table.rowHeight = UITableView.automaticDimension
         table.register(LMUIComponents.shared.postCell)
         table.register(LMUIComponents.shared.documentCell)
         table.register(LMUIComponents.shared.linkCell)
@@ -229,7 +228,7 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
     }
     
     open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        if data.count == section - 1 {
+        if data.count == section + 1 {
             viewModel?.getFeed()
         }
     }
@@ -241,6 +240,10 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
             return header
         }
         return nil
+    }
+    
+    open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
     }
     
     open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

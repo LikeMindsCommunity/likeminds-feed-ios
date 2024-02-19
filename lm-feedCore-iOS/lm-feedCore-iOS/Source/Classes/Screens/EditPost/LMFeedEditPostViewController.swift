@@ -214,6 +214,7 @@ open class LMFeedEditPostViewController: LMViewController {
     
     open func setupInitialView() {
         linkPreview.isHidden = true
+        taggingView.isHidden = true
         mediaCollectionView.isHidden = true
         mediaPageControl.isHidden = true
         documentTableView.isHidden = true

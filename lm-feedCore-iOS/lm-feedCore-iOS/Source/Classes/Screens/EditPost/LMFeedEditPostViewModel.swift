@@ -224,6 +224,7 @@ extension LMFeedEditPostViewModel {
         }
         
         LMFeedEditPostOperation.shared.editPostWithAttachments(postID: postID, postCaption: text, topics: selectedTopics.map({ $0.topicID }), documents: documents, media: media, linkAttachment: linkPreview)
+        delegate?.popViewController(animated: true)
     }
 }
 

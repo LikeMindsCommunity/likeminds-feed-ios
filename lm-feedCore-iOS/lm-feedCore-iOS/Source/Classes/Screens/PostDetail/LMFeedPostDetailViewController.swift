@@ -551,16 +551,25 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         }
     }
     
-    public func changePostLike() {
-        let isLiked = postData?.footerData.isLiked ?? true
-        postData?.footerData.isLiked = !isLiked
-        postData?.footerData.likeCount += !isLiked ? 1 : -1
-        reloadTable(for: IndexPath(row: 0, section: 0))
+    public func resetHeaderData() {
+        postData?.headerData.isPinned.toggle()
+        (tableView.headerView(forSection: 0) as? LMFeedPostDetailHeaderView)?.togglePinStatus()
     }
     
-    public func changePostSave() {
-        postData?.footerData.isSaved.toggle()
-        reloadTable(for: IndexPath(row: 0, section: 0))
+    public func resetFooterData(isSaved: Bool, isLiked: Bool) {
+        if isSaved {
+            postData?.footerData.isSaved.toggle()
+        }
+        
+        if isLiked {
+            postData?.footerData.isLiked.toggle()
+            let newStatus = postData?.footerData.isLiked == true
+            postData?.footerData.likeCount += newStatus ? 1 : -1
+        }
+        
+        guard let postData else { return }
+        
+        (tableView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.configure(with: postData.footerData, postID: postData.postID, delegate: self, commentCount: postData.totalCommentCount)
     }
     
     public func changeCommentLike(for indexPath: IndexPath) {

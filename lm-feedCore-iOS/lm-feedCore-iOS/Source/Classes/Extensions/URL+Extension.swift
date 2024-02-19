@@ -6,6 +6,10 @@
 //
 
 public extension URL {
+    var isDirectory: Bool {
+        (try? resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
+    }
+    
     var queryParameters: [String: String] {
         guard let components = URLComponents(url: self, resolvingAgainstBaseURL: true),
               let queryItems = components.queryItems else { return [:] }
@@ -29,4 +33,6 @@ public extension URL {
         
         return 0
     }
+    
+    
 }

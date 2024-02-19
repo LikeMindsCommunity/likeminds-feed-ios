@@ -11,7 +11,7 @@ import UIKit
 public protocol LMFeedPostTableCellProtocol {
     var postID: String { get }
     var userUUID: String { get }
-    var headerData: LMFeedPostHeaderView.ViewModel { get }
+    var headerData: LMFeedPostHeaderView.ViewModel { get set }
     var postText: String { get }
     var isShowMore: Bool { get set }
     var topics: LMFeedTopicView.ViewModel { get }
@@ -39,7 +39,7 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     open private(set) lazy var contentStack: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
-        stack.alignment = .leading
+        stack.alignment = .center
         stack.distribution = .fill
         stack.spacing = 8
         return stack

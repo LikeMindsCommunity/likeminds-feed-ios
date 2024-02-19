@@ -5,6 +5,7 @@
 //  Created by Devansh Mohata on 24/11/23.
 //
 
+import QuickLook
 import SafariServices
 import UIKit
 
@@ -67,6 +68,14 @@ open class LMViewController: UIViewController {
         loader.tintColor = Appearance.shared.colors.gray51
         return loader
     }()
+    
+    open private(set) lazy var quickLookPreview: QLPreviewController = {
+        let viewcontroller = QLPreviewController()
+        viewcontroller.dataSource = self
+        return viewcontroller
+    }()
+    
+    open private(set) var quickLookPreviewItem = NSURL()
     
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -153,10 +162,16 @@ open class LMViewController: UIViewController {
     
     open func openURL(with url: URL) {
         if ["http", "https"].contains(url.scheme?.lowercased() ?? "") {
-            let safariController = SFSafariViewController(url: url)
+            let config = SFSafariViewController.Configuration()
+            config.entersReaderIfAvailable = true
+            
+            let safariController = SFSafariViewController(url: url, configuration: config)
             present(safariController, animated: true)
-        } else {
+        } else if UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url)
+        } else {
+            quickLookPreviewItem = url as NSURL
+            present(quickLookPreview, animated: true)
         }
     }
 }
@@ -230,5 +245,19 @@ extension LMViewController: LMBaseViewControllerProtocol {
     
     open func popViewController(animated: Bool) {
         navigationController?.popViewController(animated: animated)
+    }
+}
+
+
+// MARK: QLPreviewControllerDataSource
+extension LMViewController: QLPreviewControllerDataSource {
+    open func numberOfPreviewItems(in controller: QLPreviewController) -> Int { 1 }
+    
+    open func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        defer {
+            quickLookPreviewItem.stopAccessingSecurityScopedResource()
+        }
+        quickLookPreviewItem.startAccessingSecurityScopedResource()
+        return quickLookPreviewItem
     }
 }
