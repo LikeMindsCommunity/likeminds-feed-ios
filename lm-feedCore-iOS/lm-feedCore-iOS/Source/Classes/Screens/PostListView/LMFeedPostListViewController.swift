@@ -210,15 +210,15 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1 }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell),
+        if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell, for: indexPath),
            let cellData = data[indexPath.section] as? LMFeedPostMediaCell.ViewModel {
             cell.configure(with: cellData, delegate: self)
             return cell
-        } else if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.documentCell),
+        } else if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.documentCell, for: indexPath),
                   let cellData = data[indexPath.section] as? LMFeedPostDocumentCell.ViewModel {
             cell.configure(for: indexPath, with: cellData, delegate: self)
             return cell
-        } else if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.linkCell),
+        } else if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.linkCell, for: indexPath),
                   let cellData = data[indexPath.section] as? LMFeedPostLinkCell.ViewModel {
             cell.configure(with: cellData, delegate: self)
             return cell

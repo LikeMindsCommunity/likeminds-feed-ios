@@ -40,25 +40,15 @@ open class LMFeedLinkPreview: LMView {
         stack.distribution = .fill
         return stack
     }()
-    
-//    open private(set) lazy var crossButton: LMButton = {
-//        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
-//        button.setTitle(nil, for: .normal)
-////        button.contentMode = .scaleAspectFill
-//        button.contentHorizontalAlignment = .fill
-//        button.contentVerticalAlignment = .fill
-//        button.setImage(Constants.shared.images.crossIcon, for: .normal)
-//        button.tintColor = Appearance.shared.colors.gray51
-//        button.backgroundColor = Appearance.shared.colors.white
-//        return button
-//    }()
-    
+        
     open private(set) lazy var crossButton: LMImageView = {
-        let image = LMImageView(image: Constants.shared.images.crossIcon)
+        let image = LMImageView(image: Constants.shared.images.xmarkIcon)
         image.translatesAutoresizingMaskIntoConstraints = false
         image.backgroundColor = Appearance.shared.colors.white
         image.tintColor = Appearance.shared.colors.gray51
-        image.contentMode = .scaleToFill
+        image.contentMode = .scaleAspectFill
+        image.layer.borderColor = Appearance.shared.colors.gray51.cgColor
+        image.layer.borderWidth = 1
         return image
     }()
     

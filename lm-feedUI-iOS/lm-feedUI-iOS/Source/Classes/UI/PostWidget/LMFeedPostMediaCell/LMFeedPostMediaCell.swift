@@ -75,7 +75,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     }()
     
     
-    //MARK: Data Variables
+    //MARK: setupViews
     private var mediaCellsData: [LMFeedMediaProtocol] = []
 
     
@@ -95,7 +95,8 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         contentStack.addArrangedSubview(pageControl)
     }
     
-    // MARK: Constraints
+    
+    // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
         
@@ -111,13 +112,8 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         pageControl.addConstraint(leading: (contentStack.leadingAnchor, 0), trailing: (contentStack.trailingAnchor, 0))
     }
     
-    open override func setupActions() {
-        super.setupActions()
-        
-        pageControl.addTarget(self, action: #selector(didChangePageControl), for: .primaryActionTriggered)
-    }
     
-    // MARK: Appearance
+    // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
         backgroundColor = Appearance.shared.colors.clear
@@ -125,7 +121,13 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         containerView.backgroundColor = Appearance.shared.colors.white
     }
     
-    // MARK: Action
+    
+    // MARK: setupActions
+    open override func setupActions() {
+        super.setupActions()
+        pageControl.addTarget(self, action: #selector(didChangePageControl), for: .primaryActionTriggered)
+    }
+    
     @objc
     open func didChangePageControl(_ sender: UIPageControl) {
         guard mediaCellsData.indices.contains(sender.currentPage) else { return }
@@ -142,6 +144,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
             (mediaCollectionView.visibleCells.first as? LMFeedVideoCollectionCell)?.playVideo()
         }
     }
+    
     
     // MARK: Configure Function
     open func configure(with data: ViewModel, delegate: LMPostWidgetTableViewCellProtocol?) {

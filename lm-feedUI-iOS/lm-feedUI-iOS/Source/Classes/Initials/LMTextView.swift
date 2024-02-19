@@ -40,6 +40,16 @@ open class LMTextView: UITextView {
         return currentNumOfLines
     }
     
+    public override init(frame: CGRect, textContainer: NSTextContainer?) {
+        super.init(frame: frame, textContainer: textContainer)
+        backgroundColor = Appearance.shared.colors.clear
+    }
+    
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        backgroundColor = Appearance.shared.colors.clear
+    }
+    
     open func translatesAutoresizingMaskIntoConstraints() -> Self {
         translatesAutoresizingMaskIntoConstraints = false
         return self

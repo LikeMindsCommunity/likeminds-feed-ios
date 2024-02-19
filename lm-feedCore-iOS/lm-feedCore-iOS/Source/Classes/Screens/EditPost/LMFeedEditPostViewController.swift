@@ -364,7 +364,7 @@ extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {
         mediaPageControl.currentPage = 0
     }
     
-    public func navigateToTopicView(with topics: [String]) {
+    public func navigateToTopicView(with topics: [LMFeedTopicDataModel]) {
         do {
             let viewcontroller = try LMFeedTopicSelectionViewModel.createModule(topicEnabledState: true, isShowAllTopicsButton: false, selectedTopicIds: topics, delegate: self)
             navigationController?.pushViewController(viewcontroller, animated: true)

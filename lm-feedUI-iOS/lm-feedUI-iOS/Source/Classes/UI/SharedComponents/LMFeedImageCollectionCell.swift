@@ -30,17 +30,20 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
         return image
     }()
     
-    open private(set) lazy var crossButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
-        button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.crossIcon, for: .normal)
-        button.tintColor = Appearance.shared.colors.gray51
-        button.backgroundColor = Appearance.shared.colors.white
-        return button
+    open private(set) lazy var crossButton: LMImageView = {
+        let image = LMImageView(image: Constants.shared.images.xmarkIcon)
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.backgroundColor = Appearance.shared.colors.white
+        image.tintColor = Appearance.shared.colors.gray51
+        image.contentMode = .scaleAspectFill
+        image.layer.borderColor = Appearance.shared.colors.gray51.cgColor
+        image.layer.borderWidth = 1
+        return image
     }()
     
     
     // MARK: Data Variables
+    public var crossButtonHeight: CGFloat = 24
     public var crossButtonAction: ((String) -> Void)?
     public var url: String?
     
@@ -60,7 +63,7 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
         
         crossButton.addConstraint(top: (containerView.topAnchor, 16),
                                   trailing: (containerView.trailingAnchor, -16))
-        crossButton.setHeightConstraint(with: 24)
+        crossButton.setHeightConstraint(with: crossButtonHeight)
         crossButton.setWidthConstraint(with: crossButton.heightAnchor)
     }
     
@@ -68,7 +71,7 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
-        crossButton.addTarget(self, action: #selector(didTapCrossButton), for: .touchUpInside)
+        crossButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCrossButton)))
     }
     
     @objc
@@ -81,7 +84,7 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        crossButton.layer.cornerRadius = crossButton.frame.height / 2
+        crossButton.layer.cornerRadius = crossButtonHeight / 2
     }
     
     

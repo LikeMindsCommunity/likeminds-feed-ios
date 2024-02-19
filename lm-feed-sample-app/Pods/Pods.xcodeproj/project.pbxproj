@@ -830,6 +830,7 @@
 		E451CD349D01B61FE51018521338E544 /* GDTCCTNanopbHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 30C4B4A52FDC1DFF5C63F3213FFB385B /* GDTCCTNanopbHelpers.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E51218692B810523009A9AA4 /* LMFeedPostDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51218672B810504009A9AA4 /* LMFeedPostDetailHeaderView.swift */; };
 		E512186B2B81055A009A9AA4 /* LMFeedPostDetailFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512186A2B81055A009A9AA4 /* LMFeedPostDetailFooterView.swift */; };
+		E51218702B837D4C009A9AA4 /* LMFeedPDFViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512186F2B837D4C009A9AA4 /* LMFeedPDFViewer.swift */; };
 		E53F892F2B7F5B5C00AD3403 /* LMFeedLoopedVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F892E2B7F5B5B00AD3403 /* LMFeedLoopedVideoPlayer.swift */; };
 		E53F89312B80C18200AD3403 /* LMFeedTopicDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F89302B80C18200AD3403 /* LMFeedTopicDataModel.swift */; };
 		E5635DECB22362CA17521F7B6A752BB4 /* AWSS3Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = B2881072FA98B43A2B029FD85DAAC89A /* AWSS3Resources.m */; };
@@ -2151,6 +2152,7 @@
 		E4F7F00F5E511E62A225D9E1F0F43445 /* LMFeedReportContentViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedReportContentViewModel.swift; sourceTree = "<group>"; };
 		E51218672B810504009A9AA4 /* LMFeedPostDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailHeaderView.swift; sourceTree = "<group>"; };
 		E512186A2B81055A009A9AA4 /* LMFeedPostDetailFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailFooterView.swift; sourceTree = "<group>"; };
+		E512186F2B837D4C009A9AA4 /* LMFeedPDFViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPDFViewer.swift; sourceTree = "<group>"; };
 		E53F892E2B7F5B5B00AD3403 /* LMFeedLoopedVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedLoopedVideoPlayer.swift; sourceTree = "<group>"; };
 		E53F89302B80C18200AD3403 /* LMFeedTopicDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTopicDataModel.swift; sourceTree = "<group>"; };
 		E53FAA4B44647E3F0E5FF0EA3766726E /* AWSFMDB+AWSHelpers.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "AWSFMDB+AWSHelpers.m"; path = "AWSCore/FMDB/AWSFMDB+AWSHelpers.m"; sourceTree = "<group>"; };
@@ -3071,6 +3073,7 @@
 				870B45BA320B4FC46723BADC4C18FF3F /* String+Extension.swift */,
 				A4D0111199F305162D23A2E9310C2728 /* UIColor+Extension.swift */,
 				614E72DC9B61B8064552886FBA847EFB /* UIImage+Extension.swift */,
+				E512186F2B837D4C009A9AA4 /* LMFeedPDFViewer.swift */,
 			);
 			name = Initials;
 			path = "lm-feedUI-iOS/Source/Classes/Initials";
@@ -5828,6 +5831,7 @@
 				73E988627478C4E3EDECE50C530DB5BC /* LMFeedLikeUserTableCell.swift in Sources */,
 				904F50ECA2DE42ABA187E04ABAC1D00E /* LMFeedLinkPreview.swift in Sources */,
 				58710040B1094167C062317FC1AD2526 /* LMFeedNoCommentWidget.swift in Sources */,
+				E51218702B837D4C009A9AA4 /* LMFeedPDFViewer.swift in Sources */,
 				14C2DE43E95A865C015B8AADD8E0140B /* LMFeedNoPostWidget.swift in Sources */,
 				718FCAA0689B1013A71AEA0478D42DCE /* LMFeedNotificationView.swift in Sources */,
 				59D711B1CC79AAD6FC870BCDA9C457AC /* LMFeedPostDetailCommentCell.swift in Sources */,

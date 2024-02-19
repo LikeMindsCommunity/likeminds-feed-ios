@@ -48,7 +48,7 @@ public struct LMFeedPostDetailCommentCellViewModel {
     }
     
     public var commentText: String {
-        totalReplyCount > 1 ? "\(totalReplyCount) \(Constants.shared.strings.replies)" : "\(totalReplyCount) \(Constants.shared.strings.reply)"
+        "• \(totalReplyCount) \(totalReplyCount > 1 ? Constants.shared.strings.replies : Constants.shared.strings.reply)"
     }
     
     

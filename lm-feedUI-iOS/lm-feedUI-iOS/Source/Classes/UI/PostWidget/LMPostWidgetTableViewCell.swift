@@ -88,6 +88,10 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
         seeMoreButton.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
     }
     
+    open override func prepareForReuse() {
+        super.prepareForReuse()
+        print(#function)
+    }
     
     // MARK: setupActions
     open override func setupActions() {
@@ -137,7 +141,7 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     }
     
     open func setupPostText(text: String, showMore: Bool) {
-        postText.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: text.trimmingCharacters(in: .whitespacesAndNewlines))
+        postText.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: text.trimmingCharacters(in: .whitespacesAndNewlines), andPrefix: "@")
         postText.isHidden = text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         
         seeMoreButton.isHidden = true // !(postText.numberOfLines > 4 && showMore)

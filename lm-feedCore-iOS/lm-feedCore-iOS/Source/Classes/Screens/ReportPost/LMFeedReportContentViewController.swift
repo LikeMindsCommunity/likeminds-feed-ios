@@ -67,7 +67,14 @@ open class LMFeedReportContentViewController: LMViewController {
         let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
         textView.delegate = self
         textView.addDoneButtonOnKeyboard()
+        textView.backgroundColor = Appearance.shared.colors.clear
         return textView
+    }()
+    
+    open private(set) lazy var sepratorView: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        view.backgroundColor = Appearance.shared.colors.appTintColor
+        return view
     }()
     
     open private(set) lazy var submitButton: LMButton = {
@@ -80,7 +87,6 @@ open class LMFeedReportContentViewController: LMViewController {
     
     
     // MARK: Data Variables
-    public var textViewHeightConstraint: NSLayoutConstraint?
     public var textInputHeight: CGFloat = 100
     public var tags: [(String, Int)] = []
     public var selectedTag = -1
@@ -99,7 +105,7 @@ open class LMFeedReportContentViewController: LMViewController {
         
         containerScrollView.addSubview(stackView)
         
-        [titleLabel, subtitleLabel, collectionView, otherReasonTextView].forEach { subview in
+        [titleLabel, subtitleLabel, collectionView, otherReasonTextView, sepratorView].forEach { subview in
             stackView.addArrangedSubview(subview)
         }
     }
@@ -127,12 +133,13 @@ open class LMFeedReportContentViewController: LMViewController {
         collectionView.setHeightConstraint(with: stackView.widthAnchor, relatedBy: .lessThanOrEqual, multiplier: 0.5)
         
         otherReasonTextView.setHeightConstraint(with: textInputHeight)
+        sepratorView.setHeightConstraint(with: 1)
         
         submitButton.addConstraint(top: (containerScrollView.bottomAnchor, 16),
                                    bottom: (containerView.bottomAnchor, -16),
                                    centerX: (containerView.centerXAnchor, 0))
         
-        [titleLabel, subtitleLabel, collectionView, otherReasonTextView].forEach { subview in
+        [titleLabel, subtitleLabel, collectionView, otherReasonTextView, sepratorView].forEach { subview in
             subview.addConstraint(leading: (stackView.leadingAnchor, 16),
                                   trailing: (stackView.trailingAnchor, -16))
         }
@@ -269,6 +276,8 @@ extension LMFeedReportContentViewController: LMFeedReportContentViewModelProtoco
         collectionView.reloadData()
         
         otherReasonTextView.isHidden = !showTextView
+        sepratorView.isHidden = !showTextView
+        
         setupButton(isEnabled: selectedTag != -1)
         
         if showTextView {

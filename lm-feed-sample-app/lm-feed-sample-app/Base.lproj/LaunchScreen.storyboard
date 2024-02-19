@@ -6,7 +6,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -33,7 +32,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="ouK-29-TjC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Z4h-0z-Mhk" secondAttribute="leading" constant="16" id="3pc-v0-cgi"/>
                                     <constraint firstAttribute="trailing" secondItem="GZ9-AN-chr" secondAttribute="trailing" id="FGo-ah-aw1"/>
@@ -64,10 +63,7 @@
     <resources>
         <image name="LM_Logo" width="500" height="131"/>
         <namedColor name="AccentColor">
-            <color red="0.0" green="0.5372549295425415" blue="0.48235297203063965" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.31372550129890442" green="0.27450981736183167" blue="0.89803922176361084" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

@@ -17,7 +17,7 @@ open class LMFeedTopicSelectionViewController: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.backgroundColor
+        view.backgroundColor = Appearance.shared.colors.clear
         return view
     }()
     
@@ -58,6 +58,7 @@ open class LMFeedTopicSelectionViewController: LMViewController {
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = Appearance.shared.colors.backgroundColor
         setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: nil)
         viewModel?.getTopics(for: searchController.searchBar.text, isFreshSearch: true)
     }

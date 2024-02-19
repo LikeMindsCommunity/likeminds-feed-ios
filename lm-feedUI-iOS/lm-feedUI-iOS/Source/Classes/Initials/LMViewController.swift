@@ -5,7 +5,7 @@
 //  Created by Devansh Mohata on 24/11/23.
 //
 
-import QuickLook
+import PDFKit
 import SafariServices
 import UIKit
 
@@ -69,14 +69,6 @@ open class LMViewController: UIViewController {
         return loader
     }()
     
-    open private(set) lazy var quickLookPreview: QLPreviewController = {
-        let viewcontroller = QLPreviewController()
-        viewcontroller.dataSource = self
-        return viewcontroller
-    }()
-    
-    open private(set) var quickLookPreviewItem = NSURL()
-    
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -113,9 +105,14 @@ open class LMViewController: UIViewController {
         
         if #available(iOS 15, *) {
             let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = Appearance.shared.colors.navigationBackgroundColor
+            navigationController?.navigationBar.standardAppearance = appearance
             navigationController?.navigationBar.scrollEdgeAppearance = appearance
+            navigationController?.navigationBar.barTintColor = Appearance.shared.colors.navigationBackgroundColor
         }
+        
+        navigationController?.navigationBar.isTranslucent = false
     }
     
     open func setNavigationTitleAndSubtitle(with title: String?, subtitle: String?, alignment: UIStackView.Alignment = .leading) {
@@ -167,11 +164,17 @@ open class LMViewController: UIViewController {
             
             let safariController = SFSafariViewController(url: url, configuration: config)
             present(safariController, animated: true)
+            return
         } else if UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url)
-        } else {
-            quickLookPreviewItem = url as NSURL
-            present(quickLookPreview, animated: true)
+            return
+        }
+        
+        // TODO: Need to handle this
+        if url.startAccessingSecurityScopedResource() {
+            let pdfViewer = LMFeedPDFViewer()
+            pdfViewer.configure(with: url)
+            navigationController?.pushViewController(pdfViewer, animated: true)
         }
     }
 }
@@ -245,19 +248,5 @@ extension LMViewController: LMBaseViewControllerProtocol {
     
     open func popViewController(animated: Bool) {
         navigationController?.popViewController(animated: animated)
-    }
-}
-
-
-// MARK: QLPreviewControllerDataSource
-extension LMViewController: QLPreviewControllerDataSource {
-    open func numberOfPreviewItems(in controller: QLPreviewController) -> Int { 1 }
-    
-    open func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        defer {
-            quickLookPreviewItem.stopAccessingSecurityScopedResource()
-        }
-        quickLookPreviewItem.startAccessingSecurityScopedResource()
-        return quickLookPreviewItem
     }
 }

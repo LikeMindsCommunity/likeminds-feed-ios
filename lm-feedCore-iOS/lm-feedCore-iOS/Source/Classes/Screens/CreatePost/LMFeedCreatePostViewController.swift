@@ -67,6 +67,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         textView.isScrollEnabled = false
         textView.isEditable = true
         textView.placeHolderText = "Write Something here..."
+        textView.backgroundColor = Appearance.shared.colors.clear
         textView.addDoneButtonOnKeyboard()
         return textView
     }()
@@ -111,6 +112,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         table.dataSource = self
         table.delegate = self
         table.separatorStyle = .none
+        table.backgroundColor = Appearance.shared.colors.clear
         return table
     }()
     
@@ -175,6 +177,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     public var viewModel: LMFeedCreatePostViewModel?
     public var documentCellData: [LMFeedDocumentPreview.ViewModel] = []
     public var documenTableHeight: NSLayoutConstraint?
+    public var documentCellHeight: CGFloat = 90
     
     public var taggingViewHeight: NSLayoutConstraint?
     public var inputTextViewHeightConstraint: NSLayoutConstraint?
@@ -246,8 +249,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         
         inputTextViewHeightConstraint = inputTextView.setHeightConstraint(with: 40)
         
-        documenTableHeight = documentTableView.setHeightConstraint(with: Constants.shared.number.documentPreviewSize)
-        
+        documenTableHeight = documentTableView.setHeightConstraint(with: documentCellHeight)
         scrollView.setWidthConstraint(with: containerStackView.widthAnchor)
         scrollStackView.setWidthConstraint(with: containerStackView.widthAnchor)
         mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
@@ -366,6 +368,10 @@ extension LMFeedCreatePostViewController: UITableViewDataSource, UITableViewDele
         }
         return UITableViewCell()
     }
+    
+    open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        documentCellHeight
+    }
 }
 
 
@@ -448,7 +454,7 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
         }
     }
     
-    public func navigateToTopicView(with topics: [String]) {
+    public func navigateToTopicView(with topics: [LMFeedTopicDataModel]) {
         do {
             let viewcontroller = try LMFeedTopicSelectionViewModel.createModule(topicEnabledState: true, isShowAllTopicsButton: false, selectedTopicIds: topics, delegate: self)
             navigationController?.pushViewController(viewcontroller, animated: true)
@@ -467,7 +473,9 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
         documentTableView.isHidden = documents.isEmpty
         documentCellData.append(contentsOf: documents)
         documentTableView.reloadData()
-        documenTableHeight?.constant = documentTableView.tableViewHeight
+        if !documents.isEmpty {
+            documenTableHeight?.constant = CGFloat(documents.count) * documentCellHeight
+        }
         addMoreButton.isHidden = !isShowAddMore
         
         addMediaStack.isHidden = !isShowBottomTab

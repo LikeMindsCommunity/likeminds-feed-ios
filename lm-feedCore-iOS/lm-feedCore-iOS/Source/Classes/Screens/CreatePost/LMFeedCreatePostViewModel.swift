@@ -16,7 +16,7 @@ public protocol LMFeedCreatePostViewModelProtocol: LMBaseViewControllerProtocol 
     func resetMediaView()
     func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int)
     func updateTopicView(with data: LMFeedTopicView.ViewModel)
-    func navigateToTopicView(with topics: [String])
+    func navigateToTopicView(with topics: [LMFeedTopicDataModel])
     func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?)
 }
 
@@ -255,8 +255,7 @@ extension LMFeedCreatePostViewModel {
     }
     
     func didTapTopicSelection() {
-        let currentTopics = selectedTopics.map({ $0.topicID })
-        delegate?.navigateToTopicView(with: currentTopics)
+        delegate?.navigateToTopicView(with: selectedTopics)
     }
     
     func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
