@@ -5,7 +5,7 @@
 //  Created by Devansh Mohata on 18/01/24.
 //
 
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 import LikeMindsFeed
 import Photos
 import PDFKit
@@ -16,7 +16,7 @@ public protocol LMFeedCreatePostViewModelProtocol: LMBaseViewControllerProtocol 
     func resetMediaView()
     func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int)
     func updateTopicView(with data: LMFeedTopicView.ViewModel)
-    func navigateToTopicView(with topics: [String])
+    func navigateToTopicView(with topics: [LMFeedTopicDataModel])
     func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?)
 }
 
@@ -136,10 +136,6 @@ public extension LMFeedCreatePostViewModel {
         
         currentMediaSelectionType = media.isEmpty ? .none : currentMediaSelectionType
         
-        if !media.isEmpty {
-            showLinkPreview = false
-        }
-        
         media.forEach { medium in
             switch medium.mediaType {
             case .image:
@@ -182,6 +178,7 @@ public extension LMFeedCreatePostViewModel {
 extension LMFeedCreatePostViewModel {
     func handleLinkDetection(in text: String) {
         guard showLinkPreview,
+              media.isEmpty,
               currentMediaSelectionType == .none,
               let link = text.detectLink() else {
             delegate?.setupLinkPreview(with: nil)
@@ -255,8 +252,7 @@ extension LMFeedCreatePostViewModel {
     }
     
     func didTapTopicSelection() {
-        let currentTopics = selectedTopics.map({ $0.topicID })
-        delegate?.navigateToTopicView(with: currentTopics)
+        delegate?.navigateToTopicView(with: selectedTopics)
     }
     
     func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {

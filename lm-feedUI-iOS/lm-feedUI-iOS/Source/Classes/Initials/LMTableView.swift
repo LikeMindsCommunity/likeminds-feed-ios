@@ -10,22 +10,27 @@ import UIKit
 public extension UITableView {
     func register(_ type: UITableViewCell.Type) {
         let className = String(describing: type)
-        register(type, forCellReuseIdentifier: className)
+        self.register(type, forCellReuseIdentifier: className)
     }
     
     func registerHeaderFooter(_ type: UITableViewHeaderFooterView.Type) {
         let className = String(describing: type)
-        register(type, forHeaderFooterViewReuseIdentifier: className)
+        self.register(type, forHeaderFooterViewReuseIdentifier: className)
     }
     
-    func dequeueReusableCell<T>(_ type: T.Type) -> T? {
+    func dequeueReusableCell<T>(_ type: T.Type) -> T? where T: UITableViewCell {
         let className = String(describing: type)
-        return dequeueReusableCell(withIdentifier: className) as? T
+        return self.dequeueReusableCell(withIdentifier: className) as? T
     }
     
-    func dequeueReusableHeaderFooterView<T>(_ type: T.Type) -> T? {
+    func dequeueReusableCell<T>(_ type: T.Type, for indexPath: IndexPath) -> T? where T: UITableViewCell {
         let className = String(describing: type)
-        return dequeueReusableHeaderFooterView(withIdentifier: className) as? T
+        return self.dequeueReusableCell(withIdentifier: className, for: indexPath) as? T
+    }
+    
+    func dequeueReusableHeaderFooterView<T>(_ type: T.Type) -> T? where T: UITableViewHeaderFooterView {
+        let className = String(describing: type)
+        return self.dequeueReusableHeaderFooterView(withIdentifier: className) as? T
     }
     
     func percentVisibility(of cell: UITableViewCell) -> CGFloat {
@@ -79,10 +84,21 @@ public class LMTableView: UITableView {
         UIView.performWithoutAnimation { [weak self] in
             if let index {
                 if index.row == NSNotFound {
+                    
                     self?.reloadSections(IndexSet(integer: index.section), with: .none)
                 } else {
                     self?.reloadRows(at: [index], with: .none)
                 }
+            } else {
+                self?.reloadData()
+            }
+        }
+    }
+    
+    open func reloadTableForSection(for index: IndexSet?) {
+        UIView.performWithoutAnimation { [weak self] in
+            if let index {
+                self?.reloadSections(index, with: .none)
             } else {
                 self?.reloadData()
             }

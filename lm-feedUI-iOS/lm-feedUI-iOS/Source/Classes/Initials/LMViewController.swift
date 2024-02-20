@@ -5,6 +5,8 @@
 //  Created by Devansh Mohata on 24/11/23.
 //
 
+import Kingfisher
+import PDFKit
 import SafariServices
 import UIKit
 
@@ -104,9 +106,14 @@ open class LMViewController: UIViewController {
         
         if #available(iOS 15, *) {
             let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = Appearance.shared.colors.navigationBackgroundColor
+            navigationController?.navigationBar.standardAppearance = appearance
             navigationController?.navigationBar.scrollEdgeAppearance = appearance
+            navigationController?.navigationBar.barTintColor = Appearance.shared.colors.navigationBackgroundColor
         }
+        
+        navigationController?.navigationBar.isTranslucent = false
     }
     
     open func setNavigationTitleAndSubtitle(with title: String?, subtitle: String?, alignment: UIStackView.Alignment = .leading) {
@@ -153,11 +160,28 @@ open class LMViewController: UIViewController {
     
     open func openURL(with url: URL) {
         if ["http", "https"].contains(url.scheme?.lowercased() ?? "") {
-            let safariController = SFSafariViewController(url: url)
+            let config = SFSafariViewController.Configuration()
+            config.entersReaderIfAvailable = true
+            
+            let safariController = SFSafariViewController(url: url, configuration: config)
             present(safariController, animated: true)
-        } else {
+            return
+        } else if UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url)
+            return
         }
+        
+        // TODO: Need to handle this
+        if url.startAccessingSecurityScopedResource() {
+            let pdfViewer = LMFeedPDFViewer()
+            pdfViewer.configure(with: url)
+            navigationController?.pushViewController(pdfViewer, animated: true)
+        }
+    }
+    
+    open override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        ImageCache.default.clearMemoryCache()
     }
 }
 

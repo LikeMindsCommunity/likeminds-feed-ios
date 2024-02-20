@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import lm_feedUI_iOS
-import lm_feedCore_iOS
+import LikeMindsFeedUI
+import LikeMindsFeedCore
 
 class ViewController: UIViewController {
 

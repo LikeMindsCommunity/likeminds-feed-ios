@@ -5,7 +5,7 @@
 //  Created by Devansh Mohata on 01/01/24.
 //
 
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 import LikeMindsFeed
 
 public protocol LMFeedTopicSelectionViewModelProtocol: LMBaseViewControllerProtocol {
@@ -21,12 +21,12 @@ public class LMFeedTopicSelectionViewModel {
     public var searchType: String
     public var isFetching: Bool
     public var isLastTopicReached: Bool
-    public var selectedTopicIds: [String]
+    public var selectedTopicIds: [LMFeedTopicDataModel]
     public var searchString: String?
     public var topicList: [LMFeedTopicDataModel]
     public weak var delegate: LMFeedTopicSelectionViewModelProtocol?
     
-    init(showOnlyEnabledTopics: Bool, isShowAllTopicsButton: Bool, selectedTopicIds: [String], delegate: LMFeedTopicSelectionViewModelProtocol?) {
+    init(showOnlyEnabledTopics: Bool, isShowAllTopicsButton: Bool, selectedTopicIds: [LMFeedTopicDataModel], delegate: LMFeedTopicSelectionViewModelProtocol?) {
         self.currentPage = 1
         self.pageSize = 10
         self.isEnabled = showOnlyEnabledTopics
@@ -39,7 +39,7 @@ public class LMFeedTopicSelectionViewModel {
         self.delegate = delegate
     }
     
-    public static func createModule(topicEnabledState: Bool, isShowAllTopicsButton: Bool, selectedTopicIds: [String] = [], delegate: LMFeedTopicSelectionViewProtocol?) throws -> LMFeedTopicSelectionViewController {
+    public static func createModule(topicEnabledState: Bool, isShowAllTopicsButton: Bool, selectedTopicIds: [LMFeedTopicDataModel] = [], delegate: LMFeedTopicSelectionViewProtocol?) throws -> LMFeedTopicSelectionViewController {
         guard LMFeedMain.isInitialized else { throw LMFeedError.feedNotInitialized }
         
         let viewController = Components.shared.topicFeedSelectionScreen.init()
@@ -93,23 +93,29 @@ public class LMFeedTopicSelectionViewModel {
                 return
             }
             
-            self.currentPage += 1
-            self.isLastTopicReached = topics.isEmpty
             
-            let tempData: [LMFeedTopicDataModel] = topics.compactMap { topic in
+            var tempData: [LMFeedTopicDataModel] = topics.compactMap { topic in
                 guard let id = topic.id,
                       let name = topic.name else { return nil }
                 return .init(topicName: name, topicID: id, isEnabled: topic.isEnabled ?? false)
             }
             
+            if isEnabled,
+               currentPage == 1 {
+                tempData.append(contentsOf: selectedTopicIds.filter({ !$0.isEnabled }))
+            }
+
             self.topicList.append(contentsOf: tempData)
             self.convertToViewData()
+            
+            self.currentPage += 1
+            self.isLastTopicReached = topics.isEmpty
         }
     }
     
     public func convertToViewData() {
         let convertedTopics: [LMFeedTopicSelectionCell.ViewModel] = topicList.map { topic in
-                .init(topic: topic.topicName, topicID: topic.topicID, isSelected: selectedTopicIds.contains(where: { $0 == topic.topicID }))
+                .init(topic: topic.topicName, topicID: topic.topicID, isSelected: selectedTopicIds.contains(where: { $0.topicID == topic.topicID }))
         }
         
         var convertedData: [[LMFeedTopicSelectionCell.ViewModel]] = []
@@ -128,11 +134,11 @@ public class LMFeedTopicSelectionViewModel {
         if isShowAllTopicsButton,
            index.section == 0 {
             selectedTopicIds.removeAll()
-        } else if let topicId = topicList[safe: index.row]?.topicID {
-            if selectedTopicIds.contains(where: { $0 == topicId }) {
-                selectedTopicIds.removeAll(where: { $0 == topicId })
+        } else if let topic = topicList[safe: index.row] {
+            if selectedTopicIds.contains(where: { $0.topicID == topic.topicID }) {
+                selectedTopicIds.removeAll(where: { $0.topicID == topic.topicID })
             } else {
-                selectedTopicIds.append(topicId)
+                selectedTopicIds.append(topic)
             }
         }
         
@@ -141,7 +147,7 @@ public class LMFeedTopicSelectionViewModel {
     
     public func didTapDoneButton() {
         let filteredTopics = topicList.filter { topic in
-            selectedTopicIds.contains(where: { $0 == topic.topicID })
+            selectedTopicIds.contains(where: { $0.topicID == topic.topicID })
         }
         
         delegate?.updateTopicFeed(with: filteredTopics)

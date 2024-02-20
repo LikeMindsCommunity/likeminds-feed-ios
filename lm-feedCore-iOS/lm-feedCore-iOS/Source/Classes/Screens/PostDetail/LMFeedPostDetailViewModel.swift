@@ -5,19 +5,18 @@
 //  Created by Devansh Mohata on 03/01/24.
 //
 
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 import LikeMindsFeed
 
 public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol {
     func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostDetailCommentCellViewModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool)
     
-    func changePostLike()
-    func changePostSave()
+    func resetHeaderData()
+    func resetFooterData(isSaved: Bool, isLiked: Bool)
     
     func changeCommentLike(for indexPath: IndexPath)
     func replyToComment(userName: String)
     
-    func showNoPostError(with message: String, isPop: Bool)
     func updateCommentStatus(isEnabled: Bool)
     
     func setEditCommentText(with text: String) 
@@ -137,7 +136,9 @@ public extension LMFeedPostDetailViewModel {
             guard response.success,
                   let post = response.data?.post,
                   let users = response.data?.users else {
-                delegate?.showNoPostError(with: response.errorMessage ?? LMStringConstants.shared.genericErrorMessage, isPop: postDetail == nil)
+                if postDetail == nil {
+                    delegate?.showError(with: response.errorMessage ?? LMStringConstants.shared.genericErrorMessage, isPopVC: true)
+                }
                 return
             }
             
@@ -207,11 +208,12 @@ public extension LMFeedPostDetailViewModel {
             guard let self else { return }
             
             if response,
-               var (comment, commentIndex) = findCommentIndex(for: commentID, from: commentList) {
+               let answer = findCommentIndex(for: commentID, from: commentList) {
+                var comment = answer.comment
+                let commentIndex = answer.index
                 let isLiked = comment.isLiked
                 comment.isLiked = !isLiked
                 comment.likeCount += !isLiked ? 1 : -1
-                
                 
                 if commentIndex.row == NSNotFound {
                     commentList[commentIndex.section] = comment
@@ -253,7 +255,12 @@ public extension LMFeedPostDetailViewModel {
                 return .init(comment: comment, user: user)
             } ?? []
             
-            commentList[index].replies.append(contentsOf: newComments)
+            newComments.forEach { newComment in
+                if !self.commentList[index].replies.contains(where: { $0.commentID == newComment.commentID }) {
+                    self.commentList[index].replies.append(newComment)
+                }
+            }
+            
             self.convertToViewData()
         }
     }
@@ -488,7 +495,7 @@ public extension LMFeedPostDetailViewModel {
                 postDetail?.likeCount += newState ? 1 : -1
                 notifyObjectChange()
             } else {
-                delegate?.changePostLike()
+                delegate?.resetFooterData(isSaved: false, isLiked: true)
             }
         }
     }
@@ -502,7 +509,7 @@ public extension LMFeedPostDetailViewModel {
                 postDetail?.isSaved.toggle()
                 notifyObjectChange()
             } else {
-                delegate?.changePostSave()
+                delegate?.resetFooterData(isSaved: true, isLiked: false)
             }
         }
     }
@@ -515,8 +522,8 @@ public extension LMFeedPostDetailViewModel {
             if response {
                 postDetail?.isPinned.toggle()
                 updatePinMenu()
-                convertToViewData(for: .init(row: NSNotFound, section: 0))
                 notifyObjectChange()
+                delegate?.resetHeaderData()
             }
         }
     }
@@ -635,7 +642,7 @@ public extension LMFeedPostDetailViewModel {
                 _ = commentList.remove(at: index.section)
                 postDetail?.commentCount -= 1
             } else {
-                commentList[index.section].replies.removeAll(keepingCapacity: true)
+                commentList[index.section].replies.remove(at: index.row)
                 commentList[index.section].totalRepliesCount -= 1
             }
             notifyObjectChange()

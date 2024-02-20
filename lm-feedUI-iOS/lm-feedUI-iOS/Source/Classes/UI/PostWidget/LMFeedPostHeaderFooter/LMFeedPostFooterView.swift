@@ -8,15 +8,16 @@
 import UIKit
 
 public protocol LMFeedPostFooterViewProtocol: AnyObject {
-    func didTapLikeButton()
-    func didTapLikeTextButton()
-    func didTapCommentButton()
-    func didTapShareButton()
-    func didTapSaveButton()
+    func didTapLikeButton(for postID: String)
+    func didTapLikeTextButton(for postID: String)
+    func didTapCommentButton(for postID: String)
+    func didTapShareButton(for postID: String)
+    func didTapSaveButton(for postID: String)
+    func didTapPost(postID: String)
 }
 
 @IBDesignable
-open class LMFeedPostFooterView: LMView {
+open class LMFeedPostFooterView: LMTableViewHeaderFooterView {
     public struct ViewModel {
         public var isSaved: Bool
         public var isLiked: Bool
@@ -33,153 +34,69 @@ open class LMFeedPostFooterView: LMView {
     
     
     // MARK: UI Elements
-    open private(set) lazy var stackView: LMStackView = {
+    open private(set) lazy var containerView: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
+    open private(set) lazy var actionStackView: LMStackView = {
         let stack = LMStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
-        stack.spacing = 4
-        stack.alignment = .center
+        stack.spacing = 8
+        stack.alignment = .fill
         stack.distribution = .fill
         return stack
     }()
     
     open private(set) lazy var likeButton: LMButton = {
-//        let button = LMButton.createButton(with: <#T##String?#>, image: <#T##UIImage?#>, textColor: <#T##UIColor?#>, textFont: <#T##UIFont?#>)
-        if #available(iOS 15.0, *) {
-            var btnConfig = UIButton.Configuration.plain()
-            btnConfig.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 4)
-            btnConfig.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont1)
-            btnConfig.image = Constants.Images.shared.heart
-            
-            let button = LMButton(configuration: btnConfig)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.setContentHuggingPriority(.defaultLow, for: .horizontal)
-            button.tintColor = Appearance.shared.colors.gray2
-            return button
-        } else {
-            let button = LMButton()
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.setContentHuggingPriority(.defaultLow, for: .horizontal)
-            button.contentEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 4)
-            button.setImage(Constants.Images.shared.heart, for: .normal)
-            button.tintColor = Appearance.shared.colors.gray2
-            return button
-        }
+        let button = LMButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(Constants.shared.images.heart, for: .normal)
+        button.setImage(Constants.shared.images.heartFilled, for: .selected)
+        button.tintColor = Appearance.shared.colors.gray2
+        button.setPreferredSymbolConfiguration(.init(font: Appearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
+        return button
     }()
     
     open private(set) lazy var likeTextButton: LMButton = {
-        if #available(iOS 15.0, *) {
-            var btnConfig = UIButton.Configuration.plain()
-            btnConfig.contentInsets = .zero
-            btnConfig.titleAlignment = .center
-            
-            var titleAttributes = AttributeContainer()
-            titleAttributes.font = Appearance.shared.fonts.buttonFont1
-            titleAttributes.foregroundColor = Appearance.shared.colors.gray2
-            btnConfig.attributedTitle = AttributedString(Constants.shared.strings.like, attributes: titleAttributes)
-            
-            btnConfig.titlePadding = .zero
-            
-            let button = LMButton(configuration: btnConfig)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.tintColor = Appearance.shared.colors.gray2
-            button.setContentHuggingPriority(.defaultLow, for: .horizontal)
-            return button
-        } else {
-            let button = LMButton()
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.setContentHuggingPriority(.defaultLow, for: .horizontal)
-            button.setTitle(Constants.shared.strings.like, for: .normal)
-            button.setTitleColor(Appearance.shared.colors.gray2, for: .normal)
-            button.titleLabel?.font = Appearance.shared.fonts.buttonFont1
-            button.tintColor = Appearance.shared.colors.gray2
-            return button
-        }
+        let button = LMButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(Constants.shared.strings.like, for: .normal)
+        button.setTitleColor(Appearance.shared.colors.gray2, for: .normal)
+        button.tintColor = Appearance.shared.colors.gray2
+        return button
     }()
     
     open private(set) lazy var commentButton: LMButton = {
-        if #available(iOS 15.0, *) {
-            var btnConfig = UIButton.Configuration.plain()
-            btnConfig.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 0)
-            
-            var titleAttributes = AttributeContainer()
-            titleAttributes.font = Appearance.shared.fonts.buttonFont1
-            titleAttributes.foregroundColor = Appearance.shared.colors.gray2
-            btnConfig.attributedTitle = AttributedString(Constants.shared.strings.comment, attributes: titleAttributes)
-            
-            btnConfig.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont1)
-            btnConfig.image = Constants.Images.shared.commentIcon
-            btnConfig.imagePadding = 4
-            
-            let button = LMButton(configuration: btnConfig)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.tintColor = Appearance.shared.colors.gray2
-            button.setTitleColor(Appearance.shared.colors.gray2, for: .normal)
-            button.setContentHuggingPriority(.defaultLow, for: .horizontal)
-            return button
-        } else {
-            let button = LMButton()
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.setContentHuggingPriority(.defaultLow, for: .horizontal)
-            button.setTitle(Constants.shared.strings.comment, for: .normal)
-            button.setTitleColor(Appearance.shared.colors.gray2, for: .normal)
-            button.titleLabel?.font = Appearance.shared.fonts.buttonFont1
-            button.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 4)
-            button.setImage(Constants.Images.shared.commentIcon, for: .normal)
-            button.tintColor = Appearance.shared.colors.gray2
-            return button
-        }
+        let button = LMButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(Constants.Images.shared.commentIcon, for: .normal)
+        button.setTitle(Constants.shared.strings.comment, for: .normal)
+        button.setTitleColor(Appearance.shared.colors.gray2, for: .normal)
+        button.tintColor = Appearance.shared.colors.gray2
+        button.centerTextAndImage(spacing: 4)
+        button.setPreferredSymbolConfiguration(.init(font: Appearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
+        return button
     }()
     
     open private(set) lazy var saveButton: LMButton = {
-        if #available(iOS 15.0, *) {
-            var btnConfig = UIButton.Configuration.plain()
-            btnConfig.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 8)
-            
-            btnConfig.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont1)
-            btnConfig.image = Constants.Images.shared.bookmark
-            btnConfig.title = nil
-            
-            let button = LMButton(configuration: btnConfig)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.tintColor = Appearance.shared.colors.gray2
-            button.setContentHuggingPriority(.defaultLow, for: .horizontal)
-            return button
-        } else {
-            let button = LMButton()
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.setTitle(nil, for: .normal)
-            button.contentEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 8)
-            button.tintColor = Appearance.shared.colors.gray2
-            button.setImage(Constants.Images.shared.bookmark, for: .normal)
-            return button
-        }
+        let button = LMButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(Constants.shared.images.bookmark, for: .normal)
+        button.setImage(Constants.shared.images.bookmarkFilled, for: .selected)
+        button.tintColor = Appearance.shared.colors.gray2
+        button.setPreferredSymbolConfiguration(.init(font: Appearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
+        return button
     }()
     
     open private(set) lazy var shareButton: LMButton = {
-        if #available(iOS 15.0, *) {
-            var btnConfig = UIButton.Configuration.plain()
-            btnConfig.contentInsets = .zero
-            btnConfig.imagePadding = 8
-            
-            btnConfig.title = nil
-            btnConfig.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont1)
-            btnConfig.image = Constants.Images.shared.shareIcon
-            
-            let button = LMButton(configuration: btnConfig)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.tintColor = Appearance.shared.colors.gray2
-            button.setContentHuggingPriority(.defaultLow, for: .horizontal)
-            return button
-        } else {
-            let button = LMButton()
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.setTitle(nil, for: .normal)
-            button.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 0)
-            button.tintColor = Appearance.shared.colors.gray2
-            button.setImage(Constants.Images.shared.shareIcon, for: .normal)
-            return button
-        }
+        let button = LMButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(Constants.shared.images.shareIcon, for: .normal)
+        button.tintColor = Appearance.shared.colors.gray2
+        button.setPreferredSymbolConfiguration(.init(font: Appearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
+        return button
     }()
     
     open private(set) lazy var spacer: LMView = {
@@ -188,26 +105,27 @@ open class LMFeedPostFooterView: LMView {
     
     // MARK: Data Variables
     public weak var delegate: LMFeedPostFooterViewProtocol?
+    public var postID: String?
+    public var likeCount: Int = 0
     
     // MARK: View Hierachy
     open override func setupViews() {
         super.setupViews()
         
-        addSubview(stackView)
-        [likeButton, likeTextButton, commentButton, spacer, saveButton, shareButton].forEach { stackView.addArrangedSubview($0) }
+        contentView.addSubview(containerView)
+        containerView.addSubview(actionStackView)
+        [likeButton, likeTextButton, commentButton, spacer, saveButton, shareButton].forEach { actionStackView.addArrangedSubview($0) }
     }
     
     // MARK: -  Constraints
     open override func setupLayouts() {
         super.setupLayouts()
         
-        pinSubView(subView: stackView, padding: .init(top: 8, left: 0, bottom: -8, right: 0))
+        contentView.pinSubView(subView: containerView, padding: .init(top: 0, left: 0, bottom: -8, right: 0))
+        containerView.pinSubView(subView: actionStackView, padding: .init(top: 8, left: 16, bottom: -8, right: -16))
         
-        [likeButton, likeTextButton, commentButton, spacer, saveButton, shareButton].forEach { btn in
-            NSLayoutConstraint.activate([
-                btn.topAnchor.constraint(equalTo: stackView.topAnchor),
-                btn.bottomAnchor.constraint(equalTo: stackView.bottomAnchor)
-            ])
+        [likeButton, likeTextButton, commentButton, saveButton, shareButton].forEach { btn in
+            btn.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         }
     }
     
@@ -220,24 +138,30 @@ open class LMFeedPostFooterView: LMView {
         commentButton.addTarget(self, action: #selector(didTapCommentButton), for: .touchUpInside)
         saveButton.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
         shareButton.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
+        containerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapPost)))
     }
     
     // MARK: Appearance
     open override func setupAppearance() {
         super.setupAppearance()
-        backgroundColor = .clear
+        containerView.backgroundColor = Appearance.shared.colors.white
     }
     
     
     // MARK: configure
-    open func configure(with data: ViewModel) {
-        likeButton.setImage(data.isLiked ? Constants.shared.images.heartFilled : Constants.shared.images.heart , for: .normal)
+    open func configure(with data: ViewModel, postID: String, delegate: LMFeedPostFooterViewProtocol) {
+        self.postID = postID
+        self.likeCount = data.likeCount
+        self.delegate = delegate
+        
+        likeButton.isSelected = data.isLiked
+//        likeButton.setImage(data.isLiked ? Constants.shared.images.heartFilled : Constants.shared.images.heart , for: .normal)
         likeButton.tintColor = data.isLiked ? Appearance.shared.colors.red : Appearance.shared.colors.gray2
         
         likeTextButton.setTitle(getLikeText(for: data.likeCount), for: .normal)
         commentButton.setTitle(getCommentText(for: data.commentCount), for: .normal)
         
-        saveButton.setImage(data.isSaved ? Constants.shared.images.bookmarkFilled : Constants.shared.images.bookmark, for: .normal)
+        saveButton.isSelected = data.isSaved
     }
     
     open func getLikeText(for likeCount: Int) -> String {
@@ -265,22 +189,37 @@ open class LMFeedPostFooterView: LMView {
 @objc
 extension LMFeedPostFooterView {
     open func didTapLikeButton() {
-        delegate?.didTapLikeButton()
+        guard let postID else { return }
+        likeButton.isSelected.toggle()
+        likeButton.tintColor = likeButton.isSelected ? Appearance.shared.colors.red : Appearance.shared.colors.gray2
+        likeCount += likeButton.isSelected ? 1 : -1
+        likeTextButton.setTitle(getLikeText(for: likeCount), for: .normal)
+        delegate?.didTapLikeButton(for: postID)
     }
     
     open func didTapLikeTextButton() {
-        delegate?.didTapLikeTextButton()
+        guard let postID else { return }
+        delegate?.didTapLikeTextButton(for: postID)
     }
     
     open func didTapCommentButton() {
-        delegate?.didTapCommentButton()
+        guard let postID else { return }
+        delegate?.didTapCommentButton(for: postID)
     }
     
     open func didTapSaveButton() {
-        delegate?.didTapSaveButton()
+        guard let postID else { return }
+        saveButton.isSelected.toggle()
+        delegate?.didTapSaveButton(for: postID)
     }
     
     open func didTapShareButton() {
-        delegate?.didTapShareButton()
+        guard let postID else { return }
+        delegate?.didTapShareButton(for: postID)
+    }
+    
+    open func didTapPost() {
+        guard let postID else { return }
+        delegate?.didTapPost(postID: postID)
     }
 }

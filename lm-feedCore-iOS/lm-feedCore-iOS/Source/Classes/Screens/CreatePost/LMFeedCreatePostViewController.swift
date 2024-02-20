@@ -7,7 +7,7 @@
 
 import AVKit
 import BSImagePicker
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 import UIKit
 import Photos
 
@@ -67,6 +67,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         textView.isScrollEnabled = false
         textView.isEditable = true
         textView.placeHolderText = "Write Something here..."
+        textView.backgroundColor = Appearance.shared.colors.clear
         textView.addDoneButtonOnKeyboard()
         return textView
     }()
@@ -90,6 +91,16 @@ open class LMFeedCreatePostViewController: LMViewController {
         return collection
     }()
     
+    open private(set) lazy var mediaPageControl: UIPageControl = {
+        let pageControl = UIPageControl()
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.hidesForSinglePage = true
+        pageControl.tintColor = Appearance.shared.colors.appTintColor
+        pageControl.currentPageIndicatorTintColor = Appearance.shared.colors.appTintColor
+        pageControl.pageIndicatorTintColor = Appearance.shared.colors.gray155
+        return pageControl
+    }()
+    
     open private(set) lazy var documentTableView: LMTableView = {
         let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
         table.showsVerticalScrollIndicator = false
@@ -101,6 +112,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         table.dataSource = self
         table.delegate = self
         table.separatorStyle = .none
+        table.backgroundColor = Appearance.shared.colors.clear
         return table
     }()
     
@@ -165,6 +177,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     public var viewModel: LMFeedCreatePostViewModel?
     public var documentCellData: [LMFeedDocumentPreview.ViewModel] = []
     public var documenTableHeight: NSLayoutConstraint?
+    public var documentCellHeight: CGFloat = 90
     
     public var taggingViewHeight: NSLayoutConstraint?
     public var inputTextViewHeightConstraint: NSLayoutConstraint?
@@ -199,7 +212,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         
         scrollView.addSubview(scrollStackView)
         
-        [headerView, topicView, inputTextView, linkPreview, mediaCollectionView, documentTableView, addMoreButton].forEach { subView in
+        [headerView, topicView, inputTextView, linkPreview, mediaCollectionView, mediaPageControl ,documentTableView, addMoreButton].forEach { subView in
             scrollStackView.addArrangedSubview(subView)
         }
         
@@ -236,8 +249,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         
         inputTextViewHeightConstraint = inputTextView.setHeightConstraint(with: 40)
         
-        documenTableHeight = documentTableView.setHeightConstraint(with: Constants.shared.number.documentPreviewSize)
-        
+        documenTableHeight = documentTableView.setHeightConstraint(with: documentCellHeight)
         scrollView.setWidthConstraint(with: containerStackView.widthAnchor)
         scrollStackView.setWidthConstraint(with: containerStackView.widthAnchor)
         mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
@@ -328,6 +340,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     open func setupInitialView() {
         linkPreview.isHidden = true
         mediaCollectionView.isHidden = true
+        mediaPageControl.isHidden = true
         documentTableView.isHidden = true
         addMoreButton.isHidden = true
         topicView.isHidden = true
@@ -354,6 +367,10 @@ extension LMFeedCreatePostViewController: UITableViewDataSource, UITableViewDele
             return cell
         }
         return UITableViewCell()
+    }
+    
+    open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        documentCellHeight
     }
 }
 
@@ -416,6 +433,8 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
     }
 
     public func scrollingFinished() {
+        mediaPageControl.currentPage = Int(mediaCollectionView.contentOffset.x / mediaCollectionView.frame.width)
+        
         if mediaCollectionView.visibleCells.count == 1 {
             (mediaCollectionView.visibleCells.first as? LMFeedVideoCollectionCell)?.playVideo()
         }
@@ -428,14 +447,14 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
     public func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?) {
         linkPreview.isHidden = data == nil
         if let data {
-            linkPreview.configure(with: data) { [weak self] in
+            linkPreview.configure(with: data) { [weak self, weak linkPreview] in
                 self?.viewModel?.hideLinkPreview()
-                self?.linkPreview.isHidden = true
+                linkPreview?.isHidden = true
             }
         }
     }
     
-    public func navigateToTopicView(with topics: [String]) {
+    public func navigateToTopicView(with topics: [LMFeedTopicDataModel]) {
         do {
             let viewcontroller = try LMFeedTopicSelectionViewModel.createModule(topicEnabledState: true, isShowAllTopicsButton: false, selectedTopicIds: topics, delegate: self)
             navigationController?.pushViewController(viewcontroller, animated: true)
@@ -454,7 +473,9 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
         documentTableView.isHidden = documents.isEmpty
         documentCellData.append(contentsOf: documents)
         documentTableView.reloadData()
-        documenTableHeight?.constant = documentTableView.tableViewHeight
+        if !documents.isEmpty {
+            documenTableHeight?.constant = CGFloat(documents.count) * documentCellHeight
+        }
         addMoreButton.isHidden = !isShowAddMore
         
         addMediaStack.isHidden = !isShowBottomTab
@@ -464,6 +485,8 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
     public func showMedia(media: [LMFeedMediaProtocol], isShowAddMore: Bool, isShowBottomTab: Bool) {
         linkPreview.isHidden = true
         mediaCollectionView.isHidden = media.isEmpty
+        mediaPageControl.isHidden = media.count < 1
+        mediaPageControl.numberOfPages = media.count
         mediaCellData.append(contentsOf: media)
         mediaCollectionView.reloadData()
         scrollingFinished()
@@ -475,6 +498,7 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
     
     public func resetMediaView() {
         mediaCollectionView.isHidden = true
+        mediaPageControl.isHidden = true
         documentTableView.isHidden = true
         addMoreButton.isHidden = true
         mediaCellData.removeAll(keepingCapacity: true)

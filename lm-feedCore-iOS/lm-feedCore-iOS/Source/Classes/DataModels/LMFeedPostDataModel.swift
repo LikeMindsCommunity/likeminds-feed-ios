@@ -5,7 +5,7 @@
 //  Created by Devansh Mohata on 28/12/23.
 //
 
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 import LikeMindsFeed
 
 public struct LMFeedPostDataModel {

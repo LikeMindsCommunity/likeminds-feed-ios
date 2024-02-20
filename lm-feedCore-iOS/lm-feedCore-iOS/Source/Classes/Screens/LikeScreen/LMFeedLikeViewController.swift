@@ -5,7 +5,7 @@
 //  Created by Devansh Mohata on 21/01/24.
 //
 
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 import UIKit
 
 @IBDesignable
@@ -49,7 +49,7 @@ open class LMFeedLikeViewController: LMViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         viewModel?.getLikes()
-        setNavigationTitleAndSubtitle(with: "Likes", subtitle: "0 Likes")
+        setNavigationTitleAndSubtitle(with: "Likes", subtitle: "0 Likes", alignment: .center)
         
         view.backgroundColor = Appearance.shared.colors.white
         
@@ -97,7 +97,8 @@ extension LMFeedLikeViewController: LMFeedLikeViewModelProtocol {
         tableView.reloadData()
         totalLikes = totalCount
         setNavigationTitleAndSubtitle(with: "Likes",
-                                      subtitle: "\(totalLikes) Like\(totalLikes == 1 ? "" : "s")")
+                                      subtitle: "\(totalLikes) Like\(totalLikes == 1 ? "" : "s")",
+                                      alignment: .center)
     }
     
     public func showHideTableLoader(isShow: Bool) {

@@ -1,5 +1,5 @@
 {
-  "name": "lm-feedCore-iOS",
+  "name": "LikeMindsFeedUI",
   "summary": "Masterpiece in Making",
   "homepage": "https://likeminds.community/",
   "version": "0.1.0",
@@ -14,10 +14,10 @@
     "git": "git@github.com:LikeMindsCommunity/likeminds-feed-ios.git",
     "tag": "v0.1.0"
   },
-  "source_files": "lm-feedCore-iOS/Source/**/*.swift",
+  "source_files": "lm-feedUI-iOS/Source/Classes/**/*.swift",
   "resource_bundles": {
-    "lm-feedCore-iOS": [
-      "lm-feedCore-iOS/Source/**/*.{xcassets}"
+    "LikeMindsFeedUIAssets": [
+      "lm-feedUI-iOS/Source/Assets/*.{xcassets}"
     ]
   },
   "platforms": {
@@ -26,29 +26,8 @@
   "swift_versions": "5.0",
   "requires_arc": true,
   "dependencies": {
-    "AWSCore": [
-
-    ],
-    "AWSCognito": [
-
-    ],
-    "AWSS3": [
-
-    ],
-    "BSImagePicker": [
-
-    ],
-    "FirebaseCore": [
-
-    ],
-    "FirebaseMessaging": [
-
-    ],
-    "LikeMindsFeed": [
-
-    ],
-    "lm-feedUI-iOS": [
-
+    "Kingfisher": [
+      "~> 7.0"
     ]
   },
   "swift_version": "5.0"

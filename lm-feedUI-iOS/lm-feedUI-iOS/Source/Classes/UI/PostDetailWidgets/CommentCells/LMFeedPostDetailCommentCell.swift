@@ -76,6 +76,7 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(Constants.shared.images.heart, for: .normal)
+        button.setImage(Constants.shared.images.heartFilled, for: .selected)
         button.tintColor = Appearance.shared.colors.gray3
         return button
     }()
@@ -103,6 +104,7 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
     public var commentId: String?
     public var userUUID: String?
     public var indexPath: IndexPath?
+    public var likeCount: Int = 0
     public var seeMoreAction: (() -> Void)?
     
     
@@ -167,13 +169,27 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
     @objc
     open func didTapMenuButton() {
         guard let commentId else { return }
-        delegate?.didTapMenuButton(for: commentId)
+        delegate?.didTapCommentMenuButton(for: commentId)
     }
     
     @objc
     open func didTapLikeButton() {
         guard let commentId,
               let indexPath else { return }
+        likeButton.isSelected.toggle()
+        likeButton.tintColor = likeButton.isSelected ? Appearance.shared.colors.red : Appearance.shared.colors.gray3
+        likeCount += likeButton.isSelected ? 1 : -1
+        
+        likeTextButton.isHidden = likeCount == 0
+        if likeCount == 0 {
+            likeTextButton.setTitle(Constants.shared.strings.like, for: .normal)
+        } else if likeCount == 1 {
+            likeTextButton.setTitle("1 \(Constants.shared.strings.like)", for: .normal)
+        } else {
+            likeTextButton.setTitle("\(likeCount) \(Constants.shared.strings.likes)", for: .normal)
+        }
+        
+        
         delegate?.didTapLikeButton(for: commentId, indexPath: indexPath)
     }
     
@@ -234,6 +250,7 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         self.userUUID = data.author.userUUID
         self.indexPath = indexPath
         self.seeMoreAction = seeMoreAction
+        self.likeCount = data.likeCount
         
         authorNameLabel.text = data.authorName
         
@@ -244,7 +261,7 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         
         commentTimeLabel.text = data.commentTimeFormatted
         
-        likeButton.setImage(data.isLiked ? Constants.shared.images.heartFilled : Constants.shared.images.heart, for: .normal)
+        likeButton.isSelected = data.isLiked
         likeButton.tintColor = data.isLiked ? Appearance.shared.colors.red : Appearance.shared.colors.gray3
         likeButton.isEnabled = data.commentId != nil
         

@@ -7,7 +7,7 @@
 
 import UIKit
 
-public protocol LMFeedPostDocumentCellProtocol: AnyObject {
+public protocol LMFeedPostDocumentCellProtocol: LMPostWidgetTableViewCellProtocol {
     func didTapShowMoreDocuments(for indexPath: IndexPath)
     func didTapDocument(with url: String)
 }
@@ -81,16 +81,22 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
     public weak var delegate: LMFeedPostDocumentCellProtocol?
     var indexPath: IndexPath?
     
+    deinit {
+        print(#file, "Deinit Called")
+    }
+    
+    open override func prepareForReuse() {
+        super.prepareForReuse()
+        print("Document Cell is Dequeued")
+    }
+    
     
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
         
         contentView.addSubview(containerView)
-        
-        containerView.addSubview(headerView)
         containerView.addSubview(contentStack)
-        containerView.addSubview(footerView)
         
         [topicFeed, postText, seeMoreButton, documentContainerStack].forEach { subView in
             contentStack.addArrangedSubview(subView)
@@ -101,32 +107,13 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
     // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
-                
-        containerView.addConstraint(top: (contentView.topAnchor, 0),
-                                    leading: (contentView.leadingAnchor, 0),
-                                    trailing: (contentView.trailingAnchor, 0))
-        containerView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -16).isActive = true
         
-        headerView.setHeightConstraint(with: Constants.shared.number.postHeaderSize)
-        headerView.addConstraint(
-            top: (containerView.topAnchor, 0),
-            bottom: (contentStack.topAnchor, -8),
-            leading: (containerView.leadingAnchor, 0),
-            trailing: (containerView.trailingAnchor, 0)
-        )
+        contentView.pinSubView(subView: containerView)
+        containerView.pinSubView(subView: contentStack)
         
-        contentStack.addConstraint(leading: (headerView.leadingAnchor, 0), trailing: (headerView.trailingAnchor, 0))
         topicFeed.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         postText.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         documentContainerStack.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
-        
-        footerView.setHeightConstraint(with: Constants.shared.number.postFooterSize)
-        footerView.addConstraint(
-            top: (contentStack.bottomAnchor, 0),
-            bottom: (containerView.bottomAnchor, 0),
-            leading: (contentStack.leadingAnchor, 16),
-            trailing: (contentStack.trailingAnchor, -16)
-        )
     }
     
     
@@ -152,23 +139,19 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         
     
     // MARK: configure
-    open func configure(for indexPath: IndexPath, with data: ViewModel, delegate: (LMFeedPostDocumentCellProtocol & LMFeedTableCellToViewControllerProtocol)?) {
+    open func configure(for indexPath: IndexPath, with data: ViewModel, delegate: LMFeedPostDocumentCellProtocol?) {
         self.indexPath = indexPath
         self.delegate = delegate
         self.actionDelegate = delegate
         
         postID = data.postID
         userUUID = data.userUUID
-        
-        headerView.configure(with: data.headerData)
-        
+                
         setupPostText(text: data.postText, showMore: data.isShowMore)
         
         topicFeed.configure(with: data.topics)
         topicFeed.isHidden = data.topics.topics.isEmpty
-        
-        footerView.configure(with: data.footerData)
-        
+                
         documentContainerStack.removeAllArrangedSubviews()
         
         data.documents.enumerated().forEach { index, document in
@@ -187,7 +170,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         }
         
         if data.documents.count > Constants.shared.number.maxDocumentView && !data.isShowAllDocuments {
-            seeMoreDocumentsButton.setTitle("+\(data.documents.count - 2) more", for: .normal)
+            seeMoreDocumentsButton.setTitle("+\(data.documents.count - Constants.shared.number.maxDocumentView) more", for: .normal)
             seeMoreDocumentsButton.setImage(nil, for: .normal)
             
             documentContainerStack.addArrangedSubview(seeMoreDocumentsButton)

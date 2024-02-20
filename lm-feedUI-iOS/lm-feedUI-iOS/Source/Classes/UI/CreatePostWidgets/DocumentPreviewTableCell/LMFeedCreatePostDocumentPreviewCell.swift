@@ -27,19 +27,16 @@ open class LMFeedCreatePostDocumentPreviewCell: LMTableViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-            
-            documentPreview.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            documentPreview.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            documentPreview.topAnchor.constraint(equalTo: containerView.topAnchor),
-            documentPreview.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-        ])
+        contentView.pinSubView(subView: containerView, padding: .init(top: 0, left: 0, bottom: -16, right: 0))
+        containerView.pinSubView(subView: documentPreview)
     }
     
+    
+    // MARK: setupAppearance
+    open override func setupAppearance() {
+        super.setupAppearance()
+        backgroundColor = Appearance.shared.colors.clear
+    }
     
     // MARK: configure
     open func configure(data: LMFeedDocumentPreview.ViewModel, delegate: LMFeedDocumentPreviewProtocol) {

@@ -188,9 +188,9 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleDataTransport/GoogleDataTransport.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/LikeMindsFeedCore/LikeMindsFeedCore.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/LikeMindsFeedUI/LikeMindsFeedUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/lm-feedCore-iOS/lm_feedCore_iOS.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/lm-feedUI-iOS/lm_feedUI_iOS.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/LikeMindsFeed/LikeMindsFeed.framework"
 fi
@@ -207,9 +207,9 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleDataTransport/GoogleDataTransport.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/LikeMindsFeedCore/LikeMindsFeedCore.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/LikeMindsFeedUI/LikeMindsFeedUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/lm-feedCore-iOS/lm_feedCore_iOS.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/lm-feedUI-iOS/lm_feedUI_iOS.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/LikeMindsFeed/LikeMindsFeed.framework"
 fi

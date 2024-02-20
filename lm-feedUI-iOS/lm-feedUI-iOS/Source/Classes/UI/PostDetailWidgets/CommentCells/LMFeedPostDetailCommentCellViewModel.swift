@@ -8,7 +8,7 @@
 // MARK: LMChatPostCommentProtocol
 public protocol LMChatPostCommentProtocol: AnyObject {
     func didTapUserName(for uuid: String)
-    func didTapMenuButton(for commentId: String)
+    func didTapCommentMenuButton(for commentId: String)
     func didTapLikeButton(for commentId: String, indexPath: IndexPath)
     func didTapLikeCountButton(for commentId: String)
     func didTapReplyButton(for commentId: String)
@@ -48,7 +48,7 @@ public struct LMFeedPostDetailCommentCellViewModel {
     }
     
     public var commentText: String {
-        totalReplyCount > 1 ? "\(totalReplyCount) \(Constants.shared.strings.replies)" : "\(totalReplyCount) \(Constants.shared.strings.reply)"
+        "• \(totalReplyCount) \(totalReplyCount > 1 ? Constants.shared.strings.replies : Constants.shared.strings.reply)"
     }
     
     

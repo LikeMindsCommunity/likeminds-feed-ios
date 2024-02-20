@@ -9,19 +9,20 @@ import Kingfisher
 import UIKit
 
 public protocol LMFeedPostHeaderViewProtocol: AnyObject {
-    func didTapProfilePicture()
-    func didTapMenuButton()
+    func didTapProfilePicture(having uuid: String)
+    func didTapPostMenuButton(for postID: String)
+    func didTapPost(postID: String)
 }
 
 @IBDesignable
-open class LMFeedPostHeaderView: LMView {
+open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
     public struct ViewModel {
-        let profileImage: String?
-        let authorName: String
-        let authorTag: String?
-        let subtitle: String?
-        let isPinned: Bool
-        let showMenu: Bool
+        public let profileImage: String?
+        public let authorName: String
+        public let authorTag: String?
+        public let subtitle: String?
+        public var isPinned: Bool
+        public let showMenu: Bool
         
         public init(profileImage: String?, authorName: String, authorTag: String?, subtitle: String?, isPinned: Bool, showMenu: Bool) {
             self.profileImage = profileImage
@@ -126,6 +127,7 @@ open class LMFeedPostHeaderView: LMView {
         label.lineBreakMode = .byTruncatingTail
         label.font = Appearance.shared.fonts.headingFont1
         label.textColor = Appearance.shared.colors.gray1
+        label.isUserInteractionEnabled = true
         return label
     }()
 
@@ -155,6 +157,8 @@ open class LMFeedPostHeaderView: LMView {
 
     // MARK: Data Variables
     public weak var delegate: LMFeedPostHeaderViewProtocol?
+    public var userUUID: String?
+    public var postID: String?
     
     // MARK: View Hierachy
     open override func setupViews() {
@@ -180,7 +184,7 @@ open class LMFeedPostHeaderView: LMView {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        pinSubView(subView: contentContainerView, padding: .init(top: 4, left: 0, bottom: -4, right: 0))
+        pinSubView(subView: contentContainerView, padding: .init(top: 4, left: 0, bottom: 0, right: 0))
         
         imageView.addConstraint(top: (contentContainerView.topAnchor, 8),
                                 bottom: (contentContainerView.bottomAnchor, -8),
@@ -219,7 +223,9 @@ open class LMFeedPostHeaderView: LMView {
         super.setupActions()
         
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapProfilePicture)))
+        authorNameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapProfilePicture)))
         menuButton.addTarget(self, action: #selector(didTapMenuButton), for: .touchUpInside)
+        contentContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapPost)))
     }
     
     // MARK: Appearance
@@ -231,7 +237,11 @@ open class LMFeedPostHeaderView: LMView {
         imageView.layer.cornerRadius = 48 / 2
     }
     
-    open func configure(with data: ViewModel) {
+    open func configure(with data: ViewModel, postID: String, userUUID: String, delegate: LMFeedPostHeaderViewProtocol?) {
+        self.postID = postID
+        self.userUUID = userUUID
+        self.delegate = delegate
+        
         imageView.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.authorName))
         
         authorNameLabel.text = data.authorName
@@ -244,16 +254,27 @@ open class LMFeedPostHeaderView: LMView {
         pinButton.isHidden = !data.isPinned
         menuButton.isHidden = !data.showMenu
     }
+    
+    open func togglePinStatus() {
+        pinButton.isHidden.toggle()
+    }
 }
 
 // MARK: Actions
 @objc
 extension LMFeedPostHeaderView {
     open func didTapProfilePicture() {
-        delegate?.didTapProfilePicture()
+        guard let userUUID else { return }
+        delegate?.didTapProfilePicture(having: userUUID)
     }
     
     open func didTapMenuButton() { 
-        delegate?.didTapMenuButton()
+        guard let postID else { return }
+        delegate?.didTapPostMenuButton(for: postID)
+    }
+    
+    open func didTapPost() {
+        guard let postID else { return }
+        delegate?.didTapPost(postID: postID)
     }
 }

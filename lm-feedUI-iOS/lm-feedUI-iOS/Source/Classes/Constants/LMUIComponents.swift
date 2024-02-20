@@ -20,8 +20,8 @@ public struct LMUIComponents {
     
     // MARK: Universal Feed Components
     public var documentCell: LMFeedPostDocumentCell.Type = LMFeedPostDocumentCell.self
-    public var footerCell: LMFeedPostFooterView.Type = LMFeedPostFooterView.self
-    public var headerCell: LMFeedPostHeaderView.Type = LMFeedPostHeaderView.self
+    public var footerView: LMFeedPostFooterView.Type = LMFeedPostFooterView.self
+    public var headerView: LMFeedPostHeaderView.Type = LMFeedPostHeaderView.self
     public var linkCell: LMFeedPostLinkCell.Type = LMFeedPostLinkCell.self
     public var postCell: LMFeedPostMediaCell.Type = LMFeedPostMediaCell.self
     
@@ -29,12 +29,11 @@ public struct LMUIComponents {
     public var commentCell: LMFeedPostDetailCommentCell.Type = LMFeedPostDetailCommentCell.self
     public var commentHeaderView: LMFeedPostDetailCommentHeaderView.Type = LMFeedPostDetailCommentHeaderView.self
     public var loadMoreReplies: LMFeedPostMoreRepliesCell.Type = LMFeedPostMoreRepliesCell.self
-    public var noCommentFooter: LMFeedNoCommentWidget.Type = LMFeedNoCommentWidget.self
     public var postDetailDocumentCell: LMFeedPostDetailDocumentCell.Type = LMFeedPostDetailDocumentCell.self
     public var postDetailLinkCell: LMFeedPostDetailLinkCell.Type = LMFeedPostDetailLinkCell.self
     public var postDetailMediaCell: LMFeedPostDetailMediaCell.Type = LMFeedPostDetailMediaCell.self
-    public var totalCommentFooter: LMFeedPostDetailTotalCommentCell.Type = LMFeedPostDetailTotalCommentCell.self
-    
+    public var postDetailHeaderView: LMFeedPostDetailHeaderView.Type = LMFeedPostDetailHeaderView.self
+    public var postDetailFooterView: LMFeedPostDetailFooterView.Type = LMFeedPostDetailFooterView.self
     
     // MARK: Topic Feed Components
     public var topicFeed: LMFeedTopicView.Type = LMFeedTopicView.self

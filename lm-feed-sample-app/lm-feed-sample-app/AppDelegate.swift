@@ -7,13 +7,19 @@
 
 import FirebaseCore
 import FirebaseMessaging
-import lm_feedCore_iOS
+import Kingfisher
+import LikeMindsFeedCore
 import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         initateNotifications()
+        ImageCache.default.memoryStorage.config.totalCostLimit = 1 //1 in bytes
+        return true
+    }
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         return true
     }
 

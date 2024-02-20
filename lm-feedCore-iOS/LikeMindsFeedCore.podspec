@@ -1,17 +1,25 @@
 Pod::Spec.new do |spec|
-  spec.name         = 'lm-feedUI-iOS'
+  spec.name         = 'LikeMindsFeedCore'
   spec.summary      = 'Masterpiece in Making'
   spec.homepage     = 'https://likeminds.community/'
   spec.version      = '0.1.0'
   spec.license      = { :type => 'MIT', :file => '../LICENSE' }
   spec.authors      = { 'Devansh Mohata' => 'devansh.mohata@likeminds.community' }
   spec.source       = { :git => 'git@github.com:LikeMindsCommunity/likeminds-feed-ios.git', :tag => "v#{spec.version}" }
-  spec.source_files = 'lm-feedUI-iOS/Source/Classes/**/*.swift'
+  spec.source_files = 'lm-feedCore-iOS/Source/**/*.swift'
   spec.resource_bundles = {
-     'lm-feedUI-iOS' => ['lm-feedUI-iOS/Source/Assets/*.{xcassets}']
+     'LikeMindsFeedCore' => ['lm-feedCore-iOS/Source/**/*.{xcassets}']
   }
   spec.ios.deployment_target = '13.0'
   spec.swift_version = '5.0'
   spec.requires_arc = true
-  spec.dependency 'Kingfisher', '~> 7.0'
+
+  spec.dependency "AWSCore"
+  spec.dependency "AWSCognito"
+  spec.dependency "AWSS3"
+  spec.dependency 'BSImagePicker'
+  spec.dependency "FirebaseCore"
+  spec.dependency "FirebaseMessaging"
+  spec.dependency 'LikeMindsFeed'
+  spec.dependency 'LikeMindsFeedUI'
 end

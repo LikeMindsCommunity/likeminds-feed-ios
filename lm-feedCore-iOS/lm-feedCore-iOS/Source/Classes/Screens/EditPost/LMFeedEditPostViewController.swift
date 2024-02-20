@@ -6,7 +6,7 @@
 //
 
 import AVKit
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 import UIKit
 
 @IBDesignable
@@ -214,6 +214,7 @@ open class LMFeedEditPostViewController: LMViewController {
     
     open func setupInitialView() {
         linkPreview.isHidden = true
+        taggingView.isHidden = true
         mediaCollectionView.isHidden = true
         mediaPageControl.isHidden = true
         documentTableView.isHidden = true
@@ -363,7 +364,7 @@ extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {
         mediaPageControl.currentPage = 0
     }
     
-    public func navigateToTopicView(with topics: [String]) {
+    public func navigateToTopicView(with topics: [LMFeedTopicDataModel]) {
         do {
             let viewcontroller = try LMFeedTopicSelectionViewModel.createModule(topicEnabledState: true, isShowAllTopicsButton: false, selectedTopicIds: topics, delegate: self)
             navigationController?.pushViewController(viewcontroller, animated: true)

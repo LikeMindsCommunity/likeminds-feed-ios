@@ -26,6 +26,12 @@ open class LMTableViewCell: UITableViewCell {
         initUI()
     }
     
+    deinit {
+        contentView.subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+    }
+    
     private func initUI() {
         setupViews()
         setupLayouts()

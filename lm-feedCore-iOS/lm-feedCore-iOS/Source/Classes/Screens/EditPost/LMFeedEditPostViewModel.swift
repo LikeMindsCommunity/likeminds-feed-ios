@@ -6,10 +6,10 @@
 //
 
 import LikeMindsFeed
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 
 public protocol LMFeedEditPostViewModelProtocol: LMBaseViewControllerProtocol {
-    func navigateToTopicView(with topics: [String])
+    func navigateToTopicView(with topics: [LMFeedTopicDataModel])
     func setupData(with userData: LMFeedCreatePostHeaderView.ViewDataModel, text: String)
     func setupDocumentPreview(with data: [LMFeedDocumentPreview.ViewModel])
     func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?)
@@ -111,8 +111,7 @@ public final class LMFeedEditPostViewModel {
     }
     
     func didTapTopicSelection() {
-        let currentTopics = selectedTopics.map({ $0.topicID })
-        delegate?.navigateToTopicView(with: currentTopics)
+        delegate?.navigateToTopicView(with: selectedTopics)
     }
     
     func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
@@ -224,6 +223,7 @@ extension LMFeedEditPostViewModel {
         }
         
         LMFeedEditPostOperation.shared.editPostWithAttachments(postID: postID, postCaption: text, topics: selectedTopics.map({ $0.topicID }), documents: documents, media: media, linkAttachment: linkPreview)
+        delegate?.popViewController(animated: true)
     }
 }
 
