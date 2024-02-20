@@ -8,7 +8,7 @@
 import FirebaseCore
 import FirebaseMessaging
 import Kingfisher
-import lm_feedCore_iOS
+import LikeMindsFeedCore
 import UIKit
 
 @main

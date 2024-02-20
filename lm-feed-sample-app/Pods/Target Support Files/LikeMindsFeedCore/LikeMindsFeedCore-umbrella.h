@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double lm_feedCore_iOSVersionNumber;
-FOUNDATION_EXPORT const unsigned char lm_feedCore_iOSVersionString[];
+FOUNDATION_EXPORT double LikeMindsFeedCoreVersionNumber;
+FOUNDATION_EXPORT const unsigned char LikeMindsFeedCoreVersionString[];
 

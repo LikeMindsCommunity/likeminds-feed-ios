@@ -1,5 +1,5 @@
 Pod::Spec.new do |spec|
-  spec.name         = 'lm-feedCore-iOS'
+  spec.name         = 'LikeMindsFeedCore'
   spec.summary      = 'Masterpiece in Making'
   spec.homepage     = 'https://likeminds.community/'
   spec.version      = '0.1.0'
