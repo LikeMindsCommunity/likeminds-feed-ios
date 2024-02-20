@@ -5,7 +5,7 @@
 //  Created by Devansh Mohata on 31/01/24.
 //
 
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 import UIKit
 
 public protocol LMFeedReportContentViewModelProtocol: LMBaseViewControllerProtocol {

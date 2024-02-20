@@ -5,7 +5,7 @@
 //  Created by Devansh Mohata on 28/01/24.
 //
 
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 
 public final class LMFeedRouter {
     enum RouteHostURL: String {

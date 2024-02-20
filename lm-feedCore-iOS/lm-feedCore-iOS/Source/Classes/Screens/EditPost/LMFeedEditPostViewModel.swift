@@ -6,7 +6,7 @@
 //
 
 import LikeMindsFeed
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 
 public protocol LMFeedEditPostViewModelProtocol: LMBaseViewControllerProtocol {
     func navigateToTopicView(with topics: [LMFeedTopicDataModel])

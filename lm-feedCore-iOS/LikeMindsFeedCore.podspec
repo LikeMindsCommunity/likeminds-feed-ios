@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
   spec.source       = { :git => 'git@github.com:LikeMindsCommunity/likeminds-feed-ios.git', :tag => "v#{spec.version}" }
   spec.source_files = 'lm-feedCore-iOS/Source/**/*.swift'
   spec.resource_bundles = {
-     'lm-feedCore-iOS' => ['lm-feedCore-iOS/Source/**/*.{xcassets}']
+     'LikeMindsFeedCore' => ['lm-feedCore-iOS/Source/**/*.{xcassets}']
   }
   spec.ios.deployment_target = '13.0'
   spec.swift_version = '5.0'
@@ -21,5 +21,5 @@ Pod::Spec.new do |spec|
   spec.dependency "FirebaseCore"
   spec.dependency "FirebaseMessaging"
   spec.dependency 'LikeMindsFeed'
-  spec.dependency 'lm-feedUI-iOS'
+  spec.dependency 'LikeMindsFeedUI'
 end

@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 
 // MARK: LMFeedPostListVCProtocol
 // This contains list of functions that are triggered from Child View Controller aka `LMFeedPostListViewController` to be handled by Parent View Controller

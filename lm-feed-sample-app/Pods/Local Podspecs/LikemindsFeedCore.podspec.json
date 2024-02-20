@@ -16,7 +16,7 @@
   },
   "source_files": "lm-feedCore-iOS/Source/**/*.swift",
   "resource_bundles": {
-    "lm-feedCore-iOS": [
+    "LikeMindsFeedCore": [
       "lm-feedCore-iOS/Source/**/*.{xcassets}"
     ]
   },
@@ -47,7 +47,7 @@
     "LikeMindsFeed": [
 
     ],
-    "lm-feedUI-iOS": [
+    "LikeMindsFeedUI": [
 
     ]
   },

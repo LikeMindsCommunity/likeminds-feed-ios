@@ -5,7 +5,7 @@
 //  Created by Devansh Mohata on 01/01/24.
 //
 
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 import LikeMindsFeed
 
 public protocol LMFeedTopicSelectionViewModelProtocol: LMBaseViewControllerProtocol {

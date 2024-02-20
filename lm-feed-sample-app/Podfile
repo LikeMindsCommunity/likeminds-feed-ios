@@ -7,7 +7,7 @@ target 'lm-feed-sample-app' do
   project 'lm-feed-sample-app.xcodeproj'
   use_frameworks!
   
-  pod 'lm-feedUI-iOS', path: '../lm-feedUI-iOS'
+  pod 'LikeMindsFeedUI', path: '../lm-feedUI-iOS'
   pod 'LikeMindsFeedCore', path: '../lm-feedCore-iOS'
 end
 

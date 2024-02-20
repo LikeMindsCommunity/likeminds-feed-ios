@@ -7,7 +7,7 @@
 
 import FirebaseCore
 import FirebaseMessaging
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 import LikeMindsFeed
 
 // Keep Only Auth Logic

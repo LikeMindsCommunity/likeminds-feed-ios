@@ -6,7 +6,7 @@
 //
 
 import AVKit
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 import UIKit
 
 @IBDesignable

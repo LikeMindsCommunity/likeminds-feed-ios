@@ -1,5 +1,5 @@
 {
-  "name": "lm-feedUI-iOS",
+  "name": "LikeMindsFeedUI",
   "summary": "Masterpiece in Making",
   "homepage": "https://likeminds.community/",
   "version": "0.1.0",
@@ -16,7 +16,7 @@
   },
   "source_files": "lm-feedUI-iOS/Source/Classes/**/*.swift",
   "resource_bundles": {
-    "lm-feedUI-iOS": [
+    "LikeMindsFeedUIAssets": [
       "lm-feedUI-iOS/Source/Assets/*.{xcassets}"
     ]
   },

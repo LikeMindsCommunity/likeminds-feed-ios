@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import lm_feedUI_iOS
+import LikeMindsFeedUI
 
 public protocol LMFeedTopicSelectionViewProtocol: AnyObject {
     func updateTopicFeed(with topics: [LMFeedTopicDataModel])
