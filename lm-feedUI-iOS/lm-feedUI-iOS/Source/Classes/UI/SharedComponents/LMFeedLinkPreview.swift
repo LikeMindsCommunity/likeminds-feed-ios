@@ -41,15 +41,14 @@ open class LMFeedLinkPreview: LMView {
         return stack
     }()
         
-    open private(set) lazy var crossButton: LMImageView = {
-        let image = LMImageView(image: Constants.shared.images.xmarkIcon)
-        image.translatesAutoresizingMaskIntoConstraints = false
-        image.backgroundColor = Appearance.shared.colors.white
-        image.tintColor = Appearance.shared.colors.gray51
-        image.contentMode = .scaleAspectFill
-        image.layer.borderColor = Appearance.shared.colors.gray51.cgColor
-        image.layer.borderWidth = 1
-        return image
+    open private(set) lazy var crossButton: LMButton = {
+        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+        button.setTitle(nil, for: .normal)
+        button.setImage(Constants.shared.images.xmarkIcon, for: .normal)
+        button.backgroundColor = Appearance.shared.colors.white
+        button.tintColor = Appearance.shared.colors.gray51
+        button.contentMode = .scaleAspectFit
+        return button
     }()
     
     open private(set) lazy var imageView: LMImageView = {
@@ -163,13 +162,15 @@ open class LMFeedLinkPreview: LMView {
         containerView.layer.borderColor = Appearance.shared.colors.sepratorColor.cgColor
         sepratorView.backgroundColor = Appearance.shared.colors.sepratorColor
         crossButton.layer.cornerRadius = crossButtonSize / 2
+        crossButton.layer.borderColor = Appearance.shared.colors.gray51.cgColor
+        crossButton.layer.borderWidth = 1
     }
     
     
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
-        crossButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCrossButton)))
+        crossButton.addTarget(self, action: #selector(didTapCrossButton), for: .touchUpInside)
     }
     
     @objc

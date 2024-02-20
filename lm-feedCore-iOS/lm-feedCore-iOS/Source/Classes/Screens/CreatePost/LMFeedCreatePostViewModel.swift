@@ -136,10 +136,6 @@ public extension LMFeedCreatePostViewModel {
         
         currentMediaSelectionType = media.isEmpty ? .none : currentMediaSelectionType
         
-        if !media.isEmpty {
-            showLinkPreview = false
-        }
-        
         media.forEach { medium in
             switch medium.mediaType {
             case .image:
@@ -182,6 +178,7 @@ public extension LMFeedCreatePostViewModel {
 extension LMFeedCreatePostViewModel {
     func handleLinkDetection(in text: String) {
         guard showLinkPreview,
+              media.isEmpty,
               currentMediaSelectionType == .none,
               let link = text.detectLink() else {
             delegate?.setupLinkPreview(with: nil)

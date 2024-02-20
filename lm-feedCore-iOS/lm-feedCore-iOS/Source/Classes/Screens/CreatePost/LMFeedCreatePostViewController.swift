@@ -447,9 +447,9 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
     public func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?) {
         linkPreview.isHidden = data == nil
         if let data {
-            linkPreview.configure(with: data) { [weak self] in
+            linkPreview.configure(with: data) { [weak self, weak linkPreview] in
                 self?.viewModel?.hideLinkPreview()
-                self?.linkPreview.isHidden = true
+                linkPreview?.isHidden = true
             }
         }
     }
