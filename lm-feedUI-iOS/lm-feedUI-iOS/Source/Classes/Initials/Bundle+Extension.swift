@@ -11,6 +11,8 @@ private class BundleClass { }
 
 extension Bundle {
     static var LMBundleIdentifier: Bundle {
-        Bundle(for: BundleClass.self)
+        return Bundle(for: BundleClass.self)
+            .url(forResource: "LikeMindsFeedUIAssets", withExtension: "bundle")
+            .flatMap(Bundle.init(url:)) ?? Bundle(for: BundleClass.self)
     }
 }

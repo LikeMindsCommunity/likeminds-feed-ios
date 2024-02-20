@@ -22,8 +22,8 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
     
     
     // MARK: UI Elements
-    open private(set) lazy var imageView: UIImageView = {
-        let image = UIImageView()
+    open private(set) lazy var imageView: LMImageView = {
+        let image = LMImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFit
         image.backgroundColor = Appearance.shared.colors.black

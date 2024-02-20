@@ -43,8 +43,8 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         return view
     }()
 
-    open private(set) lazy var imageView: UIImageView = {
-        let imageView = UIImageView(frame: .zero)
+    open private(set) lazy var imageView: LMImageView = {
+        let imageView = LMImageView(frame: .zero)
         imageView.clipsToBounds = true
         imageView.isUserInteractionEnabled = true
         imageView.layer.masksToBounds = true
