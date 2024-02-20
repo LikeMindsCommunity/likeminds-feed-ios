@@ -81,16 +81,22 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
     public weak var delegate: LMFeedPostDocumentCellProtocol?
     var indexPath: IndexPath?
     
+    deinit {
+        print(#file, "Deinit Called")
+    }
+    
+    open override func prepareForReuse() {
+        super.prepareForReuse()
+        print("Document Cell is Dequeued")
+    }
+    
     
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
         
         contentView.addSubview(containerView)
-        
-//        containerView.addSubview(headerView)
         containerView.addSubview(contentStack)
-//        containerView.addSubview(footerView)
         
         [topicFeed, postText, seeMoreButton, documentContainerStack].forEach { subView in
             contentStack.addArrangedSubview(subView)
@@ -164,7 +170,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         }
         
         if data.documents.count > Constants.shared.number.maxDocumentView && !data.isShowAllDocuments {
-            seeMoreDocumentsButton.setTitle("+\(data.documents.count - 2) more", for: .normal)
+            seeMoreDocumentsButton.setTitle("+\(data.documents.count - Constants.shared.number.maxDocumentView) more", for: .normal)
             seeMoreDocumentsButton.setImage(nil, for: .normal)
             
             documentContainerStack.addArrangedSubview(seeMoreDocumentsButton)

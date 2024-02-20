@@ -76,6 +76,9 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     public var userUUID: String?
     public var postID: String?
     
+    deinit {
+        print(#file)
+    }
     
     // MARK: setupLayouts
     open override func setupLayouts() {

@@ -75,11 +75,21 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     }()
     
     
-    //MARK: setupViews
+    //MARK: Data Variables
     private var mediaCellsData: [LMFeedMediaProtocol] = []
-
     
-    // MARK: View Hierachy
+    deinit {
+        print(#file, "Deinit Called")
+    }
+    
+    open override func prepareForReuse() {
+        print("Media Cell is Dequeued")
+        tableViewScrolled()
+        super.prepareForReuse()
+    }
+    
+
+    // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
         
@@ -137,6 +147,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     open func tableViewScrolled(isPlay: Bool = false) {
         for case let cell as LMFeedVideoCollectionCell in mediaCollectionView.visibleCells {
             cell.pauseVideo()
+            
         }
         
         if isPlay,
@@ -167,13 +178,6 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         
         pageControl.isHidden = mediaCellsData.count < 2
         pageControl.numberOfPages = mediaCellsData.count
-    }
-    
-    
-    // MARK: Reset Player
-    open override func prepareForReuse() {
-        super.prepareForReuse()
-        tableViewScrolled()
     }
 }
 
@@ -206,22 +210,26 @@ extension LMFeedPostMediaCell: UICollectionViewDataSource,
     }
     
     open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        pageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.width)
         scrollingFinished()
     }
     
     open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
-            pageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.width)
+            scrollingFinished()
         }
-        scrollingFinished()
     }
     
     open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         tableViewScrolled()
     }
     
+    open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        (cell as? LMFeedVideoCollectionCell)?.unload()
+    }
+    
     public func scrollingFinished() {
+        pageControl.currentPage = Int(mediaCollectionView.contentOffset.x / mediaCollectionView.frame.width)
+        
         if mediaCollectionView.visibleCells.count == 1 {
             (mediaCollectionView.visibleCells.first as? LMFeedVideoCollectionCell)?.playVideo()
         }

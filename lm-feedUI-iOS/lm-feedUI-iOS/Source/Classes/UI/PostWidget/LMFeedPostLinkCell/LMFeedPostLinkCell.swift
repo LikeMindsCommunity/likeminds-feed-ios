@@ -60,6 +60,14 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
     open weak var delegate: LMChatLinkProtocol?
     public var postURL: String?
     
+    deinit {
+        print(#file, "Deinit Called")
+    }
+    
+    open override func prepareForReuse() {
+        super.prepareForReuse()
+        print("Link Cell is Dequeued")
+    }
     
     // MARK: setupViews
     open override func setupViews() {

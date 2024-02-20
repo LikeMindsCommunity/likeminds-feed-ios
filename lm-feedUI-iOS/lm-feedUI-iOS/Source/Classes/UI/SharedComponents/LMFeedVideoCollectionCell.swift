@@ -43,13 +43,13 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     // MARK: Data Variables
     public var crossButtonHeight: CGFloat = 24
     public var crossButtonAction: ((String) -> Void)?
-    public var videoURL: String?
+    public var videoURL: URL?
     
     
     // MARK: prepareForReuse
     open override func prepareForReuse() {
+        videoPlayer.unload()
         super.prepareForReuse()
-        pauseVideo()
     }
     
     
@@ -93,13 +93,13 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     @objc
     open func didTapCrossButton() {
         guard let videoURL else { return }
-        crossButtonAction?(videoURL)
+        crossButtonAction?(videoURL.absoluteString)
     }
     
     // MARK: configure
     open func configure(with data: ViewModel, crossButtonAction: ((String) -> Void)? = nil) {
         guard let url = URL(string: data.videoURL) else { return }
-        videoURL = data.videoURL
+        videoURL = url
         
         videoPlayer.prepareVideo(url)
         self.crossButtonAction = crossButtonAction
@@ -110,10 +110,15 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     }
     
     open func playVideo() {
-        videoPlayer.play()
+        guard let videoURL else { return }
+        videoPlayer.prepareVideo(videoURL)
     }
     
     open func pauseVideo() {
         videoPlayer.pause()
+    }
+    
+    open func unload() {
+        videoPlayer.unload()
     }
 }

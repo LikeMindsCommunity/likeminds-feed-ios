@@ -5,6 +5,7 @@
 //  Created by Devansh Mohata on 24/11/23.
 //
 
+import Kingfisher
 import PDFKit
 import SafariServices
 import UIKit
@@ -176,6 +177,11 @@ open class LMViewController: UIViewController {
             pdfViewer.configure(with: url)
             navigationController?.pushViewController(pdfViewer, animated: true)
         }
+    }
+    
+    open override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        ImageCache.default.clearMemoryCache()
     }
 }
 

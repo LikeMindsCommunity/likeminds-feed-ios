@@ -28,6 +28,7 @@ open class LMFeedPostListViewController: LMViewController, LMFeedPostListViewMod
         table.translatesAutoresizingMaskIntoConstraints = false
         table.dataSource = self
         table.delegate = self
+        table.prefetchDataSource = self
         table.separatorStyle = .none
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
@@ -204,7 +205,7 @@ open class LMFeedPostListViewController: LMViewController, LMFeedPostListViewMod
 
 // MARK: UITableView
 @objc
-extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelegate {
+extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
     open func numberOfSections(in tableView: UITableView) -> Int { data.count }
     
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1 }
@@ -226,13 +227,7 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
         
         return UITableViewCell()
     }
-    
-    open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        if data.count == section + 1 {
-            viewModel?.getFeed()
-        }
-    }
-    
+        
     open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.headerView),
            let cellData = data[safe: section] {
@@ -261,6 +256,14 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
     
     open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         UITableView.automaticDimension
+    }
+    
+    open func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        let filtered = indexPaths.filter({ $0.section >= data.count - 1 })
+        
+        if !filtered.isEmpty {
+            viewModel?.getFeed()
+        }
     }
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
