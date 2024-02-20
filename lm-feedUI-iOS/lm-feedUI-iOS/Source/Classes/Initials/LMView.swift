@@ -202,6 +202,13 @@ open class LMView: UIView {
         setupAppearance()
     }
     
+    deinit {
+        self.subviews.forEach { subView in
+            print(String(describing: subView))
+            subView.removeFromSuperview()
+        }
+    }
+    
     public func translatesAutoresizingMaskIntoConstraints() -> Self {
         self.translatesAutoresizingMaskIntoConstraints = false
         return self

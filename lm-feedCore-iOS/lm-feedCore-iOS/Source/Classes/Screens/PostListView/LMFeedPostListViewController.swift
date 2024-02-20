@@ -266,6 +266,10 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
         }
     }
     
+    open func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
+    }
+    
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         delegate?.tableViewScrolled(scrollView)
     }
