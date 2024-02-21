@@ -146,7 +146,7 @@ public extension LMFeedCreatePostViewModel {
                 docData.append(
                     .init(
                         title: medium.url.deletingPathExtension().lastPathComponent,
-                        documentURL: medium.url.absoluteString,
+                        documentURL: medium.url,
                         size: medium.url.getFileSize(),
                         pageCount: getNumberOfPages(from: medium.url),
                         docType: medium.url.pathExtension,

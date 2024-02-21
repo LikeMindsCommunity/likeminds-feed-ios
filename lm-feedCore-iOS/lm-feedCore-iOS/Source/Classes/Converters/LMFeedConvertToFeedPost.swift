@@ -69,8 +69,16 @@ public struct LMFeedConvertToFeedPost {
     }
     
     public static func convertToDocument(from data: [LMFeedPostDataModel.DocumentAttachment]) -> [LMFeedDocumentPreview.ViewModel] {
-        data.map { datum in
-                .init(title: datum.name, documentURL: datum.url, size: datum.size, pageCount: datum.pageCount, docType: datum.format)
+        data.compactMap { datum in
+            guard let url = URL(string: datum.url) else { return nil }
+            
+            return .init(
+                title: datum.name,
+                documentURL: url,
+                size: datum.size,
+                pageCount: datum.pageCount,
+                docType: datum.format
+            )
         }
     }
     

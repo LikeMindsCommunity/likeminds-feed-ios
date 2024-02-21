@@ -185,12 +185,12 @@ open class LMFeedLinkPreview: LMView {
         self.crossButtonAction = crossButtonAction
         
         imageView.kf.indicatorType = .activity
-        imageView.kf.setImage(with: URL(string: data.linkPreview ?? "")) { [weak self] result in
+        imageView.kf.setImage(with: URL(string: data.linkPreview ?? "")) { [weak imageView] result in
             switch result {
             case .success(_):
-                self?.imageView.isHidden = false
+                imageView?.isHidden = false
             case .failure(_):
-                self?.imageView.isHidden = true
+                imageView?.isHidden = true
             }
         }
         

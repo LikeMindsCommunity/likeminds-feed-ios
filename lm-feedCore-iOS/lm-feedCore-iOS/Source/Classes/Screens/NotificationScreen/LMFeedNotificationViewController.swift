@@ -94,8 +94,8 @@ extension LMFeedNotificationViewController: UITableViewDataSource, UITableViewDe
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.notificationTableCell),
-           let data = cellsData[safe: indexPath.row] {
+        if let data = cellsData[safe: indexPath.row],
+           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.notificationTableCell) {
             cell.configure(with: data) { [weak self] in
                 self?.viewModel?.markReadNotification(activityId: data.notificationID)
                 self?.navigateToPost(from: data.route)

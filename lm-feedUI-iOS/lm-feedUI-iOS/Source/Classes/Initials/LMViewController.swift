@@ -171,11 +171,11 @@ open class LMViewController: UIViewController {
             return
         }
         
-        // TODO: Need to handle this
+        
         if url.startAccessingSecurityScopedResource() {
-            let pdfViewer = LMFeedPDFViewer()
-            pdfViewer.configure(with: url)
-            navigationController?.pushViewController(pdfViewer, animated: true)
+            let document = UIDocumentInteractionController(url: url)
+            document.delegate = self
+            document.presentPreview(animated: true)
         }
     }
     
@@ -255,4 +255,9 @@ extension LMViewController: LMBaseViewControllerProtocol {
     open func popViewController(animated: Bool) {
         navigationController?.popViewController(animated: animated)
     }
+}
+
+
+extension LMViewController: UIDocumentInteractionControllerDelegate {
+    open func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController { self }
 }

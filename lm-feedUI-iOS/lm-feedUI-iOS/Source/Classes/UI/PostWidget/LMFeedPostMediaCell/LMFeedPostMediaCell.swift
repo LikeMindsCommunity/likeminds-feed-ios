@@ -147,7 +147,6 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     open func tableViewScrolled(isPlay: Bool = false) {
         for case let cell as LMFeedVideoCollectionCell in mediaCollectionView.visibleCells {
             cell.pauseVideo()
-            
         }
         
         if isPlay,
@@ -192,12 +191,12 @@ extension LMFeedPostMediaCell: UICollectionViewDataSource,
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreviewCell, for: indexPath),
-           let data = mediaCellsData[indexPath.row] as? LMFeedImageCollectionCell.ViewModel {
+        if let data = mediaCellsData[indexPath.row] as? LMFeedImageCollectionCell.ViewModel,
+           let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreviewCell, for: indexPath) {
             cell.configure(with: data)
             return cell
-        } else if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath),
-                  let data = mediaCellsData[indexPath.row] as? LMFeedVideoCollectionCell.ViewModel {
+        } else if let data = mediaCellsData[indexPath.row] as? LMFeedVideoCollectionCell.ViewModel,
+                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath) {
             cell.configure(with: data)
             return cell
         }

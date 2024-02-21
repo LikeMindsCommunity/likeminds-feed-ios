@@ -354,21 +354,21 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0,
            let postData {
-            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailMediaCell),
-               let data = postData as? LMFeedPostMediaCell.ViewModel {
+            if let data = postData as? LMFeedPostMediaCell.ViewModel,
+               let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailMediaCell) {
                 cell.configure(with: data, delegate: self)
                 return cell
-            } else if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailLinkCell),
-                      let data = postData as? LMFeedPostLinkCell.ViewModel {
+            } else if let data = postData as? LMFeedPostLinkCell.ViewModel,
+                      let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailLinkCell) {
                 cell.configure(with: data, delegate: self)
                 return cell
-            } else if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailDocumentCell),
-                      let data = postData as? LMFeedPostDocumentCell.ViewModel {
+            } else if let data = postData as? LMFeedPostDocumentCell.ViewModel,
+                      let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailDocumentCell) {
                 cell.configure(for: indexPath, with: data, delegate: self)
                 return cell
             }
-        } else if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.commentCell),
-                  var data = cellsData[safe: indexPath.section - 1] {
+        } else if var data = cellsData[safe: indexPath.section - 1],
+                  let cell = tableView.dequeueReusableCell(LMUIComponents.shared.commentCell) {
             let comment = data.replies[indexPath.row]
             cell.configure(with: comment, delegate: self, indexPath: indexPath) { [weak self] in
                 data.replies[indexPath.row].isShowMore.toggle()
@@ -387,8 +387,8 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
            let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.postDetailHeaderView) {
             header.configure(with: postData.headerData, postID: postData.postID, userUUID: postData.userUUID, delegate: self)
             return header
-        } else if let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.commentHeaderView),
-           var data = cellsData[safe: section - 1] {
+        } else if var data = cellsData[safe: section - 1],
+            let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.commentHeaderView) {
             header.configure(with: data, delegate: self, indexPath: .init(row: NSNotFound, section: section)) { [weak self] in
                 data.isShowMore.toggle()
                 self?.cellsData[section - 1] = data
@@ -726,8 +726,7 @@ extension LMFeedPostDetailViewController: LMChatLinkProtocol, LMFeedPostDocument
         }
     }
     
-    open func didTapDocument(with url: String) {
-        guard let url = URL(string: url) else { return }
+    open func didTapDocument(with url: URL) {
         openURL(with: url)
     }
     

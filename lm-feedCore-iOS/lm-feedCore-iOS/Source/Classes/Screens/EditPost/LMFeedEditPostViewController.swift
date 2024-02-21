@@ -229,8 +229,8 @@ extension LMFeedEditPostViewController: UITableViewDataSource, UITableViewDelega
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(LMFeedCreatePostDocumentPreviewCell.self),
-           let data = documentCells[safe: indexPath.row] {
+        if let data = documentCells[safe: indexPath.row],
+           let cell = tableView.dequeueReusableCell(LMFeedCreatePostDocumentPreviewCell.self) {
             cell.configure(data: data, delegate: self)
             return cell
         }
@@ -247,12 +247,12 @@ extension LMFeedEditPostViewController: UICollectionViewDataSource, UICollection
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreviewCell, for: indexPath),
-           let data = mediaCells[safe: indexPath.row] as? LMFeedImageCollectionCell.ViewModel {
+        if let data = mediaCells[safe: indexPath.row] as? LMFeedImageCollectionCell.ViewModel,
+           let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreviewCell, for: indexPath) {
             cell.configure(with: data)
             return cell
-        } else if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath),
-                  let data = mediaCells[safe: indexPath.row] as? LMFeedVideoCollectionCell.ViewModel {
+        } else if let data = mediaCells[safe: indexPath.row] as? LMFeedVideoCollectionCell.ViewModel,
+                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath) {
             cell.configure(with: data)
             return cell
         }
@@ -382,9 +382,8 @@ extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {
 
 // MARK: LMFeedDocumentPreviewProtocol
 extension LMFeedEditPostViewController: LMFeedDocumentPreviewProtocol {
-    public func didTapDocument(documentID: String) {
-        guard let url = documentID.convertIntoURL() else { return }
-        openURL(with: url)
+    public func didTapDocument(documentID: URL) {
+        openURL(with: documentID)
     }
 }
 

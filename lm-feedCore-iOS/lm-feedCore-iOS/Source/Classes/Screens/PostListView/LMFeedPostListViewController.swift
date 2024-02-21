@@ -153,9 +153,7 @@ open class LMFeedPostListViewController: LMViewController, LMFeedPostListViewMod
     }
     
     open func loadPosts(with data: [LMFeedPostTableCellProtocol], index: IndexSet?, reloadNow: Bool) {
-        self.data = data
-        
-        if self.data.isEmpty {
+        if data.isEmpty {
             emptyListView.configure { [weak self] in
                 do {
                     let viewcontroller = try LMFeedCreatePostViewModel.createModule()
@@ -174,7 +172,21 @@ open class LMFeedPostListViewController: LMViewController, LMFeedPostListViewMod
         
         guard reloadNow else { return }
         
-        reloadTable(for: index)
+        let initialCount = self.data.count
+        let newCount = data.count
+        self.data = data
+        
+        if let index {
+            reloadTable(for: index)
+        } else if newCount > initialCount {
+            UIView.performWithoutAnimation {
+                tableView.beginUpdates()
+                tableView.insertSections(IndexSet(integersIn: (initialCount..<newCount)), with: .none)
+                tableView.endUpdates()
+            }
+        } else {
+            reloadTable()
+        }
         delegate?.postDataFetched(isEmpty: self.data.isEmpty)
     }
     
@@ -211,16 +223,16 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1 }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell, for: indexPath),
-           let cellData = data[indexPath.section] as? LMFeedPostMediaCell.ViewModel {
+        if let cellData = data[indexPath.section] as? LMFeedPostMediaCell.ViewModel,
+           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell, for: indexPath) {
             cell.configure(with: cellData, delegate: self)
             return cell
-        } else if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.documentCell, for: indexPath),
-                  let cellData = data[indexPath.section] as? LMFeedPostDocumentCell.ViewModel {
+        } else if let cellData = data[indexPath.section] as? LMFeedPostDocumentCell.ViewModel,
+            let cell = tableView.dequeueReusableCell(LMUIComponents.shared.documentCell, for: indexPath) {
             cell.configure(for: indexPath, with: cellData, delegate: self)
             return cell
-        } else if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.linkCell, for: indexPath),
-                  let cellData = data[indexPath.section] as? LMFeedPostLinkCell.ViewModel {
+        } else if let cellData = data[indexPath.section] as? LMFeedPostLinkCell.ViewModel,
+                  let cell = tableView.dequeueReusableCell(LMUIComponents.shared.linkCell, for: indexPath) {
             cell.configure(with: cellData, delegate: self)
             return cell
         }
@@ -229,8 +241,8 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
     }
         
     open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.headerView),
-           let cellData = data[safe: section] {
+        if let cellData = data[safe: section],
+           let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.headerView) {
             header.configure(with: cellData.headerData, postID: cellData.postID, userUUID: cellData.userUUID, delegate: self)
             return header
         }
@@ -246,8 +258,8 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
     }
     
     open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.footerView),
-           let cellData = data[safe: section] {
+        if let cellData = data[safe: section],
+           let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.footerView) {
             footer.configure(with: cellData.footerData, postID: cellData.postID, delegate: self)
             return footer
         }
@@ -281,7 +293,7 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
     }
     
     open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if decelerate {
+        if !decelerate {
             scrollingFinished()
         }
     }
@@ -392,8 +404,7 @@ extension LMFeedPostListViewController: LMChatLinkProtocol, LMFeedPostDocumentCe
         }
     }
     
-    open func didTapDocument(with url: String) {
-        guard let urlLink = url.convertIntoURL() else { return }
-        openURL(with: urlLink)
+    open func didTapDocument(with url: URL) {
+        openURL(with: url)
     }
 }

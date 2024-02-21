@@ -5,31 +5,39 @@
 //  Created by Devansh Mohata on 19/02/24.
 //
 
+import PDFKit
 import UIKit
-import WebKit
 
 @IBDesignable
 open class LMFeedPDFViewer: LMViewController {
-    open private(set) lazy var webViewer: WKWebView = {
-        let viewer = WKWebView(frame: view.frame)
-        viewer.translatesAutoresizingMaskIntoConstraints = false
-        viewer.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        return viewer
+    open private(set) lazy var pdfViewer: PDFView = {
+        let pdfView = PDFView()
+        pdfView.translatesAutoresizingMaskIntoConstraints = false
+        pdfView.displayMode = .singlePageContinuous
+        pdfView.displayDirection = .vertical
+        pdfView.autoScales = true
+        pdfView.delegate = self
+        return pdfView
     }()
     
     
     open override func setupViews() {
         super.setupViews()
-        view.addSubview(webViewer)
+        view.addSubview(pdfViewer)
     }
     
     open override func setupLayouts() {
         super.setupLayouts()
-        view.pinSubView(subView: webViewer)
+        view.pinSubView(subView: pdfViewer)
     }
     
-    open func configure(with pdf: URL) {
-        setNavigationTitleAndSubtitle(with: "PDF Viewer", subtitle: nil, alignment: .center)
-        webViewer.loadFileURL(pdf, allowingReadAccessTo: pdf)
+    open func configure(with pdf: PDFDocument) {
+        pdfViewer.document = pdf
+    }
+}
+
+extension LMFeedPDFViewer: PDFViewDelegate {
+    public func pdfViewWillClick(onLink sender: PDFView, with url: URL) {
+        openURL(with: url)
     }
 }

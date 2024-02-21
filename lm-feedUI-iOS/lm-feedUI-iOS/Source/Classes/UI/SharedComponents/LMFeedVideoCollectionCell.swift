@@ -78,7 +78,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        backgroundColor = .red
+        videoPlayer.backgroundColor = Appearance.shared.colors.black
         crossButton.layer.cornerRadius = crossButtonHeight / 2
         crossButton.layer.borderColor = Appearance.shared.colors.gray51.cgColor
         crossButton.layer.borderWidth = 1

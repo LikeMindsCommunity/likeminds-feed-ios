@@ -377,13 +377,12 @@ extension LMFeedCreatePostViewController: UITableViewDataSource, UITableViewDele
 
 // MARK: LMFeedDocumentPreviewProtocol
 extension LMFeedCreatePostViewController: LMFeedDocumentPreviewProtocol {
-    public func didTapCrossButton(documentID: String) {
-        viewModel?.removeAsset(url: documentID)
+    public func didTapCrossButton(documentID: URL) {
+        viewModel?.removeAsset(url: documentID.absoluteString)
     }
     
-    public func didTapDocument(documentID: String) { 
-        guard let url = URL(string: documentID) else { return }
-        openURL(with: url)
+    public func didTapDocument(documentID: URL) {
+        openURL(with: documentID)
     }
 }
 
@@ -393,15 +392,15 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { mediaCellData.count }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreviewCell, for: indexPath),
-           let data = mediaCellData[indexPath.row] as? LMFeedImageCollectionCell.ViewModel {
+        if let data = mediaCellData[indexPath.row] as? LMFeedImageCollectionCell.ViewModel,
+           let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreviewCell, for: indexPath) {
             cell.configure(with: data) { [weak self] imageID in
                 guard let self else { return }
                 viewModel?.removeAsset(url: imageID)
             }
             return cell
-        } else if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath),
-                  let data = mediaCellData[indexPath.row] as? LMFeedVideoCollectionCell.ViewModel {
+        } else if let data = mediaCellData[indexPath.row] as? LMFeedVideoCollectionCell.ViewModel,
+                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath) {
             cell.configure(with: data) { [weak self] videoID in
                 guard let self else { return }
                 viewModel?.removeAsset(url: videoID)

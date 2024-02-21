@@ -9,7 +9,7 @@ import UIKit
 
 public protocol LMFeedPostDocumentCellProtocol: LMPostWidgetTableViewCellProtocol {
     func didTapShowMoreDocuments(for indexPath: IndexPath)
-    func didTapDocument(with url: String)
+    func didTapDocument(with url: URL)
 }
 
 @IBDesignable
@@ -186,7 +186,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
 // MARK: LMFeedDocumentPreviewProtocol
 @objc
 extension LMFeedPostDocumentCell: LMFeedDocumentPreviewProtocol {
-    open func didTapDocument(documentID: String) {
+    public func didTapDocument(documentID: URL) {
         delegate?.didTapDocument(with: documentID)
     }
 }

@@ -8,26 +8,25 @@
 import UIKit
 
 public protocol LMFeedDocumentPreviewProtocol: AnyObject {
-    func didTapCrossButton(documentID: String)
-    func didTapDocument(documentID: String)
+    func didTapCrossButton(documentID: URL)
+    func didTapDocument(documentID: URL)
 }
 
 public extension LMFeedDocumentPreviewProtocol {
-    func didTapCrossButton(documentID: String) { }
-    func didTapDocument(documentID: String) { }
+    func didTapCrossButton(documentID: URL) { }
 }
 
 @IBDesignable
 open class LMFeedDocumentPreview: LMView {
     public struct ViewModel {
         public let title: String
-        public let documentURL: String
+        public let documentURL: URL
         public let size: Int?
         public let pageCount: Int?
         public let docType: String?
         public let isShowCrossButton: Bool
         
-        public init(title: String, documentURL: String, size: Int?, pageCount: Int?, docType: String?, isShowCrossButton: Bool = false) {
+        public init(title: String, documentURL: URL, size: Int?, pageCount: Int?, docType: String?, isShowCrossButton: Bool = false) {
             self.title = title
             self.documentURL = documentURL
             self.size = size
@@ -108,7 +107,7 @@ open class LMFeedDocumentPreview: LMView {
     
     // MARK: Data Variables
     public weak var delegate: LMFeedDocumentPreviewProtocol?
-    public var documentID: String?
+    public var documentID: URL?
     
     
     // MARK: setupViews

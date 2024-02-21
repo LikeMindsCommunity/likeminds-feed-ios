@@ -70,8 +70,8 @@ extension LMFeedLikeViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.likedUserTableCell.self),
-           let data = cellsData[safe: indexPath.row] {
+        if let data = cellsData[safe: indexPath.row],
+           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.likedUserTableCell.self) {
             cell.configure(with: data) { [weak self] in
                 self?.didTapUser(uuid: data.uuid)
             }
