@@ -73,7 +73,7 @@ public final class LMFeedCreatePostViewModel {
         
         media.forEach { medium in
             if medium.url.getFileSize() > LMNumbersConstant.shared.maxFileSizeInBytes {
-                delegate?.showError(with: String(format: LMStringConstants.shared.maxUploadSizeErrorMessage, LMNumbersConstant.shared.maxFileSizeInBytes), isPopVC: false)
+                delegate?.showError(with: String(format: LMStringConstants.shared.maxUploadSizeErrorMessage, LMNumbersConstant.shared.maxFileSizeInMB), isPopVC: false)
                 return
             }
             

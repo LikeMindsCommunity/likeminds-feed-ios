@@ -37,4 +37,21 @@ open class LMCollectionView: UICollectionView {
         layout.minimumLineSpacing = 0
         return layout
     }
+    
+    public func isCellAtIndexPathFullyVisible(_ indexPath: IndexPath) -> Bool {
+        guard let layoutAttribute = layoutAttributesForItem(at: indexPath) else {
+            return false
+        }
+        
+        let cellFrame = layoutAttribute.frame
+        return self.bounds.contains(cellFrame)
+    }
+    
+    public func indexPathsForFullyVisibleItems() -> [IndexPath] {
+        let visibleIndexPaths = indexPathsForVisibleItems
+        
+        return visibleIndexPaths.filter { indexPath in
+            return isCellAtIndexPathFullyVisible(indexPath)
+        }
+    }
 }

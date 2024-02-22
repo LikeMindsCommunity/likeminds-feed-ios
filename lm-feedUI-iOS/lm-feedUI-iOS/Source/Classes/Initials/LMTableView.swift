@@ -55,6 +55,10 @@ public extension UITableView {
         
         return max(0, min(1, percentOfIntersection)) // Ensure the percentage is between 0 and 1
     }
+    
+    func hasRowAtIndexPath(indexPath: IndexPath) -> Bool {
+        return indexPath.section < self.numberOfSections && indexPath.row < self.numberOfRows(inSection: indexPath.section)
+    }
 }
 
 public class LMTableView: UITableView {

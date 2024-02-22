@@ -14,7 +14,7 @@ public struct LMStringConstants {
     
     public var appName = "LM Feed"
     public var genericErrorMessage = "Something went wrong!"
-    public var maxUploadSizeErrorMessage = "Max Upload Size is %d"
+    public var maxUploadSizeErrorMessage = "Max Upload Size is %d MB"
     public var doneText = "Done"
     public var oKText = "OK"
     

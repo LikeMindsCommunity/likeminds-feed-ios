@@ -43,7 +43,7 @@ open class LMFeedAddMediaPreview: LMView {
     open private(set) lazy var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .medium)
         indicator.translatesAutoresizingMaskIntoConstraints = false
-        indicator.tintColor = Appearance.shared.colors.gray102
+        indicator.tintColor = Appearance.shared.colors.gray51
         return indicator
     }()
     

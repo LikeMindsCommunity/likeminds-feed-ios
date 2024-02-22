@@ -149,7 +149,10 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
                 
         setupPostText(text: data.postText, showMore: data.isShowMore)
         
-        topicFeed.configure(with: data.topics)
+        topicFeed.configure(with: data.topics) { [weak self] height in
+            self?.topicHeightConstraint?.constant = height
+        }
+        
         topicFeed.isHidden = data.topics.topics.isEmpty
                 
         documentContainerStack.removeAllArrangedSubviews()

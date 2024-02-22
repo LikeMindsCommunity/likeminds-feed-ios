@@ -53,21 +53,18 @@ open class LMFeedTopicSelectionCell: LMTableViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
+        contentView.pinSubView(subView: containerView)
+        tickButton.setHeightConstraint(with: 24)
+        tickButton.setWidthConstraint(with: tickButton.heightAnchor)
+        
         NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
             topicLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
             topicLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
             topicLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -16),
             
             tickButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
             tickButton.centerYAnchor.constraint(equalTo: topicLabel.centerYAnchor),
-            tickButton.leadingAnchor.constraint(greaterThanOrEqualTo: topicLabel.trailingAnchor, constant: 16),
-            tickButton.heightAnchor.constraint(equalToConstant: 24),
-            tickButton.widthAnchor.constraint(equalTo: tickButton.heightAnchor, multiplier: 1)
+            tickButton.leadingAnchor.constraint(greaterThanOrEqualTo: topicLabel.trailingAnchor, constant: 16)
         ])
     }
     

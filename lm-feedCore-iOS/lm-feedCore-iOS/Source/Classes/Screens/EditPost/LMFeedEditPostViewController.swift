@@ -262,15 +262,15 @@ extension LMFeedEditPostViewController: UICollectionViewDataSource, UICollection
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         collectionView.frame.size
     }
-    
-    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+    open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         mediaCollectionView.visibleCells.forEach { cell in
             (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
         }
     }
     
     open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if decelerate {
+        if !decelerate {
             scrollingFinished()
         }
     }

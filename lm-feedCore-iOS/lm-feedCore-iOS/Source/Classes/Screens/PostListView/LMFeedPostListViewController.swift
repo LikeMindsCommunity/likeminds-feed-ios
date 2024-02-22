@@ -136,8 +136,11 @@ open class LMFeedPostListViewController: LMViewController, LMFeedPostListViewMod
     }
     
     open func reloadTable(for index: IndexSet? = nil) {
+        tableView.visibleCells.forEach { cell in
+            (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
+        }
+        
         tableView.reloadTableForSection(for: index)
-        scrollingFinished()
     }
     
     
@@ -303,10 +306,11 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
     }
 
     func scrollingFinished() {
-        tableView.visibleCells.forEach { cell in
+        for cell in tableView.visibleCells {
             if type(of: cell) == LMFeedPostMediaCell.self,
-               tableView.percentVisibility(of: cell) == 1 {
+               tableView.percentVisibility(of: cell) >= 0.8 {
                 (cell as? LMFeedPostMediaCell)?.tableViewScrolled(isPlay: true)
+                break
             }
         }
     }

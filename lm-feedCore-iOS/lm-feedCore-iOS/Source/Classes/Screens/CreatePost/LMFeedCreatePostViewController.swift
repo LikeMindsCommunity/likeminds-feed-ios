@@ -414,15 +414,15 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: collectionView.frame.width, height: collectionView.frame.width)
     }
-    
-    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+    open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         mediaCollectionView.visibleCells.forEach { cell in
             (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
         }
     }
     
     open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if decelerate {
+        if !decelerate {
             scrollingFinished()
         }
     }
@@ -434,8 +434,10 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
     public func scrollingFinished() {
         mediaPageControl.currentPage = Int(mediaCollectionView.contentOffset.x / mediaCollectionView.frame.width)
         
-        if mediaCollectionView.visibleCells.count == 1 {
-            (mediaCollectionView.visibleCells.first as? LMFeedVideoCollectionCell)?.playVideo()
+        let visibleCount = mediaCollectionView.indexPathsForFullyVisibleItems()
+        if visibleCount.count == 1,
+           let index = visibleCount.first {
+            (mediaCollectionView.cellForItem(at: index) as? LMFeedVideoCollectionCell)?.playVideo()
         }
     }
 }
@@ -484,11 +486,13 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
     public func showMedia(media: [LMFeedMediaProtocol], isShowAddMore: Bool, isShowBottomTab: Bool) {
         linkPreview.isHidden = true
         mediaCollectionView.isHidden = media.isEmpty
-        mediaPageControl.isHidden = media.count < 1
+        mediaPageControl.isHidden = media.count < 2
         mediaPageControl.numberOfPages = media.count
         mediaCellData.append(contentsOf: media)
         mediaCollectionView.reloadData()
-        scrollingFinished()
+        DispatchQueue.main.async { [weak self] in
+            self?.scrollingFinished()
+        }
         addMoreButton.isHidden = !isShowAddMore
         addMediaStack.isHidden = !isShowBottomTab
         
@@ -578,6 +582,10 @@ public extension LMFeedCreatePostViewController {
         imagePicker.settings.theme.selectionStyle = .numbered
         imagePicker.settings.fetch.assets.supportedMediaTypes = isFirstTime ? [mediaType] : [.image, .video]
         imagePicker.settings.selection.unselectOnReachingMax = false
+        
+        mediaCollectionView.visibleCells.forEach { cell in
+            (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
+        }
         
         presentImagePicker(imagePicker, select: { asset in
             asset.asyncURL { url in

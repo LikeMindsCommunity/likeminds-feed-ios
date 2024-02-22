@@ -127,7 +127,10 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
         self.actionDelegate = delegate
         postURL = data.mediaData.url
         
-        topicFeed.configure(with: data.topics)
+        topicFeed.configure(with: data.topics) { [weak self] height in
+            self?.topicHeightConstraint?.constant = height
+        }
+        
         topicFeed.isHidden = data.topics.topics.isEmpty
         
         setupPostText(text: data.postText, showMore: data.isShowMore)

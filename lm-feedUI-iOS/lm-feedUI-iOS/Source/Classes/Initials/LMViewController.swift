@@ -129,13 +129,7 @@ open class LMViewController: UIViewController {
         stackView.distribution = .fillProportionally
         
         titleView.addSubview(stackView)
-        
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: titleView.leadingAnchor),
-            stackView.topAnchor.constraint(equalTo: titleView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: titleView.bottomAnchor),
-            stackView.trailingAnchor.constraint(equalTo: titleView.trailingAnchor)
-        ])
+        titleView.pinSubView(subView: stackView, padding: .init(top: 2, left: 0, bottom: -2, right: 0))
         
         if let title,
            !title.isEmpty {

@@ -128,6 +128,7 @@ open class LMFeedPostDetailViewController: LMViewController {
     public var textInputMaximumHeight: CGFloat = 100
     public var viewModel: LMFeedPostDetailViewModel?
     public var isCommentingEnabled: Bool = LocalPreferences.memberState?.memberRights?.contains(where: { $0.state == .commentOrReplyOnPost }) ?? false
+    public var frozenContentOffsetForRowAnimation: CGPoint?
     
     // MARK: setupViews
     open override func setupViews() {
@@ -236,6 +237,11 @@ open class LMFeedPostDetailViewController: LMViewController {
     @objc
     open func pullToRefresh(_ refreshControl: UIRefreshControl) {
         refreshControl.endRefreshing()
+        
+        tableView.visibleCells.forEach { cell in
+            (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
+        }
+        
         viewModel?.getPost(isInitialFetch: true)
     }
     
@@ -315,6 +321,12 @@ open class LMFeedPostDetailViewController: LMViewController {
         tableView.reloadTable(for: index)
         scrollingFinished()
     }
+    
+    public func setNavigationTitle(with commentCount: Int) {
+        setNavigationTitleAndSubtitle(with: "Post",
+                                      subtitle: "\(commentCount) comment\(commentCount == 1 ? "" : "s")",
+                                      alignment: .center)
+    }
 }
 
 // MARK: Keyboard Extension
@@ -337,8 +349,7 @@ extension LMFeedPostDetailViewController {
 
 // MARK: UITableViewDataSource, UITableViewDelegate
 @objc
-extension LMFeedPostDetailViewController: UITableViewDataSource,
-                                          UITableViewDelegate {
+extension LMFeedPostDetailViewController: UITableViewDataSource, UITableViewDelegate {
     open func numberOfSections(in tableView: UITableView) -> Int {
         guard postData != nil else { return .zero }
         return cellsData.count + 1
@@ -367,14 +378,10 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
                 cell.configure(for: indexPath, with: data, delegate: self)
                 return cell
             }
-        } else if var data = cellsData[safe: indexPath.section - 1],
+        } else if let data = cellsData[safe: indexPath.section - 1],
                   let cell = tableView.dequeueReusableCell(LMUIComponents.shared.commentCell) {
             let comment = data.replies[indexPath.row]
-            cell.configure(with: comment, delegate: self, indexPath: indexPath) { [weak self] in
-                data.replies[indexPath.row].isShowMore.toggle()
-                self?.cellsData[indexPath.section - 1] = data
-                self?.reloadTable(for: indexPath)
-            }
+            cell.configure(with: comment, delegate: self, indexPath: indexPath)
             return cell
         }
         
@@ -439,11 +446,15 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
     }
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if type(of: scrollView) is UITableView.Type {
-            view.endEditing(true)
+        if let overrideOffset = frozenContentOffsetForRowAnimation, tableView.contentOffset != overrideOffset {
+            tableView.setContentOffset(overrideOffset, animated: false)
         }
-        for case let cell as LMFeedPostMediaCell in tableView.visibleCells {
-            cell.tableViewScrolled()
+    }
+    
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        frozenContentOffsetForRowAnimation = nil
+        tableView.visibleCells.forEach { cell in
+            (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
         }
     }
     
@@ -469,8 +480,8 @@ extension LMFeedPostDetailViewController: UITableViewDataSource,
 
     func scrollingFinished() {
         tableView.visibleCells.forEach { cell in
-            if type(of: cell) == LMFeedPostMediaCell.self,
-               tableView.percentVisibility(of: cell) == 1 {
+            if type(of: cell) == LMFeedPostDetailMediaCell.self,
+               tableView.percentVisibility(of: cell) >= 0.8 {
                 (cell as? LMFeedPostMediaCell)?.tableViewScrolled(isPlay: true)
             }
         }
@@ -522,15 +533,59 @@ extension LMFeedPostDetailViewController: LMChatPostCommentProtocol {
 
 // MARK: LMFeedPostDetailViewModelProtocol
 extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
+    public func deleteRows(for section: Int, comments: [LMFeedPostDetailCommentCellViewModel]) {
+        cellsData = comments
+        if section < tableView.numberOfSections {
+            let originalContentOffset = tableView.contentOffset
+            var rows: [IndexPath] = []
+            for i in 0..<tableView.numberOfRows(inSection: section) {
+                rows.append(.init(row: i, section: section))
+            }
+            
+            tableView.beginUpdates()
+            tableView.deleteRows(at: rows, with: .none)
+            tableView.endUpdates()
+            
+            if tableView.contentOffset != originalContentOffset {
+                frozenContentOffsetForRowAnimation = tableView.contentOffset
+            }
+        }
+    }
+    
+    public func insertComment(at index: IndexSet, with comments: [LikeMindsFeedUI.LMFeedPostDetailCommentCellViewModel], totalCommentCount: Int) {
+        cellsData = comments
+        setNavigationTitle(with: totalCommentCount)
+        (tableView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.updateCommentCount(with: totalCommentCount)
+        tableView.beginUpdates()
+        tableView.insertSections(index, with: .none)
+        tableView.endUpdates()
+    }
+    
+    public func deleteComment(at index: Int, with comments: [LikeMindsFeedUI.LMFeedPostDetailCommentCellViewModel], totalCommentCount: Int) {
+        cellsData = comments
+        setNavigationTitle(with: totalCommentCount)
+        (tableView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.updateCommentCount(with: totalCommentCount)
+        tableView.beginUpdates()
+        tableView.deleteSections(IndexSet(integer: index), with: .none)
+        tableView.endUpdates()
+    }
+    
+    public func reloadComments(with comments: [LMFeedPostDetailCommentCellViewModel], index: IndexSet?) {
+        cellsData = comments
+        
+        let indexSet = IndexSet(integersIn: 1..<tableView.numberOfSections)
+        UIView.performWithoutAnimation { [weak self] in
+            self?.tableView.reloadSections(indexSet, with: .none)
+        }
+    }
+    
     public func navigateToEditPost(for postID: String) {
         guard let viewcontroller = LMFeedEditPostViewModel.createModule(for: postID) else { return }
         navigationController?.pushViewController(viewcontroller, animated: true)
     }
     
     public func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostDetailCommentCellViewModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool) {
-        setNavigationTitleAndSubtitle(with: "Post",
-                                      subtitle: "\(comments.count) comment\(comments.count == 1 ? "" : "s")",
-                                      alignment: .center)
+        setNavigationTitle(with: post.totalCommentCount)
         showHideLoaderView(isShow: false)
         
         self.postData = post

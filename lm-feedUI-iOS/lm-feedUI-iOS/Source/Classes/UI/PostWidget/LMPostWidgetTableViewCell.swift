@@ -75,6 +75,7 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     public weak var actionDelegate: LMPostWidgetTableViewCellProtocol?
     public var userUUID: String?
     public var postID: String?
+    public var topicHeightConstraint: NSLayoutConstraint?
     
     deinit {
         print(#file)
@@ -85,7 +86,7 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
         super.setupLayouts()
         
         topicFeed.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        topicFeed.setHeightConstraint(with: 10, priority: .defaultLow)
+        topicHeightConstraint = topicFeed.setHeightConstraint(with: 10)
         postText.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         postText.setHeightConstraint(with: 10, priority: .defaultLow)
         seeMoreButton.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)

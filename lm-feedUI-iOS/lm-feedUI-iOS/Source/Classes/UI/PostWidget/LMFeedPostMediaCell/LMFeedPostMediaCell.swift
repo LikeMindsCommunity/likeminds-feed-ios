@@ -150,8 +150,9 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         }
         
         if isPlay,
-           mediaCollectionView.visibleCells.count == 1 {
-            (mediaCollectionView.visibleCells.first as? LMFeedVideoCollectionCell)?.playVideo()
+           mediaCollectionView.indexPathsForFullyVisibleItems().count == 1,
+           let visibleIndex = mediaCollectionView.indexPathsForFullyVisibleItems().first {
+            (mediaCollectionView.cellForItem(at: visibleIndex) as? LMFeedVideoCollectionCell)?.playVideo()
         }
     }
     
@@ -164,7 +165,10 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         
         setupPostText(text: data.postText, showMore: data.isShowMore)
         
-        topicFeed.configure(with: data.topics)
+        topicFeed.configure(with: data.topics) { [weak self] height in
+            self?.topicHeightConstraint?.constant = height
+        }
+        
         topicFeed.isHidden = data.topics.topics.isEmpty
         
         mediaCellsData = data.mediaData
@@ -177,6 +181,8 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         
         pageControl.isHidden = mediaCellsData.count < 2
         pageControl.numberOfPages = mediaCellsData.count
+        
+        tableViewScrolled()
     }
 }
 
@@ -223,7 +229,7 @@ extension LMFeedPostMediaCell: UICollectionViewDataSource,
     }
     
     open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        (cell as? LMFeedVideoCollectionCell)?.unload()
+        (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
     }
     
     public func scrollingFinished() {

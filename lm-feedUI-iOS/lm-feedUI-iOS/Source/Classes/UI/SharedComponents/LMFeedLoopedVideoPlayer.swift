@@ -22,21 +22,17 @@ public final class LMFeedLoopedVideoPlayer: UIView {
             self.queuePlayer = AVQueuePlayer(playerItem: playerItem)
             self.playerLayer = AVPlayerLayer(player: self.queuePlayer)
             
-            if let queuePlayer {
+            if let queuePlayer,
+               let playerLayer {
                 self.playbackLooper = AVPlayerLooper.init(player: queuePlayer, templateItem: playerItem)
+                playerLayer.videoGravity = .resizeAspectFill
+                playerLayer.frame = self.frame
+                self.layer.addSublayer(playerLayer)
             }
         }
-        
-        guard let playerLayer else { return }
-        
-        playerLayer.videoGravity = .resizeAspectFill
-        playerLayer.frame = self.frame
-        self.layer.addSublayer(playerLayer)
-        
-        play()
     }
     
-   func play() {
+    func play() {
         self.queuePlayer?.play()
     }
     
@@ -50,14 +46,13 @@ public final class LMFeedLoopedVideoPlayer: UIView {
     }
     
     func unload() {
-        print(#function, #file)
         self.playerLayer?.removeFromSuperlayer()
         queuePlayer?.replaceCurrentItem(with: nil)
         self.playerLayer = nil
         self.queuePlayer = nil
         self.playbackLooper = nil
     }
-        
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)

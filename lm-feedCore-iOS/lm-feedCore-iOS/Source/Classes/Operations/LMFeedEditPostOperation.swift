@@ -25,7 +25,8 @@ final class LMFeedEditPostOperation {
             if response.success,
                let data = response.data?.post,
                let users = response.data?.users,
-               let post = LMFeedPostDataModel(post: data, users: users, allTopics: []) {
+               
+               let post = LMFeedPostDataModel(post: data, users: users, allTopics: response.data?.topics?.compactMap({ $0.value }) ?? []) {
                 NotificationCenter.default.post(name: .LMPostEdited, object: post)
             } else {
                 NotificationCenter.default.post(name: .LMPostEditError, object: LMFeedError.postEditFailed(error: response.errorMessage))

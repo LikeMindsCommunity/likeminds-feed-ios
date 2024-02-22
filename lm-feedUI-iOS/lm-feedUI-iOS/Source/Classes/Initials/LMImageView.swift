@@ -9,7 +9,7 @@ import Kingfisher
 import UIKit
 
 @IBDesignable
-public class LMImageView: AnimatedImageView { 
+public class LMImageView: UIImageView { 
     open func translatesAutoresizingMaskIntoConstraints() -> Self {
         translatesAutoresizingMaskIntoConstraints = false
         return self

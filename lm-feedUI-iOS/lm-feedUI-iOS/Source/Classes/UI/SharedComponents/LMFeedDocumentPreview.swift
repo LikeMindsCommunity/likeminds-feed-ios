@@ -83,6 +83,7 @@ open class LMFeedDocumentPreview: LMView {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Title Text"
         label.font = Appearance.shared.fonts.headingFont1
+        label.lineBreakMode = .byTruncatingTail
         label.textColor = Appearance.shared.colors.gray102
         return label
     }()
@@ -90,6 +91,7 @@ open class LMFeedDocumentPreview: LMView {
     open private(set) lazy var subtitleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Subtitle Text"
+        label.lineBreakMode = .byTruncatingTail
         label.font = Appearance.shared.fonts.subHeadingFont2
         label.textColor = Appearance.shared.colors.gray102
         return label

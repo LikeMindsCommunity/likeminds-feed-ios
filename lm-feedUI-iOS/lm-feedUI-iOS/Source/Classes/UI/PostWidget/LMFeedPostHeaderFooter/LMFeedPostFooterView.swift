@@ -155,7 +155,6 @@ open class LMFeedPostFooterView: LMTableViewHeaderFooterView {
         self.delegate = delegate
         
         likeButton.isSelected = data.isLiked
-//        likeButton.setImage(data.isLiked ? Constants.shared.images.heartFilled : Constants.shared.images.heart , for: .normal)
         likeButton.tintColor = data.isLiked ? Appearance.shared.colors.red : Appearance.shared.colors.gray2
         
         likeTextButton.setTitle(getLikeText(for: data.likeCount), for: .normal)

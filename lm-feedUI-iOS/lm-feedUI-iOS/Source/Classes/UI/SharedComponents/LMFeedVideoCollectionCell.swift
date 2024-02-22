@@ -94,6 +94,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     @objc
     open func didTapCrossButton() {
         guard let videoURL else { return }
+        unload()
         crossButtonAction?(videoURL.absoluteString)
     }
     
@@ -111,8 +112,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     }
     
     open func playVideo() {
-        guard let videoURL else { return }
-        videoPlayer.prepareVideo(videoURL)
+        videoPlayer.play()
     }
     
     open func pauseVideo() {

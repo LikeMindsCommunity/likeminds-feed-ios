@@ -59,7 +59,7 @@ open class LMFeedTopicSelectionViewController: LMViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Appearance.shared.colors.backgroundColor
-        setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: nil)
+        setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: nil, alignment: .center)
         viewModel?.getTopics(for: searchController.searchBar.text, isFreshSearch: true)
     }
     
@@ -152,9 +152,9 @@ extension LMFeedTopicSelectionViewController: LMFeedTopicSelectionViewModelProto
         tableView.reloadData()
         
         if selectedCount == .zero {
-            setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: nil)
+            setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: nil, alignment: .center)
         } else {
-            setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: "\(selectedCount) Selected")
+            setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: "\(selectedCount) Selected", alignment: .center)
         }
     }
     
