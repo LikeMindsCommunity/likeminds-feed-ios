@@ -36,7 +36,7 @@ final public class LMFeedPostDetailViewModel {
     public var pageSize: Int
     public var isFetchingData: Bool
     public var isDataAvailable: Bool
-    public var postDetail: LMFeedPostDataModel?
+    public var postDetail: LMFeedPostDataModel? 
     public var commentList: [LMFeedCommentDataModel]
     public var replyToComment:  LMFeedCommentDataModel?
     public var editCommentIndex: (commentID: String, indexPath: IndexPath)?
@@ -272,7 +272,7 @@ public extension LMFeedPostDetailViewModel {
             } ?? []
             
             newComments.forEach { newComment in
-                if !self.commentList[index].replies.contains(where: { $0.commentID == newComment.commentID }) {
+                if !self.commentList[index].replies.contains(where: { $0.commentID == newComment.commentID || $0.temporaryCommentID == newComment.temporaryCommentID }) {
                     self.commentList[index].replies.append(newComment)
                 }
             }
@@ -416,7 +416,7 @@ public extension LMFeedPostDetailViewModel {
             
             if let idx = commentList.firstIndex(where: { $0.temporaryCommentID == localComment.temporaryCommentID }) {
                 commentList[idx] = newComment
-                updateCommentSection()
+                updateCommentSection(index: IndexSet(integer: idx + 1))
                 notifyObjectChange()
             }
         }
@@ -441,7 +441,7 @@ public extension LMFeedPostDetailViewModel {
             if let idx = commentList.firstIndex(where: { $0.commentID == commentID }),
                let tempIdx = commentList[idx].replies.firstIndex(where: { $0.temporaryCommentID == localComment.temporaryCommentID }) {
                 commentList[idx].replies[tempIdx] = newComment
-                updateCommentSection()
+                updateCommentSection(index: IndexSet(integer: idx + 1))
             }
         }
     }

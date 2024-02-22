@@ -117,7 +117,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     }()
     
     open private(set) lazy var addMoreButton: LMButton = {
-        let button = LMButton.createButton(with: LMStringConstants.shared.addMoreText, image: Constants.shared.images.plusIcon, textColor: Appearance.shared.colors.appTintColor, textFont: Appearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 4, left: 8, bottom: 4, right: 8))
+        let button = LMButton.createButton(with: LMStringConstants.shared.addMoreText, image: Constants.shared.images.plusIcon, textColor: Appearance.shared.colors.appTintColor, textFont: Appearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 16, bottom: 8, right: 16))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = Appearance.shared.colors.appTintColor
         button.layer.borderColor = Appearance.shared.colors.appTintColor.cgColor
@@ -181,6 +181,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     
     public var taggingViewHeight: NSLayoutConstraint?
     public var inputTextViewHeightConstraint: NSLayoutConstraint?
+    public var textInputMinimumHeight: CGFloat = 80
     public var textInputMaximumHeight: CGFloat = 150
     
     public var mediaCellData: [LMFeedMediaProtocol] = []
@@ -247,7 +248,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         taggingView.bottomAnchor.constraint(lessThanOrEqualTo: scrollStackView.bottomAnchor, constant: -16).isActive = true
         taggingViewHeight = taggingView.setHeightConstraint(with: 10)
         
-        inputTextViewHeightConstraint = inputTextView.setHeightConstraint(with: 40)
+        inputTextViewHeightConstraint = inputTextView.setHeightConstraint(with: textInputMinimumHeight)
         
         documenTableHeight = documentTableView.setHeightConstraint(with: documentCellHeight)
         scrollView.setWidthConstraint(with: containerStackView.widthAnchor)
@@ -268,7 +269,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        taggingView.dropShadow(color: .red, offSet: .init(width: 1, height: 1))
+//        taggingView.dropShadow(color: .black.withAlphaComponent(0.1), offSet: .init(width: 1, height: 1))
     }
     
     // MARK: setupActions
@@ -564,7 +565,7 @@ extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
         let newSize = inputTextView.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
         
         inputTextView.isScrollEnabled = newSize.height > textInputMaximumHeight
-        inputTextViewHeightConstraint?.constant = min(newSize.height, textInputMaximumHeight)
+        inputTextViewHeightConstraint?.constant = min(max(newSize.height, textInputMinimumHeight), textInputMaximumHeight)
         
         viewModel?.handleLinkDetection(in: inputTextView.text)
         observeCreateButton()

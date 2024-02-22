@@ -16,7 +16,7 @@ public protocol LMFeedPostTableCellProtocol {
     var isShowMore: Bool { get set }
     var topics: LMFeedTopicView.ViewModel { get }
     var footerData: LMFeedPostFooterView.ViewModel { get set }
-    var totalCommentCount: Int { get }
+    var totalCommentCount: Int { get set }
 }
 
 // MARK: LMPostWidgetTableViewCellProtocol
@@ -75,18 +75,15 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     public weak var actionDelegate: LMPostWidgetTableViewCellProtocol?
     public var userUUID: String?
     public var postID: String?
-    public var topicHeightConstraint: NSLayoutConstraint?
     
-    deinit {
-        print(#file)
-    }
+    deinit { }
     
     // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
         
         topicFeed.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        topicHeightConstraint = topicFeed.setHeightConstraint(with: 10)
+        topicFeed.setHeightConstraint(with: 10, priority: .defaultLow)
         postText.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         postText.setHeightConstraint(with: 10, priority: .defaultLow)
         seeMoreButton.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)

@@ -63,7 +63,7 @@ open class LMFeedNotificationView: LMTableViewCell {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = Appearance.shared.fonts.headingFont3
         label.textColor = Appearance.shared.colors.black
-        label.numberOfLines = 0
+        label.numberOfLines = 4
         return label
     }()
     
@@ -163,7 +163,7 @@ open class LMFeedNotificationView: LMTableViewCell {
         timeLabel.text = data.time
         userImage.kf.setImage(with: URL(string: data.user.userProfileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.user.userName))
         mediaImage.image = Constants.Images.loadSystemImage(with: data.mediaImage ?? "")
-        mediaImage.isHidden = data.mediaImage?.isEmpty != false
+        mediaContainerView.isHidden = data.mediaImage?.isEmpty != false
         
         containerView.backgroundColor = data.isRead ? Appearance.shared.colors.white : Appearance.shared.colors.notificationBackgroundColor
     }

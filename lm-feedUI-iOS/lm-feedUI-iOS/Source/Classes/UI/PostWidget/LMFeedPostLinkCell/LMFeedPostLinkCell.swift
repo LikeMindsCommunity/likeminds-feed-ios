@@ -60,9 +60,7 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
     open weak var delegate: LMChatLinkProtocol?
     public var postURL: String?
     
-    deinit {
-        print(#file, "Deinit Called")
-    }
+    deinit { }
     
     open override func prepareForReuse() {
         super.prepareForReuse()
@@ -127,9 +125,7 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
         self.actionDelegate = delegate
         postURL = data.mediaData.url
         
-        topicFeed.configure(with: data.topics) { [weak self] height in
-            self?.topicHeightConstraint?.constant = height
-        }
+        topicFeed.configure(with: data.topics)
         
         topicFeed.isHidden = data.topics.topics.isEmpty
         

@@ -78,9 +78,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     //MARK: Data Variables
     private var mediaCellsData: [LMFeedMediaProtocol] = []
     
-    deinit {
-        print(#file, "Deinit Called")
-    }
+    deinit { }
     
     open override func prepareForReuse() {
         print("Media Cell is Dequeued")
@@ -164,10 +162,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         userUUID = data.userUUID
         
         setupPostText(text: data.postText, showMore: data.isShowMore)
-        
-        topicFeed.configure(with: data.topics) { [weak self] height in
-            self?.topicHeightConstraint?.constant = height
-        }
+        topicFeed.configure(with: data.topics)
         
         topicFeed.isHidden = data.topics.topics.isEmpty
         

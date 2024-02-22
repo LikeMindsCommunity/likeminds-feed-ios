@@ -20,6 +20,7 @@ open class LMFeedNotificationViewController: LMViewController {
         table.rowHeight = UITableView.automaticDimension
         table.dataSource = self
         table.delegate = self
+        table.prefetchDataSource = self
         table.separatorStyle = .none
         return table
     }()
@@ -59,7 +60,6 @@ open class LMFeedNotificationViewController: LMViewController {
     
     @objc
     open func pullToRefresh(_ refreshControl: UIRefreshControl) {
-        refreshControl.endRefreshing()
         viewModel?.getNotifications(isInitialFetch: true)
     }
     
@@ -84,11 +84,19 @@ open class LMFeedNotificationViewController: LMViewController {
             }
         }
     }
+    
+    open override func showHideLoaderView(isShow: Bool, backgroundColor: UIColor) {
+        if isShow {
+            refreshControl.beginRefreshing()
+        } else {
+            refreshControl.endRefreshing()
+        }
+    }
 }
 
 
 // MARK: UITableView
-extension LMFeedNotificationViewController: UITableViewDataSource, UITableViewDelegate {
+extension LMFeedNotificationViewController: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         cellsData.count
     }
@@ -105,10 +113,15 @@ extension LMFeedNotificationViewController: UITableViewDataSource, UITableViewDe
         return UITableViewCell()
     }
     
-    open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == cellsData.count - 1 {
+    open func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        let count = cellsData.count
+        if !indexPaths.filter({ $0.row > count }).isEmpty {
             viewModel?.getNotifications(isInitialFetch: false)
         }
+    }
+    
+    open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
     }
 }
 

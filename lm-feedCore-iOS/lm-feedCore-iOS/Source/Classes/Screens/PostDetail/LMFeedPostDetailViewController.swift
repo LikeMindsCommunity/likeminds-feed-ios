@@ -16,10 +16,12 @@ open class LMFeedPostDetailViewController: LMViewController {
         table.separatorStyle = .none
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
-        table.estimatedRowHeight = 100
+        table.estimatedRowHeight = 1
         table.rowHeight = UITableView.automaticDimension
         table.estimatedSectionHeaderHeight = 1
         table.sectionHeaderHeight = UITableView.automaticDimension
+        table.estimatedSectionFooterHeight = 1
+        table.sectionFooterHeight = UITableView.automaticDimension
         table.dataSource = self
         table.delegate = self
         table.register(LMUIComponents.shared.postDetailMediaCell)
@@ -302,6 +304,7 @@ open class LMFeedPostDetailViewController: LMViewController {
         replyView.isHidden = true
         viewModel?.getMemberState()
         viewModel?.getPost(isInitialFetch: true)
+        inputTextView.addDoneButtonOnKeyboard()
         showHideLoaderView(isShow: true)
     }
     
@@ -446,8 +449,9 @@ extension LMFeedPostDetailViewController: UITableViewDataSource, UITableViewDele
     }
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if let overrideOffset = frozenContentOffsetForRowAnimation, tableView.contentOffset != overrideOffset {
-            tableView.setContentOffset(overrideOffset, animated: false)
+        if let frozenContentOffsetForRowAnimation,
+            tableView.contentOffset != frozenContentOffsetForRowAnimation {
+            tableView.setContentOffset(frozenContentOffsetForRowAnimation, animated: false)
         }
     }
     
@@ -542,40 +546,65 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
                 rows.append(.init(row: i, section: section))
             }
             
-            tableView.beginUpdates()
-            tableView.deleteRows(at: rows, with: .none)
-            tableView.endUpdates()
-            
-            if tableView.contentOffset != originalContentOffset {
-                frozenContentOffsetForRowAnimation = tableView.contentOffset
+            UIView.performWithoutAnimation { [weak self] in
+                self?.tableView.beginUpdates()
+                self?.tableView.deleteRows(at: rows, with: .none)
+                self?.tableView.endUpdates()
             }
+            
+//            if tableView.contentOffset != originalContentOffset {
+                frozenContentOffsetForRowAnimation = tableView.contentOffset
+//            }
         }
     }
     
     public func insertComment(at index: IndexSet, with comments: [LikeMindsFeedUI.LMFeedPostDetailCommentCellViewModel], totalCommentCount: Int) {
         cellsData = comments
         setNavigationTitle(with: totalCommentCount)
+        postData?.totalCommentCount = totalCommentCount
         (tableView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.updateCommentCount(with: totalCommentCount)
-        tableView.beginUpdates()
-        tableView.insertSections(index, with: .none)
-        tableView.endUpdates()
+        UIView.performWithoutAnimation { [weak self] in
+            self?.tableView.beginUpdates()
+            self?.tableView.setContentOffset(self?.tableView.contentOffset ?? .zero, animated: false)
+            self?.tableView.insertSections(index, with: .none)
+            self?.tableView.endUpdates()
+        }
+        
+        for idx in index {
+            tableView.scrollToRow(at: IndexPath(row: NSNotFound, section: idx), at: .top, animated: true)
+        }
     }
     
     public func deleteComment(at index: Int, with comments: [LikeMindsFeedUI.LMFeedPostDetailCommentCellViewModel], totalCommentCount: Int) {
         cellsData = comments
         setNavigationTitle(with: totalCommentCount)
         (tableView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.updateCommentCount(with: totalCommentCount)
-        tableView.beginUpdates()
-        tableView.deleteSections(IndexSet(integer: index), with: .none)
-        tableView.endUpdates()
+        UIView.performWithoutAnimation { [weak self] in
+            self?.tableView.beginUpdates()
+            self?.tableView.deleteSections(IndexSet(integer: index), with: .none)
+            self?.tableView.endUpdates()
+        }
     }
     
     public func reloadComments(with comments: [LMFeedPostDetailCommentCellViewModel], index: IndexSet?) {
         cellsData = comments
+        let originalContentOffset = tableView.contentOffset
+        if let index {
+            UIView.performWithoutAnimation { [weak self] in
+                self?.tableView.reloadSections(index, with: .none)
+            }
+        } else {
+            let indexSet = IndexSet(integersIn: 1..<tableView.numberOfSections)
+            UIView.performWithoutAnimation { [weak self] in
+                self?.tableView.beginUpdates()
+                self?.tableView.setContentOffset(self?.tableView.contentOffset ?? .zero, animated: false)
+                self?.tableView.reloadSections(indexSet, with: .none)
+                self?.tableView.endUpdates()
+            }
+        }
         
-        let indexSet = IndexSet(integersIn: 1..<tableView.numberOfSections)
-        UIView.performWithoutAnimation { [weak self] in
-            self?.tableView.reloadSections(indexSet, with: .none)
+        if tableView.contentOffset != originalContentOffset {
+            frozenContentOffsetForRowAnimation = originalContentOffset
         }
     }
     

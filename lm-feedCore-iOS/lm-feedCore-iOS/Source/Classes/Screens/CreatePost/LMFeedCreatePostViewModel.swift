@@ -179,10 +179,13 @@ extension LMFeedCreatePostViewModel {
     func handleLinkDetection(in text: String) {
         guard showLinkPreview,
               media.isEmpty,
-              currentMediaSelectionType == .none,
-              let link = text.detectLink() else {
+              currentMediaSelectionType == .none else {
             delegate?.setupLinkPreview(with: nil)
-            return }
+            return
+        }
+        
+        guard let link = text.detectLink(),
+              linkPreview?.url != link else { return }
         
         debounceForDecodeLink?.invalidate()
         

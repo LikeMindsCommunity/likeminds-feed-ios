@@ -61,19 +61,10 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
     }()
         
     open private(set) lazy var seeMoreDocumentsButton: LMButton = {
-        if #available(iOS 15, *) {
-            var btnConfig = UIButton.Configuration.plain()
-            btnConfig.baseForegroundColor = Appearance.shared.colors.appTintColor
-            btnConfig.contentInsets = .zero
-            return LMButton(configuration: btnConfig).translatesAutoresizingMaskIntoConstraints()
-        } else {
-            let button = LMButton().translatesAutoresizingMaskIntoConstraints()
-            button.contentEdgeInsets = .zero
-            button.setTitleColor(Appearance.shared.colors.appTintColor, for: .normal)
-            button.setTitle(nil, for: .normal)
-            button.setImage(nil, for: .normal)
-            return button
-        }
+        let button = LMButton.createButton(with: "See More", image: nil, textColor: Appearance.shared.colors.appTintColor, textFont: Appearance.shared.fonts.headingFont1, contentSpacing: .init(top: 8, left: 8, bottom: 8, right: 8))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = Appearance.shared.colors.appTintColor
+        return button
     }()
     
     
@@ -81,9 +72,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
     public weak var delegate: LMFeedPostDocumentCellProtocol?
     var indexPath: IndexPath?
     
-    deinit {
-        print(#file, "Deinit Called")
-    }
+    deinit { }
     
     open override func prepareForReuse() {
         super.prepareForReuse()
@@ -149,9 +138,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
                 
         setupPostText(text: data.postText, showMore: data.isShowMore)
         
-        topicFeed.configure(with: data.topics) { [weak self] height in
-            self?.topicHeightConstraint?.constant = height
-        }
+        topicFeed.configure(with: data.topics)
         
         topicFeed.isHidden = data.topics.topics.isEmpty
                 

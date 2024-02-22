@@ -98,19 +98,18 @@ open class LMFeedTopicView: LMView {
     
     
     // MARK: configure
-    open func configure(with data: ViewModel, heightConstriantUpdate: ((CGFloat) -> Void)?) {
+    open func configure(with data: ViewModel) {
         topics = data.topics
         isEditFlow = data.isEditFlow
         isSelectFlow = data.isSelectFlow
         sepratorView.isHidden = !data.isSepratorShown
         
         collectionView.reloadData()
-        
-        DispatchQueue.main.async { [weak self] in
-            guard let newHeight = self?.collectionView.intrinsicContentSize.height else { return }
-            heightConstriantUpdate?(newHeight)
-        }
         layoutIfNeeded()
+        
+        DispatchQueue.main.async {
+            print(self.collectionView.contentSize)
+        }
     }
 }
 
