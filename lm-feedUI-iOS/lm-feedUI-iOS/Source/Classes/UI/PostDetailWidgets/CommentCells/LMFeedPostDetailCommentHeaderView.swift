@@ -20,6 +20,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         label.textColor = Appearance.shared.colors.gray1
         label.font = Appearance.shared.fonts.headingFont3
         label.text = "Ronald Richards"
+        label.isUserInteractionEnabled = true
         return label
     }()
     
@@ -135,8 +136,8 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
     public var commentId: String?
     public var indexPath: IndexPath?
     public var likeCount: Int = 0
+    public var commentUserUUID: String?
     public var seeMoreAction: (() -> Void)?
-
     
     // MARK: setupViews
     open override func setupViews() {
@@ -199,6 +200,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         likeTextButton.addTarget(self, action: #selector(didTapLikeCountButton), for: .touchUpInside)
         replyButton.addTarget(self, action: #selector(didTapReplyButton), for: .touchUpInside)
         replyCountButton.addTarget(self, action: #selector(didTapReplyCountButton), for: .touchUpInside)
+        authorNameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCommentUser)))
     }
     
     @objc
@@ -274,6 +276,12 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         delegate?.didTapUserName(for: route)
     }
     
+    @objc
+    open func didTapCommentUser() {
+        guard let commentUserUUID else { return }
+        didTapRoute(route: commentUserUUID)
+    }
+    
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
@@ -293,6 +301,7 @@ open class LMFeedPostDetailCommentHeaderView: LMTableViewHeaderFooterView {
         self.delegate = delegate
         self.indexPath = indexPath
         self.likeCount = data.likeCount
+        self.commentUserUUID = data.author.userUUID
         self.seeMoreAction = seeMoreAction
         
         authorNameLabel.text = data.authorName

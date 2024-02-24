@@ -14,7 +14,8 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = Appearance.shared.colors.gray1
         label.font = Appearance.shared.fonts.headingFont3
-        label.text = "Ronald RichardsRonald RichardsRonald RichardsRonald RichardsRonald RichardsRonald RichardsRonald RichardsRonald RichardsRonald RichardsRonald RichardsRonald Richards"
+        label.text = "Ronald Richards"
+        label.isUserInteractionEnabled = true
         return label
     }()
     
@@ -105,8 +106,8 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
     public var userUUID: String?
     public var indexPath: IndexPath?
     public var likeCount: Int = 0
+    public var commentUserUUID: String?
     public var seeMoreAction: (() -> Void)?
-    
     
     // MARK: setupViews
     open override func setupViews() {
@@ -159,6 +160,7 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         likeTextButton.addTarget(self, action: #selector(didTapLikeCountButton), for: .touchUpInside)
         commentLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedTextView)))
+        authorNameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCommentUser)))
     }
     
     @objc
@@ -225,9 +227,16 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
     
     open func didTapHashTag(hashtag: String) { }
     
-    open func didTapRoute(route: String) { 
+    open func didTapRoute(route: String) {
         delegate?.didTapUserName(for: route)
     }
+    
+    @objc
+    open func didTapCommentUser() {
+        guard let commentUserUUID else { return }
+        didTapRoute(route: commentUserUUID)
+    }
+    
     
     // MARK: setupAppearance
     open override func setupAppearance() {
@@ -250,6 +259,7 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         self.userUUID = data.author.userUUID
         self.indexPath = indexPath
         self.seeMoreAction = seeMoreAction
+        self.commentUserUUID = data.author.userUUID
         self.likeCount = data.likeCount
         
         authorNameLabel.text = data.authorName

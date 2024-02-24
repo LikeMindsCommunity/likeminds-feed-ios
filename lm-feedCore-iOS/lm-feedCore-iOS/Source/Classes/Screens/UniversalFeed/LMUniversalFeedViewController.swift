@@ -112,6 +112,7 @@ open class LMUniversalFeedViewController: LMViewController {
     public var viewModel: LMUniversalFeedViewModel?
     public weak var feedListDelegate: LMFeedPostListVCToProtocol?
     public var createPostButtonWidth: NSLayoutConstraint?
+    public var lastVelocityYSign = 0
     
     // MARK: viewDidLoad
     open override func viewDidLoad() {
@@ -360,20 +361,26 @@ extension LMUniversalFeedViewController: LMFeedTopicViewCellProtocol {
 @objc
 extension LMUniversalFeedViewController: LMFeedPostListVCFromProtocol {
     open func tableViewScrolled(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y > .zero {
-            UIView.animate(withDuration: 0.2, delay: 1, options: .curveEaseIn) { [weak self] in
+        let currentVelocityY =  scrollView.panGestureRecognizer.velocity(in: scrollView.superview).y
+        let currentVelocityYSign = Int(currentVelocityY).signum()
+        if currentVelocityYSign != lastVelocityYSign &&
+            currentVelocityYSign != 0 {
+            lastVelocityYSign = currentVelocityYSign
+        }
+        
+        if lastVelocityYSign < 0,
+           createPostButtonWidth?.isActive != true {
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
                 self?.createPostButton.setTitle("", for: .normal)
-                self?.createPostButton.setContentInsets(with: .zero)
-                self?.createPostButton.setImageInsets(with: .zero)
                 self?.createPostButtonWidth?.isActive = true
-            }
-        } else {
-            UIView.animate(withDuration: 0.2, delay: 1, options: .curveEaseOut) { [weak self] in
+                self?.createPostButton.layoutIfNeeded()
+            }, completion: nil)
+        } else if lastVelocityYSign > 0 {
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
                 self?.createPostButton.setTitle("Create Post", for: .normal)
-                self?.createPostButton.setImageInsets(with: 8)
-                self?.createPostButton.setContentInsets(with: .init(top: 4, left: 8, bottom: 4, right: 8))
                 self?.createPostButtonWidth?.isActive = false
-            }
+                self?.createPostButton.layoutIfNeeded()
+            }, completion: nil)
         }
     }
     
