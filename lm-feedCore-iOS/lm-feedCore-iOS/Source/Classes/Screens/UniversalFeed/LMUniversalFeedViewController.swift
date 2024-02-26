@@ -375,7 +375,8 @@ extension LMUniversalFeedViewController: LMFeedPostListVCFromProtocol {
                 self?.createPostButtonWidth?.isActive = true
                 self?.createPostButton.layoutIfNeeded()
             }, completion: nil)
-        } else if lastVelocityYSign > 0 {
+        } else if lastVelocityYSign > 0,
+                  createPostButtonWidth?.isActive != false {
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
                 self?.createPostButton.setTitle("Create Post", for: .normal)
                 self?.createPostButtonWidth?.isActive = false

@@ -285,6 +285,10 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
         (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
     }
     
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        delegate?.tableViewScrolled(scrollView)
+    }
+    
     open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         tableView.visibleCells.forEach { cell in
             (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
@@ -292,7 +296,6 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
     }
     
     open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        delegate?.tableViewScrolled(scrollView)
         if !decelerate {
             scrollingFinished()
         }
