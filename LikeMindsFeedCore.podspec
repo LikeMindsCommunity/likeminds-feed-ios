@@ -7,9 +7,7 @@ Pod::Spec.new do |spec|
   spec.authors      = { 'Devansh Mohata' => 'devansh.mohata@likeminds.community' }
   spec.source       = { :git => 'https://github.com/LikeMindsCommunity/likeminds-feed-ios.git', :tag => spec.version }
   spec.source_files = 'lm-feedCore-iOS/lm-feedCore-iOS/Source/**/*.swift'
-  spec.resource_bundles = {
-     'LikeMindsFeedCore' => ['lm-feedCore-iOS/lm-feedCore-iOS/Source/**/*.{xcassets}']
-  }
+  
   spec.ios.deployment_target = '13.0'
   spec.swift_version = '5.0'
   spec.requires_arc = true
