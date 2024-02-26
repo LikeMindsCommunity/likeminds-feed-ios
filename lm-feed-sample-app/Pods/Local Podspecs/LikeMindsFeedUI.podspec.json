@@ -1,23 +1,23 @@
 {
   "name": "LikeMindsFeedUI",
-  "summary": "Masterpiece in Making",
+  "summary": "UI Components used in LikeMindsFeedCore",
   "homepage": "https://likeminds.community/",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": {
     "type": "MIT",
-    "file": "../LICENSE"
+    "file": "LICENSE"
   },
   "authors": {
     "Devansh Mohata": "devansh.mohata@likeminds.community"
   },
   "source": {
-    "git": "git@github.com:LikeMindsCommunity/likeminds-feed-ios.git",
-    "tag": "v0.1.0"
+    "git": "https://github.com/LikeMindsCommunity/likeminds-feed-ios.git",
+    "tag": "v1.0.0"
   },
-  "source_files": "lm-feedUI-iOS/Source/Classes/**/*.swift",
+  "source_files": "lm-feedUI-iOS/lm-feedUI-iOS/Source/Classes/**/*.swift",
   "resource_bundles": {
     "LikeMindsFeedUIAssets": [
-      "lm-feedUI-iOS/Source/Assets/*.{xcassets}"
+      "lm-feedUI-iOS/lm-feedUI-iOS/Source/Assets/*.{xcassets}"
     ]
   },
   "platforms": {

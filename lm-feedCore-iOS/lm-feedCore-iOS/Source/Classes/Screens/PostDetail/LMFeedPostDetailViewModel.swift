@@ -61,7 +61,7 @@ final public class LMFeedPostDetailViewModel {
         openCommentSection: Bool = false,
         scrollToCommentSection: Bool = false
     ) -> LMFeedPostDetailViewController? {
-        guard LMFeedMain.isInitialized else { return nil }
+        guard LMFeedCore.isInitialized else { return nil }
         let viewController = Components.shared.postDetailScreen.init()
         let viewModel: LMFeedPostDetailViewModel = .init(postID: postID, delegate: viewController, openCommentSection: openCommentSection, scrollToCommentSection: scrollToCommentSection)
         
@@ -411,7 +411,7 @@ public extension LMFeedPostDetailViewModel {
                   let user = response.data?.users?[comment.uuid ?? ""],
                   let newComment = LMFeedCommentDataModel.init(comment: comment, user: user) else { return }
             
-            LMFeedMain.analytics?.trackEvent(for: .commentPosted, eventProperties: ["post_id": postID,
+            LMFeedCore.analytics?.trackEvent(for: .commentPosted, eventProperties: ["post_id": postID,
                                                                                    "comment_id": newComment.commentID])
             
             if let idx = commentList.firstIndex(where: { $0.temporaryCommentID == localComment.temporaryCommentID }) {
@@ -431,7 +431,7 @@ public extension LMFeedPostDetailViewModel {
                   let newComment = LMFeedCommentDataModel.init(comment: comment, user: user),
             let (parentComment, _) = findCommentIndex(for: commentID, from: commentList) else { return }
             
-            LMFeedMain.analytics?.trackEvent(for: .commentReplyPosted, eventProperties: [
+            LMFeedCore.analytics?.trackEvent(for: .commentReplyPosted, eventProperties: [
                 "user_id": parentComment.userDetail.userUUID,
                 "post_id": postID,
                 "comment_id": commentID,
@@ -480,7 +480,7 @@ public extension LMFeedPostDetailViewModel {
             analyticProperties["comment_reply_id"] = commentID
         }
 
-        LMFeedMain.analytics?.trackEvent(for: eventName, eventProperties: analyticProperties)
+        LMFeedCore.analytics?.trackEvent(for: eventName, eventProperties: analyticProperties)
     }
     
     func deleteComment(for commentID: String, index: IndexPath, reason: String?) {
@@ -571,7 +571,7 @@ public extension LMFeedPostDetailViewModel {
                 alert.addAction(.init(title: menu.name, style: .default) { [weak self] _ in
                     self?.pinUnpinPost(postId: postID)
                     
-                    LMFeedMain.analytics?.trackEvent(for: postDetail.isPinned ? .postUnpinned : .postPinned, eventProperties: [
+                    LMFeedCore.analytics?.trackEvent(for: postDetail.isPinned ? .postUnpinned : .postPinned, eventProperties: [
                         "created_by_id": postDetail.userDetails.userUUID,
                         "post_id": postID,
                         "post_type": postDetail.getPostType()
@@ -585,7 +585,7 @@ public extension LMFeedPostDetailViewModel {
                 alert.addAction(.init(title: menu.name, style: .default) { [weak self] _ in
                     self?.delegate?.navigateToEditPost(for: postID)
                     
-                    LMFeedMain.analytics?.trackEvent(for: .postEdited, eventProperties: [
+                    LMFeedCore.analytics?.trackEvent(for: .postEdited, eventProperties: [
                         "post_id": postID,
                         "post_type": postDetail.getPostType()
                     ])
@@ -617,7 +617,7 @@ public extension LMFeedPostDetailViewModel {
             
             delegate?.presentAlert(with: alert, animated: true)
             
-            LMFeedMain.analytics?.trackEvent(for: .postDeleted, eventProperties: [
+            LMFeedCore.analytics?.trackEvent(for: .postDeleted, eventProperties: [
                 "user_state": "member",
                 "user_id": postDetail.userDetails.userUUID,
                 "post_id": postDetail.postId,
@@ -627,7 +627,7 @@ public extension LMFeedPostDetailViewModel {
             // State 1 means its a admin
             delegate?.navigateToDeleteScreen(for: postID, commentID: nil)
             
-            LMFeedMain.analytics?.trackEvent(for: .postDeleted, eventProperties: [
+            LMFeedCore.analytics?.trackEvent(for: .postDeleted, eventProperties: [
                 "user_state": "CM",
                 "user_id": postDetail.userDetails.userUUID,
                 "post_id": postDetail.postId,

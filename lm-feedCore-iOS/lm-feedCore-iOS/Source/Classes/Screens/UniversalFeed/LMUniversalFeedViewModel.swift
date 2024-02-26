@@ -30,7 +30,7 @@ public class LMUniversalFeedViewModel {
     }
     
     public static func createModule() -> LMUniversalFeedViewController? {
-        guard LMFeedMain.isInitialized else { return nil }
+        guard LMFeedCore.isInitialized else { return nil }
         let viewController = Components.shared.universalFeedViewController.init()
         let viewModel: LMUniversalFeedViewModel = .init(delegate: viewController)
         

@@ -59,8 +59,8 @@ class ViewController: UIViewController {
     
     
     func initateAPI(apiKey: String, username: String, userId: String) {
-        LMFeedMain.shared.setupLikeMindsFeed(apiKey: apiKey, analytics: DummyAnalytics())
-        LMFeedMain.shared.initiateLikeMindsFeed(username: username, userId: userId) { [weak self] result in
+        LMFeedCore.shared.setupLikeMindsFeed(apiKey: apiKey, analytics: DummyAnalytics())
+        LMFeedCore.shared.initiateLikeMindsFeed(username: username, userId: userId) { [weak self] result in
             switch result {
             case .success(_):
                 guard let viewController = LMUniversalFeedViewModel.createModule() else { return }

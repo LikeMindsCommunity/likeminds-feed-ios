@@ -43,7 +43,7 @@ public final class LMFeedReportContentViewModel {
     }
     
     public static func createModule(creatorUUID: String, postID: String, commentID: String? = nil, replyCommentID: String? = nil) throws -> LMFeedReportContentViewController {
-        guard LMFeedMain.isInitialized else { throw LMFeedError.feedNotInitialized }
+        guard LMFeedCore.isInitialized else { throw LMFeedError.feedNotInitialized }
         let viewcontroller = Components.shared.reportScreen.init()
         let viewmodel = Self.init(delegate: viewcontroller, postID: postID, commentID: commentID, replyCommentID: replyCommentID, creatorUUID: creatorUUID)
         
@@ -132,21 +132,21 @@ public final class LMFeedReportContentViewModel {
     func handleTrackEvent(reason: String) {
         switch contentType {
         case .post:
-            LMFeedMain.analytics?.trackEvent(for: .postReported, eventProperties: [
+            LMFeedCore.analytics?.trackEvent(for: .postReported, eventProperties: [
                 "created_by_id": creatorUUID,
                 "post_id": entityID,
                 "report_reason": reason,
                 "post_type": "text"
             ])
         case .comment:
-            LMFeedMain.analytics?.trackEvent(for: .commentReported, eventProperties: [
+            LMFeedCore.analytics?.trackEvent(for: .commentReported, eventProperties: [
                 "post_id": postID,
                 "user_id": creatorUUID,
                 "comment_id": entityID,
                 "reason": reason
             ])
         case .reply:
-            LMFeedMain.analytics?.trackEvent(for: .commentReplyReported, eventProperties: [
+            LMFeedCore.analytics?.trackEvent(for: .commentReplyReported, eventProperties: [
                 "post_id": postID,
                 "user_id": creatorUUID,
                 "comment_id": commentID ?? "",

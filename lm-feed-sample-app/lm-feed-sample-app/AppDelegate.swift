@@ -49,7 +49,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
     
     func handleNotification(notification: UNNotificationRequest) {
-        LMFeedMain.shared.didReceiveNotification(notification) { result in
+        LMFeedCore.shared.didReceiveNotification(notification) { result in
             switch result {
             case .success(let lmVC):
                 if let vc = UIApplication.shared.topMostViewController() {

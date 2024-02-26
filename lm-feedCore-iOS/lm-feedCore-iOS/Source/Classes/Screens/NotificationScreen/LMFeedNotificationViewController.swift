@@ -71,7 +71,7 @@ open class LMFeedNotificationViewController: LMViewController {
         tableView.refreshControl = refreshControl
         viewModel?.getNotifications(isInitialFetch: true)
         
-        LMFeedMain.analytics?.trackEvent(for: .notificationPageOpened, eventProperties: [:])
+        LMFeedCore.analytics?.trackEvent(for: .notificationPageOpened, eventProperties: [:])
     }
     
     public func navigateToPost(from route: String) {

@@ -22,7 +22,7 @@ public final class LMFeedDeleteReviewViewModel {
     }
     
     public static func createModule(postID: String, commentID: String? = nil) -> LMFeedDeleteReviewScreen? {
-        guard LMFeedMain.isInitialized else { return nil }
+        guard LMFeedCore.isInitialized else { return nil }
         let viewcontroller = Components.shared.deleteReviewScreen.init()
         let viewmodel = Self.init(delegate: viewcontroller, postID: postID, commentID: commentID)
         

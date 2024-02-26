@@ -40,7 +40,7 @@ public class LMFeedPostListViewModel {
     }
     
     public static func createModule(with delegate: LMFeedPostListVCFromProtocol?) throws -> LMFeedPostListViewController {
-        guard LMFeedMain.isInitialized else { throw LMFeedError.feedNotInitialized }
+        guard LMFeedCore.isInitialized else { throw LMFeedError.feedNotInitialized }
         
         let viewController = Components.shared.feedListViewController.init()
         let viewModel: LMFeedPostListViewModel = .init(delegate: viewController)
@@ -210,7 +210,7 @@ public extension LMFeedPostListViewModel {
                 let action = UIAlertAction(title: menu.name, style: .default) { [weak self] _ in
                     self?.togglePostPin(for: postID)
                     
-                    LMFeedMain.analytics?.trackEvent(for: post.isPinned ? .postUnpinned : .postPinned, eventProperties: [
+                    LMFeedCore.analytics?.trackEvent(for: post.isPinned ? .postUnpinned : .postPinned, eventProperties: [
                         "created_by_id": post.userDetails.userUUID,
                         "post_id": postID,
                         "post_type": post.getPostType()
@@ -226,7 +226,7 @@ public extension LMFeedPostListViewModel {
                 let action = UIAlertAction(title: menu.name, style: .default) { [weak self] _ in
                     self?.delegate?.navigateToEditScreen(for: postID)
                     
-                    LMFeedMain.analytics?.trackEvent(for: .postEdited, eventProperties: [
+                    LMFeedCore.analytics?.trackEvent(for: .postEdited, eventProperties: [
                         "post_id": postID,
                         "post_type": post.getPostType()
                     ])
@@ -262,7 +262,7 @@ public extension LMFeedPostListViewModel {
             
             delegate?.presentAlert(with: alert, animated: true)
             
-            LMFeedMain.analytics?.trackEvent(for: .postDeleted, eventProperties: [
+            LMFeedCore.analytics?.trackEvent(for: .postDeleted, eventProperties: [
                 "user_state": "member",
                 "user_id": post.userDetails.userUUID,
                 "post_id": post.postId,
@@ -271,7 +271,7 @@ public extension LMFeedPostListViewModel {
         } else if LocalPreferences.memberState?.state == 1 {
             delegate?.navigateToDeleteScreen(for: post.postId)
             
-            LMFeedMain.analytics?.trackEvent(for: .postDeleted, eventProperties: [
+            LMFeedCore.analytics?.trackEvent(for: .postDeleted, eventProperties: [
                 "user_state": "CM",
                 "user_id": post.userDetails.userUUID,
                 "post_id": post.postId,

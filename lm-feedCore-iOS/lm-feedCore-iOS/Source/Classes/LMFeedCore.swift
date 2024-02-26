@@ -1,5 +1,5 @@
 //
-//  LMFeedMain.swift
+//  LMFeedCore.swift
 //  likeminds-feed-iOS
 //
 //  Created by Devansh Mohata on 28/12/23.
@@ -11,11 +11,11 @@ import LikeMindsFeedUI
 import LikeMindsFeed
 
 // Keep Only Auth Logic
-public class LMFeedMain {
+public class LMFeedCore {
     
     private init() {}
     
-    public static var shared: LMFeedMain = .init()
+    public static var shared: LMFeedCore = .init()
     static var analytics: LMFeedAnalyticsProtocol?
     static private(set) var isInitialized: Bool = false
     

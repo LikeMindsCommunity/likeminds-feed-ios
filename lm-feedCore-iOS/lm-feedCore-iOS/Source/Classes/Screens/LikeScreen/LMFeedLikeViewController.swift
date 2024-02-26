@@ -54,7 +54,7 @@ open class LMFeedLikeViewController: LMViewController {
         view.backgroundColor = Appearance.shared.colors.white
         
         // Analytics
-        LMFeedMain.analytics?.trackEvent(for: .postLikeListOpened, eventProperties: ["post_id": viewModel?.postID ?? ""])
+        LMFeedCore.analytics?.trackEvent(for: .postLikeListOpened, eventProperties: ["post_id": viewModel?.postID ?? ""])
     }
     
     open func didTapUser(uuid: String) {

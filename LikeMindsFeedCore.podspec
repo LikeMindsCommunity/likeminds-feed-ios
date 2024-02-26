@@ -1,14 +1,14 @@
 Pod::Spec.new do |spec|
   spec.name         = 'LikeMindsFeedCore'
-  spec.summary      = 'Masterpiece in Making'
+  spec.summary      = 'LikeMinds Feed official iOS SDK'
   spec.homepage     = 'https://likeminds.community/'
-  spec.version      = '0.1.0'
-  spec.license      = { :type => 'MIT', :file => '../LICENSE' }
+  spec.version      = '1.0.0'
+  spec.license      = { :type => 'MIT', :file => 'LICENSE' }
   spec.authors      = { 'Devansh Mohata' => 'devansh.mohata@likeminds.community' }
-  spec.source       = { :git => 'git@github.com:LikeMindsCommunity/likeminds-feed-ios.git', :tag => "v#{spec.version}" }
-  spec.source_files = 'lm-feedCore-iOS/Source/**/*.swift'
+  spec.source       = { :git => 'https://github.com/LikeMindsCommunity/likeminds-feed-ios.git', :tag => "v#{spec.version}" }
+  spec.source_files = 'lm-feedCore-iOS/lm-feedCore-iOS/Source/**/*.swift'
   spec.resource_bundles = {
-     'LikeMindsFeedCore' => ['lm-feedCore-iOS/Source/**/*.{xcassets}']
+     'LikeMindsFeedCore' => ['lm-feedCore-iOS/lm-feedCore-iOS/Source/**/*.{xcassets}']
   }
   spec.ios.deployment_target = '13.0'
   spec.swift_version = '5.0'

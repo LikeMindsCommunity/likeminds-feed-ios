@@ -40,7 +40,7 @@ public class LMFeedTopicSelectionViewModel {
     }
     
     public static func createModule(topicEnabledState: Bool, isShowAllTopicsButton: Bool, selectedTopicIds: [LMFeedTopicDataModel] = [], delegate: LMFeedTopicSelectionViewProtocol?) throws -> LMFeedTopicSelectionViewController {
-        guard LMFeedMain.isInitialized else { throw LMFeedError.feedNotInitialized }
+        guard LMFeedCore.isInitialized else { throw LMFeedError.feedNotInitialized }
         
         let viewController = Components.shared.topicFeedSelectionScreen.init()
         let viewModel: LMFeedTopicSelectionViewModel = .init(

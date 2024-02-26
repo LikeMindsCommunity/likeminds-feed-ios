@@ -120,7 +120,7 @@ open class LMFeedPostListViewController: LMViewController, LMFeedPostListViewMod
         viewModel?.getFeed()
         
         // Analytics
-        LMFeedMain.analytics?.trackEvent(for: .feedOpened, eventProperties: ["feed_type": "universal_feed"])
+        LMFeedCore.analytics?.trackEvent(for: .feedOpened, eventProperties: ["feed_type": "universal_feed"])
     }
     
     open override func viewWillAppear(_ animated: Bool) {

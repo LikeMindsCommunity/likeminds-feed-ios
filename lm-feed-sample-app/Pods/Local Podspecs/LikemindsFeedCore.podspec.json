@@ -1,23 +1,23 @@
 {
   "name": "LikeMindsFeedCore",
-  "summary": "Masterpiece in Making",
+  "summary": "LikeMinds Feed official iOS SDK",
   "homepage": "https://likeminds.community/",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": {
     "type": "MIT",
-    "file": "../LICENSE"
+    "file": "LICENSE"
   },
   "authors": {
     "Devansh Mohata": "devansh.mohata@likeminds.community"
   },
   "source": {
-    "git": "git@github.com:LikeMindsCommunity/likeminds-feed-ios.git",
-    "tag": "v0.1.0"
+    "git": "https://github.com/LikeMindsCommunity/likeminds-feed-ios.git",
+    "tag": "v1.0.0"
   },
-  "source_files": "lm-feedCore-iOS/Source/**/*.swift",
+  "source_files": "lm-feedCore-iOS/lm-feedCore-iOS/Source/**/*.swift",
   "resource_bundles": {
     "LikeMindsFeedCore": [
-      "lm-feedCore-iOS/Source/**/*.{xcassets}"
+      "lm-feedCore-iOS/lm-feedCore-iOS/Source/**/*.{xcassets}"
     ]
   },
   "platforms": {

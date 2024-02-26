@@ -285,19 +285,19 @@ open class LMFeedCreatePostViewController: LMViewController {
     
     @objc
     open func didTapAddPhoto() {
-        LMFeedMain.analytics?.trackEvent(for: .postCreationAttachmentClicked, eventProperties: ["type": "image"])
+        LMFeedCore.analytics?.trackEvent(for: .postCreationAttachmentClicked, eventProperties: ["type": "image"])
         viewModel?.updateCurrentSelection(to: .image)
     }
     
     @objc
     open func didTapAddVideo() {
-        LMFeedMain.analytics?.trackEvent(for: .postCreationAttachmentClicked, eventProperties: ["type": "video"])
+        LMFeedCore.analytics?.trackEvent(for: .postCreationAttachmentClicked, eventProperties: ["type": "video"])
         viewModel?.updateCurrentSelection(to: .video)
     }
     
     @objc
     open func didTapAddDocument() {
-        LMFeedMain.analytics?.trackEvent(for: .postCreationAttachmentClicked, eventProperties: ["type": "file"])
+        LMFeedCore.analytics?.trackEvent(for: .postCreationAttachmentClicked, eventProperties: ["type": "file"])
         viewModel?.updateCurrentSelection(to: .document)
     }
     
