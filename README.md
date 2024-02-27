@@ -52,7 +52,8 @@ func application(_ application: UIApplication, willFinishLaunchingWithOptions la
 func initiateLikeMindsFeed(username: String, userId: String, completionHandler: ((Result<Void, LMFeedError>) -> Void)?)
 ```
 
-This function initiates the SDK. Initiating the feed is crucial as you won't be able to access the feed without this step.
+This function initiates the SDK.
+> **Note:** Initiating the feed is crucial as you won't be able to access the feed without this step!
 
 **Example:** In your `ViewController.swift`:
 
