@@ -15,25 +15,25 @@ public protocol LMFeedPostDocumentCellProtocol: LMPostWidgetTableViewCellProtoco
 @IBDesignable
 open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
     // MARK: Data Model
-    public struct ViewModel: LMFeedPostTableCellProtocol {
+    public struct ContentModel: LMFeedPostTableCellProtocol {
         public var postID: String
         public var userUUID: String
-        public var headerData: LMFeedPostHeaderView.ViewModel
+        public var headerData: LMFeedPostHeaderView.ContentModel
         public var postText: String
-        public var topics: LMFeedTopicView.ViewModel
-        public let documents: [LMFeedDocumentPreview.ViewModel]
+        public var topics: LMFeedTopicView.ContentModel
+        public let documents: [LMFeedDocumentPreview.ContentModel]
         public var isShowMore: Bool
         public var isShowAllDocuments: Bool
-        public var footerData: LMFeedPostFooterView.ViewModel
+        public var footerData: LMFeedPostFooterView.ContentModel
         public var totalCommentCount: Int
         
         public init( postID: String,
                      userUUID: String,
-                     headerData: LMFeedPostHeaderView.ViewModel,
-                     topics: LMFeedTopicView.ViewModel?,
+                     headerData: LMFeedPostHeaderView.ContentModel,
+                     topics: LMFeedTopicView.ContentModel?,
                      postText: String?,
-                     documents: [LMFeedDocumentPreview.ViewModel],
-                     footerData: LMFeedPostFooterView.ViewModel,
+                     documents: [LMFeedDocumentPreview.ContentModel],
+                     footerData: LMFeedPostFooterView.ContentModel,
                      totalCommentCount: Int,
                      isShowMore: Bool = true,
                      isShowAllDocuments: Bool = false) {
@@ -128,7 +128,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         
     
     // MARK: configure
-    open func configure(for indexPath: IndexPath, with data: ViewModel, delegate: LMFeedPostDocumentCellProtocol?) {
+    open func configure(for indexPath: IndexPath, with data: ContentModel, delegate: LMFeedPostDocumentCellProtocol?) {
         self.indexPath = indexPath
         self.delegate = delegate
         self.actionDelegate = delegate

@@ -1,5 +1,5 @@
 //
-//  LMFeedTaggingUserTableCell.swift
+//  LMFeedTaggingUserView.swift
 //  lm-feedUI-iOS
 //
 //  Created by Devansh Mohata on 08/01/24.
@@ -9,8 +9,8 @@ import Kingfisher
 import UIKit
 
 @IBDesignable
-open class LMFeedTaggingUserTableCell: LMTableViewCell {
-    public struct ViewModel {
+open class LMFeedTaggingUserView: LMTableViewCell {
+    public struct ContentModel {
         public let userImage: String?
         public let userName: String
         public let route: String
@@ -96,7 +96,7 @@ open class LMFeedTaggingUserTableCell: LMTableViewCell {
     
     
     // MARK: configure
-    open func configure(with data: ViewModel) {
+    open func configure(with data: ContentModel) {
         userNameLabel.text = data.userName
         userImage.kf.setImage(with: URL(string: data.userImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.userName))
     }

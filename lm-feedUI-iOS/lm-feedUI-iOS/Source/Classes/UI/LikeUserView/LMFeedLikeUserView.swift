@@ -1,5 +1,5 @@
 //
-//  LMFeedLikeUserTableCell.swift
+//  LMFeedLikeUserView.swift
 //  lm-feedUI-iOS
 //
 //  Created by Devansh Mohata on 21/01/24.
@@ -9,8 +9,8 @@ import Kingfisher
 import UIKit
 
 @IBDesignable
-open class LMFeedLikeUserTableCell: LMTableViewCell {
-    public struct ViewModel {
+open class LMFeedLikeUserView: LMTableViewCell {
+    public struct ContentModel {
         public let username: String
         public let uuid: String
         public let customTitle: String?
@@ -85,7 +85,7 @@ open class LMFeedLikeUserTableCell: LMTableViewCell {
     
     
     // MARK: configure
-    open func configure(with data: ViewModel, touchCallback: (() -> Void)?) {
+    open func configure(with data: ContentModel, touchCallback: (() -> Void)?) {
         self.touchCallback = touchCallback
         userTitleLabel.attributedText = setUsername(with: data.username, customTitle: data.customTitle)
         userImage.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.username))

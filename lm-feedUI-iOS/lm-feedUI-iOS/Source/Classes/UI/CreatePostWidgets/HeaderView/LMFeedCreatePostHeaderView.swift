@@ -10,7 +10,7 @@ import UIKit
 
 @IBDesignable
 open class LMFeedCreatePostHeaderView: LMView {
-    public struct ViewDataModel {
+    public struct ContentModel {
         let profileImage: String?
         let username: String
         let isEditFlow: Bool
@@ -100,7 +100,7 @@ open class LMFeedCreatePostHeaderView: LMView {
     
   
     // MARK: configure
-    open func configure(with data: ViewDataModel) {
+    open func configure(with data: ContentModel) {
         userProfileImage.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.username))
         userNameLabel.text = data.username
         editAuthorButton.isHidden = !data.isEditFlow

@@ -54,7 +54,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     }()
     
     open private(set) lazy var topicView: LMFeedTopicView = {
-        let view = LMUIComponents.shared.topicFeed.init().translatesAutoresizingMaskIntoConstraints()
+        let view = LMUIComponents.shared.topicFeedView.init().translatesAutoresizingMaskIntoConstraints()
         view.delegate = self
         return view
     }()
@@ -81,8 +81,8 @@ open class LMFeedCreatePostViewController: LMViewController {
     open private(set) lazy var mediaCollectionView: LMCollectionView = {
         let collection = LMCollectionView(frame: .zero, collectionViewLayout: LMCollectionView.mediaFlowLayout())
         collection.translatesAutoresizingMaskIntoConstraints = false
-        collection.registerCell(type: LMUIComponents.shared.imagePreviewCell)
-        collection.registerCell(type: LMUIComponents.shared.videoPreviewCell)
+        collection.registerCell(type: LMUIComponents.shared.imagePreview)
+        collection.registerCell(type: LMUIComponents.shared.videoPreview)
         collection.showsVerticalScrollIndicator = false
         collection.showsHorizontalScrollIndicator = false
         collection.isPagingEnabled = true
@@ -175,7 +175,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     
     // MARK: Data Variables
     public var viewModel: LMFeedCreatePostViewModel?
-    public var documentCellData: [LMFeedDocumentPreview.ViewModel] = []
+    public var documentCellData: [LMFeedDocumentPreview.ContentModel] = []
     public var documenTableHeight: NSLayoutConstraint?
     public var documentCellHeight: CGFloat = 90
     
@@ -393,15 +393,15 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { mediaCellData.count }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let data = mediaCellData[indexPath.row] as? LMFeedImageCollectionCell.ViewModel,
-           let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreviewCell, for: indexPath) {
+        if let data = mediaCellData[indexPath.row] as? LMFeedImageCollectionCell.ContentModel,
+           let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreview, for: indexPath) {
             cell.configure(with: data) { [weak self] imageID in
                 guard let self else { return }
                 viewModel?.removeAsset(url: imageID)
             }
             return cell
-        } else if let data = mediaCellData[indexPath.row] as? LMFeedVideoCollectionCell.ViewModel,
-                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath) {
+        } else if let data = mediaCellData[indexPath.row] as? LMFeedVideoCollectionCell.ContentModel,
+                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreview, for: indexPath) {
             cell.configure(with: data) { [weak self] videoID in
                 guard let self else { return }
                 viewModel?.removeAsset(url: videoID)
@@ -446,7 +446,7 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
 
 // MARK: LMFeedCreatePostViewModelProtocol
 extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
-    public func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?) {
+    public func setupLinkPreview(with data: LMFeedLinkPreview.ContentModel?) {
         linkPreview.isHidden = data == nil
         if let data {
             linkPreview.configure(with: data) { [weak self, weak linkPreview] in
@@ -465,12 +465,12 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
         }
     }
     
-    public func updateTopicView(with data: LMFeedTopicView.ViewModel) {
+    public func updateTopicView(with data: LMFeedTopicView.ContentModel) {
         topicView.isHidden = false
         topicView.configure(with: data)
     }
     
-    public func showMedia(documents: [LMFeedDocumentPreview.ViewModel], isShowAddMore: Bool, isShowBottomTab: Bool) {
+    public func showMedia(documents: [LMFeedDocumentPreview.ContentModel], isShowAddMore: Bool, isShowBottomTab: Bool) {
         linkPreview.isHidden = true
         documentTableView.isHidden = documents.isEmpty
         documentCellData.append(contentsOf: documents)

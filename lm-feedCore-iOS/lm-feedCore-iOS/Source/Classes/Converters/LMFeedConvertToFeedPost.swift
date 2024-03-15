@@ -19,7 +19,7 @@ public struct LMFeedConvertToFeedPost {
         }
     }
     
-    private static func convertToTopicViewData(from topics: [LMFeedTopicDataModel]) -> LMFeedTopicView.ViewModel {
+    private static func convertToTopicViewData(from topics: [LMFeedTopicDataModel]) -> LMFeedTopicView.ContentModel {
         let mappedTopics: [LMFeedTopicCollectionCellDataModel] = topics.map {
             .init(topic: $0.topicName, topicID: $0.topicID)
         }
@@ -27,7 +27,7 @@ public struct LMFeedConvertToFeedPost {
         return .init(topics: mappedTopics)
     }
     
-    public static func convertToHeaderViewData(from data: LMFeedPostDataModel) -> LMFeedPostHeaderView.ViewModel {
+    public static func convertToHeaderViewData(from data: LMFeedPostDataModel) -> LMFeedPostHeaderView.ContentModel {
         .init(
             profileImage: data.userDetails.userProfileImage,
             authorName: data.userDetails.userName,
@@ -38,11 +38,11 @@ public struct LMFeedConvertToFeedPost {
         )
     }
     
-    public static func convertToFooterViewData(from data: LMFeedPostDataModel) -> LMFeedPostFooterView.ViewModel {
+    public static func convertToFooterViewData(from data: LMFeedPostDataModel) -> LMFeedPostFooterView.ContentModel {
         .init(likeCount: data.likeCount, commentCount: data.commentCount, isSaved: data.isSaved, isLiked: data.isLiked)
     }
     
-    public static func convertToLinkViewData(from data: LMFeedPostDataModel, link: LMFeedPostDataModel.LinkAttachment) -> LMFeedPostLinkCell.ViewModel {
+    public static func convertToLinkViewData(from data: LMFeedPostDataModel, link: LMFeedPostDataModel.LinkAttachment) -> LMFeedPostLinkCell.ContentModel {
         .init(
             postID: data.postId,
             userUUID: data.userDetails.userUUID,
@@ -55,7 +55,7 @@ public struct LMFeedConvertToFeedPost {
         )
     }
     
-    public static func convertToDocumentCells(from data: LMFeedPostDataModel) -> LMFeedPostDocumentCell.ViewModel {
+    public static func convertToDocumentCells(from data: LMFeedPostDataModel) -> LMFeedPostDocumentCell.ContentModel {
         return .init(
             postID: data.postId,
             userUUID: data.userDetails.userUUID,
@@ -68,7 +68,7 @@ public struct LMFeedConvertToFeedPost {
         )
     }
     
-    public static func convertToDocument(from data: [LMFeedPostDataModel.DocumentAttachment]) -> [LMFeedDocumentPreview.ViewModel] {
+    public static func convertToDocument(from data: [LMFeedPostDataModel.DocumentAttachment]) -> [LMFeedDocumentPreview.ContentModel] {
         data.compactMap { datum in
             guard let url = URL(string: datum.url) else { return nil }
             
@@ -82,7 +82,7 @@ public struct LMFeedConvertToFeedPost {
         }
     }
     
-    public static func convertToImageVideoCells(from data: LMFeedPostDataModel) -> LMFeedPostMediaCell.ViewModel {
+    public static func convertToImageVideoCells(from data: LMFeedPostDataModel) -> LMFeedPostMediaCell.ContentModel {
         return .init(
             postID: data.postId,
             userUUID: data.userDetails.userUUID,
@@ -98,9 +98,9 @@ public struct LMFeedConvertToFeedPost {
     public static func convertToMediaProtocol(from data: [LMFeedPostDataModel.ImageVideoAttachment]) -> [LMFeedMediaProtocol] {
         data.map { datum in
             if datum.isVideo {
-                return LMFeedVideoCollectionCell.ViewModel(videoURL: datum.url)
+                return LMFeedVideoCollectionCell.ContentModel(videoURL: datum.url)
             } else {
-                return LMFeedImageCollectionCell.ViewModel(image: datum.url)
+                return LMFeedImageCollectionCell.ContentModel(image: datum.url)
             }
         }
     }

@@ -10,7 +10,7 @@ import UIKit
 
 @IBDesignable
 open class LMFeedImageCollectionCell: LMCollectionViewCell {
-    public struct ViewModel: LMFeedMediaProtocol {
+    public struct ContentModel: LMFeedMediaProtocol {
         public let image: String
         public let isFilePath: Bool
         
@@ -90,7 +90,7 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
     
     
     // MARK: configure
-    open func configure(with data: ViewModel, crossButtonAction: ((String) -> Void)? = nil) {
+    open func configure(with data: ContentModel, crossButtonAction: ((String) -> Void)? = nil) {
         self.url = data.image
         self.crossButtonAction = crossButtonAction
         crossButton.isHidden = crossButtonAction == nil

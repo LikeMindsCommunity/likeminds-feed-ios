@@ -44,7 +44,7 @@ open class LMFeedEditPostViewController: LMViewController {
     }()
     
     open private(set) lazy var topicView: LMFeedTopicView = {
-        let view = LMUIComponents.shared.topicFeed.init().translatesAutoresizingMaskIntoConstraints()
+        let view = LMUIComponents.shared.topicFeedView.init().translatesAutoresizingMaskIntoConstraints()
         view.delegate = self
         return view
     }()
@@ -68,8 +68,8 @@ open class LMFeedEditPostViewController: LMViewController {
     open private(set) lazy var mediaCollectionView: LMCollectionView = {
         let collection = LMCollectionView(frame: .zero, collectionViewLayout: LMCollectionView.mediaFlowLayout())
         collection.translatesAutoresizingMaskIntoConstraints = false
-        collection.registerCell(type: LMUIComponents.shared.imagePreviewCell)
-        collection.registerCell(type: LMUIComponents.shared.videoPreviewCell)
+        collection.registerCell(type: LMUIComponents.shared.imagePreview)
+        collection.registerCell(type: LMUIComponents.shared.videoPreview)
         collection.showsVerticalScrollIndicator = false
         collection.showsHorizontalScrollIndicator = false
         collection.dataSource = self
@@ -121,7 +121,7 @@ open class LMFeedEditPostViewController: LMViewController {
     // MARK: Data Variables
     public var viewmodel: LMFeedEditPostViewModel?
     public var mediaCells: [LMFeedMediaProtocol] = []
-    public var documentCells: [LMFeedDocumentPreview.ViewModel] = []
+    public var documentCells: [LMFeedDocumentPreview.ContentModel] = []
     
     public var taggingUserViewHeightConstraint: NSLayoutConstraint?
     public var inputTextViewHeightConstraint: NSLayoutConstraint?
@@ -247,12 +247,12 @@ extension LMFeedEditPostViewController: UICollectionViewDataSource, UICollection
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let data = mediaCells[safe: indexPath.row] as? LMFeedImageCollectionCell.ViewModel,
-           let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreviewCell, for: indexPath) {
+        if let data = mediaCells[safe: indexPath.row] as? LMFeedImageCollectionCell.ContentModel,
+           let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreview, for: indexPath) {
             cell.configure(with: data)
             return cell
-        } else if let data = mediaCells[safe: indexPath.row] as? LMFeedVideoCollectionCell.ViewModel,
-                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath) {
+        } else if let data = mediaCells[safe: indexPath.row] as? LMFeedVideoCollectionCell.ContentModel,
+                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreview, for: indexPath) {
             cell.configure(with: data)
             return cell
         }
@@ -329,20 +329,20 @@ extension LMFeedEditPostViewController: LMFeedTaggingTextViewProtocol {
 
 // MARK: LMFeedEditPostViewModelProtocol
 extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {    
-    public func setupData(with userData: LMFeedCreatePostHeaderView.ViewDataModel, text: String) {
+    public func setupData(with userData: LMFeedCreatePostHeaderView.ContentModel, text: String) {
         headerView.configure(with: userData)
         inputTextView.setAttributedText(from: text, prefix: "@")
         contentHeightChanged()
     }
     
-    public func setupDocumentPreview(with data: [LMFeedDocumentPreview.ViewModel]) {
+    public func setupDocumentPreview(with data: [LMFeedDocumentPreview.ContentModel]) {
         self.documentCells = data
         
         documentTableView.isHidden = false
         documentTableView.reloadTable()
     }
     
-    public func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?) {
+    public func setupLinkPreview(with data: LMFeedLinkPreview.ContentModel?) {
         linkPreview.isHidden = data == nil
         
         if let data {
@@ -373,7 +373,7 @@ extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {
         }
     }
     
-    public func setupTopicFeed(with data: LMFeedTopicView.ViewModel) {
+    public func setupTopicFeed(with data: LMFeedTopicView.ContentModel) {
         topicView.isHidden = false
         topicView.configure(with: data)
     }

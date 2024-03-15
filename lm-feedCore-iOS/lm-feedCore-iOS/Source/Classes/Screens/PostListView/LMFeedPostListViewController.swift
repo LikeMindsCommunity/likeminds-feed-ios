@@ -226,15 +226,15 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1 }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cellData = data[indexPath.section] as? LMFeedPostMediaCell.ViewModel,
+        if let cellData = data[indexPath.section] as? LMFeedPostMediaCell.ContentModel,
            let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell, for: indexPath) {
             cell.configure(with: cellData, delegate: self)
             return cell
-        } else if let cellData = data[indexPath.section] as? LMFeedPostDocumentCell.ViewModel,
+        } else if let cellData = data[indexPath.section] as? LMFeedPostDocumentCell.ContentModel,
             let cell = tableView.dequeueReusableCell(LMUIComponents.shared.documentCell, for: indexPath) {
             cell.configure(for: indexPath, with: cellData, delegate: self)
             return cell
-        } else if let cellData = data[indexPath.section] as? LMFeedPostLinkCell.ViewModel,
+        } else if let cellData = data[indexPath.section] as? LMFeedPostLinkCell.ContentModel,
                   let cell = tableView.dequeueReusableCell(LMUIComponents.shared.linkCell, for: indexPath) {
             cell.configure(with: cellData, delegate: self)
             return cell
@@ -377,9 +377,9 @@ extension LMFeedPostListViewController: LMFeedPostFooterViewProtocol {
 }
 
 
-// MARK: LMPostWidgetTableViewCellProtocol, LMChatLinkProtocol, LMFeedPostDocumentCellProtocol
+// MARK: LMPostWidgetTableViewCellProtocol, LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol
 @objc
-extension LMFeedPostListViewController: LMChatLinkProtocol, LMFeedPostDocumentCellProtocol {
+extension LMFeedPostListViewController: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol {
     open func didTapPost(postID: String) {
         guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: false) else { return }
         navigationController?.pushViewController(viewController, animated: true)
@@ -401,7 +401,7 @@ extension LMFeedPostListViewController: LMChatLinkProtocol, LMFeedPostDocumentCe
     }
     
     open func didTapShowMoreDocuments(for indexPath: IndexPath) {
-        if var docData = data[safe: indexPath.section] as? LMFeedPostDocumentCell.ViewModel {
+        if var docData = data[safe: indexPath.section] as? LMFeedPostDocumentCell.ContentModel {
             docData.isShowAllDocuments.toggle()
             data[indexPath.section] = docData
             reloadTable(for: .init(integer: indexPath.section))

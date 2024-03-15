@@ -50,7 +50,7 @@ open class LMFeedTopicSelectionViewController: LMViewController {
     }()
     
     // MARK: Data Variables
-    public var topicList: [[LMFeedTopicSelectionCell.ViewModel]] = []
+    public var topicList: [[LMFeedTopicSelectionCell.ContentModel]] = []
     public var viewModel: LMFeedTopicSelectionViewModel?
     public var searchTimer: Timer?
     public weak var delegate: LMFeedTopicSelectionViewProtocol?
@@ -147,7 +147,7 @@ extension LMFeedTopicSelectionViewController: UITableViewDataSource, UITableView
 
 // MARK: LMFeedTopicSelectionViewModelProtocol
 extension LMFeedTopicSelectionViewController: LMFeedTopicSelectionViewModelProtocol {
-    public func updateTopicList(with data: [[LMFeedTopicSelectionCell.ViewModel]], selectedCount: Int) {
+    public func updateTopicList(with data: [[LMFeedTopicSelectionCell.ContentModel]], selectedCount: Int) {
         self.topicList = data
         tableView.reloadData()
         

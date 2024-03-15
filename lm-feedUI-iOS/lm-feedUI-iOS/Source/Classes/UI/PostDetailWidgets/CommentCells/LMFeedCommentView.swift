@@ -1,15 +1,20 @@
 //
-//  LMFeedPostDetailCommentCell.swift
+//  LMFeedCommentView.swift
 //  LMFramework
 //
-//  Created by Devansh Mohata on 15/12/23.
+//  Created by Devansh Mohata on 14/12/23.
 //
 
 import UIKit
 
 @IBDesignable
-open class LMFeedPostDetailCommentCell: LMTableViewCell {
-    // MARK: UI Elements    
+open class LMFeedCommentView: LMTableViewHeaderFooterView {
+    // MARK: UI Elements
+    open private(set) lazy var containerView: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
     open private(set) lazy var authorNameLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = Appearance.shared.colors.gray1
@@ -19,20 +24,20 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         return label
     }()
     
-    open private(set) lazy var commentContainerStack: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
-        stack.axis = .horizontal
-        stack.alignment = .center
-        stack.distribution = .equalSpacing
-        return stack
-    }()
-    
     open private(set) lazy var commentStack: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .leading
         stack.distribution = .fill
-        stack.spacing = 0
+        stack.spacing = 8
+        return stack
+    }()
+    
+    open private(set) lazy var commentContainerStack: LMStackView = {
+        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+        stack.axis = .horizontal
+        stack.alignment = .center
+        stack.distribution = .equalSpacing
         return stack
     }()
     
@@ -44,6 +49,9 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         label.backgroundColor = Appearance.shared.colors.clear
         label.textColor = Appearance.shared.colors.gray1
         label.font = Appearance.shared.fonts.subHeadingFont2
+        label.textContainer.lineFragmentPadding = CGFloat(0.0)
+        label.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        label.contentInset = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 0)
         return label
     }()
     
@@ -67,7 +75,7 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
     open private(set) lazy var actionStack: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .horizontal
-        stack.alignment = .fill
+        stack.alignment = .center
         stack.distribution = .fill
         stack.spacing = 8
         return stack
@@ -91,19 +99,41 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         return button
     }()
     
+    open private(set) lazy var sepratorView: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        view.backgroundColor = Appearance.shared.colors.gray3
+        return view
+    }()
+    
+    open private(set) lazy var replyButton: LMButton = {
+        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+        button.setImage(nil, for: .normal)
+        button.setTitle("Reply", for: .normal)
+        button.setTitleColor(Appearance.shared.colors.gray3, for: .normal)
+        button.setFont(Appearance.shared.fonts.buttonFont1)
+        return button
+    }()
+    
+    open private(set) lazy var replyCountButton: LMButton = {
+        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+        button.setTitle(nil, for: .normal)
+        button.setImage(nil, for: .normal)
+        button.setTitleColor(Appearance.shared.colors.appTintColor, for: .normal)
+        button.setFont(Appearance.shared.fonts.buttonFont1)
+        return button
+    }()
+    
     open private(set) lazy var commentTimeLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = Appearance.shared.colors.gray3
         label.font = Appearance.shared.fonts.subHeadingFont1
-        label.text = "20m"
         return label
     }()
     
     
     // MARK: Data Variables
-    weak var delegate: LMChatPostCommentProtocol?
+    weak var delegate: LMFeedPostCommentProtocol?
     public var commentId: String?
-    public var userUUID: String?
     public var indexPath: IndexPath?
     public var likeCount: Int = 0
     public var commentUserUUID: String?
@@ -124,14 +154,17 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         commentStack.addArrangedSubview(commentLabel)
         commentStack.addArrangedSubview(seeMoreText)
         
-        actionStack.addArrangedSubview(likeButton)
-        actionStack.addArrangedSubview(likeTextButton)
+        [likeButton, likeTextButton, sepratorView, replyButton, replyCountButton].forEach { subView in
+            actionStack.addArrangedSubview(subView)
+        }
     }
     
+    
+    // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
         
-        contentView.pinSubView(subView: containerView, padding: .init(top: 0, left: 32, bottom: 0, right: 0))
+        contentView.pinSubView(subView: containerView)
         authorNameLabel.addConstraint(top: (containerView.topAnchor, 16),
                                       leading: (containerView.leadingAnchor, 16))
         
@@ -146,8 +179,14 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         commentTimeLabel.addConstraint(trailing: (commentContainerStack.trailingAnchor, 0),
                                        centerY: (actionStack.centerYAnchor, 0))
         
+        sepratorView.setWidthConstraint(with: 1)
+        sepratorView.setHeightConstraint(with: 24)
+        actionStack.setHeightConstraint(with: 34)
+        
         authorNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -16).isActive = true
         commentTimeLabel.leadingAnchor.constraint(greaterThanOrEqualTo: actionStack.trailingAnchor, constant: 16).isActive = true
+        
+        seeMoreText.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
     }
     
     
@@ -159,7 +198,8 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         menuButton.addTarget(self, action: #selector(didTapMenuButton), for: .touchUpInside)
         likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         likeTextButton.addTarget(self, action: #selector(didTapLikeCountButton), for: .touchUpInside)
-        commentLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedTextView)))
+        replyButton.addTarget(self, action: #selector(didTapReplyButton), for: .touchUpInside)
+        replyCountButton.addTarget(self, action: #selector(didTapReplyCountButton), for: .touchUpInside)
         authorNameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCommentUser)))
     }
     
@@ -191,7 +231,6 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
             likeTextButton.setTitle("\(likeCount) \(Constants.shared.strings.likes)", for: .normal)
         }
         
-        
         delegate?.didTapLikeButton(for: commentId, indexPath: indexPath)
     }
     
@@ -202,9 +241,15 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
     }
     
     @objc
-    open func didTapUsername() {
-        guard let userUUID else { return }
-        delegate?.didTapUserName(for: userUUID)
+    open func didTapReplyButton() {
+        guard let commentId else { return }
+        delegate?.didTapReplyButton(for: commentId)
+    }
+    
+    @objc
+    open func didTapReplyCountButton() {
+        guard let commentId else { return }
+        delegate?.didTapReplyCountButton(for: commentId)
     }
     
     @objc
@@ -237,12 +282,9 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         didTapRoute(route: commentUserUUID)
     }
     
-    
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        
-        backgroundColor = Appearance.shared.colors.clear
         contentView.backgroundColor = Appearance.shared.colors.white
         containerView.backgroundColor = Appearance.shared.colors.clear
         
@@ -253,14 +295,14 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
     
     
     // MARK: configure
-    open func configure(with data: LMFeedPostDetailCommentCellViewModel, delegate: LMChatPostCommentProtocol, indexPath: IndexPath, seeMoreAction: (() -> Void)? = nil) {
+    open func configure(with data: LMFeedCommentContentModel, delegate: LMFeedPostCommentProtocol, indexPath: IndexPath, seeMoreAction: (() -> Void)? = nil) {
         commentId = data.commentId
+        
         self.delegate = delegate
-        self.userUUID = data.author.userUUID
         self.indexPath = indexPath
-        self.seeMoreAction = seeMoreAction
-        self.commentUserUUID = data.author.userUUID
         self.likeCount = data.likeCount
+        self.commentUserUUID = data.author.userUUID
+        self.seeMoreAction = seeMoreAction
         
         authorNameLabel.text = data.authorName
         
@@ -268,6 +310,7 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         
         seeMoreText.isHidden = true // !(commentLabel.numberOfLines > 4 && data.isShowMore)
         commentLabel.textContainer.maximumNumberOfLines = 0 // commentLabel.numberOfLines > 4 && !data.isShowMore ? .zero : 4
+        
         
         commentTimeLabel.text = data.commentTimeFormatted
         
@@ -277,5 +320,9 @@ open class LMFeedPostDetailCommentCell: LMTableViewCell {
         
         likeTextButton.isHidden = data.likeCount == .zero
         likeTextButton.setTitle(data.likeText, for: .normal)
+        
+        replyButton.isEnabled = data.commentId != nil
+        replyCountButton.setTitle(data.commentText, for: .normal)
+        replyCountButton.isHidden = data.totalReplyCount == .zero
     }
 }

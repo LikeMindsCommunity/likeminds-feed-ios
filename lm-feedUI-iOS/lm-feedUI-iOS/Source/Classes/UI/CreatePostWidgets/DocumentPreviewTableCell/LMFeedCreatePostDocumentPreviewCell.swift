@@ -39,7 +39,7 @@ open class LMFeedCreatePostDocumentPreviewCell: LMTableViewCell {
     }
     
     // MARK: configure
-    open func configure(data: LMFeedDocumentPreview.ViewModel, delegate: LMFeedDocumentPreviewProtocol) {
+    open func configure(data: LMFeedDocumentPreview.ContentModel, delegate: LMFeedDocumentPreviewProtocol) {
         documentPreview.configure(with: data, delegate: delegate)
     }
 }

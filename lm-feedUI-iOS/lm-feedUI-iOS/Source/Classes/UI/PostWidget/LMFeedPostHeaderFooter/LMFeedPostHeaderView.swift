@@ -16,7 +16,7 @@ public protocol LMFeedPostHeaderViewProtocol: AnyObject {
 
 @IBDesignable
 open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
-    public struct ViewModel {
+    public struct ContentModel {
         public let profileImage: String?
         public let authorName: String
         public let authorTag: String?
@@ -237,7 +237,7 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         imageView.layer.cornerRadius = 48 / 2
     }
     
-    open func configure(with data: ViewModel, postID: String, userUUID: String, delegate: LMFeedPostHeaderViewProtocol?) {
+    open func configure(with data: ContentModel, postID: String, userUUID: String, delegate: LMFeedPostHeaderViewProtocol?) {
         self.postID = postID
         self.userUUID = userUUID
         self.delegate = delegate

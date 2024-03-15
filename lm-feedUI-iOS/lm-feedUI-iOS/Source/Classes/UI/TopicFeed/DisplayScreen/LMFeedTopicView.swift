@@ -21,7 +21,7 @@ public extension LMFeedTopicViewCellProtocol {
 
 @IBDesignable
 open class LMFeedTopicView: LMView {
-    public struct ViewModel {
+    public struct ContentModel {
         public let topics: [LMFeedTopicCollectionCellDataModel]
         public let isSelectFlow: Bool
         public let isEditFlow: Bool
@@ -58,9 +58,9 @@ open class LMFeedTopicView: LMView {
         collection.dataSource = self
         collection.delegate = self
         collection.backgroundColor = Appearance.shared.colors.clear
-        collection.registerCell(type: LMUIComponents.shared.topicFeedCollectionCell)
-        collection.registerCell(type: LMUIComponents.shared.topicFeedEditIconCollectionCell)
-        collection.registerCell(type: LMUIComponents.shared.topicSelectIconCollectionCell)
+        collection.registerCell(type: LMUIComponents.shared.topicFeedDisplayView)
+        collection.registerCell(type: LMUIComponents.shared.topicFeedEditIconView)
+        collection.registerCell(type: LMUIComponents.shared.topicSelectIconView)
         return collection
     }()
     
@@ -98,7 +98,7 @@ open class LMFeedTopicView: LMView {
     
     
     // MARK: configure
-    open func configure(with data: ViewModel) {
+    open func configure(with data: ContentModel) {
         topics = data.topics
         isEditFlow = data.isEditFlow
         isSelectFlow = data.isSelectFlow
@@ -106,10 +106,6 @@ open class LMFeedTopicView: LMView {
         
         collectionView.reloadData()
         layoutIfNeeded()
-        
-        DispatchQueue.main.async {
-            print(self.collectionView.contentSize)
-        }
     }
 }
 
@@ -121,18 +117,18 @@ extension LMFeedTopicView: UICollectionViewDataSource, UICollectionViewDelegateF
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.topicFeedCollectionCell, for: indexPath),
+        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.topicFeedDisplayView, for: indexPath),
            let data = topics[safe: indexPath.row] {
             cell.configure(with: data)
             return cell
         } else if isEditFlow,
-                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.topicFeedEditIconCollectionCell, for: indexPath) {
+                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.topicFeedEditIconView, for: indexPath) {
             cell.configure { [weak self] in
                 self?.delegate?.didTapEditButton()
             }
             return cell
         } else if isSelectFlow,
-                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.topicSelectIconCollectionCell, for: indexPath) {
+                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.topicSelectIconView, for: indexPath) {
             cell.configure { [weak self] in
                 self?.delegate?.didTapSelectTopicButton()
             }
