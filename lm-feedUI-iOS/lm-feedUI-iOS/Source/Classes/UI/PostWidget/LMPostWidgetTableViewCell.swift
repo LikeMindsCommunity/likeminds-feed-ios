@@ -11,11 +11,11 @@ import UIKit
 public protocol LMFeedPostTableCellProtocol {
     var postID: String { get }
     var userUUID: String { get }
-    var headerData: LMFeedPostHeaderView.ViewModel { get set }
+    var headerData: LMFeedPostHeaderView.ContentModel { get set }
     var postText: String { get }
     var isShowMore: Bool { get set }
-    var topics: LMFeedTopicView.ViewModel { get }
-    var footerData: LMFeedPostFooterView.ViewModel { get set }
+    var topics: LMFeedTopicView.ContentModel { get }
+    var footerData: LMFeedPostFooterView.ContentModel { get set }
     var totalCommentCount: Int { get set }
 }
 

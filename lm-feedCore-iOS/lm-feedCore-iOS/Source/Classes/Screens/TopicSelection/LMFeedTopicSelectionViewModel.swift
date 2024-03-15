@@ -9,7 +9,7 @@ import LikeMindsFeedUI
 import LikeMindsFeed
 
 public protocol LMFeedTopicSelectionViewModelProtocol: LMBaseViewControllerProtocol {
-    func updateTopicList(with data: [[LMFeedTopicSelectionCell.ViewModel]], selectedCount: Int)
+    func updateTopicList(with data: [[LMFeedTopicSelectionCell.ContentModel]], selectedCount: Int)
     func updateTopicFeed(with topics: [LMFeedTopicDataModel])
 }
 
@@ -114,11 +114,11 @@ public class LMFeedTopicSelectionViewModel {
     }
     
     public func convertToViewData() {
-        let convertedTopics: [LMFeedTopicSelectionCell.ViewModel] = topicList.map { topic in
+        let convertedTopics: [LMFeedTopicSelectionCell.ContentModel] = topicList.map { topic in
                 .init(topic: topic.topicName, topicID: topic.topicID, isSelected: selectedTopicIds.contains(where: { $0.topicID == topic.topicID }))
         }
         
-        var convertedData: [[LMFeedTopicSelectionCell.ViewModel]] = []
+        var convertedData: [[LMFeedTopicSelectionCell.ContentModel]] = []
         
         if isShowAllTopicsButton,
            searchString?.isEmpty != false {

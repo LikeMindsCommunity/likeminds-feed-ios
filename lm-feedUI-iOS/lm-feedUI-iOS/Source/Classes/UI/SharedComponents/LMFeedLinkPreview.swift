@@ -10,7 +10,7 @@ import UIKit
 
 @IBDesignable
 open class LMFeedLinkPreview: LMView {
-    public struct ViewModel: LMFeedMediaProtocol {
+    public struct ContentModel: LMFeedMediaProtocol {
         let linkPreview: String?
         let title: String?
         let description: String?
@@ -180,7 +180,7 @@ open class LMFeedLinkPreview: LMView {
     
     
     // MARK: configure
-    open func configure(with data: ViewModel, crossButtonAction: (() -> Void)? = nil) {
+    open func configure(with data: ContentModel, crossButtonAction: (() -> Void)? = nil) {
         crossButton.isHidden = crossButtonAction == nil
         self.crossButtonAction = crossButtonAction
         

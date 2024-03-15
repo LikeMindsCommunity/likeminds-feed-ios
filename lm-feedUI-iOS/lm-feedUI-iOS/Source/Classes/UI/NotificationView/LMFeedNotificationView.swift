@@ -9,7 +9,7 @@ import UIKit
 
 @IBDesignable
 open class LMFeedNotificationView: LMTableViewCell {
-    public struct ViewModel {
+    public struct ContentModel {
         public let notificationID: String
         public let notification: String
         public let user: LMFeedUserDataModel
@@ -156,7 +156,7 @@ open class LMFeedNotificationView: LMTableViewCell {
     }
     
     // MARK: configure
-    open func configure(with data: ViewModel, onTapCallback: (() -> Void)?) {
+    open func configure(with data: ContentModel, onTapCallback: (() -> Void)?) {
         self.onTapCallback = onTapCallback
         
         titleLabel.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.notification)

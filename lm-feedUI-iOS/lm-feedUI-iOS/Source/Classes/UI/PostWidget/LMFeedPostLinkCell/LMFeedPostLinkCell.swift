@@ -7,32 +7,32 @@
 
 import UIKit
 
-public protocol LMChatLinkProtocol: LMPostWidgetTableViewCellProtocol {
+public protocol LMFeedLinkProtocol: LMPostWidgetTableViewCellProtocol {
     func didTapLinkPreview(with url: String)
 }
 
 @IBDesignable
 open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
     // MARK: Data Model
-    public struct ViewModel: LMFeedPostTableCellProtocol {
+    public struct ContentModel: LMFeedPostTableCellProtocol {
         public var postID: String
         public var userUUID: String
-        public var headerData: LMFeedPostHeaderView.ViewModel
+        public var headerData: LMFeedPostHeaderView.ContentModel
         public var postText: String
         public var isShowMore: Bool
-        public var topics: LMFeedTopicView.ViewModel
-        public var mediaData: LMFeedLinkPreview.ViewModel
-        public var footerData: LMFeedPostFooterView.ViewModel
+        public var topics: LMFeedTopicView.ContentModel
+        public var mediaData: LMFeedLinkPreview.ContentModel
+        public var footerData: LMFeedPostFooterView.ContentModel
         public var totalCommentCount: Int
         
         public init(
             postID: String,
             userUUID: String,
-            headerData: LMFeedPostHeaderView.ViewModel,
+            headerData: LMFeedPostHeaderView.ContentModel,
             postText: String,
-            topics: LMFeedTopicView.ViewModel,
-            mediaData: LMFeedLinkPreview.ViewModel,
-            footerData: LMFeedPostFooterView.ViewModel,
+            topics: LMFeedTopicView.ContentModel,
+            mediaData: LMFeedLinkPreview.ContentModel,
+            footerData: LMFeedPostFooterView.ContentModel,
             totalCommentCount: Int,
             isShowMore: Bool = true
         ) {
@@ -57,7 +57,7 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
     }()
     
     // MARK: Data Variables
-    open weak var delegate: LMChatLinkProtocol?
+    open weak var delegate: LMFeedLinkProtocol?
     public var postURL: String?
     
     deinit { }
@@ -117,7 +117,7 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
     
     
     // MARK: configure
-    open func configure(with data: ViewModel, delegate: LMChatLinkProtocol?) {
+    open func configure(with data: ContentModel, delegate: LMFeedLinkProtocol?) {
         postID = data.postID
         userUUID = data.userUUID
         

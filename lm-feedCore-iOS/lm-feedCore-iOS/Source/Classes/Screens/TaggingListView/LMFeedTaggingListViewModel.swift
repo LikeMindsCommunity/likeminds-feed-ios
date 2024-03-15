@@ -9,7 +9,7 @@ import LikeMindsFeedUI
 import LikeMindsFeed
 
 public protocol LMFeedTaggingListViewModelProtocol: AnyObject { 
-    func updateList(with users: [LMFeedTaggingUserTableCell.ViewModel])
+    func updateList(with users: [LMFeedTaggingUserView.ContentModel])
 }
 
 public final class LMFeedTaggingListViewModel {
@@ -106,7 +106,7 @@ public final class LMFeedTaggingListViewModel {
     private func convertToViewModel() {
         guard shouldFetchNames else { return }
         
-        let convertedUsers: [LMFeedTaggingUserTableCell.ViewModel] = taggedUsers.map { user in
+        let convertedUsers: [LMFeedTaggingUserView.ContentModel] = taggedUsers.map { user in
                 .init(userImage: user.userImage, userName: user.username, route: user.route)
         }
         

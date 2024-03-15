@@ -11,13 +11,13 @@ import Photos
 import PDFKit
 
 public protocol LMFeedCreatePostViewModelProtocol: LMBaseViewControllerProtocol { 
-    func showMedia(documents: [LMFeedDocumentPreview.ViewModel], isShowAddMore: Bool, isShowBottomTab: Bool)
+    func showMedia(documents: [LMFeedDocumentPreview.ContentModel], isShowAddMore: Bool, isShowBottomTab: Bool)
     func showMedia(media: [LMFeedMediaProtocol], isShowAddMore: Bool, isShowBottomTab: Bool)
     func resetMediaView()
     func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int)
-    func updateTopicView(with data: LMFeedTopicView.ViewModel)
+    func updateTopicView(with data: LMFeedTopicView.ContentModel)
     func navigateToTopicView(with topics: [LMFeedTopicDataModel])
-    func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?)
+    func setupLinkPreview(with data: LMFeedLinkPreview.ContentModel?)
 }
 
 public final class LMFeedCreatePostViewModel {
@@ -131,7 +131,7 @@ public extension LMFeedCreatePostViewModel {
     }
     
     func reloadMedia() {
-        var docData: [LMFeedDocumentPreview.ViewModel] = []
+        var docData: [LMFeedDocumentPreview.ContentModel] = []
         var mediaData: [LMFeedMediaProtocol] = []
         
         currentMediaSelectionType = media.isEmpty ? .none : currentMediaSelectionType
@@ -139,9 +139,9 @@ public extension LMFeedCreatePostViewModel {
         media.forEach { medium in
             switch medium.mediaType {
             case .image:
-                mediaData.append(LMFeedImageCollectionCell.ViewModel(image: medium.url.absoluteString, isFilePath: medium.url.isFileURL))
+                mediaData.append(LMFeedImageCollectionCell.ContentModel(image: medium.url.absoluteString, isFilePath: medium.url.isFileURL))
             case .video:
-                mediaData.append(LMFeedVideoCollectionCell.ViewModel(videoURL: medium.url.absoluteString, isFilePath: medium.url.isFileURL))
+                mediaData.append(LMFeedVideoCollectionCell.ContentModel(videoURL: medium.url.absoluteString, isFilePath: medium.url.isFileURL))
             case .document:
                 docData.append(
                     .init(
@@ -212,7 +212,7 @@ extension LMFeedCreatePostViewModel {
             return
         }
         
-        let linkViewModel: LMFeedLinkPreview.ViewModel = .init(
+        let linkViewModel: LMFeedLinkPreview.ContentModel = .init(
             linkPreview: linkPreview.previewImage,
             title: linkPreview.title,
             description: linkPreview.description,
@@ -245,7 +245,7 @@ extension LMFeedCreatePostViewModel {
     
     func setupTopicFeed() {
         if isShowTopicFeed {
-            let data: LMFeedTopicView.ViewModel = .init(topics: selectedTopics.map({ .init(topic: $0.topicName, topicID: $0.topicID) }),
+            let data: LMFeedTopicView.ContentModel = .init(topics: selectedTopics.map({ .init(topic: $0.topicName, topicID: $0.topicID) }),
                                                         isSelectFlow: selectedTopics.isEmpty,
                                                         isEditFlow: !selectedTopics.isEmpty,
                                                         isSepratorShown: true)

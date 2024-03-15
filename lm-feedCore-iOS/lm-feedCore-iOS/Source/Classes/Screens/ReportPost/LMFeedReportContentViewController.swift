@@ -59,7 +59,7 @@ open class LMFeedReportContentViewController: LMViewController {
         collection.dataSource = self
         collection.delegate = self
         collection.backgroundColor = Appearance.shared.colors.clear
-        collection.registerCell(type: LMUIComponents.shared.reportCollectionCell)
+        collection.registerCell(type: LMUIComponents.shared.reportView)
         return collection
     }()
     
@@ -229,7 +229,7 @@ extension LMFeedReportContentViewController: UICollectionViewDataSource, UIColle
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { tags.count }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.reportCollectionCell, for: indexPath) {
+        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.reportView, for: indexPath) {
             let name = tags[indexPath.row].0
             let tagID = tags[indexPath.row].1
             

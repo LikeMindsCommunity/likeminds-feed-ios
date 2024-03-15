@@ -56,7 +56,7 @@ open class LMUniversalFeedViewController: LMViewController {
         let collection = LMCollectionView(frame: .zero, collectionViewLayout: layout).translatesAutoresizingMaskIntoConstraints()
         collection.dataSource = self
         collection.delegate = self
-        collection.registerCell(type: LMUIComponents.shared.topicFeedEditCollectionCell)
+        collection.registerCell(type: LMUIComponents.shared.topicFeedEditView)
         collection.showsHorizontalScrollIndicator = false
         collection.showsVerticalScrollIndicator = false
         collection.backgroundColor = Appearance.shared.colors.clear
@@ -297,7 +297,7 @@ extension LMUniversalFeedViewController: UICollectionViewDataSource, UICollectio
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.topicFeedEditCollectionCell, for: indexPath),
+        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.topicFeedEditView, for: indexPath),
            let data = selectedTopics[safe: indexPath.row] {
             cell.configure(with: data, delegate: self)
             return cell

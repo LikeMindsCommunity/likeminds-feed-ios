@@ -1,12 +1,12 @@
 //
-//  LMFeedPostDetailCommentCellViewModel.swift
+//  LMFeedCommentContentModel.swift
 //  LMFramework
 //
 //  Created by Devansh Mohata on 18/12/23.
 //
 
-// MARK: LMChatPostCommentProtocol
-public protocol LMChatPostCommentProtocol: AnyObject {
+// MARK: LMFeedPostCommentProtocol
+public protocol LMFeedPostCommentProtocol: AnyObject {
     func didTapUserName(for uuid: String)
     func didTapCommentMenuButton(for commentId: String)
     func didTapLikeButton(for commentId: String, indexPath: IndexPath)
@@ -16,8 +16,8 @@ public protocol LMChatPostCommentProtocol: AnyObject {
     func didTapURL(url: URL)
 }
 
-// MARK: LMFeedPostDetailCommentCellViewModel
-public struct LMFeedPostDetailCommentCellViewModel {
+// MARK: LMFeedCommentViewModel
+public struct LMFeedCommentContentModel {
     public let author: LMFeedUserDataModel
     public let commentId: String?
     public let tempCommentId: String?
@@ -27,7 +27,7 @@ public struct LMFeedPostDetailCommentCellViewModel {
     public var isLiked: Bool
     public var likeCount: Int
     public let totalReplyCount: Int
-    public var replies: [LMFeedPostDetailCommentCellViewModel]
+    public var replies: [LMFeedCommentContentModel]
     public var isShowMore: Bool
     
     public var authorName: String { author.userName }
@@ -60,7 +60,7 @@ public struct LMFeedPostDetailCommentCellViewModel {
         commentTime: String,
         likeCount: Int,
         totalReplyCount: Int,
-        replies: [LMFeedPostDetailCommentCellViewModel],
+        replies: [LMFeedCommentContentModel],
         isEdited: Bool,
         isLiked: Bool,
         isShowMore: Bool = true
