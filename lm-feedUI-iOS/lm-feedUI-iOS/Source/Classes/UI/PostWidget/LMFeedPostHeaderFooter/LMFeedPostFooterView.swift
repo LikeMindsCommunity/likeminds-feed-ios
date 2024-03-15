@@ -18,7 +18,7 @@ public protocol LMFeedPostFooterViewProtocol: AnyObject {
 
 @IBDesignable
 open class LMFeedPostFooterView: LMTableViewHeaderFooterView {
-    public struct ViewModel {
+    public struct ContentModel {
         public var isSaved: Bool
         public var isLiked: Bool
         public var likeCount: Int
@@ -149,7 +149,7 @@ open class LMFeedPostFooterView: LMTableViewHeaderFooterView {
     
     
     // MARK: configure
-    open func configure(with data: ViewModel, postID: String, delegate: LMFeedPostFooterViewProtocol) {
+    open func configure(with data: ContentModel, postID: String, delegate: LMFeedPostFooterViewProtocol) {
         self.postID = postID
         self.likeCount = data.likeCount
         self.delegate = delegate

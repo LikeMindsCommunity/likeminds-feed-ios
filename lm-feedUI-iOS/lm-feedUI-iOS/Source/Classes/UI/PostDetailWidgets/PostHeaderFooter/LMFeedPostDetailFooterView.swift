@@ -94,7 +94,7 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
         commentContainerView.backgroundColor = Appearance.shared.colors.white
     }
     
-    open func configure(with data: LMFeedPostFooterView.ViewModel, postID: String, delegate: LMFeedPostFooterViewProtocol, commentCount: Int) {
+    open func configure(with data: LMFeedPostFooterView.ContentModel, postID: String, delegate: LMFeedPostFooterViewProtocol, commentCount: Int) {
         super.configure(with: data, postID: postID, delegate: delegate)
         updateCommentCount(with: commentCount)
     }

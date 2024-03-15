@@ -17,6 +17,7 @@
 				E1714705B94AC5CAD50FC03A40B6E2B9 /* PBXTargetDependency */,
 			);
 			name = LikeMindsFeed;
+			productName = LikeMindsFeed;
 		};
 /* End PBXAggregateTarget section */
 
@@ -115,7 +116,7 @@
 		1C0BE4197BC4B439E1DF35F8383F43AB /* LMFeedTopicDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE9872434EB669D529BF8B21DDDA222 /* LMFeedTopicDataModel.swift */; };
 		1CB2771F40A128D4564FFA08B486BDF8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A787C24D3F11D1885D40B7B60191377F /* SystemConfiguration.framework */; };
 		1CBAD3B5202BD8A5C4E48C274E375D28 /* AWSFMDatabasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = BDBF486EE8E71EF887833042CDC467EC /* AWSFMDatabasePool.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1CEBA497A743AA769CED116880B0D771 /* LMFeedPostDetailCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A4A814499E11CA8E52A1AF81D065D /* LMFeedPostDetailCommentCell.swift */; };
+		1CEBA497A743AA769CED116880B0D771 /* LMFeedReplyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A4A814499E11CA8E52A1AF81D065D /* LMFeedReplyView.swift */; };
 		1D703A357A4006A4ADEA35458A1FB588 /* GDTCCTUploadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A047D5ED2068332AAF88A70A9F3E0D0D /* GDTCCTUploadOperation.m */; };
 		1DCDC0AC3D483EBFA02CBA01C6B2C95A /* Heartbeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB768A2DCF324EE54CF3E2108106C1 /* Heartbeat.swift */; };
 		1DE9CA154EDAE7D47E585D269ECC2FCB /* FBLPromise+Timeout.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB0A0DD7B1E54B8D94E7B1D9C69578A /* FBLPromise+Timeout.m */; };
@@ -191,7 +192,7 @@
 		33BA2803C28FA464E5625D15DECE321B /* FIRMessagingAPNSInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 55ECD629319E80AB0B5E31D627BBAAA5 /* FIRMessagingAPNSInfo.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		33F623B816D5B7FEB0C404E27F0D0B25 /* AWSSTSService.m in Sources */ = {isa = PBXBuildFile; fileRef = 180576BF03E908A3802B716FE06022E8 /* AWSSTSService.m */; };
 		33FC787886182EDFAD1426EFE35A3157 /* LMFeedReportViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE4C249EE67680F6192BE44B5F7EB8F /* LMFeedReportViewCell.swift */; };
-		3469858A2F5A186B27C7F5868DB516AA /* LMFeedPostDetailCommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690B37AB8F71CF30C845AEC96161917A /* LMFeedPostDetailCommentCellViewModel.swift */; };
+		3469858A2F5A186B27C7F5868DB516AA /* LMFeedCommentContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690B37AB8F71CF30C845AEC96161917A /* LMFeedCommentContentModel.swift */; };
 		347602034A549D9EF7CE9EE74A54A506 /* GULNetworkConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 71F0DAB29E86EF4BE9E1DF70C720203F /* GULNetworkConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		35A821E0813628121BF19D2C8ABA9DAC /* ImagePickerController+PresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39161C75ABA87D15CBD9A4C868DD7177 /* ImagePickerController+PresentationDelegate.swift */; };
 		35DE35B230B0DF0A4EC9BFE2471D357F /* GULNetworkMessageCode.h in Headers */ = {isa = PBXBuildFile; fileRef = EF95AE4EFD4727A21E9FAD4076C20EFF /* GULNetworkMessageCode.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -269,7 +270,6 @@
 		4BD62206372B69834B155243DA74A3C9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD654C93764A85880772B1F7968E238 /* Foundation.framework */; };
 		4BE73B23EB32D4B246B3CC31F5152698 /* FIRComponentType.h in Headers */ = {isa = PBXBuildFile; fileRef = 5635C0292CF035405A983E4E14C31329 /* FIRComponentType.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		4C1CC731DAB49793158DB4EA0982137C /* ImageBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056A90EEEA2DD0E2196B70D7E733BE4D /* ImageBinder.swift */; };
-		4C30DD308C9E93D4F46DF63277A211B7 /* LMFeedTopicSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B716D723E58B89301892746E6EC8BCF1 /* LMFeedTopicSelectionView.swift */; };
 		4C581712067A8A613FA406AD019B6BBA /* AWSDDASLLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = BCD37C5646A25415758EA8BBB81B6AC1 /* AWSDDASLLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4C9929DF0DC4F442AB171CF856C157BA /* GDTCORUploader.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BD28655990DBE98154A502655794776 /* GDTCORUploader.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		4CC3242D770C494FED1D4F3D2ACC31DA /* GDTCCTCompressionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F6069E410CB3D2BE5F10985788CE58 /* GDTCCTCompressionHelper.m */; };
@@ -301,7 +301,6 @@
 		5260D6BB35344FE03B5AA9A76438D5C4 /* LMFeedCreatePostDocumentPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB77EE31ECDD5D2F6F18BE263779B8ED /* LMFeedCreatePostDocumentPreviewCell.swift */; };
 		529173B31EFCD3D199E79866AFBEC86C /* HTTPHeaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F4594D6F6EF099C2B63ABD8A494A04 /* HTTPHeaders.swift */; };
 		52C12C9473C45EA208F32A26371A83C7 /* DropdownTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884C39B87CCDD76F878964D9011F43AE /* DropdownTransitionDelegate.swift */; };
-		52D9B7DAF9FBA51A94EF5B7D0B8E769A /* LMFeedNoCommentWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523AA844C931F3D7A9ECA90FF4711D85 /* LMFeedNoCommentWidget.swift */; };
 		530FC2CFAAF9C09C0B75CF5CF6DF0B65 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356238669C02C26138EE735EFC3D3BB4 /* Storage.swift */; };
 		53896AA6B59E00BA07CD202E9C5DB187 /* FIRInstallationsLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B6D7E5EDF64A78B1CF3FBE2718834FC /* FIRInstallationsLogger.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		539E9EED5FBF53E3ECF2652ECFA4A2FD /* MemoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B1A840233C1D55E10257823C96D9CD /* MemoryStorage.swift */; };
@@ -334,7 +333,6 @@
 		5C7262E69FDCA86E06F8C5435A9CEAD7 /* LMUniversalFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F9881807F408E8566C57865605A552 /* LMUniversalFeedViewController.swift */; };
 		5CF77C87157890835D64ED36D8AFF180 /* VideoPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FAE16346F0BD286B07C1D610562776 /* VideoPreviewViewController.swift */; };
 		5D08BFCCEA41C28E957EC4DFAFD0F9A4 /* FIRBundleUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = CF5E33E80CC31A440FCEF108331A19AA /* FIRBundleUtil.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		5D4D95B372206B6CB58DC23BC93AE94D /* LMFeedPostDetailTotalCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E53CA37E960E42770084CC2F74C32D /* LMFeedPostDetailTotalCommentCell.swift */; };
 		5D6F33C10824C01E79905F40409F5915 /* GDTCORFlatFileStorage+Promises.m in Sources */ = {isa = PBXBuildFile; fileRef = 757BBF51A8BEEB863534066CB65FB6E7 /* GDTCORFlatFileStorage+Promises.m */; };
 		5DB6880FA612996D386E4EA22EF46FE1 /* LMFeedShareUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF33158350143DCB2CA79EDAF460FD3 /* LMFeedShareUtility.swift */; };
 		5DE2550A18F0C1C519E6BB37607E832E /* AWSDDContextFilterLogFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DEBBE9939F37573985BDD9B6AD7AB9A /* AWSDDContextFilterLogFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -594,7 +592,7 @@
 		A43872F89CEFA1A399854A00530E31BE /* AWSDDASLLogCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = C85AB3343A10AC461D68D377DF57CCD1 /* AWSDDASLLogCapture.m */; };
 		A45E5DE682187016562DFDEE0981A178 /* AWSNSCodingUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 3395A4E94CBCCD2ED8731BE591E2A007 /* AWSNSCodingUtilities.m */; };
 		A4842FE796B7B11FBD198EC575067095 /* AssetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908ACAC7466450143A2B74535E97FDB6 /* AssetStore.swift */; };
-		A48FE094E5137AA6E30658A7DDE4A5C7 /* LMFeedLikeUserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA18568FE2548F3CE8A6CB4A0BA1081 /* LMFeedLikeUserTableCell.swift */; };
+		A48FE094E5137AA6E30658A7DDE4A5C7 /* LMFeedLikeUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA18568FE2548F3CE8A6CB4A0BA1081 /* LMFeedLikeUserView.swift */; };
 		A523488C60BF961290D0B1ABB9ADACEC /* RequestCompression.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3C8EA6AA0E21D47F32A9771F7C0C3 /* RequestCompression.swift */; };
 		A5E977750EEB0D060E2C48CFD1DB61D7 /* GoogleUtilities-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2DA728E2BB35DFFF7209E05B090D08 /* GoogleUtilities-dummy.m */; };
 		A6D6FA557D74E3DCE69FF5A4B42735A4 /* LMImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3439A87FE03983644339A788DC41DF68 /* LMImageView.swift */; };
@@ -765,7 +763,6 @@
 		D52F706ACC33F0E82085EB66D9B7E3E7 /* LMFeedTopicEditViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B87429C2464545EE5562D21FB9C4F3 /* LMFeedTopicEditViewCell.swift */; };
 		D550B43CA0AEBE114ADAC2B6CEC03EC5 /* AWSKSReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 4509282926E9B5CE433A5157AADB3951 /* AWSKSReachability.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D57C7217B7DEF8B8D486DE2AB8FD9FFB /* LMFeedCreatePostAddMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487D65787ECD44EB07421DCCDA466862 /* LMFeedCreatePostAddMediaView.swift */; };
-		D5BBFF910AF75927A5CFA619167D1B4E /* LMFeedDeletePostWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FE33F7E3440A5689B71A2A2CC406D4 /* LMFeedDeletePostWidget.swift */; };
 		D5CDB942C402656138596C179E5A64EB /* ImageModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79993D87323912DD88E322C4CD24B78 /* ImageModifier.swift */; };
 		D5D8B5C0D03894CE1F0488A2A9188131 /* FIRMessagingConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = A83F35A9378E97EC9A0B265E79706F7B /* FIRMessagingConstants.m */; };
 		D5EC2FA8D302EFDA98EB3AA9A2614446 /* GULNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0D8E8864C2D094D4D28431537A9E36 /* GULNetwork.m */; };
@@ -880,7 +877,7 @@
 		EE8C677CCC02B0F278241FFC4149186D /* LMFeedPostDetailDocumentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6074D86BC9B830722D63658AFC196C /* LMFeedPostDetailDocumentCell.swift */; };
 		EF265764E4C21969C92215FF57ED0E37 /* AWSLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 4982C3B8C2D8C679CE826D18A296EB6C /* AWSLogging.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EF6CA46A50B0E4CADD74410A10390C63 /* FIRInstallationsLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F2EF1CFC80C36EB433700DC5E3093D2 /* FIRInstallationsLogger.m */; };
-		EF74528069342BEEDB2947CCCC48F19D /* LMFeedPostMoreRepliesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558217D1AE7A9F643631A987B474356D /* LMFeedPostMoreRepliesCell.swift */; };
+		EF74528069342BEEDB2947CCCC48F19D /* LMFeedMoreRepliesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558217D1AE7A9F643631A987B474356D /* LMFeedMoreRepliesView.swift */; };
 		EF991E78928239F01ABD16A43E03DDBE /* AWSS3TransferManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FA91E23D255751D82DBD7388BB07856 /* AWSS3TransferManager.m */; };
 		EFB246DF54FDC0676D5CB4930BF3D909 /* FIRInstallationsHTTPError.h in Headers */ = {isa = PBXBuildFile; fileRef = 647648A3DD676D436318CA6E83EA0C82 /* FIRInstallationsHTTPError.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		EFEFA1E0764D990210BD03C6A266F554 /* GDTCORMetricsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D0CA2BF4E563715EAE72B9FE651DD62 /* GDTCORMetricsController.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -892,12 +889,12 @@
 		F1E9830328B2CB35C46D762D41D8E340 /* LMAWSManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0EAE02D40C1DA9D6E8E914AA6A051C /* LMAWSManager.swift */; };
 		F2415AE8678DE2698B7AD7D88B1A5C0F /* AlamofireExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8982C9CE188EC6D46F0941AB1344528 /* AlamofireExtended.swift */; };
 		F2446FC3CD5D89961D5953CC1810D426 /* FIRInstallationsIIDTokenStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F33C1C0198923474674985467D5B74A /* FIRInstallationsIIDTokenStore.m */; };
-		F2A8337A2CFAFE59B8A09244E576ED9F /* LMFeedPostDetailCommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D98247FA6595FECA42B74EB1B23B7D /* LMFeedPostDetailCommentHeaderView.swift */; };
+		F2A8337A2CFAFE59B8A09244E576ED9F /* LMFeedCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D98247FA6595FECA42B74EB1B23B7D /* LMFeedCommentView.swift */; };
 		F2E25565FCA001D6528F4EFAB3899612 /* FIRComponentType.h in Headers */ = {isa = PBXBuildFile; fileRef = 0F15BE6A55BB9EAFD2DBA26785013257 /* FIRComponentType.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		F3B5353C1CDE6C2DD2E80F32D3637750 /* SessionDataTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA5F4774430412613F7EABFD2858B80 /* SessionDataTask.swift */; };
 		F404BFA0E5F2CFF051688C90B319AC85 /* AnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B7F123309A8BB466515D520CAC68D9 /* AnimatedImageView.swift */; };
 		F434379F68A1CD0E8D5F9A82D15902D0 /* FIRMessaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EDFCCD9F93AB29C2FF800D7C3192AF5 /* FIRMessaging.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F4F6C8106492B8C38CA214F460330972 /* LMFeedTaggingUserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443810C1164ADCACFE2B74959A55C66 /* LMFeedTaggingUserTableCell.swift */; };
+		F4F6C8106492B8C38CA214F460330972 /* LMFeedTaggingUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D443810C1164ADCACFE2B74959A55C66 /* LMFeedTaggingUserView.swift */; };
 		F66CC47AD425C8D57BD149AFD09C2AFE /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BB7B3470BFED6D8012C98956A36340 /* HTTPMethod.swift */; };
 		F66D27B97364E38B01682D6FC111F4A0 /* LMFeedCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497C8932148BC10AA6EA6733206067CA /* LMFeedCore.swift */; };
 		F67DC63AB00B464792AC3332199CBFB8 /* FIRMessagingTokenOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 87D37272C68F3081AE8DCA5565066540 /* FIRMessagingTokenOperation.m */; };
@@ -1288,7 +1285,7 @@
 		05E5CA77327695C45BAFE5A6612C585A /* GDTCORTransformer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCORTransformer.h; path = GoogleDataTransport/GDTCORLibrary/Private/GDTCORTransformer.h; sourceTree = "<group>"; };
 		05E6C19AD75CE3C9130A090B50322511 /* AWSTMMemoryCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSTMMemoryCache.h; path = AWSCore/TMCache/AWSTMMemoryCache.h; sourceTree = "<group>"; };
 		06065AC81D2AA61F3059E51C34A005C3 /* AWSTimestampSerialization.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSTimestampSerialization.m; path = AWSCore/Serialization/AWSTimestampSerialization.m; sourceTree = "<group>"; };
-		06519C79A0FA618C8A48E0CDB63631C2 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = Sources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		06519C79A0FA618C8A48E0CDB63631C2 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Sources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		06798DA8970B9B719523C510E12567C2 /* FIRMessagingLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessagingLogger.h; path = FirebaseMessaging/Sources/FIRMessagingLogger.h; sourceTree = "<group>"; };
 		06F846019CE419F8F6B88E74B82EF451 /* nanopb-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "nanopb-dummy.m"; sourceTree = "<group>"; };
 		06FC5C9CF96D60C50FCD47D339C91951 /* nanopb */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = nanopb; path = nanopb.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1346,7 +1343,7 @@
 		16A4086F2CB0CEBB3DB526DAA2C964F8 /* GDTCORMetricsMetadata.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GDTCORMetricsMetadata.m; path = GoogleDataTransport/GDTCORLibrary/GDTCORMetricsMetadata.m; sourceTree = "<group>"; };
 		175B046D51E4339B24E7DEAEC6776275 /* FIRFirebaseUserAgent.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRFirebaseUserAgent.h; path = FirebaseCore/Sources/FIRFirebaseUserAgent.h; sourceTree = "<group>"; };
 		176F2B8C6E7ADECF1CB5E82A77FD50EE /* RequestTaskMap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RequestTaskMap.swift; path = Source/RequestTaskMap.swift; sourceTree = "<group>"; };
-		1774C497B39418F809C694B994E7C487 /* LikeMindsFeedUI.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = LikeMindsFeedUI.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		1774C497B39418F809C694B994E7C487 /* LikeMindsFeedUI.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = LikeMindsFeedUI.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		177A3F8AA82E31ACF3B0AE9321D53D3E /* String+MD5.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "String+MD5.swift"; path = "Sources/Utility/String+MD5.swift"; sourceTree = "<group>"; };
 		180576BF03E908A3802B716FE06022E8 /* AWSSTSService.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSSTSService.m; path = AWSCore/STS/AWSSTSService.m; sourceTree = "<group>"; };
 		18C26C6729A8B4DDBB424FD26B3741EF /* LikeMindsFeedUI-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "LikeMindsFeedUI-Info.plist"; sourceTree = "<group>"; };
@@ -1399,7 +1396,7 @@
 		28713DAD540338EA919081C09C412BD0 /* FIRComponentType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRComponentType.h; path = FirebaseCore/Extension/FIRComponentType.h; sourceTree = "<group>"; };
 		2886E1A791F142170D4D5BEE1B138728 /* LMStackView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMStackView.swift; sourceTree = "<group>"; };
 		28AA35BB00E0F7BCE9D2D57DF2E3139C /* FirebaseCore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FirebaseCore.release.xcconfig; sourceTree = "<group>"; };
-		28B8547E70427CF19736D0668897BCEB /* compliance.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; name = compliance.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/compliance.nanopb.c; sourceTree = "<group>"; };
+		28B8547E70427CF19736D0668897BCEB /* compliance.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = compliance.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/compliance.nanopb.c; sourceTree = "<group>"; };
 		291DB83FE9D6B361E14AA263BF132DCC /* FIRInstallations.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRInstallations.m; path = FirebaseInstallations/Source/Library/FIRInstallations.m; sourceTree = "<group>"; };
 		292B4632D8553B5C090FFD2947C819CB /* ImageFormat.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageFormat.swift; path = Sources/Image/ImageFormat.swift; sourceTree = "<group>"; };
 		297083A99B7B3A415FFA3038EA0F2227 /* NSError+FIRMessaging.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSError+FIRMessaging.m"; path = "FirebaseMessaging/Sources/NSError+FIRMessaging.m"; sourceTree = "<group>"; };
@@ -1458,7 +1455,7 @@
 		34349C03642666847B17F2D56D2FAB18 /* RequestModifier.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RequestModifier.swift; path = Sources/Networking/RequestModifier.swift; sourceTree = "<group>"; };
 		3439A87FE03983644339A788DC41DF68 /* LMImageView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMImageView.swift; sourceTree = "<group>"; };
 		3457B14DA27C6EBEA41739C31DF40A6C /* LikeMindsFeedCore-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LikeMindsFeedCore-umbrella.h"; sourceTree = "<group>"; };
-		346EAADE80B0BC6C273EC218694A4EAC /* cct.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; name = cct.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/cct.nanopb.c; sourceTree = "<group>"; };
+		346EAADE80B0BC6C273EC218694A4EAC /* cct.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = cct.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/cct.nanopb.c; sourceTree = "<group>"; };
 		350E4E93A8BE6A8DE3DC0ADD1798311B /* Pods-lm-feed-sample-app-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-lm-feed-sample-app-acknowledgements.markdown"; sourceTree = "<group>"; };
 		35170646438A087DC613052E12DE910F /* GULNetworkInternal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GULNetworkInternal.h; path = GoogleUtilities/Network/GULNetworkInternal.h; sourceTree = "<group>"; };
 		35334C62C7EE52DAC8831C84C5D3CA4E /* FIRAppInternal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRAppInternal.h; path = FirebaseCore/Extension/FIRAppInternal.h; sourceTree = "<group>"; };
@@ -1500,7 +1497,7 @@
 		3E48EB8CDD77F5B95F5E16DD9988CF2C /* FIRLibrary.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRLibrary.h; path = FirebaseCore/Extension/FIRLibrary.h; sourceTree = "<group>"; };
 		3E5D59B3C2A72C7334D58B7593AB7081 /* LikeMindsFeedUI-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "LikeMindsFeedUI-dummy.m"; sourceTree = "<group>"; };
 		3E9352FA9B49163AD15B66F1C1BC854C /* GULHeartbeatDateStorable.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GULHeartbeatDateStorable.h; path = GoogleUtilities/Environment/Public/GoogleUtilities/GULHeartbeatDateStorable.h; sourceTree = "<group>"; };
-		3E9AD48BEB8D18ACE9172C8798225F1A /* external_prequest_context.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; name = external_prequest_context.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/external_prequest_context.nanopb.c; sourceTree = "<group>"; };
+		3E9AD48BEB8D18ACE9172C8798225F1A /* external_prequest_context.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = external_prequest_context.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/external_prequest_context.nanopb.c; sourceTree = "<group>"; };
 		3F242D845E0C04798965A8A78B94EA3E /* FIRInstallationsAuthTokenResult.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRInstallationsAuthTokenResult.m; path = FirebaseInstallations/Source/Library/FIRInstallationsAuthTokenResult.m; sourceTree = "<group>"; };
 		3F30417BD06BD06E5D38F2899079153C /* DropdownPresentationController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DropdownPresentationController.swift; path = Sources/Presentation/Dropdown/DropdownPresentationController.swift; sourceTree = "<group>"; };
 		3F991D758B4E4C67057D8576871ECA77 /* FirebaseInstallations-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FirebaseInstallations-dummy.m"; sourceTree = "<group>"; };
@@ -1510,7 +1507,7 @@
 		4039F04E542865C339B5A5DD6552C37D /* GDTCORMetrics.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCORMetrics.h; path = GoogleDataTransport/GDTCORLibrary/Private/GDTCORMetrics.h; sourceTree = "<group>"; };
 		404DFD9AF3778A84C7958BDFA77039DA /* ResponseSerialization.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ResponseSerialization.swift; path = Source/ResponseSerialization.swift; sourceTree = "<group>"; };
 		40A88035759F1800966790717895C245 /* LikeMindsFeedUI-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LikeMindsFeedUI-prefix.pch"; sourceTree = "<group>"; };
-		40CAACEAE476A83DE8B7822DEF5C3055 /* pb_decode.c */ = {isa = PBXFileReference; includeInIndex = 1; path = pb_decode.c; sourceTree = "<group>"; };
+		40CAACEAE476A83DE8B7822DEF5C3055 /* pb_decode.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; path = pb_decode.c; sourceTree = "<group>"; };
 		41187B3CFDDA4EDBE4AFC6830BA36796 /* GULSecureCoding.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GULSecureCoding.m; path = GoogleUtilities/Environment/GULSecureCoding.m; sourceTree = "<group>"; };
 		412589617427D91634E32652AC56325F /* GULURLSessionDataResponse.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GULURLSessionDataResponse.h; path = GoogleUtilities/Environment/Public/GoogleUtilities/GULURLSessionDataResponse.h; sourceTree = "<group>"; };
 		4148A01C697B8295CF4963FEBBDA3BFC /* FIROptions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIROptions.h; path = FirebaseCore/Sources/Public/FirebaseCore/FIROptions.h; sourceTree = "<group>"; };
@@ -1567,7 +1564,7 @@
 		4BDADD4BFCC6C7B6009B9DF0931A1B64 /* GDTCORAssert.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCORAssert.h; path = GoogleDataTransport/GDTCORLibrary/Internal/GDTCORAssert.h; sourceTree = "<group>"; };
 		4C7740537F4313BA74E77A71AF0FF762 /* FirebaseCoreInternal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FirebaseCoreInternal.h; path = FirebaseCore/Extension/FirebaseCoreInternal.h; sourceTree = "<group>"; };
 		4CA0E1D6FA8C84AE40E89508D8E1B498 /* GDTCORLogSourceMetrics.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GDTCORLogSourceMetrics.m; path = GoogleDataTransport/GDTCORLibrary/GDTCORLogSourceMetrics.m; sourceTree = "<group>"; };
-		4CA18568FE2548F3CE8A6CB4A0BA1081 /* LMFeedLikeUserTableCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedLikeUserTableCell.swift; sourceTree = "<group>"; };
+		4CA18568FE2548F3CE8A6CB4A0BA1081 /* LMFeedLikeUserView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedLikeUserView.swift; sourceTree = "<group>"; };
 		4CA830A14B453096F9CA772BF4DE5D24 /* AFError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AFError.swift; path = Source/AFError.swift; sourceTree = "<group>"; };
 		4D22296A9817EE5F7F11F43494F63936 /* AWSUICKeyChainStore.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSUICKeyChainStore.m; path = AWSCore/UICKeyChainStore/AWSUICKeyChainStore.m; sourceTree = "<group>"; };
 		4D8AF1375C782FBEAD726898BDCBA268 /* FBLPromise+Delay.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "FBLPromise+Delay.m"; path = "Sources/FBLPromises/FBLPromise+Delay.m"; sourceTree = "<group>"; };
@@ -1590,20 +1587,19 @@
 		513497BEB039AA8F5AD89FEBE3F7235D /* LMFeedLikeDataModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedLikeDataModel.swift; sourceTree = "<group>"; };
 		5196CBF35F64606B8401DF2C999B26FF /* FIRApp.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRApp.m; path = FirebaseCore/Sources/FIRApp.m; sourceTree = "<group>"; };
 		51E3BB86FAD57743C8B5956C27E5E4F7 /* FIRInstallationsStore.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRInstallationsStore.h; path = FirebaseInstallations/Source/Library/InstallationsStore/FIRInstallationsStore.h; sourceTree = "<group>"; };
-		523AA844C931F3D7A9ECA90FF4711D85 /* LMFeedNoCommentWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedNoCommentWidget.swift; sourceTree = "<group>"; };
-		5257E29E8C7EF78BC427E15E41526599 /* external_privacy_context.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; name = external_privacy_context.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/external_privacy_context.nanopb.c; sourceTree = "<group>"; };
+		5257E29E8C7EF78BC427E15E41526599 /* external_privacy_context.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = external_privacy_context.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/external_privacy_context.nanopb.c; sourceTree = "<group>"; };
 		52A4299016AC9CB212546DBD1462287E /* ImagePickerController+Closure.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ImagePickerController+Closure.swift"; path = "Sources/Controller/ImagePickerController+Closure.swift"; sourceTree = "<group>"; };
 		52AF4586D1620A32EFA9AFD618D8ED4D /* AWSNetworkingHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSNetworkingHelpers.h; path = AWSCore/Networking/AWSNetworkingHelpers.h; sourceTree = "<group>"; };
 		5310586CB56757258CD0C2B0D480FB6E /* GULLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GULLogger.h; path = GoogleUtilities/Logger/Public/GoogleUtilities/GULLogger.h; sourceTree = "<group>"; };
 		531C6B022C7DAD2730AF8A0B0BFAB3BD /* nanopb.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = nanopb.debug.xcconfig; sourceTree = "<group>"; };
 		533FA21F3A444E15F5A1B29F0F7EE3AC /* AWSFMDatabaseAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSFMDatabaseAdditions.h; path = AWSCore/FMDB/AWSFMDatabaseAdditions.h; sourceTree = "<group>"; };
 		5366019CDC91F3D4FEA628A31066B0F5 /* NSButton+Kingfisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSButton+Kingfisher.swift"; path = "Sources/Extensions/NSButton+Kingfisher.swift"; sourceTree = "<group>"; };
-		5475BF4D571518A1875154708B28B1D1 /* LikeMindsFeedCore.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = LikeMindsFeedCore.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		5475BF4D571518A1875154708B28B1D1 /* LikeMindsFeedCore.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = LikeMindsFeedCore.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		5482770FECCECCB192440F661E5BA314 /* GDTCORTransport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCORTransport.h; path = GoogleDataTransport/GDTCORLibrary/Public/GoogleDataTransport/GDTCORTransport.h; sourceTree = "<group>"; };
 		54DAFF5F5025C84769A8DB924FB4D317 /* Source.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Source.swift; path = Sources/General/ImageSource/Source.swift; sourceTree = "<group>"; };
 		553452634F98A53E750986831BFE0F0E /* AWSS3TransferUtility.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSS3TransferUtility.h; path = AWSS3/AWSS3TransferUtility.h; sourceTree = "<group>"; };
 		5565C8050F9228B6D9F6E873BFB309C8 /* ZoomInteractionController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZoomInteractionController.swift; path = Sources/Presentation/Zoom/ZoomInteractionController.swift; sourceTree = "<group>"; };
-		558217D1AE7A9F643631A987B474356D /* LMFeedPostMoreRepliesCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostMoreRepliesCell.swift; sourceTree = "<group>"; };
+		558217D1AE7A9F643631A987B474356D /* LMFeedMoreRepliesView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedMoreRepliesView.swift; sourceTree = "<group>"; };
 		55D0DD65A02047F574E2335D39042AD7 /* SessionDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionDelegate.swift; path = Sources/Networking/SessionDelegate.swift; sourceTree = "<group>"; };
 		55ECD629319E80AB0B5E31D627BBAAA5 /* FIRMessagingAPNSInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessagingAPNSInfo.h; path = FirebaseMessaging/Sources/Token/FIRMessagingAPNSInfo.h; sourceTree = "<group>"; };
 		55F8902965546A80C0D9B06C34FD6199 /* AWSDDAssertMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSDDAssertMacros.h; path = AWSCore/Logging/AWSDDAssertMacros.h; sourceTree = "<group>"; };
@@ -1688,7 +1684,7 @@
 		68C1D71252AEEDDE4EF328B84B67A482 /* LMButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMButton.swift; sourceTree = "<group>"; };
 		68E62948A76A57AFA5D95A6464FF8254 /* FIRMessagingKeychain.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessagingKeychain.h; path = FirebaseMessaging/Sources/Token/FIRMessagingKeychain.h; sourceTree = "<group>"; };
 		68F6857690F97F31CAE13311A1F708B9 /* AlbumsTableViewDataSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AlbumsTableViewDataSource.swift; path = Sources/Scene/Albums/AlbumsTableViewDataSource.swift; sourceTree = "<group>"; };
-		690B37AB8F71CF30C845AEC96161917A /* LMFeedPostDetailCommentCellViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailCommentCellViewModel.swift; sourceTree = "<group>"; };
+		690B37AB8F71CF30C845AEC96161917A /* LMFeedCommentContentModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedCommentContentModel.swift; sourceTree = "<group>"; };
 		69734DED70FE9922F544488026C5DF7E /* AWSCognito.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AWSCognito.debug.xcconfig; sourceTree = "<group>"; };
 		6997188F770901A8DFCCC386E15260D9 /* FIRHeartbeatLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRHeartbeatLogger.m; path = FirebaseCore/Sources/FIRHeartbeatLogger.m; sourceTree = "<group>"; };
 		69D1EB0D9FF17429B5C35BD503F77698 /* FIRMessagingSyncMessageManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRMessagingSyncMessageManager.m; path = FirebaseMessaging/Sources/FIRMessagingSyncMessageManager.m; sourceTree = "<group>"; };
@@ -1717,7 +1713,7 @@
 		6FC5036BD6C7899B3E6F3BD82A6EE623 /* AWSMTLJSONAdapter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSMTLJSONAdapter.h; path = AWSCore/Mantle/AWSMTLJSONAdapter.h; sourceTree = "<group>"; };
 		70D795BA3F9A52B43032C7C732B84CC4 /* FBLPromise+Recover.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBLPromise+Recover.h"; path = "Sources/FBLPromises/include/FBLPromise+Recover.h"; sourceTree = "<group>"; };
 		70FF77CD6C025447136E105536B8C584 /* BSImagePicker-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "BSImagePicker-Info.plist"; sourceTree = "<group>"; };
-		7101D4E58A7D555B1BB54E535347CC9C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		7101D4E58A7D555B1BB54E535347CC9C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		71D4F1DF49D349012CCD812F54420C83 /* GDTCORMetrics+GDTCCTSupport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "GDTCORMetrics+GDTCCTSupport.h"; path = "GoogleDataTransport/GDTCCTLibrary/Private/GDTCORMetrics+GDTCCTSupport.h"; sourceTree = "<group>"; };
 		71F0DAB29E86EF4BE9E1DF70C720203F /* GULNetworkConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GULNetworkConstants.h; path = GoogleUtilities/Network/Public/GoogleUtilities/GULNetworkConstants.h; sourceTree = "<group>"; };
 		7266F8028E73983C83336522B9EA871F /* LikeMindsFeedCore */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = LikeMindsFeedCore; path = LikeMindsFeedCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1737,7 +1733,7 @@
 		75F7183E13D02CB68A15AC131701B853 /* LMFeedAnalytics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMFeedAnalytics.swift; path = "lm-feedCore-iOS/lm-feedCore-iOS/Source/Classes/LMFeedAnalytics.swift"; sourceTree = "<group>"; };
 		7705A527193B50AAEB6ECC970A0D6093 /* GDTCORLifecycle.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GDTCORLifecycle.m; path = GoogleDataTransport/GDTCORLibrary/GDTCORLifecycle.m; sourceTree = "<group>"; };
 		770604911937AE5815E9A003DDCE9D19 /* AWSService.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSService.h; path = AWSCore/Service/AWSService.h; sourceTree = "<group>"; };
-		787D7E246D6E5F9A869F34F331AA8D20 /* pb_common.c */ = {isa = PBXFileReference; includeInIndex = 1; path = pb_common.c; sourceTree = "<group>"; };
+		787D7E246D6E5F9A869F34F331AA8D20 /* pb_common.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; path = pb_common.c; sourceTree = "<group>"; };
 		78A8F5294A7F1D4363BA8517BA436034 /* GDTCORFlatFileStorage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GDTCORFlatFileStorage.m; path = GoogleDataTransport/GDTCORLibrary/GDTCORFlatFileStorage.m; sourceTree = "<group>"; };
 		78D4C448603FCF8E56F884445217960C /* GDTCORProductData.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GDTCORProductData.m; path = GoogleDataTransport/GDTCORLibrary/GDTCORProductData.m; sourceTree = "<group>"; };
 		7A0C0873634BF387ADF534F965F35EDA /* SizeExtensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SizeExtensions.swift; path = Sources/Utility/SizeExtensions.swift; sourceTree = "<group>"; };
@@ -1822,7 +1818,7 @@
 		90B978AF89260A20FF1233F8182AD1BB /* AWSS3Resources.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSS3Resources.h; path = AWSS3/AWSS3Resources.h; sourceTree = "<group>"; };
 		90BC079BA501DBD4676713AEEA3449E9 /* AWSServiceEnum.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSServiceEnum.h; path = AWSCore/Service/AWSServiceEnum.h; sourceTree = "<group>"; };
 		910315B3680B6B38900FFC5607960F68 /* AWSCognitoDataset.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSCognitoDataset.m; path = AWSCognito/AWSCognitoDataset.m; sourceTree = "<group>"; };
-		912888C9D61E69D3FDD5CBFAD2296F05 /* me.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; name = me.nanopb.c; path = FirebaseMessaging/Sources/Protogen/nanopb/me.nanopb.c; sourceTree = "<group>"; };
+		912888C9D61E69D3FDD5CBFAD2296F05 /* me.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = me.nanopb.c; path = FirebaseMessaging/Sources/Protogen/nanopb/me.nanopb.c; sourceTree = "<group>"; };
 		920D783309E5771FEDF1F59CB3090761 /* GDTCORStorageProtocol.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCORStorageProtocol.h; path = GoogleDataTransport/GDTCORLibrary/Internal/GDTCORStorageProtocol.h; sourceTree = "<group>"; };
 		9215777BC0B6085373190FE90C1EAB32 /* ImageDrawing.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageDrawing.swift; path = Sources/Image/ImageDrawing.swift; sourceTree = "<group>"; };
 		921800F7159DB4F14BF8344648BCEF03 /* AWSCognitoSyncModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCognitoSyncModel.h; path = AWSCognito/CognitoSync/AWSCognitoSyncModel.h; sourceTree = "<group>"; };
@@ -1841,7 +1837,6 @@
 		9562AA55BD3A2843D7ECEFF90A4C0F4F /* GULNSData+zlib.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "GULNSData+zlib.h"; path = "GoogleUtilities/NSData+zlib/Public/GoogleUtilities/GULNSData+zlib.h"; sourceTree = "<group>"; };
 		958E223A1E4FF70BD0C56A2A4D79B96B /* PreviewViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PreviewViewController.swift; path = Sources/Scene/Preview/PreviewViewController.swift; sourceTree = "<group>"; };
 		95A7A303D1185ABA9485BFA18E61E47F /* HeartbeatLoggingTestUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HeartbeatLoggingTestUtils.swift; path = FirebaseCore/Internal/Sources/HeartbeatLogging/HeartbeatLoggingTestUtils.swift; sourceTree = "<group>"; };
-		95E53CA37E960E42770084CC2F74C32D /* LMFeedPostDetailTotalCommentCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailTotalCommentCell.swift; sourceTree = "<group>"; };
 		961B123DDE9CDBDBB52F63FD7F22BAEB /* ImageCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageCache.swift; path = Sources/Cache/ImageCache.swift; sourceTree = "<group>"; };
 		96B78B756729DC4926DDCA6CCCE88670 /* Kingfisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Kingfisher.swift; path = Sources/General/Kingfisher.swift; sourceTree = "<group>"; };
 		96EBC8A34368C0880DD97A9BD7565F44 /* GDTCCTCompressionHelper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCCTCompressionHelper.h; path = GoogleDataTransport/GDTCCTLibrary/Private/GDTCCTCompressionHelper.h; sourceTree = "<group>"; };
@@ -1874,7 +1869,7 @@
 		9D0F3EC48752D28D33FA33ADF5AAE094 /* AWSCognitoConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCognitoConstants.h; path = AWSCognito/Internal/AWSCognitoConstants.h; sourceTree = "<group>"; };
 		9D416824215F80A082500DAAC79D1B05 /* FIRMessagingTokenDeleteOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessagingTokenDeleteOperation.h; path = FirebaseMessaging/Sources/Token/FIRMessagingTokenDeleteOperation.h; sourceTree = "<group>"; };
 		9D87A74F69BBD283788010094021ABED /* BSImagePicker.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = BSImagePicker.modulemap; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9D9791BAD2D7390B8B8782D5AE97ABCE /* FIRMessagingLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRMessagingLogger.m; path = FirebaseMessaging/Sources/FIRMessagingLogger.m; sourceTree = "<group>"; };
 		9E67D1808D0B48FE8E33FCAEDCBB8EE8 /* AssetCollectionViewCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AssetCollectionViewCell.swift; path = Sources/Scene/Assets/AssetCollectionViewCell.swift; sourceTree = "<group>"; };
 		9E804B5D66413C63C94B2AE21CCBB658 /* ImagePickerController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImagePickerController.swift; path = Sources/Controller/ImagePickerController.swift; sourceTree = "<group>"; };
@@ -1949,7 +1944,7 @@
 		AF43B280D165EA7781186028DECA97FD /* Constants+Numbers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Constants+Numbers.swift"; sourceTree = "<group>"; };
 		AFC0424A5AD829FF6E3DBA57757D9DF7 /* LMFeedReportContentViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedReportContentViewController.swift; sourceTree = "<group>"; };
 		AFC18A6D65A51FB3AA29835CAE136BB6 /* FIRMessagingTopicOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRMessagingTopicOperation.m; path = FirebaseMessaging/Sources/FIRMessagingTopicOperation.m; sourceTree = "<group>"; };
-		AFCD44780243751ADC8C192FED57E587 /* LikeMindsFeed.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = LikeMindsFeed.xcframework; sourceTree = "<group>"; };
+		AFCD44780243751ADC8C192FED57E587 /* LikeMindsFeed.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; path = LikeMindsFeed.xcframework; sourceTree = "<group>"; };
 		AFE76D93DCDD9E113F6C574C24B596E4 /* LMViewLifeCycle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMViewLifeCycle.swift; sourceTree = "<group>"; };
 		B031A802E109CA48C4AC975FD9682855 /* FABAttributes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FABAttributes.h; path = AWSCore/Fabric/FABAttributes.h; sourceTree = "<group>"; };
 		B09599C497E5605D470A3418A3DB118F /* Kingfisher-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Kingfisher-prefix.pch"; sourceTree = "<group>"; };
@@ -1978,7 +1973,7 @@
 		B4D8EDA7DF6D78C6F5B0D2A3DE46ABDF /* AWSDDLegacyMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSDDLegacyMacros.h; path = AWSCore/Logging/AWSDDLegacyMacros.h; sourceTree = "<group>"; };
 		B4FC89D19F45E29916E19E187BE09B05 /* VideoCollectionViewCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VideoCollectionViewCell.swift; path = Sources/Scene/Assets/VideoCollectionViewCell.swift; sourceTree = "<group>"; };
 		B507E29F8484DF2A5AEE73D58547F57E /* AWSS3-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AWSS3-umbrella.h"; sourceTree = "<group>"; };
-		B56A11AA527236935612F5123F179DBE /* client_metrics.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; name = client_metrics.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/client_metrics.nanopb.c; sourceTree = "<group>"; };
+		B56A11AA527236935612F5123F179DBE /* client_metrics.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = client_metrics.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/client_metrics.nanopb.c; sourceTree = "<group>"; };
 		B59062F36EC30BEA858E871B865DA879 /* AWSTMCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSTMCache.h; path = AWSCore/TMCache/AWSTMCache.h; sourceTree = "<group>"; };
 		B5910D86AA33B022AC218456EF290499 /* PromisesObjC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PromisesObjC.debug.xcconfig; sourceTree = "<group>"; };
 		B595D5037F8950A6DE5580745C07EBF5 /* LMFeedTopicSelectionDataModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedTopicSelectionDataModel.swift; sourceTree = "<group>"; };
@@ -1989,7 +1984,6 @@
 		B68A823CFA17A9B0B4BCC313F6D0BCD4 /* Alamofire-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Alamofire-umbrella.h"; sourceTree = "<group>"; };
 		B6CF36961973E91B588DA8067A0D50D4 /* GULReachabilityChecker+Internal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "GULReachabilityChecker+Internal.h"; path = "GoogleUtilities/Reachability/GULReachabilityChecker+Internal.h"; sourceTree = "<group>"; };
 		B6EECBF21AD16067117C5F7B58BBE646 /* FIRBundleUtil.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRBundleUtil.m; path = FirebaseCore/Sources/FIRBundleUtil.m; sourceTree = "<group>"; };
-		B716D723E58B89301892746E6EC8BCF1 /* LMFeedTopicSelectionView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedTopicSelectionView.swift; sourceTree = "<group>"; };
 		B73449EFFC1E4A825DF493CE768D640E /* GradientView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GradientView.swift; path = Sources/Scene/Assets/GradientView.swift; sourceTree = "<group>"; };
 		B76862FC7C5DA627C42FA32169ADCD9D /* Result.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Sources/Utility/Result.swift; sourceTree = "<group>"; };
 		B78F0F02D312077F74CD0B2B37B707F1 /* AWSURLSessionManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSURLSessionManager.m; path = AWSCore/Networking/AWSURLSessionManager.m; sourceTree = "<group>"; };
@@ -2072,7 +2066,7 @@
 		CE1462926E3D5E012E2C57F602657478 /* FIRMessagingAnalytics.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRMessagingAnalytics.m; path = FirebaseMessaging/Sources/FIRMessagingAnalytics.m; sourceTree = "<group>"; };
 		CE5815CEA1FDA92DD08A60E5619B894D /* GIFAnimatedImage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GIFAnimatedImage.swift; path = Sources/Image/GIFAnimatedImage.swift; sourceTree = "<group>"; };
 		CE67488463D22BF80803A03D5E67EFA7 /* FIRMessagingContextManagerService.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessagingContextManagerService.h; path = FirebaseMessaging/Sources/FIRMessagingContextManagerService.h; sourceTree = "<group>"; };
-		CE6A4A814499E11CA8E52A1AF81D065D /* LMFeedPostDetailCommentCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailCommentCell.swift; sourceTree = "<group>"; };
+		CE6A4A814499E11CA8E52A1AF81D065D /* LMFeedReplyView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedReplyView.swift; sourceTree = "<group>"; };
 		CED9012312D87B4D556DD6758C27B4C9 /* Delegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Delegate.swift; path = Sources/Utility/Delegate.swift; sourceTree = "<group>"; };
 		CEF3C8EA6AA0E21D47F32A9771F7C0C3 /* RequestCompression.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RequestCompression.swift; path = Source/RequestCompression.swift; sourceTree = "<group>"; };
 		CF2A3F5C5B48B610E4703BB2065FA682 /* FIRMessagingPersistentSyncMessage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessagingPersistentSyncMessage.h; path = FirebaseMessaging/Sources/FIRMessagingPersistentSyncMessage.h; sourceTree = "<group>"; };
@@ -2094,9 +2088,8 @@
 		D246A864881F0FB7C207B735BE1C965B /* AWSKSReachability.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSKSReachability.m; path = AWSCore/KSReachability/AWSKSReachability.m; sourceTree = "<group>"; };
 		D3687F6B944C9A75B311323B22A89A13 /* NSArray+AWSMTLManipulationAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSArray+AWSMTLManipulationAdditions.h"; path = "AWSCore/Mantle/NSArray+AWSMTLManipulationAdditions.h"; sourceTree = "<group>"; };
 		D3DCE2A0F07C0E0A2228F90D755661B5 /* MultipartFormData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MultipartFormData.swift; path = Source/MultipartFormData.swift; sourceTree = "<group>"; };
-		D3FE33F7E3440A5689B71A2A2CC406D4 /* LMFeedDeletePostWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedDeletePostWidget.swift; sourceTree = "<group>"; };
 		D435C56C878DF816183F04EEB622977E /* GULNetworkConstants.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GULNetworkConstants.m; path = GoogleUtilities/Network/GULNetworkConstants.m; sourceTree = "<group>"; };
-		D443810C1164ADCACFE2B74959A55C66 /* LMFeedTaggingUserTableCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedTaggingUserTableCell.swift; sourceTree = "<group>"; };
+		D443810C1164ADCACFE2B74959A55C66 /* LMFeedTaggingUserView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedTaggingUserView.swift; sourceTree = "<group>"; };
 		D492256E393DC2E3FBDA4194F0825BB9 /* LMFeedPostFooterView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostFooterView.swift; sourceTree = "<group>"; };
 		D4B5B345A8CBED298563E9B467549CFE /* ImageView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageView.swift; path = Sources/View/ImageView.swift; sourceTree = "<group>"; };
 		D4CBBA306F4BE9ECA2D562477724E82C /* GDTCOREvent.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCOREvent.h; path = GoogleDataTransport/GDTCORLibrary/Public/GoogleDataTransport/GDTCOREvent.h; sourceTree = "<group>"; };
@@ -2202,7 +2195,7 @@
 		EEBC719FFCE68403E843C2D1C1129182 /* AWSCognitoSyncResources.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCognitoSyncResources.h; path = AWSCognito/CognitoSync/AWSCognitoSyncResources.h; sourceTree = "<group>"; };
 		EEBF0CDCB1ECDF911DAFB34175783ECC /* FIRInstallationsAuthTokenResult.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRInstallationsAuthTokenResult.h; path = FirebaseInstallations/Source/Library/Public/FirebaseInstallations/FIRInstallationsAuthTokenResult.h; sourceTree = "<group>"; };
 		EEFE2808A78E3DA94538B2B3A4B686F2 /* AWSSignature.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSSignature.h; path = AWSCore/Authentication/AWSSignature.h; sourceTree = "<group>"; };
-		EF21C126792BE37745FC1BA8915D539A /* pb_encode.c */ = {isa = PBXFileReference; includeInIndex = 1; path = pb_encode.c; sourceTree = "<group>"; };
+		EF21C126792BE37745FC1BA8915D539A /* pb_encode.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; path = pb_encode.c; sourceTree = "<group>"; };
 		EF7E61EF0F19DB1BC6ECAE7792C51040 /* FIRMessagingInterop.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessagingInterop.h; path = FirebaseMessaging/Interop/FIRMessagingInterop.h; sourceTree = "<group>"; };
 		EF95AE4EFD4727A21E9FAD4076C20EFF /* GULNetworkMessageCode.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GULNetworkMessageCode.h; path = GoogleUtilities/Network/Public/GoogleUtilities/GULNetworkMessageCode.h; sourceTree = "<group>"; };
 		EF9D8791555E64BAD92D337C36D8E44E /* Kingfisher.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Kingfisher.debug.xcconfig; sourceTree = "<group>"; };
@@ -2242,7 +2235,7 @@
 		F86F3E741CEDAC0752C062C5FE836E0D /* ImageViewLayout.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageViewLayout.swift; path = Sources/View/ImageViewLayout.swift; sourceTree = "<group>"; };
 		F8982C9CE188EC6D46F0941AB1344528 /* AlamofireExtended.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AlamofireExtended.swift; path = Source/AlamofireExtended.swift; sourceTree = "<group>"; };
 		F8BEFED4ECB17BD4E456480F3A5997F1 /* LMFeedDeleteReviewScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedDeleteReviewScreen.swift; sourceTree = "<group>"; };
-		F8D98247FA6595FECA42B74EB1B23B7D /* LMFeedPostDetailCommentHeaderView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailCommentHeaderView.swift; sourceTree = "<group>"; };
+		F8D98247FA6595FECA42B74EB1B23B7D /* LMFeedCommentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedCommentView.swift; sourceTree = "<group>"; };
 		F901EB1B45CAFFD583C6799441202A07 /* Kingfisher-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Kingfisher-Info.plist"; sourceTree = "<group>"; };
 		F985273884699DE746B724176FD8144C /* AWSSTSModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSSTSModel.m; path = AWSCore/STS/AWSSTSModel.m; sourceTree = "<group>"; };
 		F9AC1A14E631C11F7F2150345A3A86E3 /* LikeMindsFeedUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = LikeMindsFeedUI.debug.xcconfig; sourceTree = "<group>"; };
@@ -2467,7 +2460,6 @@
 				FBF8D4A53C2CF96C38E6C14D5EE10F78 /* LMFeedLoopedVideoPlayer.swift */,
 				3223DE92699B11B48D8D04CF3D1E86AF /* LMFeedVideoCollectionCell.swift */,
 			);
-			name = SharedComponents;
 			path = SharedComponents;
 			sourceTree = "<group>";
 		};
@@ -2476,7 +2468,6 @@
 			children = (
 				8C6074D86BC9B830722D63658AFC196C /* LMFeedPostDetailDocumentCell.swift */,
 			);
-			name = DocumentCell;
 			path = DocumentCell;
 			sourceTree = "<group>";
 		};
@@ -2522,7 +2513,6 @@
 				D095DF2125E5CB4CF9505AEC6A5EB3BE /* Validation.swift */,
 				F34E3B5D921EAE5671F5A1AE978017DC /* Support Files */,
 			);
-			name = Alamofire;
 			path = Alamofire;
 			sourceTree = "<group>";
 		};
@@ -2555,7 +2545,6 @@
 				3FFC7E4C1D3FB30CA6586B2FED623C5E /* AWSS3TransferUtilityTasks.m */,
 				84D642A97E1CBDBD2F8AFB9D81063779 /* Support Files */,
 			);
-			name = AWSS3;
 			path = AWSS3;
 			sourceTree = "<group>";
 		};
@@ -2565,7 +2554,6 @@
 				6782E046FD202D1932C03E57441EFDA3 /* LMFeedPostListViewController.swift */,
 				04F24754305E0E4EA45F5A58350ABE5E /* LMFeedPostListViewModel.swift */,
 			);
-			name = PostListView;
 			path = PostListView;
 			sourceTree = "<group>";
 		};
@@ -2602,7 +2590,6 @@
 				2FFE1E325E9606342B34CFC97C783935 /* MediaCell */,
 				999069D5AC47E304468ADE000124A6F9 /* PostHeaderFooter */,
 			);
-			name = PostDetailWidgets;
 			path = PostDetailWidgets;
 			sourceTree = "<group>";
 		};
@@ -2695,7 +2682,6 @@
 				297083A99B7B3A415FFA3038EA0F2227 /* NSError+FIRMessaging.m */,
 				7B18CEBFB3612B76AA75B12D497B3409 /* Support Files */,
 			);
-			name = FirebaseMessaging;
 			path = FirebaseMessaging;
 			sourceTree = "<group>";
 		};
@@ -2734,9 +2720,7 @@
 			isa = PBXGroup;
 			children = (
 				CB8B1A1D12F2E783CBB1A15EAD10E257 /* LMFeedTopicSelectionCell.swift */,
-				7DEA285CDE628B5560A17B6849D1FEAB /* LMFeedTopicSelectionView */,
 			);
-			name = SelectionScreen;
 			path = SelectionScreen;
 			sourceTree = "<group>";
 		};
@@ -2746,7 +2730,6 @@
 				18F950F428038B9E966036627B6A4606 /* LMFeedEmptyNotificationView.swift */,
 				31EC72D10AB686F30E30580BDE290E33 /* LMFeedNotificationView.swift */,
 			);
-			name = NotificationView;
 			path = NotificationView;
 			sourceTree = "<group>";
 		};
@@ -2755,7 +2738,6 @@
 			children = (
 				487D65787ECD44EB07421DCCDA466862 /* LMFeedCreatePostAddMediaView.swift */,
 			);
-			name = AddMediaView;
 			path = AddMediaView;
 			sourceTree = "<group>";
 		};
@@ -2784,7 +2766,6 @@
 			children = (
 				EE1CF4B858240BEF98F6DA42E9A8968B /* LMFeedPostDetailLinkCell.swift */,
 			);
-			name = LinkCell;
 			path = LinkCell;
 			sourceTree = "<group>";
 		};
@@ -2794,7 +2775,6 @@
 				3F9D637B784A234C88B1EE8AB63A0306 /* LMFeedTopicView.swift */,
 				3F82C9765CBBE6F0761B6010C0F79DE9 /* CollectionCells */,
 			);
-			name = DisplayScreen;
 			path = DisplayScreen;
 			sourceTree = "<group>";
 		};
@@ -2803,7 +2783,6 @@
 			children = (
 				8D712A696079B7E28D54E3F496DB0530 /* LMFeedPostDetailMediaCell.swift */,
 			);
-			name = MediaCell;
 			path = MediaCell;
 			sourceTree = "<group>";
 		};
@@ -2812,7 +2791,6 @@
 			children = (
 				DB77EE31ECDD5D2F6F18BE263779B8ED /* LMFeedCreatePostDocumentPreviewCell.swift */,
 			);
-			name = DocumentPreviewTableCell;
 			path = DocumentPreviewTableCell;
 			sourceTree = "<group>";
 		};
@@ -2878,7 +2856,6 @@
 				9902C45A17A9BF9CAE8EB78CA7170AA8 /* AWSCognitoUtil.m */,
 				DE374828A965B809EC78D4DCDD40BB0C /* Support Files */,
 			);
-			name = AWSCognito;
 			path = AWSCognito;
 			sourceTree = "<group>";
 		};
@@ -2936,7 +2913,6 @@
 				9427F891D2F121DF48E6EB8B7B227F1D /* FBLPromises.h */,
 				4F15B6CE9EBEFC606C2D432D178190B9 /* Support Files */,
 			);
-			name = PromisesObjC;
 			path = PromisesObjC;
 			sourceTree = "<group>";
 		};
@@ -2948,7 +2924,6 @@
 				85B87429C2464545EE5562D21FB9C4F3 /* LMFeedTopicEditViewCell.swift */,
 				8FAAD5EA76E932FA01B894C8C69CEE88 /* LMFeedTopicViewCell.swift */,
 			);
-			name = CollectionCells;
 			path = CollectionCells;
 			sourceTree = "<group>";
 		};
@@ -2964,7 +2939,6 @@
 				F5F07393A18C1C3F70311BB5BF259A1B /* Support Files */,
 				9FEF7A6961ACD4AF71FBA8FD608373B9 /* UserDefaults */,
 			);
-			name = GoogleUtilities;
 			path = GoogleUtilities;
 			sourceTree = "<group>";
 		};
@@ -2976,29 +2950,25 @@
 				321EF7DC8E9A019E93F1BC9511E362A7 /* DocumentPreviewTableCell */,
 				90679193E98249FB20B8774197C65F26 /* HeaderView */,
 			);
-			name = CreatePostWidgets;
 			path = CreatePostWidgets;
 			sourceTree = "<group>";
 		};
 		49F32A80D90F866FE51912D4DD3D105D /* LikeUserView */ = {
 			isa = PBXGroup;
 			children = (
-				4CA18568FE2548F3CE8A6CB4A0BA1081 /* LMFeedLikeUserTableCell.swift */,
+				4CA18568FE2548F3CE8A6CB4A0BA1081 /* LMFeedLikeUserView.swift */,
 			);
-			name = LikeUserView;
 			path = LikeUserView;
 			sourceTree = "<group>";
 		};
 		4AB0C240538D8A0AE97519D18ED5B974 /* CommentCells */ = {
 			isa = PBXGroup;
 			children = (
-				CE6A4A814499E11CA8E52A1AF81D065D /* LMFeedPostDetailCommentCell.swift */,
-				690B37AB8F71CF30C845AEC96161917A /* LMFeedPostDetailCommentCellViewModel.swift */,
-				F8D98247FA6595FECA42B74EB1B23B7D /* LMFeedPostDetailCommentHeaderView.swift */,
-				95E53CA37E960E42770084CC2F74C32D /* LMFeedPostDetailTotalCommentCell.swift */,
-				558217D1AE7A9F643631A987B474356D /* LMFeedPostMoreRepliesCell.swift */,
+				CE6A4A814499E11CA8E52A1AF81D065D /* LMFeedReplyView.swift */,
+				690B37AB8F71CF30C845AEC96161917A /* LMFeedCommentContentModel.swift */,
+				F8D98247FA6595FECA42B74EB1B23B7D /* LMFeedCommentView.swift */,
+				558217D1AE7A9F643631A987B474356D /* LMFeedMoreRepliesView.swift */,
 			);
-			name = CommentCells;
 			path = CommentCells;
 			sourceTree = "<group>";
 		};
@@ -3046,7 +3016,6 @@
 				AE91DB1EB6E5CBB0F951A0F0539D808E /* Frameworks */,
 				26CF6AA7F76D2CCAAF39585857E97549 /* Support Files */,
 			);
-			name = LikeMindsFeed;
 			path = LikeMindsFeed;
 			sourceTree = "<group>";
 		};
@@ -3068,9 +3037,8 @@
 			isa = PBXGroup;
 			children = (
 				D02C4EFE3E7D7D215006AF044DC40D79 /* LMFeedTaggingTextView.swift */,
-				D443810C1164ADCACFE2B74959A55C66 /* LMFeedTaggingUserTableCell.swift */,
+				D443810C1164ADCACFE2B74959A55C66 /* LMFeedTaggingUserView.swift */,
 			);
-			name = TaggingView;
 			path = TaggingView;
 			sourceTree = "<group>";
 		};
@@ -3087,7 +3055,6 @@
 				F8BEFED4ECB17BD4E456480F3A5997F1 /* LMFeedDeleteReviewScreen.swift */,
 				1DF9990570E8F03967BFFE05DAC3C120 /* LMFeedDeleteReviewViewModel.swift */,
 			);
-			name = DeleteScreen;
 			path = DeleteScreen;
 			sourceTree = "<group>";
 		};
@@ -3159,7 +3126,6 @@
 				0CC63A4686E3692B16006425A0E62DA8 /* Resources */,
 				D0F661EC23C5677580BBC3566A65203D /* Support Files */,
 			);
-			name = Kingfisher;
 			path = Kingfisher;
 			sourceTree = "<group>";
 		};
@@ -3217,7 +3183,6 @@
 				C06F7B95427DFEB55FDE1228B8BE4ED0 /* FIROptionsInternal.h */,
 				B9FB086D0002B12ADF1E3A2699D46DF4 /* Support Files */,
 			);
-			name = FirebaseInstallations;
 			path = FirebaseInstallations;
 			sourceTree = "<group>";
 		};
@@ -3283,7 +3248,6 @@
 		79CA842255E24B9FD42E53528260BF87 /* PostWidget */ = {
 			isa = PBXGroup;
 			children = (
-				523AA844C931F3D7A9ECA90FF4711D85 /* LMFeedNoCommentWidget.swift */,
 				4EF5780C3475DB833A0F8AF8C616D9C3 /* LMFeedNoPostWidget.swift */,
 				E4CA333F6CB82DEB7BC8A0184A67D93C /* LMPostWidgetTableViewCell.swift */,
 				F3EC6A454ED13F6B682234F56ED79DC8 /* LMFeedPostDocumentCell */,
@@ -3291,7 +3255,6 @@
 				B0979FD33A3F1263BD08D78E87DE9A83 /* LMFeedPostLinkCell */,
 				EE3881DC7CAEB8FA66DEC0F9733F88C4 /* LMFeedPostMediaCell */,
 			);
-			name = PostWidget;
 			path = PostWidget;
 			sourceTree = "<group>";
 		};
@@ -3333,15 +3296,6 @@
 				8918DED547E8B5DB42231BAFDB802C40 /* GULLoggerLevel.h */,
 			);
 			name = Logger;
-			sourceTree = "<group>";
-		};
-		7DEA285CDE628B5560A17B6849D1FEAB /* LMFeedTopicSelectionView */ = {
-			isa = PBXGroup;
-			children = (
-				B716D723E58B89301892746E6EC8BCF1 /* LMFeedTopicSelectionView.swift */,
-			);
-			name = LMFeedTopicSelectionView;
-			path = LMFeedTopicSelectionView;
 			sourceTree = "<group>";
 		};
 		7F14A34C11D6184D2AAA071D042FDE80 /* UtilityModels */ = {
@@ -3406,7 +3360,6 @@
 				AFC0424A5AD829FF6E3DBA57757D9DF7 /* LMFeedReportContentViewController.swift */,
 				6BF3B8B5F9A418247FBF52D1E309B745 /* LMFeedReportContentViewModel.swift */,
 			);
-			name = ReportPost;
 			path = ReportPost;
 			sourceTree = "<group>";
 		};
@@ -3415,7 +3368,6 @@
 			children = (
 				6037A23145B2B63700C94A23924281A8 /* LMFeedCreatePostHeaderView.swift */,
 			);
-			name = HeaderView;
 			path = HeaderView;
 			sourceTree = "<group>";
 		};
@@ -3426,7 +3378,6 @@
 				A88BCFB2A6A1D3586EBC673FCB86D197 /* LMFeedNotificationViewController.swift */,
 				489BBB4D9C417CBBC922C3196DE26D03 /* LMFeedNotificationViewModel.swift */,
 			);
-			name = NotificationScreen;
 			path = NotificationScreen;
 			sourceTree = "<group>";
 		};
@@ -3436,7 +3387,6 @@
 				EC9E07A317860237E83D439683DD8796 /* LMFeedPostDetailFooterView.swift */,
 				C0883399B2FDED52B64EBBA15E723BEF /* LMFeedPostDetailHeaderView.swift */,
 			);
-			name = PostHeaderFooter;
 			path = PostHeaderFooter;
 			sourceTree = "<group>";
 		};
@@ -3609,7 +3559,6 @@
 				7D510B72365D0F2B120D9D4CDF3FC2DC /* NSValueTransformer+AWSMTLPredefinedTransformerAdditions.m */,
 				D83BA111C190AAAC693D27F2B6D2E8F2 /* Support Files */,
 			);
-			name = AWSCore;
 			path = AWSCore;
 			sourceTree = "<group>";
 		};
@@ -3619,7 +3568,6 @@
 				E67D7131F8244B958939DE1BB24B2B3F /* LMFeedPostDetailViewController.swift */,
 				F36CAC8B9A1D2EEAACD63E0F7D035F5D /* LMFeedPostDetailViewModel.swift */,
 			);
-			name = PostDetail;
 			path = PostDetail;
 			sourceTree = "<group>";
 		};
@@ -3696,17 +3644,7 @@
 				E0E97C969339E22F853F452E9867BD3E /* FIRVersion.m */,
 				FFEA5C1510A5D17E413304F65347562A /* Support Files */,
 			);
-			name = FirebaseCore;
 			path = FirebaseCore;
-			sourceTree = "<group>";
-		};
-		A35674EEF3F90B1151F0AA829A064F7B /* DeletePostWidget */ = {
-			isa = PBXGroup;
-			children = (
-				D3FE33F7E3440A5689B71A2A2CC406D4 /* LMFeedDeletePostWidget.swift */,
-			);
-			name = DeletePostWidget;
-			path = DeletePostWidget;
 			sourceTree = "<group>";
 		};
 		A7251BA0F2D3DF96C16CD4D212BEF726 /* Pods */ = {
@@ -3757,7 +3695,6 @@
 				8B137548E645C5C6A39CB20D0BF2ED0D /* LMFeedTopicSelectionViewModel.swift */,
 				D37123E2BA66EC9D54B65D3FEFC54872 /* ViewDataModel */,
 			);
-			name = TopicSelection;
 			path = TopicSelection;
 			sourceTree = "<group>";
 		};
@@ -3794,7 +3731,6 @@
 				A23BF36638C47648E58CB769EF71AF43 /* LMFeedTaggingListView.swift */,
 				0FCD3C18FED7D9CFFC2415AEC667FD3B /* LMFeedTaggingListViewModel.swift */,
 			);
-			name = TaggingListView;
 			path = TaggingListView;
 			sourceTree = "<group>";
 		};
@@ -3805,7 +3741,6 @@
 				DDE48A3317FE4157199C1E94E3F80DBB /* LMFeedLikeViewController.swift */,
 				E16B1862B92275F4BCD34B17B98A3CAA /* LMFeedLikeViewModel.swift */,
 			);
-			name = LikeScreen;
 			path = LikeScreen;
 			sourceTree = "<group>";
 		};
@@ -3814,7 +3749,6 @@
 			children = (
 				3C863C252B7F99BF1D33EA22B7246DA7 /* LMFeedPostLinkCell.swift */,
 			);
-			name = LMFeedPostLinkCell;
 			path = LMFeedPostLinkCell;
 			sourceTree = "<group>";
 		};
@@ -3838,7 +3772,6 @@
 				D492256E393DC2E3FBDA4194F0825BB9 /* LMFeedPostFooterView.swift */,
 				3D3C795B9B927C09838268F8D5A9C235 /* LMFeedPostHeaderView.swift */,
 			);
-			name = LMFeedPostHeaderFooter;
 			path = LMFeedPostHeaderFooter;
 			sourceTree = "<group>";
 		};
@@ -3847,7 +3780,6 @@
 			children = (
 				8E900D25A23C5EB2DC71448461E84BA8 /* LMFeedAddMediaPreview.swift */,
 			);
-			name = AddMediaPreview;
 			path = AddMediaPreview;
 			sourceTree = "<group>";
 		};
@@ -3940,7 +3872,6 @@
 				629979EDB554D070FCAD9A0495B21F8E /* ZoomTransitionDelegate.swift */,
 				E3FEA5B25D0A5D0746282E30846CB3B7 /* Support Files */,
 			);
-			name = BSImagePicker;
 			path = BSImagePicker;
 			sourceTree = "<group>";
 		};
@@ -3978,7 +3909,6 @@
 				28702208ABEF9840CF959CA31DF3BFAF /* DisplayScreen */,
 				1B8DE1BABB76B978908DEA39F18F09A7 /* SelectionScreen */,
 			);
-			name = TopicFeed;
 			path = TopicFeed;
 			sourceTree = "<group>";
 		};
@@ -3987,7 +3917,6 @@
 			children = (
 				B595D5037F8950A6DE5580745C07EBF5 /* LMFeedTopicSelectionDataModel.swift */,
 			);
-			name = ViewDataModel;
 			path = ViewDataModel;
 			sourceTree = "<group>";
 		};
@@ -3996,7 +3925,6 @@
 			children = (
 				CBE4C249EE67680F6192BE44B5F7EB8F /* LMFeedReportViewCell.swift */,
 			);
-			name = ReportWidgets;
 			path = ReportWidgets;
 			sourceTree = "<group>";
 		};
@@ -4087,7 +4015,6 @@
 			isa = PBXGroup;
 			children = (
 				48E363E9ABA5599C4EF91E7822A33FD7 /* CreatePostWidgets */,
-				A35674EEF3F90B1151F0AA829A064F7B /* DeletePostWidget */,
 				49F32A80D90F866FE51912D4DD3D105D /* LikeUserView */,
 				21F478EFAD2526AE429CEDD12A86DD27 /* NotificationView */,
 				0E21D3BB2226A4A4C1DB2414FEAD2991 /* PostDetailWidgets */,
@@ -4200,7 +4127,6 @@
 				F57F14012B9A3C575DCE5F5CA5A3B15C /* GoogleDataTransport.h */,
 				36E6DF4E0C500102E85EBEA6A1FF54C3 /* Support Files */,
 			);
-			name = GoogleDataTransport;
 			path = GoogleDataTransport;
 			sourceTree = "<group>";
 		};
@@ -4221,7 +4147,6 @@
 				2BE5D65D9AC470E3B6D952567E6D4E4D /* WeakContainer.swift */,
 				83FFF25DF3570EEA5F7372FD5A194480 /* Support Files */,
 			);
-			name = FirebaseCoreInternal;
 			path = FirebaseCoreInternal;
 			sourceTree = "<group>";
 		};
@@ -4239,7 +4164,6 @@
 			children = (
 				61FE5BE7541D74A3C24FCC083A11CEF5 /* LMFeedPostMediaCell.swift */,
 			);
-			name = LMFeedPostMediaCell;
 			path = LMFeedPostMediaCell;
 			sourceTree = "<group>";
 		};
@@ -4249,7 +4173,6 @@
 				E1F9881807F408E8566C57865605A552 /* LMUniversalFeedViewController.swift */,
 				8FEC54F799489998F6BF4ABE4F2988D3 /* LMUniversalFeedViewModel.swift */,
 			);
-			name = UniversalFeed;
 			path = UniversalFeed;
 			sourceTree = "<group>";
 		};
@@ -4267,7 +4190,6 @@
 				19EEE93207E860EE716763D9F1882E65 /* encode */,
 				6CBAC4C62EAB2AFF5BE3B2FBEDFF13F3 /* Support Files */,
 			);
-			name = nanopb;
 			path = nanopb;
 			sourceTree = "<group>";
 		};
@@ -4291,7 +4213,6 @@
 			children = (
 				1948ABDB369D0ACF99BD2A38AFA358F3 /* LMFeedPostDocumentCell.swift */,
 			);
-			name = LMFeedPostDocumentCell;
 			path = LMFeedPostDocumentCell;
 			sourceTree = "<group>";
 		};
@@ -4315,7 +4236,6 @@
 				D742B1B39A1B19F22DC85093B03F67D4 /* LMFeedEditPostViewController.swift */,
 				E236A91E8516B0C7DA1A00CAADDA14C5 /* LMFeedEditPostViewModel.swift */,
 			);
-			name = EditPost;
 			path = EditPost;
 			sourceTree = "<group>";
 		};
@@ -4325,7 +4245,6 @@
 				5FDC5734FC328D197412F186D1DE7246 /* LMFeedCreatePostViewController.swift */,
 				CAA12D654D1D6948CD31EA192CC2309A /* LMFeedCreatePostViewModel.swift */,
 			);
-			name = CreatePost;
 			path = CreatePost;
 			sourceTree = "<group>";
 		};
@@ -5513,41 +5432,37 @@
 				D57C7217B7DEF8B8D486DE2AB8FD9FFB /* LMFeedCreatePostAddMediaView.swift in Sources */,
 				5260D6BB35344FE03B5AA9A76438D5C4 /* LMFeedCreatePostDocumentPreviewCell.swift in Sources */,
 				90A0B4D9140CA79815F822F5020D96F4 /* LMFeedCreatePostHeaderView.swift in Sources */,
-				D5BBFF910AF75927A5CFA619167D1B4E /* LMFeedDeletePostWidget.swift in Sources */,
 				6D2CB21984C4FE903826E536F51AE814 /* LMFeedDocumentPreview.swift in Sources */,
 				BB4C4B99DDC3B836CBFFB316326B4D7E /* LMFeedEmptyNotificationView.swift in Sources */,
 				E4884EBA3E72542A48AC32CCFEEC3609 /* LMFeedImageCollectionCell.swift in Sources */,
-				A48FE094E5137AA6E30658A7DDE4A5C7 /* LMFeedLikeUserTableCell.swift in Sources */,
+				A48FE094E5137AA6E30658A7DDE4A5C7 /* LMFeedLikeUserView.swift in Sources */,
 				22CD6016EFBD67D7F4F88E6A1CBFEB9B /* LMFeedLinkPreview.swift in Sources */,
 				2AA06A23D82D1D0316B94BBC180C3B13 /* LMFeedLoopedVideoPlayer.swift in Sources */,
-				52D9B7DAF9FBA51A94EF5B7D0B8E769A /* LMFeedNoCommentWidget.swift in Sources */,
 				68E6A602040FB7E314DB3818D1230276 /* LMFeedNoPostWidget.swift in Sources */,
 				8754581480E22AA248915D95EAD9F8AA /* LMFeedNotificationView.swift in Sources */,
 				3CCE9C49D44F3760F7BDFE658B18FBE4 /* LMFeedPDFViewer.swift in Sources */,
-				1CEBA497A743AA769CED116880B0D771 /* LMFeedPostDetailCommentCell.swift in Sources */,
-				3469858A2F5A186B27C7F5868DB516AA /* LMFeedPostDetailCommentCellViewModel.swift in Sources */,
-				F2A8337A2CFAFE59B8A09244E576ED9F /* LMFeedPostDetailCommentHeaderView.swift in Sources */,
+				1CEBA497A743AA769CED116880B0D771 /* LMFeedReplyView.swift in Sources */,
+				3469858A2F5A186B27C7F5868DB516AA /* LMFeedCommentContentModel.swift in Sources */,
+				F2A8337A2CFAFE59B8A09244E576ED9F /* LMFeedCommentView.swift in Sources */,
 				EE8C677CCC02B0F278241FFC4149186D /* LMFeedPostDetailDocumentCell.swift in Sources */,
 				8FF5D02125C6234B552B5326AE619AE3 /* LMFeedPostDetailFooterView.swift in Sources */,
 				094CAA27CF389EBB49FE3E5C48F8BF2D /* LMFeedPostDetailHeaderView.swift in Sources */,
 				ECACAD304BF21AD671297A761A804CDE /* LMFeedPostDetailLinkCell.swift in Sources */,
 				AE093DD942EB2F9F3C7A2B8AA008086E /* LMFeedPostDetailMediaCell.swift in Sources */,
-				5D4D95B372206B6CB58DC23BC93AE94D /* LMFeedPostDetailTotalCommentCell.swift in Sources */,
 				7D28D77DA55F2C8C3218232844CC7754 /* LMFeedPostDocumentCell.swift in Sources */,
 				B868FAD84D3B587E72B12138C0C4ADFA /* LMFeedPostFooterView.swift in Sources */,
 				7CB9080199C73CF8973974DAD14A26B2 /* LMFeedPostHeaderView.swift in Sources */,
 				443C6F38F8C43E8E569D77039EF65127 /* LMFeedPostLinkCell.swift in Sources */,
 				A3ED4240B448ADE4DFF898AD481FDA70 /* LMFeedPostMediaCell.swift in Sources */,
-				EF74528069342BEEDB2947CCCC48F19D /* LMFeedPostMoreRepliesCell.swift in Sources */,
+				EF74528069342BEEDB2947CCCC48F19D /* LMFeedMoreRepliesView.swift in Sources */,
 				33FC787886182EDFAD1426EFE35A3157 /* LMFeedReportViewCell.swift in Sources */,
 				7E8F3CDABE752AD7C77FA7A8ED2EFA86 /* LMFeedSelectTopicViewCell.swift in Sources */,
 				6CF5017C2276B547C7B1392C93C0D8C5 /* LMFeedTaggingTextView.swift in Sources */,
-				F4F6C8106492B8C38CA214F460330972 /* LMFeedTaggingUserTableCell.swift in Sources */,
+				F4F6C8106492B8C38CA214F460330972 /* LMFeedTaggingUserView.swift in Sources */,
 				77D783774399D99F947FC5FDF3B36727 /* LMFeedTopicCollectionView.swift in Sources */,
 				1477D994B4DE668DF0C72A0C579A1852 /* LMFeedTopicEditIconViewCell.swift in Sources */,
 				D52F706ACC33F0E82085EB66D9B7E3E7 /* LMFeedTopicEditViewCell.swift in Sources */,
 				DB018EC8EFA5368B452B68614779068F /* LMFeedTopicSelectionCell.swift in Sources */,
-				4C30DD308C9E93D4F46DF63277A211B7 /* LMFeedTopicSelectionView.swift in Sources */,
 				88897CDBAF16EAFC0D42FD683476F99A /* LMFeedTopicView.swift in Sources */,
 				C681F09F2404707DB4E85CCF37D2C664 /* LMFeedTopicViewCell.swift in Sources */,
 				E1AB990A08CBAF961E3BA3857369F3F8 /* LMFeedUserDataModel.swift in Sources */,
