@@ -41,7 +41,7 @@ public struct LMUIComponents {
     public var topicFeedView: LMFeedTopicView.Type = LMFeedTopicView.self
     public var topicFeedDisplayView: LMFeedTopicViewCell.Type = LMFeedTopicViewCell.self
     public var topicFeedEditView: LMFeedTopicEditViewCell.Type = LMFeedTopicEditViewCell.self
-    public var topicFeedEditIconView: LMFeedTopicEditIconViewCell.Type = LMFeedTopicEditIconViewCell.self
+    public var topicFeedEditIconView: LMFeedTopicEditIcon.Type = LMFeedTopicEditIcon.self
     public var topicSelectIconView: LMFeedSelectTopicViewCell.Type = LMFeedSelectTopicViewCell.self
     
     // MARK: Tagging View
