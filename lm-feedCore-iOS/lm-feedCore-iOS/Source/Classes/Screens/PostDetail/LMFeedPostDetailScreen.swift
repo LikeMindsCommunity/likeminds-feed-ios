@@ -1,5 +1,5 @@
 //
-//  LMFeedPostDetailViewController.swift
+//  LMFeedPostDetailScreen.swift
 //  LMFramework
 //
 //  Created by Devansh Mohata on 15/12/23.
@@ -9,7 +9,7 @@ import LikeMindsFeedUI
 import UIKit
 
 @IBDesignable
-open class LMFeedPostDetailViewController: LMViewController {
+open class LMFeedPostDetailScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var tableView: LMTableView = {
         let table = LMTableView(frame: .zero, style: .grouped).translatesAutoresizingMaskIntoConstraints()
@@ -334,7 +334,7 @@ open class LMFeedPostDetailViewController: LMViewController {
 
 // MARK: Keyboard Extension
 @objc
-extension LMFeedPostDetailViewController {
+extension LMFeedPostDetailScreen {
     open func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             inputTextViewBottomConstraint?.constant = -keyboardSize.size.height
@@ -352,7 +352,7 @@ extension LMFeedPostDetailViewController {
 
 // MARK: UITableViewDataSource, UITableViewDelegate
 @objc
-extension LMFeedPostDetailViewController: UITableViewDataSource, UITableViewDelegate {
+extension LMFeedPostDetailScreen: UITableViewDataSource, UITableViewDelegate {
     open func numberOfSections(in tableView: UITableView) -> Int {
         guard postData != nil else { return .zero }
         return cellsData.count + 1
@@ -495,7 +495,7 @@ extension LMFeedPostDetailViewController: UITableViewDataSource, UITableViewDele
 
 // MARK: LMFeedPostCommentProtocol
 @objc
-extension LMFeedPostDetailViewController: LMFeedPostCommentProtocol {
+extension LMFeedPostDetailScreen: LMFeedPostCommentProtocol {
     public func didTapURL(url: URL) {
         openURL(with: url)
     }
@@ -536,7 +536,7 @@ extension LMFeedPostDetailViewController: LMFeedPostCommentProtocol {
 
 
 // MARK: LMFeedPostDetailViewModelProtocol
-extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
+extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
     public func deleteRows(for section: Int, comments: [LMFeedCommentContentModel]) {
         cellsData = comments
         if section < tableView.numberOfSections {
@@ -551,9 +551,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
                 self?.tableView.endUpdates()
             }
             
-//            if tableView.contentOffset != originalContentOffset {
-                frozenContentOffsetForRowAnimation = tableView.contentOffset
-//            }
+            frozenContentOffsetForRowAnimation = tableView.contentOffset
         }
     }
     
@@ -718,7 +716,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
 
 // MARK: LMFeedTaggingTextViewProtocol
 @objc
-extension LMFeedPostDetailViewController: LMFeedTaggingTextViewProtocol {
+extension LMFeedPostDetailScreen: LMFeedTaggingTextViewProtocol {
     open func mentionStarted(with text: String) {
         taggingView.getUsers(for: text)
     }
@@ -741,7 +739,7 @@ extension LMFeedPostDetailViewController: LMFeedTaggingTextViewProtocol {
 
 
 // MARK: LMFeedTaggedUserFoundProtocol
-extension LMFeedPostDetailViewController: LMFeedTaggedUserFoundProtocol {
+extension LMFeedPostDetailScreen: LMFeedTaggedUserFoundProtocol {
     public func userSelected(with route: String, and userName: String) {
         inputTextView.addTaggedUser(with: userName, route: route)
         mentionStopped()
@@ -755,7 +753,7 @@ extension LMFeedPostDetailViewController: LMFeedTaggedUserFoundProtocol {
 
 // MARK: LMFeedPostHeaderViewProtocol, LMFeedPostFooterViewProtocol
 @objc
-extension LMFeedPostDetailViewController: LMFeedPostHeaderViewProtocol, LMFeedPostFooterViewProtocol {
+extension LMFeedPostDetailScreen: LMFeedPostHeaderViewProtocol, LMFeedPostFooterViewProtocol {
     open func didTapPostMenuButton(for postID: String) {
         viewModel?.showMenu(postID: postID)
     }
@@ -800,7 +798,7 @@ extension LMFeedPostDetailViewController: LMFeedPostHeaderViewProtocol, LMFeedPo
 
 // MARK: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol
 @objc
-extension LMFeedPostDetailViewController: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol {
+extension LMFeedPostDetailScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol {
     open func didTapShowMoreDocuments(for indexPath: IndexPath) {
         if var data = postData as? LMFeedPostDocumentCell.ContentModel {
             data.isShowAllDocuments.toggle()

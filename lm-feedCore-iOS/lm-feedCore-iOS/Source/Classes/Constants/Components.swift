@@ -15,10 +15,10 @@ public struct Components {
     public var feedListViewController: LMFeedPostListViewController.Type = LMFeedPostListViewController.self
     
     // MARK: Post Detail
-    public var postDetailScreen: LMFeedPostDetailViewController.Type = LMFeedPostDetailViewController.self
+    public var postDetailScreen: LMFeedPostDetailScreen.Type = LMFeedPostDetailScreen.self
     
     // MARK: Topic Feed
-    public var topicFeedSelectionScreen: LMFeedTopicSelectionViewController.Type = LMFeedTopicSelectionViewController.self
+    public var topicFeedSelectionScreen: LMFeedTopicSelectionScreen.Type = LMFeedTopicSelectionScreen.self
     
     // MARK: Tagging List View
     public var taggingListView: LMFeedTaggingListView.Type = LMFeedTaggingListView.self

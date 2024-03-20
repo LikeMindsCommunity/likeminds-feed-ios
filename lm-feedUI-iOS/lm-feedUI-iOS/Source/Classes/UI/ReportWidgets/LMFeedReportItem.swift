@@ -1,5 +1,5 @@
 //
-//  LMFeedReportViewCell.swift
+//  LMFeedReportItem.swift
 //  lm-feedUI-iOS
 //
 //  Created by Devansh Mohata on 31/01/24.
@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedReportViewCell: LMCollectionViewCell {
+open class LMFeedReportItem: LMCollectionViewCell {
     // MARK: UI Elements
     open private(set) lazy var textLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()

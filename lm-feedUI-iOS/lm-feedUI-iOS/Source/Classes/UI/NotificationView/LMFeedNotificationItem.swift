@@ -1,5 +1,5 @@
 //
-//  LMFeedNotificationView.swift
+//  LMFeedNotificationItem.swift
 //  lm-feedUI-iOS
 //
 //  Created by Devansh Mohata on 21/01/24.
@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedNotificationView: LMTableViewCell {
+open class LMFeedNotificationItem: LMTableViewCell {
     public struct ContentModel {
         public let notificationID: String
         public let notification: String

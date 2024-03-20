@@ -135,20 +135,20 @@ open class LMFeedCreatePostViewController: LMViewController {
         return stack
     }()
     
-    open private(set) lazy var addPhotosTab: LMFeedCreatePostAddMediaView = {
-        let view = LMUIComponents.shared.createPostAddMediaView.init().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var addPhotosTab: LMFeedAddMediaView = {
+        let view = LMUIComponents.shared.addMediaView.init().translatesAutoresizingMaskIntoConstraints()
         view.isUserInteractionEnabled = true
         return view
     }()
     
-    open private(set) lazy var addVideoTab: LMFeedCreatePostAddMediaView = {
-        let view = LMUIComponents.shared.createPostAddMediaView.init().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var addVideoTab: LMFeedAddMediaView = {
+        let view = LMUIComponents.shared.addMediaView.init().translatesAutoresizingMaskIntoConstraints()
         view.isUserInteractionEnabled = true
         return view
     }()
     
-    open private(set) lazy var addDocumentsTab: LMFeedCreatePostAddMediaView = {
-        let view = LMUIComponents.shared.createPostAddMediaView.init().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var addDocumentsTab: LMFeedAddMediaView = {
+        let view = LMUIComponents.shared.addMediaView.init().translatesAutoresizingMaskIntoConstraints()
         view.isUserInteractionEnabled = true
         return view
     }()

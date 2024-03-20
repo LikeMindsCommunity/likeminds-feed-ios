@@ -1,5 +1,5 @@
 //
-//  LMFeedTopicSelectionViewController.swift
+//  LMFeedTopicSelectionScreen.swift
 //  likeminds-feed-iOS
 //
 //  Created by Devansh Mohata on 23/12/23.
@@ -13,7 +13,7 @@ public protocol LMFeedTopicSelectionViewProtocol: AnyObject {
 }
 
 @IBDesignable
-open class LMFeedTopicSelectionViewController: LMViewController {
+open class LMFeedTopicSelectionScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
@@ -99,7 +99,7 @@ open class LMFeedTopicSelectionViewController: LMViewController {
 
 // MARK: UITableView
 @objc
-extension LMFeedTopicSelectionViewController: UITableViewDataSource, UITableViewDelegate {
+extension LMFeedTopicSelectionScreen: UITableViewDataSource, UITableViewDelegate {
     open func numberOfSections(in tableView: UITableView) -> Int {
         topicList.count
     }
@@ -146,7 +146,7 @@ extension LMFeedTopicSelectionViewController: UITableViewDataSource, UITableView
 
 
 // MARK: LMFeedTopicSelectionViewModelProtocol
-extension LMFeedTopicSelectionViewController: LMFeedTopicSelectionViewModelProtocol {
+extension LMFeedTopicSelectionScreen: LMFeedTopicSelectionViewModelProtocol {
     public func updateTopicList(with data: [[LMFeedTopicSelectionCell.ContentModel]], selectedCount: Int) {
         self.topicList = data
         tableView.reloadData()
@@ -167,7 +167,7 @@ extension LMFeedTopicSelectionViewController: LMFeedTopicSelectionViewModelProto
 
 // MARK: UISearchControllerDelegate
 @objc
-extension LMFeedTopicSelectionViewController: UISearchControllerDelegate, UISearchBarDelegate {
+extension LMFeedTopicSelectionScreen: UISearchControllerDelegate, UISearchBarDelegate {
     open func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchTimer?.invalidate()
         

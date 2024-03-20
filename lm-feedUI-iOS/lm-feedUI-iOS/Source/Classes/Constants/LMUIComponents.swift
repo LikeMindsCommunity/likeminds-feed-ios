@@ -45,18 +45,18 @@ public struct LMUIComponents {
     public var topicSelectIconView: LMFeedSelectTopicViewCell.Type = LMFeedSelectTopicViewCell.self
     
     // MARK: Tagging View
-    public var taggingUserView: LMFeedTaggingUserView.Type = LMFeedTaggingUserView.self
+    public var taggingUserItem: LMFeedTaggingUserItem.Type = LMFeedTaggingUserItem.self
     
     // MARK: Create Post Components
-    public var createPostAddMediaView: LMFeedCreatePostAddMediaView.Type = LMFeedCreatePostAddMediaView.self
+    public var addMediaView: LMFeedAddMediaView.Type = LMFeedAddMediaView.self
     public var createPostHeaderView: LMFeedCreatePostHeaderView.Type = LMFeedCreatePostHeaderView.self
     
     // MARK: Like Count Screen Components
-    public var likedUserView: LMFeedLikeUserView.Type = LMFeedLikeUserView.self
+    public var likeUserItem: LMFeedMemberItem.Type = LMFeedMemberItem.self
     
     // MARK: Notification Screen Components
-    public var notificationView: LMFeedNotificationView.Type = LMFeedNotificationView.self
+    public var notificationItem: LMFeedNotificationItem.Type = LMFeedNotificationItem.self
     
     // MARK: Report Screen Components
-    public var reportView: LMFeedReportViewCell.Type = LMFeedReportViewCell.self
+    public var reportItem: LMFeedReportItem.Type = LMFeedReportItem.self
 }

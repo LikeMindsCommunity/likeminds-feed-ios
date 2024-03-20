@@ -60,7 +60,7 @@ final public class LMFeedPostDetailViewModel {
         for postID: String,
         openCommentSection: Bool = false,
         scrollToCommentSection: Bool = false
-    ) -> LMFeedPostDetailViewController? {
+    ) -> LMFeedPostDetailScreen? {
         guard LMFeedCore.isInitialized else { return nil }
         let viewController = Components.shared.postDetailScreen.init()
         let viewModel: LMFeedPostDetailViewModel = .init(postID: postID, delegate: viewController, openCommentSection: openCommentSection, scrollToCommentSection: scrollToCommentSection)

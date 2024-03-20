@@ -19,14 +19,14 @@ open class LMFeedLikeViewController: LMViewController {
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.bounces = false
-        table.register(LMUIComponents.shared.likedUserView)
+        table.register(LMUIComponents.shared.likeUserItem)
         table.separatorStyle = .none
         return table
     }()
     
     // MARK: Data Variables
     public var viewModel: LMFeedLikeViewModel?
-    public var cellsData: [LMFeedLikeUserView.ContentModel] = []
+    public var cellsData: [LMFeedMemberItem.ContentModel] = []
     public var cellHeight: CGFloat = 72
     public var totalLikes: Int = 0
     
@@ -71,7 +71,7 @@ extension LMFeedLikeViewController: UITableViewDataSource, UITableViewDelegate {
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let data = cellsData[safe: indexPath.row],
-           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.likedUserView.self) {
+           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.likeUserItem.self) {
             cell.configure(with: data) { [weak self] in
                 self?.didTapUser(uuid: data.uuid)
             }
@@ -92,7 +92,7 @@ extension LMFeedLikeViewController: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: LMFeedLikeViewModelProtocol
 extension LMFeedLikeViewController: LMFeedLikeViewModelProtocol {
-    public func reloadTableView(with data: [LMFeedLikeUserView.ContentModel], totalCount: Int) {
+    public func reloadTableView(with data: [LMFeedMemberItem.ContentModel], totalCount: Int) {
         cellsData = data
         tableView.reloadData()
         totalLikes = totalCount

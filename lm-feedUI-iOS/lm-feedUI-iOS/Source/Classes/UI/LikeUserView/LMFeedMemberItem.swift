@@ -1,5 +1,5 @@
 //
-//  LMFeedLikeUserView.swift
+//  LMFeedMemberItem.swift
 //  lm-feedUI-iOS
 //
 //  Created by Devansh Mohata on 21/01/24.
@@ -9,7 +9,7 @@ import Kingfisher
 import UIKit
 
 @IBDesignable
-open class LMFeedLikeUserView: LMTableViewCell {
+open class LMFeedMemberItem: LMTableViewCell {
     public struct ContentModel {
         public let username: String
         public let uuid: String

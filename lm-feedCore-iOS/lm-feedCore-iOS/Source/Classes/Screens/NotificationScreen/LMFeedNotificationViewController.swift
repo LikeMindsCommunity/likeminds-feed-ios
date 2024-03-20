@@ -15,7 +15,7 @@ open class LMFeedNotificationViewController: LMViewController {
         let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
-        table.register(LMUIComponents.shared.notificationView)
+        table.register(LMUIComponents.shared.notificationItem)
         table.estimatedRowHeight = 50
         table.rowHeight = UITableView.automaticDimension
         table.dataSource = self
@@ -35,7 +35,7 @@ open class LMFeedNotificationViewController: LMViewController {
     
     // MARK: Data Variables
     public var viewModel: LMFeedNotificationViewModel?
-    public var cellsData: [LMFeedNotificationView.ContentModel] = []
+    public var cellsData: [LMFeedNotificationItem.ContentModel] = []
     
     
     // MARK: setupViews
@@ -103,7 +103,7 @@ extension LMFeedNotificationViewController: UITableViewDataSource, UITableViewDe
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let data = cellsData[safe: indexPath.row],
-           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.notificationView) {
+           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.notificationItem) {
             cell.configure(with: data) { [weak self] in
                 self?.viewModel?.markReadNotification(activityId: data.notificationID)
                 self?.navigateToPost(from: data.route)
@@ -127,7 +127,7 @@ extension LMFeedNotificationViewController: UITableViewDataSource, UITableViewDe
 
 // MARK: LMFeedNotificationViewModelProtocol
 extension LMFeedNotificationViewController: LMFeedNotificationViewModelProtocol {
-    public func showNotifications(with data: [LMFeedNotificationView.ContentModel], indexPath: IndexPath?) {
+    public func showNotifications(with data: [LMFeedNotificationItem.ContentModel], indexPath: IndexPath?) {
         tableView.backgroundView = nil
         cellsData = data
         

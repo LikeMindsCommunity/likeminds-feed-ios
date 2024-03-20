@@ -1,5 +1,5 @@
 //
-//  LMFeedTaggingUserView.swift
+//  LMFeedTaggingUserItem.swift
 //  lm-feedUI-iOS
 //
 //  Created by Devansh Mohata on 08/01/24.
@@ -9,7 +9,7 @@ import Kingfisher
 import UIKit
 
 @IBDesignable
-open class LMFeedTaggingUserView: LMTableViewCell {
+open class LMFeedTaggingUserItem: LMTableViewCell {
     public struct ContentModel {
         public let userImage: String?
         public let userName: String
