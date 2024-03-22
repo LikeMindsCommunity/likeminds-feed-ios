@@ -39,5 +39,5 @@ public struct Components {
     public var deleteReviewScreen: LMFeedDeleteReviewScreen.Type = LMFeedDeleteReviewScreen.self
     
     // MARK: Report Screem
-    public var reportScreen: LMFeedReportContentViewController.Type = LMFeedReportContentViewController.self
+    public var reportScreen: LMFeedReportContentScreen.Type = LMFeedReportContentScreen.self
 }

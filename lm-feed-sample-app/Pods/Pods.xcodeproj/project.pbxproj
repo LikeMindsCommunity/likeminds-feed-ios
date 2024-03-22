@@ -508,7 +508,7 @@
 		8E698F134A953250D5834C8B83CDAD34 /* DispatchQueue+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46707CC31C237D90559A153035763226 /* DispatchQueue+Alamofire.swift */; };
 		8E70A0C826CC03C838E763901B9F6B8C /* AWSModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 887E318203FECC78DA6E9F7C69052B57 /* AWSModel.m */; };
 		8E85763AE29BEF0A46EE875B8F069E8E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD654C93764A85880772B1F7968E238 /* Foundation.framework */; };
-		8EA2C1D909BF383BBC688074A0903642 /* LMFeedReportContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC0424A5AD829FF6E3DBA57757D9DF7 /* LMFeedReportContentViewController.swift */; };
+		8EA2C1D909BF383BBC688074A0903642 /* LMFeedReportContentScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC0424A5AD829FF6E3DBA57757D9DF7 /* LMFeedReportContentScreen.swift */; };
 		8EDF10DF35C5509E4863606740C130F2 /* LMFeedDeleteReviewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BEFED4ECB17BD4E456480F3A5997F1 /* LMFeedDeleteReviewScreen.swift */; };
 		8F52CE66CFE87697709715E33527A05C /* LMFeedConvertToFeedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C26424C17EF767A55D60DE9ABD20C9 /* LMFeedConvertToFeedPost.swift */; };
 		8F5368FAFDC9881C9D78BC832A8F33C8 /* AWSCancellationToken.h in Headers */ = {isa = PBXBuildFile; fileRef = 5BB58F9AA5429C097C60003818A67878 /* AWSCancellationToken.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1942,7 +1942,7 @@
 		AEB91C98852D5213DECD8DBE7CD18DC9 /* LikeMindsFeedUI */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = LikeMindsFeedUI; path = LikeMindsFeedUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AED185E023A9D7BC85DBFD13A4E8AA52 /* FIRComponentContainer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRComponentContainer.h; path = FirebaseCore/Extension/FIRComponentContainer.h; sourceTree = "<group>"; };
 		AF43B280D165EA7781186028DECA97FD /* Constants+Numbers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Constants+Numbers.swift"; sourceTree = "<group>"; };
-		AFC0424A5AD829FF6E3DBA57757D9DF7 /* LMFeedReportContentViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedReportContentViewController.swift; sourceTree = "<group>"; };
+		AFC0424A5AD829FF6E3DBA57757D9DF7 /* LMFeedReportContentScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedReportContentScreen.swift; sourceTree = "<group>"; };
 		AFC18A6D65A51FB3AA29835CAE136BB6 /* FIRMessagingTopicOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRMessagingTopicOperation.m; path = FirebaseMessaging/Sources/FIRMessagingTopicOperation.m; sourceTree = "<group>"; };
 		AFCD44780243751ADC8C192FED57E587 /* LikeMindsFeed.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; path = LikeMindsFeed.xcframework; sourceTree = "<group>"; };
 		AFE76D93DCDD9E113F6C574C24B596E4 /* LMViewLifeCycle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMViewLifeCycle.swift; sourceTree = "<group>"; };
@@ -3357,7 +3357,7 @@
 		8FBB4DF3034A9875073027102D61D53B /* ReportPost */ = {
 			isa = PBXGroup;
 			children = (
-				AFC0424A5AD829FF6E3DBA57757D9DF7 /* LMFeedReportContentViewController.swift */,
+				AFC0424A5AD829FF6E3DBA57757D9DF7 /* LMFeedReportContentScreen.swift */,
 				6BF3B8B5F9A418247FBF52D1E309B745 /* LMFeedReportContentViewModel.swift */,
 			);
 			path = ReportPost;
@@ -5819,7 +5819,7 @@
 				9835EC847315D5175A6EB99AEB8F2EC8 /* LMFeedPostListViewController.swift in Sources */,
 				758A17AD78B2AFC75EEB526DCE6ADA4A /* LMFeedPostListViewModel.swift in Sources */,
 				B2A62B05F90F6CF983A74094625A96FA /* LMFeedPostOperation.swift in Sources */,
-				8EA2C1D909BF383BBC688074A0903642 /* LMFeedReportContentViewController.swift in Sources */,
+				8EA2C1D909BF383BBC688074A0903642 /* LMFeedReportContentScreen.swift in Sources */,
 				1712973584DAE7F520044D7DEE0578AE /* LMFeedReportContentViewModel.swift in Sources */,
 				AFF7E9895A83271B03A1363608850E30 /* LMFeedRouter.swift in Sources */,
 				5DB6880FA612996D386E4EA22EF46FE1 /* LMFeedShareUtility.swift in Sources */,
