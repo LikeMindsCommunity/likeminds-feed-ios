@@ -1,5 +1,5 @@
 //
-//  LMFeedCreatePostViewController.swift
+//  LMFeedCreatePostScreen.swift
 //  lm-feedCore-iOS
 //
 //  Created by Devansh Mohata on 16/01/24.
@@ -12,7 +12,7 @@ import UIKit
 import Photos
 
 @IBDesignable
-open class LMFeedCreatePostViewController: LMViewController {
+open class LMFeedCreatePostScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
@@ -359,7 +359,7 @@ open class LMFeedCreatePostViewController: LMViewController {
 
 
 // MARK: UITableView
-extension LMFeedCreatePostViewController: UITableViewDataSource, UITableViewDelegate {
+extension LMFeedCreatePostScreen: UITableViewDataSource, UITableViewDelegate {
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { documentCellData.count }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -377,7 +377,7 @@ extension LMFeedCreatePostViewController: UITableViewDataSource, UITableViewDele
 
 
 // MARK: LMFeedDocumentPreviewProtocol
-extension LMFeedCreatePostViewController: LMFeedDocumentPreviewProtocol {
+extension LMFeedCreatePostScreen: LMFeedDocumentPreviewProtocol {
     public func didTapCrossButton(documentID: URL) {
         viewModel?.removeAsset(url: documentID.absoluteString)
     }
@@ -389,7 +389,7 @@ extension LMFeedCreatePostViewController: LMFeedDocumentPreviewProtocol {
 
 
 // MARK: UICollectionView
-extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension LMFeedCreatePostScreen: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { mediaCellData.count }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -445,7 +445,7 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
 
 
 // MARK: LMFeedCreatePostViewModelProtocol
-extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
+extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
     public func setupLinkPreview(with data: LMFeedLinkPreview.ContentModel?) {
         linkPreview.isHidden = data == nil
         if let data {
@@ -549,7 +549,7 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
 
 
 // MARK: LMFeedTaggingTextViewProtocol
-extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
+extension LMFeedCreatePostScreen: LMFeedTaggingTextViewProtocol {
     public func mentionStarted(with text: String) {
         taggingView.isHidden = false
         taggingView.getUsers(for: text)
@@ -574,7 +574,7 @@ extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
 
 
 // MARK: Media Control
-public extension LMFeedCreatePostViewController {
+public extension LMFeedCreatePostScreen {
     func openImagePicker(_ mediaType: Settings.Fetch.Assets.MediaTypes, isFirstTime: Bool, maxSelection: Int) {
         var currentAssets: [(asset: PHAsset, url: URL)] = []
         
@@ -612,7 +612,7 @@ public extension LMFeedCreatePostViewController {
 
 
 // MARK: UIDocumentPickerDelegate
-extension LMFeedCreatePostViewController: UIDocumentPickerDelegate {
+extension LMFeedCreatePostScreen: UIDocumentPickerDelegate {
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         viewModel?.handleAssets(assets: urls)
         controller.dismiss(animated: true)
@@ -625,7 +625,7 @@ extension LMFeedCreatePostViewController: UIDocumentPickerDelegate {
 
 
 // MARK: LMFeedTaggedUserFoundProtocol
-extension LMFeedCreatePostViewController: LMFeedTaggedUserFoundProtocol {
+extension LMFeedCreatePostScreen: LMFeedTaggedUserFoundProtocol {
     public func userSelected(with route: String, and userName: String) {
         inputTextView.addTaggedUser(with: userName, route: route)
     }
@@ -637,7 +637,7 @@ extension LMFeedCreatePostViewController: LMFeedTaggedUserFoundProtocol {
 
 
 // MARK: LMFeedTopicViewCellProtocol
-extension LMFeedCreatePostViewController: LMFeedTopicViewCellProtocol {
+extension LMFeedCreatePostScreen: LMFeedTopicViewCellProtocol {
     public func didTapEditButton() {
         viewModel?.didTapTopicSelection()
     }
@@ -649,7 +649,7 @@ extension LMFeedCreatePostViewController: LMFeedTopicViewCellProtocol {
 
 
 // MARK: LMFeedTopicSelectionViewProtocol
-extension LMFeedCreatePostViewController: LMFeedTopicSelectionViewProtocol {
+extension LMFeedCreatePostScreen: LMFeedTopicSelectionViewProtocol {
     public func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         viewModel?.updateTopicFeed(with: topics)
     }

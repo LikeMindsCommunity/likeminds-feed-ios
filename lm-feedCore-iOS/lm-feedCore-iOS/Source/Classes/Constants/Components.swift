@@ -30,7 +30,7 @@ public struct Components {
     public var notificationScreen: LMFeedNotificationScreen.Type = LMFeedNotificationScreen.self
     
     // MARK: Create Post
-    public var createPostScreen: LMFeedCreatePostViewController.Type = LMFeedCreatePostViewController.self
+    public var createPostScreen: LMFeedCreatePostScreen.Type = LMFeedCreatePostScreen.self
     
     // MARK: Edit Post
     public var editPostScreen: LMFeedEditPostViewController.Type = LMFeedEditPostViewController.self

@@ -374,7 +374,7 @@
 		6A0DEAE6AA7EFBF46167B25088062956 /* GDTCORMetricsMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 2A2D2A0C138CF10D6B9924C422294F52 /* GDTCORMetricsMetadata.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		6A445396B3A17B316E2D1BF5F75389AC /* GULNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = B15D4F60BA9ABAA2836118043A0D846A /* GULNSData+zlib.m */; };
 		6AEC1D90061537F2B48E0586C13E90FB /* FIRMessagingAuthKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = 904735EEDCAC970B1E446F140C5A9497 /* FIRMessagingAuthKeychain.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		6BA2BCC430715DBF38C399E74626F64C /* LMFeedCreatePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDC5734FC328D197412F186D1DE7246 /* LMFeedCreatePostViewController.swift */; };
+		6BA2BCC430715DBF38C399E74626F64C /* LMFeedCreatePostScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDC5734FC328D197412F186D1DE7246 /* LMFeedCreatePostScreen.swift */; };
 		6BD283DE5BBBBB68C422A1132FFB7994 /* AWSCognitoSQLiteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 64CCCB17C3F4B15A1652CD63DD7D1EA0 /* AWSCognitoSQLiteManager.m */; };
 		6C2A8D78B7E5B02974B212599B28AD77 /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B27405A9B527DFB73DB7163A9C10AF /* Indicator.swift */; };
 		6C421BF74C2A0C94D1FFBBAB2201C8A4 /* FIRAnalyticsConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B7104EEBEC6A86BEA903FD7969212A /* FIRAnalyticsConfiguration.m */; };
@@ -1644,7 +1644,7 @@
 		5ED0803D1AD56774D3CE23C105F39F29 /* AWSCognitoUtil.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCognitoUtil.h; path = AWSCognito/Internal/AWSCognitoUtil.h; sourceTree = "<group>"; };
 		5ED48130F3CAC7FDA86748338D1FB892 /* Notification+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Notification+Extension.swift"; sourceTree = "<group>"; };
 		5EDB85ADA4FF9D9D1577E4CDD40C125B /* LikeMindsFeedCore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = LikeMindsFeedCore.release.xcconfig; sourceTree = "<group>"; };
-		5FDC5734FC328D197412F186D1DE7246 /* LMFeedCreatePostViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePostViewController.swift; sourceTree = "<group>"; };
+		5FDC5734FC328D197412F186D1DE7246 /* LMFeedCreatePostScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePostScreen.swift; sourceTree = "<group>"; };
 		5FFDA86CF62AE80EDC45703AE08FB536 /* FIRLibrary.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRLibrary.h; path = FirebaseCore/Extension/FIRLibrary.h; sourceTree = "<group>"; };
 		602862CD78BD3C1DCE6B1CC139199783 /* FIRComponentContainer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRComponentContainer.h; path = FirebaseCore/Extension/FIRComponentContainer.h; sourceTree = "<group>"; };
 		6037A23145B2B63700C94A23924281A8 /* LMFeedCreatePostHeaderView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePostHeaderView.swift; sourceTree = "<group>"; };
@@ -4242,7 +4242,7 @@
 		FAFF63D53588A01D330A45A500965043 /* CreatePost */ = {
 			isa = PBXGroup;
 			children = (
-				5FDC5734FC328D197412F186D1DE7246 /* LMFeedCreatePostViewController.swift */,
+				5FDC5734FC328D197412F186D1DE7246 /* LMFeedCreatePostScreen.swift */,
 				CAA12D654D1D6948CD31EA192CC2309A /* LMFeedCreatePostViewModel.swift */,
 			);
 			path = CreatePost;
@@ -5798,7 +5798,7 @@
 				8F52CE66CFE87697709715E33527A05C /* LMFeedConvertToFeedPost.swift in Sources */,
 				F66D27B97364E38B01682D6FC111F4A0 /* LMFeedCore.swift in Sources */,
 				A90CA9D31272CBAD08CA68211D4A0FEE /* LMFeedCreatePostOperation.swift in Sources */,
-				6BA2BCC430715DBF38C399E74626F64C /* LMFeedCreatePostViewController.swift in Sources */,
+				6BA2BCC430715DBF38C399E74626F64C /* LMFeedCreatePostScreen.swift in Sources */,
 				3D612F1CC824F01790E0A0E87E96D791 /* LMFeedCreatePostViewModel.swift in Sources */,
 				8EDF10DF35C5509E4863606740C130F2 /* LMFeedDeleteReviewScreen.swift in Sources */,
 				97719FB31A2C9C0587C75DB183EBC1AA /* LMFeedDeleteReviewViewModel.swift in Sources */,
