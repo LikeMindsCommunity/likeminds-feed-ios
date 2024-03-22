@@ -1,5 +1,5 @@
 //
-//  LMFeedNotificationViewController.swift
+//  LMFeedNotificationScreen.swift
 //  lm-feedCore-iOS
 //
 //  Created by Devansh Mohata on 21/01/24.
@@ -9,7 +9,7 @@ import LikeMindsFeedUI
 import UIKit
 
 @IBDesignable
-open class LMFeedNotificationViewController: LMViewController {
+open class LMFeedNotificationScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var tableView: LMTableView = {
         let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
@@ -35,7 +35,7 @@ open class LMFeedNotificationViewController: LMViewController {
     
     // MARK: Data Variables
     public var viewModel: LMFeedNotificationViewModel?
-    public var cellsData: [LMFeedNotificationItem.ContentModel] = []
+    public var notifications: [LMFeedNotificationItem.ContentModel] = []
     
     
     // MARK: setupViews
@@ -96,13 +96,13 @@ open class LMFeedNotificationViewController: LMViewController {
 
 
 // MARK: UITableView
-extension LMFeedNotificationViewController: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
+extension LMFeedNotificationScreen: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        cellsData.count
+        notifications.count
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let data = cellsData[safe: indexPath.row],
+        if let data = notifications[safe: indexPath.row],
            let cell = tableView.dequeueReusableCell(LMUIComponents.shared.notificationItem) {
             cell.configure(with: data) { [weak self] in
                 self?.viewModel?.markReadNotification(activityId: data.notificationID)
@@ -114,7 +114,7 @@ extension LMFeedNotificationViewController: UITableViewDataSource, UITableViewDe
     }
     
     open func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        let count = cellsData.count
+        let count = notifications.count
         if !indexPaths.filter({ $0.row > count }).isEmpty {
             viewModel?.getNotifications(isInitialFetch: false)
         }
@@ -126,10 +126,10 @@ extension LMFeedNotificationViewController: UITableViewDataSource, UITableViewDe
 }
 
 // MARK: LMFeedNotificationViewModelProtocol
-extension LMFeedNotificationViewController: LMFeedNotificationViewModelProtocol {
+extension LMFeedNotificationScreen: LMFeedNotificationViewModelProtocol {
     public func showNotifications(with data: [LMFeedNotificationItem.ContentModel], indexPath: IndexPath?) {
         tableView.backgroundView = nil
-        cellsData = data
+        notifications = data
         
         if let indexPath {
             tableView.reloadRows(at: [indexPath], with: .none)

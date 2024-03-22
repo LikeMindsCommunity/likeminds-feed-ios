@@ -126,7 +126,7 @@ open class LMFeedPostDetailScreen: LMViewController {
     
     // MARK: Data Variables
     public var postData: LMFeedPostTableCellProtocol?
-    public var cellsData: [LMFeedCommentContentModel] = []
+    public var commentsData: [LMFeedCommentContentModel] = []
     public var textInputMaximumHeight: CGFloat = 100
     public var viewModel: LMFeedPostDetailViewModel?
     public var isCommentingEnabled: Bool = LocalPreferences.memberState?.memberRights?.contains(where: { $0.state == .commentOrReplyOnPost }) ?? false
@@ -355,11 +355,11 @@ extension LMFeedPostDetailScreen {
 extension LMFeedPostDetailScreen: UITableViewDataSource, UITableViewDelegate {
     open func numberOfSections(in tableView: UITableView) -> Int {
         guard postData != nil else { return .zero }
-        return cellsData.count + 1
+        return commentsData.count + 1
     }
     
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let comment = cellsData[safe: section - 1] {
+        if let comment = commentsData[safe: section - 1] {
             return comment.replies.count
         }
         return 1
@@ -381,7 +381,7 @@ extension LMFeedPostDetailScreen: UITableViewDataSource, UITableViewDelegate {
                 cell.configure(for: indexPath, with: data, delegate: self)
                 return cell
             }
-        } else if let data = cellsData[safe: indexPath.section - 1],
+        } else if let data = commentsData[safe: indexPath.section - 1],
                   let cell = tableView.dequeueReusableCell(LMUIComponents.shared.replyView) {
             let comment = data.replies[indexPath.row]
             cell.configure(with: comment, delegate: self, indexPath: indexPath)
@@ -397,11 +397,11 @@ extension LMFeedPostDetailScreen: UITableViewDataSource, UITableViewDelegate {
            let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.postDetailHeaderView) {
             header.configure(with: postData.headerData, postID: postData.postID, userUUID: postData.userUUID, delegate: self)
             return header
-        } else if var data = cellsData[safe: section - 1],
+        } else if var data = commentsData[safe: section - 1],
             let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.commentView) {
             header.configure(with: data, delegate: self, indexPath: .init(row: NSNotFound, section: section)) { [weak self] in
                 data.isShowMore.toggle()
-                self?.cellsData[section - 1] = data
+                self?.commentsData[section - 1] = data
                 self?.reloadTable(for: IndexPath(row: NSNotFound, section: section))
             }
             return header
@@ -412,7 +412,7 @@ extension LMFeedPostDetailScreen: UITableViewDataSource, UITableViewDelegate {
     open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
             return Constants.shared.number.postHeaderSize
-        } else if (cellsData[safe: section - 1]) != nil {
+        } else if (commentsData[safe: section - 1]) != nil {
             return UITableView.automaticDimension
         }
         return .leastNormalMagnitude
@@ -424,7 +424,7 @@ extension LMFeedPostDetailScreen: UITableViewDataSource, UITableViewDelegate {
            let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.postDetailFooterView) {
             footer.configure(with: postData.footerData, postID: postData.postID, delegate: self, commentCount: postData.totalCommentCount)
             return footer
-        } else if let data = cellsData[safe: section - 1],
+        } else if let data = commentsData[safe: section - 1],
                   data.repliesCount != 0,
                   data.repliesCount < data.totalReplyCount,
                   let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.loadMoreReplies) {
@@ -441,8 +441,8 @@ extension LMFeedPostDetailScreen: UITableViewDataSource, UITableViewDelegate {
     open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == 0 {
             return UITableView.automaticDimension
-        } else if cellsData[section - 1].repliesCount != 0,
-                  cellsData[section - 1].repliesCount < cellsData[section - 1].totalReplyCount {
+        } else if commentsData[section - 1].repliesCount != 0,
+                  commentsData[section - 1].repliesCount < commentsData[section - 1].totalReplyCount {
             return UITableView.automaticDimension
         }
         return 1
@@ -467,7 +467,7 @@ extension LMFeedPostDetailScreen: UITableViewDataSource, UITableViewDelegate {
     }
     
     open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        if section == cellsData.count - 1 {
+        if section == commentsData.count - 1 {
             viewModel?.getPost(isInitialFetch: false)
         }
     }
@@ -538,7 +538,7 @@ extension LMFeedPostDetailScreen: LMFeedPostCommentProtocol {
 // MARK: LMFeedPostDetailViewModelProtocol
 extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
     public func deleteRows(for section: Int, comments: [LMFeedCommentContentModel]) {
-        cellsData = comments
+        commentsData = comments
         if section < tableView.numberOfSections {
             var rows: [IndexPath] = []
             for i in 0..<tableView.numberOfRows(inSection: section) {
@@ -556,7 +556,7 @@ extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
     }
     
     public func insertComment(at index: IndexSet, with comments: [LikeMindsFeedUI.LMFeedCommentContentModel], totalCommentCount: Int) {
-        cellsData = comments
+        commentsData = comments
         setNavigationTitle(with: totalCommentCount)
         postData?.totalCommentCount = totalCommentCount
         (tableView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.updateCommentCount(with: totalCommentCount)
@@ -573,7 +573,7 @@ extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
     }
     
     public func deleteComment(at index: Int, with comments: [LikeMindsFeedUI.LMFeedCommentContentModel], totalCommentCount: Int) {
-        cellsData = comments
+        commentsData = comments
         setNavigationTitle(with: totalCommentCount)
         (tableView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.updateCommentCount(with: totalCommentCount)
         UIView.performWithoutAnimation { [weak self] in
@@ -584,7 +584,7 @@ extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
     }
     
     public func reloadComments(with comments: [LMFeedCommentContentModel], index: IndexSet?) {
-        cellsData = comments
+        commentsData = comments
         let originalContentOffset = tableView.contentOffset
         if let index {
             UIView.performWithoutAnimation { [weak self] in
@@ -615,7 +615,7 @@ extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
         showHideLoaderView(isShow: false)
         
         self.postData = post
-        self.cellsData = comments
+        self.commentsData = comments
         
         reloadTable(for: indexPath)
         
@@ -654,7 +654,7 @@ extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
     }
     
     public func changeCommentLike(for indexPath: IndexPath) {
-        if var sectionData = cellsData[safe: indexPath.section - 1] {
+        if var sectionData = commentsData[safe: indexPath.section - 1] {
             if indexPath.row == NSNotFound {
                 let isLiked = sectionData.isLiked
                 sectionData.isLiked = !isLiked
@@ -666,7 +666,7 @@ extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
                 sectionData.replies[indexPath.row] = reply
             }
             
-            cellsData[indexPath.section - 1] = sectionData
+            commentsData[indexPath.section - 1] = sectionData
         }
     }
     

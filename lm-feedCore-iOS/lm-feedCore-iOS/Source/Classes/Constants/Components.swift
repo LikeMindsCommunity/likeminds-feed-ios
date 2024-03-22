@@ -24,10 +24,10 @@ public struct Components {
     public var taggingListView: LMFeedTaggingListView.Type = LMFeedTaggingListView.self
     
     // MARK: Like Screen
-    public var likeListScreen: LMFeedLikeViewController.Type = LMFeedLikeViewController.self
+    public var likeListScreen: LMFeedLikeListScreen.Type = LMFeedLikeListScreen.self
     
     // MARK: Notification Screen
-    public var notificationScreen: LMFeedNotificationViewController.Type = LMFeedNotificationViewController.self
+    public var notificationScreen: LMFeedNotificationScreen.Type = LMFeedNotificationScreen.self
     
     // MARK: Create Post
     public var createPostScreen: LMFeedCreatePostViewController.Type = LMFeedCreatePostViewController.self

@@ -36,7 +36,7 @@ public final class LMFeedLikeViewModel {
         self.delegate = delegate
     }
     
-    public static func createModule(postID: String, commentID: String? = nil) throws -> LMFeedLikeViewController {
+    public static func createModule(postID: String, commentID: String? = nil) throws -> LMFeedLikeListScreen {
         guard LMFeedCore.isInitialized else { throw LMFeedError.feedNotInitialized }
         
         let viewcontroller = Components.shared.likeListScreen.init()

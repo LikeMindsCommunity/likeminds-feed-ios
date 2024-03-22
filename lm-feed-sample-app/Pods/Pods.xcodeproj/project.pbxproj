@@ -139,7 +139,7 @@
 		2415BCF90B06A03D9C2772E45D9AACBB /* FBLPromise+Reduce.h in Headers */ = {isa = PBXBuildFile; fileRef = F1285743E6AEBA9FC6D9A97ED449FF21 /* FBLPromise+Reduce.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		244791D8D44906C42E5998D6D4849D9A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A787C24D3F11D1885D40B7B60191377F /* SystemConfiguration.framework */; };
 		247A17FAF10B3F71EB6523CD986C2B63 /* GULNetworkConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D435C56C878DF816183F04EEB622977E /* GULNetworkConstants.m */; };
-		247B1C7A206BDD54CECC2E0F5B281348 /* LMFeedNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88BCFB2A6A1D3586EBC673FCB86D197 /* LMFeedNotificationViewController.swift */; };
+		247B1C7A206BDD54CECC2E0F5B281348 /* LMFeedNotificationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88BCFB2A6A1D3586EBC673FCB86D197 /* LMFeedNotificationScreen.swift */; };
 		2480B116D9A738E79212C0E0DD41872D /* GIFAnimatedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5815CEA1FDA92DD08A60E5619B894D /* GIFAnimatedImage.swift */; };
 		2531195C1B1CF3A664E429BA9522AB68 /* AWSCancellationTokenRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BFF8B0F17B09C946F8534BE6C92B405 /* AWSCancellationTokenRegistration.m */; };
 		256BF0503D4E0C4E56C40CD5F0930203 /* FIRMessagingAPNSInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B7997CA95CF70933331925BE1D461EC9 /* FIRMessagingAPNSInfo.m */; };
@@ -153,7 +153,7 @@
 		28B0F44AF21598F8D82810BA6D6F0CEC /* AWSS3Service.h in Headers */ = {isa = PBXBuildFile; fileRef = 684D4D09DCF602B774799557ED2CB6F8 /* AWSS3Service.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		28B2AE180C3F46F7EFD05FA052EA27AC /* AWSFMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C913288D695B1818D2930E8BA4BF726D /* AWSFMDatabaseQueue.m */; };
 		2917A1D5FBF06CBE1493BC6018B96C74 /* NSError+AWSMTLModelException.m in Sources */ = {isa = PBXBuildFile; fileRef = 586737FFED4E7DD9782D07D8B34C7948 /* NSError+AWSMTLModelException.m */; };
-		291EA109AAC50022389E53EE5A69795D /* LMFeedLikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE48A3317FE4157199C1E94E3F80DBB /* LMFeedLikeViewController.swift */; };
+		291EA109AAC50022389E53EE5A69795D /* LMFeedLikeListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE48A3317FE4157199C1E94E3F80DBB /* LMFeedLikeListScreen.swift */; };
 		297FAD91927B0F6E1B233262EC1628BE /* FIRMessagingTokenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 24CCC981CE00A9308580CFEE7F77EC76 /* FIRMessagingTokenManager.m */; };
 		29BDB3A9B67371BD5FAB7DD0642796A7 /* HeartbeatStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D063C3E2E0F64632A05A5A049E2CFC /* HeartbeatStorage.swift */; };
 		29E263A53E369380C64D03E6FC9827E4 /* NSDictionary+FIRMessaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C4FEB398B505A71914958FE49E6D2FA /* NSDictionary+FIRMessaging.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1916,7 +1916,7 @@
 		A83F35A9378E97EC9A0B265E79706F7B /* FIRMessagingConstants.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRMessagingConstants.m; path = FirebaseMessaging/Sources/FIRMessagingConstants.m; sourceTree = "<group>"; };
 		A87918480858D9916601A98B517197CD /* AWSCognitoHandlers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCognitoHandlers.h; path = AWSCognito/AWSCognitoHandlers.h; sourceTree = "<group>"; };
 		A88820C61B7ECC1952C046ACC2E71477 /* GULMutableDictionary.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GULMutableDictionary.m; path = GoogleUtilities/Network/GULMutableDictionary.m; sourceTree = "<group>"; };
-		A88BCFB2A6A1D3586EBC673FCB86D197 /* LMFeedNotificationViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedNotificationViewController.swift; sourceTree = "<group>"; };
+		A88BCFB2A6A1D3586EBC673FCB86D197 /* LMFeedNotificationScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedNotificationScreen.swift; sourceTree = "<group>"; };
 		A917A9A4B1F36C6E5E5FE574771FF04A /* FBLPromise+Any.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBLPromise+Any.h"; path = "Sources/FBLPromises/include/FBLPromise+Any.h"; sourceTree = "<group>"; };
 		A95F8F29C0F097642105BE4417007A94 /* AWSCognitoService.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSCognitoService.m; path = AWSCognito/AWSCognitoService.m; sourceTree = "<group>"; };
 		A9C1BF7D63794C08628FA9B1292A49B1 /* GDTCORMetricsControllerProtocol.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCORMetricsControllerProtocol.h; path = GoogleDataTransport/GDTCORLibrary/Internal/GDTCORMetricsControllerProtocol.h; sourceTree = "<group>"; };
@@ -2118,7 +2118,7 @@
 		DD96E52FCC9CCD013B4EB966C448BAE9 /* FIRMessagingTokenInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessagingTokenInfo.h; path = FirebaseMessaging/Sources/Token/FIRMessagingTokenInfo.h; sourceTree = "<group>"; };
 		DDA04A6FBF679C005A8CDE5C50224FCC /* Runtime.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Runtime.swift; path = Sources/Utility/Runtime.swift; sourceTree = "<group>"; };
 		DDA605433F519FE045E6C8C2D283BFCF /* AWSS3.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AWSS3.release.xcconfig; sourceTree = "<group>"; };
-		DDE48A3317FE4157199C1E94E3F80DBB /* LMFeedLikeViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedLikeViewController.swift; sourceTree = "<group>"; };
+		DDE48A3317FE4157199C1E94E3F80DBB /* LMFeedLikeListScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedLikeListScreen.swift; sourceTree = "<group>"; };
 		DE0D7FAEC087662A5866AFEED2EEEC22 /* GoogleDataTransport.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = GoogleDataTransport.debug.xcconfig; sourceTree = "<group>"; };
 		DE31BA935717B300B7C6732F0DFF31A5 /* AWSCognito.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AWSCognito.release.xcconfig; sourceTree = "<group>"; };
 		DE8668AB5847DF40AD4117F21AD2776D /* FIRMessagingAnalytics.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessagingAnalytics.h; path = FirebaseMessaging/Sources/FIRMessagingAnalytics.h; sourceTree = "<group>"; };
@@ -3375,7 +3375,7 @@
 			isa = PBXGroup;
 			children = (
 				CC6C7D0D04D55BDEE6D6086D65BC6DAE /* LMFeedNotificationDataModel.swift */,
-				A88BCFB2A6A1D3586EBC673FCB86D197 /* LMFeedNotificationViewController.swift */,
+				A88BCFB2A6A1D3586EBC673FCB86D197 /* LMFeedNotificationScreen.swift */,
 				489BBB4D9C417CBBC922C3196DE26D03 /* LMFeedNotificationViewModel.swift */,
 			);
 			path = NotificationScreen;
@@ -3738,7 +3738,7 @@
 			isa = PBXGroup;
 			children = (
 				513497BEB039AA8F5AD89FEBE3F7235D /* LMFeedLikeDataModel.swift */,
-				DDE48A3317FE4157199C1E94E3F80DBB /* LMFeedLikeViewController.swift */,
+				DDE48A3317FE4157199C1E94E3F80DBB /* LMFeedLikeListScreen.swift */,
 				E16B1862B92275F4BCD34B17B98A3CAA /* LMFeedLikeViewModel.swift */,
 			);
 			path = LikeScreen;
@@ -5807,11 +5807,11 @@
 				4264F841EFEDD585553D87BDB83F5626 /* LMFeedEditPostViewModel.swift in Sources */,
 				39D2F391308CB256C96591DB218D10CF /* LMFeedError.swift in Sources */,
 				9CAA2C3EC88CC68AEB18270C907F4614 /* LMFeedLikeDataModel.swift in Sources */,
-				291EA109AAC50022389E53EE5A69795D /* LMFeedLikeViewController.swift in Sources */,
+				291EA109AAC50022389E53EE5A69795D /* LMFeedLikeListScreen.swift in Sources */,
 				4D10E1922CAEDE72D92EA0F2C65D53A4 /* LMFeedLikeViewModel.swift in Sources */,
 				505C9F48F65A6D84BFE202F337A7221A /* LMFeedMenuDataModel.swift in Sources */,
 				F8148CE899823B785954DDF495B12180 /* LMFeedNotificationDataModel.swift in Sources */,
-				247B1C7A206BDD54CECC2E0F5B281348 /* LMFeedNotificationViewController.swift in Sources */,
+				247B1C7A206BDD54CECC2E0F5B281348 /* LMFeedNotificationScreen.swift in Sources */,
 				8789300E370AB2072C2C57D06C12D3EF /* LMFeedNotificationViewModel.swift in Sources */,
 				EC70B8D8911472C204F93787B78FF94E /* LMFeedPostDataModel.swift in Sources */,
 				C10EBC51BA758743709135A0CC179AB5 /* LMFeedPostDetailScreen.swift in Sources */,

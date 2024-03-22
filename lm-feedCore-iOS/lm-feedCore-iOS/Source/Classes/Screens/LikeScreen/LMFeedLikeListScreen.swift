@@ -1,5 +1,5 @@
 //
-//  LMFeedLikeViewController.swift
+//  LMFeedLikeListScreen.swift
 //  Pods
 //
 //  Created by Devansh Mohata on 21/01/24.
@@ -9,7 +9,7 @@ import LikeMindsFeedUI
 import UIKit
 
 @IBDesignable
-open class LMFeedLikeViewController: LMViewController {
+open class LMFeedLikeListScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var tableView: LMTableView = {
         let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
@@ -64,7 +64,7 @@ open class LMFeedLikeViewController: LMViewController {
 
 
 // MARK: UITableView
-extension LMFeedLikeViewController: UITableViewDataSource, UITableViewDelegate {
+extension LMFeedLikeListScreen: UITableViewDataSource, UITableViewDelegate {
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         cellsData.count
     }
@@ -91,7 +91,7 @@ extension LMFeedLikeViewController: UITableViewDataSource, UITableViewDelegate {
 
 
 // MARK: LMFeedLikeViewModelProtocol
-extension LMFeedLikeViewController: LMFeedLikeViewModelProtocol {
+extension LMFeedLikeListScreen: LMFeedLikeViewModelProtocol {
     public func reloadTableView(with data: [LMFeedMemberItem.ContentModel], totalCount: Int) {
         cellsData = data
         tableView.reloadData()

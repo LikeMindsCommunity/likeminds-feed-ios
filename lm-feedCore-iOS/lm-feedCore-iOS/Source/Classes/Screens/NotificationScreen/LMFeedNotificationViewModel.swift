@@ -30,7 +30,7 @@ public final class LMFeedNotificationViewModel {
         self.delegate = delegate
     }
     
-    public static func createModule() -> LMFeedNotificationViewController {
+    public static func createModule() -> LMFeedNotificationScreen {
         let viewcontroller = Components.shared.notificationScreen.init()
         let viewModel = LMFeedNotificationViewModel(delegate: viewcontroller)
         
