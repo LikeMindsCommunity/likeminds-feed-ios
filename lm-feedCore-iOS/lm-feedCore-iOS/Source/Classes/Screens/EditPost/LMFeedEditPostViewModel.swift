@@ -49,7 +49,7 @@ public final class LMFeedEditPostViewModel {
         self.delegate = delegate
     }
     
-    public static func createModule(for postID: String) -> LMFeedEditPostViewController? {
+    public static func createModule(for postID: String) -> LMFeedEditPostScreen? {
         guard LMFeedCore.isInitialized else { return nil }
         
         let viewcontroller = Components.shared.editPostScreen.init()

@@ -1,5 +1,5 @@
 //
-//  LMFeedEditPostViewController.swift
+//  LMFeedEditPostScreen.swift
 //  lm-feedCore-iOS
 //
 //  Created by Devansh Mohata on 24/01/24.
@@ -10,7 +10,7 @@ import LikeMindsFeedUI
 import UIKit
 
 @IBDesignable
-open class LMFeedEditPostViewController: LMViewController {
+open class LMFeedEditPostScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
@@ -223,7 +223,7 @@ open class LMFeedEditPostViewController: LMViewController {
 
 
 // MARK: UITableView
-extension LMFeedEditPostViewController: UITableViewDataSource, UITableViewDelegate {
+extension LMFeedEditPostScreen: UITableViewDataSource, UITableViewDelegate {
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         documentCells.count
     }
@@ -241,7 +241,7 @@ extension LMFeedEditPostViewController: UITableViewDataSource, UITableViewDelega
 
 
 // MARK: UICollectionView
-extension LMFeedEditPostViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension LMFeedEditPostScreen: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         mediaCells.count
     }
@@ -290,7 +290,7 @@ extension LMFeedEditPostViewController: UICollectionViewDataSource, UICollection
 
 
 // MARK: LMFeedTopicViewCellProtocol
-extension LMFeedEditPostViewController: LMFeedTopicViewCellProtocol {
+extension LMFeedEditPostScreen: LMFeedTopicViewCellProtocol {
     public func didTapEditButton() {
         viewmodel?.didTapTopicSelection()
     }
@@ -303,7 +303,7 @@ extension LMFeedEditPostViewController: LMFeedTopicViewCellProtocol {
 
 // MARK: LMFeedTaggingTextViewProtocol
 @objc
-extension LMFeedEditPostViewController: LMFeedTaggingTextViewProtocol {
+extension LMFeedEditPostScreen: LMFeedTaggingTextViewProtocol {
     open func mentionStarted(with text: String) {
         taggingView.getUsers(for: text)
         taggingView.isHidden = false
@@ -328,7 +328,7 @@ extension LMFeedEditPostViewController: LMFeedTaggingTextViewProtocol {
 
 
 // MARK: LMFeedEditPostViewModelProtocol
-extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {    
+extension LMFeedEditPostScreen: LMFeedEditPostViewModelProtocol {    
     public func setupData(with userData: LMFeedCreatePostHeaderView.ContentModel, text: String) {
         headerView.configure(with: userData)
         inputTextView.setAttributedText(from: text, prefix: "@")
@@ -381,7 +381,7 @@ extension LMFeedEditPostViewController: LMFeedEditPostViewModelProtocol {
 
 
 // MARK: LMFeedDocumentPreviewProtocol
-extension LMFeedEditPostViewController: LMFeedDocumentPreviewProtocol {
+extension LMFeedEditPostScreen: LMFeedDocumentPreviewProtocol {
     public func didTapDocument(documentID: URL) {
         openURL(with: documentID)
     }
@@ -389,7 +389,7 @@ extension LMFeedEditPostViewController: LMFeedDocumentPreviewProtocol {
 
 
 // MARK: LMFeedTaggedUserFoundProtocol
-extension LMFeedEditPostViewController: LMFeedTaggedUserFoundProtocol {
+extension LMFeedEditPostScreen: LMFeedTaggedUserFoundProtocol {
     public func userSelected(with route: String, and userName: String) {
         inputTextView.addTaggedUser(with: userName, route: route)
     }
@@ -401,7 +401,7 @@ extension LMFeedEditPostViewController: LMFeedTaggedUserFoundProtocol {
 
 
 // MARK: LMFeedTopicSelectionViewModelProtocol
-extension LMFeedEditPostViewController: LMFeedTopicSelectionViewProtocol {
+extension LMFeedEditPostScreen: LMFeedTopicSelectionViewProtocol {
     public func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         viewmodel?.updateTopicFeed(with: topics)
     }

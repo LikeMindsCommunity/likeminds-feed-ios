@@ -33,7 +33,7 @@ public struct Components {
     public var createPostScreen: LMFeedCreatePostScreen.Type = LMFeedCreatePostScreen.self
     
     // MARK: Edit Post
-    public var editPostScreen: LMFeedEditPostViewController.Type = LMFeedEditPostViewController.self
+    public var editPostScreen: LMFeedEditPostScreen.Type = LMFeedEditPostScreen.self
     
     // MARK: Delete Review Screen
     public var deleteReviewScreen: LMFeedDeleteReviewScreen.Type = LMFeedDeleteReviewScreen.self
