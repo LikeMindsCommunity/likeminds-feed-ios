@@ -330,7 +330,7 @@
 		5B92A66A66BD639411C3D839A0F87B0C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40550780738AD0F2EB2E8B3338B78E7 /* Request.swift */; };
 		5C041C0F3BBC8ED3017D03D1A00BFEDF /* DisplayLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2BCD55C571CABEFA3979C0590A5C4 /* DisplayLink.swift */; };
 		5C4B28724B14F4781887CF400FF4534D /* LMUIComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBDB7CFD531A9FF7CD82817947DFE24 /* LMUIComponents.swift */; };
-		5C7262E69FDCA86E06F8C5435A9CEAD7 /* LMUniversalFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F9881807F408E8566C57865605A552 /* LMUniversalFeedViewController.swift */; };
+		5C7262E69FDCA86E06F8C5435A9CEAD7 /* LMUniversalFeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F9881807F408E8566C57865605A552 /* LMUniversalFeedScreen.swift */; };
 		5CF77C87157890835D64ED36D8AFF180 /* VideoPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FAE16346F0BD286B07C1D610562776 /* VideoPreviewViewController.swift */; };
 		5D08BFCCEA41C28E957EC4DFAFD0F9A4 /* FIRBundleUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = CF5E33E80CC31A440FCEF108331A19AA /* FIRBundleUtil.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		5D6F33C10824C01E79905F40409F5915 /* GDTCORFlatFileStorage+Promises.m in Sources */ = {isa = PBXBuildFile; fileRef = 757BBF51A8BEEB863534066CB65FB6E7 /* GDTCORFlatFileStorage+Promises.m */; };
@@ -549,7 +549,7 @@
 		97866B48DFD4999A14BF3036CBA6B217 /* AWSCognitoUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 5ED0803D1AD56774D3CE23C105F39F29 /* AWSCognitoUtil.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		9798B99735393F600051F9FFAC2D65C7 /* AWSS3TransferUtilityDatabaseHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 25C4FB5D095040662C6B902B47D4E4E4 /* AWSS3TransferUtilityDatabaseHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		97BD97F3B2B7112D6E60F2759E592C67 /* LMFeedTaggingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23BF36638C47648E58CB769EF71AF43 /* LMFeedTaggingListView.swift */; };
-		9835EC847315D5175A6EB99AEB8F2EC8 /* LMFeedPostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782E046FD202D1932C03E57441EFDA3 /* LMFeedPostListViewController.swift */; };
+		9835EC847315D5175A6EB99AEB8F2EC8 /* LMFeedPostListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782E046FD202D1932C03E57441EFDA3 /* LMFeedPostListScreen.swift */; };
 		9929AF5D2B4BFBD9304F9F6A689A8001 /* FIRLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = DD0065E479ACDDC67385B676C5B06FED /* FIRLogger.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		99A14E4B35804D1FC420CAD61D4CC45D /* LMFeedVideoCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3223DE92699B11B48D8D04CF3D1E86AF /* LMFeedVideoCollectionCell.swift */; };
 		99C4FAF4309A33E62EC89708B2C5902A /* AWSValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4475998F6BB512D4E6FB8F86AEF0A7AD /* AWSValidation.m */; };
@@ -1674,7 +1674,7 @@
 		659A71D7B9409067987AA2F8567372BA /* FIRInstallationsItem+RegisterInstallationAPI.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FIRInstallationsItem+RegisterInstallationAPI.h"; path = "FirebaseInstallations/Source/Library/InstallationsAPI/FIRInstallationsItem+RegisterInstallationAPI.h"; sourceTree = "<group>"; };
 		6697D88F31DC5C3B16AF32DABDA96DC3 /* FIRInstallationsIIDStore.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRInstallationsIIDStore.m; path = FirebaseInstallations/Source/Library/IIDMigration/FIRInstallationsIIDStore.m; sourceTree = "<group>"; };
 		66FA5B3912F346048655DFA46455C0B0 /* GDTCOREvent+GDTCCTSupport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "GDTCOREvent+GDTCCTSupport.h"; path = "GoogleDataTransport/GDTCCTLibrary/Public/GDTCOREvent+GDTCCTSupport.h"; sourceTree = "<group>"; };
-		6782E046FD202D1932C03E57441EFDA3 /* LMFeedPostListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostListViewController.swift; sourceTree = "<group>"; };
+		6782E046FD202D1932C03E57441EFDA3 /* LMFeedPostListScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostListScreen.swift; sourceTree = "<group>"; };
 		67E4CB8704CB91D26DEE4A6F8EE4E9BF /* GULLoggerCodes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GULLoggerCodes.h; path = GoogleUtilities/Common/GULLoggerCodes.h; sourceTree = "<group>"; };
 		67FB5A65E5C95E83822E46E9FB81A202 /* FBLPromise+Await.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "FBLPromise+Await.m"; path = "Sources/FBLPromises/FBLPromise+Await.m"; sourceTree = "<group>"; };
 		684D4D09DCF602B774799557ED2CB6F8 /* AWSS3Service.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSS3Service.h; path = AWSS3/AWSS3Service.h; sourceTree = "<group>"; };
@@ -2135,7 +2135,7 @@
 		E16B1862B92275F4BCD34B17B98A3CAA /* LMFeedLikeViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedLikeViewModel.swift; sourceTree = "<group>"; };
 		E1BCC52CDA7A5FA75EFDE8265FC3463B /* Box.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Box.swift; path = Sources/Utility/Box.swift; sourceTree = "<group>"; };
 		E1D443D59599B28851D702DBAE5EFEF8 /* GDTCORUploadCoordinator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GDTCORUploadCoordinator.m; path = GoogleDataTransport/GDTCORLibrary/GDTCORUploadCoordinator.m; sourceTree = "<group>"; };
-		E1F9881807F408E8566C57865605A552 /* LMUniversalFeedViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMUniversalFeedViewController.swift; sourceTree = "<group>"; };
+		E1F9881807F408E8566C57865605A552 /* LMUniversalFeedScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMUniversalFeedScreen.swift; sourceTree = "<group>"; };
 		E236A91E8516B0C7DA1A00CAADDA14C5 /* LMFeedEditPostViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedEditPostViewModel.swift; sourceTree = "<group>"; };
 		E26C32649752995AD21C88E216B9652E /* AWSDDLog.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSDDLog.h; path = AWSCore/Logging/AWSDDLog.h; sourceTree = "<group>"; };
 		E2B63D462DB7F827C4B11FD51E4F8E2D /* FirebaseCore */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = FirebaseCore; path = FirebaseCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2551,7 +2551,7 @@
 		0A5F4DDBFF350DAE187AA59482203A31 /* PostListView */ = {
 			isa = PBXGroup;
 			children = (
-				6782E046FD202D1932C03E57441EFDA3 /* LMFeedPostListViewController.swift */,
+				6782E046FD202D1932C03E57441EFDA3 /* LMFeedPostListScreen.swift */,
 				04F24754305E0E4EA45F5A58350ABE5E /* LMFeedPostListViewModel.swift */,
 			);
 			path = PostListView;
@@ -4170,7 +4170,7 @@
 		F1FBF0175BFF917D9C70B8E896BF1751 /* UniversalFeed */ = {
 			isa = PBXGroup;
 			children = (
-				E1F9881807F408E8566C57865605A552 /* LMUniversalFeedViewController.swift */,
+				E1F9881807F408E8566C57865605A552 /* LMUniversalFeedScreen.swift */,
 				8FEC54F799489998F6BF4ABE4F2988D3 /* LMUniversalFeedViewModel.swift */,
 			);
 			path = UniversalFeed;
@@ -5816,7 +5816,7 @@
 				EC70B8D8911472C204F93787B78FF94E /* LMFeedPostDataModel.swift in Sources */,
 				C10EBC51BA758743709135A0CC179AB5 /* LMFeedPostDetailScreen.swift in Sources */,
 				B1EE6764C4A2FDB7EA1D2126B7BF4344 /* LMFeedPostDetailViewModel.swift in Sources */,
-				9835EC847315D5175A6EB99AEB8F2EC8 /* LMFeedPostListViewController.swift in Sources */,
+				9835EC847315D5175A6EB99AEB8F2EC8 /* LMFeedPostListScreen.swift in Sources */,
 				758A17AD78B2AFC75EEB526DCE6ADA4A /* LMFeedPostListViewModel.swift in Sources */,
 				B2A62B05F90F6CF983A74094625A96FA /* LMFeedPostOperation.swift in Sources */,
 				8EA2C1D909BF383BBC688074A0903642 /* LMFeedReportContentScreen.swift in Sources */,
@@ -5833,7 +5833,7 @@
 				5B39D9078B4F4EA7B1EF0AB1D76B3095 /* LMFeedUserDataModel.swift in Sources */,
 				559E55A03A33E6B1BD0E6734C3E4394B /* LMNumbersConstant.swift in Sources */,
 				17052E34988849A1EB8508DFB1D600BD /* LMStringConstants.swift in Sources */,
-				5C7262E69FDCA86E06F8C5435A9CEAD7 /* LMUniversalFeedViewController.swift in Sources */,
+				5C7262E69FDCA86E06F8C5435A9CEAD7 /* LMUniversalFeedScreen.swift in Sources */,
 				A14276E8EED3FAB601E14997D858AEB2 /* LMUniversalFeedViewModel.swift in Sources */,
 				BBE400D780AFC38F25D8C536BA6F5F34 /* LocalPreferences.swift in Sources */,
 				0051AFC0B40BCED14509803479876F1E /* Notification+Extension.swift in Sources */,

@@ -11,8 +11,8 @@ public struct Components {
     public static var shared = Self()
     
     // MARK: Universal Feed
-    public var universalFeedViewController: LMUniversalFeedViewController.Type = LMUniversalFeedViewController.self
-    public var feedListViewController: LMFeedPostListViewController.Type = LMFeedPostListViewController.self
+    public var universalFeedScreen: LMUniversalFeedScreen.Type = LMUniversalFeedScreen.self
+    public var feedListScreen: LMFeedPostListScreen.Type = LMFeedPostListScreen.self
     
     // MARK: Post Detail
     public var postDetailScreen: LMFeedPostDetailScreen.Type = LMFeedPostDetailScreen.self

@@ -1,5 +1,5 @@
 //
-//  LMFeedPostListViewController.swift
+//  LMFeedPostListScreen.swift
 //  likeminds-feed-iOS
 //
 //  Created by Devansh Mohata on 02/01/24.
@@ -9,20 +9,20 @@ import UIKit
 import LikeMindsFeedUI
 
 // MARK: LMFeedPostListVCProtocol
-// This contains list of functions that are triggered from Child View Controller aka `LMFeedPostListViewController` to be handled by Parent View Controller
+// This contains list of functions that are triggered from Child View Controller aka `LMFeedPostListScreen` to be handled by Parent View Controller
 public protocol LMFeedPostListVCFromProtocol: AnyObject {
     func tableViewScrolled(_ scrollView: UIScrollView)
     func postDataFetched(isEmpty: Bool)
 }
 
 // MARK: LMFeedPostListVCToProtocol
-// This contains list of functions that are triggered from Parent View Controller to be handled by Child View Controller aka `LMFeedPostListViewController`
+// This contains list of functions that are triggered from Parent View Controller to be handled by Child View Controller aka `LMFeedPostListScreen`
 public protocol LMFeedPostListVCToProtocol: AnyObject {
     func loadPostsWithTopics(_ topics: [String])
 }
 
 @IBDesignable
-open class LMFeedPostListViewController: LMViewController, LMFeedPostListViewModelProtocol {
+open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtocol {
     open private(set) lazy var tableView: LMTableView = {
         let table = LMTableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -220,7 +220,7 @@ open class LMFeedPostListViewController: LMViewController, LMFeedPostListViewMod
 
 // MARK: UITableView
 @objc
-extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
+extension LMFeedPostListScreen: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
     open func numberOfSections(in tableView: UITableView) -> Int { data.count }
     
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1 }
@@ -319,7 +319,7 @@ extension LMFeedPostListViewController: UITableViewDataSource, UITableViewDelega
 
 // MARK: LMFeedPostListVCToProtocol
 @objc
-extension LMFeedPostListViewController: LMFeedPostListVCToProtocol {
+extension LMFeedPostListScreen: LMFeedPostListVCToProtocol {
     open func loadPostsWithTopics(_ topics: [String]) {
         viewModel?.updateTopics(with: topics)
     }
@@ -327,7 +327,7 @@ extension LMFeedPostListViewController: LMFeedPostListVCToProtocol {
 
 
 @objc
-extension LMFeedPostListViewController: LMFeedPostHeaderViewProtocol {
+extension LMFeedPostListScreen: LMFeedPostHeaderViewProtocol {
     open func didTapProfilePicture(having uuid: String) {
         showError(with: "User Profile Tapped having UUID: \(uuid)", isPopVC: false)
     }
@@ -339,7 +339,7 @@ extension LMFeedPostListViewController: LMFeedPostHeaderViewProtocol {
 
 // MARK: LMFeedPostFooterViewProtocol
 @objc
-extension LMFeedPostListViewController: LMFeedPostFooterViewProtocol {
+extension LMFeedPostListScreen: LMFeedPostFooterViewProtocol {
     open func didTapLikeButton(for postID: String) {
         if let index = data.firstIndex(where: { $0.postID == postID }) {
             data[index].footerData.isLiked.toggle()
@@ -379,7 +379,7 @@ extension LMFeedPostListViewController: LMFeedPostFooterViewProtocol {
 
 // MARK: LMPostWidgetTableViewCellProtocol, LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol
 @objc
-extension LMFeedPostListViewController: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol {
+extension LMFeedPostListScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol {
     open func didTapPost(postID: String) {
         guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: false) else { return }
         navigationController?.pushViewController(viewController, animated: true)
