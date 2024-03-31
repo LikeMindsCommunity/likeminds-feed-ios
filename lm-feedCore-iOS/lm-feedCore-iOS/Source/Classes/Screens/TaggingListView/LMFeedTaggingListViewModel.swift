@@ -40,7 +40,7 @@ public final class LMFeedTaggingListViewModel {
     }
     
     public static func createModule(delegate: LMFeedTaggedUserFoundProtocol?) -> LMFeedTaggingListView {
-        let viewController = Components.shared.taggingListView.init()
+        let viewController = LMFeedTaggingListView()
         let viewModel = LMFeedTaggingListViewModel(delegate: viewController)
         
         viewController.viewModel = viewModel

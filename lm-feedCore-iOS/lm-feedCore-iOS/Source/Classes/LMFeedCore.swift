@@ -51,8 +51,6 @@ public class LMFeedCore {
                 return
             }
             
-            self?.registerDeviceToken()
-            
             LocalPreferences.apiKey = apiKey
             LocalPreferences.userObj = user
             
@@ -62,44 +60,33 @@ public class LMFeedCore {
         }
     }
     
-    func registerDeviceToken() {
-        guard let deviceid = UIDevice.current.identifierForVendor?.uuidString, !deviceid.isEmpty else {
-            print("Device id not available")
-            return
-        }
+    public func registerDeviceToken(with fcmToken: String, deviceID: String, completion: ((Result<Void, LMFeedError>) -> Void)? = nil) {
+        let request = RegisterDeviceRequest.builder()
+            .token(fcmToken)
+            .deviceId(deviceID)
+            .build()
         
-        print("===Device Token===")
-        print(deviceid)
-        print("===Device Token===")
-        
-        Messaging.messaging().token { token, error in
-            guard let token else {
-                print("Error Fetching FCM Token: \(String(describing: error))")
-                return
-            }
-            
-            print("===FCM Token===")
-            print(token)
-            print("===FCM Token===")
-            
-            let request = RegisterDeviceRequest.builder()
-                .token(token)
-                .deviceId(deviceid)
-                .build()
-            
-            LMFeedClient.shared.registerDevice(request: request) { response in
-                dump(response)
+        LMFeedClient.shared.registerDevice(request: request) { response in
+            if response.success {
+                completion?(.success(()))
+            } else {
+                completion?(.failure(.notificationRegisterationFailed(error: response.errorMessage)))
             }
         }
     }
     
-    public func logout(_ refreshToken: String, deviceId: String) {
+    public func logout(_ refreshToken: String, deviceId: String, completion: ((Result<Void, LMFeedError>) -> Void)? = nil) {
         let request = LogoutRequest.builder()
             .refreshToken(refreshToken)
             .deviceId(deviceId)
             .build()
+        
         LMFeedClient.shared.logout(request: request) { response in
-            dump(response)
+            if response.success {
+                completion?(.success(()))
+            } else {
+                completion?(.failure(.logoutFailed(error: response.errorMessage)))
+            }
         }
     }
     

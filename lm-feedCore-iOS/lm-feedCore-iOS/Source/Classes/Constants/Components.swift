@@ -20,9 +20,6 @@ public struct Components {
     // MARK: Topic Feed
     public var topicFeedSelectionScreen: LMFeedTopicSelectionScreen.Type = LMFeedTopicSelectionScreen.self
     
-    // MARK: Tagging List View
-    public var taggingListView: LMFeedTaggingListView.Type = LMFeedTaggingListView.self
-    
     // MARK: Like Screen
     public var likeListScreen: LMFeedLikeListScreen.Type = LMFeedLikeListScreen.self
     
