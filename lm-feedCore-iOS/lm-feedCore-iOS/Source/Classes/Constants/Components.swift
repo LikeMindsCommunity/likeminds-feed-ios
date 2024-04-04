@@ -27,7 +27,7 @@ public struct Components {
     public var likeListScreen: LMFeedLikeViewController.Type = LMFeedLikeViewController.self
     
     // MARK: Notification Screen
-    public var notificationScreen: LMFeedNotificationViewController.Type = LMFeedNotificationViewController.self
+    public var notificationScreen: LMFeedNotificationFeedViewController.Type = LMFeedNotificationFeedViewController.self
     
     // MARK: Create Post
     public var createPostScreen: LMFeedCreatePostViewController.Type = LMFeedCreatePostViewController.self
@@ -36,8 +36,8 @@ public struct Components {
     public var editPostScreen: LMFeedEditPostViewController.Type = LMFeedEditPostViewController.self
     
     // MARK: Delete Review Screen
-    public var deleteReviewScreen: LMFeedDeleteReviewScreen.Type = LMFeedDeleteReviewScreen.self
+    public var deleteReviewScreen: LMFeedDeleteScreen.Type = LMFeedDeleteScreen.self
     
     // MARK: Report Screem
-    public var reportScreen: LMFeedReportContentViewController.Type = LMFeedReportContentViewController.self
+    public var reportScreen: LMFeedReportViewController.Type = LMFeedReportViewController.self
 }

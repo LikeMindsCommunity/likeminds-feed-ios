@@ -175,16 +175,16 @@ open class LMFeedCreatePostViewController: LMViewController {
     
     // MARK: Data Variables
     public var viewModel: LMFeedCreatePostViewModel?
-    public var documentCellData: [LMFeedDocumentPreview.ViewModel] = []
+    public var documentAttachmentData: [LMFeedDocumentPreview.ViewModel] = []
     public var documenTableHeight: NSLayoutConstraint?
-    public var documentCellHeight: CGFloat = 90
+    public var documentAttachmentHeight: CGFloat = 90
     
     public var taggingViewHeight: NSLayoutConstraint?
     public var inputTextViewHeightConstraint: NSLayoutConstraint?
     public var textInputMinimumHeight: CGFloat = 80
     public var textInputMaximumHeight: CGFloat = 150
     
-    public var mediaCellData: [LMFeedMediaProtocol] = []
+    public var mediaAttachmentData: [LMFeedMediaProtocol] = []
     
     public lazy var documentPicker: UIDocumentPickerViewController = {
         if #available(iOS 14, *) {
@@ -250,7 +250,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         
         inputTextViewHeightConstraint = inputTextView.setHeightConstraint(with: textInputMinimumHeight)
         
-        documenTableHeight = documentTableView.setHeightConstraint(with: documentCellHeight)
+        documenTableHeight = documentTableView.setHeightConstraint(with: documentAttachmentHeight)
         scrollView.setWidthConstraint(with: containerStackView.widthAnchor)
         scrollStackView.setWidthConstraint(with: containerStackView.widthAnchor)
         mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
@@ -353,25 +353,25 @@ open class LMFeedCreatePostViewController: LMViewController {
     }
     
     open func observeCreateButton() {
-        createPostButton.isEnabled = !mediaCellData.isEmpty || !inputTextView.getText().isEmpty || !documentCellData.isEmpty
+        createPostButton.isEnabled = !mediaAttachmentData.isEmpty || !inputTextView.getText().isEmpty || !documentAttachmentData.isEmpty
     }
 }
 
 
 // MARK: UITableView
 extension LMFeedCreatePostViewController: UITableViewDataSource, UITableViewDelegate {
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { documentCellData.count }
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { documentAttachmentData.count }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(LMFeedCreatePostDocumentPreviewCell.self) {
-            cell.configure(data: documentCellData[indexPath.row], delegate: self)
+            cell.configure(data: documentAttachmentData[indexPath.row], delegate: self)
             return cell
         }
         return UITableViewCell()
     }
     
     open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        documentCellHeight
+        documentAttachmentHeight
     }
 }
 
@@ -390,17 +390,17 @@ extension LMFeedCreatePostViewController: LMFeedDocumentPreviewProtocol {
 
 // MARK: UICollectionView
 extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { mediaCellData.count }
+    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { mediaAttachmentData.count }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let data = mediaCellData[indexPath.row] as? LMFeedImageCollectionCell.ViewModel,
+        if let data = mediaAttachmentData[indexPath.row] as? LMFeedImageCollectionCell.ViewModel,
            let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreviewCell, for: indexPath) {
             cell.configure(with: data) { [weak self] imageID in
                 guard let self else { return }
                 viewModel?.removeAsset(url: imageID)
             }
             return cell
-        } else if let data = mediaCellData[indexPath.row] as? LMFeedVideoCollectionCell.ViewModel,
+        } else if let data = mediaAttachmentData[indexPath.row] as? LMFeedVideoCollectionCell.ViewModel,
                   let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath) {
             cell.configure(with: data) { [weak self] videoID in
                 guard let self else { return }
@@ -473,10 +473,10 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
     public func showMedia(documents: [LMFeedDocumentPreview.ViewModel], isShowAddMore: Bool, isShowBottomTab: Bool) {
         linkPreview.isHidden = true
         documentTableView.isHidden = documents.isEmpty
-        documentCellData.append(contentsOf: documents)
+        documentAttachmentData.append(contentsOf: documents)
         documentTableView.reloadData()
         if !documents.isEmpty {
-            documenTableHeight?.constant = CGFloat(documents.count) * documentCellHeight
+            documenTableHeight?.constant = CGFloat(documents.count) * documentAttachmentHeight
         }
         addMoreButton.isHidden = !isShowAddMore
         
@@ -489,7 +489,7 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
         mediaCollectionView.isHidden = media.isEmpty
         mediaPageControl.isHidden = media.count < 2
         mediaPageControl.numberOfPages = media.count
-        mediaCellData.append(contentsOf: media)
+        mediaAttachmentData.append(contentsOf: media)
         mediaCollectionView.reloadData()
         DispatchQueue.main.async { [weak self] in
             self?.scrollingFinished()
@@ -505,8 +505,8 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
         mediaPageControl.isHidden = true
         documentTableView.isHidden = true
         addMoreButton.isHidden = true
-        mediaCellData.removeAll(keepingCapacity: true)
-        documentCellData.removeAll(keepingCapacity: true)
+        mediaAttachmentData.removeAll(keepingCapacity: true)
+        documentAttachmentData.removeAll(keepingCapacity: true)
     }
     
     public func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int) {

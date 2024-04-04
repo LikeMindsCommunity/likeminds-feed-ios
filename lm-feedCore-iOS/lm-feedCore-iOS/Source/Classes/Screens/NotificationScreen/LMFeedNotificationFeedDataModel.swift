@@ -1,5 +1,5 @@
 //
-//  LMFeedNotificationDataModel.swift
+//  LMFeedNotificationFeedDataModel.swift
 //  lm-feedCore-iOS
 //
 //  Created by Devansh Mohata on 21/01/24.
@@ -7,7 +7,7 @@
 
 import LikeMindsFeedUI
 
-public struct LMFeedNotificationDataModel {
+public struct LMFeedNotificationFeedDataModel {
     public enum AttachmentType {
         case image,
              video,
