@@ -32,6 +32,7 @@ public enum PostCreationAttachmentType {
 final class LMFeedCreatePostOperation {
     struct LMAWSRequestModel {
         let url: URL
+        let data: Data
         let fileName: String
         let awsFilePath: String
         let contentType: PostCreationAttachmentType
@@ -67,7 +68,7 @@ final class LMFeedCreatePostOperation {
             for i in 0..<files.count {
                 dispatchGroup.enter()
                 let file = files[i]
-                LMAWSManager.shared.uploadfile(fileUrl: file.url, fileName: "\(file.awsFilePath)\(file.fileName)", contenType: file.contentType.contentType, progress: nil) { [weak self] response, error in
+                LMAWSManager.shared.uploadfile(fileData: file.data, fileName: "\(file.awsFilePath)\(file.fileName)", contenType: file.contentType.contentType, progress: nil) { [weak self] response, error in
                     if error == nil {
                         tempFiles[i].awsURL = response
                     }

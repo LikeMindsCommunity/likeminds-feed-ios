@@ -94,6 +94,7 @@ final class LMAWSManager {
     
     func uploadfile(fileData: Data, fileName: String, contenType: String, progress: progressBlock?, completion: completionBlock?) {
         let expression = AWSS3TransferUtilityUploadExpression()
+        expression.setValue("public-read", forRequestHeader:"x-amz-acl")
         expression.progressBlock = {(task, awsProgress) in
             guard let uploadProgress = progress else { return }
             DispatchQueue.main.async {

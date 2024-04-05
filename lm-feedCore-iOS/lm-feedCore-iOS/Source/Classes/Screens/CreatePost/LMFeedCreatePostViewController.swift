@@ -10,6 +10,7 @@ import BSImagePicker
 import LikeMindsFeedUI
 import UIKit
 import Photos
+import PhotosUI
 
 @IBDesignable
 open class LMFeedCreatePostViewController: LMViewController {
@@ -64,7 +65,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         textView.dataDetectorTypes = [.link]
         textView.mentionDelegate = self
         textView.backgroundColor = Appearance.shared.colors.clear
-        textView.isScrollEnabled = false
+        textView.isScrollEnabled = true
         textView.isEditable = true
         textView.placeHolderText = "Write Something here..."
         textView.backgroundColor = Appearance.shared.colors.clear
@@ -182,6 +183,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     public var taggingViewHeight: NSLayoutConstraint?
     public var inputTextViewHeightConstraint: NSLayoutConstraint?
     public var textInputMinimumHeight: CGFloat = 80
+    public var textInputMaximumHeight: CGFloat = 150
     
     public var mediaCellData: [LMFeedMediaProtocol] = []
     
@@ -242,6 +244,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         taggingView.addConstraint(top: (inputTextView.bottomAnchor, 0),
                                   leading: (inputTextView.leadingAnchor, 0),
                                   trailing: (inputTextView.trailingAnchor, 0))
+        
         taggingView.bottomAnchor.constraint(lessThanOrEqualTo: scrollStackView.bottomAnchor, constant: -16).isActive = true
         taggingViewHeight = taggingView.setHeightConstraint(with: 10)
         
@@ -303,14 +306,6 @@ open class LMFeedCreatePostViewController: LMViewController {
     }
     
     
-    // MARK: setupObservers
-    open override func setupObservers() {
-        super.setupObservers()
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear), name: UIResponder.keyboardDidShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -353,33 +348,6 @@ open class LMFeedCreatePostViewController: LMViewController {
     
     open func observeCreateButton() {
         createPostButton.isEnabled = !mediaCellData.isEmpty || !inputTextView.getText().isEmpty || !documentCellData.isEmpty
-    }
-    
-    @objc 
-    public func onKeyboardAppear(_ notification: NSNotification) {
-        let info = notification.userInfo!
-        let rect: CGRect = info[UIResponder.keyboardFrameBeginUserInfoKey] as! CGRect
-        let kbSize = rect.size
-
-        let insets = UIEdgeInsets(top: 0, left: 0, bottom: kbSize.height, right: 0)
-        scrollView.contentInset = insets
-        scrollView.scrollIndicatorInsets = insets
-
-        // If active text field is hidden by keyboard, scroll it so it's visible
-        // Your application might not need or want this behavior.
-        var aRect = self.view.frame
-        aRect.size.height -= kbSize.height
-        
-        if !aRect.contains(inputTextView.frame.origin) {
-            let scrollPoint = CGPoint(x: 0, y: inputTextView.frame.origin.y-kbSize.height)
-            scrollView.setContentOffset(scrollPoint, animated: true)
-        }
-    }
-
-    @objc 
-    public func onKeyboardDisappear(_ notification: NSNotification) {
-        scrollView.contentInset = UIEdgeInsets.zero
-        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
     }
 }
 
@@ -590,7 +558,8 @@ extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
         let width = inputTextView.frame.size.width
         let newSize = inputTextView.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
         
-        inputTextViewHeightConstraint?.constant = max(newSize.height, textInputMinimumHeight)
+        inputTextView.isScrollEnabled = newSize.height > textInputMaximumHeight
+        inputTextViewHeightConstraint?.constant = min(max(newSize.height, textInputMinimumHeight), textInputMaximumHeight)
         
         viewModel?.handleLinkDetection(in: inputTextView.text)
         observeCreateButton()
@@ -601,7 +570,7 @@ extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
 // MARK: Media Control
 public extension LMFeedCreatePostViewController {
     func openImagePicker(_ mediaType: Settings.Fetch.Assets.MediaTypes, isFirstTime: Bool, maxSelection: Int) {
-        var currentAssets: [(asset: PHAsset, url: URL)] = []
+        var currentAssets: [(asset: PHAsset, url: URL, data: Data)] = []
         
         let imagePicker = ImagePickerController()
         imagePicker.settings.selection.max = maxSelection
@@ -614,9 +583,39 @@ public extension LMFeedCreatePostViewController {
         }
         
         presentImagePicker(imagePicker, select: { asset in
+            
             asset.asyncURL { url in
                 guard let url else { return }
-                currentAssets.append((asset, url))
+                
+                switch asset.mediaType {
+                case .image:
+                    let options = PHImageRequestOptions()
+                    options.version = .original
+                    options.isSynchronous = true
+                    
+                    PHImageManager.default().requestImageDataAndOrientation(for: asset, options: options) { data,_,_,_ in
+                        if let data {
+                            currentAssets.append((asset, url, data))
+                        }
+                    }
+                case .video:
+                    let options = PHVideoRequestOptions()
+                    options.version = .original
+                    
+                    PHImageManager.default().requestAVAsset(forVideo: asset, options: options) { (avAsset, audioMix, info) in
+                        if let urlAsset = avAsset as? AVURLAsset {
+                            let videoURL = urlAsset.url
+                            do {
+                                let data = try Data(contentsOf: videoURL)
+                                currentAssets.append((asset, url, data))
+                            } catch let error {
+                                print(error)
+                            }
+                        }
+                    }
+                default:
+                    return
+                }
             }
         }, deselect: { asset in
             asset.asyncURL { _ in
