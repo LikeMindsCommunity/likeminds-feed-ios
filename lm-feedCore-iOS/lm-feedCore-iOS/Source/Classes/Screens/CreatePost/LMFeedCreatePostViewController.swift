@@ -182,7 +182,6 @@ open class LMFeedCreatePostViewController: LMViewController {
     public var taggingViewHeight: NSLayoutConstraint?
     public var inputTextViewHeightConstraint: NSLayoutConstraint?
     public var textInputMinimumHeight: CGFloat = 80
-    public var textInputMaximumHeight: CGFloat = 150
     
     public var mediaCellData: [LMFeedMediaProtocol] = []
     
@@ -227,8 +226,6 @@ open class LMFeedCreatePostViewController: LMViewController {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        view.pinSubView(subView: containerView)
-        
         containerView.addConstraint(top: (view.safeAreaLayoutGuide.topAnchor, 0),
                                     bottom: (view.safeAreaLayoutGuide.bottomAnchor, 0),
                                     leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
@@ -265,13 +262,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         }
     }
     
-    
-    // MARK: setupAppearance
-    open override func setupAppearance() {
-        super.setupAppearance()
-//        taggingView.dropShadow(color: .black.withAlphaComponent(0.1), offSet: .init(width: 1, height: 1))
-    }
-    
+        
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
@@ -309,6 +300,14 @@ open class LMFeedCreatePostViewController: LMViewController {
     @objc
     open func didTapCreateButton() {
         viewModel?.createPost(with: inputTextView.getText())
+    }
+    
+    
+    // MARK: setupObservers
+    open override func setupObservers() {
+        super.setupObservers()
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     
@@ -354,6 +353,33 @@ open class LMFeedCreatePostViewController: LMViewController {
     
     open func observeCreateButton() {
         createPostButton.isEnabled = !mediaCellData.isEmpty || !inputTextView.getText().isEmpty || !documentCellData.isEmpty
+    }
+    
+    @objc 
+    public func onKeyboardAppear(_ notification: NSNotification) {
+        let info = notification.userInfo!
+        let rect: CGRect = info[UIResponder.keyboardFrameBeginUserInfoKey] as! CGRect
+        let kbSize = rect.size
+
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: kbSize.height, right: 0)
+        scrollView.contentInset = insets
+        scrollView.scrollIndicatorInsets = insets
+
+        // If active text field is hidden by keyboard, scroll it so it's visible
+        // Your application might not need or want this behavior.
+        var aRect = self.view.frame
+        aRect.size.height -= kbSize.height
+        
+        if !aRect.contains(inputTextView.frame.origin) {
+            let scrollPoint = CGPoint(x: 0, y: inputTextView.frame.origin.y-kbSize.height)
+            scrollView.setContentOffset(scrollPoint, animated: true)
+        }
+    }
+
+    @objc 
+    public func onKeyboardDisappear(_ notification: NSNotification) {
+        scrollView.contentInset = UIEdgeInsets.zero
+        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
     }
 }
 
@@ -564,8 +590,7 @@ extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
         let width = inputTextView.frame.size.width
         let newSize = inputTextView.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
         
-        inputTextView.isScrollEnabled = newSize.height > textInputMaximumHeight
-        inputTextViewHeightConstraint?.constant = min(max(newSize.height, textInputMinimumHeight), textInputMaximumHeight)
+        inputTextViewHeightConstraint?.constant = max(newSize.height, textInputMinimumHeight)
         
         viewModel?.handleLinkDetection(in: inputTextView.text)
         observeCreateButton()
@@ -582,7 +607,7 @@ public extension LMFeedCreatePostViewController {
         imagePicker.settings.selection.max = maxSelection
         imagePicker.settings.theme.selectionStyle = .numbered
         imagePicker.settings.fetch.assets.supportedMediaTypes = isFirstTime ? [mediaType] : [.image, .video]
-        imagePicker.settings.selection.unselectOnReachingMax = false
+        imagePicker.settings.selection.unselectOnReachingMax = true
         
         mediaCollectionView.visibleCells.forEach { cell in
             (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
