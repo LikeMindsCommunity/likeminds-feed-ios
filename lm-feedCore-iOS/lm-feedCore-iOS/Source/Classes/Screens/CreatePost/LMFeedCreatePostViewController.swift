@@ -10,6 +10,7 @@ import BSImagePicker
 import LikeMindsFeedUI
 import UIKit
 import Photos
+import PhotosUI
 
 @IBDesignable
 open class LMFeedCreatePostViewController: LMViewController {
@@ -64,7 +65,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         textView.dataDetectorTypes = [.link]
         textView.mentionDelegate = self
         textView.backgroundColor = Appearance.shared.colors.clear
-        textView.isScrollEnabled = false
+        textView.isScrollEnabled = true
         textView.isEditable = true
         textView.placeHolderText = "Write Something here..."
         textView.backgroundColor = Appearance.shared.colors.clear
@@ -227,8 +228,6 @@ open class LMFeedCreatePostViewController: LMViewController {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        view.pinSubView(subView: containerView)
-        
         containerView.addConstraint(top: (view.safeAreaLayoutGuide.topAnchor, 0),
                                     bottom: (view.safeAreaLayoutGuide.bottomAnchor, 0),
                                     leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
@@ -245,6 +244,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         taggingView.addConstraint(top: (inputTextView.bottomAnchor, 0),
                                   leading: (inputTextView.leadingAnchor, 0),
                                   trailing: (inputTextView.trailingAnchor, 0))
+        
         taggingView.bottomAnchor.constraint(lessThanOrEqualTo: scrollStackView.bottomAnchor, constant: -16).isActive = true
         taggingViewHeight = taggingView.setHeightConstraint(with: 10)
         
@@ -265,13 +265,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         }
     }
     
-    
-    // MARK: setupAppearance
-    open override func setupAppearance() {
-        super.setupAppearance()
-//        taggingView.dropShadow(color: .black.withAlphaComponent(0.1), offSet: .init(width: 1, height: 1))
-    }
-    
+        
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
@@ -576,22 +570,52 @@ extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
 // MARK: Media Control
 public extension LMFeedCreatePostViewController {
     func openImagePicker(_ mediaType: Settings.Fetch.Assets.MediaTypes, isFirstTime: Bool, maxSelection: Int) {
-        var currentAssets: [(asset: PHAsset, url: URL)] = []
+        var currentAssets: [(asset: PHAsset, url: URL, data: Data)] = []
         
         let imagePicker = ImagePickerController()
         imagePicker.settings.selection.max = maxSelection
         imagePicker.settings.theme.selectionStyle = .numbered
         imagePicker.settings.fetch.assets.supportedMediaTypes = isFirstTime ? [mediaType] : [.image, .video]
-        imagePicker.settings.selection.unselectOnReachingMax = false
+        imagePicker.settings.selection.unselectOnReachingMax = true
         
         mediaCollectionView.visibleCells.forEach { cell in
             (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
         }
         
         presentImagePicker(imagePicker, select: { asset in
+            
             asset.asyncURL { url in
                 guard let url else { return }
-                currentAssets.append((asset, url))
+                
+                switch asset.mediaType {
+                case .image:
+                    let options = PHImageRequestOptions()
+                    options.version = .original
+                    options.isSynchronous = true
+                    
+                    PHImageManager.default().requestImageDataAndOrientation(for: asset, options: options) { data,_,_,_ in
+                        if let data {
+                            currentAssets.append((asset, url, data))
+                        }
+                    }
+                case .video:
+                    let options = PHVideoRequestOptions()
+                    options.version = .original
+                    
+                    PHImageManager.default().requestAVAsset(forVideo: asset, options: options) { (avAsset, audioMix, info) in
+                        if let urlAsset = avAsset as? AVURLAsset {
+                            let videoURL = urlAsset.url
+                            do {
+                                let data = try Data(contentsOf: videoURL)
+                                currentAssets.append((asset, url, data))
+                            } catch let error {
+                                print(error)
+                            }
+                        }
+                    }
+                default:
+                    return
+                }
             }
         }, deselect: { asset in
             asset.asyncURL { _ in
