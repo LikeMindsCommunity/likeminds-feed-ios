@@ -64,7 +64,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         textView.dataDetectorTypes = [.link]
         textView.mentionDelegate = self
         textView.backgroundColor = Appearance.shared.colors.clear
-        textView.isScrollEnabled = false
+        textView.isScrollEnabled = true
         textView.isEditable = true
         textView.placeHolderText = "Write Something here..."
         textView.backgroundColor = Appearance.shared.colors.clear
@@ -227,8 +227,6 @@ open class LMFeedCreatePostViewController: LMViewController {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        view.pinSubView(subView: containerView)
-        
         containerView.addConstraint(top: (view.safeAreaLayoutGuide.topAnchor, 0),
                                     bottom: (view.safeAreaLayoutGuide.bottomAnchor, 0),
                                     leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
@@ -245,6 +243,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         taggingView.addConstraint(top: (inputTextView.bottomAnchor, 0),
                                   leading: (inputTextView.leadingAnchor, 0),
                                   trailing: (inputTextView.trailingAnchor, 0))
+        
         taggingView.bottomAnchor.constraint(lessThanOrEqualTo: scrollStackView.bottomAnchor, constant: -16).isActive = true
         taggingViewHeight = taggingView.setHeightConstraint(with: 10)
         
@@ -265,13 +264,7 @@ open class LMFeedCreatePostViewController: LMViewController {
         }
     }
     
-    
-    // MARK: setupAppearance
-    open override func setupAppearance() {
-        super.setupAppearance()
-//        taggingView.dropShadow(color: .black.withAlphaComponent(0.1), offSet: .init(width: 1, height: 1))
-    }
-    
+        
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
@@ -576,22 +569,32 @@ extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
 // MARK: Media Control
 public extension LMFeedCreatePostViewController {
     func openImagePicker(_ mediaType: Settings.Fetch.Assets.MediaTypes, isFirstTime: Bool, maxSelection: Int) {
-        var currentAssets: [(asset: PHAsset, url: URL)] = []
+        var currentAssets: [(asset:  PHAsset, url: URL, data: Data)] = []
         
         let imagePicker = ImagePickerController()
         imagePicker.settings.selection.max = maxSelection
         imagePicker.settings.theme.selectionStyle = .numbered
         imagePicker.settings.fetch.assets.supportedMediaTypes = isFirstTime ? [mediaType] : [.image, .video]
-        imagePicker.settings.selection.unselectOnReachingMax = false
+        imagePicker.settings.selection.unselectOnReachingMax = true
         
         mediaCollectionView.visibleCells.forEach { cell in
             (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
         }
         
         presentImagePicker(imagePicker, select: { asset in
+            
             asset.asyncURL { url in
                 guard let url else { return }
-                currentAssets.append((asset, url))
+                
+                let fm = FileManager.default
+                let destination = fm.temporaryDirectory.appendingPathComponent("\(Int(Date().timeIntervalSince1970))_\(url.lastPathComponent)")
+                do {
+                    try fm.copyItem(at: url, to: destination)
+                    let data = try Data(contentsOf: url)
+                    currentAssets.append((asset, destination, data))
+                } catch {
+                    print(error.localizedDescription)
+                }
             }
         }, deselect: { asset in
             asset.asyncURL { _ in
@@ -599,7 +602,7 @@ public extension LMFeedCreatePostViewController {
             }
         }, cancel: { _ in
         }, finish: { [weak self] assets in
-            self?.viewModel?.handleAssets(assets: currentAssets)
+            self?.viewModel?.handleAssets(assets: currentAssets.map({ ($0.asset.mediaType, $0.url, $0.data) }))
         })
     }
     
