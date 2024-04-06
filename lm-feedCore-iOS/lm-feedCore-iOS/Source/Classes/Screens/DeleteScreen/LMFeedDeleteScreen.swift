@@ -1,5 +1,5 @@
 //
-//  LMFeedDeleteReviewScreen.swift
+//  LMFeedDeleteScreen.swift
 //  lm-feedCore-iOS
 //
 //  Created by Devansh Mohata on 30/01/24.
@@ -12,14 +12,14 @@ public protocol LMFeedDeleteProtocol: AnyObject {
     func initateDeleteAction(with reason: String)
 }
 
-public protocol LMFeedDeleteReviewViewModelProtocol: LMBaseViewControllerProtocol {
+public protocol LMFeedDeleteViewModelProtocol: LMBaseViewControllerProtocol {
     func showTags(with tags: [String], title: String, subtitle: String)
     func setNewReason(with title: String, isShowTextField: Bool)
 }
 
 
 @IBDesignable
-open class LMFeedDeleteReviewScreen: LMViewController {
+open class LMFeedDeleteScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var contentView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
@@ -128,8 +128,8 @@ open class LMFeedDeleteReviewScreen: LMViewController {
     
     
     // MARK: Data Variables
-    public var tags: [String] = []
-    public var viewmodel: LMFeedDeleteReviewViewModel?
+    public var tagsData: [String] = []
+    public var viewmodel: LMFeedDeleteViewModel?
     public let placeholderText = "Write other reason!"
     
     
@@ -246,7 +246,7 @@ open class LMFeedDeleteReviewScreen: LMViewController {
     open func didTapDeleteButton() {
         view.endEditing(true)
         
-        if tags[pickerView.selectedRow(inComponent: 0)].lowercased() == "others" {
+        if tagsData[pickerView.selectedRow(inComponent: 0)].lowercased() == "others" {
             if !otherReasonTextView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
                otherReasonTextView.text.trimmingCharacters(in: .whitespacesAndNewlines) != placeholderText {
                 viewmodel?.initateDeleteAction(with: otherReasonTextView.text)
@@ -254,7 +254,7 @@ open class LMFeedDeleteReviewScreen: LMViewController {
                 otherReasonTextView.layer.borderColor = Appearance.shared.colors.red.cgColor
             }
         } else {
-            viewmodel?.initateDeleteAction(with: tags[pickerView.selectedRow(inComponent: 0)])
+            viewmodel?.initateDeleteAction(with: tagsData[pickerView.selectedRow(inComponent: 0)])
         }
     }
     
@@ -311,13 +311,13 @@ open class LMFeedDeleteReviewScreen: LMViewController {
 }
 
 
-// MARK: LMFeedDeleteReviewViewModelProtocol
-extension LMFeedDeleteReviewScreen: LMFeedDeleteReviewViewModelProtocol {
+// MARK: LMFeedDeleteViewModelProtocol
+extension LMFeedDeleteScreen: LMFeedDeleteViewModelProtocol {
     public func showTags(with tags: [String], title: String, subtitle: String) {
         titleLabel.text = title
         subtitleLabel.text = subtitle
         
-        self.tags = tags
+        self.tagsData = tags
         containerView.isHidden = false
         pickerView.reloadAllComponents()
         pickerView.selectRow(0, inComponent: 0, animated: true)
@@ -343,24 +343,24 @@ extension LMFeedDeleteReviewScreen: LMFeedDeleteReviewViewModelProtocol {
 
 
 // MARK: UIPickerView
-extension LMFeedDeleteReviewScreen: UIPickerViewDataSource, UIPickerViewDelegate {
+extension LMFeedDeleteScreen: UIPickerViewDataSource, UIPickerViewDelegate {
     open func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
     
-    open func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int { tags.count }
+    open func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int { tagsData.count }
     
     open func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        NSAttributedString(string: tags[row], attributes: [.font: Appearance.shared.fonts.buttonFont1,
+        NSAttributedString(string: tagsData[row], attributes: [.font: Appearance.shared.fonts.buttonFont1,
                                                            .foregroundColor: Appearance.shared.colors.gray51])
     }
     
     open func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        viewmodel?.updateSelectedReason(with: tags[row])
+        viewmodel?.updateSelectedReason(with: tagsData[row])
     }
 }
 
 
 // MARK: UITextViewDelegate
-extension LMFeedDeleteReviewScreen: UITextViewDelegate {
+extension LMFeedDeleteScreen: UITextViewDelegate {
     open func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) == placeholderText {
             otherReasonTextView.text = nil

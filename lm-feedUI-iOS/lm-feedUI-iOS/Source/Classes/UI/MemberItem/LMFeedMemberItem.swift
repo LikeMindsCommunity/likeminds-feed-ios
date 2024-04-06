@@ -1,5 +1,5 @@
 //
-//  LMFeedLikeUserTableCell.swift
+//  LMFeedMemberItem.swift
 //  lm-feedUI-iOS
 //
 //  Created by Devansh Mohata on 21/01/24.
@@ -9,7 +9,7 @@ import Kingfisher
 import UIKit
 
 @IBDesignable
-open class LMFeedLikeUserTableCell: LMTableViewCell {
+open class LMFeedMemberItem: LMTableViewCell {
     public struct ViewModel {
         public let username: String
         public let uuid: String
@@ -38,7 +38,7 @@ open class LMFeedLikeUserTableCell: LMTableViewCell {
     }()
     
     // MARK: Data Variables
-    public var touchCallback: (() -> Void)?
+    public var onTapCallback: (() -> Void)?
     
     
     // MARK: setupViews
@@ -70,12 +70,12 @@ open class LMFeedLikeUserTableCell: LMTableViewCell {
     
     // MARK: setupActions
     open override func setupActions() {
-        containerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapView)))
+        containerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapMemberItem)))
     }
     
     @objc
-    open func didTapView() {
-        touchCallback?()
+    open func didTapMemberItem() {
+        onTapCallback?()
     }
     
     open override func setupAppearance() {
@@ -85,8 +85,8 @@ open class LMFeedLikeUserTableCell: LMTableViewCell {
     
     
     // MARK: configure
-    open func configure(with data: ViewModel, touchCallback: (() -> Void)?) {
-        self.touchCallback = touchCallback
+    open func configure(with data: ViewModel, onTapCallback: (() -> Void)?) {
+        self.onTapCallback = onTapCallback
         userTitleLabel.attributedText = setUsername(with: data.username, customTitle: data.customTitle)
         userImage.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.username))
     }

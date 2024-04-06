@@ -21,7 +21,7 @@ open class LMFeedTopicSelectionViewController: LMViewController {
         return view
     }()
     
-    open private(set) lazy var tableView: LMTableView = {
+    open private(set) lazy var topicSelectionListView: LMTableView = {
         let table = LMTableView(frame: .zero, style: .grouped).translatesAutoresizingMaskIntoConstraints()
         table.backgroundColor = Appearance.shared.colors.clear
         table.dataSource = self
@@ -42,15 +42,10 @@ open class LMFeedTopicSelectionViewController: LMViewController {
         search.searchBar.delegate = self
         return search
     }()
-    
-    open private(set) lazy var rightBarButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
-        button.setTitle("Done", for: .normal)
-        return button
-    }()
+
     
     // MARK: Data Variables
-    public var topicList: [[LMFeedTopicSelectionCell.ViewModel]] = []
+    public var topicData: [[LMFeedTopicSelectionCell.ViewModel]] = []
     public var viewModel: LMFeedTopicSelectionViewModel?
     public var searchTimer: Timer?
     public weak var delegate: LMFeedTopicSelectionViewProtocol?
@@ -67,7 +62,7 @@ open class LMFeedTopicSelectionViewController: LMViewController {
     open override func setupViews() {
         super.setupViews()
         view.addSubview(containerView)
-        containerView.addSubview(tableView)
+        containerView.addSubview(topicSelectionListView)
         
         navigationItem.searchController = searchController
     }
@@ -81,17 +76,17 @@ open class LMFeedTopicSelectionViewController: LMViewController {
                                     bottom: (view.safeAreaLayoutGuide.bottomAnchor, 0),
                                     leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
                                     trailing: (view.safeAreaLayoutGuide.trailingAnchor, 0))
-        containerView.pinSubView(subView: tableView)
+        containerView.pinSubView(subView: topicSelectionListView)
     }
     
     
     // MARK: setupActions
     open override func setupActions() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(didTapDoneButton))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(didTapSelectButton))
     }
     
     @objc
-    open func didTapDoneButton() {
+    open func didTapSelectButton() {
         viewModel?.didTapDoneButton()
     }
 }
@@ -101,16 +96,16 @@ open class LMFeedTopicSelectionViewController: LMViewController {
 @objc
 extension LMFeedTopicSelectionViewController: UITableViewDataSource, UITableViewDelegate {
     open func numberOfSections(in tableView: UITableView) -> Int {
-        topicList.count
+        topicData.count
     }
     
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        topicList[safe: section]?.count ?? .zero
+        topicData[safe: section]?.count ?? .zero
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(LMFeedTopicSelectionCell.self),
-           let data = topicList[safe: indexPath.section]?[safe: indexPath.row] {
+           let data = topicData[safe: indexPath.section]?[safe: indexPath.row] {
             cell.configure(with: data)
             return cell
         }
@@ -130,7 +125,7 @@ extension LMFeedTopicSelectionViewController: UITableViewDataSource, UITableView
     }
     
     open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == topicList.count - 1 {
+        if indexPath.row == topicData.count - 1 {
             viewModel?.getTopics(for: searchController.searchBar.text)
         }
     }
@@ -148,8 +143,8 @@ extension LMFeedTopicSelectionViewController: UITableViewDataSource, UITableView
 // MARK: LMFeedTopicSelectionViewModelProtocol
 extension LMFeedTopicSelectionViewController: LMFeedTopicSelectionViewModelProtocol {
     public func updateTopicList(with data: [[LMFeedTopicSelectionCell.ViewModel]], selectedCount: Int) {
-        self.topicList = data
-        tableView.reloadData()
+        self.topicData = data
+        topicSelectionListView.reloadData()
         
         if selectedCount == .zero {
             setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: nil, alignment: .center)

@@ -9,7 +9,7 @@ import LikeMindsFeedUI
 import LikeMindsFeed
 
 public protocol LMFeedLikeViewModelProtocol: LMBaseViewControllerProtocol {
-    func reloadTableView(with data: [LMFeedLikeUserTableCell.ViewModel], totalCount: Int)
+    func reloadTableView(with data: [LMFeedMemberItem.ViewModel], totalCount: Int)
     func showHideTableLoader(isShow: Bool)
 }
 
@@ -149,7 +149,7 @@ public final class LMFeedLikeViewModel {
     }
     
     func convertToViewData() {
-        let convertedData: [LMFeedLikeUserTableCell.ViewModel] = likesData.map { like in
+        let convertedData: [LMFeedMemberItem.ViewModel] = likesData.map { like in
                 .init(username: like.username, uuid: like.uuid, customTitle: like.customTitle, profileImage: like.userImage)
         }
         

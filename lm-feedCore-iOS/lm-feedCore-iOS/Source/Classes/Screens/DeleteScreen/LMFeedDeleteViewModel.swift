@@ -1,5 +1,5 @@
 //
-//  LMFeedDeleteReviewViewModel.swift
+//  LMFeedDeleteViewModel.swift
 //  lm-feedCore-iOS
 //
 //  Created by Devansh Mohata on 30/01/24.
@@ -7,21 +7,21 @@
 
 import LikeMindsFeed
 
-public final class LMFeedDeleteReviewViewModel {
-    weak var delegate: LMFeedDeleteReviewViewModelProtocol?
+public final class LMFeedDeleteViewModel {
+    weak var delegate: LMFeedDeleteViewModelProtocol?
     var postID: String
     var commentID: String?
     
     private let popupTitle = "Delete %@?"
     private let popupMessage = "Are you sure you want to delete this %@? This action cannot be reversed."
     
-    init(delegate: LMFeedDeleteReviewViewModelProtocol? = nil, postID: String, commentID: String?) {
+    init(delegate: LMFeedDeleteViewModelProtocol? = nil, postID: String, commentID: String?) {
         self.delegate = delegate
         self.postID = postID
         self.commentID = commentID
     }
     
-    public static func createModule(postID: String, commentID: String? = nil) -> LMFeedDeleteReviewScreen? {
+    public static func createModule(postID: String, commentID: String? = nil) -> LMFeedDeleteScreen? {
         guard LMFeedCore.isInitialized else { return nil }
         let viewcontroller = Components.shared.deleteReviewScreen.init()
         let viewmodel = Self.init(delegate: viewcontroller, postID: postID, commentID: commentID)
