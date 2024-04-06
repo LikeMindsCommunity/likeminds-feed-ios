@@ -175,18 +175,10 @@ open class LMFeedPostListViewController: LMViewController, LMFeedPostListViewMod
         
         guard reloadNow else { return }
         
-        let initialCount = self.data.count
-        let newCount = data.count
         self.data = data
         
         if let index {
             reloadTable(for: index)
-        } else if newCount > initialCount {
-            UIView.performWithoutAnimation {
-                tableView.beginUpdates()
-                tableView.insertSections(IndexSet(integersIn: (initialCount..<newCount)), with: .none)
-                tableView.endUpdates()
-            }
         } else {
             reloadTable()
         }
