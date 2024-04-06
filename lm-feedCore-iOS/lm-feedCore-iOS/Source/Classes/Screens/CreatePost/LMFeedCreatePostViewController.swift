@@ -10,7 +10,6 @@ import BSImagePicker
 import LikeMindsFeedUI
 import UIKit
 import Photos
-import PhotosUI
 
 @IBDesignable
 open class LMFeedCreatePostViewController: LMViewController {
