@@ -90,14 +90,12 @@ public final class LMFeedCreatePostViewModel {
 
 // MARK: Assets Arena
 public extension LMFeedCreatePostViewModel {
-    func handleAssets(assets: [(PHAsset, URL, Data)]) {
+    func handleAssets(assets: [(PHAssetMediaType, URL, Data)]) {
         assets.forEach { asset in
-            if !media.contains(where: { $0.url == asset.1 }) {
-                if asset.0.mediaType == .image {
-                    media.append(.init(url: asset.1, data: asset.2, mediaType: .image))
-                } else if asset.0.mediaType == .video {
-                    media.append(.init(url: asset.1, data: asset.2, mediaType: .video))
-                }
+            if asset.0 == .image {
+                media.append(.init(url: asset.1, data: asset.2, mediaType: .image))
+            } else if asset.0 == .video {
+                media.append(.init(url: asset.1, data: asset.2, mediaType: .video))
             }
         }
         

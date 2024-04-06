@@ -570,7 +570,7 @@ extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
 // MARK: Media Control
 public extension LMFeedCreatePostViewController {
     func openImagePicker(_ mediaType: Settings.Fetch.Assets.MediaTypes, isFirstTime: Bool, maxSelection: Int) {
-        var currentAssets: [(asset: PHAsset, url: URL, data: Data)] = []
+        var currentAssets: [(asset:  PHAsset, url: URL, data: Data)] = []
         
         let imagePicker = ImagePickerController()
         imagePicker.settings.selection.max = maxSelection
@@ -587,34 +587,14 @@ public extension LMFeedCreatePostViewController {
             asset.asyncURL { url in
                 guard let url else { return }
                 
-                switch asset.mediaType {
-                case .image:
-                    let options = PHImageRequestOptions()
-                    options.version = .original
-                    options.isSynchronous = true
-                    
-                    PHImageManager.default().requestImageDataAndOrientation(for: asset, options: options) { data,_,_,_ in
-                        if let data {
-                            currentAssets.append((asset, url, data))
-                        }
-                    }
-                case .video:
-                    let options = PHVideoRequestOptions()
-                    options.version = .original
-                    
-                    PHImageManager.default().requestAVAsset(forVideo: asset, options: options) { (avAsset, audioMix, info) in
-                        if let urlAsset = avAsset as? AVURLAsset {
-                            let videoURL = urlAsset.url
-                            do {
-                                let data = try Data(contentsOf: videoURL)
-                                currentAssets.append((asset, url, data))
-                            } catch let error {
-                                print(error)
-                            }
-                        }
-                    }
-                default:
-                    return
+                let fm = FileManager.default
+                let destination = fm.temporaryDirectory.appendingPathComponent("\(Int(Date().timeIntervalSince1970))_\(url.lastPathComponent)")
+                do {
+                    try fm.copyItem(at: url, to: destination)
+                    let data = try Data(contentsOf: url)
+                    currentAssets.append((asset, destination, data))
+                } catch {
+                    print(error.localizedDescription)
                 }
             }
         }, deselect: { asset in
@@ -623,7 +603,7 @@ public extension LMFeedCreatePostViewController {
             }
         }, cancel: { _ in
         }, finish: { [weak self] assets in
-            self?.viewModel?.handleAssets(assets: currentAssets)
+            self?.viewModel?.handleAssets(assets: currentAssets.map({ ($0.asset.mediaType, $0.url, $0.data) }))
         })
     }
     
