@@ -29,9 +29,9 @@ public class LMUniversalFeedViewModel {
         self.delegate = delegate
     }
     
-    public static func createModule() -> LMUniversalFeedViewController? {
+    public static func createModule() -> LMUniversalFeedScreen? {
         guard LMFeedCore.isInitialized else { return nil }
-        let viewController = Components.shared.universalFeedViewController.init()
+        let viewController = Components.shared.universalFeedScreen.init()
         let viewModel: LMUniversalFeedViewModel = .init(delegate: viewController)
         
         viewController.viewModel = viewModel

@@ -10,7 +10,7 @@ import UIKit
 
 @IBDesignable
 open class LMFeedVideoCollectionCell: LMCollectionViewCell {
-    public struct ViewModel: LMFeedMediaProtocol {
+    public struct ContentModel: LMFeedMediaProtocol {
         public let videoURL: String
         public let isFilePath: Bool
         
@@ -99,7 +99,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     }
     
     // MARK: configure
-    open func configure(with data: ViewModel, crossButtonAction: ((String) -> Void)? = nil) {
+    open func configure(with data: ContentModel, crossButtonAction: ((String) -> Void)? = nil) {
         guard let url = URL(string: data.videoURL) else { return }
         videoURL = url
         

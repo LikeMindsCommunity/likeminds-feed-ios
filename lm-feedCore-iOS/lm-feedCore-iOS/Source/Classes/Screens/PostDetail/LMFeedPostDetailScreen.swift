@@ -1,5 +1,5 @@
 //
-//  LMFeedPostDetailViewController.swift
+//  LMFeedPostDetailScreen.swift
 //  LMFramework
 //
 //  Created by Devansh Mohata on 15/12/23.
@@ -9,7 +9,7 @@ import LikeMindsFeedUI
 import UIKit
 
 @IBDesignable
-open class LMFeedPostDetailViewController: LMViewController {
+open class LMFeedPostDetailScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var postDetailListView: LMTableView = {
         let table = LMTableView(frame: .zero, style: .grouped).translatesAutoresizingMaskIntoConstraints()
@@ -27,9 +27,9 @@ open class LMFeedPostDetailViewController: LMViewController {
         table.register(LMUIComponents.shared.postDetailMediaCell)
         table.register(LMUIComponents.shared.postDetailLinkCell)
         table.register(LMUIComponents.shared.postDetailDocumentCell)
-        table.register(LMUIComponents.shared.commentCell)
+        table.register(LMUIComponents.shared.replyView)
         table.registerHeaderFooter(LMUIComponents.shared.loadMoreReplies)
-        table.registerHeaderFooter(LMUIComponents.shared.commentHeaderView)
+        table.registerHeaderFooter(LMUIComponents.shared.commentView)
         table.registerHeaderFooter(LMUIComponents.shared.postDetailHeaderView)
         table.registerHeaderFooter(LMUIComponents.shared.postDetailFooterView)
         return table
@@ -126,7 +126,7 @@ open class LMFeedPostDetailViewController: LMViewController {
     
     // MARK: Data Variables
     public var postData: LMFeedPostTableCellProtocol?
-    public var commentsData: [LMFeedPostDetailCommentCellViewModel] = []
+    public var commentsData: [LMFeedCommentContentModel] = []
     public var textInputMaximumHeight: CGFloat = 100
     public var viewModel: LMFeedPostDetailViewModel?
     public var isCommentingEnabled: Bool = LocalPreferences.memberState?.memberRights?.contains(where: { $0.state == .commentOrReplyOnPost }) ?? false
@@ -334,7 +334,7 @@ open class LMFeedPostDetailViewController: LMViewController {
 
 // MARK: Keyboard Extension
 @objc
-extension LMFeedPostDetailViewController {
+extension LMFeedPostDetailScreen {
     open func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             inputTextViewBottomConstraint?.constant = -keyboardSize.size.height
@@ -352,7 +352,7 @@ extension LMFeedPostDetailViewController {
 
 // MARK: UITableViewDataSource, UITableViewDelegate
 @objc
-extension LMFeedPostDetailViewController: UITableViewDataSource, UITableViewDelegate {
+extension LMFeedPostDetailScreen: UITableViewDataSource, UITableViewDelegate {
     open func numberOfSections(in tableView: UITableView) -> Int {
         guard postData != nil else { return .zero }
         return commentsData.count + 1
@@ -368,21 +368,21 @@ extension LMFeedPostDetailViewController: UITableViewDataSource, UITableViewDele
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0,
            let postData {
-            if let data = postData as? LMFeedPostMediaCell.ViewModel,
+            if let data = postData as? LMFeedPostMediaCell.ContentModel,
                let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailMediaCell) {
                 cell.configure(with: data, delegate: self)
                 return cell
-            } else if let data = postData as? LMFeedPostLinkCell.ViewModel,
+            } else if let data = postData as? LMFeedPostLinkCell.ContentModel,
                       let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailLinkCell) {
                 cell.configure(with: data, delegate: self)
                 return cell
-            } else if let data = postData as? LMFeedPostDocumentCell.ViewModel,
+            } else if let data = postData as? LMFeedPostDocumentCell.ContentModel,
                       let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailDocumentCell) {
                 cell.configure(for: indexPath, with: data, delegate: self)
                 return cell
             }
         } else if let data = commentsData[safe: indexPath.section - 1],
-                  let cell = tableView.dequeueReusableCell(LMUIComponents.shared.commentCell) {
+                  let cell = tableView.dequeueReusableCell(LMUIComponents.shared.replyView) {
             let comment = data.replies[indexPath.row]
             cell.configure(with: comment, delegate: self, indexPath: indexPath)
             return cell
@@ -398,7 +398,7 @@ extension LMFeedPostDetailViewController: UITableViewDataSource, UITableViewDele
             header.configure(with: postData.headerData, postID: postData.postID, userUUID: postData.userUUID, delegate: self)
             return header
         } else if var data = commentsData[safe: section - 1],
-            let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.commentHeaderView) {
+            let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.commentView) {
             header.configure(with: data, delegate: self, indexPath: .init(row: NSNotFound, section: section)) { [weak self] in
                 data.isShowMore.toggle()
                 self?.commentsData[section - 1] = data
@@ -493,9 +493,9 @@ extension LMFeedPostDetailViewController: UITableViewDataSource, UITableViewDele
 }
 
 
-// MARK: LMChatPostCommentProtocol
+// MARK: LMFeedPostCommentProtocol
 @objc
-extension LMFeedPostDetailViewController: LMChatPostCommentProtocol {
+extension LMFeedPostDetailScreen: LMFeedPostCommentProtocol {
     public func didTapURL(url: URL) {
         openURL(with: url)
     }
@@ -536,11 +536,10 @@ extension LMFeedPostDetailViewController: LMChatPostCommentProtocol {
 
 
 // MARK: LMFeedPostDetailViewModelProtocol
-extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
-    public func deleteRows(for section: Int, comments: [LMFeedPostDetailCommentCellViewModel]) {
+extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
+    public func deleteRows(for section: Int, comments: [LMFeedCommentContentModel]) {
         commentsData = comments
         if section < postDetailListView.numberOfSections {
-            let originalContentOffset = postDetailListView.contentOffset
             var rows: [IndexPath] = []
             for i in 0..<postDetailListView.numberOfRows(inSection: section) {
                 rows.append(.init(row: i, section: section))
@@ -552,13 +551,11 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
                 self?.postDetailListView.endUpdates()
             }
             
-//            if tableView.contentOffset != originalContentOffset {
-                frozenContentOffsetForRowAnimation = postDetailListView.contentOffset
-//            }
+            frozenContentOffsetForRowAnimation = postDetailListView.contentOffset
         }
     }
     
-    public func insertComment(at index: IndexSet, with comments: [LikeMindsFeedUI.LMFeedPostDetailCommentCellViewModel], totalCommentCount: Int) {
+    public func insertComment(at index: IndexSet, with comments: [LikeMindsFeedUI.LMFeedCommentContentModel], totalCommentCount: Int) {
         commentsData = comments
         setNavigationTitle(with: totalCommentCount)
         postData?.totalCommentCount = totalCommentCount
@@ -575,7 +572,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         }
     }
     
-    public func deleteComment(at index: Int, with comments: [LikeMindsFeedUI.LMFeedPostDetailCommentCellViewModel], totalCommentCount: Int) {
+    public func deleteComment(at index: Int, with comments: [LikeMindsFeedUI.LMFeedCommentContentModel], totalCommentCount: Int) {
         commentsData = comments
         setNavigationTitle(with: totalCommentCount)
         (postDetailListView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.updateCommentCount(with: totalCommentCount)
@@ -586,7 +583,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         }
     }
     
-    public func reloadComments(with comments: [LMFeedPostDetailCommentCellViewModel], index: IndexSet?) {
+    public func reloadComments(with comments: [LMFeedCommentContentModel], index: IndexSet?) {
         commentsData = comments
         let originalContentOffset = postDetailListView.contentOffset
         if let index {
@@ -613,7 +610,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
         navigationController?.pushViewController(viewcontroller, animated: true)
     }
     
-    public func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostDetailCommentCellViewModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool) {
+    public func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedCommentContentModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool) {
         setNavigationTitle(with: post.totalCommentCount)
         showHideLoaderView(isShow: false)
         
@@ -719,7 +716,7 @@ extension LMFeedPostDetailViewController: LMFeedPostDetailViewModelProtocol {
 
 // MARK: LMFeedTaggingTextViewProtocol
 @objc
-extension LMFeedPostDetailViewController: LMFeedTaggingTextViewProtocol {
+extension LMFeedPostDetailScreen: LMFeedTaggingTextViewProtocol {
     open func mentionStarted(with text: String) {
         taggingView.getUsers(for: text)
     }
@@ -742,7 +739,7 @@ extension LMFeedPostDetailViewController: LMFeedTaggingTextViewProtocol {
 
 
 // MARK: LMFeedTaggedUserFoundProtocol
-extension LMFeedPostDetailViewController: LMFeedTaggedUserFoundProtocol {
+extension LMFeedPostDetailScreen: LMFeedTaggedUserFoundProtocol {
     public func userSelected(with route: String, and userName: String) {
         inputTextView.addTaggedUser(with: userName, route: route)
         mentionStopped()
@@ -756,7 +753,7 @@ extension LMFeedPostDetailViewController: LMFeedTaggedUserFoundProtocol {
 
 // MARK: LMFeedPostHeaderViewProtocol, LMFeedPostFooterViewProtocol
 @objc
-extension LMFeedPostDetailViewController: LMFeedPostHeaderViewProtocol, LMFeedPostFooterViewProtocol {
+extension LMFeedPostDetailScreen: LMFeedPostHeaderViewProtocol, LMFeedPostFooterViewProtocol {
     open func didTapPostMenuButton(for postID: String) {
         viewModel?.showMenu(postID: postID)
     }
@@ -799,11 +796,11 @@ extension LMFeedPostDetailViewController: LMFeedPostHeaderViewProtocol, LMFeedPo
 }
 
 
-// MARK: LMChatLinkProtocol, LMFeedPostDocumentCellProtocol
+// MARK: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol
 @objc
-extension LMFeedPostDetailViewController: LMChatLinkProtocol, LMFeedPostDocumentCellProtocol {
+extension LMFeedPostDetailScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol {
     open func didTapShowMoreDocuments(for indexPath: IndexPath) {
-        if var data = postData as? LMFeedPostDocumentCell.ViewModel {
+        if var data = postData as? LMFeedPostDocumentCell.ContentModel {
             data.isShowAllDocuments.toggle()
             self.postData = data
             reloadTable(for: IndexPath(row: NSNotFound, section: 0))

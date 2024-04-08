@@ -33,14 +33,14 @@ open class LMFeedTaggingListView: LMView {
         table.clipsToBounds = true
         table.separatorStyle = .none
         table.rowHeight = UITableView.automaticDimension
-        table.register(LMUIComponents.shared.taggingTableViewCell)
+        table.register(LMUIComponents.shared.taggingUserItem)
         return table
     }()
     
     
     // MARK: Data Variables
     public let cellHeight: CGFloat = 60
-    public var taggingCellsData: [LMFeedTaggingUserTableCell.ViewModel] = []
+    public var taggingCellsData: [LMFeedTaggingUserItem.ContentModel] = []
     public var viewModel: LMFeedTaggingListViewModel?
     public weak var delegate: LMFeedTaggedUserFoundProtocol?
     
@@ -90,7 +90,7 @@ extension LMFeedTaggingListView: UITableViewDataSource, UITableViewDelegate {
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.taggingTableViewCell),
+        if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.taggingUserItem),
            let data = taggingCellsData[safe: indexPath.row] {
             cell.configure(with: data)
             return cell
@@ -117,7 +117,7 @@ extension LMFeedTaggingListView: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: LMFeedTaggingListViewModelProtocol
 extension LMFeedTaggingListView: LMFeedTaggingListViewModelProtocol {
-    public func updateList(with users: [LMFeedTaggingUserTableCell.ViewModel]) {
+    public func updateList(with users: [LMFeedTaggingUserItem.ContentModel]) {
         taggingCellsData.removeAll(keepingCapacity: true)
         taggingCellsData.append(contentsOf: users)
         tableView.reloadData()

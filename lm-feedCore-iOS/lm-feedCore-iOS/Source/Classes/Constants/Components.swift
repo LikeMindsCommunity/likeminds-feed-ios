@@ -11,33 +11,30 @@ public struct Components {
     public static var shared = Self()
     
     // MARK: Universal Feed
-    public var universalFeedViewController: LMUniversalFeedViewController.Type = LMUniversalFeedViewController.self
-    public var feedListViewController: LMFeedPostListViewController.Type = LMFeedPostListViewController.self
+    public var universalFeedScreen: LMUniversalFeedScreen.Type = LMUniversalFeedScreen.self
+    public var feedListScreen: LMFeedPostListScreen.Type = LMFeedPostListScreen.self
     
     // MARK: Post Detail
-    public var postDetailScreen: LMFeedPostDetailViewController.Type = LMFeedPostDetailViewController.self
+    public var postDetailScreen: LMFeedPostDetailScreen.Type = LMFeedPostDetailScreen.self
     
     // MARK: Topic Feed
-    public var topicFeedSelectionScreen: LMFeedTopicSelectionViewController.Type = LMFeedTopicSelectionViewController.self
-    
-    // MARK: Tagging List View
-    public var taggingListView: LMFeedTaggingListView.Type = LMFeedTaggingListView.self
+    public var topicFeedSelectionScreen: LMFeedTopicSelectionScreen.Type = LMFeedTopicSelectionScreen.self
     
     // MARK: Like Screen
-    public var likeListScreen: LMFeedLikeViewController.Type = LMFeedLikeViewController.self
+    public var likeListScreen: LMFeedLikeListScreen.Type = LMFeedLikeListScreen.self
     
     // MARK: Notification Screen
-    public var notificationScreen: LMFeedNotificationFeedViewController.Type = LMFeedNotificationFeedViewController.self
+    public var notificationScreen: LMFeedNotificationFeedScreen.Type = LMFeedNotificationFeedScreen.self
     
     // MARK: Create Post
-    public var createPostScreen: LMFeedCreatePostViewController.Type = LMFeedCreatePostViewController.self
+    public var createPostScreen: LMFeedCreatePostScreen.Type = LMFeedCreatePostScreen.self
     
     // MARK: Edit Post
-    public var editPostScreen: LMFeedEditPostViewController.Type = LMFeedEditPostViewController.self
+    public var editPostScreen: LMFeedEditPostScreen.Type = LMFeedEditPostScreen.self
     
     // MARK: Delete Review Screen
     public var deleteReviewScreen: LMFeedDeleteScreen.Type = LMFeedDeleteScreen.self
     
     // MARK: Report Screem
-    public var reportScreen: LMFeedReportViewController.Type = LMFeedReportViewController.self
+    public var reportScreen: LMFeedReportScreen.Type = LMFeedReportScreen.self
 }

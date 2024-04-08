@@ -1,5 +1,5 @@
 //
-//  LMUniversalFeedViewController.swift
+//  LMUniversalFeedScreen.swift
 //  LMFramework
 //
 //  Created by Devansh Mohata on 28/11/23.
@@ -8,7 +8,7 @@
 import LikeMindsFeedUI
 import UIKit
 
-open class LMUniversalFeedViewController: LMViewController {
+open class LMUniversalFeedScreen: LMViewController {
     // MARK: UI Elements
     
     open private(set) lazy var contentStack: LMStackView = {
@@ -56,7 +56,7 @@ open class LMUniversalFeedViewController: LMViewController {
         let collection = LMCollectionView(frame: .zero, collectionViewLayout: layout).translatesAutoresizingMaskIntoConstraints()
         collection.dataSource = self
         collection.delegate = self
-        collection.registerCell(type: LMUIComponents.shared.topicFeedEditCollectionCell)
+        collection.registerCell(type: LMUIComponents.shared.topicFeedEditView)
         collection.showsHorizontalScrollIndicator = false
         collection.showsVerticalScrollIndicator = false
         collection.backgroundColor = Appearance.shared.colors.clear
@@ -73,7 +73,7 @@ open class LMUniversalFeedViewController: LMViewController {
         return button
     }()
     
-    open private(set) lazy var postList: LMFeedPostListViewController? = {
+    open private(set) lazy var postList: LMFeedPostListScreen? = {
         do {
             let vc = try LMFeedPostListViewModel.createModule(with: self)
             return vc
@@ -285,13 +285,13 @@ open class LMUniversalFeedViewController: LMViewController {
 
 
 // MARK: UICollectionView
-extension LMUniversalFeedViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension LMUniversalFeedScreen: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         selectedTopics.count
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.topicFeedEditCollectionCell, for: indexPath),
+        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.topicFeedEditView, for: indexPath),
            let data = selectedTopics[safe: indexPath.row] {
             cell.configure(with: data, delegate: self)
             return cell
@@ -308,7 +308,7 @@ extension LMUniversalFeedViewController: UICollectionViewDataSource, UICollectio
 
 
 // MARK: LMUniversalFeedViewModelProtocol
-extension LMUniversalFeedViewController: LMUniversalFeedViewModelProtocol {
+extension LMUniversalFeedScreen: LMUniversalFeedViewModelProtocol {
     public func setupInitialView(isShowTopicFeed: Bool, isShowCreatePost: Bool) {
         self.isShowCreatePost = isShowCreatePost
         createPostButton.backgroundColor = isShowCreatePost ? Appearance.shared.colors.appTintColor : Appearance.shared.colors.gray51
@@ -336,7 +336,7 @@ extension LMUniversalFeedViewController: LMUniversalFeedViewModelProtocol {
 
 
 // MARK: LMFeedTopicSelectionViewProtocol
-extension LMUniversalFeedViewController: LMFeedTopicSelectionViewProtocol {
+extension LMUniversalFeedScreen: LMFeedTopicSelectionViewProtocol {
     public func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         viewModel?.updateSelectedTopics(with: topics)
     }
@@ -345,7 +345,7 @@ extension LMUniversalFeedViewController: LMFeedTopicSelectionViewProtocol {
 
 // MARK: LMFeedTopicViewCellProtocol
 @objc
-extension LMUniversalFeedViewController: LMFeedTopicViewCellProtocol {
+extension LMUniversalFeedScreen: LMFeedTopicViewCellProtocol {
     open func didTapCrossButton(for topicId: String) {
         viewModel?.removeTopic(id: topicId)
     }
@@ -353,7 +353,7 @@ extension LMUniversalFeedViewController: LMFeedTopicViewCellProtocol {
 
 // MARK: LMFeedPostListVCFromProtocol
 @objc
-extension LMUniversalFeedViewController: LMFeedPostListVCFromProtocol {
+extension LMUniversalFeedScreen: LMFeedPostListVCFromProtocol {
     open func onPostListScrolled(_ scrollView: UIScrollView) {
         let currentVelocityY =  scrollView.panGestureRecognizer.velocity(in: scrollView.superview).y
         let currentVelocityYSign = Int(currentVelocityY).signum()

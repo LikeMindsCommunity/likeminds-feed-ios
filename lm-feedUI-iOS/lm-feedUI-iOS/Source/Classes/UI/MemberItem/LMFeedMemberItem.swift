@@ -10,7 +10,7 @@ import UIKit
 
 @IBDesignable
 open class LMFeedMemberItem: LMTableViewCell {
-    public struct ViewModel {
+    public struct ContentModel {
         public let username: String
         public let uuid: String
         public let customTitle: String?
@@ -85,7 +85,7 @@ open class LMFeedMemberItem: LMTableViewCell {
     
     
     // MARK: configure
-    open func configure(with data: ViewModel, onTapCallback: (() -> Void)?) {
+    open func configure(with data: ContentModel, onTapCallback: (() -> Void)?) {
         self.onTapCallback = onTapCallback
         userTitleLabel.attributedText = setUsername(with: data.username, customTitle: data.customTitle)
         userImage.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.username))

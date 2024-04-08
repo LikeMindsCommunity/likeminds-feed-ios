@@ -13,25 +13,25 @@ public protocol LMFeedMediaProtocol { }
 @IBDesignable
 open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     // MARK: Data Model
-    public struct ViewModel: LMFeedPostTableCellProtocol {
+    public struct ContentModel: LMFeedPostTableCellProtocol {
         public var postID: String
         public var userUUID: String
-        public var headerData: LMFeedPostHeaderView.ViewModel
+        public var headerData: LMFeedPostHeaderView.ContentModel
         public var postText: String
         public var isShowMore: Bool
-        public var topics: LMFeedTopicView.ViewModel
+        public var topics: LMFeedTopicView.ContentModel
         public var mediaData: [LMFeedMediaProtocol]
-        public var footerData: LMFeedPostFooterView.ViewModel
+        public var footerData: LMFeedPostFooterView.ContentModel
         public var totalCommentCount: Int
         
         public init(
             postID: String,
             userUUID: String,
-            headerData: LMFeedPostHeaderView.ViewModel,
+            headerData: LMFeedPostHeaderView.ContentModel,
             postText: String,
-            topics: LMFeedTopicView.ViewModel,
+            topics: LMFeedTopicView.ContentModel,
             mediaData: [LMFeedMediaProtocol],
-            footerData: LMFeedPostFooterView.ViewModel,
+            footerData: LMFeedPostFooterView.ContentModel,
             totalCommentCount: Int,
             isShowMore: Bool = true
         ) {
@@ -58,8 +58,8 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
         collection.showsVerticalScrollIndicator = false
         collection.bounces = false
         collection.backgroundColor = Appearance.shared.colors.clear
-        collection.registerCell(type: LMUIComponents.shared.imagePreviewCell)
-        collection.registerCell(type: LMUIComponents.shared.videoPreviewCell)
+        collection.registerCell(type: LMUIComponents.shared.imagePreview)
+        collection.registerCell(type: LMUIComponents.shared.videoPreview)
         return collection
     }()
     
@@ -156,7 +156,7 @@ open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     
     
     // MARK: Configure Function
-    open func configure(with data: ViewModel, delegate: LMPostWidgetTableViewCellProtocol?) {
+    open func configure(with data: ContentModel, delegate: LMPostWidgetTableViewCellProtocol?) {
         actionDelegate = delegate
         postID = data.postID
         userUUID = data.userUUID
@@ -192,12 +192,12 @@ extension LMFeedPostMediaCell: UICollectionViewDataSource,
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let data = mediaCellsData[indexPath.row] as? LMFeedImageCollectionCell.ViewModel,
-           let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreviewCell, for: indexPath) {
+        if let data = mediaCellsData[indexPath.row] as? LMFeedImageCollectionCell.ContentModel,
+           let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreview, for: indexPath) {
             cell.configure(with: data)
             return cell
-        } else if let data = mediaCellsData[indexPath.row] as? LMFeedVideoCollectionCell.ViewModel,
-                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath) {
+        } else if let data = mediaCellsData[indexPath.row] as? LMFeedVideoCollectionCell.ContentModel,
+                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreview, for: indexPath) {
             cell.configure(with: data)
             return cell
         }

@@ -9,7 +9,7 @@ import LikeMindsFeedUI
 import LikeMindsFeed
 
 public protocol LMFeedNotificationViewModelProtocol: LMBaseViewControllerProtocol {
-    func showNotifications(with data: [LMFeedNotificationView.ViewModel], indexPath: IndexPath?)
+    func showNotifications(with data: [LMFeedNotificationItem.ContentModel], indexPath: IndexPath?)
     func showHideTableLoader(isShow: Bool)
     func showError(with message: String)
     func showEmptyNotificationView()
@@ -30,7 +30,7 @@ public final class LMFeedNotificationFeedViewModel {
         self.delegate = delegate
     }
     
-    public static func createModule() -> LMFeedNotificationFeedViewController {
+    public static func createModule() -> LMFeedNotificationFeedScreen {
         let viewcontroller = Components.shared.notificationScreen.init()
         let viewModel = LMFeedNotificationFeedViewModel(delegate: viewcontroller)
         
@@ -134,7 +134,7 @@ public final class LMFeedNotificationFeedViewModel {
 
 extension LMFeedNotificationFeedViewModel {
     func convertToViewModel(indexPath: IndexPath? = nil) {
-        let convertedData: [LMFeedNotificationView.ViewModel] = notifications.map { notification in
+        let convertedData: [LMFeedNotificationItem.ContentModel] = notifications.map { notification in
                 .init(
                     notificationID: notification.id,
                     notification: notification.activityText,

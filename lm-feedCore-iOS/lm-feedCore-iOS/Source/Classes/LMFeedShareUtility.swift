@@ -10,7 +10,7 @@ import Foundation
 public final class LMFeedShareUtility {
     static private(set) var domainURL: String = "lmfeed://yourdomain.com"
     
-    static func setupDomain(with url: String) {
+    public static func setupDomain(with url: String) {
         domainURL = url
     }
     

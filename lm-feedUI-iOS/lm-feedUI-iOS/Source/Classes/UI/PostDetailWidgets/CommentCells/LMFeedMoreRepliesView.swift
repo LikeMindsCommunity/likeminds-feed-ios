@@ -1,5 +1,5 @@
 //
-//  LMFeedPostMoreRepliesCell.swift
+//  LMFeedMoreRepliesView.swift
 //  LMFramework
 //
 //  Created by Devansh Mohata on 18/12/23.
@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedPostMoreRepliesCell: LMTableViewHeaderFooterView {
+open class LMFeedMoreRepliesView: LMTableViewHeaderFooterView {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()

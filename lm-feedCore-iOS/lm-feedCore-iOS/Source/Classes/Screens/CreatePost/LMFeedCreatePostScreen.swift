@@ -1,5 +1,5 @@
 //
-//  LMFeedCreatePostViewController.swift
+//  LMFeedCreatePostScreen.swift
 //  lm-feedCore-iOS
 //
 //  Created by Devansh Mohata on 16/01/24.
@@ -12,7 +12,7 @@ import UIKit
 import Photos
 
 @IBDesignable
-open class LMFeedCreatePostViewController: LMViewController {
+open class LMFeedCreatePostScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
@@ -54,7 +54,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     }()
     
     open private(set) lazy var topicView: LMFeedTopicView = {
-        let view = LMUIComponents.shared.topicFeed.init().translatesAutoresizingMaskIntoConstraints()
+        let view = LMUIComponents.shared.topicFeedView.init().translatesAutoresizingMaskIntoConstraints()
         view.delegate = self
         return view
     }()
@@ -81,8 +81,8 @@ open class LMFeedCreatePostViewController: LMViewController {
     open private(set) lazy var mediaCollectionView: LMCollectionView = {
         let collection = LMCollectionView(frame: .zero, collectionViewLayout: LMCollectionView.mediaFlowLayout())
         collection.translatesAutoresizingMaskIntoConstraints = false
-        collection.registerCell(type: LMUIComponents.shared.imagePreviewCell)
-        collection.registerCell(type: LMUIComponents.shared.videoPreviewCell)
+        collection.registerCell(type: LMUIComponents.shared.imagePreview)
+        collection.registerCell(type: LMUIComponents.shared.videoPreview)
         collection.showsVerticalScrollIndicator = false
         collection.showsHorizontalScrollIndicator = false
         collection.isPagingEnabled = true
@@ -135,20 +135,20 @@ open class LMFeedCreatePostViewController: LMViewController {
         return stack
     }()
     
-    open private(set) lazy var addPhotosTab: LMFeedCreatePostAddMediaView = {
-        let view = LMUIComponents.shared.createPostAddMediaView.init().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var addPhotosTab: LMFeedAddMediaView = {
+        let view = LMUIComponents.shared.addMediaView.init().translatesAutoresizingMaskIntoConstraints()
         view.isUserInteractionEnabled = true
         return view
     }()
     
-    open private(set) lazy var addVideoTab: LMFeedCreatePostAddMediaView = {
-        let view = LMUIComponents.shared.createPostAddMediaView.init().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var addVideoTab: LMFeedAddMediaView = {
+        let view = LMUIComponents.shared.addMediaView.init().translatesAutoresizingMaskIntoConstraints()
         view.isUserInteractionEnabled = true
         return view
     }()
     
-    open private(set) lazy var addDocumentsTab: LMFeedCreatePostAddMediaView = {
-        let view = LMUIComponents.shared.createPostAddMediaView.init().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var addDocumentsTab: LMFeedAddMediaView = {
+        let view = LMUIComponents.shared.addMediaView.init().translatesAutoresizingMaskIntoConstraints()
         view.isUserInteractionEnabled = true
         return view
     }()
@@ -175,7 +175,7 @@ open class LMFeedCreatePostViewController: LMViewController {
     
     // MARK: Data Variables
     public var viewModel: LMFeedCreatePostViewModel?
-    public var documentAttachmentData: [LMFeedDocumentPreview.ViewModel] = []
+    public var documentAttachmentData: [LMFeedDocumentPreview.ContentModel] = []
     public var documenTableHeight: NSLayoutConstraint?
     public var documentAttachmentHeight: CGFloat = 90
     
@@ -352,7 +352,7 @@ open class LMFeedCreatePostViewController: LMViewController {
 
 
 // MARK: UITableView
-extension LMFeedCreatePostViewController: UITableViewDataSource, UITableViewDelegate {
+extension LMFeedCreatePostScreen: UITableViewDataSource, UITableViewDelegate {
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { documentAttachmentData.count }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -370,7 +370,7 @@ extension LMFeedCreatePostViewController: UITableViewDataSource, UITableViewDele
 
 
 // MARK: LMFeedDocumentPreviewProtocol
-extension LMFeedCreatePostViewController: LMFeedDocumentPreviewProtocol {
+extension LMFeedCreatePostScreen: LMFeedDocumentPreviewProtocol {
     public func didTapCrossButton(documentID: URL) {
         viewModel?.removeAsset(url: documentID.absoluteString)
     }
@@ -382,19 +382,19 @@ extension LMFeedCreatePostViewController: LMFeedDocumentPreviewProtocol {
 
 
 // MARK: UICollectionView
-extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension LMFeedCreatePostScreen: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { mediaAttachmentData.count }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let data = mediaAttachmentData[indexPath.row] as? LMFeedImageCollectionCell.ViewModel,
-           let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreviewCell, for: indexPath) {
+        if let data = mediaAttachmentData[indexPath.row] as? LMFeedImageCollectionCell.ContentModel,
+           let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreview, for: indexPath) {
             cell.configure(with: data) { [weak self] imageID in
                 guard let self else { return }
                 viewModel?.removeAsset(url: imageID)
             }
             return cell
-        } else if let data = mediaAttachmentData[indexPath.row] as? LMFeedVideoCollectionCell.ViewModel,
-                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreviewCell, for: indexPath) {
+        } else if let data = mediaAttachmentData[indexPath.row] as? LMFeedVideoCollectionCell.ContentModel,
+                  let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreview, for: indexPath) {
             cell.configure(with: data) { [weak self] videoID in
                 guard let self else { return }
                 viewModel?.removeAsset(url: videoID)
@@ -438,8 +438,8 @@ extension LMFeedCreatePostViewController: UICollectionViewDataSource, UICollecti
 
 
 // MARK: LMFeedCreatePostViewModelProtocol
-extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
-    public func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?) {
+extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
+    public func setupLinkPreview(with data: LMFeedLinkPreview.ContentModel?) {
         linkPreview.isHidden = data == nil
         if let data {
             linkPreview.configure(with: data) { [weak self, weak linkPreview] in
@@ -458,12 +458,12 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
         }
     }
     
-    public func updateTopicView(with data: LMFeedTopicView.ViewModel) {
+    public func updateTopicView(with data: LMFeedTopicView.ContentModel) {
         topicView.isHidden = false
         topicView.configure(with: data)
     }
     
-    public func showMedia(documents: [LMFeedDocumentPreview.ViewModel], isShowAddMore: Bool, isShowBottomTab: Bool) {
+    public func showMedia(documents: [LMFeedDocumentPreview.ContentModel], isShowAddMore: Bool, isShowBottomTab: Bool) {
         linkPreview.isHidden = true
         documentTableView.isHidden = documents.isEmpty
         documentAttachmentData.append(contentsOf: documents)
@@ -542,7 +542,7 @@ extension LMFeedCreatePostViewController: LMFeedCreatePostViewModelProtocol {
 
 
 // MARK: LMFeedTaggingTextViewProtocol
-extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
+extension LMFeedCreatePostScreen: LMFeedTaggingTextViewProtocol {
     public func mentionStarted(with text: String) {
         taggingView.isHidden = false
         taggingView.getUsers(for: text)
@@ -567,7 +567,7 @@ extension LMFeedCreatePostViewController: LMFeedTaggingTextViewProtocol {
 
 
 // MARK: Media Control
-public extension LMFeedCreatePostViewController {
+public extension LMFeedCreatePostScreen {
     func openImagePicker(_ mediaType: Settings.Fetch.Assets.MediaTypes, isFirstTime: Bool, maxSelection: Int) {
         var currentAssets: [(asset:  PHAsset, url: URL, data: Data)] = []
         
@@ -582,7 +582,6 @@ public extension LMFeedCreatePostViewController {
         }
         
         presentImagePicker(imagePicker, select: { asset in
-            
             asset.asyncURL { url in
                 guard let url else { return }
                 
@@ -615,7 +614,7 @@ public extension LMFeedCreatePostViewController {
 
 
 // MARK: UIDocumentPickerDelegate
-extension LMFeedCreatePostViewController: UIDocumentPickerDelegate {
+extension LMFeedCreatePostScreen: UIDocumentPickerDelegate {
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         viewModel?.handleAssets(assets: urls)
         controller.dismiss(animated: true)
@@ -628,7 +627,7 @@ extension LMFeedCreatePostViewController: UIDocumentPickerDelegate {
 
 
 // MARK: LMFeedTaggedUserFoundProtocol
-extension LMFeedCreatePostViewController: LMFeedTaggedUserFoundProtocol {
+extension LMFeedCreatePostScreen: LMFeedTaggedUserFoundProtocol {
     public func userSelected(with route: String, and userName: String) {
         inputTextView.addTaggedUser(with: userName, route: route)
     }
@@ -640,7 +639,7 @@ extension LMFeedCreatePostViewController: LMFeedTaggedUserFoundProtocol {
 
 
 // MARK: LMFeedTopicViewCellProtocol
-extension LMFeedCreatePostViewController: LMFeedTopicViewCellProtocol {
+extension LMFeedCreatePostScreen: LMFeedTopicViewCellProtocol {
     public func didTapEditButton() {
         viewModel?.didTapTopicSelection()
     }
@@ -652,7 +651,7 @@ extension LMFeedCreatePostViewController: LMFeedTopicViewCellProtocol {
 
 
 // MARK: LMFeedTopicSelectionViewProtocol
-extension LMFeedCreatePostViewController: LMFeedTopicSelectionViewProtocol {
+extension LMFeedCreatePostScreen: LMFeedTopicSelectionViewProtocol {
     public func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         viewModel?.updateTopicFeed(with: topics)
     }

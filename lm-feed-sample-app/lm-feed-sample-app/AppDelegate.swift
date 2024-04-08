@@ -96,7 +96,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 // MARK: Message
 extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        print("FCM Token: \(fcmToken ?? "")")
+        guard let fcmToken,
+              let deviceid = UIDevice.current.identifierForVendor?.uuidString,
+              !deviceid.isEmpty else { return }
+        
+        LMFeedCore.shared.registerDeviceToken(with: fcmToken, deviceID: deviceid)
     }
 }
 
