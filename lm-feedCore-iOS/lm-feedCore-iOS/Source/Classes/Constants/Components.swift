@@ -24,7 +24,7 @@ public struct Components {
     public var likeListScreen: LMFeedLikeListScreen.Type = LMFeedLikeListScreen.self
     
     // MARK: Notification Screen
-    public var notificationScreen: LMFeedNotificationScreen.Type = LMFeedNotificationScreen.self
+    public var notificationScreen: LMFeedNotificationFeedScreen.Type = LMFeedNotificationFeedScreen.self
     
     // MARK: Create Post
     public var createPostScreen: LMFeedCreatePostScreen.Type = LMFeedCreatePostScreen.self
@@ -36,5 +36,5 @@ public struct Components {
     public var deleteReviewScreen: LMFeedDeleteScreen.Type = LMFeedDeleteScreen.self
     
     // MARK: Report Screem
-    public var reportScreen: LMFeedReportContentScreen.Type = LMFeedReportContentScreen.self
+    public var reportScreen: LMFeedReportScreen.Type = LMFeedReportScreen.self
 }

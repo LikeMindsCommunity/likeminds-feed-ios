@@ -1,5 +1,5 @@
 //
-//  LMFeedReportContentScreen.swift
+//  LMFeedReportScreen.swift
 //  LMFeedReportViewController.swift
 //  lm-feedCore-iOS
 //
@@ -14,7 +14,7 @@ public protocol LMFeedReportViewModelProtocol: LMBaseViewControllerProtocol {
 }
 
 @IBDesignable
-open class LMFeedReportContentScreen: LMViewController {
+open class LMFeedReportScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
@@ -226,7 +226,7 @@ open class LMFeedReportContentScreen: LMViewController {
 
 
 // MARK: UICollectionView
-extension LMFeedReportContentScreen: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension LMFeedReportScreen: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { tagsData.count }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -250,7 +250,7 @@ extension LMFeedReportContentScreen: UICollectionViewDataSource, UICollectionVie
 
 
 // MARK: UITextViewDelegate
-extension LMFeedReportContentScreen: UITextViewDelegate {
+extension LMFeedReportScreen: UITextViewDelegate {
     open func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) == placeholderText {
             textView.text = nil
@@ -270,7 +270,7 @@ extension LMFeedReportContentScreen: UITextViewDelegate {
 
 
 // MARK: LMFeedReportContentViewModelProtocol
-extension LMFeedReportContentScreen: LMFeedReportViewModelProtocol {
+extension LMFeedReportScreen: LMFeedReportViewModelProtocol {
     public func updateView(with tags: [(name: String, tagID: Int)], selectedTag: Int, showTextView: Bool) {
         self.tagsData = tags
         self.selectedTag = selectedTag

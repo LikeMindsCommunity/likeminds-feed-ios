@@ -116,7 +116,7 @@
 		1DEB9563E8416F85348BCF9F97814E1D /* FirebaseInstallationsInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 367C98BDC4B7E7F827D27FAA07CAC281 /* FirebaseInstallationsInternal.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		1E2497F6A1A1DDAEB16497556D8B1B54 /* AWSFMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 36B53EF4688F7691E80936C55497FE83 /* AWSFMResultSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1E781AB86D285595CF7E2154CA2460C7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1D889FF21619A3889C8FA2381E7E0B5 /* UIKit.framework */; };
-		1ECC1EA075BE260E8BBEE7BD21C5FDC3 /* LMFeedReportContentScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE40BE1047FD8EB649CBFD14A8FB5C4 /* LMFeedReportContentScreen.swift */; };
+		1ECC1EA075BE260E8BBEE7BD21C5FDC3 /* LMFeedReportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE40BE1047FD8EB649CBFD14A8FB5C4 /* LMFeedReportScreen.swift */; };
 		1F3B15705EE5CF016971797156A34231 /* LMFeedTopicSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C9DD5A03F1BEA64BBCC0398A4D79DB /* LMFeedTopicSelectionViewModel.swift */; };
 		1FA0A88EBF6A2CA5132E0B80C3946ADE /* AWSCognitoIdentity+Fabric.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DE43E24261BB05919EBD374D1E85C89 /* AWSCognitoIdentity+Fabric.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1FAEB37B540CF1A72F82B9771643E20E /* AWSCognitoSyncResources.h in Headers */ = {isa = PBXBuildFile; fileRef = EEBC719FFCE68403E843C2D1C1129182 /* AWSCognitoSyncResources.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -831,7 +831,7 @@
 		E70DF51A77A6C5F919CD91E73783FB41 /* LMFeedEditPostScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41EE2679D407BB4E3BDC8060059DEEF /* LMFeedEditPostScreen.swift */; };
 		E718E500074E8D6B011D53571B27BC0D /* Kingfisher-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = ACEE779ABC11D621238E35004A89AAD5 /* Kingfisher-dummy.m */; };
 		E7ED6AC14FAF9BAE16E7FDFA6717FDD7 /* FIRMessagingUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = B663B7C26CFB642CC67E2C4E208ECCAF /* FIRMessagingUtilities.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		E828632F4B843CB880F18E0E4C8AEB29 /* LMFeedNotificationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F6731111C643ED178A74F390637821 /* LMFeedNotificationScreen.swift */; };
+		E828632F4B843CB880F18E0E4C8AEB29 /* LMFeedNotificationFeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F6731111C643ED178A74F390637821 /* LMFeedNotificationFeedScreen.swift */; };
 		E9004D114D72C6D8E7538CD9D6A11308 /* AWSKSReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D246A864881F0FB7C207B735BE1C965B /* AWSKSReachability.m */; };
 		E91580C7F9AA87BA0868CC24EAE7BF38 /* AWSMTLReflection.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC45C730D6E64B4ADA082741B71B7D6 /* AWSMTLReflection.m */; };
 		E921468FAC7C6258942998B6620E0B80 /* GDTCORTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 09CB78A5A7E9CF732068FE032B187C2C /* GDTCORTransformer.m */; };
@@ -1365,7 +1365,7 @@
 		20B1A4C05BB1D63B8DCF0DFBEB4A2E1E /* GULReachabilityChecker.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GULReachabilityChecker.h; path = GoogleUtilities/Reachability/Public/GoogleUtilities/GULReachabilityChecker.h; sourceTree = "<group>"; };
 		20DE3EBE5B1717BBC1B13B3118F872F9 /* AWSDDAbstractDatabaseLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSDDAbstractDatabaseLogger.h; path = AWSCore/Logging/AWSDDAbstractDatabaseLogger.h; sourceTree = "<group>"; };
 		20E15343FF374F29A68BEBD6B11FCEF5 /* AWSMTLModel+NSCoding.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "AWSMTLModel+NSCoding.h"; path = "AWSCore/Mantle/AWSMTLModel+NSCoding.h"; sourceTree = "<group>"; };
-		22F6731111C643ED178A74F390637821 /* LMFeedNotificationScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedNotificationScreen.swift; sourceTree = "<group>"; };
+		22F6731111C643ED178A74F390637821 /* LMFeedNotificationFeedScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedNotificationFeedScreen.swift; sourceTree = "<group>"; };
 		2333C91DDAD03F24AE26159EA7A33C1F /* FBLPromise+Race.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBLPromise+Race.h"; path = "Sources/FBLPromises/include/FBLPromise+Race.h"; sourceTree = "<group>"; };
 		234095218187CB9F46BFA06BBB67671C /* KFImageOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KFImageOptions.swift; path = Sources/SwiftUI/KFImageOptions.swift; sourceTree = "<group>"; };
 		23892D6606EAE203C2AF9CE9F9FCD5E1 /* GDTCORLifecycle.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCORLifecycle.h; path = GoogleDataTransport/GDTCORLibrary/Internal/GDTCORLifecycle.h; sourceTree = "<group>"; };
@@ -2120,7 +2120,7 @@
 		DE31BA935717B300B7C6732F0DFF31A5 /* AWSCognito.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AWSCognito.release.xcconfig; sourceTree = "<group>"; };
 		DE8668AB5847DF40AD4117F21AD2776D /* FIRMessagingAnalytics.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessagingAnalytics.h; path = FirebaseMessaging/Sources/FIRMessagingAnalytics.h; sourceTree = "<group>"; };
 		DEA109DF3DED1D8A1AD3501B7F2896A3 /* external_prequest_context.nanopb.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = external_prequest_context.nanopb.h; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/external_prequest_context.nanopb.h; sourceTree = "<group>"; };
-		DEE40BE1047FD8EB649CBFD14A8FB5C4 /* LMFeedReportContentScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedReportContentScreen.swift; sourceTree = "<group>"; };
+		DEE40BE1047FD8EB649CBFD14A8FB5C4 /* LMFeedReportScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedReportScreen.swift; sourceTree = "<group>"; };
 		DF026B110AA1E132EDB97E24EAA51D89 /* GULReachabilityChecker.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GULReachabilityChecker.m; path = GoogleUtilities/Reachability/GULReachabilityChecker.m; sourceTree = "<group>"; };
 		DF055A5FB050CB5DF3F3C5F0714B786B /* LikeMindsFeedUI-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LikeMindsFeedUI-umbrella.h"; sourceTree = "<group>"; };
 		DF2B56C3BDBC576F213BF87ED9953319 /* AWSS3.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AWSS3.modulemap; sourceTree = "<group>"; };
@@ -3929,7 +3929,7 @@
 			children = (
 				FD577ACF7495602614FC0A358233CC2F /* LMFeedNotificationFeedDataModel.swift */,
 				2EE692858DFC14994FFBDCD37A5B8C70 /* LMFeedNotificationFeedViewModel.swift */,
-				22F6731111C643ED178A74F390637821 /* LMFeedNotificationScreen.swift */,
+				22F6731111C643ED178A74F390637821 /* LMFeedNotificationFeedScreen.swift */,
 			);
 			path = NotificationScreen;
 			sourceTree = "<group>";
@@ -4187,7 +4187,7 @@
 		F27CA4BBC69C97ED4275AA6725CD803E /* ReportPost */ = {
 			isa = PBXGroup;
 			children = (
-				DEE40BE1047FD8EB649CBFD14A8FB5C4 /* LMFeedReportContentScreen.swift */,
+				DEE40BE1047FD8EB649CBFD14A8FB5C4 /* LMFeedReportScreen.swift */,
 				D8B618F5267A17148AB715B6C670EE07 /* LMFeedReportViewModel.swift */,
 			);
 			path = ReportPost;
@@ -5490,14 +5490,14 @@
 				37BD8B28E6F1BFC895F3D7F3BAB715C3 /* LMFeedMenuDataModel.swift in Sources */,
 				20936BC98898F6E57929CB422550D88B /* LMFeedNotificationFeedDataModel.swift in Sources */,
 				FFA074F2E84F6B64F13D846BA0449891 /* LMFeedNotificationFeedViewModel.swift in Sources */,
-				E828632F4B843CB880F18E0E4C8AEB29 /* LMFeedNotificationScreen.swift in Sources */,
+				E828632F4B843CB880F18E0E4C8AEB29 /* LMFeedNotificationFeedScreen.swift in Sources */,
 				2AB474F141AD201E5015BB5D4C941529 /* LMFeedPostDataModel.swift in Sources */,
 				C26CBF304F73B4EC3F2557E45EBAA5A9 /* LMFeedPostDetailScreen.swift in Sources */,
 				B8FF0A41F0FEF7CB12845685FFB3F23B /* LMFeedPostDetailViewModel.swift in Sources */,
 				7E4186A6A7CCBB463AD667BA188CEAFD /* LMFeedPostListScreen.swift in Sources */,
 				52F460B118350EFB1CC7B1E43ED7AB6D /* LMFeedPostListViewModel.swift in Sources */,
 				B9DE0243E5FFC063E2955A7EB9BF2116 /* LMFeedPostOperation.swift in Sources */,
-				1ECC1EA075BE260E8BBEE7BD21C5FDC3 /* LMFeedReportContentScreen.swift in Sources */,
+				1ECC1EA075BE260E8BBEE7BD21C5FDC3 /* LMFeedReportScreen.swift in Sources */,
 				36F08936B5A09521616A6BBDB26A8F24 /* LMFeedReportViewModel.swift in Sources */,
 				7075C0229FFC1FA2B237A8DE24885BAB /* LMFeedRouter.swift in Sources */,
 				D8100DE0A0EC7E5B4FB9ABDD3C4792FF /* LMFeedShareUtility.swift in Sources */,

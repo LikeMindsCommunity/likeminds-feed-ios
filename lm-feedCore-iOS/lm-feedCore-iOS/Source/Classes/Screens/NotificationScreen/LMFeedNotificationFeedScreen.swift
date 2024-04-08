@@ -1,5 +1,5 @@
 //
-//  LMFeedNotificationScreen.swift
+//  LMFeedNotificationFeedScreen.swift
 //  LMFeedNotificationFeedViewController.swift
 //  lm-feedCore-iOS
 //
@@ -10,7 +10,7 @@ import LikeMindsFeedUI
 import UIKit
 
 @IBDesignable
-open class LMFeedNotificationScreen: LMViewController {
+open class LMFeedNotificationFeedScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var notificationListView: LMTableView = {
         let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
@@ -98,7 +98,7 @@ open class LMFeedNotificationScreen: LMViewController {
 
 
 // MARK: UITableView
-extension LMFeedNotificationScreen: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
+extension LMFeedNotificationFeedScreen: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         notificationData.count
     }
@@ -128,7 +128,7 @@ extension LMFeedNotificationScreen: UITableViewDataSource, UITableViewDelegate, 
 }
 
 // MARK: LMFeedNotificationViewModelProtocol
-extension LMFeedNotificationScreen: LMFeedNotificationViewModelProtocol {
+extension LMFeedNotificationFeedScreen: LMFeedNotificationViewModelProtocol {
     public func showNotifications(with data: [LMFeedNotificationItem.ContentModel], indexPath: IndexPath?) {
         notificationListView.backgroundView = nil
         notificationData = data
