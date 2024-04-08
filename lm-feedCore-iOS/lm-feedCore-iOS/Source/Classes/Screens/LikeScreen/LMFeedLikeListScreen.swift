@@ -11,7 +11,7 @@ import UIKit
 @IBDesignable
 open class LMFeedLikeListScreen: LMViewController {
     // MARK: UI Elements
-    open private(set) lazy var tableView: LMTableView = {
+    open private(set) lazy var memberListView: LMTableView = {
         let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
         table.dataSource = self
         table.delegate = self
@@ -26,7 +26,7 @@ open class LMFeedLikeListScreen: LMViewController {
     
     // MARK: Data Variables
     public var viewModel: LMFeedLikeViewModel?
-    public var cellsData: [LMFeedMemberItem.ContentModel] = []
+    public var userData: [LMFeedMemberItem.ContentModel] = []
     public var cellHeight: CGFloat = 72
     public var totalLikes: Int = 0
     
@@ -34,14 +34,14 @@ open class LMFeedLikeListScreen: LMViewController {
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
-        view.addSubview(tableView)
+        view.addSubview(memberListView)
     }
     
     
     // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
-        view.pinSubView(subView: tableView)
+        view.pinSubView(subView: memberListView)
     }
     
     
@@ -58,7 +58,7 @@ open class LMFeedLikeListScreen: LMViewController {
     }
     
     open func didTapUser(uuid: String) {
-        showError(with: "Tapped user with uuid: \(uuid)", isPopVC: false)
+        print(#function)
     }
 }
 
@@ -66,12 +66,12 @@ open class LMFeedLikeListScreen: LMViewController {
 // MARK: UITableView
 extension LMFeedLikeListScreen: UITableViewDataSource, UITableViewDelegate {
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        cellsData.count
+        userData.count
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let data = cellsData[safe: indexPath.row],
-           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.likeUserItem.self) {
+        if let data = userData[safe: indexPath.row],
+           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.likeUserItem) {
             cell.configure(with: data) { [weak self] in
                 self?.didTapUser(uuid: data.uuid)
             }
@@ -81,7 +81,7 @@ extension LMFeedLikeListScreen: UITableViewDataSource, UITableViewDelegate {
     }
     
     open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == cellsData.count - 1 {
+        if indexPath.row == userData.count - 1 {
             viewModel?.getLikes()
         }
     }
@@ -93,8 +93,8 @@ extension LMFeedLikeListScreen: UITableViewDataSource, UITableViewDelegate {
 // MARK: LMFeedLikeViewModelProtocol
 extension LMFeedLikeListScreen: LMFeedLikeViewModelProtocol {
     public func reloadTableView(with data: [LMFeedMemberItem.ContentModel], totalCount: Int) {
-        cellsData = data
-        tableView.reloadData()
+        userData = data
+        memberListView.reloadData()
         totalLikes = totalCount
         setNavigationTitleAndSubtitle(with: "Likes",
                                       subtitle: "\(totalLikes) Like\(totalLikes == 1 ? "" : "s")",
@@ -102,6 +102,6 @@ extension LMFeedLikeListScreen: LMFeedLikeViewModelProtocol {
     }
     
     public func showHideTableLoader(isShow: Bool) {
-        tableView.showHideFooterLoader(isShow: isShow)
+        memberListView.showHideFooterLoader(isShow: isShow)
     }
 }

@@ -1,5 +1,6 @@
 //
 //  LMFeedReportContentScreen.swift
+//  LMFeedReportViewController.swift
 //  lm-feedCore-iOS
 //
 //  Created by Devansh Mohata on 31/01/24.
@@ -8,7 +9,7 @@
 import LikeMindsFeedUI
 import UIKit
 
-public protocol LMFeedReportContentViewModelProtocol: LMBaseViewControllerProtocol {
+public protocol LMFeedReportViewModelProtocol: LMBaseViewControllerProtocol {
     func updateView(with tags: [(name: String, tagID: Int)], selectedTag: Int, showTextView: Bool)
 }
 
@@ -53,7 +54,7 @@ open class LMFeedReportContentScreen: LMViewController {
         return label
     }()
     
-    open private(set) lazy var collectionView: LMCollectionView = {
+    open private(set) lazy var reportCollectionView: LMCollectionView = {
         let collection = LMFeedTopicCollectionView(frame: .zero, collectionViewLayout: TagsLayout()).translatesAutoresizingMaskIntoConstraints()
         collection.isScrollEnabled = true
         collection.dataSource = self
@@ -88,10 +89,10 @@ open class LMFeedReportContentScreen: LMViewController {
     
     // MARK: Data Variables
     public var textInputHeight: CGFloat = 100
-    public var tags: [(String, Int)] = []
+    public var tagsData: [(String, Int)] = []
     public var selectedTag = -1
     public var placeholderText = "Write Description!"
-    public var viewmodel: LMFeedReportContentViewModel?
+    public var viewmodel: LMFeedReportViewModel?
     
     
     // MARK: setupViews
@@ -105,7 +106,7 @@ open class LMFeedReportContentScreen: LMViewController {
         
         containerScrollView.addSubview(stackView)
         
-        [titleLabel, subtitleLabel, collectionView, otherReasonTextView, sepratorView].forEach { subview in
+        [titleLabel, subtitleLabel, reportCollectionView, otherReasonTextView, sepratorView].forEach { subview in
             stackView.addArrangedSubview(subview)
         }
     }
@@ -130,7 +131,7 @@ open class LMFeedReportContentScreen: LMViewController {
         stackView.setHeightConstraint(with: 50, priority: .defaultLow)
         stackView.setWidthConstraint(with: containerView.widthAnchor)
         
-        collectionView.setHeightConstraint(with: stackView.widthAnchor, relatedBy: .lessThanOrEqual, multiplier: 0.5)
+        reportCollectionView.setHeightConstraint(with: stackView.widthAnchor, relatedBy: .lessThanOrEqual, multiplier: 0.5)
         
         otherReasonTextView.setHeightConstraint(with: textInputHeight)
         sepratorView.setHeightConstraint(with: 1)
@@ -139,7 +140,7 @@ open class LMFeedReportContentScreen: LMViewController {
                                    bottom: (containerView.bottomAnchor, -16),
                                    centerX: (containerView.centerXAnchor, 0))
         
-        [titleLabel, subtitleLabel, collectionView, otherReasonTextView, sepratorView].forEach { subview in
+        [titleLabel, subtitleLabel, reportCollectionView, otherReasonTextView, sepratorView].forEach { subview in
             subview.addConstraint(leading: (stackView.leadingAnchor, 16),
                                   trailing: (stackView.trailingAnchor, -16))
         }
@@ -226,12 +227,12 @@ open class LMFeedReportContentScreen: LMViewController {
 
 // MARK: UICollectionView
 extension LMFeedReportContentScreen: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { tags.count }
+    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { tagsData.count }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.reportItem, for: indexPath) {
-            let name = tags[indexPath.row].0
-            let tagID = tags[indexPath.row].1
+            let name = tagsData[indexPath.row].0
+            let tagID = tagsData[indexPath.row].1
             
             cell.configure(with: name, isSelected: tagID == selectedTag) { [weak self] in
                 self?.viewmodel?.updateSelectedTag(with: tagID)
@@ -242,7 +243,7 @@ extension LMFeedReportContentScreen: UICollectionViewDataSource, UICollectionVie
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = tags[indexPath.row].0.sizeOfString(with: Appearance.shared.fonts.textFont1).width + 32
+        let width = tagsData[indexPath.row].0.sizeOfString(with: Appearance.shared.fonts.textFont1).width + 32
         return .init(width: width, height: 50)
     }
 }
@@ -269,11 +270,11 @@ extension LMFeedReportContentScreen: UITextViewDelegate {
 
 
 // MARK: LMFeedReportContentViewModelProtocol
-extension LMFeedReportContentScreen: LMFeedReportContentViewModelProtocol {
+extension LMFeedReportContentScreen: LMFeedReportViewModelProtocol {
     public func updateView(with tags: [(name: String, tagID: Int)], selectedTag: Int, showTextView: Bool) {
-        self.tags = tags
+        self.tagsData = tags
         self.selectedTag = selectedTag
-        collectionView.reloadData()
+        reportCollectionView.reloadData()
         
         otherReasonTextView.isHidden = !showTextView
         sepratorView.isHidden = !showTextView

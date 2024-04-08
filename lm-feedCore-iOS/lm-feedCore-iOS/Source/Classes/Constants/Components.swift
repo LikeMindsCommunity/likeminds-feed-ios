@@ -33,7 +33,7 @@ public struct Components {
     public var editPostScreen: LMFeedEditPostScreen.Type = LMFeedEditPostScreen.self
     
     // MARK: Delete Review Screen
-    public var deleteReviewScreen: LMFeedDeleteReviewScreen.Type = LMFeedDeleteReviewScreen.self
+    public var deleteReviewScreen: LMFeedDeleteScreen.Type = LMFeedDeleteScreen.self
     
     // MARK: Report Screem
     public var reportScreen: LMFeedReportContentScreen.Type = LMFeedReportContentScreen.self

@@ -21,7 +21,7 @@ open class LMFeedTopicSelectionScreen: LMViewController {
         return view
     }()
     
-    open private(set) lazy var tableView: LMTableView = {
+    open private(set) lazy var topicSelectionListView: LMTableView = {
         let table = LMTableView(frame: .zero, style: .grouped).translatesAutoresizingMaskIntoConstraints()
         table.backgroundColor = Appearance.shared.colors.clear
         table.dataSource = self
@@ -42,12 +42,7 @@ open class LMFeedTopicSelectionScreen: LMViewController {
         search.searchBar.delegate = self
         return search
     }()
-    
-    open private(set) lazy var rightBarButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
-        button.setTitle("Done", for: .normal)
-        return button
-    }()
+
     
     // MARK: Data Variables
     public var topicList: [[LMFeedTopicSelectionCell.ContentModel]] = []
@@ -67,7 +62,7 @@ open class LMFeedTopicSelectionScreen: LMViewController {
     open override func setupViews() {
         super.setupViews()
         view.addSubview(containerView)
-        containerView.addSubview(tableView)
+        containerView.addSubview(topicSelectionListView)
         
         navigationItem.searchController = searchController
     }
@@ -81,17 +76,17 @@ open class LMFeedTopicSelectionScreen: LMViewController {
                                     bottom: (view.safeAreaLayoutGuide.bottomAnchor, 0),
                                     leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
                                     trailing: (view.safeAreaLayoutGuide.trailingAnchor, 0))
-        containerView.pinSubView(subView: tableView)
+        containerView.pinSubView(subView: topicSelectionListView)
     }
     
     
     // MARK: setupActions
     open override func setupActions() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(didTapDoneButton))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(didTapSelectButton))
     }
     
     @objc
-    open func didTapDoneButton() {
+    open func didTapSelectButton() {
         viewModel?.didTapDoneButton()
     }
 }
@@ -149,7 +144,7 @@ extension LMFeedTopicSelectionScreen: UITableViewDataSource, UITableViewDelegate
 extension LMFeedTopicSelectionScreen: LMFeedTopicSelectionViewModelProtocol {
     public func updateTopicList(with data: [[LMFeedTopicSelectionCell.ContentModel]], selectedCount: Int) {
         self.topicList = data
-        tableView.reloadData()
+        topicSelectionListView.reloadData()
         
         if selectedCount == .zero {
             setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: nil, alignment: .center)

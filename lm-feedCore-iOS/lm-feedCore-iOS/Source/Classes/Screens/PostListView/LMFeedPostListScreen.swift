@@ -11,8 +11,8 @@ import LikeMindsFeedUI
 // MARK: LMFeedPostListVCProtocol
 // This contains list of functions that are triggered from Child View Controller aka `LMFeedPostListScreen` to be handled by Parent View Controller
 public protocol LMFeedPostListVCFromProtocol: AnyObject {
-    func tableViewScrolled(_ scrollView: UIScrollView)
-    func postDataFetched(isEmpty: Bool)
+    func onPostListScrolled(_ scrollView: UIScrollView)
+    func onPostDataFetched(isEmpty: Bool)
 }
 
 // MARK: LMFeedPostListVCToProtocol
@@ -23,7 +23,7 @@ public protocol LMFeedPostListVCToProtocol: AnyObject {
 
 @IBDesignable
 open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtocol {
-    open private(set) lazy var tableView: LMTableView = {
+    open private(set) lazy var postList: LMTableView = {
         let table = LMTableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.dataSource = self
@@ -59,21 +59,21 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
-        view.addSubview(tableView)
+        view.addSubview(postList)
     }
     
     
     // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
-        view.pinSubView(subView: tableView)
+        view.pinSubView(subView: postList)
     }
     
     
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
-        tableView.refreshControl = refreshControl
+        postList.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
     }
     
@@ -88,7 +88,7 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
     open override func setupAppearance() {
         super.setupAppearance()
         view.backgroundColor = Appearance.shared.colors.backgroundColor
-        tableView.backgroundColor = Appearance.shared.colors.clear
+        postList.backgroundColor = Appearance.shared.colors.clear
     }
     
     
@@ -130,24 +130,24 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
     
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        tableView.visibleCells.forEach { cell in
+        postList.visibleCells.forEach { cell in
             (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
         }
     }
     
     open func reloadTable(for index: IndexSet? = nil) {
-        tableView.visibleCells.forEach { cell in
+        postList.visibleCells.forEach { cell in
             (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
         }
         
-        tableView.reloadTableForSection(for: index)
+        postList.reloadTableForSection(for: index)
     }
     
     
     // MARK: LMFeedPostListViewModelProtocol
     open func updateHeader(with data: [LMFeedPostTableCellProtocol], section: Int) {
         self.data = data
-        (tableView.headerView(forSection: section) as? LMFeedPostHeaderView)?.pinButton.isHidden.toggle()
+        (postList.headerView(forSection: section) as? LMFeedPostHeaderView)?.pinButton.isHidden.toggle()
     }
     
     open func navigateToEditScreen(for postID: String) {
@@ -166,35 +166,27 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
                 }
             }
             
-            tableView.backgroundView = emptyListView
-            emptyListView.setHeightConstraint(with: tableView.heightAnchor)
-            emptyListView.setWidthConstraint(with: tableView.widthAnchor)
+            postList.backgroundView = emptyListView
+            emptyListView.setHeightConstraint(with: postList.heightAnchor)
+            emptyListView.setWidthConstraint(with: postList.widthAnchor)
         } else {
-            tableView.backgroundView = nil
+            postList.backgroundView = nil
         }
         
         guard reloadNow else { return }
         
-        let initialCount = self.data.count
-        let newCount = data.count
         self.data = data
         
         if let index {
             reloadTable(for: index)
-        } else if newCount > initialCount {
-            UIView.performWithoutAnimation {
-                tableView.beginUpdates()
-                tableView.insertSections(IndexSet(integersIn: (initialCount..<newCount)), with: .none)
-                tableView.endUpdates()
-            }
         } else {
             reloadTable()
         }
-        delegate?.postDataFetched(isEmpty: self.data.isEmpty)
+        delegate?.onPostDataFetched(isEmpty: self.data.isEmpty)
     }
     
     open func showHideFooterLoader(isShow: Bool) {
-        tableView.showHideFooterLoader(isShow: isShow)
+        postList.showHideFooterLoader(isShow: isShow)
     }
     
     open func showActivityLoader() {
@@ -203,14 +195,14 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
     }
     
     open func navigateToDeleteScreen(for postID: String) {
-        guard let viewcontroller = LMFeedDeleteReviewViewModel.createModule(postID: postID) else { return }
+        guard let viewcontroller = LMFeedDeleteViewModel.createModule(postID: postID) else { return }
         viewcontroller.modalPresentationStyle = .overFullScreen
         present(viewcontroller, animated: false)
     }
     
     open func navigateToReportScreen(for postID: String, creatorUUID: String) {
         do {
-            let viewcontroller = try LMFeedReportContentViewModel.createModule(creatorUUID: creatorUUID, postID: postID)
+            let viewcontroller = try LMFeedReportViewModel.createModule(creatorUUID: creatorUUID, postID: postID)
             navigationController?.pushViewController(viewcontroller, animated: true)
         } catch let error {
             print(error.localizedDescription)
@@ -286,11 +278,11 @@ extension LMFeedPostListScreen: UITableViewDataSource, UITableViewDelegate, UITa
     }
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        delegate?.tableViewScrolled(scrollView)
+        delegate?.onPostListScrolled(scrollView)
     }
     
     open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        tableView.visibleCells.forEach { cell in
+        postList.visibleCells.forEach { cell in
             (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
         }
     }
@@ -306,9 +298,9 @@ extension LMFeedPostListScreen: UITableViewDataSource, UITableViewDelegate, UITa
     }
 
     func scrollingFinished() {
-        for cell in tableView.visibleCells {
+        for cell in postList.visibleCells {
             if type(of: cell) == LMFeedPostMediaCell.self,
-               tableView.percentVisibility(of: cell) >= 0.8 {
+               postList.percentVisibility(of: cell) >= 0.8 {
                 (cell as? LMFeedPostMediaCell)?.tableViewScrolled(isPlay: true)
                 break
             }

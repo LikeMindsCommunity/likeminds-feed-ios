@@ -1,5 +1,6 @@
 //
 //  LMFeedNotificationScreen.swift
+//  LMFeedNotificationFeedViewController.swift
 //  lm-feedCore-iOS
 //
 //  Created by Devansh Mohata on 21/01/24.
@@ -11,7 +12,7 @@ import UIKit
 @IBDesignable
 open class LMFeedNotificationScreen: LMViewController {
     // MARK: UI Elements
-    open private(set) lazy var tableView: LMTableView = {
+    open private(set) lazy var notificationListView: LMTableView = {
         let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
@@ -34,21 +35,22 @@ open class LMFeedNotificationScreen: LMViewController {
     }()
     
     // MARK: Data Variables
-    public var viewModel: LMFeedNotificationViewModel?
-    public var notifications: [LMFeedNotificationItem.ContentModel] = []
-    
+
+    public var viewModel: LMFeedNotificationFeedViewModel?
+    public var notificationData: [LMFeedNotificationItem.ContentModel] = []
+        
     
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
-        view.addSubview(tableView)
+        view.addSubview(notificationListView)
     }
     
     
     // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
-        view.pinSubView(subView: tableView)
+        view.pinSubView(subView: notificationListView)
     }
     
     
@@ -68,7 +70,7 @@ open class LMFeedNotificationScreen: LMViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationTitleAndSubtitle(with: "Notifications", subtitle: nil, alignment: .center)
-        tableView.refreshControl = refreshControl
+        notificationListView.refreshControl = refreshControl
         viewModel?.getNotifications(isInitialFetch: true)
         
         LMFeedCore.analytics?.trackEvent(for: .notificationPageOpened, eventProperties: [:])
@@ -98,11 +100,11 @@ open class LMFeedNotificationScreen: LMViewController {
 // MARK: UITableView
 extension LMFeedNotificationScreen: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        notifications.count
+        notificationData.count
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let data = notifications[safe: indexPath.row],
+        if let data = notificationData[safe: indexPath.row],
            let cell = tableView.dequeueReusableCell(LMUIComponents.shared.notificationItem) {
             cell.configure(with: data) { [weak self] in
                 self?.viewModel?.markReadNotification(activityId: data.notificationID)
@@ -114,7 +116,7 @@ extension LMFeedNotificationScreen: UITableViewDataSource, UITableViewDelegate, 
     }
     
     open func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        let count = notifications.count
+        let count = notificationData.count
         if !indexPaths.filter({ $0.row > count }).isEmpty {
             viewModel?.getNotifications(isInitialFetch: false)
         }
@@ -128,18 +130,18 @@ extension LMFeedNotificationScreen: UITableViewDataSource, UITableViewDelegate, 
 // MARK: LMFeedNotificationViewModelProtocol
 extension LMFeedNotificationScreen: LMFeedNotificationViewModelProtocol {
     public func showNotifications(with data: [LMFeedNotificationItem.ContentModel], indexPath: IndexPath?) {
-        tableView.backgroundView = nil
-        notifications = data
+        notificationListView.backgroundView = nil
+        notificationData = data
         
         if let indexPath {
-            tableView.reloadRows(at: [indexPath], with: .none)
+            notificationListView.reloadRows(at: [indexPath], with: .none)
         } else {
-            tableView.reloadData()
+            notificationListView.reloadData()
         }
     }
     
     public func showHideTableLoader(isShow: Bool) {
-        tableView.showHideFooterLoader(isShow: isShow)
+        notificationListView.showHideFooterLoader(isShow: isShow)
     }
     
     public func showError(with message: String) {
@@ -153,8 +155,8 @@ extension LMFeedNotificationScreen: LMFeedNotificationViewModelProtocol {
     }
     
     public func showEmptyNotificationView() {
-        tableView.backgroundView = emptyNotificationView
-        emptyNotificationView.heightAnchor.constraint(equalTo: tableView.heightAnchor, multiplier: 1).isActive = true
-        emptyNotificationView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1).isActive = true
+        notificationListView.backgroundView = emptyNotificationView
+        emptyNotificationView.heightAnchor.constraint(equalTo: notificationListView.heightAnchor, multiplier: 1).isActive = true
+        emptyNotificationView.widthAnchor.constraint(equalTo: notificationListView.widthAnchor, multiplier: 1).isActive = true
     }
 }

@@ -1,5 +1,5 @@
 //
-//  LMFeedReportContentViewModel.swift
+//  LMFeedReportViewModel.swift
 //  lm-feedCore-iOS
 //
 //  Created by Devansh Mohata on 31/01/24.
@@ -7,8 +7,8 @@
 
 import LikeMindsFeed
 
-public final class LMFeedReportContentViewModel {
-    weak var delegate: LMFeedReportContentViewModelProtocol?
+public final class LMFeedReportViewModel {
+    weak var delegate: LMFeedReportViewModelProtocol?
     let postID: String
     let commentID: String?
     let replyCommentID: String?
@@ -22,7 +22,7 @@ public final class LMFeedReportContentViewModel {
         replyCommentID ?? commentID ?? postID
     }
     
-    init(delegate: LMFeedReportContentViewModelProtocol?, postID: String, commentID: String?, replyCommentID: String?, creatorUUID: String) {
+    init(delegate: LMFeedReportViewModelProtocol?, postID: String, commentID: String?, replyCommentID: String?, creatorUUID: String) {
         self.delegate = delegate
         self.reportTags = []
         self.selectedTag = -1

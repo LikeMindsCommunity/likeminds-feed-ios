@@ -37,7 +37,7 @@ open class LMUniversalFeedScreen: LMViewController {
         return stack
     }()
     
-    open private(set) lazy var allTopicsButton: LMButton = {
+    open private(set) lazy var topicSelectionButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(Constants.shared.strings.allTopics, for: .normal)
         button.setImage(Constants.shared.images.downArrow, for: .normal)
@@ -138,7 +138,7 @@ open class LMUniversalFeedScreen: LMViewController {
         }
         
         topicContainerView.addSubview(topicStackView)
-        topicStackView.addArrangedSubview(allTopicsButton)
+        topicStackView.addArrangedSubview(topicSelectionButton)
         topicStackView.addArrangedSubview(topicCollection)
         topicStackView.addArrangedSubview(clearButton)
     }
@@ -172,7 +172,7 @@ open class LMUniversalFeedScreen: LMViewController {
         createPostButtonWidth = createPostButton.setWidthConstraint(with: createPostButton.heightAnchor)
         createPostButtonWidth?.isActive = false
         
-        allTopicsButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        topicSelectionButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         clearButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     }
     
@@ -181,19 +181,14 @@ open class LMUniversalFeedScreen: LMViewController {
     open override func setupActions() {
         super.setupActions()
         
-        allTopicsButton.addTarget(self, action: #selector(didTapAllTopicsButton), for: .touchUpInside)
+        topicSelectionButton.addTarget(self, action: #selector(didTapTopicSelection), for: .touchUpInside)
         clearButton.addTarget(self, action: #selector(didTapClearButton), for: .touchUpInside)
         createPostButton.addTarget(self, action: #selector(didTapNewPostButton), for: .touchUpInside)
         feedListDelegate = postList
     }
     
     @objc
-    open func didTapNavigationMenuButton() {
-        print(#function)
-    }
-    
-    @objc
-    open func didTapAllTopicsButton() {
+    open func didTapTopicSelection() {
         do {
             let viewController = try LMFeedTopicSelectionViewModel.createModule(topicEnabledState: false, isShowAllTopicsButton: true, delegate: self)
             navigationController?.pushViewController(viewController, animated: true)
@@ -274,7 +269,6 @@ open class LMUniversalFeedScreen: LMViewController {
     open override func setupNavigationBar() {
         super.setupNavigationBar()
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: Constants.shared.images.menuIcon, style: .plain, target: self, action: #selector(didTapNavigationMenuButton))
         navigationController?.navigationBar.backgroundColor = Appearance.shared.colors.navigationBackgroundColor
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.appName, subtitle: nil, alignment: .center)
         
@@ -284,7 +278,7 @@ open class LMUniversalFeedScreen: LMViewController {
     
     @objc
     open func didTapNotificationButton() {
-        let viewcontroller = LMFeedNotificationViewModel.createModule()
+        let viewcontroller = LMFeedNotificationFeedViewModel.createModule()
         navigationController?.pushViewController(viewcontroller, animated: true)
     }
 }
@@ -322,7 +316,7 @@ extension LMUniversalFeedScreen: LMUniversalFeedViewModelProtocol {
         topicContainerView.isHidden = !isShowTopicFeed
         
         if isShowTopicFeed {
-            allTopicsButton.isHidden = !selectedTopics.isEmpty
+            topicSelectionButton.isHidden = !selectedTopics.isEmpty
             topicCollection.isHidden = selectedTopics.isEmpty
             clearButton.isHidden = selectedTopics.isEmpty
         }
@@ -334,7 +328,7 @@ extension LMUniversalFeedScreen: LMUniversalFeedViewModelProtocol {
         
         topicCollection.reloadData()
 
-        allTopicsButton.isHidden = !topics.isEmpty
+        topicSelectionButton.isHidden = !topics.isEmpty
         topicCollection.isHidden = topics.isEmpty
         clearButton.isHidden = topics.isEmpty
     }
@@ -360,7 +354,7 @@ extension LMUniversalFeedScreen: LMFeedTopicViewCellProtocol {
 // MARK: LMFeedPostListVCFromProtocol
 @objc
 extension LMUniversalFeedScreen: LMFeedPostListVCFromProtocol {
-    open func tableViewScrolled(_ scrollView: UIScrollView) {
+    open func onPostListScrolled(_ scrollView: UIScrollView) {
         let currentVelocityY =  scrollView.panGestureRecognizer.velocity(in: scrollView.superview).y
         let currentVelocityYSign = Int(currentVelocityY).signum()
         if currentVelocityYSign != lastVelocityYSign &&
@@ -385,7 +379,7 @@ extension LMUniversalFeedScreen: LMFeedPostListVCFromProtocol {
         }
     }
     
-    open func postDataFetched(isEmpty: Bool) {
+    open func onPostDataFetched(isEmpty: Bool) {
         createPostButton.isHidden = isEmpty
     }
 }

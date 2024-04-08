@@ -11,7 +11,7 @@ import UIKit
 @IBDesignable
 open class LMFeedPostDetailScreen: LMViewController {
     // MARK: UI Elements
-    open private(set) lazy var tableView: LMTableView = {
+    open private(set) lazy var postDetailListView: LMTableView = {
         let table = LMTableView(frame: .zero, style: .grouped).translatesAutoresizingMaskIntoConstraints()
         table.separatorStyle = .none
         table.showsVerticalScrollIndicator = false
@@ -75,7 +75,7 @@ open class LMFeedPostDetailScreen: LMViewController {
         return label
     }()
     
-    open private(set) lazy var replyCross: LMButton = {
+    open private(set) lazy var removeReplyButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(Constants.shared.images.xmarkIcon, for: .normal)
@@ -136,7 +136,7 @@ open class LMFeedPostDetailScreen: LMViewController {
     open override func setupViews() {
         super.setupViews()
         
-        view.addSubview(tableView)
+        view.addSubview(postDetailListView)
         view.addSubview(containerView)
         
         containerView.addSubview(containerStackView)
@@ -147,7 +147,7 @@ open class LMFeedPostDetailScreen: LMViewController {
         containerStackView.addArrangedSubview(stackView)
         
         replyView.addSubview(replyNameLabel)
-        replyView.addSubview(replyCross)
+        replyView.addSubview(removeReplyButton)
         
         stackView.addArrangedSubview(inputTextView)
         stackView.addArrangedSubview(sendButton)
@@ -158,11 +158,11 @@ open class LMFeedPostDetailScreen: LMViewController {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        tableView.addConstraint(top: (view.safeAreaLayoutGuide.topAnchor, 0),
+        postDetailListView.addConstraint(top: (view.safeAreaLayoutGuide.topAnchor, 0),
                                 leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
                                 trailing: (view.safeAreaLayoutGuide.trailingAnchor, 0))
         
-        containerView.addConstraint(top: (tableView.bottomAnchor, 0),
+        containerView.addConstraint(top: (postDetailListView.bottomAnchor, 0),
                                     leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
                                     trailing: (view.safeAreaLayoutGuide.trailingAnchor, 0))
         containerView.pinSubView(subView: containerStackView)
@@ -180,11 +180,11 @@ open class LMFeedPostDetailScreen: LMViewController {
                                      bottom: (replyView.bottomAnchor, -16),
                                      leading: (replyView.leadingAnchor, 16))
         
-        replyCross.addConstraint( leading: (replyNameLabel.trailingAnchor, 16),
+        removeReplyButton.addConstraint( leading: (replyNameLabel.trailingAnchor, 16),
                                   trailing: (replyView.trailingAnchor, -16),
                                   centerY: (replyNameLabel.centerYAnchor, 0))
         
-        replyCross.setWidthConstraint(with: replyCross.heightAnchor)
+        removeReplyButton.setWidthConstraint(with: removeReplyButton.heightAnchor)
         
         stackView.addConstraint(leading: (containerView.leadingAnchor, 16),
                                 trailing: (containerView.trailingAnchor, -16))
@@ -213,10 +213,10 @@ open class LMFeedPostDetailScreen: LMViewController {
         super.setupActions()
         inputTextView.mentionDelegate = self
         
-        replyCross.addTarget(self, action: #selector(didTapReplyCrossButton), for: .touchUpInside)
+        removeReplyButton.addTarget(self, action: #selector(didTapReplyCrossButton), for: .touchUpInside)
         sendButton.addTarget(self, action: #selector(didTapSendCommentButton), for: .touchUpInside)
         
-        tableView.refreshControl = refreshControl
+        postDetailListView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
     }
     
@@ -240,7 +240,7 @@ open class LMFeedPostDetailScreen: LMViewController {
     open func pullToRefresh(_ refreshControl: UIRefreshControl) {
         refreshControl.endRefreshing()
         
-        tableView.visibleCells.forEach { cell in
+        postDetailListView.visibleCells.forEach { cell in
             (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
         }
         
@@ -251,7 +251,7 @@ open class LMFeedPostDetailScreen: LMViewController {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        tableView.backgroundColor = Appearance.shared.colors.backgroundColor
+        postDetailListView.backgroundColor = Appearance.shared.colors.backgroundColor
         view.backgroundColor = Appearance.shared.colors.white
     }
     
@@ -315,13 +315,13 @@ open class LMFeedPostDetailScreen: LMViewController {
     
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        tableView.visibleCells.forEach { cell in
+        postDetailListView.visibleCells.forEach { cell in
             (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
         }
     }
     
     open func reloadTable(for index: IndexPath? = nil) {
-        tableView.reloadTable(for: index)
+        postDetailListView.reloadTable(for: index)
         scrollingFinished()
     }
     
@@ -450,14 +450,14 @@ extension LMFeedPostDetailScreen: UITableViewDataSource, UITableViewDelegate {
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if let frozenContentOffsetForRowAnimation,
-            tableView.contentOffset != frozenContentOffsetForRowAnimation {
-            tableView.setContentOffset(frozenContentOffsetForRowAnimation, animated: false)
+            postDetailListView.contentOffset != frozenContentOffsetForRowAnimation {
+            postDetailListView.setContentOffset(frozenContentOffsetForRowAnimation, animated: false)
         }
     }
     
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         frozenContentOffsetForRowAnimation = nil
-        tableView.visibleCells.forEach { cell in
+        postDetailListView.visibleCells.forEach { cell in
             (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
         }
     }
@@ -483,9 +483,9 @@ extension LMFeedPostDetailScreen: UITableViewDataSource, UITableViewDelegate {
     }
 
     func scrollingFinished() {
-        tableView.visibleCells.forEach { cell in
+        postDetailListView.visibleCells.forEach { cell in
             if type(of: cell) == LMFeedPostDetailMediaCell.self,
-               tableView.percentVisibility(of: cell) >= 0.8 {
+               postDetailListView.percentVisibility(of: cell) >= 0.8 {
                 (cell as? LMFeedPostMediaCell)?.tableViewScrolled(isPlay: true)
             }
         }
@@ -539,19 +539,19 @@ extension LMFeedPostDetailScreen: LMFeedPostCommentProtocol {
 extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
     public func deleteRows(for section: Int, comments: [LMFeedCommentContentModel]) {
         commentsData = comments
-        if section < tableView.numberOfSections {
+        if section < postDetailListView.numberOfSections {
             var rows: [IndexPath] = []
-            for i in 0..<tableView.numberOfRows(inSection: section) {
+            for i in 0..<postDetailListView.numberOfRows(inSection: section) {
                 rows.append(.init(row: i, section: section))
             }
             
             UIView.performWithoutAnimation { [weak self] in
-                self?.tableView.beginUpdates()
-                self?.tableView.deleteRows(at: rows, with: .none)
-                self?.tableView.endUpdates()
+                self?.postDetailListView.beginUpdates()
+                self?.postDetailListView.deleteRows(at: rows, with: .none)
+                self?.postDetailListView.endUpdates()
             }
             
-            frozenContentOffsetForRowAnimation = tableView.contentOffset
+            frozenContentOffsetForRowAnimation = postDetailListView.contentOffset
         }
     }
     
@@ -559,48 +559,48 @@ extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
         commentsData = comments
         setNavigationTitle(with: totalCommentCount)
         postData?.totalCommentCount = totalCommentCount
-        (tableView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.updateCommentCount(with: totalCommentCount)
+        (postDetailListView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.updateCommentCount(with: totalCommentCount)
         UIView.performWithoutAnimation { [weak self] in
-            self?.tableView.beginUpdates()
-            self?.tableView.setContentOffset(self?.tableView.contentOffset ?? .zero, animated: false)
-            self?.tableView.insertSections(index, with: .none)
-            self?.tableView.endUpdates()
+            self?.postDetailListView.beginUpdates()
+            self?.postDetailListView.setContentOffset(self?.postDetailListView.contentOffset ?? .zero, animated: false)
+            self?.postDetailListView.insertSections(index, with: .none)
+            self?.postDetailListView.endUpdates()
         }
         
         for idx in index {
-            tableView.scrollToRow(at: IndexPath(row: NSNotFound, section: idx), at: .top, animated: true)
+            postDetailListView.scrollToRow(at: IndexPath(row: NSNotFound, section: idx), at: .top, animated: true)
         }
     }
     
     public func deleteComment(at index: Int, with comments: [LikeMindsFeedUI.LMFeedCommentContentModel], totalCommentCount: Int) {
         commentsData = comments
         setNavigationTitle(with: totalCommentCount)
-        (tableView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.updateCommentCount(with: totalCommentCount)
+        (postDetailListView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.updateCommentCount(with: totalCommentCount)
         UIView.performWithoutAnimation { [weak self] in
-            self?.tableView.beginUpdates()
-            self?.tableView.deleteSections(IndexSet(integer: index), with: .none)
-            self?.tableView.endUpdates()
+            self?.postDetailListView.beginUpdates()
+            self?.postDetailListView.deleteSections(IndexSet(integer: index), with: .none)
+            self?.postDetailListView.endUpdates()
         }
     }
     
     public func reloadComments(with comments: [LMFeedCommentContentModel], index: IndexSet?) {
         commentsData = comments
-        let originalContentOffset = tableView.contentOffset
+        let originalContentOffset = postDetailListView.contentOffset
         if let index {
             UIView.performWithoutAnimation { [weak self] in
-                self?.tableView.reloadSections(index, with: .none)
+                self?.postDetailListView.reloadSections(index, with: .none)
             }
         } else {
-            let indexSet = IndexSet(integersIn: 1..<tableView.numberOfSections)
+            let indexSet = IndexSet(integersIn: 1..<postDetailListView.numberOfSections)
             UIView.performWithoutAnimation { [weak self] in
-                self?.tableView.beginUpdates()
-                self?.tableView.setContentOffset(self?.tableView.contentOffset ?? .zero, animated: false)
-                self?.tableView.reloadSections(indexSet, with: .none)
-                self?.tableView.endUpdates()
+                self?.postDetailListView.beginUpdates()
+                self?.postDetailListView.setContentOffset(self?.postDetailListView.contentOffset ?? .zero, animated: false)
+                self?.postDetailListView.reloadSections(indexSet, with: .none)
+                self?.postDetailListView.endUpdates()
             }
         }
         
-        if tableView.contentOffset != originalContentOffset {
+        if postDetailListView.contentOffset != originalContentOffset {
             frozenContentOffsetForRowAnimation = originalContentOffset
         }
     }
@@ -626,15 +626,15 @@ extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
             }
         }
         
-        if tableView.numberOfSections >= 1,
+        if postDetailListView.numberOfSections >= 1,
            scrollToCommentSection {
-            tableView.scrollToRow(at: IndexPath(row: NSNotFound, section: 1), at: .bottom, animated: true)
+            postDetailListView.scrollToRow(at: IndexPath(row: NSNotFound, section: 1), at: .bottom, animated: true)
         }
     }
     
     public func resetHeaderData() {
         postData?.headerData.isPinned.toggle()
-        (tableView.headerView(forSection: 0) as? LMFeedPostDetailHeaderView)?.togglePinStatus()
+        (postDetailListView.headerView(forSection: 0) as? LMFeedPostDetailHeaderView)?.togglePinStatus()
     }
     
     public func resetFooterData(isSaved: Bool, isLiked: Bool) {
@@ -650,7 +650,7 @@ extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
         
         guard let postData else { return }
         
-        (tableView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.configure(with: postData.footerData, postID: postData.postID, delegate: self, commentCount: postData.totalCommentCount)
+        (postDetailListView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.configure(with: postData.footerData, postID: postData.postID, delegate: self, commentCount: postData.totalCommentCount)
     }
     
     public func changeCommentLike(for indexPath: IndexPath) {
@@ -692,14 +692,14 @@ extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
     }
     
     public func navigateToDeleteScreen(for postID: String, commentID: String?) {
-        guard let viewcontroller = LMFeedDeleteReviewViewModel.createModule(postID: postID, commentID: commentID) else { return }
+        guard let viewcontroller = LMFeedDeleteViewModel.createModule(postID: postID, commentID: commentID) else { return }
         viewcontroller.modalPresentationStyle = .overFullScreen
         present(viewcontroller, animated: false)
     }
     
     public func navigateToReportScreen(for postID: String, creatorUUID: String, commentID: String?, replyCommentID: String?) {
         do {
-            let viewcontroller = try LMFeedReportContentViewModel.createModule(creatorUUID: creatorUUID, postID: postID, commentID: commentID, replyCommentID: replyCommentID)
+            let viewcontroller = try LMFeedReportViewModel.createModule(creatorUUID: creatorUUID, postID: postID, commentID: commentID, replyCommentID: replyCommentID)
             navigationController?.pushViewController(viewcontroller, animated: true)
         } catch let error {
             print(error.localizedDescription)

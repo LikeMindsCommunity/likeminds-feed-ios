@@ -64,7 +64,7 @@ open class LMFeedCreatePostScreen: LMViewController {
         textView.dataDetectorTypes = [.link]
         textView.mentionDelegate = self
         textView.backgroundColor = Appearance.shared.colors.clear
-        textView.isScrollEnabled = false
+        textView.isScrollEnabled = true
         textView.isEditable = true
         textView.placeHolderText = "Write Something here..."
         textView.backgroundColor = Appearance.shared.colors.clear
@@ -175,16 +175,16 @@ open class LMFeedCreatePostScreen: LMViewController {
     
     // MARK: Data Variables
     public var viewModel: LMFeedCreatePostViewModel?
-    public var documentCellData: [LMFeedDocumentPreview.ContentModel] = []
+    public var documentAttachmentData: [LMFeedDocumentPreview.ContentModel] = []
     public var documenTableHeight: NSLayoutConstraint?
-    public var documentCellHeight: CGFloat = 90
+    public var documentAttachmentHeight: CGFloat = 90
     
     public var taggingViewHeight: NSLayoutConstraint?
     public var inputTextViewHeightConstraint: NSLayoutConstraint?
     public var textInputMinimumHeight: CGFloat = 80
     public var textInputMaximumHeight: CGFloat = 150
     
-    public var mediaCellData: [LMFeedMediaProtocol] = []
+    public var mediaAttachmentData: [LMFeedMediaProtocol] = []
     
     public lazy var documentPicker: UIDocumentPickerViewController = {
         if #available(iOS 14, *) {
@@ -227,8 +227,6 @@ open class LMFeedCreatePostScreen: LMViewController {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        view.pinSubView(subView: containerView)
-        
         containerView.addConstraint(top: (view.safeAreaLayoutGuide.topAnchor, 0),
                                     bottom: (view.safeAreaLayoutGuide.bottomAnchor, 0),
                                     leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
@@ -245,12 +243,13 @@ open class LMFeedCreatePostScreen: LMViewController {
         taggingView.addConstraint(top: (inputTextView.bottomAnchor, 0),
                                   leading: (inputTextView.leadingAnchor, 0),
                                   trailing: (inputTextView.trailingAnchor, 0))
+        
         taggingView.bottomAnchor.constraint(lessThanOrEqualTo: scrollStackView.bottomAnchor, constant: -16).isActive = true
         taggingViewHeight = taggingView.setHeightConstraint(with: 10)
         
         inputTextViewHeightConstraint = inputTextView.setHeightConstraint(with: textInputMinimumHeight)
         
-        documenTableHeight = documentTableView.setHeightConstraint(with: documentCellHeight)
+        documenTableHeight = documentTableView.setHeightConstraint(with: documentAttachmentHeight)
         scrollView.setWidthConstraint(with: containerStackView.widthAnchor)
         scrollStackView.setWidthConstraint(with: containerStackView.widthAnchor)
         mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
@@ -265,13 +264,7 @@ open class LMFeedCreatePostScreen: LMViewController {
         }
     }
     
-    
-    // MARK: setupAppearance
-    open override func setupAppearance() {
-        super.setupAppearance()
-//        taggingView.dropShadow(color: .black.withAlphaComponent(0.1), offSet: .init(width: 1, height: 1))
-    }
-    
+        
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
@@ -353,25 +346,25 @@ open class LMFeedCreatePostScreen: LMViewController {
     }
     
     open func observeCreateButton() {
-        createPostButton.isEnabled = !mediaCellData.isEmpty || !inputTextView.getText().isEmpty || !documentCellData.isEmpty
+        createPostButton.isEnabled = !mediaAttachmentData.isEmpty || !inputTextView.getText().isEmpty || !documentAttachmentData.isEmpty
     }
 }
 
 
 // MARK: UITableView
 extension LMFeedCreatePostScreen: UITableViewDataSource, UITableViewDelegate {
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { documentCellData.count }
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { documentAttachmentData.count }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(LMFeedCreatePostDocumentPreviewCell.self) {
-            cell.configure(data: documentCellData[indexPath.row], delegate: self)
+            cell.configure(data: documentAttachmentData[indexPath.row], delegate: self)
             return cell
         }
         return UITableViewCell()
     }
     
     open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        documentCellHeight
+        documentAttachmentHeight
     }
 }
 
@@ -390,17 +383,17 @@ extension LMFeedCreatePostScreen: LMFeedDocumentPreviewProtocol {
 
 // MARK: UICollectionView
 extension LMFeedCreatePostScreen: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { mediaCellData.count }
+    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { mediaAttachmentData.count }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let data = mediaCellData[indexPath.row] as? LMFeedImageCollectionCell.ContentModel,
+        if let data = mediaAttachmentData[indexPath.row] as? LMFeedImageCollectionCell.ContentModel,
            let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreview, for: indexPath) {
             cell.configure(with: data) { [weak self] imageID in
                 guard let self else { return }
                 viewModel?.removeAsset(url: imageID)
             }
             return cell
-        } else if let data = mediaCellData[indexPath.row] as? LMFeedVideoCollectionCell.ContentModel,
+        } else if let data = mediaAttachmentData[indexPath.row] as? LMFeedVideoCollectionCell.ContentModel,
                   let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreview, for: indexPath) {
             cell.configure(with: data) { [weak self] videoID in
                 guard let self else { return }
@@ -473,10 +466,10 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
     public func showMedia(documents: [LMFeedDocumentPreview.ContentModel], isShowAddMore: Bool, isShowBottomTab: Bool) {
         linkPreview.isHidden = true
         documentTableView.isHidden = documents.isEmpty
-        documentCellData.append(contentsOf: documents)
+        documentAttachmentData.append(contentsOf: documents)
         documentTableView.reloadData()
         if !documents.isEmpty {
-            documenTableHeight?.constant = CGFloat(documents.count) * documentCellHeight
+            documenTableHeight?.constant = CGFloat(documents.count) * documentAttachmentHeight
         }
         addMoreButton.isHidden = !isShowAddMore
         
@@ -489,7 +482,7 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
         mediaCollectionView.isHidden = media.isEmpty
         mediaPageControl.isHidden = media.count < 2
         mediaPageControl.numberOfPages = media.count
-        mediaCellData.append(contentsOf: media)
+        mediaAttachmentData.append(contentsOf: media)
         mediaCollectionView.reloadData()
         DispatchQueue.main.async { [weak self] in
             self?.scrollingFinished()
@@ -505,8 +498,8 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
         mediaPageControl.isHidden = true
         documentTableView.isHidden = true
         addMoreButton.isHidden = true
-        mediaCellData.removeAll(keepingCapacity: true)
-        documentCellData.removeAll(keepingCapacity: true)
+        mediaAttachmentData.removeAll(keepingCapacity: true)
+        documentAttachmentData.removeAll(keepingCapacity: true)
     }
     
     public func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int) {
@@ -576,13 +569,13 @@ extension LMFeedCreatePostScreen: LMFeedTaggingTextViewProtocol {
 // MARK: Media Control
 public extension LMFeedCreatePostScreen {
     func openImagePicker(_ mediaType: Settings.Fetch.Assets.MediaTypes, isFirstTime: Bool, maxSelection: Int) {
-        var currentAssets: [(asset: PHAsset, url: URL)] = []
+        var currentAssets: [(asset:  PHAsset, url: URL, data: Data)] = []
         
         let imagePicker = ImagePickerController()
         imagePicker.settings.selection.max = maxSelection
         imagePicker.settings.theme.selectionStyle = .numbered
         imagePicker.settings.fetch.assets.supportedMediaTypes = isFirstTime ? [mediaType] : [.image, .video]
-        imagePicker.settings.selection.unselectOnReachingMax = false
+        imagePicker.settings.selection.unselectOnReachingMax = true
         
         mediaCollectionView.visibleCells.forEach { cell in
             (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
@@ -591,7 +584,16 @@ public extension LMFeedCreatePostScreen {
         presentImagePicker(imagePicker, select: { asset in
             asset.asyncURL { url in
                 guard let url else { return }
-                currentAssets.append((asset, url))
+                
+                let fm = FileManager.default
+                let destination = fm.temporaryDirectory.appendingPathComponent("\(Int(Date().timeIntervalSince1970))_\(url.lastPathComponent)")
+                do {
+                    try fm.copyItem(at: url, to: destination)
+                    let data = try Data(contentsOf: url)
+                    currentAssets.append((asset, destination, data))
+                } catch {
+                    print(error.localizedDescription)
+                }
             }
         }, deselect: { asset in
             asset.asyncURL { _ in
@@ -599,7 +601,7 @@ public extension LMFeedCreatePostScreen {
             }
         }, cancel: { _ in
         }, finish: { [weak self] assets in
-            self?.viewModel?.handleAssets(assets: currentAssets)
+            self?.viewModel?.handleAssets(assets: currentAssets.map({ ($0.asset.mediaType, $0.url, $0.data) }))
         })
     }
     

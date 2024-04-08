@@ -38,7 +38,7 @@ open class LMFeedMemberItem: LMTableViewCell {
     }()
     
     // MARK: Data Variables
-    public var touchCallback: (() -> Void)?
+    public var onTapCallback: (() -> Void)?
     
     
     // MARK: setupViews
@@ -70,12 +70,12 @@ open class LMFeedMemberItem: LMTableViewCell {
     
     // MARK: setupActions
     open override func setupActions() {
-        containerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapView)))
+        containerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapMemberItem)))
     }
     
     @objc
-    open func didTapView() {
-        touchCallback?()
+    open func didTapMemberItem() {
+        onTapCallback?()
     }
     
     open override func setupAppearance() {
@@ -85,8 +85,8 @@ open class LMFeedMemberItem: LMTableViewCell {
     
     
     // MARK: configure
-    open func configure(with data: ContentModel, touchCallback: (() -> Void)?) {
-        self.touchCallback = touchCallback
+    open func configure(with data: ContentModel, onTapCallback: (() -> Void)?) {
+        self.onTapCallback = onTapCallback
         userTitleLabel.attributedText = setUsername(with: data.username, customTitle: data.customTitle)
         userImage.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.username))
     }

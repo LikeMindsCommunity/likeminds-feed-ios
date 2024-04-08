@@ -23,10 +23,12 @@ public protocol LMFeedCreatePostViewModelProtocol: LMBaseViewControllerProtocol 
 public final class LMFeedCreatePostViewModel {
     public struct Attachment {
         let url: URL
+        let data: Data
         let mediaType: PostCreationAttachmentType
         
-        public init(url: URL, mediaType: PostCreationAttachmentType) {
+        public init(url: URL, data: Data, mediaType: PostCreationAttachmentType) {
             self.url = url
+            self.data = data
             self.mediaType = mediaType
         }
     }
@@ -77,7 +79,7 @@ public final class LMFeedCreatePostViewModel {
                 return
             }
             
-            attachments.append(.init(url: medium.url, fileName: medium.url.lastPathComponent, awsFilePath: filePath, contentType: medium.mediaType))
+            attachments.append(.init(url: medium.url, data: medium.data, fileName: medium.url.lastPathComponent, awsFilePath: filePath, contentType: medium.mediaType))
         }
         
         LMFeedCreatePostOperation.shared.createPost(with: text, topics: selectedTopics.map({ $0.topicID }), files: attachments, linkPreview: linkPreview)
@@ -88,14 +90,12 @@ public final class LMFeedCreatePostViewModel {
 
 // MARK: Assets Arena
 public extension LMFeedCreatePostViewModel {
-    func handleAssets(assets: [(PHAsset, URL)]) {
+    func handleAssets(assets: [(PHAssetMediaType, URL, Data)]) {
         assets.forEach { asset in
-            if !media.contains(where: { $0.url == asset.1 }) {
-                if asset.0.mediaType == .image {
-                    media.append(.init(url: asset.1, mediaType: .image))
-                } else if asset.0.mediaType == .video {
-                    media.append(.init(url: asset.1, mediaType: .video))
-                }
+            if asset.0 == .image {
+                media.append(.init(url: asset.1, data: asset.2, mediaType: .image))
+            } else if asset.0 == .video {
+                media.append(.init(url: asset.1, data: asset.2, mediaType: .video))
             }
         }
         
@@ -109,8 +109,11 @@ public extension LMFeedCreatePostViewModel {
     
     func handleAssets(assets: [URL]) {
         assets.prefix(maxMedia - media.count).forEach { asset in
-            if !media.contains(where: { $0.url == asset }) {
-                media.append(.init(url: asset, mediaType: .document))
+            if !media.contains(where: { $0.url == asset }),
+               asset.startAccessingSecurityScopedResource(),
+               let data = try? Data(contentsOf: asset) {
+                media.append(.init(url: asset, data: data, mediaType: .document))
+                asset.stopAccessingSecurityScopedResource()
             }
         }
         reloadMedia()

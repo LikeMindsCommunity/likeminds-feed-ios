@@ -1,5 +1,5 @@
 //
-//  LMFeedNotificationViewModel.swift
+//  LMFeedNotificationFeedViewModel.swift
 //  lm-feedCore-iOS
 //
 //  Created by Devansh Mohata on 21/01/24.
@@ -15,11 +15,11 @@ public protocol LMFeedNotificationViewModelProtocol: LMBaseViewControllerProtoco
     func showEmptyNotificationView()
 }
 
-public final class LMFeedNotificationViewModel {
+public final class LMFeedNotificationFeedViewModel {
     public var currentPage: Int
     public var isFetchingNotifications: Bool
     public var isLastPage: Bool
-    public var notifications: [LMFeedNotificationDataModel]
+    public var notifications: [LMFeedNotificationFeedDataModel]
     public weak var delegate: LMFeedNotificationViewModelProtocol?
     
     public init(delegate: LMFeedNotificationViewModelProtocol?) {
@@ -32,7 +32,7 @@ public final class LMFeedNotificationViewModel {
     
     public static func createModule() -> LMFeedNotificationScreen {
         let viewcontroller = Components.shared.notificationScreen.init()
-        let viewModel = LMFeedNotificationViewModel(delegate: viewcontroller)
+        let viewModel = LMFeedNotificationFeedViewModel(delegate: viewcontroller)
         
         viewcontroller.viewModel = viewModel
         return viewcontroller
@@ -75,7 +75,7 @@ public final class LMFeedNotificationViewModel {
             if response.success,
                let activities = response.data?.activities,
                let users = response.data?.users {
-                let tempNotifications: [LMFeedNotificationDataModel] = activities.compactMap { activity in
+                let tempNotifications: [LMFeedNotificationFeedDataModel] = activities.compactMap { activity in
                     return self.convertToDataModel(from: activity, users: users)
                 }
                 
@@ -89,7 +89,7 @@ public final class LMFeedNotificationViewModel {
         }
     }
     
-    func convertToDataModel(from activity: Activity, users: [String: User]?) -> LMFeedNotificationDataModel? {
+    func convertToDataModel(from activity: Activity, users: [String: User]?) -> LMFeedNotificationFeedDataModel? {
         let users: [LMFeedUserDataModel] = activity.actionBy?.compactMap { actionBy in
             guard let userInfo = users?[actionBy],
                   let user = convertToUserModel(from: userInfo) else { return nil }
@@ -118,7 +118,7 @@ public final class LMFeedNotificationViewModel {
         return .init(userName: username, userUUID: uuid, userProfileImage: user.imageUrl, customTitle: user.customTitle)
     }
     
-    func getAttachmentType(from attachment: AttachmentType) -> LMFeedNotificationDataModel.AttachmentType {
+    func getAttachmentType(from attachment: AttachmentType) -> LMFeedNotificationFeedDataModel.AttachmentType {
         switch attachment {
         case .image:
             return .image
@@ -132,7 +132,7 @@ public final class LMFeedNotificationViewModel {
     }
 }
 
-extension LMFeedNotificationViewModel {
+extension LMFeedNotificationFeedViewModel {
     func convertToViewModel(indexPath: IndexPath? = nil) {
         let convertedData: [LMFeedNotificationItem.ContentModel] = notifications.map { notification in
                 .init(
@@ -155,7 +155,7 @@ extension LMFeedNotificationViewModel {
 }
 
 // MARK: Read Notification
-extension LMFeedNotificationViewModel {
+extension LMFeedNotificationFeedViewModel {
     func markReadNotification(activityId: String) {
         guard let index = notifications.firstIndex(where: { $0.id == activityId }),
               !notifications[index].isRead else { return }
