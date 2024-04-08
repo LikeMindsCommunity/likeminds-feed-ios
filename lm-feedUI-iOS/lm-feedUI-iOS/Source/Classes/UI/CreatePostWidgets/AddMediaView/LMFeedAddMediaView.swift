@@ -1,5 +1,5 @@
 //
-//  LMFeedCreatePostAddMediaView.swift
+//  LMFeedAddMediaView.swift
 //  lm-feedUI-iOS
 //
 //  Created by Devansh Mohata on 17/01/24.
@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedCreatePostAddMediaView: LMView {
+open class LMFeedAddMediaView: LMView {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()

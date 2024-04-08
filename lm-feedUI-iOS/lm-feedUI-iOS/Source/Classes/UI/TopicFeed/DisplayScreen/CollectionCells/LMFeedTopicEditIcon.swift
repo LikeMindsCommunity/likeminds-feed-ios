@@ -1,5 +1,5 @@
 //
-//  LMFeedTopicEditIconViewCell.swift
+//  LMFeedTopicEditIcon.swift
 //  likeminds-feed-iOS
 //
 //  Created by Devansh Mohata on 20/12/23.
@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedTopicEditIconViewCell: LMCollectionViewCell {
+open class LMFeedTopicEditIcon: LMCollectionViewCell {
     // MARK: UI Elements
     open private(set) lazy var editIcon: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()

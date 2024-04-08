@@ -1,4 +1,5 @@
 //
+//  LMFeedNotificationFeedScreen.swift
 //  LMFeedNotificationFeedViewController.swift
 //  lm-feedCore-iOS
 //
@@ -9,13 +10,13 @@ import LikeMindsFeedUI
 import UIKit
 
 @IBDesignable
-open class LMFeedNotificationFeedViewController: LMViewController {
+open class LMFeedNotificationFeedScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var notificationListView: LMTableView = {
         let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
-        table.register(LMUIComponents.shared.notificationTableCell)
+        table.register(LMUIComponents.shared.notificationItem)
         table.estimatedRowHeight = 50
         table.rowHeight = UITableView.automaticDimension
         table.dataSource = self
@@ -34,9 +35,10 @@ open class LMFeedNotificationFeedViewController: LMViewController {
     }()
     
     // MARK: Data Variables
+
     public var viewModel: LMFeedNotificationFeedViewModel?
-    public var notificationData: [LMFeedNotificationView.ViewModel] = []
-    
+    public var notificationData: [LMFeedNotificationItem.ContentModel] = []
+        
     
     // MARK: setupViews
     open override func setupViews() {
@@ -96,14 +98,14 @@ open class LMFeedNotificationFeedViewController: LMViewController {
 
 
 // MARK: UITableView
-extension LMFeedNotificationFeedViewController: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
+extension LMFeedNotificationFeedScreen: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         notificationData.count
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let data = notificationData[safe: indexPath.row],
-           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.notificationTableCell) {
+           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.notificationItem) {
             cell.configure(with: data) { [weak self] in
                 self?.viewModel?.markReadNotification(activityId: data.notificationID)
                 self?.navigateToPost(from: data.route)
@@ -126,8 +128,8 @@ extension LMFeedNotificationFeedViewController: UITableViewDataSource, UITableVi
 }
 
 // MARK: LMFeedNotificationViewModelProtocol
-extension LMFeedNotificationFeedViewController: LMFeedNotificationViewModelProtocol {
-    public func showNotifications(with data: [LMFeedNotificationView.ViewModel], indexPath: IndexPath?) {
+extension LMFeedNotificationFeedScreen: LMFeedNotificationViewModelProtocol {
+    public func showNotifications(with data: [LMFeedNotificationItem.ContentModel], indexPath: IndexPath?) {
         notificationListView.backgroundView = nil
         notificationData = data
         

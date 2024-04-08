@@ -1,4 +1,5 @@
 //
+//  LMFeedReportScreen.swift
 //  LMFeedReportViewController.swift
 //  lm-feedCore-iOS
 //
@@ -13,7 +14,7 @@ public protocol LMFeedReportViewModelProtocol: LMBaseViewControllerProtocol {
 }
 
 @IBDesignable
-open class LMFeedReportViewController: LMViewController {
+open class LMFeedReportScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
@@ -59,7 +60,7 @@ open class LMFeedReportViewController: LMViewController {
         collection.dataSource = self
         collection.delegate = self
         collection.backgroundColor = Appearance.shared.colors.clear
-        collection.registerCell(type: LMUIComponents.shared.reportCollectionCell)
+        collection.registerCell(type: LMUIComponents.shared.reportItem)
         return collection
     }()
     
@@ -225,11 +226,11 @@ open class LMFeedReportViewController: LMViewController {
 
 
 // MARK: UICollectionView
-extension LMFeedReportViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension LMFeedReportScreen: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { tagsData.count }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.reportCollectionCell, for: indexPath) {
+        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.reportItem, for: indexPath) {
             let name = tagsData[indexPath.row].0
             let tagID = tagsData[indexPath.row].1
             
@@ -249,7 +250,7 @@ extension LMFeedReportViewController: UICollectionViewDataSource, UICollectionVi
 
 
 // MARK: UITextViewDelegate
-extension LMFeedReportViewController: UITextViewDelegate {
+extension LMFeedReportScreen: UITextViewDelegate {
     open func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) == placeholderText {
             textView.text = nil
@@ -269,7 +270,7 @@ extension LMFeedReportViewController: UITextViewDelegate {
 
 
 // MARK: LMFeedReportContentViewModelProtocol
-extension LMFeedReportViewController: LMFeedReportViewModelProtocol {
+extension LMFeedReportScreen: LMFeedReportViewModelProtocol {
     public func updateView(with tags: [(name: String, tagID: Int)], selectedTag: Int, showTextView: Bool) {
         self.tagsData = tags
         self.selectedTag = selectedTag

@@ -10,11 +10,11 @@ import LikeMindsFeedUI
 
 public protocol LMFeedEditPostViewModelProtocol: LMBaseViewControllerProtocol {
     func navigateToTopicView(with topics: [LMFeedTopicDataModel])
-    func setupData(with userData: LMFeedCreatePostHeaderView.ViewDataModel, text: String)
-    func setupDocumentPreview(with data: [LMFeedDocumentPreview.ViewModel])
-    func setupLinkPreview(with data: LMFeedLinkPreview.ViewModel?)
+    func setupData(with userData: LMFeedCreatePostHeaderView.ContentModel, text: String)
+    func setupDocumentPreview(with data: [LMFeedDocumentPreview.ContentModel])
+    func setupLinkPreview(with data: LMFeedLinkPreview.ContentModel?)
     func setupMediaPreview(with mediaCells: [LMFeedMediaProtocol])
-    func setupTopicFeed(with data: LMFeedTopicView.ViewModel)
+    func setupTopicFeed(with data: LMFeedTopicView.ContentModel)
 }
 
 public final class LMFeedEditPostViewModel {
@@ -49,7 +49,7 @@ public final class LMFeedEditPostViewModel {
         self.delegate = delegate
     }
     
-    public static func createModule(for postID: String) -> LMFeedEditPostViewController? {
+    public static func createModule(for postID: String) -> LMFeedEditPostScreen? {
         guard LMFeedCore.isInitialized else { return nil }
         
         let viewcontroller = Components.shared.editPostScreen.init()
@@ -131,7 +131,7 @@ public final class LMFeedEditPostViewModel {
         
         isShowLinkPreview = documents.isEmpty && media.isEmpty
         
-        let headerData: LMFeedCreatePostHeaderView.ViewDataModel = .init(profileImage: postDetail.userDetails.userProfileImage, username: postDetail.userDetails.userName)
+        let headerData: LMFeedCreatePostHeaderView.ContentModel = .init(profileImage: postDetail.userDetails.userProfileImage, username: postDetail.userDetails.userName)
         
         delegate?.setupData(with: headerData, text: postDetail.postContent)
         
@@ -154,7 +154,7 @@ public final class LMFeedEditPostViewModel {
     
     private func setupTopicFeed() {
         let topics: [LMFeedTopicCollectionCellDataModel] = selectedTopics.map({ .init(topic: $0.topicName, topicID: $00.topicID) })
-        let topicData: LMFeedTopicView.ViewModel = .init(topics: topics, isSelectFlow: isShowTopicFeed && topics.isEmpty, isEditFlow: isShowTopicFeed && !topics.isEmpty, isSepratorShown: true)
+        let topicData: LMFeedTopicView.ContentModel = .init(topics: topics, isSelectFlow: isShowTopicFeed && topics.isEmpty, isEditFlow: isShowTopicFeed && !topics.isEmpty, isSepratorShown: true)
         delegate?.setupTopicFeed(with: topicData)
     }
 }
@@ -196,7 +196,7 @@ extension LMFeedEditPostViewModel {
             return
         }
         
-        let linkViewModel: LMFeedLinkPreview.ViewModel = .init(
+        let linkViewModel: LMFeedLinkPreview.ContentModel = .init(
             linkPreview: linkPreview.previewImage,
             title: linkPreview.title,
             description: linkPreview.description,

@@ -42,7 +42,7 @@ public final class LMFeedReportViewModel {
         }
     }
     
-    public static func createModule(creatorUUID: String, postID: String, commentID: String? = nil, replyCommentID: String? = nil) throws -> LMFeedReportViewController {
+    public static func createModule(creatorUUID: String, postID: String, commentID: String? = nil, replyCommentID: String? = nil) throws -> LMFeedReportScreen {
         guard LMFeedCore.isInitialized else { throw LMFeedError.feedNotInitialized }
         let viewcontroller = Components.shared.reportScreen.init()
         let viewmodel = Self.init(delegate: viewcontroller, postID: postID, commentID: commentID, replyCommentID: replyCommentID, creatorUUID: creatorUUID)

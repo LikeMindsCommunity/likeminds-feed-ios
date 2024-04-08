@@ -18,7 +18,7 @@ public extension LMFeedDocumentPreviewProtocol {
 
 @IBDesignable
 open class LMFeedDocumentPreview: LMView {
-    public struct ViewModel {
+    public struct ContentModel {
         public let title: String
         public let documentURL: URL
         public let size: Int?
@@ -197,7 +197,7 @@ open class LMFeedDocumentPreview: LMView {
     
     
     // MARK: Configure
-    open func configure(with data: ViewModel, delegate: LMFeedDocumentPreviewProtocol?) {
+    open func configure(with data: ContentModel, delegate: LMFeedDocumentPreviewProtocol?) {
         self.delegate = delegate
         self.documentID = data.documentURL
         

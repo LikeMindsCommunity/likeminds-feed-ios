@@ -1,5 +1,5 @@
 //
-//  LMFeedLikeViewController.swift
+//  LMFeedLikeListScreen.swift
 //  Pods
 //
 //  Created by Devansh Mohata on 21/01/24.
@@ -9,7 +9,7 @@ import LikeMindsFeedUI
 import UIKit
 
 @IBDesignable
-open class LMFeedLikeViewController: LMViewController {
+open class LMFeedLikeListScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var memberListView: LMTableView = {
         let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
@@ -19,14 +19,14 @@ open class LMFeedLikeViewController: LMViewController {
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.bounces = false
-        table.register(LMUIComponents.shared.likedUserTableCell)
+        table.register(LMUIComponents.shared.likeUserItem)
         table.separatorStyle = .none
         return table
     }()
     
     // MARK: Data Variables
     public var viewModel: LMFeedLikeViewModel?
-    public var userData: [LMFeedMemberItem.ViewModel] = []
+    public var userData: [LMFeedMemberItem.ContentModel] = []
     public var cellHeight: CGFloat = 72
     public var totalLikes: Int = 0
     
@@ -64,14 +64,14 @@ open class LMFeedLikeViewController: LMViewController {
 
 
 // MARK: UITableView
-extension LMFeedLikeViewController: UITableViewDataSource, UITableViewDelegate {
+extension LMFeedLikeListScreen: UITableViewDataSource, UITableViewDelegate {
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         userData.count
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let data = userData[safe: indexPath.row],
-           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.likedUserTableCell.self) {
+           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.likeUserItem) {
             cell.configure(with: data) { [weak self] in
                 self?.didTapUser(uuid: data.uuid)
             }
@@ -91,8 +91,8 @@ extension LMFeedLikeViewController: UITableViewDataSource, UITableViewDelegate {
 
 
 // MARK: LMFeedLikeViewModelProtocol
-extension LMFeedLikeViewController: LMFeedLikeViewModelProtocol {
-    public func reloadTableView(with data: [LMFeedMemberItem.ViewModel], totalCount: Int) {
+extension LMFeedLikeListScreen: LMFeedLikeViewModelProtocol {
+    public func reloadTableView(with data: [LMFeedMemberItem.ContentModel], totalCount: Int) {
         userData = data
         memberListView.reloadData()
         totalLikes = totalCount

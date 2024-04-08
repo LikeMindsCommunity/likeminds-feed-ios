@@ -9,7 +9,7 @@ import UIKit
 
 @IBDesignable
 open class LMFeedTopicSelectionCell: LMTableViewCell {
-    public struct ViewModel {
+    public struct ContentModel {
         public let topic: String
         public let topicID: String?
         public let isSelected: Bool
@@ -70,7 +70,7 @@ open class LMFeedTopicSelectionCell: LMTableViewCell {
     
     
     // MARK: configure
-    open func configure(with data: ViewModel) {
+    open func configure(with data: ContentModel) {
         topicLabel.text = data.topic
         tickButton.image = data.isSelected ? Constants.shared.images.checkmarkIconFilled : nil
     }

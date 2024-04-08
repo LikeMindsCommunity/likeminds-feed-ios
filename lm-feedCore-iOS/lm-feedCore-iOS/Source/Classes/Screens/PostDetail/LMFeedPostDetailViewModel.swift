@@ -9,11 +9,11 @@ import LikeMindsFeedUI
 import LikeMindsFeed
 
 public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol {
-    func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedPostDetailCommentCellViewModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool)
-    func reloadComments(with comments: [LMFeedPostDetailCommentCellViewModel], index: IndexSet?)
-    func insertComment(at index: IndexSet, with comments: [LMFeedPostDetailCommentCellViewModel], totalCommentCount: Int)
-    func deleteComment(at index: Int, with comments: [LMFeedPostDetailCommentCellViewModel], totalCommentCount: Int)
-    func deleteRows(for section: Int, comments: [LMFeedPostDetailCommentCellViewModel])
+    func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedCommentContentModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool)
+    func reloadComments(with comments: [LMFeedCommentContentModel], index: IndexSet?)
+    func insertComment(at index: IndexSet, with comments: [LMFeedCommentContentModel], totalCommentCount: Int)
+    func deleteComment(at index: Int, with comments: [LMFeedCommentContentModel], totalCommentCount: Int)
+    func deleteRows(for section: Int, comments: [LMFeedCommentContentModel])
     
     func resetHeaderData()
     func resetFooterData(isSaved: Bool, isLiked: Bool)
@@ -60,7 +60,7 @@ final public class LMFeedPostDetailViewModel {
         for postID: String,
         openCommentSection: Bool = false,
         scrollToCommentSection: Bool = false
-    ) -> LMFeedPostDetailViewController? {
+    ) -> LMFeedPostDetailScreen? {
         guard LMFeedCore.isInitialized else { return nil }
         let viewController = Components.shared.postDetailScreen.init()
         let viewModel: LMFeedPostDetailViewModel = .init(postID: postID, delegate: viewController, openCommentSection: openCommentSection, scrollToCommentSection: scrollToCommentSection)
@@ -183,14 +183,14 @@ public extension LMFeedPostDetailViewModel {
         scrollToCommentSection = false
     }
     
-    func convertToCommentModel(for comments: [LMFeedCommentDataModel]) -> [LMFeedPostDetailCommentCellViewModel] {
+    func convertToCommentModel(for comments: [LMFeedCommentDataModel]) -> [LMFeedCommentContentModel] {
         comments.enumerated().map { index, comment in
             return convertToCommentModel(from: comment)
         }
     }
     
-    func convertToCommentModel(from comment: LMFeedCommentDataModel) -> LMFeedPostDetailCommentCellViewModel {
-        var replies: [LMFeedPostDetailCommentCellViewModel] = []
+    func convertToCommentModel(from comment: LMFeedCommentDataModel) -> LMFeedCommentContentModel {
+        var replies: [LMFeedCommentContentModel] = []
         
         comment.replies.forEach { reply in
             replies.append(convertToCommentModel(from: reply))

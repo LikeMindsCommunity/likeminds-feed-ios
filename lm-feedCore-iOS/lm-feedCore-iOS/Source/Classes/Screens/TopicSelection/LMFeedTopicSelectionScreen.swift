@@ -1,5 +1,5 @@
 //
-//  LMFeedTopicSelectionViewController.swift
+//  LMFeedTopicSelectionScreen.swift
 //  likeminds-feed-iOS
 //
 //  Created by Devansh Mohata on 23/12/23.
@@ -13,7 +13,7 @@ public protocol LMFeedTopicSelectionViewProtocol: AnyObject {
 }
 
 @IBDesignable
-open class LMFeedTopicSelectionViewController: LMViewController {
+open class LMFeedTopicSelectionScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
@@ -45,7 +45,7 @@ open class LMFeedTopicSelectionViewController: LMViewController {
 
     
     // MARK: Data Variables
-    public var topicData: [[LMFeedTopicSelectionCell.ViewModel]] = []
+    public var topicList: [[LMFeedTopicSelectionCell.ContentModel]] = []
     public var viewModel: LMFeedTopicSelectionViewModel?
     public var searchTimer: Timer?
     public weak var delegate: LMFeedTopicSelectionViewProtocol?
@@ -94,18 +94,18 @@ open class LMFeedTopicSelectionViewController: LMViewController {
 
 // MARK: UITableView
 @objc
-extension LMFeedTopicSelectionViewController: UITableViewDataSource, UITableViewDelegate {
+extension LMFeedTopicSelectionScreen: UITableViewDataSource, UITableViewDelegate {
     open func numberOfSections(in tableView: UITableView) -> Int {
-        topicData.count
+        topicList.count
     }
     
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        topicData[safe: section]?.count ?? .zero
+        topicList[safe: section]?.count ?? .zero
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(LMFeedTopicSelectionCell.self),
-           let data = topicData[safe: indexPath.section]?[safe: indexPath.row] {
+           let data = topicList[safe: indexPath.section]?[safe: indexPath.row] {
             cell.configure(with: data)
             return cell
         }
@@ -125,7 +125,7 @@ extension LMFeedTopicSelectionViewController: UITableViewDataSource, UITableView
     }
     
     open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == topicData.count - 1 {
+        if indexPath.row == topicList.count - 1 {
             viewModel?.getTopics(for: searchController.searchBar.text)
         }
     }
@@ -141,9 +141,9 @@ extension LMFeedTopicSelectionViewController: UITableViewDataSource, UITableView
 
 
 // MARK: LMFeedTopicSelectionViewModelProtocol
-extension LMFeedTopicSelectionViewController: LMFeedTopicSelectionViewModelProtocol {
-    public func updateTopicList(with data: [[LMFeedTopicSelectionCell.ViewModel]], selectedCount: Int) {
-        self.topicData = data
+extension LMFeedTopicSelectionScreen: LMFeedTopicSelectionViewModelProtocol {
+    public func updateTopicList(with data: [[LMFeedTopicSelectionCell.ContentModel]], selectedCount: Int) {
+        self.topicList = data
         topicSelectionListView.reloadData()
         
         if selectedCount == .zero {
@@ -162,7 +162,7 @@ extension LMFeedTopicSelectionViewController: LMFeedTopicSelectionViewModelProto
 
 // MARK: UISearchControllerDelegate
 @objc
-extension LMFeedTopicSelectionViewController: UISearchControllerDelegate, UISearchBarDelegate {
+extension LMFeedTopicSelectionScreen: UISearchControllerDelegate, UISearchBarDelegate {
     open func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchTimer?.invalidate()
         

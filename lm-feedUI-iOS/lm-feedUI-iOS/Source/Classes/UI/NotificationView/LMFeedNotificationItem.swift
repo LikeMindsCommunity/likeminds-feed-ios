@@ -1,5 +1,5 @@
 //
-//  LMFeedNotificationView.swift
+//  LMFeedNotificationItem.swift
 //  lm-feedUI-iOS
 //
 //  Created by Devansh Mohata on 21/01/24.
@@ -8,8 +8,8 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedNotificationView: LMTableViewCell {
-    public struct ViewModel {
+open class LMFeedNotificationItem: LMTableViewCell {
+    public struct ContentModel {
         public let notificationID: String
         public let notification: String
         public let user: LMFeedUserDataModel
@@ -156,7 +156,7 @@ open class LMFeedNotificationView: LMTableViewCell {
     }
     
     // MARK: configure
-    open func configure(with data: ViewModel, onTapCallback: (() -> Void)?) {
+    open func configure(with data: ContentModel, onTapCallback: (() -> Void)?) {
         self.onTapCallback = onTapCallback
         
         titleLabel.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.notification)

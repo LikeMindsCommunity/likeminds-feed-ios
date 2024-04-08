@@ -21,11 +21,16 @@ public enum LMFeedError: Error {
     case reportFailed(error: String?)
     
     case routeError(error: String?)
-        
+
+    case notificationRegisterationFailed(error: String?)
+    case logoutFailed(error: String?)
+    
     public var localizedDescription: String {
         switch self {
         case .apiInitializationFailed(let error),
                 .commentDeleteFailed(let error),
+                .notificationRegisterationFailed(let error),
+                .logoutFailed(let error),
                 .postCreationFailed(let error),
                 .postDeleteFailed(let error),
                 .postEditFailed(let error),
