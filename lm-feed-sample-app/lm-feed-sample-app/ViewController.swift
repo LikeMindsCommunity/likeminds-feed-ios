@@ -22,12 +22,12 @@ class ViewController: UIViewController {
         submitBtn.layer.cornerRadius = 8
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(endEditing)))
         
-        if let apiKey = LocalPreferences.apiKey,
-           !apiKey.isEmpty,
-           let username = LocalPreferences.userObj?.name,
-           let uuid = LocalPreferences.userObj?.sdkClientInfo?.uuid {
-            initateAPI(apiKey: apiKey, username: username, userId: uuid)
-        }
+//        if let apiKey = LocalPreferences.apiKey,
+//           !apiKey.isEmpty,
+//           let username = LocalPreferences.userObj?.name,
+//           let uuid = LocalPreferences.userObj?.sdkClientInfo?.uuid {
+//            initateAPI(apiKey: apiKey, username: username, userId: uuid)
+//        }
     }
     
     @IBAction private func submitBtnClicked(_ sender: UIButton) {
@@ -59,8 +59,7 @@ class ViewController: UIViewController {
     
     
     func initateAPI(apiKey: String, username: String, userId: String) {
-        LMFeedCore.shared.setupLikeMindsFeed(apiKey: apiKey, analytics: DummyAnalytics())
-        LMFeedCore.shared.initiateLikeMindsFeed(username: username, userId: userId) { [weak self] result in
+        LMFeedCore.shared.setupFeed(apiKey: apiKey, username: username, uuid: userId) { [weak self] result in
             switch result {
             case .success(_):
                 guard let viewController = LMUniversalFeedViewModel.createModule() else { return }

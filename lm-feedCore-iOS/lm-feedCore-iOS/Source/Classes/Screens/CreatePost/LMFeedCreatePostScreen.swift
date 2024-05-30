@@ -7,6 +7,7 @@
 
 import AVKit
 import BSImagePicker
+import LikeMindsFeed
 import LikeMindsFeedUI
 import UIKit
 import Photos

@@ -112,6 +112,10 @@ class AssetsViewController: UIViewController {
             let index = fetchResult.index(of: asset)
             guard index != NSNotFound else { continue }
             let indexPath = IndexPath(item: index, section: 0)
+
+            let numberOfItems = collectionView.numberOfItems(inSection: 0)
+            guard index + 1 <= numberOfItems else { continue }
+
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
             updateSelectionIndexForCell(at: indexPath)
         }
@@ -204,9 +208,9 @@ extension AssetsViewController: UICollectionViewDelegate {
 
 extension AssetsViewController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
-        guard let changes = changeInstance.changeDetails(for: fetchResult) else { return }
         // Since we are gonna update UI, make sure we are on main
         DispatchQueue.main.async {
+            guard let changes = changeInstance.changeDetails(for: self.fetchResult) else { return }
             if changes.hasIncrementalChanges {
                 self.collectionView.performBatchUpdates({
                     self.fetchResult = changes.fetchResultAfterChanges
@@ -217,7 +221,9 @@ extension AssetsViewController: PHPhotoLibraryChangeObserver {
                         let removedItems = removed.map { IndexPath(item: $0, section:0) }
                         let removedSelections = self.collectionView.indexPathsForSelectedItems?.filter { return removedItems.contains($0) }
                         removedSelections?.forEach {
-                            self.delegate?.assetsViewController(self, didDeselectAsset: changes.fetchResultBeforeChanges.object(at: $0.row))
+                            let removedAsset = changes.fetchResultBeforeChanges.object(at: $0.row)
+                            self.store.remove(removedAsset)
+                            self.delegate?.assetsViewController(self, didDeselectAsset: removedAsset)
                         }
                         self.collectionView.deleteItems(at: removedItems)
                     }
