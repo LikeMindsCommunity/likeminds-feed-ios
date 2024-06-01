@@ -22,12 +22,7 @@ class ViewController: UIViewController {
         submitBtn.layer.cornerRadius = 8
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(endEditing)))
         
-//        if let apiKey = LocalPreferences.apiKey,
-//           !apiKey.isEmpty,
-//           let username = LocalPreferences.userObj?.name,
-//           let uuid = LocalPreferences.userObj?.sdkClientInfo?.uuid {
-//            initateAPI(apiKey: apiKey, username: username, userId: uuid)
-//        }
+        initateAPI(apiKey: "6b51af13-ce28-444b-a571-53a3fb125444", username: "devansh", userId: "devansh")
     }
     
     @IBAction private func submitBtnClicked(_ sender: UIButton) {
@@ -48,8 +43,6 @@ class ViewController: UIViewController {
         if userId.isEmpty {
             userId = "userId"
         }
-        
-        initateAPI(apiKey: apiKey, username: username, userId: userId)
     }
     
     @objc
@@ -71,5 +64,16 @@ class ViewController: UIViewController {
                 self?.present(alert, animated: true)
             }
         }
+    }
+}
+
+
+extension ViewController: LMFeedCoreCallback {
+    func onAccessTokenExpiredAndRefreshed(accessToken: String, refreshToken: String) {
+        print("\(#function)-\(#file)")
+    }
+    
+    func onRefreshTokenExpired(_ completionHandler: (((accessToken: String, refreshToken: String)) -> Void)?) {
+        print("\(#function)-\(#file)")
     }
 }

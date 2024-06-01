@@ -100,7 +100,7 @@ extension AppDelegate: MessagingDelegate {
               let deviceid = UIDevice.current.identifierForVendor?.uuidString,
               !deviceid.isEmpty else { return }
         
-        LMFeedCore.shared.registerDeviceToken(with: fcmToken, deviceID: deviceid)
+//        LMFeedCore.shared.registerDeviceToken(with: fcmToken, deviceID: deviceid)
     }
 }
 
