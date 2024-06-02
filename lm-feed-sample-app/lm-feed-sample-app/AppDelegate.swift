@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         initateNotifications()
         ImageCache.default.memoryStorage.config.totalCostLimit = 1 //1 in bytes
+        LMFeedCore.shared.setupFeedCoreCallback(with: FeedTokenHandler())
         return true
     }
     
