@@ -90,7 +90,7 @@ public final class LMFeedNotificationFeedViewModel {
     }
     
     func convertToDataModel(from activity: Activity, users: [String: User]?) -> LMFeedNotificationFeedDataModel? {
-        let users: [LMFeedUserDataModel] = activity.actionBy?.compactMap { actionBy in
+        let users: [LMFeedUserModel] = activity.actionBy?.compactMap { actionBy in
             guard let userInfo = users?[actionBy],
                   let user = convertToUserModel(from: userInfo) else { return nil }
             return user
@@ -112,7 +112,7 @@ public final class LMFeedNotificationFeedViewModel {
             user: user)
     }
     
-    func convertToUserModel(from user: User) -> LMFeedUserDataModel? {
+    func convertToUserModel(from user: User) -> LMFeedUserModel? {
         guard let username = user.name,
               let uuid = user.sdkClientInfo?.uuid else { return nil }
         return .init(userName: username, userUUID: uuid, userProfileImage: user.imageUrl, customTitle: user.customTitle)

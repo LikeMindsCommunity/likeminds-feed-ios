@@ -5,30 +5,8 @@
 //  Created by Devansh Mohata on 03/01/24.
 //
 
-import LikeMindsFeedUI
 import LikeMindsFeed
-
-public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol {
-    func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedCommentContentModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool)
-    func reloadComments(with comments: [LMFeedCommentContentModel], index: IndexSet?)
-    func insertComment(at index: IndexSet, with comments: [LMFeedCommentContentModel], totalCommentCount: Int)
-    func deleteComment(at index: Int, with comments: [LMFeedCommentContentModel], totalCommentCount: Int)
-    func deleteRows(for section: Int, comments: [LMFeedCommentContentModel])
-    
-    func resetHeaderData()
-    func resetFooterData(isSaved: Bool, isLiked: Bool)
-    
-    func changeCommentLike(for indexPath: IndexPath)
-    func replyToComment(userName: String)
-    
-    func updateCommentStatus(isEnabled: Bool)
-    
-    func setEditCommentText(with text: String) 
-    
-    func navigateToEditPost(for postID: String)
-    func navigateToDeleteScreen(for postID: String, commentID: String?)
-    func navigateToReportScreen(for postID: String, creatorUUID: String, commentID: String?, replyCommentID: String?)
-}
+import LikeMindsFeedUI
 
 final public class LMFeedPostDetailViewModel {
     public let postID: String
@@ -161,7 +139,7 @@ public extension LMFeedPostDetailViewModel {
                 } else if !newComments.isEmpty {
                     let old = commentList.count - newComments.count
                     let new = commentList.count
-                    delegate?.insertComment(at: IndexSet(integersIn: old..<new), with: convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
+                    delegate?.insertComment(at: IndexSet(integersIn: old..<new), with: LMFeedConvertToFeedPost.convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
                 }
                 self.currentPage += 1
             } else if postDetail == nil {
@@ -176,42 +154,15 @@ public extension LMFeedPostDetailViewModel {
         guard let postDetail else { return }
         let convertedPostDetail = LMFeedConvertToFeedPost.convertToViewModel(for: postDetail)
         
-        let convertedComments = convertToCommentModel(for: commentList)
+        let convertedComments = LMFeedConvertToFeedPost.convertToCommentModel(for: commentList)
         
         delegate?.showPostDetails(with: convertedPostDetail, comments: convertedComments, indexPath: indexPath, openCommentSection: openCommentSection, scrollToCommentSection: scrollToCommentSection)
         openCommentSection = false
         scrollToCommentSection = false
     }
     
-    func convertToCommentModel(for comments: [LMFeedCommentDataModel]) -> [LMFeedCommentContentModel] {
-        comments.enumerated().map { index, comment in
-            return convertToCommentModel(from: comment)
-        }
-    }
-    
-    func convertToCommentModel(from comment: LMFeedCommentDataModel) -> LMFeedCommentContentModel {
-        var replies: [LMFeedCommentContentModel] = []
-        
-        comment.replies.forEach { reply in
-            replies.append(convertToCommentModel(from: reply))
-        }
-        
-        return .init(
-            author: comment.userDetail,
-            commentId: comment.commentID,
-            tempCommentId: comment.temporaryCommentID,
-            comment: comment.commentText,
-            commentTime: comment.createdAtFormatted,
-            likeCount: comment.likeCount,
-            totalReplyCount: comment.totalRepliesCount,
-            replies: replies,
-            isEdited: comment.isEdited,
-            isLiked: comment.isLiked
-        )
-    }
-    
     func updateCommentSection(index: IndexSet? = nil) {
-        let updatedComments = convertToCommentModel(for: commentList)
+        let updatedComments = LMFeedConvertToFeedPost.convertToCommentModel(for: commentList)
         delegate?.reloadComments(with: updatedComments, index: index)
     }
 }
@@ -248,7 +199,7 @@ public extension LMFeedPostDetailViewModel {
         if isClose,
            !commentList[index].replies.isEmpty {
             commentList[index].replies.removeAll(keepingCapacity: true)
-            delegate?.deleteRows(for: index + 1, comments: convertToCommentModel(for: commentList))
+            delegate?.deleteRows(for: index + 1, comments: LMFeedConvertToFeedPost.convertToCommentModel(for: commentList))
             return
         }
         
@@ -396,7 +347,7 @@ public extension LMFeedPostDetailViewModel {
         } else {
             postDetail?.commentCount += 1
             commentList.insert(localComment, at: 0)
-            delegate?.insertComment(at: IndexSet(integer: 1), with: convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
+            delegate?.insertComment(at: IndexSet(integer: 1), with: LMFeedConvertToFeedPost.convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
             postReplyOnPost(with: commentString, localComment: localComment)
         }
         
@@ -657,7 +608,7 @@ public extension LMFeedPostDetailViewModel {
             if index.row == NSNotFound {
                 _ = commentList.remove(at: index.section)
                 postDetail?.commentCount -= 1
-                delegate?.deleteComment(at: index.section + 1, with: convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
+                delegate?.deleteComment(at: index.section + 1, with: LMFeedConvertToFeedPost.convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
             } else {
                 commentList[index.section].replies.remove(at: index.row)
                 commentList[index.section].totalRepliesCount -= 1

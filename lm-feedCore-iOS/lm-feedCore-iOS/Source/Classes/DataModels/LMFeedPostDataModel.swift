@@ -19,7 +19,7 @@ public struct LMFeedPostDataModel {
     public let createTime: String
     public var isEdited: Bool
     public var postMenu: [LMFeedMenuDataModel]
-    public let userDetails: LMFeedUserDataModel
+    public let userDetails: LMFeedUserModel
     public let topics: [LMFeedTopicDataModel]
     public var imageVideoAttachment: [ImageVideoAttachment] = []
     public var documentAttachment: [DocumentAttachment] = []
@@ -38,7 +38,7 @@ public struct LMFeedPostDataModel {
         createTime: String,
         isEdited: Bool,
         postMenu: [LMFeedMenuDataModel],
-        userDetails: LMFeedUserDataModel,
+        userDetails: LMFeedUserModel,
         topics: [LMFeedTopicDataModel],
         imageVideoAttachment: [LMFeedPostDataModel.ImageVideoAttachment] = [],
         documentAttachment: [LMFeedPostDataModel.DocumentAttachment] = [],

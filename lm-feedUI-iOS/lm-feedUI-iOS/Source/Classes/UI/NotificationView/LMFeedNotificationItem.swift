@@ -12,13 +12,13 @@ open class LMFeedNotificationItem: LMTableViewCell {
     public struct ContentModel {
         public let notificationID: String
         public let notification: String
-        public let user: LMFeedUserDataModel
+        public let user: LMFeedUserModel
         public let time: String
         public let isRead: Bool
         public let mediaImage: String?
         public let route: String
         
-        public init(notificationID: String, notification: String, user: LMFeedUserDataModel, time: String, isRead: Bool, mediaImage: String?, route: String) {
+        public init(notificationID: String, notification: String, user: LMFeedUserModel, time: String, isRead: Bool, mediaImage: String?, route: String) {
             self.notificationID = notificationID
             self.notification = notification
             self.user = user

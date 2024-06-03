@@ -14,42 +14,6 @@ public protocol LMFeedPostDocumentCellProtocol: LMPostWidgetTableViewCellProtoco
 
 @IBDesignable
 open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
-    // MARK: Data Model
-    public struct ContentModel: LMFeedPostTableCellProtocol {
-        public var postID: String
-        public var userUUID: String
-        public var headerData: LMFeedPostHeaderView.ContentModel
-        public var postText: String
-        public var topics: LMFeedTopicView.ContentModel
-        public let documents: [LMFeedDocumentPreview.ContentModel]
-        public var isShowMore: Bool
-        public var isShowAllDocuments: Bool
-        public var footerData: LMFeedPostFooterView.ContentModel
-        public var totalCommentCount: Int
-        
-        public init( postID: String,
-                     userUUID: String,
-                     headerData: LMFeedPostHeaderView.ContentModel,
-                     topics: LMFeedTopicView.ContentModel?,
-                     postText: String?,
-                     documents: [LMFeedDocumentPreview.ContentModel],
-                     footerData: LMFeedPostFooterView.ContentModel,
-                     totalCommentCount: Int,
-                     isShowMore: Bool = true,
-                     isShowAllDocuments: Bool = false) {
-            self.postID = postID
-            self.userUUID = userUUID
-            self.headerData = headerData
-            self.postText = postText ?? ""
-            self.topics = topics ?? .init()
-            self.documents = documents
-            self.footerData = footerData
-            self.totalCommentCount = totalCommentCount
-            self.isShowMore = isShowMore
-            self.isShowAllDocuments = isShowAllDocuments
-        }
-    }
-    
     // MARK: UI Elements
     open private(set) lazy var documentContainerStack: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
@@ -128,7 +92,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         
     
     // MARK: configure
-    open func configure(for indexPath: IndexPath, with data: ContentModel, delegate: LMFeedPostDocumentCellProtocol?) {
+    open func configure(for indexPath: IndexPath, with data: LMFeedPostContentModel, delegate: LMFeedPostDocumentCellProtocol?) {
         self.indexPath = indexPath
         self.delegate = delegate
         self.actionDelegate = delegate
@@ -145,7 +109,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
         documentContainerStack.removeAllArrangedSubviews()
         
         data.documents.enumerated().forEach { index, document in
-            guard index < Constants.shared.number.maxDocumentView || data.isShowAllDocuments else { return }
+            guard index < Constants.shared.number.maxDocumentView || data.isShowMoreDocuments else { return }
             let documentView = LMUIComponents.shared.documentPreview.init()
             
             documentView.setHeightConstraint(with: Constants.shared.number.documentPreviewSize)
@@ -159,7 +123,7 @@ open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
             ])
         }
         
-        if data.documents.count > Constants.shared.number.maxDocumentView && !data.isShowAllDocuments {
+        if data.documents.count > Constants.shared.number.maxDocumentView && !data.isShowMoreDocuments {
             seeMoreDocumentsButton.setTitle("+\(data.documents.count - Constants.shared.number.maxDocumentView) more", for: .normal)
             seeMoreDocumentsButton.setImage(nil, for: .normal)
             

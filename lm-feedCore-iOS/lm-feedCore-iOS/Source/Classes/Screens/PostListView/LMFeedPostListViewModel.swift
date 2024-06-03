@@ -10,13 +10,13 @@ import LikeMindsFeed
 
 // MARK: LMUniversalFeedViewModelProtocol
 public protocol LMFeedPostListViewModelProtocol: LMBaseViewControllerProtocol {
-    func loadPosts(with data: [LMFeedPostTableCellProtocol], index: IndexSet?, reloadNow: Bool)
+    func loadPosts(with data: [LMFeedPostContentModel], index: IndexSet?, reloadNow: Bool)
     func showHideFooterLoader(isShow: Bool)
     func showActivityLoader()
     func navigateToEditScreen(for postID: String)
     func navigateToDeleteScreen(for postID: String)
     func navigateToReportScreen(for postID: String, creatorUUID: String)
-    func updateHeader(with data: [LMFeedPostTableCellProtocol], section: Int)
+    func updateHeader(with data: [LMFeedPostContentModel], section: Int)
 }
 
 public class LMFeedPostListViewModel {
@@ -78,13 +78,13 @@ public extension LMFeedPostListViewModel {
         LMFeedPostOperation.shared.getFeed(currentPage: currentPage, pageSize: pageSize, selectedTopics: selectedTopics) { [weak self] response in
             guard let self else { return }
             
-            isFetchingFeed = false
             delegate?.showHideFooterLoader(isShow: false)
             
             guard response.success,
                   let posts = response.data?.posts,
                   let users = response.data?.users else {
                 convertToViewData()
+                isFetchingFeed = false
                 return
             }
             
@@ -103,17 +103,22 @@ public extension LMFeedPostListViewModel {
             self.postList.append(contentsOf: convertedData)
             self.convertToViewData()
             
+            isFetchingFeed = false
         }
     }
     
     func convertToViewData(for section: IndexSet? = nil, reloadNow: Bool = true) {
-        var convertedViewData: [LMFeedPostTableCellProtocol] = []
+        var convertedViewData: [LMFeedPostContentModel] = []
         
-        postList.forEach { post in
-            convertedViewData.append(LMFeedConvertToFeedPost.convertToViewModel(for: post))
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.postList.forEach { post in
+                convertedViewData.append(LMFeedConvertToFeedPost.convertToViewModel(for: post))
+            }
+            
+            DispatchQueue.main.async {
+                self?.delegate?.loadPosts(with: convertedViewData, index: section, reloadNow: reloadNow)
+            }
         }
-        
-        delegate?.loadPosts(with: convertedViewData, index: section, reloadNow: reloadNow)
     }
 }
 
@@ -179,7 +184,7 @@ public extension LMFeedPostListViewModel {
                 
                 postList[index] = feed
                 
-                var convertedViewData: [LMFeedPostTableCellProtocol] = []
+                var convertedViewData: [LMFeedPostContentModel] = []
                 
                 postList.forEach { post in
                     convertedViewData.append(LMFeedConvertToFeedPost.convertToViewModel(for: post))
