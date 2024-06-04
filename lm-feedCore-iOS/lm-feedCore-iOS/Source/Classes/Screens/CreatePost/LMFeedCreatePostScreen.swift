@@ -264,7 +264,7 @@ open class LMFeedCreatePostScreen: LMViewController {
         }
     }
     
-        
+    
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
@@ -408,7 +408,7 @@ extension LMFeedCreatePostScreen: UICollectionViewDataSource, UICollectionViewDe
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: collectionView.frame.width, height: collectionView.frame.width)
     }
-        
+    
     open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         mediaCollectionView.visibleCells.forEach { cell in
             (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
@@ -420,11 +420,11 @@ extension LMFeedCreatePostScreen: UICollectionViewDataSource, UICollectionViewDe
             scrollingFinished()
         }
     }
-
+    
     open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         scrollingFinished()
     }
-
+    
     public func scrollingFinished() {
         mediaPageControl.currentPage = Int(mediaCollectionView.contentOffset.x / mediaCollectionView.frame.width)
         
@@ -502,15 +502,15 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
         documentAttachmentData.removeAll(keepingCapacity: true)
     }
     
-    public func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int) {
+    public func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int, selectedAssets: [PHAsset]) {
         switch mediaType {
         case .image:
             checkPhotoLibraryPermission { [weak self] in
-                self?.openImagePicker(.image, isFirstTime: isFirstPick, maxSelection: allowedNumber)
+                self?.openImagePicker(.image, isFirstTime: isFirstPick, maxSelection: allowedNumber, selectedAssets: selectedAssets)
             }
         case .video:
             checkPhotoLibraryPermission { [weak self] in
-                self?.openImagePicker(.video, isFirstTime: isFirstPick, maxSelection: allowedNumber)
+                self?.openImagePicker(.video, isFirstTime: isFirstPick, maxSelection: allowedNumber, selectedAssets: selectedAssets)
             }
         case .document:
             openDocumentPicker()
@@ -568,10 +568,10 @@ extension LMFeedCreatePostScreen: LMFeedTaggingTextViewProtocol {
 
 // MARK: Media Control
 public extension LMFeedCreatePostScreen {
-    func openImagePicker(_ mediaType: Settings.Fetch.Assets.MediaTypes, isFirstTime: Bool, maxSelection: Int) {
-        var currentAssets: [(asset:  PHAsset, url: URL, data: Data)] = []
+    func openImagePicker(_ mediaType: Settings.Fetch.Assets.MediaTypes, isFirstTime: Bool, maxSelection: Int, selectedAssets: [PHAsset]) {
+        var currentAssets: [PHAsset] = selectedAssets
         
-        let imagePicker = ImagePickerController()
+        let imagePicker = ImagePickerController(selectedAssets: selectedAssets)
         imagePicker.settings.selection.max = maxSelection
         imagePicker.settings.theme.selectionStyle = .numbered
         imagePicker.settings.fetch.assets.supportedMediaTypes = isFirstTime ? [mediaType] : [.image, .video]
@@ -582,26 +582,12 @@ public extension LMFeedCreatePostScreen {
         }
         
         presentImagePicker(imagePicker, select: { asset in
-            asset.asyncURL { url in
-                guard let url else { return }
-                
-                let fm = FileManager.default
-                let destination = fm.temporaryDirectory.appendingPathComponent("\(Int(Date().timeIntervalSince1970))_\(url.lastPathComponent)")
-                do {
-                    try fm.copyItem(at: url, to: destination)
-                    let data = try Data(contentsOf: url)
-                    currentAssets.append((asset, destination, data))
-                } catch {
-                    print(error.localizedDescription)
-                }
-            }
+            currentAssets.append(asset)
         }, deselect: { asset in
-            asset.asyncURL { _ in
-                currentAssets.removeAll(where: { $0.asset == asset })
-            }
+            currentAssets.removeAll(where: { $0 == asset })
         }, cancel: { _ in
         }, finish: { [weak self] assets in
-            self?.viewModel?.handleAssets(assets: currentAssets.map({ ($0.asset.mediaType, $0.url, $0.data) }))
+            self?.handleMultiMedia(with: currentAssets)
         })
     }
     
@@ -609,6 +595,37 @@ public extension LMFeedCreatePostScreen {
         documentPicker.allowsMultipleSelection = true
         documentPicker.modalPresentationStyle = .formSheet
         present(documentPicker, animated: true, completion: nil)
+    }
+    
+    func handleMultiMedia(with assets: [PHAsset]) {
+        var currentAssets: [(asset: PHAsset, url: URL, data: Data)?] = Array(repeating: nil, count: assets.count)
+        let dispatchGroup = DispatchGroup()
+        
+        let fm = FileManager.default
+        
+        for (index, asset) in assets.enumerated() {
+            dispatchGroup.enter()
+            asset.asyncURL { url in
+                defer { dispatchGroup.leave() } // Ensure leave is called at the end of the closure
+                
+                guard let url else { return }
+                
+                let destination = fm.temporaryDirectory.appendingPathComponent("\(Int(Date().timeIntervalSince1970))_\(url.lastPathComponent)")
+                do {
+                    try fm.copyItem(at: url, to: destination)
+                    let data = try Data(contentsOf: url)
+                    currentAssets[index] = (asset, destination, data)
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            // Remove nil values before passing to handleAssets
+            let filteredAssets = currentAssets.compactMap { $0 }
+            self?.viewModel?.handleAssets(assets: filteredAssets.map { ($0.asset, $0.url, $0.data) })
+        }
     }
 }
 
