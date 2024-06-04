@@ -144,7 +144,7 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         label.textAlignment = .natural
         label.lineBreakMode = .byTruncatingTail
         label.adjustsFontSizeToFitWidth = true
-        label.font = Appearance.shared.fonts.headingFont2
+        label.font = Appearance.shared.fonts.headingFont1
         label.backgroundColor = Appearance.shared.colors.appTintColor
         return label
     }()

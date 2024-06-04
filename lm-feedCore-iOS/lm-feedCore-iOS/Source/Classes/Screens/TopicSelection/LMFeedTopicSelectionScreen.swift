@@ -42,6 +42,12 @@ open class LMFeedTopicSelectionScreen: LMViewController {
         search.searchBar.delegate = self
         return search
     }()
+    
+    open private(set) lazy var noResultsView: LMFeedNoResultView = {
+        let view = LMFeedNoResultView()
+        view.configure(with: "No Results Found!")
+        return view
+    }()
 
     
     // MARK: Data Variables
@@ -145,6 +151,8 @@ extension LMFeedTopicSelectionScreen: LMFeedTopicSelectionViewModelProtocol {
     public func updateTopicList(with data: [[LMFeedTopicSelectionCell.ContentModel]], selectedCount: Int) {
         self.topicList = data
         topicSelectionListView.reloadData()
+        
+        topicSelectionListView.backgroundView = selectedCount == .zero ? noResultsView : nil
         
         if selectedCount == .zero {
             setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: nil, alignment: .center)
