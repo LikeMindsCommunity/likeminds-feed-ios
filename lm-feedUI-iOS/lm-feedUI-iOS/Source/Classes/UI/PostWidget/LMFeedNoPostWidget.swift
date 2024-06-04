@@ -38,7 +38,7 @@ open class LMFeedNoPostWidget: LMView {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = Appearance.shared.colors.gray1
         label.font = Appearance.shared.fonts.buttonFont1
-        label.text = "No post to show"
+        label.text = "No posts to show"
         label.numberOfLines = 0
         label.textAlignment = .center
         return label

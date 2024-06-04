@@ -44,7 +44,7 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
     
     open private(set) lazy var noCommentSubtitleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.text = "Be the first one to comment"
+        label.text = "Be the first one to create a comment"
         label.textColor = Appearance.shared.colors.gray102
         return label
     }()

@@ -615,12 +615,12 @@ public extension LMFeedCreatePostScreen {
 
 // MARK: UIDocumentPickerDelegate
 extension LMFeedCreatePostScreen: UIDocumentPickerDelegate {
-    public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+    open func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         viewModel?.handleAssets(assets: urls)
         controller.dismiss(animated: true)
     }
     
-    public func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+    open func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         controller.dismiss(animated: true)
     }
 }

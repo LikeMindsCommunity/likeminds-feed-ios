@@ -108,6 +108,11 @@ public extension LMFeedCreatePostViewModel {
     }
     
     func handleAssets(assets: [URL]) {
+        if (assets.count + media.count) > maxMedia {
+            delegate?.showError(with: "You can select upto \(maxMedia) items", isPopVC: false)
+            return
+        }
+        
         assets.prefix(maxMedia - media.count).forEach { asset in
             if !media.contains(where: { $0.url == asset }),
                asset.startAccessingSecurityScopedResource(),

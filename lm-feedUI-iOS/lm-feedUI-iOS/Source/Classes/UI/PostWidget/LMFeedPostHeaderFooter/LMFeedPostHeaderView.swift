@@ -212,10 +212,10 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         pinButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         menuButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         
-        authorNameLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        authorTagLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         authorTagLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         
-        authorTagLabel.setWidthConstraint(with: 0, priority: .defaultLow)
+        authorNameLabel.setWidthConstraint(with: 0, priority: .defaultLow)
     }
     
     // MARK: Actions
