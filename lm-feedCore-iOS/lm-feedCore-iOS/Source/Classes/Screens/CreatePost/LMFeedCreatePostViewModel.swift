@@ -132,7 +132,7 @@ public extension LMFeedCreatePostViewModel {
         currentMediaSelectionType = type
         let selectedMedia = media.compactMap { $0.asset }
         
-        delegate?.openMediaPicker(type, isFirstPick: media.isEmpty, allowedNumber: maxMedia - media.count, selectedAssets: selectedMedia)
+        delegate?.openMediaPicker(type, isFirstPick: media.isEmpty, allowedNumber: maxMedia, selectedAssets: selectedMedia)
     }
     
     func addMoreButtonClicked() {
@@ -140,7 +140,7 @@ public extension LMFeedCreatePostViewModel {
         case .image, .video, .document:
             let selectedMedia = media.compactMap { $0.asset }
             
-            delegate?.openMediaPicker(currentMediaSelectionType, isFirstPick: media.isEmpty, allowedNumber: maxMedia - media.count, selectedAssets: selectedMedia)
+            delegate?.openMediaPicker(currentMediaSelectionType, isFirstPick: media.isEmpty, allowedNumber: maxMedia, selectedAssets: selectedMedia)
         case .none:
             break
         }

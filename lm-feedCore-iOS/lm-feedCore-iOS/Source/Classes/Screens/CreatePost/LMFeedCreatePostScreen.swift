@@ -198,6 +198,12 @@ open class LMFeedCreatePostScreen: LMViewController {
         }
     }()
     
+//    public lazy var imagePicker: ImagePickerController = {
+//        let imagePicker = ImagePickerController(selectedAssets: [])
+//        imagePicker.settings.theme.selectionStyle = .numbered
+//        imagePicker.settings.selection.unselectOnReachingMax = false
+//        return imagePicker
+//    }()
     
     // MARK: setupViews
     open override func setupViews() {
@@ -573,21 +579,16 @@ public extension LMFeedCreatePostScreen {
         
         let imagePicker = ImagePickerController(selectedAssets: selectedAssets)
         imagePicker.settings.selection.max = maxSelection
-        imagePicker.settings.theme.selectionStyle = .numbered
         imagePicker.settings.fetch.assets.supportedMediaTypes = isFirstTime ? [mediaType] : [.image, .video]
-        imagePicker.settings.selection.unselectOnReachingMax = true
-        
         mediaCollectionView.visibleCells.forEach { cell in
             (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
         }
         
         presentImagePicker(imagePicker, select: { asset in
-            currentAssets.append(asset)
         }, deselect: { asset in
-            currentAssets.removeAll(where: { $0 == asset })
         }, cancel: { _ in
         }, finish: { [weak self] assets in
-            self?.handleMultiMedia(with: currentAssets)
+            self?.handleMultiMedia(with: assets)
         })
     }
     
