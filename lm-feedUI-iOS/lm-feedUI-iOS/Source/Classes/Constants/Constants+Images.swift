@@ -47,9 +47,11 @@ public extension Constants {
         public var personIcon = loadSystemImage(with: "person")
         public var checkmarkIconFilled = loadSystemImage(with: "checkmark.circle.fill")
         public var plusIcon = loadSystemImage(with: "plus")
+        public var plusCircleIcon = loadSystemImage(with: "plus.circle")
         public var notificationBell = loadSystemImage(with: "bell.fill")
         public var documentsIcon = loadSystemImage(with: "doc.fill")
         public var galleryIcon = loadSystemImage(with: "photo")
+        public var equalIcon = loadSystemImage(with: "equal")
         
         public var pdfIcon = loadImage(with: "pdfIcon")
         public var placeholderImage = loadImage(with: "placeholderImage")

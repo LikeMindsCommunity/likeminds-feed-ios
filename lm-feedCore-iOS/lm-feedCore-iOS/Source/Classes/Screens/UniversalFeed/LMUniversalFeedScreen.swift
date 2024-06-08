@@ -204,20 +204,24 @@ open class LMUniversalFeedScreen: LMViewController {
     
     @objc
     open func didTapNewPostButton() {
-        guard isShowCreatePost else { return }
+        let vc = LMFeedPollCreationScreen()
         
-        guard !isPostCreationInProgress else {
-            showError(with: "A post is already uploading!", isPopVC: false)
-            return
-        }
-        do {
-            let viewcontroller = try LMFeedCreatePostViewModel.createModule()
-            navigationController?.pushViewController(viewcontroller, animated: true)
-            
-            LMFeedCore.analytics?.trackEvent(for: .postCreationStarted, eventProperties: [:])
-        } catch let error {
-            print(error.localizedDescription)
-        }
+        navigationController?.pushViewController(vc, animated: true)
+        
+//        guard isShowCreatePost else { return }
+//        
+//        guard !isPostCreationInProgress else {
+//            showError(with: "A post is already uploading!", isPopVC: false)
+//            return
+//        }
+//        do {
+//            let viewcontroller = try LMFeedCreatePostViewModel.createModule()
+//            navigationController?.pushViewController(viewcontroller, animated: true)
+//            
+//            LMFeedCore.analytics?.trackEvent(for: .postCreationStarted, eventProperties: [:])
+//        } catch let error {
+//            print(error.localizedDescription)
+//        }
     }
     
     

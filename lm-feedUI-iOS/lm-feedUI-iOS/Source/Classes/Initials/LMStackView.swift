@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMStackView: UIStackView {
+open class LMStackView: UIStackView {    
     open func translatesAutoresizingMaskIntoConstraints() -> Self {
         translatesAutoresizingMaskIntoConstraints = false
         return self
