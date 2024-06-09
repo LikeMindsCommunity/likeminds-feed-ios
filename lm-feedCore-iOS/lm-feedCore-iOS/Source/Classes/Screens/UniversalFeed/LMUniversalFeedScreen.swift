@@ -204,9 +204,14 @@ open class LMUniversalFeedScreen: LMViewController {
     
     @objc
     open func didTapNewPostButton() {
-        let vc = LMFeedPollCreationScreen()
+        let pollData = LMFeedCreatePollDataModel.init(pollQuestion: "This is a Question", expiryTime: Date().addingTimeInterval(100000), pollOptions: ["Option 1", "Option 2", "Option 3"], isInstantPoll: true, selectState: .atMax, selectStateCount: 2, isAnonymous: false, allowAddOptions: true)
         
-        navigationController?.pushViewController(vc, animated: true)
+        do {
+            let vc = try LMFeedCreatePollViewModel.createModule(with: nil)
+            navigationController?.pushViewController(vc, animated: true)
+        } catch {
+            
+        }
         
 //        guard isShowCreatePost else { return }
 //        

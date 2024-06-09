@@ -29,4 +29,10 @@ public struct DateUtility {
         formatter.unitsStyle = .short
         return formatter.string(for: Date(timeIntervalSince1970: time))
     }
+    
+    public static func formatDate(_ date: Date, toFormat format: String = "dd-MM-yyyy HH:mm") -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.string(from: date)
+    }
 }

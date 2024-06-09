@@ -560,7 +560,6 @@
 		90566268162615ACA42E2F9127DA63B2 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA35FF4E9D9E20BC6CEBD638BBEC3DE1 /* Post.swift */; };
 		905DB2A2107DAF8B8766CF2F4A34CBA5 /* AWSURLRequestRetryHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = F1546D1F7345F35A15237B5F1B0B9BD2 /* AWSURLRequestRetryHandler.m */; };
 		907F0E2FB129D40D0E4B3B0AF7CD1771 /* Fabric.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DB8C893B86FE6444B97221A1E309022 /* Fabric.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		9090F8CF2582D0439F5A7A54CB670DCD /* DateUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2631641F00C1B972440E3E9CFB68BB /* DateUtility.swift */; };
 		90A0BE5638899BB6C9683702F28D0BAF /* AWSSTS.h in Headers */ = {isa = PBXBuildFile; fileRef = CE1C4D7C46D463EDABFDB4ED624AFA32 /* AWSSTS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		90B896C7ECD2AB7C043C36220E9F016F /* FIRAppInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = F1EA2FC28CF945D55934EEAADBA96C52 /* FIRAppInternal.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		9136355471B1C08A16DA36B0A2E536B8 /* NSButton+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29DD2392AE040E282CDE336D0C3C9B9 /* NSButton+Kingfisher.swift */; };
@@ -896,7 +895,7 @@
 		E4B8C9D3BA1E3A6711BA80E57C869C5E /* AWSSTSService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D84513EE581704CFF20B3F60D0A8BC5 /* AWSSTSService.m */; };
 		E53EAD862C10514300D88E4A /* LMMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EAD852C10514200D88E4A /* LMMeta.swift */; };
 		E53EAD882C106BAF00D88E4A /* PollOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EAD872C106BAF00D88E4A /* PollOption.swift */; };
-		E53EAD8B2C1190DF00D88E4A /* LMFeedPollCreationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EAD8A2C1190DF00D88E4A /* LMFeedPollCreationScreen.swift */; };
+		E53EAD8B2C1190DF00D88E4A /* LMFeedCreatePollScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EAD8A2C1190DF00D88E4A /* LMFeedCreatePollScreen.swift */; };
 		E53EAD912C11A1FD00D88E4A /* LMFeedCreatePollHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EAD902C11A1FD00D88E4A /* LMFeedCreatePollHeader.swift */; };
 		E53EAD952C11EED000D88E4A /* LMFeedCreatePollQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EAD942C11EED000D88E4A /* LMFeedCreatePollQuestionView.swift */; };
 		E53EAD992C13092900D88E4A /* LMFeedCreatePollDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EAD982C13092900D88E4A /* LMFeedCreatePollDateView.swift */; };
@@ -904,6 +903,10 @@
 		E53EAD9D2C13284700D88E4A /* LMFeedCreatePollMetaOptionWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EAD9C2C13284700D88E4A /* LMFeedCreatePollMetaOptionWidget.swift */; };
 		E53EAD9F2C13359F00D88E4A /* LMFeedCreatePollMetaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EAD9E2C13359E00D88E4A /* LMFeedCreatePollMetaView.swift */; };
 		E53EADA12C1475E000D88E4A /* LMFeedCreatePollUserOptionWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EADA02C1475E000D88E4A /* LMFeedCreatePollUserOptionWidget.swift */; };
+		E53EADA32C148F6D00D88E4A /* LMFeedCreatePollViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EADA22C148F6D00D88E4A /* LMFeedCreatePollViewModel.swift */; };
+		E53EADA52C14920300D88E4A /* LMFeedCreatePollDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EADA42C14920300D88E4A /* LMFeedCreatePollDataModel.swift */; };
+		E53EADA62C14C00F00D88E4A /* DateUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2631641F00C1B972440E3E9CFB68BB /* DateUtility.swift */; };
+		E53EADA82C14ED8E00D88E4A /* LMFeedPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EADA72C14ED8E00D88E4A /* LMFeedPickerView.swift */; };
 		E5571522DD6080069F2A4AC436701D6B /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC427A9EDAB4C3A6D6806CC8D14623AF /* Preferences.swift */; };
 		E5635DECB22362CA17521F7B6A752BB4 /* AWSS3Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D2D168B7FDB7D6D9638AECB431DB24E /* AWSS3Resources.m */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4BFB00D33CC2E541D239DEFE7D32300 /* SessionDelegate.swift */; };
@@ -2329,7 +2332,7 @@
 		E539A1CD6C152482BC19FC2397CDD77B /* FBLPromise+Delay.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "FBLPromise+Delay.m"; path = "Sources/FBLPromises/FBLPromise+Delay.m"; sourceTree = "<group>"; };
 		E53EAD852C10514200D88E4A /* LMMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMMeta.swift; sourceTree = "<group>"; };
 		E53EAD872C106BAF00D88E4A /* PollOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollOption.swift; sourceTree = "<group>"; };
-		E53EAD8A2C1190DF00D88E4A /* LMFeedPollCreationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPollCreationScreen.swift; sourceTree = "<group>"; };
+		E53EAD8A2C1190DF00D88E4A /* LMFeedCreatePollScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePollScreen.swift; sourceTree = "<group>"; };
 		E53EAD902C11A1FD00D88E4A /* LMFeedCreatePollHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePollHeader.swift; sourceTree = "<group>"; };
 		E53EAD942C11EED000D88E4A /* LMFeedCreatePollQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePollQuestionView.swift; sourceTree = "<group>"; };
 		E53EAD982C13092900D88E4A /* LMFeedCreatePollDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePollDateView.swift; sourceTree = "<group>"; };
@@ -2337,6 +2340,9 @@
 		E53EAD9C2C13284700D88E4A /* LMFeedCreatePollMetaOptionWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePollMetaOptionWidget.swift; sourceTree = "<group>"; };
 		E53EAD9E2C13359E00D88E4A /* LMFeedCreatePollMetaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePollMetaView.swift; sourceTree = "<group>"; };
 		E53EADA02C1475E000D88E4A /* LMFeedCreatePollUserOptionWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePollUserOptionWidget.swift; sourceTree = "<group>"; };
+		E53EADA22C148F6D00D88E4A /* LMFeedCreatePollViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePollViewModel.swift; sourceTree = "<group>"; };
+		E53EADA42C14920300D88E4A /* LMFeedCreatePollDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePollDataModel.swift; sourceTree = "<group>"; };
+		E53EADA72C14ED8E00D88E4A /* LMFeedPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPickerView.swift; sourceTree = "<group>"; };
 		E56B9664F2C7EF30AEAAE2785C3AA6C3 /* FIRComponentType.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRComponentType.m; path = FirebaseCore/Sources/FIRComponentType.m; sourceTree = "<group>"; };
 		E5BB17F53144403789EFD147D0242972 /* cct.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = cct.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/cct.nanopb.c; sourceTree = "<group>"; };
 		E5BF5E0AF72E89CE6D9CC45D326BDE6C /* AWSTMCacheBackgroundTaskManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSTMCacheBackgroundTaskManager.h; path = AWSCore/TMCache/AWSTMCacheBackgroundTaskManager.h; sourceTree = "<group>"; };
@@ -3144,6 +3150,7 @@
 		353A9677149663684BCA1B260263BDCF /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				2B2631641F00C1B972440E3E9CFB68BB /* DateUtility.swift */,
 				08555EF1607B204D9DE535E4FAFF7144 /* GetAttributedTextWithRoutes.swift */,
 			);
 			name = Utility;
@@ -4109,7 +4116,6 @@
 		9A87FB7D3A6C27E1C0032B280C14BF55 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				2B2631641F00C1B972440E3E9CFB68BB /* DateUtility.swift */,
 			);
 			name = Utilities;
 			path = "lm-feedCore-iOS/lm-feedCore-iOS/Source/Classes/Utilities";
@@ -4353,6 +4359,7 @@
 				DECD189E8A467607B74D6A31927329EC /* String+Extension.swift */,
 				5B188CE5B275CCC149FE7840FB0A95EF /* UIColor+Extension.swift */,
 				AFB3F14A0ABE9AA9BD793DCD602A6716 /* UIImage+Extension.swift */,
+				E53EADA72C14ED8E00D88E4A /* LMFeedPickerView.swift */,
 			);
 			name = Initials;
 			path = "lm-feedUI-iOS/lm-feedUI-iOS/Source/Classes/Initials";
@@ -4638,7 +4645,8 @@
 		E53EAD892C11907000D88E4A /* Poll */ = {
 			isa = PBXGroup;
 			children = (
-				E53EAD8A2C1190DF00D88E4A /* LMFeedPollCreationScreen.swift */,
+				E53EAD8A2C1190DF00D88E4A /* LMFeedCreatePollScreen.swift */,
+				E53EADA22C148F6D00D88E4A /* LMFeedCreatePollViewModel.swift */,
 			);
 			path = Poll;
 			sourceTree = "<group>";
@@ -4654,12 +4662,12 @@
 		E53EAD8F2C11A1D300D88E4A /* CreateWidgets */ = {
 			isa = PBXGroup;
 			children = (
-				E53EAD902C11A1FD00D88E4A /* LMFeedCreatePollHeader.swift */,
-				E53EAD942C11EED000D88E4A /* LMFeedCreatePollQuestionView.swift */,
 				E53EAD982C13092900D88E4A /* LMFeedCreatePollDateView.swift */,
-				E53EAD9A2C13173D00D88E4A /* LMFeedCreatePollOptionWidget.swift */,
+				E53EAD902C11A1FD00D88E4A /* LMFeedCreatePollHeader.swift */,
 				E53EAD9C2C13284700D88E4A /* LMFeedCreatePollMetaOptionWidget.swift */,
 				E53EAD9E2C13359E00D88E4A /* LMFeedCreatePollMetaView.swift */,
+				E53EAD9A2C13173D00D88E4A /* LMFeedCreatePollOptionWidget.swift */,
+				E53EAD942C11EED000D88E4A /* LMFeedCreatePollQuestionView.swift */,
 				E53EADA02C1475E000D88E4A /* LMFeedCreatePollUserOptionWidget.swift */,
 			);
 			path = CreateWidgets;
@@ -4714,6 +4722,7 @@
 			isa = PBXGroup;
 			children = (
 				FC0BDB99C326A676A634807757630907 /* LMFeedCommentDataModel.swift */,
+				E53EADA42C14920300D88E4A /* LMFeedCreatePollDataModel.swift */,
 				ADEF663CBA1B7070809C6B013349FD1E /* LMFeedMenuDataModel.swift */,
 				8E4F13F0757DBFAD3E4257137CCFDFB3 /* LMFeedPostDataModel.swift */,
 				82CB1B9A1C09572554AE331E09CF417C /* LMFeedTagListDataModel.swift */,
@@ -6165,12 +6174,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E53EAD8B2C1190DF00D88E4A /* LMFeedPollCreationScreen.swift in Sources */,
+				E53EAD8B2C1190DF00D88E4A /* LMFeedCreatePollScreen.swift in Sources */,
 				DD45293D4BA358719AF124E396187647 /* Collection+Extension.swift in Sources */,
 				CD5BF1DDF0CF1B71D9FC6917FEFE43F2 /* CollectionView+Extension.swift in Sources */,
+				E53EADA32C148F6D00D88E4A /* LMFeedCreatePollViewModel.swift in Sources */,
 				1D901D6D62DD3F4B33633D589E7E77AB /* Components.swift in Sources */,
 				C68C207D3AB95C303671F501AB1EA948 /* Date+Extension.swift in Sources */,
-				9090F8CF2582D0439F5A7A54CB670DCD /* DateUtility.swift in Sources */,
 				3FAC4104AA33E0ABE778389B7C7A55BF /* LikeMindsFeedCore-dummy.m in Sources */,
 				4EB5B4637B200A9B92AEFBE71494419F /* LMAWSManager.swift in Sources */,
 				721D9FED566C45FA31BD062333CC125F /* LMFeedAnalytics.swift in Sources */,
@@ -6186,6 +6195,7 @@
 				0BB10864560D2B384F9CAB6D7843AE01 /* LMFeedEditPostScreen.swift in Sources */,
 				58A4F85372A8C947B7AC7EA230B6F490 /* LMFeedEditPostViewModel.swift in Sources */,
 				9394F89A5D12E3107F1A77FE40CB9AFB /* LMFeedError.swift in Sources */,
+				E53EADA52C14920300D88E4A /* LMFeedCreatePollDataModel.swift in Sources */,
 				881487E225EEC7507C4E2D24C19E8CF3 /* LMFeedLikeDataModel.swift in Sources */,
 				3EF0FBC9C2013F641897C270C3ACF3D6 /* LMFeedLikeListScreen.swift in Sources */,
 				F9D8E28FAA7E3F0013CAF6A4ACEAC7A7 /* LMFeedLikeViewModel.swift in Sources */,
@@ -6833,6 +6843,7 @@
 				C454585C4AE7A3C7642012DCF0742F41 /* LMFeedDocumentPreview.swift in Sources */,
 				73D93400390C47A4DBC0D2165D8A00A5 /* LMFeedEmptyNotificationView.swift in Sources */,
 				1E75E86EBEEE0A08302FA6879D3E3025 /* LMFeedImageCollectionCell.swift in Sources */,
+				E53EADA62C14C00F00D88E4A /* DateUtility.swift in Sources */,
 				B108268035A3678F81211E9EADB3D31E /* LMFeedLinkPreview.swift in Sources */,
 				646DE17B0668AEE49E8ED6F76DC21A01 /* LMFeedLoopedVideoPlayer.swift in Sources */,
 				E53EAD992C13092900D88E4A /* LMFeedCreatePollDateView.swift in Sources */,
@@ -6865,6 +6876,7 @@
 				AFE7F44A6E9B692C88B4E618558AD9E3 /* LMFeedTopicSelectionCell.swift in Sources */,
 				F9D5E6AD2E1DD8558F6ADB05FCAD1E5F /* LMFeedTopicView.swift in Sources */,
 				EB598DC5A41AA462B8005C620CB1B00E /* LMFeedTopicViewCell.swift in Sources */,
+				E53EADA82C14ED8E00D88E4A /* LMFeedPickerView.swift in Sources */,
 				E0A395305A4BE019D3496636A4947417 /* LMFeedUserModel.swift in Sources */,
 				E53EAD952C11EED000D88E4A /* LMFeedCreatePollQuestionView.swift in Sources */,
 				5A967DE0138E3BE28E2917ED452D4153 /* LMFeedVideoCollectionCell.swift in Sources */,

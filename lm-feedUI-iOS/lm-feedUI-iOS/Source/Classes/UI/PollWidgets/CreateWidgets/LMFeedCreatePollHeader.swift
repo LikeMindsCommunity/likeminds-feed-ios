@@ -13,10 +13,12 @@ open class LMFeedCreatePollHeader: LMView {
     public struct ContentModel {
         let profileImage: String?
         let username: String
+        let pollQuestion: String?
         
-        public init(profileImage: String?, username: String) {
+        public init(profileImage: String?, username: String, pollQuestion: String?) {
             self.profileImage = profileImage
             self.username = username
+            self.pollQuestion = pollQuestion
         }
     }
     
@@ -99,9 +101,9 @@ open class LMFeedCreatePollHeader: LMView {
         
         userNameLabel.addConstraint(leading: (userProfileImage.trailingAnchor, 16),
                                     centerY: (userProfileImage.centerYAnchor, 0))
-        userNameLabel.trailingAnchor.constraint(greaterThanOrEqualTo: containerView.trailingAnchor, constant: -16).isActive = true
+        userNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -16).isActive = true
         
-        pollQuestionTitle.addConstraint(top: (userNameLabel.bottomAnchor, 24),
+        pollQuestionTitle.addConstraint(top: (userProfileImage.bottomAnchor, 16),
                                         leading: (userProfileImage.leadingAnchor, 0))
         pollQuestionTitle.trailingAnchor.constraint(greaterThanOrEqualTo: containerView.trailingAnchor, constant: -16).isActive = true
         
@@ -115,7 +117,18 @@ open class LMFeedCreatePollHeader: LMView {
     
     // MARK: configure
     open func configure(with data: ContentModel) {
-        userProfileImage.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.username))
+        userProfileImage.kf.setImage(
+            with: URL(string: data.profileImage ?? ""),
+            placeholder: LMImageView.generateLetterImage(name: data.username)
+        )
+        
+        userNameLabel.text = data.username
+        
+        if let question = data.pollQuestion,
+           !question.isEmpty {
+            pollQuestionTextField.textColor = Appearance.shared.colors.black
+            pollQuestionTextField.text = question
+        }
     }
     
     public func retrivePollQestion() -> String? {
@@ -126,7 +139,7 @@ open class LMFeedCreatePollHeader: LMView {
 extension LMFeedCreatePollHeader: UITextViewDelegate {
     open func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) == textFieldPlaceholderText {
-            textView.textColor = .black
+            textView.textColor = Appearance.shared.colors.black
             textView.text = ""
         }
     }

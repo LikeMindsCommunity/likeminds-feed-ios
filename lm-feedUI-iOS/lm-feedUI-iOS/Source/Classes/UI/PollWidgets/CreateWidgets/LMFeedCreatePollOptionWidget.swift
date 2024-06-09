@@ -7,11 +7,21 @@
 
 import Foundation
 
-open class LMFeedCreatePollOptionWidget: LMView {
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        return view
-    }()
+open class LMFeedCreatePollOptionWidget: LMTableViewCell {
+    public struct ContentModel {
+        public let option: String?
+        
+        public init(option: String?) {
+            self.option = option
+        }
+    }
+    
+    
+    // MARK: UI Elements
+//    open private(set) lazy var containerView: LMView = {
+//        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+//        return view
+//    }()
     
     open private(set) lazy var optionTextField: UITextField = {
         let textField = UITextField()
@@ -35,11 +45,16 @@ open class LMFeedCreatePollOptionWidget: LMView {
     }()
     
     
+    // MARK: Data Variables
+    public var id: Int?
+    public var onCrossButtonCallback: (() -> Void)?
+    
+    
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
         
-        addSubview(containerView)
+        contentView.addSubview(containerView)
         containerView.addSubview(optionTextField)
         containerView.addSubview(crossButton)
         containerView.addSubview(sepratorView)
@@ -50,7 +65,7 @@ open class LMFeedCreatePollOptionWidget: LMView {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        pinSubView(subView: containerView)
+        contentView.pinSubView(subView: containerView)
         
         optionTextField.addConstraint(top: (containerView.topAnchor, 16),
                                       leading: (containerView.leadingAnchor, 16))
@@ -74,5 +89,25 @@ open class LMFeedCreatePollOptionWidget: LMView {
         super.setupAppearance()
         
         containerView.backgroundColor = Appearance.shared.colors.white
+    }
+    
+    
+    // MARK: setupActions
+    open override func setupActions() {
+        super.setupActions()
+        
+        crossButton.addTarget(self, action: #selector(onTapCrossButton), for: .touchUpInside)
+    }
+    
+    @objc
+    open func onTapCrossButton() {
+        onCrossButtonCallback?()
+    }
+    
+    
+    // MARK: configure
+    open func configure(with data: ContentModel, onCrossButtonCallback: (() -> Void)?) {
+        self.onCrossButtonCallback = onCrossButtonCallback
+        optionTextField.text = data.option
     }
 }

@@ -7,6 +7,11 @@
 
 import UIKit
 
+public protocol LMFeedCreatePollQuestionViewProtocol: AnyObject {
+    func onCrossButtonTapped(for id: Int)
+    func onAddNewOptionTapped()
+}
+
 open class LMFeedCreatePollQuestionView: LMView {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
@@ -22,18 +27,24 @@ open class LMFeedCreatePollQuestionView: LMView {
         return label
     }()
     
-    open private(set) lazy var optionStack: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
-        stack.axis = .vertical
-        stack.alignment = .fill
-        stack.distribution = .fillEqually
-        stack.spacing = 4
-        return stack
+    open private(set) lazy var optionStack: LMTableView = {
+        let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
+        table.dataSource = self
+        table.delegate = self
+        table.isScrollEnabled = false
+        table.showsVerticalScrollIndicator = false
+        table.showsHorizontalScrollIndicator = false
+        table.register(LMFeedCreatePollOptionWidget.self)
+        table.estimatedRowHeight = cellSize
+        table.rowHeight = UITableView.automaticDimension
+        table.separatorStyle = .none
+        return table
     }()
     
     open private(set) lazy var addOptionView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = .clear
+        view.isUserInteractionEnabled = true
         return view
     }()
     
@@ -54,7 +65,14 @@ open class LMFeedCreatePollQuestionView: LMView {
     
     // MARK: Data Variables
     open var addOptionImageSize: CGFloat { 20 }
+    open var cellSize: CGFloat { 56 }
+    public weak var delegate: LMFeedCreatePollQuestionViewProtocol?
+    public var data: [LMFeedCreatePollOptionWidget.ContentModel] = []
     
+    public var tableViewHeightConstraint: NSLayoutConstraint?
+    
+    
+    // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
         
@@ -66,6 +84,8 @@ open class LMFeedCreatePollQuestionView: LMView {
         addOptionView.addSubview(addOptionText)
     }
     
+    
+    // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
         
@@ -93,17 +113,55 @@ open class LMFeedCreatePollQuestionView: LMView {
                                     centerY: (addOptionImage.centerYAnchor, 0))
         addOptionText.trailingAnchor.constraint(greaterThanOrEqualTo: addOptionView.trailingAnchor, constant: -16).isActive = true
         
-        
-        for _ in 0..<10 {
-            let vc = LMFeedCreatePollOptionWidget().translatesAutoresizingMaskIntoConstraints()
-            vc.setHeightConstraint(with: 64)
-            optionStack.addArrangedSubview(vc)
-        }
+        tableViewHeightConstraint = optionStack.setHeightConstraint(with: cellSize * 2)
     }
     
+    
+    // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
         
         containerView.backgroundColor = Appearance.shared.colors.white
+    }
+    
+    
+    // MARK: setupActions
+    open override func setupActions() {
+        super.setupActions()
+        
+        addOptionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapAddOptions)))
+    }
+    
+    @objc
+    open func onTapAddOptions() {
+        delegate?.onAddNewOptionTapped()
+    }
+    
+    // MARK: configure
+    open func configure(with data: [LMFeedCreatePollOptionWidget.ContentModel], delegate: LMFeedCreatePollQuestionViewProtocol?) {
+        self.delegate = delegate
+        updateOptions(with: data)
+    }
+    
+    open func updateOptions(with data: [LMFeedCreatePollOptionWidget.ContentModel]) {
+        self.data = data
+        optionStack.reloadData()
+        tableViewHeightConstraint?.constant = CGFloat(data.count) * cellSize
+    }
+}
+
+extension LMFeedCreatePollQuestionView: UITableViewDataSource, UITableViewDelegate {
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        data.count
+    }
+    
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(LMFeedCreatePollOptionWidget.self) {
+            cell.configure(with: data[indexPath.row]) { [weak delegate] in
+                delegate?.onCrossButtonTapped(for: indexPath.row)
+            }
+            return cell
+        }
+        return UITableViewCell()
     }
 }

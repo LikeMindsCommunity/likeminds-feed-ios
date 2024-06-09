@@ -52,6 +52,8 @@ public extension Constants {
         public var documentsIcon = loadSystemImage(with: "doc.fill")
         public var galleryIcon = loadSystemImage(with: "photo")
         public var equalIcon = loadSystemImage(with: "equal")
+        public var chevronDownIcon = loadSystemImage(with: "chevron.down")
+        public var chevronUpIcon = loadSystemImage(with: "chevron.up")
         
         public var pdfIcon = loadImage(with: "pdfIcon")
         public var placeholderImage = loadImage(with: "placeholderImage")

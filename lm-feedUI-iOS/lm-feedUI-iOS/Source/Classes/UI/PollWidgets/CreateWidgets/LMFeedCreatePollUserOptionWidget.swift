@@ -53,14 +53,13 @@ open class LMFeedCreatePollUserOptionWidget: LMView {
         
         pinSubView(subView: containerView)
         
-        titleLabel.addConstraint(top: (containerView.topAnchor, 16),
-                                 bottom: (containerView.bottomAnchor, -16),
+        titleLabel.addConstraint(top: (containerView.topAnchor, 4),
+                                 bottom: (containerView.bottomAnchor, -4),
                                  leading: (containerView.leadingAnchor, 0))
         
         downArrow.addConstraint(leading: (titleLabel.trailingAnchor, 8),
                                 trailing: (containerView.trailingAnchor, 0),
                                 centerY: (titleLabel.centerYAnchor, 0))
-//        downArrow.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabel.trailingAnchor, constant: 8).isActive = true
         
         sepratorView.addConstraint(bottom: (containerView.bottomAnchor, 0),
                                    leading: (titleLabel.leadingAnchor, 0),
@@ -69,5 +68,11 @@ open class LMFeedCreatePollUserOptionWidget: LMView {
         
         titleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    }
+    
+    
+    // MARK: configure
+    open func configure(with title: String) {
+        titleLabel.text = title
     }
 }

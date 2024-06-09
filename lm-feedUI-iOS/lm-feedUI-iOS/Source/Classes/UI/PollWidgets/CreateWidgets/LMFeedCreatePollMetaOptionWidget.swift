@@ -9,10 +9,12 @@ import UIKit
 
 open class LMFeedCreatePollMetaOptionWidget: LMView {
     public struct ContentModel {
+        let id: Int
         let title: String
         let isSelected: Bool
         
-        public init(title: String, isSelected: Bool) {
+        public init(id: Int, title: String, isSelected: Bool) {
+            self.id = id
             self.title = title
             self.isSelected = isSelected
         }
