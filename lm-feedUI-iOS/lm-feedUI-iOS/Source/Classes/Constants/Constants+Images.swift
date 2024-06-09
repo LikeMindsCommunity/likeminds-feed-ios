@@ -63,5 +63,6 @@ public extension Constants {
         public var createPostIcon = loadImage(with: "createPostIcon")
         public var emptyViewIcon = loadImage(with: "emptyView")
         public var docImageIcon = loadImage(with: "docTexImage")
+        public var addPollIcon = loadImage(with: "addpoll")
     }
 }

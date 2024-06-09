@@ -115,6 +115,14 @@ open class LMFeedCreatePollHeader: LMView {
     }
     
     
+    // MARK: setupAppearance
+    open override func setupAppearance() {
+        super.setupAppearance()
+        
+        userProfileImage.layer.cornerRadius = userImageSize / 2
+    }
+    
+    
     // MARK: configure
     open func configure(with data: ContentModel) {
         userProfileImage.kf.setImage(
@@ -132,7 +140,12 @@ open class LMFeedCreatePollHeader: LMView {
     }
     
     public func retrivePollQestion() -> String? {
-        pollQuestionTextField.text
+        let text = pollQuestionTextField.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard !text.isEmpty,
+              text != textFieldPlaceholderText else { return nil }
+        
+        return text
     }
 }
 

@@ -12,23 +12,9 @@ public protocol LMFeedCreatePollDateViewProtocol: AnyObject {
 }
 
 open class LMFeedCreatePollDateView: LMView {
+    // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        return view
-    }()
-    
-    open private(set) lazy var containerStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
-        stack.axis = .vertical
-        stack.alignment = .center
-        stack.distribution = .fill
-        stack.spacing = 4
-        return stack
-    }()
-    
-    open private(set) lazy var wrapperView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.isUserInteractionEnabled = true
         return view
     }()
     
@@ -48,17 +34,6 @@ open class LMFeedCreatePollDateView: LMView {
         return label
     }()
     
-    open private(set) lazy var datePicker: UIDatePicker = {
-        let picker = UIDatePicker()
-        picker.translatesAutoresizingMaskIntoConstraints = false
-        picker.datePickerMode = .dateAndTime
-        picker.isHidden = true
-        if #available(iOS 13.4, *) {
-            picker.preferredDatePickerStyle = .wheels
-        }
-        return picker
-    }()
-    
     
     // MARK: Data Variables
     public weak var delegate: LMFeedCreatePollDateViewProtocol?
@@ -68,14 +43,8 @@ open class LMFeedCreatePollDateView: LMView {
         super.setupViews()
         
         addSubview(containerView)
-        
-        containerView.addSubview(containerStackView)
-        
-        containerStackView.addArrangedSubview(wrapperView)
-        containerStackView.addArrangedSubview(datePicker)
-        
-        wrapperView.addSubview(titleLabel)
-        wrapperView.addSubview(dateLabel)
+        containerView.addSubview(titleLabel)
+        containerView.addSubview(dateLabel)
     }
     
     
@@ -84,19 +53,15 @@ open class LMFeedCreatePollDateView: LMView {
         super.setupLayouts()
         
         pinSubView(subView: containerView)
-        containerView.pinSubView(subView: containerStackView)
         
-        wrapperView.addConstraint(leading: (containerStackView.leadingAnchor, 0),
-                                  trailing: (containerStackView.trailingAnchor, 0))
-        
-        titleLabel.addConstraint(top: (wrapperView.topAnchor, 16),
-                                 leading: (wrapperView.leadingAnchor, 16))
-        titleLabel.trailingAnchor.constraint(greaterThanOrEqualTo: wrapperView.trailingAnchor, constant: -16).isActive = true
+        titleLabel.addConstraint(top: (containerView.topAnchor, 16),
+                                 leading: (containerView.leadingAnchor, 16))
+        titleLabel.trailingAnchor.constraint(greaterThanOrEqualTo: containerView.trailingAnchor, constant: -16).isActive = true
         
         dateLabel.addConstraint(top: (titleLabel.bottomAnchor, 16),
-                                bottom: (wrapperView.bottomAnchor, -16),
+                                bottom: (containerView.bottomAnchor, -16),
                                 leading: (titleLabel.leadingAnchor, 0))
-        dateLabel.trailingAnchor.constraint(greaterThanOrEqualTo: wrapperView.trailingAnchor, constant: -16).isActive = true
+        dateLabel.trailingAnchor.constraint(greaterThanOrEqualTo: containerView.trailingAnchor, constant: -16).isActive = true
     }
     
     
@@ -108,26 +73,6 @@ open class LMFeedCreatePollDateView: LMView {
     }
     
     
-    // MARK: setupActions
-    open override func setupActions() {
-        super.setupActions()
-        
-        wrapperView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapDateView)))
-        datePicker.addTarget(self, action: #selector(onDateChanged), for: .valueChanged)
-    }
-    
-    @objc
-    open func onTapDateView() {
-        datePicker.minimumDate = Date().addingTimeInterval(60 * 5)
-        showHidePickerView(isShow: true)
-    }
-    
-    @objc
-    open func onDateChanged(sender: UIDatePicker) {
-        delegate?.onDateChanged(newDate: sender.date)
-    }
-    
-    
     // MARK: configure
     open func configure(with date: Date, delegate: LMFeedCreatePollDateViewProtocol?) {
         self.delegate = delegate
@@ -135,15 +80,7 @@ open class LMFeedCreatePollDateView: LMView {
     }
     
     open func updateExpiryDate(with newDate: Date) {
+        dateLabel.textColor = Appearance.shared.colors.black
         dateLabel.text = DateUtility.formatDate(newDate)
-        datePicker.setDate(newDate, animated: true)
-    }
-    
-    open func showHidePickerView(isShow: Bool) {
-        let duration: TimeInterval = isShow ? 0.3 : 0.1
-        
-        UIView.animate(withDuration: duration) { [weak self] in
-            self?.datePicker.isHidden = !isShow
-        }
     }
 }

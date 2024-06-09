@@ -18,11 +18,6 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
     
     
     // MARK: UI Elements
-//    open private(set) lazy var containerView: LMView = {
-//        let view = LMView().translatesAutoresizingMaskIntoConstraints()
-//        return view
-//    }()
-    
     open private(set) lazy var optionTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -33,21 +28,22 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
     open private(set) lazy var crossButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.crossIcon, for: .normal)
+        button.setImage(Constants.shared.images.xmarkIcon, for: .normal)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 24)), forImageIn: .normal)
+        button.tintColor = UIColor(red: 208 / 255, green: 216 / 255, blue: 226 / 255, alpha: 1)
         return button
     }()
     
     open private(set) lazy var sepratorView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = UIColor(red: 208 / 255, green: 216 / 255, blue: 226 / 255, alpha: 1) // Appearance.shared.colors.gray1
+        view.backgroundColor = UIColor(red: 208 / 255, green: 216 / 255, blue: 226 / 255, alpha: 1)
         return view
     }()
     
     
     // MARK: Data Variables
-    public var id: Int?
     public var onCrossButtonCallback: (() -> Void)?
+    public var onTextValueChanged: ((String?) -> Void)?
     
     
     // MARK: setupViews
@@ -109,5 +105,9 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
     open func configure(with data: ContentModel, onCrossButtonCallback: (() -> Void)?) {
         self.onCrossButtonCallback = onCrossButtonCallback
         optionTextField.text = data.option
+    }
+    
+    open func retriveText() -> String? {
+        optionTextField.text
     }
 }

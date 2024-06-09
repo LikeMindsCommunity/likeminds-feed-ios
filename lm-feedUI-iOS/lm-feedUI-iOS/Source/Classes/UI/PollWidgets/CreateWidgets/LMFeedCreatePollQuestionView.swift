@@ -148,6 +148,12 @@ open class LMFeedCreatePollQuestionView: LMView {
         optionStack.reloadData()
         tableViewHeightConstraint?.constant = CGFloat(data.count) * cellSize
     }
+    
+    open func retrieveTextFromOptions() -> [String?] {
+        optionStack.visibleCells.map { cell in
+            (cell as? LMFeedCreatePollOptionWidget)?.retriveText()
+        }
+    }
 }
 
 extension LMFeedCreatePollQuestionView: UITableViewDataSource, UITableViewDelegate {

@@ -11,34 +11,62 @@ public protocol LMFeedCreatePollViewModelProtocol: LMBaseViewControllerProtocol 
     func configure(pollHeaderData: LMFeedCreatePollHeader.ContentModel, pollOptionsData: [LMFeedCreatePollOptionWidget.ContentModel], metaOptions: LMFeedCreatePollMetaView.ContentModel, expiryDate: Date?)
     func updateExpiryDate(with newDate: Date)
     func updatePollOptions(with newData: [LMFeedCreatePollOptionWidget.ContentModel])
-    func showMetaOptionsPickerView(with components: [[String]], selectedOptionRow: Int, selectedOptionCountRow: Int)
+    func showMetaOptionsPickerView(with data: LMFeedGeneralPicker.ContentModel)
+    func updateMetaOption(with option: String, count: Int)
+    func presentDatePicker(with selectedDate: Date, minimumDate: Date)
+    func updatePoll(with data: LMFeedCreatePollDataModel)
 }
 
 final public class LMFeedCreatePollViewModel {
     var delegate: LMFeedCreatePollViewModelProtocol?
-    var prefilledData: LMFeedCreatePollDataModel?
+    
+    /// minimum poll options to be shown
     let defaultPollAnswerCount: Int
+    
+    /// poll question
+    var pollQuestion: String?
+    
+    /// number of options in selection
     var currentOptionCount: Int
+    
+    /// poll option state - `exactly` || `at_max` || `at_least`
     var optionSelectionState: LMFeedCreatePollDataModel.OptionState
+    
+    /// poll expiry date
     var pollExpiryDate: Date?
+    
+    /// poll options
     var pollOptions: [String?]
+    
+    /// is anonymous poll: default is `false`
+    var isAnonymousPoll: Bool
+    
+    /// is instant poll: default is `true`
+    var isInstantPoll: Bool
+    
+    /// allow user to add options: default is `false`
+    var allowAddOptions: Bool
     
     init(delegate: LMFeedCreatePollViewModelProtocol?, prefilledData: LMFeedCreatePollDataModel?) {
         self.delegate = delegate
-        self.prefilledData = prefilledData
+        self.pollQuestion = prefilledData?.pollQuestion
         self.defaultPollAnswerCount = 2
         self.optionSelectionState = prefilledData?.selectState ?? .exactly
         self.currentOptionCount = prefilledData?.selectStateCount ?? 1
         self.pollOptions = prefilledData?.pollOptions ?? Array(repeating: nil, count: defaultPollAnswerCount)
+        self.isAnonymousPoll = prefilledData?.isAnonymous ?? false
+        self.isInstantPoll = prefilledData?.isInstantPoll ?? true
+        self.allowAddOptions = prefilledData?.allowAddOptions ?? false
     }
     
-    public static func createModule(with data: LMFeedCreatePollDataModel? = nil) throws -> LMFeedCreatePollScreen {
+    public static func createModule(with pollDelegate: LMFeedCreatePollProtocol, data: LMFeedCreatePollDataModel? = nil) throws -> LMFeedCreatePollScreen {
         guard LMFeedCore.isInitialized else { throw LMFeedError.feedNotInitialized }
         
         let viewcontroller = LMFeedCreatePollScreen()
         let viewModel = LMFeedCreatePollViewModel(delegate: viewcontroller, prefilledData: data)
         
         viewcontroller.viewmodel = viewModel
+        viewcontroller.pollDelegate = pollDelegate
         
         return viewcontroller
     }
@@ -49,7 +77,7 @@ final public class LMFeedCreatePollViewModel {
         let pollHeaderData = LMFeedCreatePollHeader.ContentModel(
             profileImage: userDetails?.imageUrl,
             username: userDetails?.name ?? "User",
-            pollQuestion: prefilledData?.pollQuestion
+            pollQuestion: pollQuestion
         )
         
         let pollOptions: [LMFeedCreatePollOptionWidget.ContentModel] = pollOptions.enumerated().map { id, option in
@@ -63,11 +91,11 @@ final public class LMFeedCreatePollViewModel {
             let desc = option.description
             switch option {
             case .isAnonymousPoll:
-                metaOptionsModel.append(.init(id: option.rawValue, title: desc, isSelected: prefilledData?.isAnonymous ?? false))
+                metaOptionsModel.append(.init(id: option.rawValue, title: desc, isSelected: isAnonymousPoll))
             case .isInstantPoll:
-                metaOptionsModel.append(.init(id: option.rawValue, title: desc, isSelected: prefilledData?.isInstantPoll ?? false))
+                metaOptionsModel.append(.init(id: option.rawValue, title: desc, isSelected: !isInstantPoll))
             case .allowAddOptions:
-                metaOptionsModel.append(.init(id: option.rawValue, title: desc, isSelected: prefilledData?.allowAddOptions ?? false))
+                metaOptionsModel.append(.init(id: option.rawValue, title: desc, isSelected: allowAddOptions))
             }
         }
         
@@ -82,18 +110,11 @@ final public class LMFeedCreatePollViewModel {
             pollHeaderData: pollHeaderData,
             pollOptionsData: pollOptions,
             metaOptions: metaOptionsData,
-            expiryDate: prefilledData?.expiryTime
+            expiryDate: pollExpiryDate
         )
     }
     
     public func updatePollExpiryDate(with newDate: Date) {
-        let current = Date()
-        var newDate = newDate
-        
-        if newDate < current {
-            newDate = current.addingTimeInterval(60 * 5)
-        }
-        
         pollExpiryDate = newDate
         delegate?.updateExpiryDate(with: newDate)
     }
@@ -102,6 +123,12 @@ final public class LMFeedCreatePollViewModel {
         guard pollOptions.count > 2,
               pollOptions.indices.contains(index) else { return }
         pollOptions.remove(at: index)
+        
+        
+        if currentOptionCount > pollOptions.count {
+            currentOptionCount = 1
+            delegate?.updateMetaOption(with: optionSelectionState.description, count: currentOptionCount)
+        }
         
         delegate?.updatePollOptions(with: pollOptions.map({ .init(option: $0) }))
     }
@@ -127,10 +154,77 @@ final public class LMFeedCreatePollViewModel {
             optionCountRow.append("\(i) option\(i == 1 ? "" : "s")")
         }
         
-        delegate?.showMetaOptionsPickerView(
-            with: [optionTypeRow, optionCountRow],
-            selectedOptionRow: optionSelectionState.rawValue,
-            selectedOptionCountRow: currentOptionCount - 1 // Doing this because array starts from 0
+        let data = LMFeedGeneralPicker.ContentModel(components: [optionTypeRow, optionCountRow],
+                                                    selectedIndex: [optionSelectionState.rawValue, currentOptionCount - 1])
+        
+        delegate?.showMetaOptionsPickerView(with: data)
+    }
+    
+    public func updateMetaOptionPicker(with selectedIndex: [Int]) {
+        guard let newOptionType = LMFeedCreatePollDataModel.OptionState(rawValue: selectedIndex[0]) else { return }
+        optionSelectionState = newOptionType
+        currentOptionCount = selectedIndex[1] + 1
+        
+        delegate?.updateMetaOption(with: optionSelectionState.description, count: currentOptionCount)
+    }
+    
+    public func openDatePicker() {
+        delegate?.presentDatePicker(with: pollExpiryDate ?? Date(), minimumDate: Date().addingTimeInterval(60 * 5))
+    }
+    
+    public func metaValueChanged(for id: Int) {
+        guard let option = LMFeedCreatePollDataModel.MetaOptions(rawValue: id) else { return }
+        
+        switch option {
+        case .isAnonymousPoll:
+            isAnonymousPoll.toggle()
+        case .isInstantPoll:
+            isInstantPoll.toggle()
+        case .allowAddOptions:
+            allowAddOptions.toggle()
+        }
+    }
+    
+    public func validatePoll(with question: String?, options: [String?]) {
+        guard let question,
+              !question.isEmpty else {
+            delegate?.showError(with: "Question cannot be empty", isPopVC: false)
+            return
+        }
+        
+        let filteredOptions = options.compactMap { option in
+            let trimmedText = option?.trimmingCharacters(in: .whitespacesAndNewlines)
+            return trimmedText?.isEmpty != false ? nil : trimmedText
+        }
+        
+        guard filteredOptions.count > 1 else {
+            delegate?.showError(with: "Need atleast 2 poll options", isPopVC: false)
+            return
+        }
+        
+        guard filteredOptions.count == Set(filteredOptions).count else {
+            delegate?.showError(with: "Options should be unique", isPopVC: false)
+            return
+        }
+        
+        guard let pollExpiryDate else {
+            delegate?.showError(with: "Expiry date cannot be empty", isPopVC: false)
+            return
+        }
+        
+        
+        let pollDetails: LMFeedCreatePollDataModel = .init(
+            pollQuestion: question,
+            expiryTime: pollExpiryDate,
+            pollOptions: filteredOptions,
+            isInstantPoll: isInstantPoll,
+            selectState: optionSelectionState,
+            selectStateCount: currentOptionCount,
+            isAnonymous: isAnonymousPoll,
+            allowAddOptions: allowAddOptions
         )
+        
+        
+        delegate?.updatePoll(with: pollDetails)
     }
 }

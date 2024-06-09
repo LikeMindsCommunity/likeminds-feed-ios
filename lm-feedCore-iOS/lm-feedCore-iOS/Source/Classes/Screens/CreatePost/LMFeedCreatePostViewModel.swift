@@ -18,6 +18,7 @@ public protocol LMFeedCreatePostViewModelProtocol: LMBaseViewControllerProtocol 
     func updateTopicView(with data: LMFeedTopicView.ContentModel)
     func navigateToTopicView(with topics: [LMFeedTopicDataModel])
     func setupLinkPreview(with data: LMFeedLinkPreview.ContentModel?)
+    func navigateToCreatePoll(with data: LMFeedCreatePollDataModel?)
 }
 
 public final class LMFeedCreatePostViewModel {
@@ -42,6 +43,7 @@ public final class LMFeedCreatePostViewModel {
     private var debounceForDecodeLink: Timer?
     private var selectedTopics: [LMFeedTopicDataModel]
     private var linkPreview: LMFeedPostDataModel.LinkAttachment?
+    private var pollDetails: LMFeedCreatePollDataModel?
     private var showLinkPreview: Bool {
         willSet {
             if !newValue {
@@ -121,14 +123,20 @@ public extension LMFeedCreatePostViewModel {
     
     func updateCurrentSelection(to type: PostCreationAttachmentType) {
         currentMediaSelectionType = type
-        delegate?.openMediaPicker(type, isFirstPick: media.isEmpty, allowedNumber: maxMedia - media.count)
+        
+        if currentMediaSelectionType == .poll {
+            delegate?.navigateToCreatePoll(with: pollDetails)
+        } else {
+            delegate?.openMediaPicker(type, isFirstPick: media.isEmpty, allowedNumber: maxMedia - media.count)
+        }
     }
     
     func addMoreButtonClicked() {
         switch currentMediaSelectionType {
         case .image, .video, .document:
             delegate?.openMediaPicker(currentMediaSelectionType, isFirstPick: media.isEmpty, allowedNumber: maxMedia - media.count)
-        case .none:
+        case .poll, 
+                .none:
             break
         }
     }
@@ -156,7 +164,8 @@ public extension LMFeedCreatePostViewModel {
                         isShowCrossButton: true
                     )
                 )
-            case .none:
+            case .poll,
+                    .none:
                 break
             }
         }
@@ -164,7 +173,7 @@ public extension LMFeedCreatePostViewModel {
         delegate?.resetMediaView()
         
         switch currentMediaSelectionType {
-        case .image, .video, .none:
+        case .image, .video, .none, .poll:
             delegate?.showMedia(media: mediaData, isShowAddMore: !media.isEmpty && media.count < maxMedia, isShowBottomTab: media.isEmpty)
         case .document:
             delegate?.showMedia(documents: docData, isShowAddMore: !media.isEmpty && media.count < maxMedia, isShowBottomTab: media.isEmpty)

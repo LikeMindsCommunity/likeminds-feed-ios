@@ -20,6 +20,8 @@ open class LMFeedCreatePollMetaOptionWidget: LMView {
         }
     }
     
+    
+    // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
         return view
@@ -46,6 +48,13 @@ open class LMFeedCreatePollMetaOptionWidget: LMView {
         return view
     }()
     
+    
+    // MARK: Data Variables
+    public var onValueSwitched: ((Int) -> Void)?
+    public var id: Int?
+    
+    
+    // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
         addSubview(containerView)
@@ -54,6 +63,8 @@ open class LMFeedCreatePollMetaOptionWidget: LMView {
         containerView.addSubview(sepratorView)
     }
     
+    
+    // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
         
@@ -77,7 +88,25 @@ open class LMFeedCreatePollMetaOptionWidget: LMView {
         sepratorView.setHeightConstraint(with: 1)
     }
     
-    open func configure(with data: ContentModel) {
+    
+    // MARK: setupActions
+    open override func setupActions() {
+        super.setupActions()
+        optionSwitcher.addTarget(self, action: #selector(onValueChange), for: .valueChanged)
+    }
+    
+    @objc
+    open func onValueChange(_ sender: UISwitch) {
+        guard let id else { return }
+        onValueSwitched?(id)
+    }
+    
+    
+    // MARK: configure
+    open func configure(with data: ContentModel, onValueSwitched: ((Int) -> Void)?) {
+        self.onValueSwitched = onValueSwitched
+        self.id = data.id
+        
         optionTitleLabel.text = data.title
         optionSwitcher.isOn = data.isSelected
     }

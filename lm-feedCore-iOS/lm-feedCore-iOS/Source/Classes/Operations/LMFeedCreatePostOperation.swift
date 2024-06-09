@@ -13,6 +13,7 @@ public enum PostCreationAttachmentType {
     case image,
          video,
          document,
+         poll,
          none
     
     var contentType: String {
@@ -25,6 +26,8 @@ public enum PostCreationAttachmentType {
             return "document"
         case .none:
             return ""
+        case .poll:
+            return "poll"
         }
     }
 }
@@ -94,7 +97,7 @@ final class LMFeedCreatePostOperation {
                         if let attachment = fileAttachmentData(attachment: file) {
                             attachments.append(attachment)
                         }
-                    case .none:
+                    case .none, .poll:
                         break
                     }
                 }
@@ -242,7 +245,7 @@ final class LMFeedCreatePostOperation {
                         pdfPage.draw(with: .mediaBox, to: ctx.cgContext)
                     }
                 }
-            case .none:
+            case .none, .poll:
                 break
             }
         }

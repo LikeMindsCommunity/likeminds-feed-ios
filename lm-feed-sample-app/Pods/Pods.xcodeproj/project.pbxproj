@@ -907,6 +907,8 @@
 		E53EADA52C14920300D88E4A /* LMFeedCreatePollDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EADA42C14920300D88E4A /* LMFeedCreatePollDataModel.swift */; };
 		E53EADA62C14C00F00D88E4A /* DateUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2631641F00C1B972440E3E9CFB68BB /* DateUtility.swift */; };
 		E53EADA82C14ED8E00D88E4A /* LMFeedPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EADA72C14ED8E00D88E4A /* LMFeedPickerView.swift */; };
+		E53EADAB2C15C89600D88E4A /* LMFeedGeneralPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EADAA2C15C89600D88E4A /* LMFeedGeneralPicker.swift */; };
+		E53EADAD2C15E24900D88E4A /* LMFeedTimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EADAC2C15E24900D88E4A /* LMFeedTimePicker.swift */; };
 		E5571522DD6080069F2A4AC436701D6B /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC427A9EDAB4C3A6D6806CC8D14623AF /* Preferences.swift */; };
 		E5635DECB22362CA17521F7B6A752BB4 /* AWSS3Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D2D168B7FDB7D6D9638AECB431DB24E /* AWSS3Resources.m */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4BFB00D33CC2E541D239DEFE7D32300 /* SessionDelegate.swift */; };
@@ -2343,6 +2345,8 @@
 		E53EADA22C148F6D00D88E4A /* LMFeedCreatePollViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePollViewModel.swift; sourceTree = "<group>"; };
 		E53EADA42C14920300D88E4A /* LMFeedCreatePollDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePollDataModel.swift; sourceTree = "<group>"; };
 		E53EADA72C14ED8E00D88E4A /* LMFeedPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPickerView.swift; sourceTree = "<group>"; };
+		E53EADAA2C15C89600D88E4A /* LMFeedGeneralPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedGeneralPicker.swift; sourceTree = "<group>"; };
+		E53EADAC2C15E24900D88E4A /* LMFeedTimePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTimePicker.swift; sourceTree = "<group>"; };
 		E56B9664F2C7EF30AEAAE2785C3AA6C3 /* FIRComponentType.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRComponentType.m; path = FirebaseCore/Sources/FIRComponentType.m; sourceTree = "<group>"; };
 		E5BB17F53144403789EFD147D0242972 /* cct.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = cct.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/cct.nanopb.c; sourceTree = "<group>"; };
 		E5BF5E0AF72E89CE6D9CC45D326BDE6C /* AWSTMCacheBackgroundTaskManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSTMCacheBackgroundTaskManager.h; path = AWSCore/TMCache/AWSTMCacheBackgroundTaskManager.h; sourceTree = "<group>"; };
@@ -4673,6 +4677,15 @@
 			path = CreateWidgets;
 			sourceTree = "<group>";
 		};
+		E53EADA92C15C87700D88E4A /* UIPicker */ = {
+			isa = PBXGroup;
+			children = (
+				E53EADAA2C15C89600D88E4A /* LMFeedGeneralPicker.swift */,
+				E53EADAC2C15E24900D88E4A /* LMFeedTimePicker.swift */,
+			);
+			path = UIPicker;
+			sourceTree = "<group>";
+		};
 		E675A902C80950BA490BF216292DCFA5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -4795,17 +4808,18 @@
 		F5915E1687F7381FA0F229678A492C67 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				E53EAD892C11907000D88E4A /* Poll */,
 				206EE3725539BE6F0354FC161DCD6633 /* CreatePost */,
 				ED991E395343EF40AD936872D2499449 /* DeleteScreen */,
 				FC65EFB108FBC5D7E7BB6610BD6CA967 /* EditPost */,
 				A67F3FE03CB7BF066F4E261DD35AB1F5 /* LikeScreen */,
 				DE95418F8DDE4C48396305494A396BC3 /* NotificationScreen */,
+				E53EAD892C11907000D88E4A /* Poll */,
 				90C72B1F81CE9272DE2E9A6C65B03B10 /* PostDetail */,
 				C6E1AC6AE32D8F2907D9CEC55B315636 /* PostListView */,
 				087D141D47C18027068D2A60807F7FEE /* ReportPost */,
 				08210CC5DC271DE59D055D979D13989C /* TaggingListView */,
 				4518397A749F7B89A2FE74279D9D7CB9 /* TopicSelection */,
+				E53EADA92C15C87700D88E4A /* UIPicker */,
 				D6558B98071144D9E0AC3DDE0F7A1944 /* UniversalFeed */,
 			);
 			name = Screens;
@@ -6189,6 +6203,7 @@
 				CB7B08F6A4BD998CDABB8BB96019484A /* LMFeedCreatePostOperation.swift in Sources */,
 				8965441F67BE2C6DA32422E8116CA68F /* LMFeedCreatePostScreen.swift in Sources */,
 				505C190678DC99647C911B8042A5B57F /* LMFeedCreatePostViewModel.swift in Sources */,
+				E53EADAB2C15C89600D88E4A /* LMFeedGeneralPicker.swift in Sources */,
 				F57E37BCA0FD6CC7E3C6B5CAB148D952 /* LMFeedDeleteScreen.swift in Sources */,
 				58CC1BCCC1C4CAFFEF023B784FB06C70 /* LMFeedDeleteViewModel.swift in Sources */,
 				2F51020DC5D8F56336D41ACD49D8814A /* LMFeedEditPostOperation.swift in Sources */,
@@ -6218,6 +6233,7 @@
 				75BACC4481B69A148D79C112A14652A5 /* LMFeedTagListDataModel.swift in Sources */,
 				2CB95CD7182954D76CC3C6F633CFCE84 /* LMFeedTopicDataModel.swift in Sources */,
 				FCAFD80197E6580832D1F82FB550F1FC /* LMFeedTopicSelectionDataModel.swift in Sources */,
+				E53EADAD2C15E24900D88E4A /* LMFeedTimePicker.swift in Sources */,
 				7AF959C3672089B8B5982BD630D380B9 /* LMFeedTopicSelectionScreen.swift in Sources */,
 				618A262D5447C724AA034654EAC0CCD7 /* LMFeedTopicSelectionViewModel.swift in Sources */,
 				ADC8423CCF3886115C5088A34298A8A4 /* LMFeedUserDataModel.swift in Sources */,

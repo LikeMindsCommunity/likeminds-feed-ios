@@ -153,6 +153,12 @@ open class LMFeedCreatePostScreen: LMViewController {
         return view
     }()
     
+    open private(set) lazy var addPollTab: LMFeedAddMediaView = {
+        let view = LMUIComponents.shared.addMediaView.init().translatesAutoresizingMaskIntoConstraints()
+        view.isUserInteractionEnabled = true
+        return view
+    }()
+    
     open private(set) lazy var videoPlayer: AVPlayerViewController = {
         let player = AVPlayerViewController()
         player.view.translatesAutoresizingMaskIntoConstraints = false
@@ -217,7 +223,7 @@ open class LMFeedCreatePostScreen: LMViewController {
             scrollStackView.addArrangedSubview(subView)
         }
         
-        [addPhotosTab, addVideoTab, addDocumentsTab].forEach { subView in
+        [addPhotosTab, addVideoTab, addDocumentsTab, addPollTab].forEach { subView in
             addMediaStack.addArrangedSubview(subView)
         }
     }
@@ -272,6 +278,7 @@ open class LMFeedCreatePostScreen: LMViewController {
         addPhotosTab.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapAddPhoto)))
         addVideoTab.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapAddVideo)))
         addDocumentsTab.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapAddDocument)))
+        addPollTab.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapAddPoll)))
         addMoreButton.addTarget(self, action: #selector(didTapAddMoreButton), for: .touchUpInside)
         navigationItem.rightBarButtonItem = createPostButton
     }
@@ -292,6 +299,12 @@ open class LMFeedCreatePostScreen: LMViewController {
     open func didTapAddDocument() {
         LMFeedCore.analytics?.trackEvent(for: .postCreationAttachmentClicked, eventProperties: ["type": "file"])
         viewModel?.updateCurrentSelection(to: .document)
+    }
+    
+    @objc
+    open func didTapAddPoll() {
+        LMFeedCore.analytics?.trackEvent(for: .postCreationAttachmentClicked, eventProperties: ["type": "pollx"])
+        viewModel?.updateCurrentSelection(to: .poll)
     }
     
     @objc
@@ -328,6 +341,7 @@ open class LMFeedCreatePostScreen: LMViewController {
         addPhotosTab.configure(with: LMStringConstants.shared.addPhotoText, image: Constants.shared.images.galleryIcon)
         addVideoTab.configure(with: LMStringConstants.shared.addVideoText, image: Constants.shared.images.videoIcon)
         addDocumentsTab.configure(with: LMStringConstants.shared.attachFiles, image: Constants.shared.images.paperclipIcon)
+        addPollTab.configure(with: LMStringConstants.shared.addPoll, image: Constants.shared.images.addPollIcon)
         taggingView.isHidden = true
     }
     
@@ -514,7 +528,7 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
             }
         case .document:
             openDocumentPicker()
-        case .none:
+        case .none, .poll:
             break
         }
     }
@@ -536,6 +550,15 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
             showError(with: "Please Allow Media Access.\nSettings -> Privacy -> Photos -> \(LMStringConstants.shared.appName) -> All Photos", isPopVC: false)
         default:
             callback?()
+        }
+    }
+    
+    public func navigateToCreatePoll(with data: LMFeedCreatePollDataModel?) {
+        do {
+            let viewcontroller = try LMFeedCreatePollViewModel.createModule(with: self, data: data)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
         }
     }
 }
@@ -654,5 +677,13 @@ extension LMFeedCreatePostScreen: LMFeedTopicViewCellProtocol {
 extension LMFeedCreatePostScreen: LMFeedTopicSelectionViewProtocol {
     public func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         viewModel?.updateTopicFeed(with: topics)
+    }
+}
+
+
+// MARK: LMFeedCreatePollProtocol
+extension LMFeedCreatePostScreen: LMFeedCreatePollProtocol {
+    public func updatePollDetails(with data: LMFeedCreatePollDataModel) {
+        debugPrint(data)
     }
 }

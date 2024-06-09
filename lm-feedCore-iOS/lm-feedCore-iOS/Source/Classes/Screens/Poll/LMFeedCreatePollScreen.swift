@@ -8,6 +8,10 @@
 import LikeMindsFeedUI
 import UIKit
 
+public protocol LMFeedCreatePollProtocol: AnyObject {
+    func updatePollDetails(with data: LMFeedCreatePollDataModel)
+}
+
 open class LMFeedCreatePollScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
@@ -76,7 +80,7 @@ open class LMFeedCreatePollScreen: LMViewController {
     
     // MARK: Data Variables
     public var viewmodel: LMFeedCreatePollViewModel?
-    
+    public weak var pollDelegate: LMFeedCreatePollProtocol?
     
     // MARK: setupViews
     open override func setupViews() {
@@ -117,7 +121,7 @@ open class LMFeedCreatePollScreen: LMViewController {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        view.backgroundColor = Appearance.shared.colors.gray4
+        view.backgroundColor = Appearance.shared.colors.backgroundColor
     }
     
     
@@ -127,6 +131,12 @@ open class LMFeedCreatePollScreen: LMViewController {
         
         advancedOptionButton.addTarget(self, action: #selector(onTapAdvancedOption), for: .touchUpInside)
         pollExpiryDateView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openDatePicker)))
+        
+        let rightBarButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(didTapDoneButton))
+        navigationItem.rightBarButtonItem = rightBarButton
+        
+        let leftBarButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(dismissPollWidget))
+        navigationItem.leftBarButtonItem = leftBarButton
     }
     
     @objc
@@ -139,8 +149,20 @@ open class LMFeedCreatePollScreen: LMViewController {
     
     @objc
     open func openDatePicker() {
-        let picker = UIDatePicker()
-        picker.datePickerMode = .dateAndTime
+        viewmodel?.openDatePicker()
+    }
+    
+    @objc
+    open func didTapDoneButton() {
+        let question = pollQuestionHeaderView.retrivePollQestion()
+        let options = pollOptionView.retrieveTextFromOptions()
+        
+        viewmodel?.validatePoll(with: question, options: options)
+    }
+    
+    @objc
+    open func dismissPollWidget() {
+        navigationController?.popViewController(animated: true)
     }
     
     // MARK: viewDidLoad
@@ -171,13 +193,30 @@ extension LMFeedCreatePollScreen: LMFeedCreatePollViewModelProtocol {
     
     public func updatePollOptions(with newData: [LikeMindsFeedUI.LMFeedCreatePollOptionWidget.ContentModel]) {
         pollOptionView.updateOptions(with: newData)
-        
-        pollMetaOptionsView.showHidePickerView(isShow: false)
-        pollExpiryDateView.showHidePickerView(isShow: false)
     }
     
-    public func showMetaOptionsPickerView(with components: [[String]], selectedOptionRow: Int, selectedOptionCountRow: Int) {
-        pollMetaOptionsView.displayUserMetaOptions(with: components, selectedOption: selectedOptionRow, selectedOptionCount: selectedOptionCountRow)
+    public func showMetaOptionsPickerView(with data: LMFeedGeneralPicker.ContentModel) {
+        let vc = LMFeedGeneralPicker()
+        vc.configure(with: data, delegate: self)
+        vc.modalPresentationStyle = .overFullScreen
+        present(vc, animated: true)
+    }
+    
+    public func updateMetaOption(with option: String, count: Int) {
+        pollMetaOptionsView.updateUserMetaOption(option: option, count: count)
+    }
+    
+    public func presentDatePicker(with selectedDate: Date, minimumDate: Date) {
+        let viewcontroller = LMFeedTimePicker()
+        viewcontroller.configure(selecteDate: selectedDate, minimumDate: minimumDate, delegate: self)
+        viewcontroller.modalPresentationStyle = .overFullScreen
+        
+        present(viewcontroller, animated: true)
+    }
+    
+    public func updatePoll(with data: LMFeedCreatePollDataModel) {
+        pollDelegate?.updatePollDetails(with: data)
+        dismissPollWidget()
     }
 }
 
@@ -204,7 +243,27 @@ extension LMFeedCreatePollScreen: LMFeedCreatePollQuestionViewProtocol {
 
 // MARK: LMFeedCreatePollMetaViewProtocol
 extension LMFeedCreatePollScreen: LMFeedCreatePollMetaViewProtocol {
+    public func onValueChanged(for id: Int) {
+        viewmodel?.metaValueChanged(for: id)
+    }
+    
     public func onTapUserMetaOptions() {
         viewmodel?.showMetaOptionsPicker()
+    }
+}
+
+
+// MARK: LMFeedGeneralPickerProtocol
+extension LMFeedCreatePollScreen: LMFeedGeneralPickerProtocol {
+    public func didSelectRowAt(index: [Int]) {
+        viewmodel?.updateMetaOptionPicker(with: index)
+    }
+}
+
+
+// MARK: LMFeedTimePickerProtocol
+extension LMFeedCreatePollScreen: LMFeedTimePickerProtocol {
+    public func didSelectTime(at date: Date) {
+        viewmodel?.updatePollExpiryDate(with: date)
     }
 }
