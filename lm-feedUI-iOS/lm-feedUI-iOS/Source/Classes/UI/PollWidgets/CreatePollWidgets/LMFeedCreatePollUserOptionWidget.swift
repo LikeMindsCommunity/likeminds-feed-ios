@@ -17,7 +17,6 @@ open class LMFeedCreatePollUserOptionWidget: LMView {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = Appearance.shared.colors.black
         label.font = Appearance.shared.fonts.buttonFont2
-        label.text = "Demon Back"
         return label
     }()
     

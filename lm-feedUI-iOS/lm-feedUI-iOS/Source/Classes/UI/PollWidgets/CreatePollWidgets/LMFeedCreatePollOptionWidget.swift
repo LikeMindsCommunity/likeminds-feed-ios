@@ -20,9 +20,10 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
     
     
     // MARK: UI Elements
-    open private(set) lazy var optionTextField: UITextField = {
-        let textField = UITextField()
+    open private(set) lazy var optionTextField: LMTextField = {
+        let textField = LMTextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.addDoneButtonOnKeyboard()
         textField.placeholder = "Option"
         return textField
     }()

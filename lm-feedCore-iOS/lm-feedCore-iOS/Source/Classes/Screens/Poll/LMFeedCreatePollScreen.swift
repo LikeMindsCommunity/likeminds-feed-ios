@@ -27,6 +27,7 @@ open class LMFeedCreatePollScreen: LMViewController {
         scroll.showsHorizontalScrollIndicator = false
         scroll.showsVerticalScrollIndicator = false
         scroll.backgroundColor = .clear
+        scroll.keyboardDismissMode = .interactiveWithAccessory
         return scroll
     }()
     
@@ -104,7 +105,7 @@ open class LMFeedCreatePollScreen: LMViewController {
         super.setupLayouts()
         
         view.safePinSubView(subView: containerView)
-        containerView.pinSubView(subView: containerScrollView)
+        containerView.pinSubView(subView: containerScrollView, padding: .init(top: 0, left: 0, bottom: -16, right: 0))
         
         containerStackView.addConstraint(top: (containerScrollView.contentLayoutGuide.topAnchor, 0),
                                          bottom: (containerScrollView.contentLayoutGuide.bottomAnchor, 0),
@@ -138,6 +139,33 @@ open class LMFeedCreatePollScreen: LMViewController {
         
         let leftBarButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(dismissPollWidget))
         navigationItem.leftBarButtonItem = leftBarButton
+    }
+    
+    open override func setupObservers() {
+        super.setupObservers()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc
+    open func keyboardWillShow(notification:NSNotification){
+        //give room at the bottom of the scroll view, so it doesn't cover up anything the user needs to tap
+        guard let userInfo = notification.userInfo,
+              let nsVal = userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue else { return }
+        
+        var keyboardFrame = nsVal.cgRectValue
+        keyboardFrame = self.view.convert(keyboardFrame, from: nil)
+
+        var contentInset:UIEdgeInsets = containerScrollView.contentInset
+        contentInset.bottom = keyboardFrame.size.height + 56
+        containerScrollView.contentInset = contentInset
+    }
+
+    @objc
+    open func keyboardWillHide(notification:NSNotification){
+        let contentInset:UIEdgeInsets = UIEdgeInsets.zero
+        containerScrollView.contentInset = contentInset
     }
     
     @objc
@@ -201,7 +229,7 @@ extension LMFeedCreatePollScreen: LMFeedCreatePollViewModelProtocol {
         let vc = LMFeedGeneralPicker()
         vc.configure(with: data, delegate: self)
         vc.modalPresentationStyle = .overFullScreen
-        present(vc, animated: true)
+        present(vc, animated: false)
     }
     
     public func updateMetaOption(with option: String, count: Int) {
@@ -213,7 +241,7 @@ extension LMFeedCreatePollScreen: LMFeedCreatePollViewModelProtocol {
         viewcontroller.configure(selecteDate: selectedDate, minimumDate: minimumDate, delegate: self)
         viewcontroller.modalPresentationStyle = .overFullScreen
         
-        present(viewcontroller, animated: true)
+        present(viewcontroller, animated: false)
     }
     
     public func updatePoll(with data: LMFeedCreatePollDataModel) {

@@ -895,6 +895,7 @@
 		E4B8C9D3BA1E3A6711BA80E57C869C5E /* AWSSTSService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D84513EE581704CFF20B3F60D0A8BC5 /* AWSSTSService.m */; };
 		E51EC1BA2C1625D500608CE8 /* LMFeedDisplayPollWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51EC1B92C1625D500608CE8 /* LMFeedDisplayPollWidget.swift */; };
 		E51EC1BC2C1629A700608CE8 /* LMFeedDisplayPollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51EC1BB2C1629A700608CE8 /* LMFeedDisplayPollView.swift */; };
+		E51EC1BE2C170E2F00608CE8 /* LMTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51EC1BD2C170E2F00608CE8 /* LMTextField.swift */; };
 		E53EAD862C10514300D88E4A /* LMMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EAD852C10514200D88E4A /* LMMeta.swift */; };
 		E53EAD882C106BAF00D88E4A /* PollOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EAD872C106BAF00D88E4A /* PollOption.swift */; };
 		E53EAD8B2C1190DF00D88E4A /* LMFeedCreatePollScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EAD8A2C1190DF00D88E4A /* LMFeedCreatePollScreen.swift */; };
@@ -2335,6 +2336,7 @@
 		E4B3A1CF66C6ECCF94EFB4D162B892CD /* RegisterDeviceRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RegisterDeviceRequest.swift; sourceTree = "<group>"; };
 		E51EC1B92C1625D500608CE8 /* LMFeedDisplayPollWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedDisplayPollWidget.swift; sourceTree = "<group>"; };
 		E51EC1BB2C1629A700608CE8 /* LMFeedDisplayPollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedDisplayPollView.swift; sourceTree = "<group>"; };
+		E51EC1BD2C170E2F00608CE8 /* LMTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMTextField.swift; sourceTree = "<group>"; };
 		E539A1CD6C152482BC19FC2397CDD77B /* FBLPromise+Delay.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "FBLPromise+Delay.m"; path = "Sources/FBLPromises/FBLPromise+Delay.m"; sourceTree = "<group>"; };
 		E53EAD852C10514200D88E4A /* LMMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMMeta.swift; sourceTree = "<group>"; };
 		E53EAD872C106BAF00D88E4A /* PollOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollOption.swift; sourceTree = "<group>"; };
@@ -4368,6 +4370,7 @@
 				5B188CE5B275CCC149FE7840FB0A95EF /* UIColor+Extension.swift */,
 				AFB3F14A0ABE9AA9BD793DCD602A6716 /* UIImage+Extension.swift */,
 				E53EADA72C14ED8E00D88E4A /* LMFeedPickerView.swift */,
+				E51EC1BD2C170E2F00608CE8 /* LMTextField.swift */,
 			);
 			name = Initials;
 			path = "lm-feedUI-iOS/lm-feedUI-iOS/Source/Classes/Initials";
@@ -6925,6 +6928,7 @@
 				E53EADA12C1475E000D88E4A /* LMFeedCreatePollUserOptionWidget.swift in Sources */,
 				295205851B71FEBD3F19D8F6F57631DE /* LMViewController.swift in Sources */,
 				CD476B189F3D0651A45001B3B5E92D53 /* LMViewLifeCycle.swift in Sources */,
+				E51EC1BE2C170E2F00608CE8 /* LMTextField.swift in Sources */,
 				D6012668AA508E1DF46A70ACD2236C9D /* NSAttributedString+Extension.swift in Sources */,
 				26CD6E3D1EFC07BA37F5D85783E337F8 /* String+Extension.swift in Sources */,
 				25E7C47F4333CB3BAA621B64B1B926F5 /* UIColor+Extension.swift in Sources */,

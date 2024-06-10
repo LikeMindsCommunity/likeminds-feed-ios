@@ -82,7 +82,25 @@ open class LMFeedGeneralPicker: LMViewController {
     public var data: [[String]] = []
     public var selectedIndex: [Int] = []
     public weak var delegate: LMFeedGeneralPickerProtocol?
+    public var bottomConstraint: NSLayoutConstraint?
     
+    
+    // MARK: viewDidLoad
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        bottomConstraint?.constant = 300
+    }
+    
+    
+    // MARK: viewDidAppear
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        UIView.animate(withDuration: 1) { [weak bottomConstraint] in
+            bottomConstraint?.constant = .zero
+        }
+    }
     
     // MARK: setupViews
     open override func setupViews() {
@@ -106,9 +124,11 @@ open class LMFeedGeneralPicker: LMViewController {
         
         view.pinSubView(subView: dismissView)
         
-        containerView.addConstraint(bottom: (view.safeAreaLayoutGuide.bottomAnchor, 0),
-                                    leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
+        containerView.addConstraint(leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
                                     trailing: (view.safeAreaLayoutGuide.trailingAnchor, 0))
+        
+        bottomConstraint = containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        bottomConstraint?.isActive = true
         
         pickerView.addConstraint(bottom: (containerView.bottomAnchor, 0),
                                  leading: (containerView.leadingAnchor, 0),
@@ -131,6 +151,10 @@ open class LMFeedGeneralPicker: LMViewController {
         dismissView.backgroundColor = .black.withAlphaComponent(0.5)
         pickerView.backgroundColor = Appearance.shared.colors.white
         containerView.backgroundColor = UIColor(r: 247, g: 247, b: 247)
+        
+        containerView.layer.cornerRadius = 8
+        containerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        
     }
     
     
