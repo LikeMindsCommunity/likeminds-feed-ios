@@ -57,6 +57,7 @@ final public class LMFeedCreatePollViewModel {
         self.isAnonymousPoll = prefilledData?.isAnonymous ?? false
         self.isInstantPoll = prefilledData?.isInstantPoll ?? true
         self.allowAddOptions = prefilledData?.allowAddOptions ?? false
+        self.pollExpiryDate = prefilledData?.expiryTime
     }
     
     public static func createModule(with pollDelegate: LMFeedCreatePollProtocol, data: LMFeedCreatePollDataModel? = nil) throws -> LMFeedCreatePollScreen {
@@ -81,7 +82,7 @@ final public class LMFeedCreatePollViewModel {
         )
         
         let pollOptions: [LMFeedCreatePollOptionWidget.ContentModel] = pollOptions.enumerated().map { id, option in
-            return .init(option: option)
+            return .init(id: id, option: option)
         }
         
         
@@ -130,7 +131,7 @@ final public class LMFeedCreatePollViewModel {
             delegate?.updateMetaOption(with: optionSelectionState.description, count: currentOptionCount)
         }
         
-        delegate?.updatePollOptions(with: pollOptions.map({ .init(option: $0) }))
+        delegate?.updatePollOptions(with: pollOptions.enumerated().map({ .init(id: $0, option: $1) }))
     }
     
     public func insertPollOption() {
@@ -140,7 +141,12 @@ final public class LMFeedCreatePollViewModel {
         }
         pollOptions.append(nil)
         
-        delegate?.updatePollOptions(with: pollOptions.map({ .init(option: $0) }))
+        delegate?.updatePollOptions(with: pollOptions.enumerated().map({ .init(id: $0, option: $1) }))
+    }
+    
+    public func updatePollOption(for id: Int, option: String?) {
+        guard pollOptions.indices.contains(id) else { return }
+        pollOptions[id] = option
     }
     
     public func showMetaOptionsPicker() {

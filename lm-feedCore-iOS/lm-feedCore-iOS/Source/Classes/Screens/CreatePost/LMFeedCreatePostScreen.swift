@@ -78,6 +78,11 @@ open class LMFeedCreatePostScreen: LMViewController {
         return view
     }()
     
+    open private(set) lazy var pollPreview: LMFeedDisplayPollView = {
+        let view = LMFeedDisplayPollView().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
     open private(set) lazy var mediaCollectionView: LMCollectionView = {
         let collection = LMCollectionView(frame: .zero, collectionViewLayout: LMCollectionView.mediaFlowLayout())
         collection.translatesAutoresizingMaskIntoConstraints = false
@@ -190,6 +195,8 @@ open class LMFeedCreatePostScreen: LMViewController {
     public var textInputMinimumHeight: CGFloat = 80
     public var textInputMaximumHeight: CGFloat = 150
     
+    public var isPollFlow: Bool = false
+    
     public var mediaAttachmentData: [LMFeedMediaProtocol] = []
     
     public lazy var documentPicker: UIDocumentPickerViewController = {
@@ -219,7 +226,7 @@ open class LMFeedCreatePostScreen: LMViewController {
         
         scrollView.addSubview(scrollStackView)
         
-        [headerView, topicView, inputTextView, linkPreview, mediaCollectionView, mediaPageControl ,documentTableView, addMoreButton].forEach { subView in
+        [headerView, topicView, inputTextView, linkPreview, pollPreview, mediaCollectionView, mediaPageControl ,documentTableView, addMoreButton].forEach { subView in
             scrollStackView.addArrangedSubview(subView)
         }
         
@@ -346,6 +353,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     }
     
     open func setupInitialView() {
+        pollPreview.isHidden = true
         linkPreview.isHidden = true
         mediaCollectionView.isHidden = true
         mediaPageControl.isHidden = true
@@ -360,7 +368,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     }
     
     open func observeCreateButton() {
-        createPostButton.isEnabled = !mediaAttachmentData.isEmpty || !inputTextView.getText().isEmpty || !documentAttachmentData.isEmpty
+        createPostButton.isEnabled = !mediaAttachmentData.isEmpty || !inputTextView.getText().isEmpty || !documentAttachmentData.isEmpty || isPollFlow
     }
 }
 
@@ -506,8 +514,9 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
         
         observeCreateButton()
     }
-    
+        
     public func resetMediaView() {
+        pollPreview.isHidden = true
         mediaCollectionView.isHidden = true
         mediaPageControl.isHidden = true
         documentTableView.isHidden = true
@@ -560,6 +569,15 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
         } catch let error {
             print(error.localizedDescription)
         }
+    }
+    
+    public func showPoll(poll: LikeMindsFeedUI.LMFeedDisplayPollView.ContentModel) {
+        isPollFlow = true
+        addMediaStack.isHidden = true
+        pollPreview.configure(with: poll, delegate: self)
+        pollPreview.isHidden = false
+        
+        observeCreateButton()
     }
 }
 
@@ -683,7 +701,24 @@ extension LMFeedCreatePostScreen: LMFeedTopicSelectionViewProtocol {
 
 // MARK: LMFeedCreatePollProtocol
 extension LMFeedCreatePostScreen: LMFeedCreatePollProtocol {
+    public func cancelledPollCreation() {
+        viewModel?.updateCurrentSelection(to: .none)
+    }
+    
     public func updatePollDetails(with data: LMFeedCreatePollDataModel) {
-        debugPrint(data)
+        viewModel?.updatePollPreview(with: data)
+    }
+}
+
+
+// MARK: LMFeedDisplayPollViewProtocol
+extension LMFeedCreatePostScreen: LMFeedDisplayPollViewProtocol {
+    public func onTapCrossButton() {
+        isPollFlow = false
+        viewModel?.removePoll()
+    }
+    
+    public func onTapEditButton() {
+        viewModel?.editPoll()
     }
 }

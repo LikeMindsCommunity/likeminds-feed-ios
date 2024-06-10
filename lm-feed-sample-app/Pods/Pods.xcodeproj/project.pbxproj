@@ -893,6 +893,8 @@
 		E4177489C7BAAC5F9DA242DB6F1B0DAF /* FIRMessagingTokenDeleteOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF0D918096922DD8736C9B98EFCB067 /* FIRMessagingTokenDeleteOperation.m */; };
 		E45BB97210051213E40CC3F040CE1584 /* LMFeedPostDocumentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30FB8DDCBBF23C7DA1DC7E72F7AE3F /* LMFeedPostDocumentCell.swift */; };
 		E4B8C9D3BA1E3A6711BA80E57C869C5E /* AWSSTSService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D84513EE581704CFF20B3F60D0A8BC5 /* AWSSTSService.m */; };
+		E51EC1BA2C1625D500608CE8 /* LMFeedDisplayPollWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51EC1B92C1625D500608CE8 /* LMFeedDisplayPollWidget.swift */; };
+		E51EC1BC2C1629A700608CE8 /* LMFeedDisplayPollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51EC1BB2C1629A700608CE8 /* LMFeedDisplayPollView.swift */; };
 		E53EAD862C10514300D88E4A /* LMMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EAD852C10514200D88E4A /* LMMeta.swift */; };
 		E53EAD882C106BAF00D88E4A /* PollOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EAD872C106BAF00D88E4A /* PollOption.swift */; };
 		E53EAD8B2C1190DF00D88E4A /* LMFeedCreatePollScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EAD8A2C1190DF00D88E4A /* LMFeedCreatePollScreen.swift */; };
@@ -2331,6 +2333,8 @@
 		E463C3C1D3E3D208E42C00C8288BB38F /* DropdownPresentationController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DropdownPresentationController.swift; path = Sources/Presentation/Dropdown/DropdownPresentationController.swift; sourceTree = "<group>"; };
 		E47085C4A090316C6D18EEDD0E97E2AE /* FBLPromise+Testing.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBLPromise+Testing.h"; path = "Sources/FBLPromises/include/FBLPromise+Testing.h"; sourceTree = "<group>"; };
 		E4B3A1CF66C6ECCF94EFB4D162B892CD /* RegisterDeviceRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RegisterDeviceRequest.swift; sourceTree = "<group>"; };
+		E51EC1B92C1625D500608CE8 /* LMFeedDisplayPollWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedDisplayPollWidget.swift; sourceTree = "<group>"; };
+		E51EC1BB2C1629A700608CE8 /* LMFeedDisplayPollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedDisplayPollView.swift; sourceTree = "<group>"; };
 		E539A1CD6C152482BC19FC2397CDD77B /* FBLPromise+Delay.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "FBLPromise+Delay.m"; path = "Sources/FBLPromises/FBLPromise+Delay.m"; sourceTree = "<group>"; };
 		E53EAD852C10514200D88E4A /* LMMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMMeta.swift; sourceTree = "<group>"; };
 		E53EAD872C106BAF00D88E4A /* PollOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollOption.swift; sourceTree = "<group>"; };
@@ -4646,6 +4650,15 @@
 			path = ReportTags;
 			sourceTree = "<group>";
 		};
+		E51EC1B82C16252000608CE8 /* DisplayWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				E51EC1B92C1625D500608CE8 /* LMFeedDisplayPollWidget.swift */,
+				E51EC1BB2C1629A700608CE8 /* LMFeedDisplayPollView.swift */,
+			);
+			path = DisplayWidgets;
+			sourceTree = "<group>";
+		};
 		E53EAD892C11907000D88E4A /* Poll */ = {
 			isa = PBXGroup;
 			children = (
@@ -4658,12 +4671,13 @@
 		E53EAD8E2C11A1CC00D88E4A /* PollWidgets */ = {
 			isa = PBXGroup;
 			children = (
-				E53EAD8F2C11A1D300D88E4A /* CreateWidgets */,
+				E51EC1B82C16252000608CE8 /* DisplayWidgets */,
+				E53EAD8F2C11A1D300D88E4A /* CreatePollWidgets */,
 			);
 			path = PollWidgets;
 			sourceTree = "<group>";
 		};
-		E53EAD8F2C11A1D300D88E4A /* CreateWidgets */ = {
+		E53EAD8F2C11A1D300D88E4A /* CreatePollWidgets */ = {
 			isa = PBXGroup;
 			children = (
 				E53EAD982C13092900D88E4A /* LMFeedCreatePollDateView.swift */,
@@ -4674,7 +4688,7 @@
 				E53EAD942C11EED000D88E4A /* LMFeedCreatePollQuestionView.swift */,
 				E53EADA02C1475E000D88E4A /* LMFeedCreatePollUserOptionWidget.swift */,
 			);
-			path = CreateWidgets;
+			path = CreatePollWidgets;
 			sourceTree = "<group>";
 		};
 		E53EADA92C15C87700D88E4A /* UIPicker */ = {
@@ -6846,6 +6860,7 @@
 				3811F0CE099EF821CC74A28050BBAC8C /* Constants+Numbers.swift in Sources */,
 				30DDA5ADCC9F5C9690D74BA24F2995B1 /* Constants+Strings.swift in Sources */,
 				65E6CCD50E21E19F4DEE9D8BF2B8E09E /* GetAttributedTextWithRoutes.swift in Sources */,
+				E51EC1BA2C1625D500608CE8 /* LMFeedDisplayPollWidget.swift in Sources */,
 				A952BBCCB54D4DAE2E88136499C453FC /* LikeMindsFeedUI-dummy.m in Sources */,
 				8BC5120AD6FCEE1B7D0B54FBAE28B120 /* LMButton.swift in Sources */,
 				4C85C5572A064F9F287E2C166355CAFF /* LMCollectionView.swift in Sources */,
@@ -6893,6 +6908,7 @@
 				F9D5E6AD2E1DD8558F6ADB05FCAD1E5F /* LMFeedTopicView.swift in Sources */,
 				EB598DC5A41AA462B8005C620CB1B00E /* LMFeedTopicViewCell.swift in Sources */,
 				E53EADA82C14ED8E00D88E4A /* LMFeedPickerView.swift in Sources */,
+				E51EC1BC2C1629A700608CE8 /* LMFeedDisplayPollView.swift in Sources */,
 				E0A395305A4BE019D3496636A4947417 /* LMFeedUserModel.swift in Sources */,
 				E53EAD952C11EED000D88E4A /* LMFeedCreatePollQuestionView.swift in Sources */,
 				5A967DE0138E3BE28E2917ED452D4153 /* LMFeedVideoCollectionCell.swift in Sources */,

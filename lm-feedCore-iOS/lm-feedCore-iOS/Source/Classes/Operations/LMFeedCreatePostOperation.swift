@@ -49,7 +49,7 @@ final class LMFeedCreatePostOperation {
     let dispatchGroup = DispatchGroup()
     
     
-    func createPost(with content: String, topics: [String], files: [LMAWSRequestModel], linkPreview: LMFeedPostDataModel.LinkAttachment?) {
+    func createPost(with content: String, topics: [String], files: [LMAWSRequestModel], linkPreview: LMFeedPostDataModel.LinkAttachment?, poll: LMFeedCreatePollDataModel?) {
         postMessageForPostCreationStart(files.first)
         
         if let linkPreview {
@@ -62,6 +62,22 @@ final class LMFeedCreatePostOperation {
             
             let attachmentRequest = Attachment()
                 .attachmentType(.link)
+                .attachmentMeta(attachmentMeta)
+            
+            createPost(with: content, attachments: [attachmentRequest], topics: topics)
+        } else if let poll {
+            let attachmentMeta = AttachmentMeta()
+                .title(poll.pollQuestion)
+                .expiryTime(poll.expiryTime.timeIntervalSince1970 * 1000)
+                .pollOptions(poll.pollOptions)
+                .multiSelectState(poll.selectState.apiKey)
+                .pollType(poll.isInstantPoll ? "instant" : "deferred")
+                .multSelectNo(poll.selectStateCount)
+                .isAnonymous(poll.isAnonymous)
+                .allowAddOptions(poll.allowAddOptions)
+            
+            let attachmentRequest = Attachment()
+                .attachmentType(.poll)
                 .attachmentMeta(attachmentMeta)
             
             createPost(with: content, attachments: [attachmentRequest], topics: topics)

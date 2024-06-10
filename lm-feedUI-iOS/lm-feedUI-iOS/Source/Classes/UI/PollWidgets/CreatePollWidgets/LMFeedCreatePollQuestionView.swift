@@ -9,6 +9,7 @@ import UIKit
 
 public protocol LMFeedCreatePollQuestionViewProtocol: AnyObject {
     func onCrossButtonTapped(for id: Int)
+    func textValueChanged(for id: Int, newValue: String?)
     func onAddNewOptionTapped()
 }
 
@@ -163,9 +164,13 @@ extension LMFeedCreatePollQuestionView: UITableViewDataSource, UITableViewDelega
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(LMFeedCreatePollOptionWidget.self) {
-            cell.configure(with: data[indexPath.row]) { [weak delegate] in
-                delegate?.onCrossButtonTapped(for: indexPath.row)
+            let datum = data[indexPath.row]
+            cell.configure(with: datum) { [weak delegate] in
+                delegate?.onCrossButtonTapped(for: datum.id)
+            } onTextValueChanged: { [weak delegate] newValue in
+                delegate?.textValueChanged(for: datum.id, newValue: newValue)
             }
+            
             return cell
         }
         return UITableViewCell()

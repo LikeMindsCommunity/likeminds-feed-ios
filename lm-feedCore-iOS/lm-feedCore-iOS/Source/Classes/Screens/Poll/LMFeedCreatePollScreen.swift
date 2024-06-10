@@ -10,6 +10,7 @@ import UIKit
 
 public protocol LMFeedCreatePollProtocol: AnyObject {
     func updatePollDetails(with data: LMFeedCreatePollDataModel)
+    func cancelledPollCreation()
 }
 
 open class LMFeedCreatePollScreen: LMViewController {
@@ -162,6 +163,7 @@ open class LMFeedCreatePollScreen: LMViewController {
     
     @objc
     open func dismissPollWidget() {
+        pollDelegate?.cancelledPollCreation()
         navigationController?.popViewController(animated: true)
     }
     
@@ -216,7 +218,7 @@ extension LMFeedCreatePollScreen: LMFeedCreatePollViewModelProtocol {
     
     public func updatePoll(with data: LMFeedCreatePollDataModel) {
         pollDelegate?.updatePollDetails(with: data)
-        dismissPollWidget()
+        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -231,6 +233,10 @@ extension LMFeedCreatePollScreen: LMFeedCreatePollDateViewProtocol {
 
 // MARK: LMFeedCreatePollQuestionViewProtocol
 extension LMFeedCreatePollScreen: LMFeedCreatePollQuestionViewProtocol {
+    public func textValueChanged(for id: Int, newValue: String?) {
+        viewmodel?.updatePollOption(for: id, option: newValue)
+    }
+    
     public func onCrossButtonTapped(for id: Int) {
         viewmodel?.removePollOption(at: id)
     }

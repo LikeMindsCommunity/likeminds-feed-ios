@@ -9,9 +9,11 @@ import Foundation
 
 open class LMFeedCreatePollOptionWidget: LMTableViewCell {
     public struct ContentModel {
+        public let id: Int
         public let option: String?
         
-        public init(option: String?) {
+        public init(id: Int, option: String?) {
+            self.id = id
             self.option = option
         }
     }
@@ -93,6 +95,7 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
         super.setupActions()
         
         crossButton.addTarget(self, action: #selector(onTapCrossButton), for: .touchUpInside)
+        optionTextField.addTarget(self, action: #selector(valueChanged), for: .editingChanged)
     }
     
     @objc
@@ -100,10 +103,16 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
         onCrossButtonCallback?()
     }
     
+    @objc
+    open func valueChanged(_ sender: UITextField) {
+        onTextValueChanged?(sender.text)
+    }
     
     // MARK: configure
-    open func configure(with data: ContentModel, onCrossButtonCallback: (() -> Void)?) {
+    open func configure(with data: ContentModel, onCrossButtonCallback: (() -> Void)?, onTextValueChanged: ((String?) -> Void)?) {
         self.onCrossButtonCallback = onCrossButtonCallback
+        self.onTextValueChanged = onTextValueChanged
+        
         optionTextField.text = data.option
     }
     

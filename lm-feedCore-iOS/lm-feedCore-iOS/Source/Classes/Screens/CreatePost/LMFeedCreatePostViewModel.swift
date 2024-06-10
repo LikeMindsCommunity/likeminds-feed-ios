@@ -13,6 +13,7 @@ import PDFKit
 public protocol LMFeedCreatePostViewModelProtocol: LMBaseViewControllerProtocol { 
     func showMedia(documents: [LMFeedDocumentPreview.ContentModel], isShowAddMore: Bool, isShowBottomTab: Bool)
     func showMedia(media: [LMFeedMediaProtocol], isShowAddMore: Bool, isShowBottomTab: Bool)
+    func showPoll(poll: LMFeedDisplayPollView.ContentModel)
     func resetMediaView()
     func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int)
     func updateTopicView(with data: LMFeedTopicView.ContentModel)
@@ -84,7 +85,7 @@ public final class LMFeedCreatePostViewModel {
             attachments.append(.init(url: medium.url, data: medium.data, fileName: medium.url.lastPathComponent, awsFilePath: filePath, contentType: medium.mediaType))
         }
         
-        LMFeedCreatePostOperation.shared.createPost(with: text, topics: selectedTopics.map({ $0.topicID }), files: attachments, linkPreview: linkPreview)
+        LMFeedCreatePostOperation.shared.createPost(with: text, topics: selectedTopics.map({ $0.topicID }), files: attachments, linkPreview: linkPreview, poll: pollDetails)
         delegate?.popViewController(animated: true)
     }
 }
@@ -273,5 +274,39 @@ extension LMFeedCreatePostViewModel {
     func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         self.selectedTopics = topics
         setupTopicFeed()
+    }
+}
+
+
+// MARK: Poll
+extension LMFeedCreatePostViewModel {
+    func updatePollPreview(with pollDetails: LMFeedCreatePollDataModel) {
+        self.pollDetails = pollDetails
+        delegate?.resetMediaView()
+        delegate?.showPoll(poll: convertToPollPreview(from: pollDetails))
+    }
+    
+    func convertToPollPreview(from poll: LMFeedCreatePollDataModel) -> LMFeedDisplayPollView.ContentModel {
+        .init(
+            question: poll.pollQuestion,
+            showEditIcon: true,
+            showCrossIcon: true,
+            expiryDate: poll.expiryTime,
+            optionState: poll.selectState.description,
+            optionCount: poll.selectStateCount,
+            options: poll.pollOptions.map {
+                .init(option: $0,
+                      addedBy: poll.allowAddOptions ? LocalPreferences.userObj?.name ?? "" : nil)
+            }
+        )
+    }
+    
+    func removePoll() {
+        pollDetails = nil
+        reloadMedia()
+    }
+    
+    func editPoll() {
+        delegate?.navigateToCreatePoll(with: pollDetails)
     }
 }
