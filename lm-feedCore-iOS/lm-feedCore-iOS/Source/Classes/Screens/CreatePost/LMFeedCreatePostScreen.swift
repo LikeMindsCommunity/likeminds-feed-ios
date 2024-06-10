@@ -575,8 +575,6 @@ extension LMFeedCreatePostScreen: LMFeedTaggingTextViewProtocol {
 // MARK: Media Control
 public extension LMFeedCreatePostScreen {
     func openImagePicker(_ mediaType: Settings.Fetch.Assets.MediaTypes, isFirstTime: Bool, maxSelection: Int, selectedAssets: [PHAsset]) {
-        var currentAssets: [PHAsset] = selectedAssets
-        
         let imagePicker = ImagePickerController(selectedAssets: selectedAssets)
         imagePicker.settings.selection.max = maxSelection
         imagePicker.settings.fetch.assets.supportedMediaTypes = isFirstTime ? [mediaType] : [.image, .video]
