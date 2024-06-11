@@ -571,7 +571,7 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
         }
     }
     
-    public func showPoll(poll: LikeMindsFeedUI.LMFeedDisplayPollView.ContentModel) {
+    public func showPoll(poll: LMFeedDisplayPollView.ContentModel) {
         isPollFlow = true
         addMediaStack.isHidden = true
         pollPreview.configure(with: poll, delegate: self)

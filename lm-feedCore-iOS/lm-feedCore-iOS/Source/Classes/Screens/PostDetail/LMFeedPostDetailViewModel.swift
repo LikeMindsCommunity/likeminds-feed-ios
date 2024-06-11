@@ -119,12 +119,13 @@ public extension LMFeedPostDetailViewModel {
                let post = response.data?.post,
                let users = response.data?.users {
                 let allTopics = response.data?.topics?.compactMap({ $0.value }) ?? []
+                let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
                 
                 if currentPage == 1 {
                     commentList.removeAll(keepingCapacity: true)
                 }
                 
-                self.postDetail = .init(post: post, users: users, allTopics: allTopics)
+                self.postDetail = .init(post: post, users: users, allTopics: allTopics, widgets: widgets)
                 
                 let newComments: [LMFeedCommentDataModel] = post.replies?.enumerated().compactMap { index, comment in
                     guard let user = users[comment.uuid ?? ""] else { return nil }

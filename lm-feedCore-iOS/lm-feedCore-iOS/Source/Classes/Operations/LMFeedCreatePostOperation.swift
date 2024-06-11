@@ -68,7 +68,7 @@ final class LMFeedCreatePostOperation {
         } else if let poll {
             let attachmentMeta = AttachmentMeta()
                 .title(poll.pollQuestion)
-                .expiryTime(poll.expiryTime.timeIntervalSince1970 * 1000)
+                .expiryTime(Int(poll.expiryTime.timeIntervalSince1970 * 1000))
                 .pollOptions(poll.pollOptions)
                 .multiSelectState(poll.selectState.apiKey)
                 .pollType(poll.isInstantPoll ? "instant" : "deferred")

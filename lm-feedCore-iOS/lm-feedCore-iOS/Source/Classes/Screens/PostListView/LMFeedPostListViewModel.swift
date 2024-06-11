@@ -96,8 +96,10 @@ public extension LMFeedPostListViewModel {
                 $0.value
             } ?? []
             
+            let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
+            
             let convertedData: [LMFeedPostDataModel] = posts.compactMap { post in
-                return .init(post: post, users: users, allTopics: topics)
+                return .init(post: post, users: users, allTopics: topics, widgets: widgets)
             }
             
             self.postList.append(contentsOf: convertedData)

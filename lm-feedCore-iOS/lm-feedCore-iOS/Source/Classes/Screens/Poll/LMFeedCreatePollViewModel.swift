@@ -30,7 +30,7 @@ final public class LMFeedCreatePollViewModel {
     var currentOptionCount: Int
     
     /// poll option state - `exactly` || `at_max` || `at_least`
-    var optionSelectionState: LMFeedCreatePollDataModel.OptionState
+    var optionSelectionState: LMFeedPollSelectState
     
     /// poll expiry date
     var pollExpiryDate: Date?
@@ -150,7 +150,7 @@ final public class LMFeedCreatePollViewModel {
     }
     
     public func showMetaOptionsPicker() {
-        let optionTypeRow: [String] = LMFeedCreatePollDataModel.OptionState.allCases.map({ $0.description })
+        let optionTypeRow: [String] = LMFeedPollSelectState.allCases.map({ $0.description })
         
         var optionCountRow: [String] = []
         
@@ -167,7 +167,7 @@ final public class LMFeedCreatePollViewModel {
     }
     
     public func updateMetaOptionPicker(with selectedIndex: [Int]) {
-        guard let newOptionType = LMFeedCreatePollDataModel.OptionState(rawValue: selectedIndex[0]) else { return }
+        guard let newOptionType = LMFeedPollSelectState(rawValue: selectedIndex[0]) else { return }
         optionSelectionState = newOptionType
         currentOptionCount = selectedIndex[1] + 1
         

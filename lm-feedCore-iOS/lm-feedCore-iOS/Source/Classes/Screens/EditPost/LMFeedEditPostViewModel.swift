@@ -14,6 +14,7 @@ public protocol LMFeedEditPostViewModelProtocol: LMBaseViewControllerProtocol {
     func setupDocumentPreview(with data: [LMFeedDocumentPreview.ContentModel])
     func setupLinkPreview(with data: LMFeedLinkPreview.ContentModel?)
     func setupMediaPreview(with mediaCells: [LMFeedMediaProtocol])
+    func setupPollPreview(with poll: LMFeedDisplayPollView.ContentModel)
     func setupTopicFeed(with data: LMFeedTopicView.ContentModel)
 }
 
@@ -24,6 +25,7 @@ public final class LMFeedEditPostViewModel {
     private var documents: [LMFeedPostDataModel.DocumentAttachment]
     private var linkPreview: LMFeedPostDataModel.LinkAttachment?
     private var media: [LMFeedPostDataModel.ImageVideoAttachment]
+    private var pollPreview: LMFeedPollDataModel?
     
     private var debounceForDecodeLink: Timer?
     private var errorMessage: String
@@ -92,7 +94,9 @@ public final class LMFeedEditPostViewModel {
             }
             
             let allTopics = response.data?.topics?.compactMap({ $0.value }) ?? []
-            self.postDetail = .init(post: data, users: users, allTopics: allTopics)
+            let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
+            
+            self.postDetail = .init(post: data, users: users, allTopics: allTopics, widgets: widgets)
             dispatchGroup.leave()
         }
     }
@@ -128,6 +132,7 @@ public final class LMFeedEditPostViewModel {
         selectedTopics = postDetail.topics
         documents = postDetail.documentAttachment
         media = postDetail.imageVideoAttachment
+        pollPreview = postDetail.pollAttachment
         
         isShowLinkPreview = documents.isEmpty && media.isEmpty
         
@@ -145,6 +150,9 @@ public final class LMFeedEditPostViewModel {
         } else if let linkData = postDetail.linkAttachment {
             linkPreview = .init(url: linkData.url, title: linkData.title, description: linkData.description, previewImage: linkData.previewImage)
             convertToLinkViewData()
+        } else if let poll = postDetail.pollAttachment {
+            let convertedData = convertToPollPreview(from: poll)
+            delegate?.setupPollPreview(with: convertedData)
         }
         
         if isShowTopicFeed || !selectedTopics.isEmpty {
@@ -209,6 +217,20 @@ extension LMFeedEditPostViewModel {
     func hideLinkPreview() {
         isShowLinkPreview = false
     }
+    
+    func convertToPollPreview(from poll: LMFeedPollDataModel) -> LMFeedDisplayPollView.ContentModel {
+        .init(
+            question: poll.question,
+            showEditIcon: false,
+            showCrossIcon: false,
+            expiryDate: Date(timeIntervalSince1970: TimeInterval(poll.expiryTime / 1000)),
+            optionState: poll.pollSelectType.description,
+            optionCount: poll.pollSelectCount,
+            options: poll.options.map {
+                .init(option: $0.option, addedBy: $0.addedBy.userName)
+            }
+        )
+    }
 }
 
 
@@ -222,7 +244,15 @@ extension LMFeedEditPostViewModel {
             return
         }
         
-        LMFeedEditPostOperation.shared.editPostWithAttachments(postID: postID, postCaption: text, topics: selectedTopics.map({ $0.topicID }), documents: documents, media: media, linkAttachment: linkPreview)
+        LMFeedEditPostOperation.shared.editPostWithAttachments(
+            postID: postID,
+            postCaption: text,
+            topics: selectedTopics.map({ $0.topicID }),
+            documents: documents,
+            media: media,
+            linkAttachment: linkPreview,
+            poll: pollPreview
+        )
         delegate?.popViewController(animated: true)
     }
 }

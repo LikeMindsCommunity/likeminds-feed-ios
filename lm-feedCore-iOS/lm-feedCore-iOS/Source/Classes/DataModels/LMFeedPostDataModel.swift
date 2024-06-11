@@ -23,7 +23,8 @@ public struct LMFeedPostDataModel {
     public let topics: [LMFeedTopicDataModel]
     public var imageVideoAttachment: [ImageVideoAttachment] = []
     public var documentAttachment: [DocumentAttachment] = []
-    public var linkAttachment: LinkAttachment? = .none
+    public var linkAttachment: LinkAttachment?
+    public var pollAttachment: LMFeedPollDataModel?
     public var isShowFullText: Bool
     public var isShowAllDocuments: Bool
     
@@ -43,6 +44,7 @@ public struct LMFeedPostDataModel {
         imageVideoAttachment: [LMFeedPostDataModel.ImageVideoAttachment] = [],
         documentAttachment: [LMFeedPostDataModel.DocumentAttachment] = [],
         linkAttachment: LMFeedPostDataModel.LinkAttachment? = .none, 
+        pollAttachment: LMFeedPollDataModel? = .none,
         isShowFullText: Bool = false,
         isShowAllDocuments: Bool = false
     ) {
@@ -61,13 +63,14 @@ public struct LMFeedPostDataModel {
         self.imageVideoAttachment = imageVideoAttachment
         self.documentAttachment = documentAttachment
         self.linkAttachment = linkAttachment
+        self.pollAttachment = pollAttachment
         self.isShowFullText = isShowFullText
         self.isShowAllDocuments = isShowAllDocuments
     }
 }
 
 extension LMFeedPostDataModel {
-    init?(post: Post, users: [String: User], allTopics: [TopicFeedResponse.TopicResponse]) {
+    init?(post: Post, users: [String: User], allTopics: [TopicFeedResponse.TopicResponse], widgets: [Widget]) {
         guard let user = users[post.uuid ?? ""],
               let username = user.name,
               let userID = user.sdkClientInfo?.uuid,
@@ -99,16 +102,19 @@ extension LMFeedPostDataModel {
             return .init(topicName: name, topicID: topicID, isEnabled: topic.isEnabled ?? false)
         } ?? []
         
-        let attachments = handleAttachments(with: post.attachments ?? [])
+        
+        let attachments = handleAttachments(for: postId, attachments: post.attachments ?? [], widgets: widgets, users: users)
         self.imageVideoAttachment = attachments.images
         self.documentAttachment = attachments.docs
         self.linkAttachment = attachments.link
+        self.pollAttachment = attachments.poll
     }
     
-    func handleAttachments(with attachments: [Attachment]) -> (images: [ImageVideoAttachment], docs: [DocumentAttachment], link: LinkAttachment?) {
+    func handleAttachments(for postID: String, attachments: [Attachment], widgets: [Widget], users: [String: User]) -> (images: [ImageVideoAttachment], docs: [DocumentAttachment], link: LinkAttachment?, poll: LMFeedPollDataModel?) {
         var tempImageVideoAttachment: [ImageVideoAttachment] = []
         var tempDocumentAttachment: [DocumentAttachment] = []
         var tempLinkAttachment: LinkAttachment?
+        var poll: LMFeedPollDataModel?
         
         attachments.forEach { attachment in
             if let type = attachment.attachmentType {
@@ -132,13 +138,15 @@ extension LMFeedPostDataModel {
                     if let url = attachment.attachmentMeta?.ogTags?.url {
                         tempLinkAttachment = .init(url: url, title: attachment.attachmentMeta?.ogTags?.title, description: attachment.attachmentMeta?.ogTags?.description, previewImage: attachment.attachmentMeta?.ogTags?.image)
                     }
+                case .poll:
+                    poll = .init(postID: postID, users: users, widgets: widgets)
                 default:
                     break
                 }
             }
         }
         
-        return (tempImageVideoAttachment, tempDocumentAttachment, tempLinkAttachment)
+        return (tempImageVideoAttachment, tempDocumentAttachment, tempLinkAttachment, poll)
     }
 }
 

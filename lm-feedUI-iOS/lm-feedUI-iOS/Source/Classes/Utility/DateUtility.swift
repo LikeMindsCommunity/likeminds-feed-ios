@@ -35,4 +35,13 @@ public struct DateUtility {
         dateFormatter.dateFormat = format
         return dateFormatter.string(from: date)
     }
+    
+    public static func isEpochTimeInSeconds(_ epochTime: Int) -> Bool {
+        let epochTimeString = String(epochTime)
+        let numDigits = epochTimeString.count
+        
+        /// Epoch time values with 10 or fewer digits are assumed to be in seconds
+        /// Epoch time values with more than 10 digits are assumed to be in milliseconds
+        return numDigits <= 10
+    }
 }

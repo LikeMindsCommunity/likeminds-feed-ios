@@ -914,6 +914,7 @@
 		E53EADAD2C15E24900D88E4A /* LMFeedTimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53EADAC2C15E24900D88E4A /* LMFeedTimePicker.swift */; };
 		E5571522DD6080069F2A4AC436701D6B /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC427A9EDAB4C3A6D6806CC8D14623AF /* Preferences.swift */; };
 		E5635DECB22362CA17521F7B6A752BB4 /* AWSS3Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D2D168B7FDB7D6D9638AECB431DB24E /* AWSS3Resources.m */; };
+		E59675A12C177293007664CF /* LMFeedPollDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59675A02C177293007664CF /* LMFeedPollDataModel.swift */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4BFB00D33CC2E541D239DEFE7D32300 /* SessionDelegate.swift */; };
 		E6A192A70EDB37BF311D87F4FD83B3B8 /* AWSDDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 3866198A0A7433E31BC066C99225E04F /* AWSDDAbstractDatabaseLogger.m */; };
 		E6AA23AB0DD59284A64E6468A5700A53 /* AWSBolts.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E64C45172F8AE468A0D13A6B41229A0 /* AWSBolts.m */; };
@@ -2354,6 +2355,7 @@
 		E53EADAA2C15C89600D88E4A /* LMFeedGeneralPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedGeneralPicker.swift; sourceTree = "<group>"; };
 		E53EADAC2C15E24900D88E4A /* LMFeedTimePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedTimePicker.swift; sourceTree = "<group>"; };
 		E56B9664F2C7EF30AEAAE2785C3AA6C3 /* FIRComponentType.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRComponentType.m; path = FirebaseCore/Sources/FIRComponentType.m; sourceTree = "<group>"; };
+		E59675A02C177293007664CF /* LMFeedPollDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPollDataModel.swift; sourceTree = "<group>"; };
 		E5BB17F53144403789EFD147D0242972 /* cct.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = cct.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/cct.nanopb.c; sourceTree = "<group>"; };
 		E5BF5E0AF72E89CE6D9CC45D326BDE6C /* AWSTMCacheBackgroundTaskManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSTMCacheBackgroundTaskManager.h; path = AWSCore/TMCache/AWSTMCacheBackgroundTaskManager.h; sourceTree = "<group>"; };
 		E5E305DAFAD9585D3F154C7C9F4B1805 /* AWSS3Service.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSS3Service.m; path = AWSS3/AWSS3Service.m; sourceTree = "<group>"; };
@@ -4758,6 +4760,7 @@
 				82CB1B9A1C09572554AE331E09CF417C /* LMFeedTagListDataModel.swift */,
 				0F9893AC0F8F982616EC983EEB6F313F /* LMFeedTopicDataModel.swift */,
 				0C11566CBBB835F972BB7FA463A66647 /* LMFeedUserDataModel.swift */,
+				E59675A02C177293007664CF /* LMFeedPollDataModel.swift */,
 			);
 			name = DataModels;
 			path = "lm-feedCore-iOS/lm-feedCore-iOS/Source/Classes/DataModels";
@@ -6249,6 +6252,7 @@
 				64F4DAE74834C3787724972ECF43DD62 /* LMFeedTaggingListViewModel.swift in Sources */,
 				75BACC4481B69A148D79C112A14652A5 /* LMFeedTagListDataModel.swift in Sources */,
 				2CB95CD7182954D76CC3C6F633CFCE84 /* LMFeedTopicDataModel.swift in Sources */,
+				E59675A12C177293007664CF /* LMFeedPollDataModel.swift in Sources */,
 				FCAFD80197E6580832D1F82FB550F1FC /* LMFeedTopicSelectionDataModel.swift in Sources */,
 				E53EADAD2C15E24900D88E4A /* LMFeedTimePicker.swift in Sources */,
 				7AF959C3672089B8B5982BD630D380B9 /* LMFeedTopicSelectionScreen.swift in Sources */,
