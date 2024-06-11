@@ -21,7 +21,7 @@ open class LMFeedNoResultView: LMView {
     
     open private(set) lazy var textLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.text = "No Results Found!"
+        label.text = Constants.shared.strings.noResultsFound
         label.textColor = Appearance.shared.colors.gray51
         label.font = Appearance.shared.fonts.headingFont3
         label.textAlignment = .center

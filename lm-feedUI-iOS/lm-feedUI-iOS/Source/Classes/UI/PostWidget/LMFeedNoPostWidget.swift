@@ -38,7 +38,7 @@ open class LMFeedNoPostWidget: LMView {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = Appearance.shared.colors.gray1
         label.font = Appearance.shared.fonts.buttonFont1
-        label.text = "No posts to show"
+        label.text = Constants.shared.strings.noPostsFound
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -48,7 +48,7 @@ open class LMFeedNoPostWidget: LMView {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = Appearance.shared.colors.gray2
         label.font = Appearance.shared.fonts.buttonFont1
-        label.text = "Be the first on to post here"
+        label.text = Constants.shared.strings.beFirstPost
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -56,7 +56,7 @@ open class LMFeedNoPostWidget: LMView {
     
     open private(set) lazy var createPostButton: LMButton = {
         let button = LMButton.createButton(
-            with: "New Post",
+            with: Constants.shared.strings.newPost,
             image: Constants.shared.images.createPostIcon,
             textColor: Appearance.shared.colors.white,
             textFont: Appearance.shared.fonts.buttonFont1,
