@@ -34,11 +34,6 @@ open class LMFeedTopicViewCell: LMCollectionViewCell {
         contentView.pinSubView(subView: containerView)
         
         NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
             textLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
             textLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
             textLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 4),

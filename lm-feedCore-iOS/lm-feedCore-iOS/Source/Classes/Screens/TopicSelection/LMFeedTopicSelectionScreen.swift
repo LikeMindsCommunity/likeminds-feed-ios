@@ -37,10 +37,16 @@ open class LMFeedTopicSelectionScreen: LMViewController {
     
     open private(set) lazy var searchController: UISearchController = {
         let search = UISearchController(searchResultsController: nil)
-        search.searchBar.placeholder = "Search Topic"
+        search.searchBar.placeholder = Constants.shared.strings.searchTopic
         search.delegate = self
         search.searchBar.delegate = self
         return search
+    }()
+    
+    open private(set) lazy var noResultsView: LMFeedNoResultView = {
+        let view = LMFeedNoResultView()
+        view.configure(with: Constants.shared.strings.noResultsFound)
+        return view
     }()
 
     
@@ -54,7 +60,7 @@ open class LMFeedTopicSelectionScreen: LMViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Appearance.shared.colors.backgroundColor
-        setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: nil, alignment: .center)
+        setNavigationTitleAndSubtitle(with: Constants.shared.strings.selectTopic, subtitle: nil, alignment: .center)
         viewModel?.getTopics(for: searchController.searchBar.text, isFreshSearch: true)
     }
     
@@ -146,10 +152,12 @@ extension LMFeedTopicSelectionScreen: LMFeedTopicSelectionViewModelProtocol {
         self.topicList = data
         topicSelectionListView.reloadData()
         
+        topicSelectionListView.backgroundView = selectedCount == .zero ? noResultsView : nil
+        
         if selectedCount == .zero {
-            setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: nil, alignment: .center)
+            setNavigationTitleAndSubtitle(with: Constants.shared.strings.selectTopic, subtitle: nil, alignment: .center)
         } else {
-            setNavigationTitleAndSubtitle(with: "Select Topic", subtitle: "\(selectedCount) Selected", alignment: .center)
+            setNavigationTitleAndSubtitle(with: Constants.shared.strings.selectTopic, subtitle: "\(selectedCount) Selected", alignment: .center)
         }
     }
     
