@@ -918,6 +918,9 @@
 		E5995083971DB1662CEC48478380D4C0 /* AWSEXTScope.h in Headers */ = {isa = PBXBuildFile; fileRef = CD6B7550D024E2F96A0EA3F053D97C49 /* AWSEXTScope.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		E59D3ED6F0517D895F847226C9185B6B /* AWSCognitoIdentityService.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BC93BC5D3C1DDB48CCEC9F9C2B4660 /* AWSCognitoIdentityService.m */; };
 		E5BDB371D64BD032B9442949622153EB /* NSArray+AWSMTLManipulationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8778C6587AF4B03B250405F3072F6574 /* NSArray+AWSMTLManipulationAdditions.m */; };
+		E5FCD96E2C19B733004A2B8C /* SubmitPollVoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FCD96D2C19B733004A2B8C /* SubmitPollVoteRequest.swift */; };
+		E5FCD9712C19CB9B004A2B8C /* AddPollOptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FCD9702C19CB9B004A2B8C /* AddPollOptionRequest.swift */; };
+		E5FCD9732C19DD2F004A2B8C /* AddPollOptionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FCD9722C19DD2F004A2B8C /* AddPollOptionResponse.swift */; };
 		E616E73E3C49BCF1F6AB5E2D796D95DE /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5683DDD7EE56E1D58903C42B338785CD /* CameraPreviewView.swift */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE990501182F08535E0904379044CB1B /* SessionDelegate.swift */; };
 		E6266A01725496C223227B277E0BC4F2 /* AWSService.h in Headers */ = {isa = PBXBuildFile; fileRef = C8761265B94E5E630C1B85B73F248E59 /* AWSService.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1462,7 +1465,7 @@
 		13605F7F08349E139F49804EEF62BB57 /* String+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		1393AF4D9E4E45D7C855E44E73E1C537 /* FIRInstallationsSingleOperationPromiseCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRInstallationsSingleOperationPromiseCache.h; path = FirebaseInstallations/Source/Library/InstallationsIDController/FIRInstallationsSingleOperationPromiseCache.h; sourceTree = "<group>"; };
 		13C8C8B254851998F9289F71229B28A2 /* FirebaseInstallations */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = FirebaseInstallations; path = FirebaseInstallations.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		13E90FCA238070A288EEEB744C30C357 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		13E90FCA238070A288EEEB744C30C357 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		148D0F9E8C7373FEAF40D800FC5F1BAA /* FirebaseCoreInternal */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = FirebaseCoreInternal; path = FirebaseCoreInternal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		14EA2207447C3FF741AE853FF03AD731 /* LMFeedTaggingTextView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedTaggingTextView.swift; sourceTree = "<group>"; };
 		1500B6293051D67FF4B5A11F20790625 /* DecodeUrlResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DecodeUrlResponse.swift; sourceTree = "<group>"; };
@@ -1470,7 +1473,7 @@
 		15D82B2710006D2995CDB9E141C08D80 /* FIRMessagingConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessagingConstants.h; path = FirebaseMessaging/Sources/FIRMessagingConstants.h; sourceTree = "<group>"; };
 		15FCA563628B55C12E902A26A3791BB8 /* LikeMindsFeed-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "LikeMindsFeed-Info.plist"; sourceTree = "<group>"; };
 		165F085A78CB0FCCE24CB5A917A56582 /* AWSTaskCompletionSource.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSTaskCompletionSource.m; path = AWSCore/Bolts/AWSTaskCompletionSource.m; sourceTree = "<group>"; };
-		16BC3035D9788A7FF99544D069AEB032 /* LikeMindsFeedCore.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = LikeMindsFeedCore.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		16BC3035D9788A7FF99544D069AEB032 /* LikeMindsFeedCore.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = LikeMindsFeedCore.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		16FF15A3072518EC03B3D22DF953C971 /* FIRComponentContainerInternal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRComponentContainerInternal.h; path = FirebaseCore/Sources/FIRComponentContainerInternal.h; sourceTree = "<group>"; };
 		1714244A573343B55EE4E7065439C699 /* LMFeedPostDetailHeaderView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailHeaderView.swift; sourceTree = "<group>"; };
 		173A6D8B1F6A9DC8E48EBBAF299C20C8 /* AWSCognitoIdentityModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCognitoIdentityModel.h; path = AWSCore/CognitoIdentity/AWSCognitoIdentityModel.h; sourceTree = "<group>"; };
@@ -1500,7 +1503,7 @@
 		1CC4816F93B2304268270A175355080B /* FIRInstallationsIDController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRInstallationsIDController.m; path = FirebaseInstallations/Source/Library/InstallationsIDController/FIRInstallationsIDController.m; sourceTree = "<group>"; };
 		1D216CE4A8B6F50D603960D17EE072C6 /* AWSS3 */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = AWSS3; path = AWSS3.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D30EC202494D82432A46AF8B172F1E0 /* LMFeedAnalytics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMFeedAnalytics.swift; path = "lm-feedCore-iOS/lm-feedCore-iOS/Source/Classes/LMFeedAnalytics.swift"; sourceTree = "<group>"; };
-		1D9B762EA49D629ED7C9754236F50CCC /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		1D9B762EA49D629ED7C9754236F50CCC /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		1E71EF4475ACD1B92A2C731CA3C26C9A /* FIRMessagingTopicOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRMessagingTopicOperation.m; path = FirebaseMessaging/Sources/FIRMessagingTopicOperation.m; sourceTree = "<group>"; };
 		1E80F9CED05F4EB1FE2B62CB98F6995B /* Collection+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Collection+Extension.swift"; sourceTree = "<group>"; };
 		1E8AF78DE9A3B2EDEBFBC73001960EEC /* AlbumsTableViewDataSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AlbumsTableViewDataSource.swift; path = Sources/Scene/Albums/AlbumsTableViewDataSource.swift; sourceTree = "<group>"; };
@@ -1587,7 +1590,7 @@
 		31A94CD931FFC0BF261C71778862A255 /* ResourceBundle-Kingfisher-Kingfisher-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-Kingfisher-Kingfisher-Info.plist"; sourceTree = "<group>"; };
 		31F673DB66B47E43B7F3E5D8B9CE0C63 /* AWSCognitoHandlers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCognitoHandlers.h; path = AWSCognito/AWSCognitoHandlers.h; sourceTree = "<group>"; };
 		32B4824F5002AC7363D811EA90CB9BF7 /* AWSEXTScope.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSEXTScope.m; path = AWSCore/Mantle/extobjc/AWSEXTScope.m; sourceTree = "<group>"; };
-		3303DD82B2A75ABB20F8A1332ADFAB40 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = Sources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		3303DD82B2A75ABB20F8A1332ADFAB40 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Sources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3347A1AB6546F0A3977529B8F199DC41 /* PromisesObjC */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = PromisesObjC; path = FBLPromises.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		33803713956A5EBD7D6ABABB64339AB4 /* _ObjC_HeartbeatController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = _ObjC_HeartbeatController.swift; path = FirebaseCore/Internal/Sources/HeartbeatLogging/_ObjC_HeartbeatController.swift; sourceTree = "<group>"; };
 		33DC5954079F3C61A0DE24474C663FBB /* LikeMindsFeedUI-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LikeMindsFeedUI-prefix.pch"; sourceTree = "<group>"; };
@@ -1743,7 +1746,7 @@
 		564A4F973AB595A4F8F367472DA73E3A /* FBLPromise+Await.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "FBLPromise+Await.m"; path = "Sources/FBLPromises/FBLPromise+Await.m"; sourceTree = "<group>"; };
 		5683DDD7EE56E1D58903C42B338785CD /* CameraPreviewView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CameraPreviewView.swift; path = Sources/Scene/Camera/CameraPreviewView.swift; sourceTree = "<group>"; };
 		570AA4929847A322891B772E2320B70A /* LMFeedPollDataModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPollDataModel.swift; sourceTree = "<group>"; };
-		5713AB1DB816E58486189A6299D047A9 /* cct.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; name = cct.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/cct.nanopb.c; sourceTree = "<group>"; };
+		5713AB1DB816E58486189A6299D047A9 /* cct.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = cct.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/cct.nanopb.c; sourceTree = "<group>"; };
 		572EBC78583785CEC7C9F6FA0A4F1B15 /* ImageModifier.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageModifier.swift; path = Sources/Networking/ImageModifier.swift; sourceTree = "<group>"; };
 		575BFCB88920074FE07509D847980F25 /* AWSMTLJSONAdapter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSMTLJSONAdapter.h; path = AWSCore/Mantle/AWSMTLJSONAdapter.h; sourceTree = "<group>"; };
 		57BD41EE5C87324CF2033041E3A062DA /* FIRLoggerLevel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRLoggerLevel.h; path = FirebaseCore/Sources/Public/FirebaseCore/FIRLoggerLevel.h; sourceTree = "<group>"; };
@@ -1771,10 +1774,10 @@
 		5BE17DE5F30C28BD5EAA9F90179E9907 /* PlayerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PlayerView.swift; path = Sources/Scene/Preview/PlayerView.swift; sourceTree = "<group>"; };
 		5C48D005363492E6D8C115E06C23C28A /* ImageView+Kingfisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ImageView+Kingfisher.swift"; path = "Sources/Extensions/ImageView+Kingfisher.swift"; sourceTree = "<group>"; };
 		5C502758A07E9811ACFE4B8E89ACC269 /* NSDictionary+AWSMTLManipulationAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+AWSMTLManipulationAdditions.m"; path = "AWSCore/Mantle/NSDictionary+AWSMTLManipulationAdditions.m"; sourceTree = "<group>"; };
-		5CED62A40C40B10DDDB2E1CCD490801A /* pb_common.c */ = {isa = PBXFileReference; includeInIndex = 1; path = pb_common.c; sourceTree = "<group>"; };
+		5CED62A40C40B10DDDB2E1CCD490801A /* pb_common.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; path = pb_common.c; sourceTree = "<group>"; };
 		5D07C100AF7957E5566B29EB3AC624EB /* NSURLSession+GULPromises.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSURLSession+GULPromises.m"; path = "GoogleUtilities/Environment/URLSessionPromiseWrapper/NSURLSession+GULPromises.m"; sourceTree = "<group>"; };
 		5D0B6A74A5FD71E9755416A8797BC54D /* LMFeedError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMFeedError.swift; path = "lm-feedCore-iOS/lm-feedCore-iOS/Source/Classes/LMFeedError.swift"; sourceTree = "<group>"; };
-		5D1733F5385F4C25FA2CEE83D6468130 /* external_prequest_context.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; name = external_prequest_context.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/external_prequest_context.nanopb.c; sourceTree = "<group>"; };
+		5D1733F5385F4C25FA2CEE83D6468130 /* external_prequest_context.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = external_prequest_context.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/external_prequest_context.nanopb.c; sourceTree = "<group>"; };
 		5D2128676A1DD72E4375BADCE880BB3E /* GetAllMembersRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GetAllMembersRequest.swift; sourceTree = "<group>"; };
 		5D352526B4A1CD65C86C24D17F08683C /* LMFeedPostDataModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostDataModel.swift; sourceTree = "<group>"; };
 		5D797E9A5C5782CE845840781FA1CC81 /* Alamofire */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Alamofire; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1844,7 +1847,7 @@
 		6CDA5309FDC17CF15CC62B8E01C4F429 /* GDTCOREndpoints.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCOREndpoints.h; path = GoogleDataTransport/GDTCORLibrary/Public/GoogleDataTransport/GDTCOREndpoints.h; sourceTree = "<group>"; };
 		6CF9494C53DBC6244F3F476790A3E619 /* LMFeedCommentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedCommentView.swift; sourceTree = "<group>"; };
 		6D3F3555929060309FA0C6739889423F /* AWSNetworkingHelpers.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSNetworkingHelpers.m; path = AWSCore/Networking/AWSNetworkingHelpers.m; sourceTree = "<group>"; };
-		6DAB344A3BB9F0113E951CD015FAE2F6 /* compliance.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; name = compliance.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/compliance.nanopb.c; sourceTree = "<group>"; };
+		6DAB344A3BB9F0113E951CD015FAE2F6 /* compliance.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = compliance.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/compliance.nanopb.c; sourceTree = "<group>"; };
 		6DB1C24550FDF133EB28F2F756505091 /* GULLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GULLogger.m; path = GoogleUtilities/Logger/GULLogger.m; sourceTree = "<group>"; };
 		6DB78F01D39079287948B951F67C7B15 /* FIRComponent.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRComponent.h; path = FirebaseCore/Extension/FIRComponent.h; sourceTree = "<group>"; };
 		6DCED7E2F4A28A1EFECEA4DD47A31573 /* FIRHeartbeatLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRHeartbeatLogger.m; path = FirebaseCore/Sources/FIRHeartbeatLogger.m; sourceTree = "<group>"; };
@@ -1938,7 +1941,7 @@
 		84DA578A4B5068FEA02CC2D3C46952A7 /* LikeUsers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LikeUsers.swift; sourceTree = "<group>"; };
 		856B5CD56F194FAD26EA91620B66D614 /* GoogleDataTransport */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = GoogleDataTransport; path = GoogleDataTransport.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85FF623DCB249D6820F8B66D6108B31D /* AWSClientContext.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSClientContext.m; path = AWSCore/Service/AWSClientContext.m; sourceTree = "<group>"; };
-		8610A0D275FC3E34CAC7C676FA410A23 /* client_metrics.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; name = client_metrics.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/client_metrics.nanopb.c; sourceTree = "<group>"; };
+		8610A0D275FC3E34CAC7C676FA410A23 /* client_metrics.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = client_metrics.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/client_metrics.nanopb.c; sourceTree = "<group>"; };
 		86500158D42DB48E43DD587039EAB618 /* GDTCORUploadCoordinator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCORUploadCoordinator.h; path = GoogleDataTransport/GDTCORLibrary/Private/GDTCORUploadCoordinator.h; sourceTree = "<group>"; };
 		8672652A2FEA6B76711116F6331A95D2 /* Pods-lm-feed-sample-app-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-lm-feed-sample-app-umbrella.h"; sourceTree = "<group>"; };
 		8694571EBFCC257F755F03561E426C61 /* LikeMindsFeedUI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = LikeMindsFeedUI.release.xcconfig; sourceTree = "<group>"; };
@@ -1974,7 +1977,7 @@
 		8CA850F23938601CBFFB7E086B8B12BE /* FirebaseCoreInternal.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = FirebaseCoreInternal.modulemap; sourceTree = "<group>"; };
 		8CB9F382BB445412DD406A110B65599C /* AWSMTLModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSMTLModel.m; path = AWSCore/Mantle/AWSMTLModel.m; sourceTree = "<group>"; };
 		8CC2F39124BBE15A8F4637C9E59F4E6A /* AWSDDTTYLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSDDTTYLogger.h; path = AWSCore/Logging/AWSDDTTYLogger.h; sourceTree = "<group>"; };
-		8CD56B6FD322A0C0F32493E57E379603 /* LikeMindsFeedUI.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = LikeMindsFeedUI.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		8CD56B6FD322A0C0F32493E57E379603 /* LikeMindsFeedUI.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = LikeMindsFeedUI.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		8CDD71005043C20157E6F2D7FE80FE2C /* LMFeedPostDetailMediaCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailMediaCell.swift; sourceTree = "<group>"; };
 		8D28F5A127104BFF32893D61A7564162 /* FirebaseCoreInternal-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FirebaseCoreInternal-dummy.m"; sourceTree = "<group>"; };
 		8D38B124280967DE921CFEB05FBD1C9A /* Kingfisher-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Kingfisher-dummy.m"; sourceTree = "<group>"; };
@@ -2053,11 +2056,11 @@
 		9CB2DF76A6C2544EB4F77A34499FD2AF /* FIRBundleUtil.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRBundleUtil.h; path = FirebaseCore/Sources/FIRBundleUtil.h; sourceTree = "<group>"; };
 		9CB734DF8B9054EE92B7EBE9AE770366 /* MemberMenu.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MemberMenu.swift; sourceTree = "<group>"; };
 		9CEB63DC0D02AE1A85CF0B96D91FD8DA /* FirebaseMessaging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FirebaseMessaging.debug.xcconfig; sourceTree = "<group>"; };
-		9D256552409899F44EFB02D7767E8367 /* pb_encode.c */ = {isa = PBXFileReference; includeInIndex = 1; path = pb_encode.c; sourceTree = "<group>"; };
+		9D256552409899F44EFB02D7767E8367 /* pb_encode.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; path = pb_encode.c; sourceTree = "<group>"; };
 		9D4447E59BD4A0397F21A7BB62158D99 /* GULHeartbeatDateStorageUserDefaults.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GULHeartbeatDateStorageUserDefaults.m; path = GoogleUtilities/Environment/GULHeartbeatDateStorageUserDefaults.m; sourceTree = "<group>"; };
 		9D7D36BAC4B8A9669F4EE39E11A96DE6 /* AssetsCollectionViewDataSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AssetsCollectionViewDataSource.swift; path = Sources/Scene/Assets/AssetsCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		9D8C12237E222986A3D20784AD2172C7 /* GDTCORTransformer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GDTCORTransformer.m; path = GoogleDataTransport/GDTCORLibrary/GDTCORTransformer.m; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9DECBB681329F7CDCED7AE373D1F2B0A /* KF.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KF.swift; path = Sources/General/KF.swift; sourceTree = "<group>"; };
 		9E8F55A8A65C75CD2D2F6CFE2F629C09 /* GDTCORFlatFileStorage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GDTCORFlatFileStorage.m; path = GoogleDataTransport/GDTCORLibrary/GDTCORFlatFileStorage.m; sourceTree = "<group>"; };
 		9E917FA98C09DF787AD99A049F0BA546 /* LMFeedEditPostViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedEditPostViewModel.swift; sourceTree = "<group>"; };
@@ -2065,7 +2068,7 @@
 		9EED730C17038E53E9EC398D9D30973F /* FIRHeartbeatLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRHeartbeatLogger.h; path = FirebaseCore/Extension/FIRHeartbeatLogger.h; sourceTree = "<group>"; };
 		9EF6937C5C42098B82005F5448EEF084 /* FBLPromises.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBLPromises.h; path = Sources/FBLPromises/include/FBLPromises.h; sourceTree = "<group>"; };
 		9F5A559769F117AD819CC9D244E36A6E /* FIRCurrentDateProvider.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRCurrentDateProvider.h; path = FirebaseInstallations/Source/Library/InstallationsIDController/FIRCurrentDateProvider.h; sourceTree = "<group>"; };
-		9F846DD2390D88AED5D05755F96400E6 /* pb_decode.c */ = {isa = PBXFileReference; includeInIndex = 1; path = pb_decode.c; sourceTree = "<group>"; };
+		9F846DD2390D88AED5D05755F96400E6 /* pb_decode.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; path = pb_decode.c; sourceTree = "<group>"; };
 		9FAC342AFCEA7EEE5FEE8242023CD712 /* AWSCategory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCategory.h; path = AWSCore/Utility/AWSCategory.h; sourceTree = "<group>"; };
 		9FB3B4261496C984DCA6C1FD66A8BBA3 /* AWSCognitoService.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCognitoService.h; path = AWSCognito/AWSCognitoService.h; sourceTree = "<group>"; };
 		9FBB28DAD884D5ABB6B3F7DA4322668E /* PollOption.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PollOption.swift; sourceTree = "<group>"; };
@@ -2101,7 +2104,7 @@
 		A6A5A5DB0E4D3EC8CAB1A30331773FF1 /* AWSFMDatabase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSFMDatabase.h; path = AWSCore/FMDB/AWSFMDatabase.h; sourceTree = "<group>"; };
 		A6D85919455821D39AF79C6FAC4A89E7 /* GetFeedOfFeedRoomResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GetFeedOfFeedRoomResponse.swift; sourceTree = "<group>"; };
 		A7086BD7D332AE6C8EB1A8D3442D3B48 /* Settings.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Settings.swift; path = Sources/Model/Settings.swift; sourceTree = "<group>"; };
-		A7168BF5A5B77AA055CDA3A25341FDB3 /* me.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; name = me.nanopb.c; path = FirebaseMessaging/Sources/Protogen/nanopb/me.nanopb.c; sourceTree = "<group>"; };
+		A7168BF5A5B77AA055CDA3A25341FDB3 /* me.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = me.nanopb.c; path = FirebaseMessaging/Sources/Protogen/nanopb/me.nanopb.c; sourceTree = "<group>"; };
 		A787C24D3F11D1885D40B7B60191377F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		A7FF48EAA60637248A220852AD7DA000 /* MenuItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		A84E0A9005805DA652629B744F9D80F5 /* GDTCORFlatFileStorage+Promises.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "GDTCORFlatFileStorage+Promises.m"; path = "GoogleDataTransport/GDTCORLibrary/GDTCORFlatFileStorage+Promises.m"; sourceTree = "<group>"; };
@@ -2242,7 +2245,7 @@
 		C7B41C5F2411E3851572F19CD217A5B4 /* LMFeedLikeViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedLikeViewModel.swift; sourceTree = "<group>"; };
 		C7C93FF332D8962167924D59961972F3 /* FIRMessaging.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRMessaging.m; path = FirebaseMessaging/Sources/FIRMessaging.m; sourceTree = "<group>"; };
 		C802019D83C987EC07CDAD3EB482D6B8 /* me.nanopb.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = me.nanopb.h; path = FirebaseMessaging/Sources/Protogen/nanopb/me.nanopb.h; sourceTree = "<group>"; };
-		C811F4EAD4126913884C382D70456DD7 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = Sources/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		C811F4EAD4126913884C382D70456DD7 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Sources/Resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C83C7B057E944843A3461E6E2DA4D797 /* FIRLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRLogger.h; path = FirebaseCore/Extension/FIRLogger.h; sourceTree = "<group>"; };
 		C86B88E3A38DB20817444088E1A6B203 /* GDTCORDirectorySizeTracker.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GDTCORDirectorySizeTracker.m; path = GoogleDataTransport/GDTCORLibrary/GDTCORDirectorySizeTracker.m; sourceTree = "<group>"; };
 		C86D1CC837A8017EF0083D816C5B0549 /* AWSCore.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AWSCore.modulemap; sourceTree = "<group>"; };
@@ -2285,7 +2288,7 @@
 		D07090E22DD4027AB90CB731708336CF /* FIRMessagingExtensionHelper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessagingExtensionHelper.h; path = FirebaseMessaging/Sources/Public/FirebaseMessaging/FIRMessagingExtensionHelper.h; sourceTree = "<group>"; };
 		D0F39587548C5DA0C35BF645F2AE94CB /* GULAppEnvironmentUtil.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GULAppEnvironmentUtil.h; path = GoogleUtilities/Environment/Public/GoogleUtilities/GULAppEnvironmentUtil.h; sourceTree = "<group>"; };
 		D11494540D982768E01A048D2E526C4B /* BrandingRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BrandingRequest.swift; sourceTree = "<group>"; };
-		D115DE394F6972DEEFEABC7ECAFFA6CE /* LikeMindsFeed.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = LikeMindsFeed.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		D115DE394F6972DEEFEABC7ECAFFA6CE /* LikeMindsFeed.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = LikeMindsFeed.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		D11F4F851B8DF9B6F1BE31073A9A4D90 /* LMStringConstants.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMStringConstants.swift; sourceTree = "<group>"; };
 		D17580B4C145D4A4A9B1CDCD193DABF5 /* GetCommentResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GetCommentResponse.swift; sourceTree = "<group>"; };
 		D18C4CC9A2B67127D0678CC73DF086DC /* GDTCOREvent+GDTMetricsSupport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "GDTCOREvent+GDTMetricsSupport.h"; path = "GoogleDataTransport/GDTCCTLibrary/Private/GDTCOREvent+GDTMetricsSupport.h"; sourceTree = "<group>"; };
@@ -2385,6 +2388,9 @@
 		E5C226C69BCE1856CDEDB6F6A8D08B9A /* LMNumbersConstant.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMNumbersConstant.swift; sourceTree = "<group>"; };
 		E5F53250A1F8CADB3694F78F18424355 /* FBLPromise+Wrap.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "FBLPromise+Wrap.m"; path = "Sources/FBLPromises/FBLPromise+Wrap.m"; sourceTree = "<group>"; };
 		E5FADFEBB7BA2B7CDB72F6D34F37D60A /* FBLPromise+Recover.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBLPromise+Recover.h"; path = "Sources/FBLPromises/include/FBLPromise+Recover.h"; sourceTree = "<group>"; };
+		E5FCD96D2C19B733004A2B8C /* SubmitPollVoteRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitPollVoteRequest.swift; sourceTree = "<group>"; };
+		E5FCD9702C19CB9B004A2B8C /* AddPollOptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPollOptionRequest.swift; sourceTree = "<group>"; };
+		E5FCD9722C19DD2F004A2B8C /* AddPollOptionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPollOptionResponse.swift; sourceTree = "<group>"; };
 		E68ABCECB590EBF21CFCE10EA3B0EFB7 /* NSValueTransformer+AWSMTLInversionAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSValueTransformer+AWSMTLInversionAdditions.h"; path = "AWSCore/Mantle/NSValueTransformer+AWSMTLInversionAdditions.h"; sourceTree = "<group>"; };
 		E6FC0C09CCD290D2AC1DCE5B57630837 /* GULNetworkConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GULNetworkConstants.h; path = GoogleUtilities/Network/Public/GoogleUtilities/GULNetworkConstants.h; sourceTree = "<group>"; };
 		E85628BCD6F52B14269897C5FB0D5CE9 /* FIRFirebaseUserAgent.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRFirebaseUserAgent.h; path = FirebaseCore/Sources/FIRFirebaseUserAgent.h; sourceTree = "<group>"; };
@@ -2454,7 +2460,7 @@
 		F69A8930387A271FFC41AE191331C8D0 /* ReportRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReportRequest.swift; sourceTree = "<group>"; };
 		F70671E6230F22D511B80A0098007E88 /* RequestModifier.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RequestModifier.swift; path = Sources/Networking/RequestModifier.swift; sourceTree = "<group>"; };
 		F7183DCA4354C08F17DB344A8861491A /* FIRMessagingCheckinService.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRMessagingCheckinService.m; path = FirebaseMessaging/Sources/Token/FIRMessagingCheckinService.m; sourceTree = "<group>"; };
-		F7B8561D10080EB7290723B2BB721489 /* external_privacy_context.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; name = external_privacy_context.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/external_privacy_context.nanopb.c; sourceTree = "<group>"; };
+		F7B8561D10080EB7290723B2BB721489 /* external_privacy_context.nanopb.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = external_privacy_context.nanopb.c; path = GoogleDataTransport/GDTCCTLibrary/Protogen/nanopb/external_privacy_context.nanopb.c; sourceTree = "<group>"; };
 		F7FC9FC96D2112CECBEA5FA59995424C /* LMFeedCreatePollDateView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedCreatePollDateView.swift; sourceTree = "<group>"; };
 		F8B7A138DF74133E531135E365741E87 /* KingfisherError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KingfisherError.swift; path = Sources/General/KingfisherError.swift; sourceTree = "<group>"; };
 		F8D46277CE762EACE48D88451AA65B5A /* LMViewLifeCycle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMViewLifeCycle.swift; sourceTree = "<group>"; };
@@ -2749,7 +2755,6 @@
 				02A32373C4C966DE51B10165D15278A1 /* FeedTokenManager.swift */,
 				0BE1723CB145AD6899C977E456D79B58 /* RefreshAccessToken.swift */,
 			);
-			name = TokenManager;
 			path = TokenManager;
 			sourceTree = "<group>";
 		};
@@ -2758,7 +2763,6 @@
 			children = (
 				D85C63C3D1867F23531B180C0118934B /* GetCommentsLikeResponse.swift */,
 			);
-			name = Response;
 			path = Response;
 			sourceTree = "<group>";
 		};
@@ -2767,7 +2771,6 @@
 			children = (
 				AD74AE4D72C49F82CD87A174E82D717C /* LMFeedPostDetailDocumentCell.swift */,
 			);
-			name = DocumentCell;
 			path = DocumentCell;
 			sourceTree = "<group>";
 		};
@@ -2777,7 +2780,6 @@
 				1233810BBEB022C4D126597C713B970B /* DecodeUrlRequest.swift */,
 				1500B6293051D67FF4B5A11F20790625 /* DecodeUrlResponse.swift */,
 			);
-			name = OGTags;
 			path = OGTags;
 			sourceTree = "<group>";
 		};
@@ -2787,7 +2789,6 @@
 				B069ECA523ED694603EB95D07DE214F9 /* RegisterDeviceRequest.swift */,
 				924224353A32AD3679B78DB858154410 /* RegisterDeviceResponse.swift */,
 			);
-			name = RegisterDevice;
 			path = RegisterDevice;
 			sourceTree = "<group>";
 		};
@@ -2833,7 +2834,6 @@
 			children = (
 				E06DC83DB78970CF4080A7B4BB4E8D94 /* Response */,
 			);
-			name = MemberState;
 			path = MemberState;
 			sourceTree = "<group>";
 		};
@@ -2842,7 +2842,6 @@
 			children = (
 				E1CB23E5B82ED5EA84BFB080CB71CD95 /* Response */,
 			);
-			name = Base;
 			path = Base;
 			sourceTree = "<group>";
 		};
@@ -2902,7 +2901,6 @@
 				9CB734DF8B9054EE92B7EBE9AE770366 /* MemberMenu.swift */,
 				BD8BB4EDEF85E8683EE22A07F33766A1 /* SearchMembersResponse.swift */,
 			);
-			name = Response;
 			path = Response;
 			sourceTree = "<group>";
 		};
@@ -2938,7 +2936,6 @@
 			children = (
 				3BAFEFB488484CC7E4812D879CDF4E54 /* TopicFeedRequest.swift */,
 			);
-			name = Request;
 			path = Request;
 			sourceTree = "<group>";
 		};
@@ -2982,7 +2979,6 @@
 				DDE5DAF2DEFB306602C9F315419FF2F3 /* InitiateUser */,
 				0A78C30B2774839EC71DE01028CF9A58 /* RegisterDevice */,
 			);
-			name = CoreFeed;
 			path = CoreFeed;
 			sourceTree = "<group>";
 		};
@@ -3008,7 +3004,6 @@
 				702175AC3F81884DE9F4BB9602A196F2 /* GetCommentLikesRequest.swift */,
 				3C282B5450FACBBD9502440F39DD1B1F /* LikeCommentRequest.swift */,
 			);
-			name = Request;
 			path = Request;
 			sourceTree = "<group>";
 		};
@@ -3024,7 +3019,6 @@
 				01AD0D17D29B587B4277ED7D895D1820 /* Support Files */,
 				474B701E7F94193D3D1968BE26DEE8AE /* UserDefaults */,
 			);
-			name = GoogleUtilities;
 			path = GoogleUtilities;
 			sourceTree = "<group>";
 		};
@@ -3048,7 +3042,6 @@
 				07EE672DB79278F2A68EE6F02AB515B8 /* LMFeedTaggingListView.swift */,
 				2B1AEC90A903FA4201313F5F124D3570 /* LMFeedTaggingListViewModel.swift */,
 			);
-			name = TaggingListView;
 			path = TaggingListView;
 			sourceTree = "<group>";
 		};
@@ -3072,7 +3065,6 @@
 				0D852C63A550BA5E97C66F64D3CAADD4 /* LMFeedCreatePostScreen.swift */,
 				35EBD6576BA01ECD8A49C82B63D06F43 /* LMFeedCreatePostViewModel.swift */,
 			);
-			name = CreatePost;
 			path = CreatePost;
 			sourceTree = "<group>";
 		};
@@ -3084,7 +3076,6 @@
 				63C72E20A06F29A41A5383A278B5286D /* LMFeedMoreRepliesView.swift */,
 				CAFC49C48B7BCF199CCAFA6D5C2AE278 /* LMFeedReplyView.swift */,
 			);
-			name = CommentCells;
 			path = CommentCells;
 			sourceTree = "<group>";
 		};
@@ -3098,7 +3089,6 @@
 				65FB508F02603B00820C6C9A31364767 /* LMFeedPostLinkCell */,
 				654F0191277AF0C5817614841E2D7A1D /* LMFeedPostMediaCell */,
 			);
-			name = PostWidget;
 			path = PostWidget;
 			sourceTree = "<group>";
 		};
@@ -3109,7 +3099,6 @@
 				08EB0FCC8B85D435C1B3CF24CD3262FA /* LMFeedTopicSelectionViewModel.swift */,
 				E708A87003827CFC00D25BFB015F497D /* ViewDataModel */,
 			);
-			name = TopicSelection;
 			path = TopicSelection;
 			sourceTree = "<group>";
 		};
@@ -3119,7 +3108,6 @@
 				7D5C4FB93222082B1C8C0F60DECB063E /* LMFeedDeleteScreen.swift */,
 				A0265512880227D1C1F3F88D1FD4C239 /* LMFeedDeleteViewModel.swift */,
 			);
-			name = DeleteScreen;
 			path = DeleteScreen;
 			sourceTree = "<group>";
 		};
@@ -3140,7 +3128,6 @@
 				BE7B2F8D34ED631BC611F3320F7458AC /* WeakContainer.swift */,
 				F082496921812FBC920628D175CC3044 /* Support Files */,
 			);
-			name = FirebaseCoreInternal;
 			path = FirebaseCoreInternal;
 			sourceTree = "<group>";
 		};
@@ -3159,7 +3146,6 @@
 				DDDD4E091060B0A0091140E7C5379374 /* DisplayScreen */,
 				6F6348531C44BEAF411B55CD8D811F6F /* SelectionScreen */,
 			);
-			name = TopicFeed;
 			path = TopicFeed;
 			sourceTree = "<group>";
 		};
@@ -3168,7 +3154,6 @@
 			children = (
 				8CDD71005043C20157E6F2D7FE80FE2C /* LMFeedPostDetailMediaCell.swift */,
 			);
-			name = MediaCell;
 			path = MediaCell;
 			sourceTree = "<group>";
 		};
@@ -3178,7 +3163,6 @@
 				880EC02C1D96E51A7DB5473D7EC1A025 /* Fonts.swift */,
 				52A8E4ECD46886A62CCB36147E1AEA61 /* LMChatClient.swift */,
 			);
-			name = Core;
 			path = Core;
 			sourceTree = "<group>";
 		};
@@ -3221,7 +3205,6 @@
 				9C33CE6117977379B4B05E6D22940044 /* FIRVersion.m */,
 				66DA3F505E9B7F0AE0EC1D316CE1E453 /* Support Files */,
 			);
-			name = FirebaseCore;
 			path = FirebaseCore;
 			sourceTree = "<group>";
 		};
@@ -3231,7 +3214,6 @@
 				203AA055422FDED7548D86549687A896 /* Request */,
 				06FC3AAF4F262161570482D70490C6F0 /* Response */,
 			);
-			name = CommentsLikes;
 			path = CommentsLikes;
 			sourceTree = "<group>";
 		};
@@ -3242,7 +3224,6 @@
 				435368B768312C73CBCA17F405E6894C /* EditCommentResponse.swift */,
 				D17580B4C145D4A4A9B1CDCD193DABF5 /* GetCommentResponse.swift */,
 			);
-			name = Response;
 			path = Response;
 			sourceTree = "<group>";
 		};
@@ -3288,7 +3269,6 @@
 				6B424D56FF879621F300323F55FAABD1 /* Validation.swift */,
 				686FFD802F345B2330A1CF276EE882DD /* Support Files */,
 			);
-			name = Alamofire;
 			path = Alamofire;
 			sourceTree = "<group>";
 		};
@@ -3314,7 +3294,6 @@
 				E6EFB671AC3EAE821FB9EB89AEC8EF2C /* Request */,
 				F2F0D600825F80366ACEE1DB12D60436 /* Response */,
 			);
-			name = FeedNotification;
 			path = FeedNotification;
 			sourceTree = "<group>";
 		};
@@ -3325,7 +3304,6 @@
 				B02B250ADA19545848C4232DAD68CA29 /* Like.swift */,
 				84DA578A4B5068FEA02CC2D3C46952A7 /* LikeUsers.swift */,
 			);
-			name = Response;
 			path = Response;
 			sourceTree = "<group>";
 		};
@@ -3337,7 +3315,6 @@
 				5EEFF0FCB31442884DC24F59F9314E79 /* LMFeedTopicEditViewCell.swift */,
 				CBDFE6A5395DBA86388CD29FA15385C9 /* LMFeedTopicViewCell.swift */,
 			);
-			name = CollectionCells;
 			path = CollectionCells;
 			sourceTree = "<group>";
 		};
@@ -3347,7 +3324,6 @@
 				8FCF5D503FC2ACDBEF62AFC5A1C26058 /* LMFeedPostListScreen.swift */,
 				69816D9C9A0268E114566221C5520F7A /* LMFeedPostListViewModel.swift */,
 			);
-			name = PostListView;
 			path = PostListView;
 			sourceTree = "<group>";
 		};
@@ -3391,6 +3367,7 @@
 		4A0AF81264A524F33B217A8D3DF4A1C8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E5FCD96F2C19C69A004A2B8C /* AddPollOption */,
 				0ED16B43F2BE3B0D7A65A79FCCD6794F /* Base */,
 				B670871FFF80AEAA1FDA83D49D707FEB /* Comments */,
 				3945AB12EA73DF0F134281F864F98244 /* CommentsLikes */,
@@ -3408,6 +3385,7 @@
 				D5F8F61AB31F56703FABF3ACC51ED2D7 /* ReplyOnComment */,
 				F4219629550F692A7FFA43C0185087E1 /* Report */,
 				7CDDE5A9E141E85393314A119EA464A4 /* ReportTags */,
+				E5FCD96C2C19B70E004A2B8C /* SubmitPollVote */,
 				70C8A6A4ADA9C521275BBB4604CBB08E /* TaggingList */,
 				8F727CEE919725813D35A73ADE73C602 /* TopicFeed */,
 				D5956A7490A6D324BF0AAA36AC3957C8 /* UniversalFeed */,
@@ -3422,7 +3400,6 @@
 				4ED48F4A2F01CFE9AAAA0A506418F70D /* LMFeedDisplayPollView.swift */,
 				1796B248103000ED51A8D1748E463B67 /* LMFeedDisplayPollWidget.swift */,
 			);
-			name = DisplayWidgets;
 			path = DisplayWidgets;
 			sourceTree = "<group>";
 		};
@@ -3432,7 +3409,6 @@
 				593FBA1F9B967D6C7DC541DA24B942CE /* Request */,
 				140A53E45C239984DE480444B65E25CE /* Response */,
 			);
-			name = MembersData;
 			path = MembersData;
 			sourceTree = "<group>";
 		};
@@ -3442,7 +3418,6 @@
 				E5206D437676DBF07F0D923CAFC94698 /* GetPostLikesRequest.swift */,
 				66A13A1601D8AD039FDF3433E6268653 /* LikePostRequest.swift */,
 			);
-			name = Request;
 			path = Request;
 			sourceTree = "<group>";
 		};
@@ -3452,7 +3427,6 @@
 				B60C93A86C0CB4914F65BCFCBA2D9C25 /* GetCommunityConfigurationRequest.swift */,
 				DA2FA9B69C6D8BCF911E2A675DA3B012 /* GetCommunityConfigurationResponse.swift */,
 			);
-			name = Community;
 			path = Community;
 			sourceTree = "<group>";
 		};
@@ -3495,7 +3469,6 @@
 				866B70EEC9295CECCF050E8A10D64F1C /* encode */,
 				877DF29E0A205195FDEE507FCFABF413 /* Support Files */,
 			);
-			name = nanopb;
 			path = nanopb;
 			sourceTree = "<group>";
 		};
@@ -3505,7 +3478,6 @@
 				5D2128676A1DD72E4375BADCE880BB3E /* GetAllMembersRequest.swift */,
 				74618758B629FAB9B47CDC912EE90F2B /* SearchMembersRequest.swift */,
 			);
-			name = Request;
 			path = Request;
 			sourceTree = "<group>";
 		};
@@ -3538,7 +3510,6 @@
 			children = (
 				8C92DB290E596D0E607A7E8069DCC6B6 /* LMFeedPostDocumentCell.swift */,
 			);
-			name = LMFeedPostDocumentCell;
 			path = LMFeedPostDocumentCell;
 			sourceTree = "<group>";
 		};
@@ -3549,7 +3520,6 @@
 				562562C88EA1DC6B5A7B86033D12E812 /* LMFeedNotificationFeedScreen.swift */,
 				0EDA7FC409A60FA371814ABA286E6146 /* LMFeedNotificationFeedViewModel.swift */,
 			);
-			name = NotificationScreen;
 			path = NotificationScreen;
 			sourceTree = "<group>";
 		};
@@ -3573,7 +3543,6 @@
 			children = (
 				DF8BCA06CA94844E6FB21D24A10CC6B1 /* LMFeedPostMediaCell.swift */,
 			);
-			name = LMFeedPostMediaCell;
 			path = LMFeedPostMediaCell;
 			sourceTree = "<group>";
 		};
@@ -3582,7 +3551,6 @@
 			children = (
 				ED73D1D59125FE6540839BAAB439430B /* LMFeedPostLinkCell.swift */,
 			);
-			name = LMFeedPostLinkCell;
 			path = LMFeedPostLinkCell;
 			sourceTree = "<group>";
 		};
@@ -3608,7 +3576,6 @@
 				68DAC89D182CCF2C653B7B602376ECCC /* EditCommentRequest.swift */,
 				E3DC4AD99CE0BF82FB864FA47042A7C7 /* GetCommentRequest.swift */,
 			);
-			name = Request;
 			path = Request;
 			sourceTree = "<group>";
 		};
@@ -3632,7 +3599,6 @@
 			children = (
 				B8AAF28B1AC58D19E529AB31A76F86EF /* LMFeedPostDetailLinkCell.swift */,
 			);
-			name = LinkCell;
 			path = LinkCell;
 			sourceTree = "<group>";
 		};
@@ -3672,7 +3638,6 @@
 			children = (
 				4744F2880E6D8ED05B45EAA0907C444C /* TopicFeedResponse.swift */,
 			);
-			name = Response;
 			path = Response;
 			sourceTree = "<group>";
 		};
@@ -3681,7 +3646,6 @@
 			children = (
 				9A8405D90AE62273CB028079F735BEE7 /* LMFeedTopicSelectionCell.swift */,
 			);
-			name = SelectionScreen;
 			path = SelectionScreen;
 			sourceTree = "<group>";
 		};
@@ -3691,7 +3655,6 @@
 				0F97C43F2A630E18FBEBAD5D59DF68FD /* GetTaggingListRequest.swift */,
 				F3293651A75F9F5556A7958CB8739EB0 /* GetTaggingListResponse.swift */,
 			);
-			name = TaggingList;
 			path = TaggingList;
 			sourceTree = "<group>";
 		};
@@ -3701,7 +3664,6 @@
 				A406810FF2EFEDDB2E34883B69231A0A /* CreatePollWidgets */,
 				4BDC1436DD8EA64E4D4CFDDF29377FD0 /* DisplayWidgets */,
 			);
-			name = PollWidgets;
 			path = PollWidgets;
 			sourceTree = "<group>";
 		};
@@ -3720,7 +3682,6 @@
 				4165F2EFCAC9117B2CE700335BC93809 /* LMFeedPostDetailScreen.swift */,
 				81E4459A339DE58D210D079768558146 /* LMFeedPostDetailViewModel.swift */,
 			);
-			name = PostDetail;
 			path = PostDetail;
 			sourceTree = "<group>";
 		};
@@ -3762,7 +3723,6 @@
 				F1DE7EA3EDFFDB355E9CCF40F7C4D176 /* GetReportTagRequest.swift */,
 				E3506A8108D37869BAA585BAC0EAEF6F /* GetReportTagResponse.swift */,
 			);
-			name = ReportTags;
 			path = ReportTags;
 			sourceTree = "<group>";
 		};
@@ -3772,7 +3732,6 @@
 				C758629A2C29ECB589CB87128A8F2967 /* LMUniversalFeedScreen.swift */,
 				20AA9D65A37E03EFE7FEB3C21E90EDA5 /* LMUniversalFeedViewModel.swift */,
 			);
-			name = UniversalFeed;
 			path = UniversalFeed;
 			sourceTree = "<group>";
 		};
@@ -3806,7 +3765,6 @@
 			children = (
 				ED0D9E0A1A7A6F4DA242BDC9E7380497 /* GetFeedRequest.swift */,
 			);
-			name = Request;
 			path = Request;
 			sourceTree = "<group>";
 		};
@@ -3890,7 +3848,6 @@
 				9EF6937C5C42098B82005F5448EEF084 /* FBLPromises.h */,
 				29B4EE98761B51903B3E9B63084E115C /* Support Files */,
 			);
-			name = PromisesObjC;
 			path = PromisesObjC;
 			sourceTree = "<group>";
 		};
@@ -3918,7 +3875,6 @@
 				DA9B5C9A7D1F4DF70F930AFC28C80A9D /* LMFeedLoopedVideoPlayer.swift */,
 				F8E18C5630B66462AA48C8E3BBC08E07 /* LMFeedVideoCollectionCell.swift */,
 			);
-			name = SharedComponents;
 			path = SharedComponents;
 			sourceTree = "<group>";
 		};
@@ -3954,7 +3910,6 @@
 			children = (
 				556E46183A46153871B04153690809E4 /* LogoutRequest.swift */,
 			);
-			name = Logout;
 			path = Logout;
 			sourceTree = "<group>";
 		};
@@ -3964,7 +3919,6 @@
 				4BAFA38075FED608508045DC3402473C /* LMFeedGeneralPicker.swift */,
 				181C86E9E2A7DF174D277A1B4CFC5EBF /* LMFeedTimePicker.swift */,
 			);
-			name = UIPicker;
 			path = UIPicker;
 			sourceTree = "<group>";
 		};
@@ -3974,7 +3928,6 @@
 				157195B274C5B1A2634E6D87DDC1BD6B /* Request */,
 				6CE019329C6CF640D82EF042FCB6F1C8 /* Response */,
 			);
-			name = TopicFeed;
 			path = TopicFeed;
 			sourceTree = "<group>";
 		};
@@ -3983,7 +3936,6 @@
 			children = (
 				91E7A4A6B908F830600687FF0EE25F25 /* GetFeedResponse.swift */,
 			);
-			name = Response;
 			path = Response;
 			sourceTree = "<group>";
 		};
@@ -3993,7 +3945,6 @@
 				50530648125B91BB3C4F5CAAEE04829E /* Request */,
 				42728A733D943C2DF7D8AFCAC78CDA34 /* Response */,
 			);
-			name = PostLike;
 			path = PostLike;
 			sourceTree = "<group>";
 		};
@@ -4018,7 +3969,6 @@
 				14EA2207447C3FF741AE853FF03AD731 /* LMFeedTaggingTextView.swift */,
 				97720525B98C83AB47D4265C02A59EF1 /* LMFeedTaggingUserItem.swift */,
 			);
-			name = TaggingView;
 			path = TaggingView;
 			sourceTree = "<group>";
 		};
@@ -4028,7 +3978,6 @@
 				6B8663453BE2D7E34A4D5C7546C1A619 /* LMFeedReportScreen.swift */,
 				8F19EA6502E8E0B62EFC15CAFAB607A9 /* LMFeedReportViewModel.swift */,
 			);
-			name = ReportPost;
 			path = ReportPost;
 			sourceTree = "<group>";
 		};
@@ -4037,7 +3986,6 @@
 			children = (
 				4366E465C835F18ADB5B47CB376D9058 /* LMFeedReportItem.swift */,
 			);
-			name = ReportWidgets;
 			path = ReportWidgets;
 			sourceTree = "<group>";
 		};
@@ -4046,7 +3994,6 @@
 			children = (
 				E86CDEC38B4717F4CF882535B092786C /* LMFeedCreatePostHeaderView.swift */,
 			);
-			name = HeaderView;
 			path = HeaderView;
 			sourceTree = "<group>";
 		};
@@ -4067,7 +4014,6 @@
 				368215BDD06928C24B2659DD2E82F37D /* MediaCell */,
 				EBE962FBB3D31E2F75F28499072ABD99 /* PostHeaderFooter */,
 			);
-			name = PostDetailWidgets;
 			path = PostDetailWidgets;
 			sourceTree = "<group>";
 		};
@@ -4160,7 +4106,6 @@
 				11CE7C84AD9B567F0AA3CAF7F79A8FE2 /* NSError+FIRMessaging.m */,
 				280009DAE23AE8868724E1FA5FC656A2 /* Support Files */,
 			);
-			name = FirebaseMessaging;
 			path = FirebaseMessaging;
 			sourceTree = "<group>";
 		};
@@ -4175,7 +4120,6 @@
 				0EAF062631B84FAAD14DA706F6291636 /* LMFeedCreatePollQuestionView.swift */,
 				BCBE9A5F47A3345AD7781BDCD9C86B04 /* LMFeedCreatePollUserOptionWidget.swift */,
 			);
-			name = CreatePollWidgets;
 			path = CreatePollWidgets;
 			sourceTree = "<group>";
 		};
@@ -4184,7 +4128,6 @@
 			children = (
 				19567D644C0F4D9D86B241E03EF1FE28 /* LMFeedMemberItem.swift */,
 			);
-			name = MemberItem;
 			path = MemberItem;
 			sourceTree = "<group>";
 		};
@@ -4366,7 +4309,6 @@
 				3BDFCE767DA143ADDA95BB2B64BADBC3 /* NSValueTransformer+AWSMTLPredefinedTransformerAdditions.m */,
 				630C5B7AC534BEC74D091D543ED1D4DD /* Support Files */,
 			);
-			name = AWSCore;
 			path = AWSCore;
 			sourceTree = "<group>";
 		};
@@ -4376,7 +4318,6 @@
 				10F023165780A9A2C4FFDDB35D469787 /* LMFeedNoResultView.swift */,
 				4B1D84E1ADAA6F54F4669B050F4351D7 /* LMFeedNotificationItem.swift */,
 			);
-			name = NotificationView;
 			path = NotificationView;
 			sourceTree = "<group>";
 		};
@@ -4434,7 +4375,6 @@
 				E533958C9725C7635A6D8A5ED58D4DF6 /* FIROptionsInternal.h */,
 				884B3CC43A88050EDCF4E76950008B52 /* Support Files */,
 			);
-			name = FirebaseInstallations;
 			path = FirebaseInstallations;
 			sourceTree = "<group>";
 		};
@@ -4457,7 +4397,6 @@
 				80B3BBF796A575190A89C297E0B544E4 /* PinPostRequest.swift */,
 				27A079763BCA71553AB902E2209435DB /* SavePostRequest.swift */,
 			);
-			name = Request;
 			path = Request;
 			sourceTree = "<group>";
 		};
@@ -4466,7 +4405,6 @@
 			children = (
 				3AE4158103D6A71E77229F9E32470462 /* GetFeedRoomRequest.swift */,
 			);
-			name = Request;
 			path = Request;
 			sourceTree = "<group>";
 		};
@@ -4510,7 +4448,6 @@
 				1937B4003132E6F928C5CA3852B0FDD8 /* AWSCognitoUtil.m */,
 				12CAA6A56C74AC3D5323FB3BBBE62443 /* Support Files */,
 			);
-			name = AWSCognito;
 			path = AWSCognito;
 			sourceTree = "<group>";
 		};
@@ -4536,7 +4473,6 @@
 				67DBE83D8DFCCE5E5404DA99CF515C4B /* Request */,
 				39B356082B92C58B4623CC8519EA1EDD /* Response */,
 			);
-			name = Comments;
 			path = Comments;
 			sourceTree = "<group>";
 		};
@@ -4622,7 +4558,6 @@
 				80BF150157B04D514B733A402CD4F29F /* Resources */,
 				CF845BAE749E80853EC79588F8509BE3 /* Support Files */,
 			);
-			name = Kingfisher;
 			path = Kingfisher;
 			sourceTree = "<group>";
 		};
@@ -4631,7 +4566,6 @@
 			children = (
 				8186E5386F05486796E6940B566CB9FD /* LMFeedCreatePostDocumentPreviewCell.swift */,
 			);
-			name = DocumentPreviewTableCell;
 			path = DocumentPreviewTableCell;
 			sourceTree = "<group>";
 		};
@@ -4641,7 +4575,6 @@
 				D11494540D982768E01A048D2E526C4B /* BrandingRequest.swift */,
 				992B9BBDA150B220E7A10171C980D4F5 /* BrandingResponse.swift */,
 			);
-			name = Branding;
 			path = Branding;
 			sourceTree = "<group>";
 		};
@@ -4668,7 +4601,6 @@
 				E92705BB0D1CE55864086865EDC27FC1 /* Post.swift */,
 				286C0082A802D79D8D4FC1C353DD9531 /* PostWidget.swift */,
 			);
-			name = Response;
 			path = Response;
 			sourceTree = "<group>";
 		};
@@ -4687,7 +4619,6 @@
 				3A7DA4526479F38C9FA48EE2971E8555 /* LMFeedEditPostScreen.swift */,
 				9E917FA98C09DF787AD99A049F0BA546 /* LMFeedEditPostViewModel.swift */,
 			);
-			name = EditPost;
 			path = EditPost;
 			sourceTree = "<group>";
 		};
@@ -4765,7 +4696,6 @@
 				A29FAB3CFF45C7043E7F41EFE604DD74 /* Resources */,
 				5B752E13E13774001175BED00C7E3C14 /* Support Files */,
 			);
-			name = BSImagePicker;
 			path = BSImagePicker;
 			sourceTree = "<group>";
 		};
@@ -4807,7 +4737,6 @@
 				4A0A62BE107873A4870FF3158F8CF720 /* AWSS3TransferUtilityTasks.m */,
 				7600D44021BFE27BC1A3FE4A19B6F3E3 /* Support Files */,
 			);
-			name = AWSS3;
 			path = AWSS3;
 			sourceTree = "<group>";
 		};
@@ -4827,7 +4756,6 @@
 				C1ED7F5EDD820C8F2F032B016C680D7A /* LMFeedCreatePollScreen.swift */,
 				0ADEDE5C4422079049F5EBE5361445AC /* LMFeedCreatePollViewModel.swift */,
 			);
-			name = Poll;
 			path = Poll;
 			sourceTree = "<group>";
 		};
@@ -4837,7 +4765,6 @@
 				81B1E5C39D535FD7C7D8481C7B68892B /* Request */,
 				9052B1ED45FD1BF1F87EAC5954D893B7 /* Response */,
 			);
-			name = UniversalFeed;
 			path = UniversalFeed;
 			sourceTree = "<group>";
 		};
@@ -4847,7 +4774,6 @@
 				994F3372563B7D0929BB853BB058FAAD /* ReplyCommentRequest.swift */,
 				49DAD722D9A2562485E5A18BB5C89FBE /* ReplyCommentResponse.swift */,
 			);
-			name = ReplyOnComment;
 			path = ReplyOnComment;
 			sourceTree = "<group>";
 		};
@@ -4858,7 +4784,6 @@
 				8947325B5DEF2F049DBCF0AAB21D5F37 /* LMFeedLikeListScreen.swift */,
 				C7B41C5F2411E3851572F19CD217A5B4 /* LMFeedLikeViewModel.swift */,
 			);
-			name = LikeScreen;
 			path = LikeScreen;
 			sourceTree = "<group>";
 		};
@@ -4868,7 +4793,6 @@
 				2D74417E194EC10D745C0962B52FD885 /* GetFeedOfFeedRoomRequest.swift */,
 				A6D85919455821D39AF79C6FAC4A89E7 /* GetFeedOfFeedRoomResponse.swift */,
 			);
-			name = FeedGroup;
 			path = FeedGroup;
 			sourceTree = "<group>";
 		};
@@ -4877,7 +4801,6 @@
 			children = (
 				AE7450278CE5D3B6960AE454EB2DD52E /* Request */,
 			);
-			name = FeedRoom;
 			path = FeedRoom;
 			sourceTree = "<group>";
 		};
@@ -4887,7 +4810,6 @@
 				C97D88D5495BA25FDD8CA379E07EE425 /* LMFeedTopicView.swift */,
 				43FB25FFC77A6B69B971EC0678779B2D /* CollectionCells */,
 			);
-			name = DisplayScreen;
 			path = DisplayScreen;
 			sourceTree = "<group>";
 		};
@@ -4899,7 +4821,6 @@
 				B6D5ED5E2FF87DAA2837F25D0F1394D3 /* InitiateUserResponse.swift */,
 				B927334489E1E8ACD27D8200BC21A25B /* User.swift */,
 			);
-			name = InitiateUser;
 			path = InitiateUser;
 			sourceTree = "<group>";
 		};
@@ -4924,7 +4845,6 @@
 				2DCD177CECC60B907D75C6DCEA76DF1D /* GetMemberStateResponse.swift */,
 				6B7356BCEB81FCE101E9DCE31A2BFE35 /* MemberRight.swift */,
 			);
-			name = Response;
 			path = Response;
 			sourceTree = "<group>";
 		};
@@ -4933,8 +4853,24 @@
 			children = (
 				AC1DF7AB4500243A865E60CC52CD6A0E /* LMResponse.swift */,
 			);
-			name = Response;
 			path = Response;
+			sourceTree = "<group>";
+		};
+		E5FCD96C2C19B70E004A2B8C /* SubmitPollVote */ = {
+			isa = PBXGroup;
+			children = (
+				E5FCD96D2C19B733004A2B8C /* SubmitPollVoteRequest.swift */,
+			);
+			path = SubmitPollVote;
+			sourceTree = "<group>";
+		};
+		E5FCD96F2C19C69A004A2B8C /* AddPollOption */ = {
+			isa = PBXGroup;
+			children = (
+				E5FCD9702C19CB9B004A2B8C /* AddPollOptionRequest.swift */,
+				E5FCD9722C19DD2F004A2B8C /* AddPollOptionResponse.swift */,
+			);
+			path = AddPollOption;
 			sourceTree = "<group>";
 		};
 		E6EFB671AC3EAE821FB9EB89AEC8EF2C /* Request */ = {
@@ -4943,7 +4879,6 @@
 				F2518C680B772D79B37E32429C73C12E /* GetNotificationFeedRequest.swift */,
 				8FBC50403F84BC2FE63B38988B439CB8 /* MarkReadNotificationRequest.swift */,
 			);
-			name = Request;
 			path = Request;
 			sourceTree = "<group>";
 		};
@@ -4955,7 +4890,6 @@
 				BEB04C5C838A1E2F45C9557F612A9C6C /* DocumentPreviewTableCell */,
 				99BCA73600D63F2F2736D01C224EB740 /* HeaderView */,
 			);
-			name = CreatePostWidgets;
 			path = CreatePostWidgets;
 			sourceTree = "<group>";
 		};
@@ -4964,7 +4898,6 @@
 			children = (
 				3E8D42504EC6E2A056A807C853386B6B /* LMFeedTopicSelectionDataModel.swift */,
 			);
-			name = ViewDataModel;
 			path = ViewDataModel;
 			sourceTree = "<group>";
 		};
@@ -4973,7 +4906,6 @@
 			children = (
 				2B2868C54C916E309213DC36591752A4 /* LMFeedAddMediaView.swift */,
 			);
-			name = AddMediaView;
 			path = AddMediaView;
 			sourceTree = "<group>";
 		};
@@ -4998,7 +4930,6 @@
 				81508546E27D4DB7C97832CDF7779243 /* LMFeedPostFooterView.swift */,
 				0FEF8DDAE8847A34C8A61DFB99BB8CA2 /* LMFeedPostHeaderView.swift */,
 			);
-			name = LMFeedPostHeaderFooter;
 			path = LMFeedPostHeaderFooter;
 			sourceTree = "<group>";
 		};
@@ -5018,7 +4949,6 @@
 				81DF37922523B552D1C484825061FBBF /* LMFeedPostDetailFooterView.swift */,
 				1714244A573343B55EE4E7065439C699 /* LMFeedPostDetailHeaderView.swift */,
 			);
-			name = PostHeaderFooter;
 			path = PostHeaderFooter;
 			sourceTree = "<group>";
 		};
@@ -5112,7 +5042,6 @@
 				70CC98134706388867CAB8CB9BC7C6AB /* GoogleDataTransport.h */,
 				B8D7CE8B34B817076BA92EC63DE6866B /* Support Files */,
 			);
-			name = GoogleDataTransport;
 			path = GoogleDataTransport;
 			sourceTree = "<group>";
 		};
@@ -5148,7 +5077,6 @@
 				73B20D49A329F1C53DC7DE10DB678D56 /* NotificationActivity.swift */,
 				BC59583E1ED4B6BD6E0F7893F2DC329B /* NotificationActivityEntity.swift */,
 			);
-			name = Response;
 			path = Response;
 			sourceTree = "<group>";
 		};
@@ -5157,7 +5085,6 @@
 			children = (
 				F69A8930387A271FFC41AE191331C8D0 /* ReportRequest.swift */,
 			);
-			name = Report;
 			path = Report;
 			sourceTree = "<group>";
 		};
@@ -5166,7 +5093,6 @@
 			children = (
 				0A3E31FA2B8412C83ED31B0755028315 /* LMFeedAddMediaPreview.swift */,
 			);
-			name = AddMediaPreview;
 			path = AddMediaPreview;
 			sourceTree = "<group>";
 		};
@@ -5202,7 +5128,6 @@
 				AE0B565CDD53BA0346EEE4FF5861BD00 /* Request */,
 				C7DA6DCEC4C7FD239CEBED6BBA81E314 /* Response */,
 			);
-			name = Post;
 			path = Post;
 			sourceTree = "<group>";
 		};
@@ -6795,6 +6720,7 @@
 				00CB8DF6FAE20771C5286F93B084518D /* AttachmentMeta.swift in Sources */,
 				A1CD3FF806BD132FFDCC1347820B18DF /* BrandingRequest.swift in Sources */,
 				2A2973013E343972F1582EF24F683D6A /* BrandingResponse.swift in Sources */,
+				E5FCD9732C19DD2F004A2B8C /* AddPollOptionResponse.swift in Sources */,
 				48DBDAEDD4F72981738EDF599E8E2C90 /* BuildManager.swift in Sources */,
 				EDDDD394C28F4FBAF407D5A909D211D3 /* Comment.swift in Sources */,
 				3308ED1F505BF570D3F8B95E0421B67C /* Community.swift in Sources */,
@@ -6876,6 +6802,7 @@
 				25B142C8AFF206E6D13C9D3343B1D35C /* RegisterDeviceRequest.swift in Sources */,
 				4A747F29765EF68E196731B5E5F64863 /* RegisterDeviceResponse.swift in Sources */,
 				90722E8D327413C59ECB2B9D94B7D70C /* ReplyCommentRequest.swift in Sources */,
+				E5FCD96E2C19B733004A2B8C /* SubmitPollVoteRequest.swift in Sources */,
 				193DC0640E46B07359B0233AA078B8F1 /* ReplyCommentResponse.swift in Sources */,
 				7490E1A0486E6736D2F7D07E7D1D5D1A /* ReportRequest.swift in Sources */,
 				A870023A3153751CAEF45025F3AC57E5 /* SavePostRequest.swift in Sources */,
@@ -6883,6 +6810,7 @@
 				10DA46A0904FABC0962A201081AD3A37 /* SearchMembersResponse.swift in Sources */,
 				09798722AE8B87B25D9795966818A7CE /* ServiceConfiguration.swift in Sources */,
 				B2BC6B9D5C24FDF46296D7996C3A70F3 /* ServiceRequest.swift in Sources */,
+				E5FCD9712C19CB9B004A2B8C /* AddPollOptionRequest.swift in Sources */,
 				1FB0324ABDE07AE61358690EC6CF852A /* String+Extension.swift in Sources */,
 				A493E1CF202D08F7F8032CBBE01A5D19 /* TopicFeedRequest.swift in Sources */,
 				4BB9AA1BE19973949C1556FDD63C28CA /* TopicFeedResponse.swift in Sources */,
