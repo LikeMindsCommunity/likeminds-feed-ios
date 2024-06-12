@@ -198,9 +198,16 @@ final public class LMFeedCreatePollViewModel {
             return
         }
         
-        let filteredOptions = options.compactMap { option in
-            let trimmedText = option?.trimmingCharacters(in: .whitespacesAndNewlines)
-            return trimmedText?.isEmpty != false ? nil : trimmedText
+        var filteredOptions: [String] = []
+        
+        for (idx, option) in options.enumerated() {
+            if let trimmedText = option?.trimmingCharacters(in: .whitespacesAndNewlines),
+               !trimmedText.isEmpty {
+                filteredOptions.append(trimmedText)
+            } else {
+                delegate?.showError(with: "Option \(idx + 1) cannot be empty", isPopVC: false)
+                return
+            }
         }
         
         guard filteredOptions.count > 1 else {
