@@ -16,6 +16,24 @@ jobs:
               with:
                 fetch-depth: 0
             
+            - name: Check for version changes
+              run: |
+                # Fetch all tags from the remote repository
+                git fetch --tags
+                
+                # Get the previous version from the last release tag
+                export previous_version=$(git describe --tags --abbrev=0)
+                
+                # Get the current version from package.json
+                export current_version=$(grep 'spec.version' LikeMindsFeedCore.podspec | awk -F '"' '/spec.version/{print $2}' | tr -d '\n' | sed 's/[^0-9.]//g; s/\..$//')
+                
+                if [[ "$previous_version" != "v$current_version" ]]; then
+                    echo "Version has changed from $previous_version to v$current_version."
+                else
+                    echo "Version has not changed."
+                    exit 1
+                fi
+            
             - name: Push Git Tag
               run: |
                 # Git login
