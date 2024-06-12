@@ -14,7 +14,7 @@ public protocol LMFeedCreatePostViewModelProtocol: LMBaseViewControllerProtocol 
     func showMedia(documents: [LMFeedDocumentPreview.ContentModel], isShowAddMore: Bool, isShowBottomTab: Bool)
     func showMedia(media: [LMFeedMediaProtocol], isShowAddMore: Bool, isShowBottomTab: Bool)
     func resetMediaView()
-    func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int)
+    func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int, selectedAssets: [PHAsset])
     func updateTopicView(with data: LMFeedTopicView.ContentModel)
     func navigateToTopicView(with topics: [LMFeedTopicDataModel])
     func setupLinkPreview(with data: LMFeedLinkPreview.ContentModel?)
@@ -25,11 +25,13 @@ public final class LMFeedCreatePostViewModel {
         let url: URL
         let data: Data
         let mediaType: PostCreationAttachmentType
+        let asset: PHAsset?
         
-        public init(url: URL, data: Data, mediaType: PostCreationAttachmentType) {
+        public init(url: URL, data: Data, mediaType: PostCreationAttachmentType, asset: PHAsset? = nil) {
             self.url = url
             self.data = data
             self.mediaType = mediaType
+            self.asset = asset
         }
     }
     
@@ -90,12 +92,14 @@ public final class LMFeedCreatePostViewModel {
 
 // MARK: Assets Arena
 public extension LMFeedCreatePostViewModel {
-    func handleAssets(assets: [(PHAssetMediaType, URL, Data)]) {
+    func handleAssets(assets: [(PHAsset, URL, Data)]) {
+        media.removeAll(keepingCapacity: true)
+        
         assets.forEach { asset in
-            if asset.0 == .image {
-                media.append(.init(url: asset.1, data: asset.2, mediaType: .image))
-            } else if asset.0 == .video {
-                media.append(.init(url: asset.1, data: asset.2, mediaType: .video))
+            if asset.0.mediaType == .image {
+                media.append(.init(url: asset.1, data: asset.2, mediaType: .image, asset: asset.0))
+            } else if asset.0.mediaType == .video {
+                media.append(.init(url: asset.1, data: asset.2, mediaType: .video, asset: asset.0))
             }
         }
         
@@ -108,6 +112,11 @@ public extension LMFeedCreatePostViewModel {
     }
     
     func handleAssets(assets: [URL]) {
+        if (assets.count + media.count) > maxMedia {
+            delegate?.showError(with: "You can select upto \(maxMedia) items", isPopVC: false)
+            return
+        }
+        
         assets.prefix(maxMedia - media.count).forEach { asset in
             if !media.contains(where: { $0.url == asset }),
                asset.startAccessingSecurityScopedResource(),
@@ -121,13 +130,17 @@ public extension LMFeedCreatePostViewModel {
     
     func updateCurrentSelection(to type: PostCreationAttachmentType) {
         currentMediaSelectionType = type
-        delegate?.openMediaPicker(type, isFirstPick: media.isEmpty, allowedNumber: maxMedia - media.count)
+        let selectedMedia = media.compactMap { $0.asset }
+        
+        delegate?.openMediaPicker(type, isFirstPick: media.isEmpty, allowedNumber: maxMedia, selectedAssets: selectedMedia)
     }
     
     func addMoreButtonClicked() {
         switch currentMediaSelectionType {
         case .image, .video, .document:
-            delegate?.openMediaPicker(currentMediaSelectionType, isFirstPick: media.isEmpty, allowedNumber: maxMedia - media.count)
+            let selectedMedia = media.compactMap { $0.asset }
+            
+            delegate?.openMediaPicker(currentMediaSelectionType, isFirstPick: media.isEmpty, allowedNumber: maxMedia, selectedAssets: selectedMedia)
         case .none:
             break
         }

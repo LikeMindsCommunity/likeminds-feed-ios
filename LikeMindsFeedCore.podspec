@@ -2,7 +2,7 @@ Pod::Spec.new do |spec|
   spec.name         = 'LikeMindsFeedCore'
   spec.summary      = 'LikeMinds Feed official iOS SDK'
   spec.homepage     = 'https://likeminds.community/'
-  spec.version      = '1.0.2'
+  spec.version      = '1.0.3'
   spec.license      = { :type => 'MIT', :file => 'LICENSE' }
   spec.authors      = { 'Devansh Mohata' => 'devansh.mohata@likeminds.community' }
   spec.source       = { :git => 'https://github.com/LikeMindsCommunity/likeminds-feed-ios.git', :tag => spec.version }
@@ -15,7 +15,7 @@ Pod::Spec.new do |spec|
   spec.dependency "AWSCore"
   spec.dependency "AWSCognito"
   spec.dependency "AWSS3"
-  spec.dependency 'BSImagePicker'
+  spec.dependency 'BSImagePicker', '~> 3.3.3'
   spec.dependency "FirebaseCore"
   spec.dependency "FirebaseMessaging"
   spec.dependency 'LikeMindsFeed'

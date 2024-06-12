@@ -5,7 +5,7 @@ PODS:
   - AWSCore (2.19.1)
   - AWSS3 (2.19.1):
     - AWSCore (= 2.19.1)
-  - BSImagePicker (3.3.1)
+  - BSImagePicker (3.3.3)
   - FirebaseCore (10.21.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.12)
@@ -101,7 +101,7 @@ SPEC CHECKSUMS:
   AWSCognito: f50de600804941d083af37a7568905f31a774727
   AWSCore: 55c154ae27efc5c98bdc30a0eeea5a35d10a2ab5
   AWSS3: 2272253b098d07803af8dd20ce6ce7302bcffb47
-  BSImagePicker: 0fe04b574d4d6b81093785d2af6c26227efc8428
+  BSImagePicker: 57900b323f951711608acaf97d52e9183530cb6d
   FirebaseCore: 74f647ad9739ea75112ce6c3b3b91f5488ce1122
   FirebaseCoreInternal: 43c1788eaeee9d1b97caaa751af567ce11010d00
   FirebaseInstallations: 390ea1d10a4d02b20c965cbfd527ee9b3b412acb
