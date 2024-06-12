@@ -38,8 +38,8 @@ open class LMFeedTopicEditIcon: LMCollectionViewCell {
         super.setupLayouts()
         
         contentView.pinSubView(subView: containerView)
-        editIcon.addConstraint(top: (containerView.topAnchor, 4),
-                               bottom: (containerView.bottomAnchor, -4),
+        editIcon.addConstraint(top: (containerView.topAnchor, 8),
+                               bottom: (containerView.bottomAnchor, -8),
                                leading: (containerView.leadingAnchor, 8),
                                trailing: (containerView.trailingAnchor, -8))
     }
