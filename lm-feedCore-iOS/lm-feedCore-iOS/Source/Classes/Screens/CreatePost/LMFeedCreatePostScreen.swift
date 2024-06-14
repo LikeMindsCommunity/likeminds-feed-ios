@@ -78,8 +78,8 @@ open class LMFeedCreatePostScreen: LMViewController {
         return view
     }()
     
-    open private(set) lazy var pollPreview: LMFeedDisplayPollView = {
-        let view = LMFeedDisplayPollView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var pollPreview: LMFeedCreateDisplayPollView = {
+        let view = LMFeedCreateDisplayPollView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
@@ -211,12 +211,6 @@ open class LMFeedCreatePostScreen: LMViewController {
         }
     }()
     
-//    public lazy var imagePicker: ImagePickerController = {
-//        let imagePicker = ImagePickerController(selectedAssets: [])
-//        imagePicker.settings.theme.selectionStyle = .numbered
-//        imagePicker.settings.selection.unselectOnReachingMax = false
-//        return imagePicker
-//    }()
     
     // MARK: setupViews
     open override func setupViews() {
@@ -577,7 +571,7 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
         }
     }
     
-    public func showPoll(poll: LMFeedDisplayPollView.ContentModel) {
+    public func showPoll(poll: LMFeedCreateDisplayPollView.ContentModel) {
         isPollFlow = true
         addMediaStack.isHidden = true
         pollPreview.configure(with: poll, delegate: self)

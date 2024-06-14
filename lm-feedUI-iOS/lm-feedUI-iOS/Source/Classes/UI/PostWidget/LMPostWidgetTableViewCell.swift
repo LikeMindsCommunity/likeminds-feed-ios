@@ -43,6 +43,7 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
     public var isShowMoreDocuments: Bool
     public var linkPreview: LMFeedLinkPreview.ContentModel?
     public var mediaData: [LMFeedMediaProtocol]
+    public var pollWidget: LMFeedDisplayPollView.ContentModel?
     
     public init(
         postType: LMFeedPostType,
@@ -56,6 +57,7 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
         documents: [LMFeedDocumentPreview.ContentModel],
         linkPreview: LMFeedLinkPreview.ContentModel?,
         mediaData: [LMFeedMediaProtocol],
+        pollWidget: LMFeedDisplayPollView.ContentModel?,
         isShowMore: Bool = true,
         isShowMoreDocuments: Bool = false
     ) {
@@ -72,6 +74,7 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
         self.isShowMoreDocuments = isShowMoreDocuments
         self.linkPreview = linkPreview
         self.mediaData = mediaData
+        self.pollWidget = pollWidget
     }
 }
 

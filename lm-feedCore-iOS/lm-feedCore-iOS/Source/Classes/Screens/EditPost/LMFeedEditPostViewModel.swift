@@ -14,7 +14,7 @@ public protocol LMFeedEditPostViewModelProtocol: LMBaseViewControllerProtocol {
     func setupDocumentPreview(with data: [LMFeedDocumentPreview.ContentModel])
     func setupLinkPreview(with data: LMFeedLinkPreview.ContentModel?)
     func setupMediaPreview(with mediaCells: [LMFeedMediaProtocol])
-    func setupPollPreview(with poll: LMFeedDisplayPollView.ContentModel)
+    func setupPollPreview(with poll: LMFeedCreateDisplayPollView.ContentModel)
     func setupTopicFeed(with data: LMFeedTopicView.ContentModel)
 }
 
@@ -218,7 +218,7 @@ extension LMFeedEditPostViewModel {
         isShowLinkPreview = false
     }
     
-    func convertToPollPreview(from poll: LMFeedPollDataModel) -> LMFeedDisplayPollView.ContentModel {
+    func convertToPollPreview(from poll: LMFeedPollDataModel) -> LMFeedCreateDisplayPollView.ContentModel {
         .init(
             question: poll.question,
             showEditIcon: false,

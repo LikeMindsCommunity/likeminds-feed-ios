@@ -1,5 +1,5 @@
 //
-//  LMFeedDisplayPollWidget.swift
+//  LMFeedDisplayCreatePollWidget.swift
 //  LikeMindsFeedUI
 //
 //  Created by Devansh Mohata on 09/06/24.
@@ -7,12 +7,12 @@
 
 import UIKit
 
-open class LMFeedDisplayPollWidget: LMView {
-    public struct ContentModel {
-        let option: String
-        let addedByUser: String?
+open class LMFeedDisplayCreatePollWidget: BaseDisplayPollWidget {
+    public struct ContentModel: BaseDisplayPollWidget.Content {
+        public var option: String
+        public var addedByUser: String?
         
-        public init(option: String, addedBy: String?) {
+        public init(option: String, addedBy: String? = nil) {
             self.option = option
             self.addedByUser = addedBy
         }
@@ -22,37 +22,6 @@ open class LMFeedDisplayPollWidget: LMView {
             return "Added by \(addedByUser)"
         }
     }
-    
-    
-    // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
-        return view
-    }()
-    
-    open private(set) lazy var stackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
-        stack.axis = .vertical
-        stack.alignment = .fill
-        stack.distribution = .fill
-        stack.spacing = 4
-        return stack
-    }()
-    
-    open private(set) lazy var optionLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.headingFont1
-        label.textColor = Appearance.shared.colors.gray51
-        return label
-    }()
-    
-    open private(set) lazy var addedByLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.subHeadingFont1
-        label.textColor = Appearance.shared.colors.blueGray.withAlphaComponent(0.7)
-        return label
-    }()
     
     
     // MARK: setupViews

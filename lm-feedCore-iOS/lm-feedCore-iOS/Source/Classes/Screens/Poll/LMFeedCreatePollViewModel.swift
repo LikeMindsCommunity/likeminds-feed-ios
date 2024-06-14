@@ -175,7 +175,8 @@ final public class LMFeedCreatePollViewModel {
     }
     
     public func openDatePicker() {
-        delegate?.presentDatePicker(with: pollExpiryDate ?? Date(), minimumDate: Date().addingTimeInterval(60 * 5))
+        let newDate = Date()
+        delegate?.presentDatePicker(with: pollExpiryDate ?? newDate, minimumDate: newDate)
     }
     
     public func metaValueChanged(for id: Int) {
@@ -225,6 +226,10 @@ final public class LMFeedCreatePollViewModel {
             return
         }
         
+        guard pollExpiryDate > Date() else {
+            delegate?.showError(with: "Expiry date cannot be in past", isPopVC: false)
+            return
+        }
         
         let pollDetails: LMFeedCreatePollDataModel = .init(
             pollQuestion: question,

@@ -115,8 +115,8 @@ open class LMFeedEditPostScreen: LMViewController {
         return view
     }()
     
-    open private(set) lazy var pollPreview: LMFeedDisplayPollView = {
-        let view = LMFeedDisplayPollView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var pollPreview: LMFeedCreateDisplayPollView = {
+        let view = LMFeedCreateDisplayPollView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
@@ -384,7 +384,7 @@ extension LMFeedEditPostScreen: LMFeedEditPostViewModelProtocol {
         topicView.configure(with: data)
     }
     
-    public func setupPollPreview(with poll: LMFeedDisplayPollView.ContentModel) {
+    public func setupPollPreview(with poll: LMFeedCreateDisplayPollView.ContentModel) {
         pollPreview.configure(with: poll, delegate: nil)
         pollPreview.isHidden = false
     }

@@ -12,17 +12,17 @@ public protocol LMFeedDisplayPollViewProtocol: AnyObject {
     func onTapEditButton()
 }
 
-open class LMFeedDisplayPollView: LMView {
-    public struct ContentModel {
-        public let question: String
-        public let showEditIcon: Bool
-        public let showCrossIcon: Bool
-        public let expiryDate: Date
-        public let optionState: String
-        public let optionCount: Int
-        public let options: [LMFeedDisplayPollWidget.ContentModel]
+open class LMFeedCreateDisplayPollView: BaseDisplayPollView {
+    public struct ContentModel: BaseDisplayPollView.Content {
+        public var question: String
+        public var showEditIcon: Bool
+        public var showCrossIcon: Bool
+        public var expiryDate: Date
+        public var optionState: String
+        public var optionCount: Int
+        public var options: [LMFeedDisplayCreatePollWidget.ContentModel]
         
-        public init(question: String, showEditIcon: Bool, showCrossIcon: Bool, expiryDate: Date, optionState: String, optionCount: Int, options: [LMFeedDisplayPollWidget.ContentModel]) {
+        public init(question: String, showEditIcon: Bool, showCrossIcon: Bool, expiryDate: Date, optionState: String, optionCount: Int, options: [LMFeedDisplayCreatePollWidget.ContentModel]) {
             self.question = question
             self.showEditIcon = showEditIcon
             self.showCrossIcon = showCrossIcon
@@ -31,32 +31,9 @@ open class LMFeedDisplayPollView: LMView {
             self.optionCount = optionCount
             self.options = options
         }
-        
-        public var expiryDateFormatted: String {
-            if expiryDate <= Date() {
-                return "Poll Ended"
-            }
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd MMM yyyy hh:mm a"
-
-            let dateString = dateFormatter.string(from: expiryDate)
-            
-            return "Expires on \(dateString)"
-        }
-        
-        public var optionStringFormatted: String {
-            "*Select \(optionState.lowercased()) \(optionCount) \(optionCount == 1 ? "option" : "options")"
-        }
     }
     
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
-        return view
-    }()
-    
     open private(set) lazy var questionStackView: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .horizontal
@@ -66,19 +43,13 @@ open class LMFeedDisplayPollView: LMView {
         return stack
     }()
     
-    open private(set) lazy var questionTitle: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.numberOfLines = 0
-        label.textColor = Appearance.shared.colors.gray51
-        label.font = Appearance.shared.fonts.headingFont1
-        return label
-    }()
-    
     open private(set) lazy var crossButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(Constants.shared.images.crossIcon, for: .normal)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(font: Appearance.shared.fonts.headingFont1), forImageIn: .normal)
+        button.contentHorizontalAlignment = .fill
+        button.contentVerticalAlignment = .fill
         button.tintColor = Appearance.shared.colors.gray51
         return button
     }()
@@ -88,33 +59,10 @@ open class LMFeedDisplayPollView: LMView {
         button.setTitle(nil, for: .normal)
         button.setImage(Constants.shared.images.pencilIcon, for: .normal)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(font: Appearance.shared.fonts.headingFont1), forImageIn: .normal)
+        button.contentHorizontalAlignment = .fill
+        button.contentVerticalAlignment = .fill
         button.tintColor = Appearance.shared.colors.gray51
         return button
-    }()
-    
-    open private(set) lazy var optionSelectCountLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.textColor = Appearance.shared.colors.gray155
-        label.font = Appearance.shared.fonts.buttonFont1
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    open private(set) lazy var optionStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
-        stack.axis = .vertical
-        stack.alignment = .fill
-        stack.distribution = .fillEqually
-        stack.spacing = 16
-        return stack
-    }()
-    
-    open private(set) lazy var expiryDateLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.textColor = Appearance.shared.colors.gray102
-        label.font = Appearance.shared.fonts.subHeadingFont1
-        label.numberOfLines = 0
-        return label
     }()
     
     
@@ -128,8 +76,9 @@ open class LMFeedDisplayPollView: LMView {
         
         addSubview(containerView)
         
-        containerView.addSubview(questionStackView)
-        containerView.addSubview(optionSelectCountLabel)
+        containerView.addSubview(questionContainerStackView)
+        questionContainerStackView.addArrangedSubview(questionStackView)
+        questionContainerStackView.addArrangedSubview(optionSelectCountLabel)
         containerView.addSubview(optionStackView)
         containerView.addSubview(expiryDateLabel)
         
@@ -145,7 +94,7 @@ open class LMFeedDisplayPollView: LMView {
         
         pinSubView(subView: containerView)
         
-        questionStackView.addConstraint(top: (containerView.topAnchor, 16),
+        questionContainerStackView.addConstraint(top: (containerView.topAnchor, 16),
                                         leading: (containerView.leadingAnchor, 16),
                                         trailing: (containerView.trailingAnchor, -16))
         
@@ -218,11 +167,12 @@ open class LMFeedDisplayPollView: LMView {
         optionStackView.removeAllArrangedSubviews()
         
         data.options.forEach { option in
-            let optionView = LMFeedDisplayPollWidget().translatesAutoresizingMaskIntoConstraints()
+            let optionView = LMFeedDisplayCreatePollWidget().translatesAutoresizingMaskIntoConstraints()
             optionView.configure(with: option)
             optionStackView.addArrangedSubview(optionView)
         }
         
         expiryDateLabel.text = data.expiryDateFormatted
+        optionSelectCountLabel.isHidden = !data.isShowOption
     }
 }

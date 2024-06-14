@@ -13,7 +13,7 @@ import PDFKit
 public protocol LMFeedCreatePostViewModelProtocol: LMBaseViewControllerProtocol { 
     func showMedia(documents: [LMFeedDocumentPreview.ContentModel], isShowAddMore: Bool, isShowBottomTab: Bool)
     func showMedia(media: [LMFeedMediaProtocol], isShowAddMore: Bool, isShowBottomTab: Bool)
-    func showPoll(poll: LMFeedDisplayPollView.ContentModel)
+    func showPoll(poll: LMFeedCreateDisplayPollView.ContentModel)
     func resetMediaView()
     func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int, selectedAssets: [PHAsset])
     func updateTopicView(with data: LMFeedTopicView.ContentModel)
@@ -297,7 +297,7 @@ extension LMFeedCreatePostViewModel {
         delegate?.showPoll(poll: convertToPollPreview(from: pollDetails))
     }
     
-    func convertToPollPreview(from poll: LMFeedCreatePollDataModel) -> LMFeedDisplayPollView.ContentModel {
+    func convertToPollPreview(from poll: LMFeedCreatePollDataModel) -> LMFeedCreateDisplayPollView.ContentModel {
         .init(
             question: poll.pollQuestion,
             showEditIcon: true,
@@ -305,10 +305,7 @@ extension LMFeedCreatePostViewModel {
             expiryDate: poll.expiryTime,
             optionState: poll.selectState.description,
             optionCount: poll.selectStateCount,
-            options: poll.pollOptions.map {
-                .init(option: $0,
-                      addedBy: poll.allowAddOptions ? LocalPreferences.userObj?.name ?? "" : nil)
-            }
+            options: poll.pollOptions.map { .init(option: $0) }
         )
     }
     

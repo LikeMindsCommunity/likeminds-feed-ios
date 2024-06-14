@@ -14,6 +14,7 @@ public struct LMFeedConvertToFeedPost {
         let documents = convertToDocument(from: post.documentAttachment)
         let media = convertToMediaProtocol(from: post.imageVideoAttachment)
         var linkPreview: LMFeedLinkPreview.ContentModel?
+        let pollPreview = convertToPollModel(from: post)
         
         if let link = post.linkAttachment {
             linkPreview = .init(linkPreview: link.previewImage, title: link.title, description: link.description, url: link.url)
@@ -27,11 +28,16 @@ public struct LMFeedConvertToFeedPost {
             postType = .documents
         } else if linkPreview != nil {
             postType = .link
+        } else if pollPreview != nil {
+            postType = .poll
+        } else if !post.postContent.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            postType = .text
         } else {
-            // Custom Widgets and Poll
+            postType = .other
         }
         
-        return .init(
+        
+        let transformedData = LMFeedPostContentModel(
             postType: postType,
             postID: post.postId,
             userUUID: post.userDetails.userUUID,
@@ -42,8 +48,11 @@ public struct LMFeedConvertToFeedPost {
             totalCommentCount: post.commentCount,
             documents: documents,
             linkPreview: linkPreview,
-            mediaData: media
+            mediaData: media,
+            pollWidget: pollPreview
         )
+        
+        return transformedData
     }
     
     private static func convertToTopicViewData(from topics: [LMFeedTopicDataModel]) -> LMFeedTopicView.ContentModel {
@@ -122,5 +131,39 @@ public struct LMFeedConvertToFeedPost {
     
     public static func convertToUserModel(from user: LMFeedUserDataModel) -> LMFeedUserModel {
         .init(userName: user.userName, userUUID: user.userUUID, userProfileImage: user.userProfileImage, customTitle: user.customTitle)
+    }
+    
+    public static func convertToPollModel(from data: LMFeedPostDataModel) -> LMFeedDisplayPollView.ContentModel? {
+        guard let pollAttachment = data.pollAttachment else { return nil }
+        
+        let postID = pollAttachment.postID
+        let pollID = pollAttachment.id
+        
+        let options: [LMFeedDisplayPollWidget.ContentModel] = pollAttachment.options.map({
+            .init(
+                pollId: pollID,
+                optionId: $0.id,
+                option: $0.option,
+                addedBy: $0.addedBy.userName,
+                voteCount: $0.voteCount,
+                votePercentage: $0.percentage,
+                isSelected: $0.isSelected,
+                showVoteCount: false
+            )
+        })
+        
+        return .init(
+            postID: postID,
+            pollID: pollID,
+            question: pollAttachment.question,
+            answerText: pollAttachment.pollDisplayText,
+            options: options,
+            expiryDate: Date(timeIntervalSince1970: Double(pollAttachment.expiryTime)),
+            optionState: pollAttachment.pollSelectType.description,
+            optionCount: pollAttachment.pollSelectCount,
+            isAnonymousPoll: pollAttachment.isAnonymous,
+            isInstantPoll: pollAttachment.isInstantPoll,
+            allowAddOptions: pollAttachment.allowAddOptions
+        )
     }
 }

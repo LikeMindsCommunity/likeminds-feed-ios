@@ -35,6 +35,7 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
         table.register(LMUIComponents.shared.postCell)
         table.register(LMUIComponents.shared.documentCell)
         table.register(LMUIComponents.shared.linkCell)
+        table.register(LMFeedPostPollCell.self)
         table.registerHeaderFooter(LMUIComponents.shared.headerView)
         table.registerHeaderFooter(LMUIComponents.shared.footerView)
         return table
@@ -208,6 +209,10 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
             print(error.localizedDescription)
         }
     }
+    
+    open func handleCustomWidget(with data: LMFeedPostContentModel) -> LMTableViewCell {
+        return LMTableViewCell()
+    }
 }
 
 // MARK: UITableView
@@ -218,7 +223,6 @@ extension LMFeedPostListScreen: UITableViewDataSource, UITableViewDelegate, UITa
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1 }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         switch data[indexPath.section].postType {
         case .text, .media:
             if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell, for: indexPath) {
@@ -235,8 +239,13 @@ extension LMFeedPostListScreen: UITableViewDataSource, UITableViewDelegate, UITa
                 cell.configure(with: data[indexPath.section], delegate: self)
                 return cell
             }
+        case .poll:
+            if let cell = tableView.dequeueReusableCell(LMFeedPostPollCell.self) {
+                cell.configure(with: data[indexPath.section])
+                return cell
+            }
         default:
-            break
+            return handleCustomWidget(with: data[indexPath.section])
         }
         
         return UITableViewCell()
@@ -304,7 +313,7 @@ extension LMFeedPostListScreen: UITableViewDataSource, UITableViewDelegate, UITa
         scrollingFinished()
     }
 
-    func scrollingFinished() {
+    open func scrollingFinished() {
         for cell in postList.visibleCells {
             if type(of: cell) == LMFeedPostMediaCell.self,
                postList.percentVisibility(of: cell) >= 0.8 {

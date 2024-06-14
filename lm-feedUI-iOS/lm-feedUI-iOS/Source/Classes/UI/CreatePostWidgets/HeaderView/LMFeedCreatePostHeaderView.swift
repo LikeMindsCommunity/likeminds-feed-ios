@@ -13,12 +13,10 @@ open class LMFeedCreatePostHeaderView: LMView {
     public struct ContentModel {
         let profileImage: String?
         let username: String
-        let isEditFlow: Bool
         
-        public init(profileImage: String?, username: String, isEditFlow: Bool = false) {
+        public init(profileImage: String?, username: String) {
             self.profileImage = profileImage
             self.username = username
-            self.isEditFlow = isEditFlow
         }
     }
     
@@ -59,20 +57,13 @@ open class LMFeedCreatePostHeaderView: LMView {
         return label
     }()
     
-    open private(set) lazy var editAuthorButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
-        button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.pencilIcon, for: .normal)
-        return button
-    }()
-    
     
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
         addSubview(containerView)
         containerView.addSubview(stackView)
-        [imageContainerView, userNameLabel, editAuthorButton].forEach { subView in
+        [imageContainerView, userNameLabel].forEach { subView in
             stackView.addArrangedSubview(subView)
         }
         
@@ -103,6 +94,5 @@ open class LMFeedCreatePostHeaderView: LMView {
     open func configure(with data: ContentModel) {
         userProfileImage.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.username))
         userNameLabel.text = data.username
-        editAuthorButton.isHidden = !data.isEditFlow
     }
 }

@@ -448,7 +448,7 @@
 		704442CA7266582BEA1D371B4F92B8C5 /* ZoomAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AD6F66F5F87D01500AC0676220AB40 /* ZoomAnimator.swift */; };
 		70460A3AB5F189ED31A0C142C6BB31E7 /* ImagePickerControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64473C4494F7839E878AB975CEA519A8 /* ImagePickerControllerDelegate.swift */; };
 		70CA1460D21E2FB23CA66EC0AC3923D8 /* ZoomInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5921D39A1A89DB7D488DEDD6C70BDCBC /* ZoomInteractionController.swift */; };
-		70F0A0B0B507388BD4CFF013EA3083B7 /* LMFeedDisplayPollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED48F4A2F01CFE9AAAA0A506418F70D /* LMFeedDisplayPollView.swift */; };
+		70F0A0B0B507388BD4CFF013EA3083B7 /* LMFeedCreateDisplayPollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED48F4A2F01CFE9AAAA0A506418F70D /* LMFeedCreateDisplayPollView.swift */; };
 		711FC88C4BDF18C01D59E82328C4EA25 /* AWSXMLWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = B797F3CD8A462176DE1642B3B7E8D1D7 /* AWSXMLWriter.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		714D5F4F9165ED6BF3CFA9FEA7DB9FF5 /* Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB7A8A549801A079F15B326FEEC64D2 /* Placeholder.swift */; };
 		7152325DB24C8A3A82F14654F24535E8 /* DecodeUrlResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500B6293051D67FF4B5A11F20790625 /* DecodeUrlResponse.swift */; };
@@ -902,7 +902,7 @@
 		E24F65300E3E0A28B8E37D2DE9105632 /* AWSCognitoIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 06927645825A7973F274AECC2D292B28 /* AWSCognitoIdentity.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E25C73A133C346E9FFDF418A38659A75 /* NSDictionary+FIRMessaging.m in Sources */ = {isa = PBXBuildFile; fileRef = A952C5D616147A158CDA1E490AE4814B /* NSDictionary+FIRMessaging.m */; };
 		E2EFDFEDEEEE11D665EA64FC86E758A6 /* AWSCognitoRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 430CDC516BBA89A1F77CB6D5F12E9455 /* AWSCognitoRecord.m */; };
-		E2F3837A23360B2F7D5C6D6690CC9893 /* LMFeedDisplayPollWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1796B248103000ED51A8D1748E463B67 /* LMFeedDisplayPollWidget.swift */; };
+		E2F3837A23360B2F7D5C6D6690CC9893 /* LMFeedDisplayCreatePollWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1796B248103000ED51A8D1748E463B67 /* LMFeedDisplayCreatePollWidget.swift */; };
 		E3376AE93E1055936B0EAFEAA81570B8 /* AWSTimestampSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD45A43EC44D0699DA3296EF2F36260 /* AWSTimestampSerialization.m */; };
 		E33A26A1DF44421BC5A4F1B8D6F87989 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A787C24D3F11D1885D40B7B60191377F /* SystemConfiguration.framework */; };
 		E3E1DB9660BC3E9940E67F874DDCDA29 /* Pods-lm-feed-sample-app-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B0A664D110C5A64895893BCCF6DBD1F8 /* Pods-lm-feed-sample-app-dummy.m */; };
@@ -917,10 +917,15 @@
 		E5635DECB22362CA17521F7B6A752BB4 /* AWSS3Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4A4C4ACDA3F5546EF645AAACD4FC93 /* AWSS3Resources.m */; };
 		E5995083971DB1662CEC48478380D4C0 /* AWSEXTScope.h in Headers */ = {isa = PBXBuildFile; fileRef = CD6B7550D024E2F96A0EA3F053D97C49 /* AWSEXTScope.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		E59D3ED6F0517D895F847226C9185B6B /* AWSCognitoIdentityService.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BC93BC5D3C1DDB48CCEC9F9C2B4660 /* AWSCognitoIdentityService.m */; };
+		E59FF9132C1B147900555BB5 /* BaseDisplayPollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59FF9122C1B147900555BB5 /* BaseDisplayPollView.swift */; };
+		E59FF9152C1B323400555BB5 /* LMFeedDisplayPollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59FF9142C1B323400555BB5 /* LMFeedDisplayPollView.swift */; };
+		E59FF9182C1C21C700555BB5 /* LMFeedPostPollCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59FF9172C1C21C700555BB5 /* LMFeedPostPollCell.swift */; };
 		E5BDB371D64BD032B9442949622153EB /* NSArray+AWSMTLManipulationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8778C6587AF4B03B250405F3072F6574 /* NSArray+AWSMTLManipulationAdditions.m */; };
 		E5FCD96E2C19B733004A2B8C /* SubmitPollVoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FCD96D2C19B733004A2B8C /* SubmitPollVoteRequest.swift */; };
 		E5FCD9712C19CB9B004A2B8C /* AddPollOptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FCD9702C19CB9B004A2B8C /* AddPollOptionRequest.swift */; };
 		E5FCD9732C19DD2F004A2B8C /* AddPollOptionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FCD9722C19DD2F004A2B8C /* AddPollOptionResponse.swift */; };
+		E5FCD9762C1AFB4C004A2B8C /* BaseDisplayPollWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FCD9752C1AFB4C004A2B8C /* BaseDisplayPollWidget.swift */; };
+		E5FCD97A2C1AFC57004A2B8C /* LMFeedDisplayPollWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FCD9792C1AFC57004A2B8C /* LMFeedDisplayPollWidget.swift */; };
 		E616E73E3C49BCF1F6AB5E2D796D95DE /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5683DDD7EE56E1D58903C42B338785CD /* CameraPreviewView.swift */; };
 		E6251F02EE12804D1B66AE32E716E664 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE990501182F08535E0904379044CB1B /* SessionDelegate.swift */; };
 		E6266A01725496C223227B277E0BC4F2 /* AWSService.h in Headers */ = {isa = PBXBuildFile; fileRef = C8761265B94E5E630C1B85B73F248E59 /* AWSService.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1478,7 +1483,7 @@
 		1714244A573343B55EE4E7065439C699 /* LMFeedPostDetailHeaderView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailHeaderView.swift; sourceTree = "<group>"; };
 		173A6D8B1F6A9DC8E48EBBAF299C20C8 /* AWSCognitoIdentityModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCognitoIdentityModel.h; path = AWSCore/CognitoIdentity/AWSCognitoIdentityModel.h; sourceTree = "<group>"; };
 		176A72706F5A29A2BFC524B1A3F33A45 /* AWSS3RequestRetryHandler.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSS3RequestRetryHandler.m; path = AWSS3/AWSS3RequestRetryHandler.m; sourceTree = "<group>"; };
-		1796B248103000ED51A8D1748E463B67 /* LMFeedDisplayPollWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedDisplayPollWidget.swift; sourceTree = "<group>"; };
+		1796B248103000ED51A8D1748E463B67 /* LMFeedDisplayCreatePollWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedDisplayCreatePollWidget.swift; sourceTree = "<group>"; };
 		17A83B6A966C98BB17B5243596CDE6CF /* FIRMessagingPubSub.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRMessagingPubSub.m; path = FirebaseMessaging/Sources/FIRMessagingPubSub.m; sourceTree = "<group>"; };
 		181C86E9E2A7DF174D277A1B4CFC5EBF /* LMFeedTimePicker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedTimePicker.swift; sourceTree = "<group>"; };
 		1828DFE54D39210B37EA924A4F89167B /* FIRMessagingCheckinService.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessagingCheckinService.h; path = FirebaseMessaging/Sources/Token/FIRMessagingCheckinService.h; sourceTree = "<group>"; };
@@ -1709,7 +1714,7 @@
 		4E80BBD9B5E29AC342F6DDD500FFFF37 /* BSImagePicker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = BSImagePicker.debug.xcconfig; sourceTree = "<group>"; };
 		4E8B1EF152A1EE9219C398332DA7B5CD /* AWSSTSModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSSTSModel.m; path = AWSCore/STS/AWSSTSModel.m; sourceTree = "<group>"; };
 		4E9D3EDDD13B0783926DC065ED267C6D /* GDTCORTransformer_Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCORTransformer_Private.h; path = GoogleDataTransport/GDTCORLibrary/Private/GDTCORTransformer_Private.h; sourceTree = "<group>"; };
-		4ED48F4A2F01CFE9AAAA0A506418F70D /* LMFeedDisplayPollView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedDisplayPollView.swift; sourceTree = "<group>"; };
+		4ED48F4A2F01CFE9AAAA0A506418F70D /* LMFeedCreateDisplayPollView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMFeedCreateDisplayPollView.swift; sourceTree = "<group>"; };
 		4EEAFC2DA8D8C7B71FD44394D3F74C57 /* UIButton+Kingfisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIButton+Kingfisher.swift"; path = "Sources/Extensions/UIButton+Kingfisher.swift"; sourceTree = "<group>"; };
 		4F02BB62AD799428679E5059C5F9C5C5 /* FIRMessagingSyncMessageManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FIRMessagingSyncMessageManager.m; path = FirebaseMessaging/Sources/FIRMessagingSyncMessageManager.m; sourceTree = "<group>"; };
 		4F4A4C4ACDA3F5546EF645AAACD4FC93 /* AWSS3Resources.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AWSS3Resources.m; path = AWSS3/AWSS3Resources.m; sourceTree = "<group>"; };
@@ -2385,12 +2390,17 @@
 		E522AAF7388E58403E31C6B5F4660798 /* AWSS3Serializer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSS3Serializer.h; path = AWSS3/AWSS3Serializer.h; sourceTree = "<group>"; };
 		E533958C9725C7635A6D8A5ED58D4DF6 /* FIROptionsInternal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIROptionsInternal.h; path = FirebaseCore/Extension/FIROptionsInternal.h; sourceTree = "<group>"; };
 		E53448D84E64DCC74072F78306001D67 /* AWSCognitoConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCognitoConstants.h; path = AWSCognito/Internal/AWSCognitoConstants.h; sourceTree = "<group>"; };
+		E59FF9122C1B147900555BB5 /* BaseDisplayPollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDisplayPollView.swift; sourceTree = "<group>"; };
+		E59FF9142C1B323400555BB5 /* LMFeedDisplayPollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedDisplayPollView.swift; sourceTree = "<group>"; };
+		E59FF9172C1C21C700555BB5 /* LMFeedPostPollCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPostPollCell.swift; sourceTree = "<group>"; };
 		E5C226C69BCE1856CDEDB6F6A8D08B9A /* LMNumbersConstant.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMNumbersConstant.swift; sourceTree = "<group>"; };
 		E5F53250A1F8CADB3694F78F18424355 /* FBLPromise+Wrap.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "FBLPromise+Wrap.m"; path = "Sources/FBLPromises/FBLPromise+Wrap.m"; sourceTree = "<group>"; };
 		E5FADFEBB7BA2B7CDB72F6D34F37D60A /* FBLPromise+Recover.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBLPromise+Recover.h"; path = "Sources/FBLPromises/include/FBLPromise+Recover.h"; sourceTree = "<group>"; };
 		E5FCD96D2C19B733004A2B8C /* SubmitPollVoteRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitPollVoteRequest.swift; sourceTree = "<group>"; };
 		E5FCD9702C19CB9B004A2B8C /* AddPollOptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPollOptionRequest.swift; sourceTree = "<group>"; };
 		E5FCD9722C19DD2F004A2B8C /* AddPollOptionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPollOptionResponse.swift; sourceTree = "<group>"; };
+		E5FCD9752C1AFB4C004A2B8C /* BaseDisplayPollWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDisplayPollWidget.swift; sourceTree = "<group>"; };
+		E5FCD9792C1AFC57004A2B8C /* LMFeedDisplayPollWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedDisplayPollWidget.swift; sourceTree = "<group>"; };
 		E68ABCECB590EBF21CFCE10EA3B0EFB7 /* NSValueTransformer+AWSMTLInversionAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSValueTransformer+AWSMTLInversionAdditions.h"; path = "AWSCore/Mantle/NSValueTransformer+AWSMTLInversionAdditions.h"; sourceTree = "<group>"; };
 		E6FC0C09CCD290D2AC1DCE5B57630837 /* GULNetworkConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GULNetworkConstants.h; path = GoogleUtilities/Network/Public/GoogleUtilities/GULNetworkConstants.h; sourceTree = "<group>"; };
 		E85628BCD6F52B14269897C5FB0D5CE9 /* FIRFirebaseUserAgent.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRFirebaseUserAgent.h; path = FirebaseCore/Sources/FIRFirebaseUserAgent.h; sourceTree = "<group>"; };
@@ -3083,11 +3093,12 @@
 			isa = PBXGroup;
 			children = (
 				BC5BBBCFFCBDE560E013572484434E0C /* LMFeedNoPostWidget.swift */,
-				920D7191CF861AB98E234D71E04E9966 /* LMPostWidgetTableViewCell.swift */,
 				5E7228E4632DB6F3B16F16A78599B810 /* LMFeedPostDocumentCell */,
 				EA0D47230234158A57F46B25D249BA22 /* LMFeedPostHeaderFooter */,
 				65FB508F02603B00820C6C9A31364767 /* LMFeedPostLinkCell */,
 				654F0191277AF0C5817614841E2D7A1D /* LMFeedPostMediaCell */,
+				E59FF9162C1C21AA00555BB5 /* LMFeedPostPollCell */,
+				920D7191CF861AB98E234D71E04E9966 /* LMPostWidgetTableViewCell.swift */,
 			);
 			path = PostWidget;
 			sourceTree = "<group>";
@@ -3397,8 +3408,9 @@
 		4BDC1436DD8EA64E4D4CFDDF29377FD0 /* DisplayWidgets */ = {
 			isa = PBXGroup;
 			children = (
-				4ED48F4A2F01CFE9AAAA0A506418F70D /* LMFeedDisplayPollView.swift */,
-				1796B248103000ED51A8D1748E463B67 /* LMFeedDisplayPollWidget.swift */,
+				E5FCD9782C1AFC44004A2B8C /* onFeedScreen */,
+				E5FCD9772C1AFC2D004A2B8C /* OnCreateScreen */,
+				E5FCD9742C1AFB2F004A2B8C /* BaseClass */,
 			);
 			path = DisplayWidgets;
 			sourceTree = "<group>";
@@ -4856,6 +4868,14 @@
 			path = Response;
 			sourceTree = "<group>";
 		};
+		E59FF9162C1C21AA00555BB5 /* LMFeedPostPollCell */ = {
+			isa = PBXGroup;
+			children = (
+				E59FF9172C1C21C700555BB5 /* LMFeedPostPollCell.swift */,
+			);
+			path = LMFeedPostPollCell;
+			sourceTree = "<group>";
+		};
 		E5FCD96C2C19B70E004A2B8C /* SubmitPollVote */ = {
 			isa = PBXGroup;
 			children = (
@@ -4871,6 +4891,33 @@
 				E5FCD9722C19DD2F004A2B8C /* AddPollOptionResponse.swift */,
 			);
 			path = AddPollOption;
+			sourceTree = "<group>";
+		};
+		E5FCD9742C1AFB2F004A2B8C /* BaseClass */ = {
+			isa = PBXGroup;
+			children = (
+				E5FCD9752C1AFB4C004A2B8C /* BaseDisplayPollWidget.swift */,
+				E59FF9122C1B147900555BB5 /* BaseDisplayPollView.swift */,
+			);
+			path = BaseClass;
+			sourceTree = "<group>";
+		};
+		E5FCD9772C1AFC2D004A2B8C /* OnCreateScreen */ = {
+			isa = PBXGroup;
+			children = (
+				4ED48F4A2F01CFE9AAAA0A506418F70D /* LMFeedCreateDisplayPollView.swift */,
+				1796B248103000ED51A8D1748E463B67 /* LMFeedDisplayCreatePollWidget.swift */,
+			);
+			path = OnCreateScreen;
+			sourceTree = "<group>";
+		};
+		E5FCD9782C1AFC44004A2B8C /* onFeedScreen */ = {
+			isa = PBXGroup;
+			children = (
+				E5FCD9792C1AFC57004A2B8C /* LMFeedDisplayPollWidget.swift */,
+				E59FF9142C1B323400555BB5 /* LMFeedDisplayPollView.swift */,
+			);
+			path = onFeedScreen;
 			sourceTree = "<group>";
 		};
 		E6EFB671AC3EAE821FB9EB89AEC8EF2C /* Request */ = {
@@ -6574,6 +6621,7 @@
 				9F914FEFA9AF6F2AE920DC3D5E420C7B /* LikeMindsFeedUI-dummy.m in Sources */,
 				66760CF74AC7B2CCD9D257150707626B /* LMButton.swift in Sources */,
 				52E8105F8AB3CC1D113C71933FA95167 /* LMCollectionView.swift in Sources */,
+				E59FF9152C1B323400555BB5 /* LMFeedDisplayPollView.swift in Sources */,
 				5B8E029D56E0C9DF4697F76546E63EF7 /* LMCollectionViewCell.swift in Sources */,
 				996B9FFAC356F1B2804C6920B379D19A /* LMFeedAddMediaPreview.swift in Sources */,
 				56629B01BF4D0B37DFEF25AFA5070621 /* LMFeedAddMediaView.swift in Sources */,
@@ -6588,9 +6636,10 @@
 				7640A969AC62ED8DC7ABFBCFFE416FA1 /* LMFeedCreatePollUserOptionWidget.swift in Sources */,
 				081BC096C776202229C375542394E2CB /* LMFeedCreatePostDocumentPreviewCell.swift in Sources */,
 				516CC41B90C12A5F39BC634F6895E3EA /* LMFeedCreatePostHeaderView.swift in Sources */,
-				70F0A0B0B507388BD4CFF013EA3083B7 /* LMFeedDisplayPollView.swift in Sources */,
-				E2F3837A23360B2F7D5C6D6690CC9893 /* LMFeedDisplayPollWidget.swift in Sources */,
+				70F0A0B0B507388BD4CFF013EA3083B7 /* LMFeedCreateDisplayPollView.swift in Sources */,
+				E2F3837A23360B2F7D5C6D6690CC9893 /* LMFeedDisplayCreatePollWidget.swift in Sources */,
 				A0664E78B200E589BC348193CE3DF625 /* LMFeedDocumentPreview.swift in Sources */,
+				E59FF9132C1B147900555BB5 /* BaseDisplayPollView.swift in Sources */,
 				AA9B8D052601E5B8EA8962A4F12CF353 /* LMFeedImageCollectionCell.swift in Sources */,
 				F24324E80274DBA35197EA2518CAF5F1 /* LMFeedLinkPreview.swift in Sources */,
 				6AB754ADE7DE42316724E64BFBCD1FCA /* LMFeedLoopedVideoPlayer.swift in Sources */,
@@ -6600,6 +6649,7 @@
 				4E094B4307B5CFFCC1F1F68BA6956575 /* LMFeedNoResultView.swift in Sources */,
 				5CAE8B85865484D57406832E3A001F29 /* LMFeedNotificationItem.swift in Sources */,
 				F18B7CBADC8CD56906A1514261169DA5 /* LMFeedPDFViewer.swift in Sources */,
+				E5FCD97A2C1AFC57004A2B8C /* LMFeedDisplayPollWidget.swift in Sources */,
 				16B61BCF9A683B9E629CB6B645D6A9E9 /* LMFeedPickerView.swift in Sources */,
 				B99224BA69E376FE196147BA6DC0C772 /* LMFeedPostDetailDocumentCell.swift in Sources */,
 				AEC4720562CE1EE6254AF6CC0C5DBCFA /* LMFeedPostDetailFooterView.swift in Sources */,
@@ -6622,7 +6672,9 @@
 				C2F9D27D50AB58FB3ED54B7F078F682B /* LMFeedTopicSelectionCell.swift in Sources */,
 				4B61D9BAFC0F5A7E1427B5F04A8B7608 /* LMFeedTopicView.swift in Sources */,
 				7B90AED0985FA1A2557E31C6F3536EFD /* LMFeedTopicViewCell.swift in Sources */,
+				E5FCD9762C1AFB4C004A2B8C /* BaseDisplayPollWidget.swift in Sources */,
 				8147153533BF933BC88605B6C57B3F90 /* LMFeedUserModel.swift in Sources */,
+				E59FF9182C1C21C700555BB5 /* LMFeedPostPollCell.swift in Sources */,
 				9F325D375674C89DBE6E20B9ADC3BEA9 /* LMFeedVideoCollectionCell.swift in Sources */,
 				887EE7AEC719D46F24968AD53C49DC8D /* LMImageView.swift in Sources */,
 				B8B26062344161718FD58FB8ABC85575 /* LMLabel.swift in Sources */,
