@@ -7,6 +7,13 @@
 
 import UIKit
 
+public protocol LMFeedPostPollCellProtocol: LMPostWidgetTableViewCellProtocol {
+    func didTapVoteCountButton(for postID: String, pollID: String, optionID: String?)
+    func didTapToVote(for postID: String, pollID: String, optionID: String)
+    func didTapSubmitVote(for postID: String, pollID: String)
+    func editVoteTapped(for postID: String, pollID: String)
+}
+
 open class LMFeedPostPollCell: LMPostWidgetTableViewCell {
     // MARK: UI Elements
     open private(set) lazy var pollPreview: LMFeedDisplayPollView = {
@@ -37,19 +44,16 @@ open class LMFeedPostPollCell: LMPostWidgetTableViewCell {
 
         topicFeed.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         postText.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
-        
-//        linkPreveiw.setHeightConstraint(with: 1000, priority: .defaultLow)
-//        linkPreveiw.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
     }
     
-    open func configure(with data: LMFeedPostContentModel) {
+    open func configure(with data: LMFeedPostContentModel, delegate: LMFeedPostPollCellProtocol?) {
         topicFeed.configure(with: data.topics)
         topicFeed.isHidden = data.topics.topics.isEmpty
         
         setupPostText(text: data.postText, showMore: data.isShowMore)
         
         if let pollData = data.pollWidget {
-            pollPreview.configure(with: pollData)
+            pollPreview.configure(with: pollData, delegate: delegate)
             contentStack.addArrangedSubview(pollPreview)
             
             NSLayoutConstraint.activate([

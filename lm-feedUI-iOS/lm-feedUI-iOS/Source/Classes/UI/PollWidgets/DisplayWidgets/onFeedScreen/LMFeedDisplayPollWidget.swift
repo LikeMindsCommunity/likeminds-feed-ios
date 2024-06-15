@@ -7,6 +7,11 @@
 
 import UIKit
 
+public protocol LMFeedDisplayPollWidgetProtocol: AnyObject {
+    func didTapVoteCountButton(optionID: String)
+    func didTapToVote(optionID: String)
+}
+
 open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
     public struct ContentModel {
         public let pollId: String
@@ -81,6 +86,7 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
     open private(set) lazy var innerContainerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = Appearance.shared.colors.clear
+        view.isUserInteractionEnabled = true
         return view
     }()
     
@@ -96,6 +102,7 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
     }()
     
     
+    // MARK: Data Variables
     open var selectedPollColor: UIColor {
         return UIColor(r: 80, g: 70, b: 229)
     }
@@ -104,6 +111,8 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
         return UIColor(r: 230, g: 235, b: 245)
     }
     
+    public weak var delegate: LMFeedDisplayPollWidgetProtocol?
+    public var optionID: String?
     
     // MARK: setupViews
     open override func setupViews() {
@@ -168,7 +177,30 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
     }
     
     
-    open func configure(with data: ContentModel) {
+    // MARK: setupActions
+    open override func setupActions() {
+        voteCount.addTarget(self, action: #selector(didTapVoteCount), for: .touchUpInside)
+        innerContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapVote)))
+    }
+    
+    @objc
+    open func didTapVoteCount() {
+        guard let optionID else { return }
+        
+        delegate?.didTapVoteCountButton(optionID: optionID)
+    }
+    
+    @objc
+    open func didTapVote() {
+        guard let optionID else { return }
+        
+        delegate?.didTapToVote(optionID: optionID)
+    }
+    
+    open func configure(with data: ContentModel, delegate: LMFeedDisplayPollWidgetProtocol?) {
+        self.delegate = delegate
+        self.optionID = data.optionId
+        
         optionLabel.text = data.option
         
         addedByLabel.text = "Added By \(data.addedBy ?? "")"

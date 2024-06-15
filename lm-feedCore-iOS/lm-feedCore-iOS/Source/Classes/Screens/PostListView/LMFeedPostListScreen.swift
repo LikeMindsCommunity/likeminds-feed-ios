@@ -241,7 +241,7 @@ extension LMFeedPostListScreen: UITableViewDataSource, UITableViewDelegate, UITa
             }
         case .poll:
             if let cell = tableView.dequeueReusableCell(LMFeedPostPollCell.self) {
-                cell.configure(with: data[indexPath.section])
+                cell.configure(with: data[indexPath.section], delegate: self)
                 return cell
             }
         default:
@@ -418,5 +418,26 @@ extension LMFeedPostListScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtoc
     
     open func didTapDocument(with url: URL) {
         openURL(with: url)
+    }
+}
+
+
+// MARK: LMFeedPostPollCellProtocol
+@objc
+extension LMFeedPostListScreen: LMFeedPostPollCellProtocol {
+    open func didTapVoteCountButton(for postID: String, pollID: String, optionID: String?) {
+        
+    }
+    
+    open func didTapToVote(for postID: String, pollID: String, optionID: String) {
+        
+    }
+    
+    open func didTapSubmitVote(for postID: String, pollID: String) {
+        
+    }
+    
+    open func editVoteTapped(for postID: String, pollID: String) {
+        
     }
 }

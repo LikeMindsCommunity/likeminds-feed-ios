@@ -131,6 +131,12 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
     }()
     
     
+    // MARK: Data Variables
+    public weak var delegate: LMFeedPostPollCellProtocol?
+    public var postID: String?
+    public var pollID: String?
+    
+    
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
@@ -181,6 +187,7 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
     }
     
     
+    // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
         
@@ -193,7 +200,46 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         submitButton.layer.cornerRadius = 8
     }
     
-    open func configure(with data: ContentModel) {
+    
+    // MARK: setupActions
+    open override func setupActions() {
+        super.setupActions()
+        
+        submitButton.addTarget(self, action: #selector(didTapSubmitButton), for: .touchUpInside)
+        editVoteLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(editVoteTapped)))
+        answerTitleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(voteCountTapped)))
+    }
+    
+    @objc
+    open func didTapSubmitButton() {
+        guard let postID,
+              let pollID else { return }
+        delegate?.didTapSubmitVote(for: postID, pollID: pollID)
+    }
+    
+    @objc
+    open func editVoteTapped() {
+        guard let postID,
+              let pollID else { return }
+        
+        delegate?.editVoteTapped(for: postID, pollID: pollID)
+    }
+    
+    @objc
+    open func voteCountTapped() {
+        guard let postID,
+              let pollID else { return }
+        
+        delegate?.didTapVoteCountButton(for: postID, pollID: pollID, optionID: nil)
+    }
+    
+    
+    // MARK: configure
+    open func configure(with data: ContentModel, delegate: LMFeedPostPollCellProtocol?) {
+        self.delegate = delegate
+        self.postID = data.postID
+        self.pollID = data.pollID
+        
         questionTitle.text = data.question
         
         optionSelectCountLabel.text = data.optionStringFormatted
@@ -203,7 +249,7 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         
         data.options.forEach { option in
             let optionView = LMFeedDisplayPollWidget().translatesAutoresizingMaskIntoConstraints()
-            optionView.configure(with: option)
+            optionView.configure(with: option, delegate: self)
             optionStackView.addArrangedSubview(optionView)
         }
         
@@ -217,5 +263,21 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         editVoteLabel.isHidden = !data.isShowEditVote
         
         submitButton.isHidden = !data.isShowSubmitButton
+    }
+}
+
+
+// MARK: LMFeedDisplayPollWidgetProtocol
+extension LMFeedDisplayPollView: LMFeedDisplayPollWidgetProtocol {
+    public func didTapVoteCountButton(optionID: String) {
+        guard let postID,
+              let pollID else { return }
+        delegate?.didTapVoteCountButton(for: postID, pollID: pollID, optionID: optionID)
+    }
+    
+    public func didTapToVote(optionID: String) {
+        guard let postID,
+              let pollID else { return }
+        delegate?.didTapToVote(for: postID, pollID: pollID, optionID: optionID)
     }
 }

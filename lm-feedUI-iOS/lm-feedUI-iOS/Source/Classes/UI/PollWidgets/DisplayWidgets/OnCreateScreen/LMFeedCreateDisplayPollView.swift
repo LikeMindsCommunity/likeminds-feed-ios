@@ -7,7 +7,7 @@
 
 import UIKit
 
-public protocol LMFeedDisplayPollViewProtocol: AnyObject {
+public protocol LMFeedCreatePollViewProtocol: AnyObject {
     func onTapCrossButton()
     func onTapEditButton()
 }
@@ -68,7 +68,7 @@ open class LMFeedCreateDisplayPollView: BaseDisplayPollView {
     
     // MARK: Data variables
     open var buttonSize: CGFloat { 24 }
-    public weak var delegate: LMFeedDisplayPollViewProtocol?
+    public weak var delegate: LMFeedCreatePollViewProtocol?
     
     // MARK: setupViews
     open override func setupViews() {
@@ -157,7 +157,7 @@ open class LMFeedCreateDisplayPollView: BaseDisplayPollView {
     
     
     // MARK: configure
-    open func configure(with data: ContentModel, delegate: LMFeedDisplayPollViewProtocol?) {
+    open func configure(with data: ContentModel, delegate: LMFeedCreatePollViewProtocol?) {
         self.delegate = delegate
         questionTitle.text = data.question
         crossButton.isHidden = !data.showCrossIcon

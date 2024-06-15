@@ -721,8 +721,8 @@ extension LMFeedCreatePostScreen: LMFeedCreatePollProtocol {
 }
 
 
-// MARK: LMFeedDisplayPollViewProtocol
-extension LMFeedCreatePostScreen: LMFeedDisplayPollViewProtocol {
+// MARK: LMFeedCreatePollViewProtocol
+extension LMFeedCreatePostScreen: LMFeedCreatePollViewProtocol {
     public func onTapCrossButton() {
         isPollFlow = false
         viewModel?.removePoll()
