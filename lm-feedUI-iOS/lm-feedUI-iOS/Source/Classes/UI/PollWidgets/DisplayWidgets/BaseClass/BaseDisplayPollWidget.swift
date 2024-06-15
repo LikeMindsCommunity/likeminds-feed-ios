@@ -32,6 +32,7 @@ open class BaseDisplayPollWidget: LMView {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = Appearance.shared.fonts.headingFont1
         label.textColor = Appearance.shared.colors.gray51
+        label.text = "Option Text"
         return label
     }()
     
@@ -39,6 +40,7 @@ open class BaseDisplayPollWidget: LMView {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = Appearance.shared.fonts.subHeadingFont1
         label.textColor = Appearance.shared.colors.blueGray.withAlphaComponent(0.7)
+        label.text = "Added By Text"
         return label
     }()
 }

@@ -15,20 +15,36 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
         public let addedBy: String?
         public let voteCount: Int
         public let votePercentage: Double
-        public let isSelected: Bool
+        public let isOptionSelectedByUser: Bool
         public let showVoteCount: Bool
+        public let showProgressBar: Bool
+        public let showTickButton: Bool
         
-        public init(pollId: String, optionId: String, option: String, addedBy: String?, voteCount: Int, votePercentage: Double, isSelected: Bool, showVoteCount: Bool) {
+        public init(
+            pollId: String,
+            optionId: String,
+            option: String,
+            addedBy: String?,
+            voteCount: Int,
+            votePercentage: Double,
+            isSelected: Bool,
+            showVoteCount: Bool,
+            showProgressBar: Bool,
+            showTickButton: Bool
+        ) {
             self.pollId = pollId
             self.optionId = optionId
             self.option = option
             self.addedBy = addedBy
             self.voteCount = voteCount
             self.votePercentage = votePercentage
-            self.isSelected = isSelected
+            self.isOptionSelectedByUser = isSelected
             self.showVoteCount = showVoteCount
+            self.showProgressBar = showProgressBar
+            self.showTickButton = showTickButton
         }
     }
+    
     
     // MARK: UI Elements
     open private(set) lazy var outerStackView: LMStackView = {
@@ -80,6 +96,15 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
     }()
     
     
+    open var selectedPollColor: UIColor {
+        return UIColor(r: 80, g: 70, b: 229)
+    }
+    
+    open var notSelectedPollColor: UIColor {
+        return UIColor(r: 230, g: 235, b: 245)
+    }
+    
+    
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
@@ -87,14 +112,14 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
         addSubview(containerView)
         containerView.addSubview(outerStackView)
         
+        voteCountContainer.addSubview(voteCount)
+        
         outerStackView.addArrangedSubview(innerContainerView)
         outerStackView.addArrangedSubview(voteCountContainer)
         
-        voteCountContainer.addSubview(voteCount)
-        
+        innerContainerView.addSubview(progressView)
         innerContainerView.addSubview(stackView)
         innerContainerView.addSubview(checkmarkIcon)
-        innerContainerView.addSubview(progressView)
         
         stackView.addArrangedSubview(optionLabel)
         stackView.addArrangedSubview(addedByLabel)
@@ -120,12 +145,16 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
                                 bottom: (innerContainerView.bottomAnchor, -16),
                                 leading: (innerContainerView.leadingAnchor, 16))
         
-        checkmarkIcon.addConstraint(trailing: (innerContainerView.trailingAnchor, -16),
+        checkmarkIcon.addConstraint(leading: (stackView.trailingAnchor, 16),
+                                    trailing: (innerContainerView.trailingAnchor, -16),
                                     centerY: (stackView.centerYAnchor, 0))
-        checkmarkIcon.setWidthConstraint(with: checkmarkIcon.heightAnchor)
-        checkmarkIcon.leadingAnchor.constraint(greaterThanOrEqualTo: stackView.trailingAnchor, constant: 16).isActive = true
+        checkmarkIcon.setWidthConstraint(with: 24)
+        checkmarkIcon.setHeightConstraint(with: 24)
         
-        innerContainerView.pinSubView(subView: progressView, padding: .init(top: 2, left: 2, bottom: -2, right: -2))
+        innerContainerView.pinSubView(subView: progressView)
+        
+        optionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        addedByLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
     
     
@@ -133,8 +162,8 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        innerContainerView.layer.cornerRadius = 8
-        innerContainerView.layer.borderColor = Appearance.shared.colors.gray155.cgColor
+        innerContainerView.clipsToBounds = true
+        innerContainerView.layer.cornerRadius = 10
         innerContainerView.layer.borderWidth = 1
     }
     
@@ -142,9 +171,19 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
     open func configure(with data: ContentModel) {
         optionLabel.text = data.option
         
-        addedByLabel.text = data.addedBy
+        addedByLabel.text = "Added By \(data.addedBy ?? "")"
         addedByLabel.isHidden = data.addedBy?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty != false
         
-        // TODO: Need to write logic for showing and hiding
+        voteCountContainer.isHidden = !data.showVoteCount
+        voteCount.setTitle("\(data.voteCount) Vote\(data.voteCount == 1 ? "" : "s")", for: .normal)
+        
+        checkmarkIcon.isHidden = !data.showTickButton
+        
+        progressView.isHidden = !data.showProgressBar
+        progressView.progress = Float(data.votePercentage / 100)
+        progressView.progressTintColor = data.isOptionSelectedByUser ? selectedPollColor.withAlphaComponent(0.2) : notSelectedPollColor
+        
+        innerContainerView.layer.borderColor = data.isOptionSelectedByUser ? selectedPollColor.cgColor : notSelectedPollColor.cgColor
+        optionLabel.textColor = data.isOptionSelectedByUser ? selectedPollColor : Appearance.shared.colors.black
     }
 }

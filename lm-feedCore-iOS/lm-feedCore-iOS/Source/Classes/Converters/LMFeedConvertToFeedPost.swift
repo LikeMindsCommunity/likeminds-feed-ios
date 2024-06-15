@@ -139,16 +139,40 @@ public struct LMFeedConvertToFeedPost {
         let postID = pollAttachment.postID
         let pollID = pollAttachment.id
         
+        let isPollSubmitted = isPollSubmitted(options: pollAttachment.options)
+        
+        let isPollEnded = hasPollEnded(time: pollAttachment.expiryTime)
+        
+        let isMultiChoice = isMultiChoicePoll(
+            pollSelectCount: pollAttachment.pollSelectCount,
+            pollSelectType: pollAttachment.pollSelectType
+        )
+        
+        let isShowSubmitButton = isShowSubmitButton(
+            isPollEnded: isPollEnded,
+            isMultiChoice: isMultiChoice,
+            isPollSubmitted: isPollSubmitted
+        )
+        
+        let allowAddOptions = isShowAddOptionButton(
+            isInstantPoll: pollAttachment.isInstantPoll,
+            isPollSubmitted: isPollSubmitted,
+            isAllowAddOption: pollAttachment.allowAddOptions,
+            isPollEnded: isPollEnded
+        )
+        
         let options: [LMFeedDisplayPollWidget.ContentModel] = pollAttachment.options.map({
             .init(
                 pollId: pollID,
                 optionId: $0.id,
                 option: $0.option,
-                addedBy: $0.addedBy.userName,
+                addedBy: pollAttachment.allowAddOptions ? $0.addedBy.userName : nil,
                 voteCount: $0.voteCount,
                 votePercentage: $0.percentage,
                 isSelected: $0.isSelected,
-                showVoteCount: false
+                showVoteCount: pollAttachment.showResults,
+                showProgressBar: pollAttachment.showResults && (isPollEnded || isPollSubmitted), 
+                showTickButton: $0.isSelected && (isMultiChoice || !pollAttachment.isInstantPoll)
             )
         })
         
@@ -158,12 +182,48 @@ public struct LMFeedConvertToFeedPost {
             question: pollAttachment.question,
             answerText: pollAttachment.pollDisplayText,
             options: options,
-            expiryDate: Date(timeIntervalSince1970: Double(pollAttachment.expiryTime)),
+            expiryDate: Date(timeIntervalSince1970: Double(pollAttachment.expiryTime / 1000)),
             optionState: pollAttachment.pollSelectType.description,
             optionCount: pollAttachment.pollSelectCount,
             isAnonymousPoll: pollAttachment.isAnonymous,
             isInstantPoll: pollAttachment.isInstantPoll,
-            allowAddOptions: pollAttachment.allowAddOptions
+            allowAddOptions: allowAddOptions,
+            isShowSubmitButton: isShowSubmitButton,
+            isShowEditVote: !isPollEnded && isPollSubmitted && !pollAttachment.isInstantPoll
         )
+    }
+}
+
+
+// MARK: Poll Specific
+extension LMFeedConvertToFeedPost {
+    public static func isPollSubmitted(options: [LMFeedPollDataModel.Option]) -> Bool {
+        options.contains(where: { $0.isSelected })
+    }
+    
+    public static func hasPollEnded(time: Int) -> Bool {
+        Int(Date().timeIntervalSince1970) > time
+    }
+    
+    public static func isMultiChoicePoll(pollSelectCount: Int, pollSelectType: LMFeedPollSelectState) -> Bool {
+        !(pollSelectType == .exactly && pollSelectCount == 1)
+    }
+    
+    
+    /// if poll has ended, hide the submit button
+    /// if it is single choice, hide the submit button
+    /// if poll has been submitted, hide the submit button
+    public static func isShowSubmitButton(isPollEnded: Bool, isMultiChoice: Bool, isPollSubmitted: Bool) -> Bool {
+        !(isPollEnded || !isMultiChoice || isPollSubmitted)
+    }
+    
+    public static func isShowAddOptionButton(isInstantPoll: Bool, isPollSubmitted: Bool, isAllowAddOption: Bool, isPollEnded: Bool) -> Bool {
+        var isAllowed = true
+        
+        if isInstantPoll {
+            isAllowed = !isPollSubmitted
+        }
+        
+        return isAllowAddOption && !isPollEnded && isAllowed
     }
 }

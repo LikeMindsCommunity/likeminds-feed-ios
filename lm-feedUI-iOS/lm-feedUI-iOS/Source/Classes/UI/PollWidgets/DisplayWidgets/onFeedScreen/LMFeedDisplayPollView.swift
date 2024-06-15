@@ -16,10 +16,12 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         public var expiryDate: Date
         public var optionState: String
         public var optionCount: Int
-        public let isAnonymousPoll: Bool
-        public let isInstantPoll: Bool
-        public let allowAddOptions: Bool
-        public let answerText: String
+        public var isAnonymousPoll: Bool
+        public var isInstantPoll: Bool
+        public var allowAddOptions: Bool
+        public var answerText: String
+        public var isShowSubmitButton: Bool
+        public var isShowEditVote: Bool
         
         public init(
             postID: String,
@@ -32,7 +34,9 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
             optionCount: Int,
             isAnonymousPoll: Bool,
             isInstantPoll: Bool,
-            allowAddOptions: Bool
+            allowAddOptions: Bool,
+            isShowSubmitButton: Bool,
+            isShowEditVote: Bool
         ) {
             self.postID = postID
             self.pollID = pollID
@@ -45,6 +49,8 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
             self.isInstantPoll = isInstantPoll
             self.allowAddOptions = allowAddOptions
             self.answerText = answerText
+            self.isShowSubmitButton = isShowSubmitButton
+            self.isShowEditVote = isShowEditVote
         }
         
         
@@ -81,14 +87,13 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         stack.axis = .vertical
         stack.alignment = .leading
         stack.distribution = .fill
-        stack.spacing = 4
+        stack.spacing = 8
         return stack
     }()
     
     open private(set) lazy var submitButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
-        button.setTitle(Constants.shared.strings.submitVote, for: .normal)
-        button.setImage(nil, for: .normal)
+        let button = LMButton.createButton(with: Constants.shared.strings.submitVote, image: nil, textColor: Appearance.shared.colors.white, textFont: Appearance.shared.fonts.buttonFont2, contentSpacing: .init(top: 8, left: 16, bottom: 8, right: 16))
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Appearance.shared.colors.appTintColor
         return button
     }()
@@ -118,6 +123,13 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         return label
     }()
     
+    open private(set) lazy var addOptionButton: LMButton = {
+        let button = LMButton.createButton(with: "Add an Option", image: Constants.shared.images.plusIcon, textColor: Appearance.shared.colors.black, textFont: Appearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 0, bottom: 8, right: 0), imageSpacing: 4)
+        button.tintColor = Appearance.shared.colors.black
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     
     // MARK: setupViews
     open override func setupViews() {
@@ -133,6 +145,7 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         
         containerView.addSubview(bottomStack)
         
+        bottomStack.addArrangedSubview(addOptionButton)
         bottomStack.addArrangedSubview(submitButton)
         bottomStack.addArrangedSubview(bottomMetaStack)
         
@@ -156,12 +169,28 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
                                       leading: (questionContainerStackView.leadingAnchor, -8),
                                       trailing: (questionContainerStackView.trailingAnchor, 8))
         
+        addOptionButton.addConstraint(leading: (bottomStack.leadingAnchor, 0),
+                                      trailing: (bottomStack.trailingAnchor, 0))
+        
         bottomStack.addConstraint(top: (optionStackView.bottomAnchor, 16),
                                   bottom: (containerView.bottomAnchor, -16),
                                   leading: (optionStackView.leadingAnchor, 0),
                                   trailing: (optionStackView.trailingAnchor, 0))
         
         bottomMetaStack.trailingAnchor.constraint(lessThanOrEqualTo: bottomStack.trailingAnchor, constant: -16).isActive = true
+    }
+    
+    
+    open override func setupAppearance() {
+        super.setupAppearance()
+        
+        addOptionButton.layer.borderColor = Appearance.shared.colors.gray155.cgColor
+        addOptionButton.layer.borderWidth = 1
+        addOptionButton.layer.cornerRadius = 8
+        
+        expiryDateLabel.font = Appearance.shared.fonts.textFont1
+        
+        submitButton.layer.cornerRadius = 8
     }
     
     open func configure(with data: ContentModel) {
@@ -177,5 +206,16 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
             optionView.configure(with: option)
             optionStackView.addArrangedSubview(optionView)
         }
+        
+        answerTitleLabel.text = data.answerText
+        
+        let expiryText = "• \(data.expiryDateFormatted)\(data.isShowEditVote ? " •": "")"
+        expiryDateLabel.text = expiryText
+        
+        addOptionButton.isHidden = !data.allowAddOptions
+        
+        editVoteLabel.isHidden = !data.isShowEditVote
+        
+        submitButton.isHidden = !data.isShowSubmitButton
     }
 }
