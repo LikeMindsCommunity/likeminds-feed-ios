@@ -19,5 +19,5 @@ Pod::Spec.new do |spec|
   spec.dependency "FirebaseCore"
   spec.dependency "FirebaseMessaging"
   spec.dependency 'LikeMindsFeed'
-  spec.dependency 'LikeMindsFeedUI'
+  spec.dependency 'LikeMindsFeedUI', spec.version.to_s
 end

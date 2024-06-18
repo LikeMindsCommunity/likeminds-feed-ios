@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.likeminds.lm-feed-sample-app</string>
+	<string>com.likeminds.lm-feed-sample-new</string>
 	<key>PROJECT_ID</key>
 	<string>likeminds-sdk-app</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:317419981427:ios:95c5fdbb838a5a8fd2f806</string>
+	<string>1:317419981427:ios:3e96b8162446c591d2f806</string>
 </dict>
 </plist>

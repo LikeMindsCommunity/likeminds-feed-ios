@@ -13,8 +13,13 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    static var fcmToken: String?
+    
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        initateNotifications()
+        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
+        registerForPushNotifications(application: application)
+        
         ImageCache.default.memoryStorage.config.totalCostLimit = 1 //1 in bytes
         return true
     }
@@ -36,6 +41,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
         handleNotification(notification: response.notification.request)
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
@@ -64,31 +73,16 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         }
     }
     
-    func initateNotifications() {
-        FirebaseApp.configure()
-        Messaging.messaging().delegate = self
+    private func registerForPushNotifications(application: UIApplication) {
         UNUserNotificationCenter.current().delegate = self
-        
-        UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
-            switch settings.authorizationStatus {
-            case .notDetermined:
-                self?.askForNotificationAllowance()
-            default:
-                break
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) {
+            (granted, error) in
+            guard granted else { return }
+            DispatchQueue.main.async {
+                application.registerForRemoteNotifications()
             }
         }
-    }
-    
-    func askForNotificationAllowance() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .sound, .alert], completionHandler: {(granted, error) in
-            if granted {
-                DispatchQueue.main.async {
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
-            } else{
-                print("Notification permissions not granted")
-            }
-        })
     }
 }
 
@@ -96,11 +90,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 // MARK: Message
 extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        guard let fcmToken,
-              let deviceid = UIDevice.current.identifierForVendor?.uuidString,
-              !deviceid.isEmpty else { return }
-        
-        LMFeedCore.shared.registerDeviceToken(with: fcmToken, deviceID: deviceid)
+        Self.fcmToken = fcmToken
     }
 }
 
