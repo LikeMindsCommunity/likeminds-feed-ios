@@ -914,6 +914,11 @@
 		E48E71958FB45E560FB048F302571359 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B927334489E1E8ACD27D8200BC21A25B /* User.swift */; };
 		E48EFB55CD6363C1EB1E2B52255D93B1 /* AssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126A6B8CA9AF139666B9108FEF28AE22 /* AssetsViewController.swift */; };
 		E4994C49D1E9E3E4E62AF9FA3DFC3057 /* AWSUICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8D132E720F59843F604E435A2296CF /* AWSUICKeyChainStore.m */; };
+		E562AB1B2C2067B700B4346C /* LMFeedPollResultScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E562AB1A2C2067B700B4346C /* LMFeedPollResultScreen.swift */; };
+		E562AB1D2C2067EA00B4346C /* LMFeedPollResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E562AB1C2C2067EA00B4346C /* LMFeedPollResultViewModel.swift */; };
+		E562AB202C206CEC00B4346C /* LMFeedPollResultCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E562AB1F2C206CEC00B4346C /* LMFeedPollResultCollectionCell.swift */; };
+		E562AB232C20878E00B4346C /* GetPollVotesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E562AB222C20878E00B4346C /* GetPollVotesRequest.swift */; };
+		E562AB252C20890000B4346C /* GetPollVotesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E562AB242C20890000B4346C /* GetPollVotesResponse.swift */; };
 		E5635DECB22362CA17521F7B6A752BB4 /* AWSS3Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4A4C4ACDA3F5546EF645AAACD4FC93 /* AWSS3Resources.m */; };
 		E5995083971DB1662CEC48478380D4C0 /* AWSEXTScope.h in Headers */ = {isa = PBXBuildFile; fileRef = CD6B7550D024E2F96A0EA3F053D97C49 /* AWSEXTScope.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		E59D3ED6F0517D895F847226C9185B6B /* AWSCognitoIdentityService.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BC93BC5D3C1DDB48CCEC9F9C2B4660 /* AWSCognitoIdentityService.m */; };
@@ -2390,6 +2395,11 @@
 		E522AAF7388E58403E31C6B5F4660798 /* AWSS3Serializer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSS3Serializer.h; path = AWSS3/AWSS3Serializer.h; sourceTree = "<group>"; };
 		E533958C9725C7635A6D8A5ED58D4DF6 /* FIROptionsInternal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIROptionsInternal.h; path = FirebaseCore/Extension/FIROptionsInternal.h; sourceTree = "<group>"; };
 		E53448D84E64DCC74072F78306001D67 /* AWSCognitoConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCognitoConstants.h; path = AWSCognito/Internal/AWSCognitoConstants.h; sourceTree = "<group>"; };
+		E562AB1A2C2067B700B4346C /* LMFeedPollResultScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPollResultScreen.swift; sourceTree = "<group>"; };
+		E562AB1C2C2067EA00B4346C /* LMFeedPollResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPollResultViewModel.swift; sourceTree = "<group>"; };
+		E562AB1F2C206CEC00B4346C /* LMFeedPollResultCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPollResultCollectionCell.swift; sourceTree = "<group>"; };
+		E562AB222C20878E00B4346C /* GetPollVotesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPollVotesRequest.swift; sourceTree = "<group>"; };
+		E562AB242C20890000B4346C /* GetPollVotesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPollVotesResponse.swift; sourceTree = "<group>"; };
 		E59FF9122C1B147900555BB5 /* BaseDisplayPollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDisplayPollView.swift; sourceTree = "<group>"; };
 		E59FF9142C1B323400555BB5 /* LMFeedDisplayPollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedDisplayPollView.swift; sourceTree = "<group>"; };
 		E59FF9172C1C21C700555BB5 /* LMFeedPostPollCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPostPollCell.swift; sourceTree = "<group>"; };
@@ -3378,6 +3388,7 @@
 		4A0AF81264A524F33B217A8D3DF4A1C8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E562AB212C20876400B4346C /* GetPollVotes */,
 				E5FCD96F2C19C69A004A2B8C /* AddPollOption */,
 				0ED16B43F2BE3B0D7A65A79FCCD6794F /* Base */,
 				B670871FFF80AEAA1FDA83D49D707FEB /* Comments */,
@@ -3408,7 +3419,7 @@
 		4BDC1436DD8EA64E4D4CFDDF29377FD0 /* DisplayWidgets */ = {
 			isa = PBXGroup;
 			children = (
-				E5FCD9782C1AFC44004A2B8C /* onFeedScreen */,
+				E5FCD9782C1AFC44004A2B8C /* OnFeedScreen */,
 				E5FCD9772C1AFC2D004A2B8C /* OnCreateScreen */,
 				E5FCD9742C1AFB2F004A2B8C /* BaseClass */,
 			);
@@ -3673,6 +3684,7 @@
 		72DF76C3D5C27EAC5CC3977270897C77 /* PollWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				E562AB1E2C206B3E00B4346C /* PollResultWidgets */,
 				A406810FF2EFEDDB2E34883B69231A0A /* CreatePollWidgets */,
 				4BDC1436DD8EA64E4D4CFDDF29377FD0 /* DisplayWidgets */,
 			);
@@ -4765,8 +4777,8 @@
 		D477E2503D0CAA499FFDF3B13E211FE0 /* Poll */ = {
 			isa = PBXGroup;
 			children = (
-				C1ED7F5EDD820C8F2F032B016C680D7A /* LMFeedCreatePollScreen.swift */,
-				0ADEDE5C4422079049F5EBE5361445AC /* LMFeedCreatePollViewModel.swift */,
+				E562AB192C20678D00B4346C /* Create */,
+				E562AB182C20677A00B4346C /* Result */,
 			);
 			path = Poll;
 			sourceTree = "<group>";
@@ -4868,6 +4880,41 @@
 			path = Response;
 			sourceTree = "<group>";
 		};
+		E562AB182C20677A00B4346C /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				E562AB1A2C2067B700B4346C /* LMFeedPollResultScreen.swift */,
+				E562AB1C2C2067EA00B4346C /* LMFeedPollResultViewModel.swift */,
+			);
+			path = Result;
+			sourceTree = "<group>";
+		};
+		E562AB192C20678D00B4346C /* Create */ = {
+			isa = PBXGroup;
+			children = (
+				C1ED7F5EDD820C8F2F032B016C680D7A /* LMFeedCreatePollScreen.swift */,
+				0ADEDE5C4422079049F5EBE5361445AC /* LMFeedCreatePollViewModel.swift */,
+			);
+			path = Create;
+			sourceTree = "<group>";
+		};
+		E562AB1E2C206B3E00B4346C /* PollResultWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				E562AB1F2C206CEC00B4346C /* LMFeedPollResultCollectionCell.swift */,
+			);
+			path = PollResultWidgets;
+			sourceTree = "<group>";
+		};
+		E562AB212C20876400B4346C /* GetPollVotes */ = {
+			isa = PBXGroup;
+			children = (
+				E562AB222C20878E00B4346C /* GetPollVotesRequest.swift */,
+				E562AB242C20890000B4346C /* GetPollVotesResponse.swift */,
+			);
+			path = GetPollVotes;
+			sourceTree = "<group>";
+		};
 		E59FF9162C1C21AA00555BB5 /* LMFeedPostPollCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -4911,13 +4958,13 @@
 			path = OnCreateScreen;
 			sourceTree = "<group>";
 		};
-		E5FCD9782C1AFC44004A2B8C /* onFeedScreen */ = {
+		E5FCD9782C1AFC44004A2B8C /* OnFeedScreen */ = {
 			isa = PBXGroup;
 			children = (
 				E5FCD9792C1AFC57004A2B8C /* LMFeedDisplayPollWidget.swift */,
 				E59FF9142C1B323400555BB5 /* LMFeedDisplayPollView.swift */,
 			);
-			path = onFeedScreen;
+			path = OnFeedScreen;
 			sourceTree = "<group>";
 		};
 		E6EFB671AC3EAE821FB9EB89AEC8EF2C /* Request */ = {
@@ -6680,6 +6727,7 @@
 				B8B26062344161718FD58FB8ABC85575 /* LMLabel.swift in Sources */,
 				27B22EBBC66C594405CADDD604339F20 /* LMPostWidgetTableViewCell.swift in Sources */,
 				99C80BFD5CFBD133289E15AC5D19397F /* LMStackView.swift in Sources */,
+				E562AB202C206CEC00B4346C /* LMFeedPollResultCollectionCell.swift in Sources */,
 				988BBF4F950CC214EFD66D30BAEDE4F2 /* LMTableView.swift in Sources */,
 				7C4F9F884560FCC19944FD69AFF37345 /* LMTableViewCell.swift in Sources */,
 				B96824D877522FB72139CF5C1995E8A8 /* LMTableViewHeaderFooterView.swift in Sources */,
@@ -6713,6 +6761,7 @@
 				BD8AA231E318A9C28387A8F33A481DF3 /* LMFeedCreatePollDataModel.swift in Sources */,
 				05D196739E759F8C33248D9F1E341B20 /* LMFeedCreatePollScreen.swift in Sources */,
 				88831E1C56C7680E52D796380AD413C0 /* LMFeedCreatePollViewModel.swift in Sources */,
+				E562AB1D2C2067EA00B4346C /* LMFeedPollResultViewModel.swift in Sources */,
 				EB81BC0428B13BC48D08C6E338695C17 /* LMFeedCreatePostOperation.swift in Sources */,
 				17B4D9FEDB1DE998F7BB857774877CF8 /* LMFeedCreatePostScreen.swift in Sources */,
 				605F7A1A4DD4465D1C3A510422E95C36 /* LMFeedCreatePostViewModel.swift in Sources */,
@@ -6750,6 +6799,7 @@
 				A3A24E32037530C06F6AF85A37ADBF9C /* LMFeedTopicSelectionScreen.swift in Sources */,
 				463D65C154827CE81B405DF167AC0BB3 /* LMFeedTopicSelectionViewModel.swift in Sources */,
 				BE2AB52BEA4DC3E719FA5818303823BE /* LMFeedUserDataModel.swift in Sources */,
+				E562AB1B2C2067B700B4346C /* LMFeedPollResultScreen.swift in Sources */,
 				B7E479A7D0EF2ED4D1C2D83297C1C3A5 /* LMNumbersConstant.swift in Sources */,
 				147073030F0C8A05D9970964FAE85FCC /* LMStringConstants.swift in Sources */,
 				D5016E7909E9CB906FF15ED6D8A2B23F /* LMUniversalFeedScreen.swift in Sources */,
@@ -6813,10 +6863,12 @@
 				DA1DCEA7925A6E781F9D634F2FC9FD88 /* GetPostResponse.swift in Sources */,
 				0F20BC36D045CBE9B7B2AFAD4F8B6DCC /* GetReportTagRequest.swift in Sources */,
 				D96793247E041C4D1D999ABF2E3569EE /* GetReportTagResponse.swift in Sources */,
+				E562AB232C20878E00B4346C /* GetPollVotesRequest.swift in Sources */,
 				0B4B7CFD68000F963F2B1059E036A077 /* GetTaggingListRequest.swift in Sources */,
 				DC87B8612B8304F23D22D4A22BF2D7EB /* GetTaggingListResponse.swift in Sources */,
 				9A7CBAB31616890E27EA4663DA7ED168 /* GetUnreadNotificationCountResponse.swift in Sources */,
 				97E3776C77815431D294A3FE3F4F051B /* InitiateUserRequest.swift in Sources */,
+				E562AB252C20890000B4346C /* GetPollVotesResponse.swift in Sources */,
 				F4C9A6D98399A7D2147F07D44DBAE660 /* InitiateUserResponse.swift in Sources */,
 				34BA3E53653DE96523DDDDEF0099C1B6 /* Like.swift in Sources */,
 				FC11E71238B7CE1B9C04521569DADB73 /* LikeCommentRequest.swift in Sources */,

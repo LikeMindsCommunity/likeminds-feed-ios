@@ -23,6 +23,7 @@ public protocol LMFeedPostListVCToProtocol: AnyObject {
 
 @IBDesignable
 open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtocol {
+    // MARK: UI Elements
     open private(set) lazy var postList: LMTableView = {
         let table = LMTableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -213,6 +214,16 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
     open func handleCustomWidget(with data: LMFeedPostContentModel) -> LMTableViewCell {
         return LMTableViewCell()
     }
+    
+    open func navigateToPollResultScreen(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?) {
+        do {
+            let viewcontroller = try LMFeedPollResultViewModel.createModule(with: pollID, optionList: optionList, selectedOption: selectedOption)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch {
+            print("Error in \(#function)")
+        }
+    }
+    
 }
 
 // MARK: UITableView
@@ -426,7 +437,7 @@ extension LMFeedPostListScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtoc
 @objc
 extension LMFeedPostListScreen: LMFeedPostPollCellProtocol {
     open func didTapVoteCountButton(for postID: String, pollID: String, optionID: String?) {
-        
+        viewModel?.didTapVoteCountButton(for: postID, pollID: pollID, optionID: optionID)
     }
     
     open func didTapToVote(for postID: String, pollID: String, optionID: String) {

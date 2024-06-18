@@ -17,6 +17,7 @@ public protocol LMFeedPostListViewModelProtocol: LMBaseViewControllerProtocol {
     func navigateToDeleteScreen(for postID: String)
     func navigateToReportScreen(for postID: String, creatorUUID: String)
     func updateHeader(with data: [LMFeedPostContentModel], section: Int)
+    func navigateToPollResultScreen(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?)
 }
 
 public class LMFeedPostListViewModel {
@@ -312,5 +313,17 @@ public extension LMFeedPostListViewModel {
         guard let index = postList.firstIndex(where: { $0.postId == post.postId }) else { return }
         postList[index] = post
         convertToViewData(for: .init(integer: index))
+    }
+}
+
+
+// MARK: Poll
+public extension LMFeedPostListViewModel {
+    func didTapVoteCountButton(for postID: String, pollID: String, optionID: String?) {
+        guard let poll = postList.first(where: { $0.postId == postID })?.pollAttachment else { return }
+        
+        let options = poll.options
+        
+        delegate?.navigateToPollResultScreen(with: pollID, optionList: options, selectedOption: optionID)
     }
 }

@@ -52,7 +52,7 @@ public struct LMUIComponents {
     public var createPostHeaderView: LMFeedCreatePostHeaderView.Type = LMFeedCreatePostHeaderView.self
     
     // MARK: Like Count Screen Components
-    public var likeUserItem: LMFeedMemberItem.Type = LMFeedMemberItem.self
+    public var memberItem: LMFeedMemberItem.Type = LMFeedMemberItem.self
     
     // MARK: Notification Screen Components
     public var notificationItem: LMFeedNotificationItem.Type = LMFeedNotificationItem.self

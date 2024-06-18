@@ -112,6 +112,7 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         label.textColor = Appearance.shared.colors.appTintColor
         label.font = Appearance.shared.fonts.textFont1
         label.text = "Be the first one to vote"
+        label.isUserInteractionEnabled = true
         return label
     }()
     
