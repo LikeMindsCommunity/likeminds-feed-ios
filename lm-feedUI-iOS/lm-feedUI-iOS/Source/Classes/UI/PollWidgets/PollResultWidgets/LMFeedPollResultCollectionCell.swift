@@ -56,11 +56,11 @@ open class LMFeedPollResultCollectionCell: LMCollectionViewCell {
     
     // MARK: Data Variables
     open var selectedPollColor: UIColor {
-        return UIColor(r: 80, g: 70, b: 229)
+        UIColor(r: 80, g: 70, b: 229)
     }
     
     open var notSelectedPollColor: UIColor {
-        return UIColor(r: 230, g: 235, b: 245)
+        UIColor(r: 102, g: 102, b: 102)
     }
     
     open override func setupViews() {

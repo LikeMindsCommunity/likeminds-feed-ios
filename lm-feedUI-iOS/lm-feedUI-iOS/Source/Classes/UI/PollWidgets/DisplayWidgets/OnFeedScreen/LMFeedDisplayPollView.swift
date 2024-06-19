@@ -209,6 +209,7 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         submitButton.addTarget(self, action: #selector(didTapSubmitButton), for: .touchUpInside)
         editVoteLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(editVoteTapped)))
         answerTitleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(voteCountTapped)))
+        addOptionButton.addTarget(self, action: #selector(didTapAddOption), for: .touchUpInside)
     }
     
     @objc
@@ -232,6 +233,15 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
               let pollID else { return }
         
         delegate?.didTapVoteCountButton(for: postID, pollID: pollID, optionID: nil)
+    }
+    
+    
+    @objc
+    open func didTapAddOption() {
+        guard let postID,
+              let pollID else { return }
+        
+        delegate?.didTapAddOption(for: postID, pollID: pollID)
     }
     
     

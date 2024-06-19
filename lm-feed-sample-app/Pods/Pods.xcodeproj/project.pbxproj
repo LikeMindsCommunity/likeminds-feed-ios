@@ -914,6 +914,8 @@
 		E48E71958FB45E560FB048F302571359 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B927334489E1E8ACD27D8200BC21A25B /* User.swift */; };
 		E48EFB55CD6363C1EB1E2B52255D93B1 /* AssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126A6B8CA9AF139666B9108FEF28AE22 /* AssetsViewController.swift */; };
 		E4994C49D1E9E3E4E62AF9FA3DFC3057 /* AWSUICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8D132E720F59843F604E435A2296CF /* AWSUICKeyChainStore.m */; };
+		E53FFF352C219F3F00D770E1 /* LMFeedPollAddOptionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53FFF342C219F3F00D770E1 /* LMFeedPollAddOptionScreen.swift */; };
+		E53FFF372C229B7900D770E1 /* LMFeedPollAddOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53FFF362C229B7900D770E1 /* LMFeedPollAddOptionViewModel.swift */; };
 		E562AB1B2C2067B700B4346C /* LMFeedPollResultScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E562AB1A2C2067B700B4346C /* LMFeedPollResultScreen.swift */; };
 		E562AB1D2C2067EA00B4346C /* LMFeedPollResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E562AB1C2C2067EA00B4346C /* LMFeedPollResultViewModel.swift */; };
 		E562AB202C206CEC00B4346C /* LMFeedPollResultCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E562AB1F2C206CEC00B4346C /* LMFeedPollResultCollectionCell.swift */; };
@@ -2395,6 +2397,8 @@
 		E522AAF7388E58403E31C6B5F4660798 /* AWSS3Serializer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSS3Serializer.h; path = AWSS3/AWSS3Serializer.h; sourceTree = "<group>"; };
 		E533958C9725C7635A6D8A5ED58D4DF6 /* FIROptionsInternal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIROptionsInternal.h; path = FirebaseCore/Extension/FIROptionsInternal.h; sourceTree = "<group>"; };
 		E53448D84E64DCC74072F78306001D67 /* AWSCognitoConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSCognitoConstants.h; path = AWSCognito/Internal/AWSCognitoConstants.h; sourceTree = "<group>"; };
+		E53FFF342C219F3F00D770E1 /* LMFeedPollAddOptionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPollAddOptionScreen.swift; sourceTree = "<group>"; };
+		E53FFF362C229B7900D770E1 /* LMFeedPollAddOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPollAddOptionViewModel.swift; sourceTree = "<group>"; };
 		E562AB1A2C2067B700B4346C /* LMFeedPollResultScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPollResultScreen.swift; sourceTree = "<group>"; };
 		E562AB1C2C2067EA00B4346C /* LMFeedPollResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPollResultViewModel.swift; sourceTree = "<group>"; };
 		E562AB1F2C206CEC00B4346C /* LMFeedPollResultCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPollResultCollectionCell.swift; sourceTree = "<group>"; };
@@ -4777,6 +4781,7 @@
 		D477E2503D0CAA499FFDF3B13E211FE0 /* Poll */ = {
 			isa = PBXGroup;
 			children = (
+				E53FFF332C219EE900D770E1 /* AddOption */,
 				E562AB192C20678D00B4346C /* Create */,
 				E562AB182C20677A00B4346C /* Result */,
 			);
@@ -4878,6 +4883,15 @@
 				AC1DF7AB4500243A865E60CC52CD6A0E /* LMResponse.swift */,
 			);
 			path = Response;
+			sourceTree = "<group>";
+		};
+		E53FFF332C219EE900D770E1 /* AddOption */ = {
+			isa = PBXGroup;
+			children = (
+				E53FFF342C219F3F00D770E1 /* LMFeedPollAddOptionScreen.swift */,
+				E53FFF362C229B7900D770E1 /* LMFeedPollAddOptionViewModel.swift */,
+			);
+			path = AddOption;
 			sourceTree = "<group>";
 		};
 		E562AB182C20677A00B4346C /* Result */ = {
@@ -6754,6 +6768,7 @@
 				5D88E669745C9971864FD3EEA358461E /* Date+Extension.swift in Sources */,
 				1712CF7EBF6E88C46219ED865B72EDC1 /* LikeMindsFeedCore-dummy.m in Sources */,
 				301612AC9BD006C309C470D53AAB9EA7 /* LMAWSManager.swift in Sources */,
+				E53FFF352C219F3F00D770E1 /* LMFeedPollAddOptionScreen.swift in Sources */,
 				2B7120E3DFBE56169591618424517755 /* LMFeedAnalytics.swift in Sources */,
 				6AD6D535B47DCA1630D528C12174C0BE /* LMFeedCommentDataModel.swift in Sources */,
 				E48A1F4EE95D0846A5227EF575B6EE78 /* LMFeedConvertToFeedPost.swift in Sources */,
@@ -6794,6 +6809,7 @@
 				68D2A0FA8D9F26809656188A6B549DE2 /* LMFeedTaggingListViewModel.swift in Sources */,
 				51F6444B507919124C19D0ADC77A15EA /* LMFeedTagListDataModel.swift in Sources */,
 				FEF11708592E3152400383AB7DD767D2 /* LMFeedTimePicker.swift in Sources */,
+				E53FFF372C229B7900D770E1 /* LMFeedPollAddOptionViewModel.swift in Sources */,
 				DDF474516D3EDC44B50815D79AA7CDA1 /* LMFeedTopicDataModel.swift in Sources */,
 				15CF47CD1DE5F2F6D4844A7535CF36F0 /* LMFeedTopicSelectionDataModel.swift in Sources */,
 				A3A24E32037530C06F6AF85A37ADBF9C /* LMFeedTopicSelectionScreen.swift in Sources */,

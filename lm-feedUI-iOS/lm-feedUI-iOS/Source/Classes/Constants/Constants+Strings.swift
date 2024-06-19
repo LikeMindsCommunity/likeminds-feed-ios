@@ -42,5 +42,6 @@ public extension Constants {
         public var deleteCommentReview = "Are you sure you want to delete this comment? This action cannot be reversed."
         
         public var submitVote = "Submit Vote"
+        public var submit = "Submit"
     }
 }

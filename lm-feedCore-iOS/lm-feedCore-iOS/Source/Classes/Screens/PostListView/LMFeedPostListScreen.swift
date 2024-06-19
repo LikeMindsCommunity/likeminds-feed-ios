@@ -224,6 +224,15 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
         }
     }
     
+    open func navigateToAddOptionPoll(with postID: String, pollID: String, options: [String]) {
+        do {
+            let viewcontroller = try LMFeedPollAddOptionViewModel.createModule(for: postID, pollID: pollID, options: options, delegate: self)
+            viewcontroller.modalPresentationStyle = .overFullScreen
+            present(viewcontroller, animated: false)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
 }
 
 // MARK: UITableView
@@ -450,5 +459,21 @@ extension LMFeedPostListScreen: LMFeedPostPollCellProtocol {
     
     open func editVoteTapped(for postID: String, pollID: String) {
         
+    }
+    
+    open func didTapAddOption(for postID: String, pollID: String) {
+        viewModel?.didTapAddOption(for: postID, pollID: pollID)
+    }
+}
+
+
+// MARK: LMFeedAddOptionProtocol
+extension LMFeedPostListScreen: LMFeedAddOptionProtocol {
+    public func onAddOptionResponse(postID: String, success: Bool, errorMessage: String?) {
+        if !success {
+            showError(with: errorMessage ?? "Something went wrong", isPopVC: false)
+        } else {
+            viewModel?.getPost(for: postID)
+        }
     }
 }

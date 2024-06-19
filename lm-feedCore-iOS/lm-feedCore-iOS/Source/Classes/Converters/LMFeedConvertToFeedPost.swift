@@ -139,6 +139,8 @@ public struct LMFeedConvertToFeedPost {
         let postID = pollAttachment.postID
         let pollID = pollAttachment.id
         
+        let optionCount = pollAttachment.options.count
+        
         let isPollSubmitted = isPollSubmitted(options: pollAttachment.options)
         
         let isPollEnded = hasPollEnded(time: pollAttachment.expiryTime)
@@ -158,7 +160,8 @@ public struct LMFeedConvertToFeedPost {
             isInstantPoll: pollAttachment.isInstantPoll,
             isPollSubmitted: isPollSubmitted,
             isAllowAddOption: pollAttachment.allowAddOptions,
-            isPollEnded: isPollEnded
+            isPollEnded: isPollEnded, 
+            optionCount: optionCount
         )
         
         let options: [LMFeedDisplayPollWidget.ContentModel] = pollAttachment.options.map({
@@ -217,13 +220,13 @@ extension LMFeedConvertToFeedPost {
         !(isPollEnded || !isMultiChoice || isPollSubmitted)
     }
     
-    public static func isShowAddOptionButton(isInstantPoll: Bool, isPollSubmitted: Bool, isAllowAddOption: Bool, isPollEnded: Bool) -> Bool {
+    public static func isShowAddOptionButton(isInstantPoll: Bool, isPollSubmitted: Bool, isAllowAddOption: Bool, isPollEnded: Bool, optionCount: Int) -> Bool {
         var isAllowed = true
         
         if isInstantPoll {
             isAllowed = !isPollSubmitted
         }
         
-        return isAllowAddOption && !isPollEnded && isAllowed
+        return isAllowAddOption && !isPollEnded && isAllowed && optionCount < 10
     }
 }

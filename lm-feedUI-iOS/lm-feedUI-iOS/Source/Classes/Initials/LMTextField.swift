@@ -7,7 +7,7 @@
 
 import UIKit
 open class LMTextField: UITextField {
-    func addDoneButtonOnKeyboard() {
+    public func addDoneButtonOnKeyboard() {
         let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
         doneToolbar.barStyle = .default
         

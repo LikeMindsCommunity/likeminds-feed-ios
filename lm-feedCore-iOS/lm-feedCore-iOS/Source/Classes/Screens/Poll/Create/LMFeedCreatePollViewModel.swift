@@ -18,7 +18,7 @@ public protocol LMFeedCreatePollViewModelProtocol: LMBaseViewControllerProtocol 
 }
 
 final public class LMFeedCreatePollViewModel {
-    var delegate: LMFeedCreatePollViewModelProtocol?
+    weak var delegate: LMFeedCreatePollViewModelProtocol?
     
     /// minimum poll options to be shown
     let defaultPollAnswerCount: Int

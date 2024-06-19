@@ -19,7 +19,7 @@ public final class LMFeedPollResultViewModel {
     let pollID: String
     var selectedOptionID: String?
     var optionList: [LMFeedPollDataModel.Option]
-    var delegate: LMFeedPollResultViewModelProtocol?
+    weak var delegate: LMFeedPollResultViewModelProtocol?
     var userList: [LMFeedUserDataModel]
     var pageNo: Int
     let pageSize: Int

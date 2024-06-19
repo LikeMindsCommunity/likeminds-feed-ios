@@ -18,6 +18,7 @@ public protocol LMFeedPostListViewModelProtocol: LMBaseViewControllerProtocol {
     func navigateToReportScreen(for postID: String, creatorUUID: String)
     func updateHeader(with data: [LMFeedPostContentModel], section: Int)
     func navigateToPollResultScreen(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?)
+    func navigateToAddOptionPoll(with postID: String, pollID: String, options: [String])
 }
 
 public class LMFeedPostListViewModel {
@@ -322,8 +323,43 @@ public extension LMFeedPostListViewModel {
     func didTapVoteCountButton(for postID: String, pollID: String, optionID: String?) {
         guard let poll = postList.first(where: { $0.postId == postID })?.pollAttachment else { return }
         
-        let options = poll.options
+        if poll.isAnonymous {
+            delegate?.showError(with: "This being an anonymous poll, the names of the voters can not be disclosed.", isPopVC: false)
+            return
+        } else if !poll.showResults || poll.expiryTime > Int(Date().timeIntervalSince1970) {
+            delegate?.showError(with: "The results will be visible after the poll has ended.", isPopVC: false)
+            return
+        }
         
+        let options = poll.options
         delegate?.navigateToPollResultScreen(with: pollID, optionList: options, selectedOption: optionID)
+    }
+    
+    func didTapAddOption(for postID: String, pollID: String) {
+        guard let poll = postList.first(where: { $0.postId == postID }) else { return }
+        
+        let options = poll.pollAttachment?.options.map({ $0.option }) ?? []
+        
+        delegate?.navigateToAddOptionPoll(with: postID, pollID: pollID, options: options)
+    }
+    
+    func getPost(for id: String) {
+        LMFeedPostOperation.shared.getPost(for: id, currentPage: 1, pageSize: 10) { [weak self] response in
+            guard let self else { return }
+            
+            if response.success,
+               let post = response.data?.post,
+               let users = response.data?.users {
+                let allTopics = response.data?.topics?.compactMap({ $0.value }) ?? []
+                let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
+                
+                
+                guard let newData = LMFeedPostDataModel.init(post: post, users: users, allTopics: allTopics, widgets: widgets),
+                      let index = postList.firstIndex(where: { $0.postId == id }) else { return }
+                
+                postList[index] = newData
+                convertToViewData(for: .init(integer: index))
+            }
+        }
     }
 }
