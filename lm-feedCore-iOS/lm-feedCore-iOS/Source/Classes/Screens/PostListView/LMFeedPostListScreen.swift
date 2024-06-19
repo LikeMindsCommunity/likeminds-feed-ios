@@ -450,11 +450,11 @@ extension LMFeedPostListScreen: LMFeedPostPollCellProtocol {
     }
     
     open func didTapToVote(for postID: String, pollID: String, optionID: String) {
-        
+        viewModel?.optionSelected(for: postID, pollID: pollID, option: optionID)
     }
     
     open func didTapSubmitVote(for postID: String, pollID: String) {
-        
+        viewModel?.pollSubmitButtonTapped(for: postID, pollID: pollID)
     }
     
     open func editVoteTapped(for postID: String, pollID: String) {

@@ -172,10 +172,10 @@ public struct LMFeedConvertToFeedPost {
                 addedBy: pollAttachment.allowAddOptions ? $0.addedBy.userName : nil,
                 voteCount: $0.voteCount,
                 votePercentage: $0.percentage,
-                isSelected: $0.isSelected,
+                isSelected: $0.isSelected || pollAttachment.userSelectedOptions.contains($0.id),
                 showVoteCount: pollAttachment.showResults,
                 showProgressBar: pollAttachment.showResults && (isPollEnded || isPollSubmitted), 
-                showTickButton: $0.isSelected && (isMultiChoice || !pollAttachment.isInstantPoll)
+                showTickButton: ($0.isSelected || pollAttachment.userSelectedOptions.contains($0.id)) && (isMultiChoice || !pollAttachment.isInstantPoll)
             )
         })
         

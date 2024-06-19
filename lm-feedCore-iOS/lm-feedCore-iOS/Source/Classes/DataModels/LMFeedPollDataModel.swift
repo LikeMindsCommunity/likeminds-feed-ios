@@ -39,6 +39,7 @@ public struct LMFeedPollDataModel {
     public let showResults: Bool
     public let isInstantPoll: Bool
     public let voteCount: Int
+    public var userSelectedOptions: [String]
     
     public init(
         id: String,
@@ -68,6 +69,7 @@ public struct LMFeedPollDataModel {
         self.showResults = showResults
         self.isInstantPoll = isInstantPoll
         self.voteCount = voteCount
+        self.userSelectedOptions = []
     }
 }
 
@@ -98,6 +100,7 @@ public extension LMFeedPollDataModel {
         self.showResults = widget.lmMeta?.isShowResult ?? false
         self.isInstantPoll = pollType == "instant"
         self.voteCount = widget.lmMeta?.voteCount ?? 0
+        self.userSelectedOptions = []
     }
 }
 

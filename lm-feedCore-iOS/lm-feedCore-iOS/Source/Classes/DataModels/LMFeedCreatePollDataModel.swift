@@ -33,6 +33,17 @@ public enum LMFeedPollSelectState: Int, CustomStringConvertible, CaseIterable {
             return "at_least"
         }
     }
+    
+    public func checkValidity(with count: Int, allowedCount: Int) -> Bool {
+        switch self {
+        case .exactly:
+            return count == allowedCount
+        case .atMax:
+            return count <= allowedCount
+        case .atLeast:
+            return count >= allowedCount
+        }
+    }
 }
 
 extension LMFeedPollSelectState {

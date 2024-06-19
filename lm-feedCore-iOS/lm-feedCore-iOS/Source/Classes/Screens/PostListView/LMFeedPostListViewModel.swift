@@ -362,4 +362,59 @@ public extension LMFeedPostListViewModel {
             }
         }
     }
+    
+    func optionSelected(for postID: String, pollID: String, option: String) {
+        guard let index = postList.firstIndex(where: { $0.postId == postID }) else { return }
+        
+        var post = postList[index]
+        
+        guard var poll = post.pollAttachment else { return }
+        
+        if poll.expiryTime < Int(Date().timeIntervalSince1970) {
+            delegate?.showError(with: "Poll ended. Vote can not be submitted now.", isPopVC: false)
+            return
+        } else if LMFeedConvertToFeedPost.isPollSubmitted(options: poll.options) && poll.isInstantPoll {
+            return
+        } else if !LMFeedConvertToFeedPost.isMultiChoicePoll(pollSelectCount: poll.pollSelectCount, pollSelectType: poll.pollSelectType) {
+            submitPollVote(for: postID, pollID: pollID, options: [option])
+        } else {
+            if let index = poll.userSelectedOptions.firstIndex(of: option) {
+                poll.userSelectedOptions.remove(at: index)
+            } else {
+                poll.userSelectedOptions.append(option)
+            }
+            
+            post.pollAttachment = poll
+            postList[index] = post
+            
+            convertToViewData(for: .init(integer: index))
+        }
+    }
+    
+    func pollSubmitButtonTapped(for postID: String, pollID: String) {
+        guard let post = postList.first(where: { $0.postId == postID }),
+              let poll = post.pollAttachment else { return }
+        
+        
+        guard poll.pollSelectType.checkValidity(with: poll.userSelectedOptions.count, allowedCount: poll.pollSelectCount) else {
+            delegate?.showError(with: "Please select \(poll.pollSelectType.description.lowercased()) \(poll.pollSelectCount) options", isPopVC: false)
+            return
+        }
+        
+        submitPollVote(for: postID, pollID: pollID, options: poll.userSelectedOptions)
+    }
+    
+    func submitPollVote(for postID: String, pollID: String, options: [String]) {
+        let request = SubmitPollVoteRequest
+            .builder()
+            .pollID(pollID)
+            .votes(options)
+            .build()
+        
+        LMFeedClient.shared.submitPollVoteRequest(request) { [weak self] response in
+            if response.success {
+                self?.getPost(for: postID)
+            }
+        }
+    }
 }
