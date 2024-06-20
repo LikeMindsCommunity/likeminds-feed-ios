@@ -148,49 +148,25 @@ public class LMFeedCore {
             completion?(.failure(.feedNotInitialized))
             return
         }
-        // TODO: Ask Ishaan
-//        let request = InitiateUserRequest.builder()
-//            .apiKey(apiKey)
-//            .userName(userName)
-//            .uuid(userUUID)
-//            .isGuest(false)
-//            .build()
-//        
-//        LMFeedClient.shared.initiateUser(request: request) { [weak self] response in
-//            guard response.success else {
-//                completion?(.failure(.apiInitializationFailed(error: response.errorMessage)))
-//                return
-//            }
-//            
-//            if response.data?.appAccess == false {
-//                self?.logout(response.data?.refreshToken ?? "", deviceId: UIDevice.current.identifierForVendor?.uuidString ?? "")
-//                completion?(.failure(.appAccessFalse))
-//                return
-//            }
-//            
-//            Self.isInitialized = true
-//            
-//            LMFeedRouter.fetchRoute(from: route) { result in
-//                switch result {
-//                case .success(let viewcontroller):
-//                    completion?(.success(viewcontroller))
-//                case .failure(let error):
-//                    completion?(.failure(error))
-//                }
-//            }
-//        }
+        
+        LMFeedRouter.fetchRoute(from: route) { result in
+            switch result {
+            case .success(let viewcontroller):
+                completion?(.success(viewcontroller))
+            case .failure(let error):
+                completion?(.failure(error))
+            }
+        }
     }
 }
 
 
 extension LMFeedCore: LMFeedSDKCallback {
     public func onAccessTokenExpiredAndRefreshed(accessToken: String, refreshToken: String) {
-        print("\(#function)-\(#file)")
         coreCallback?.onAccessTokenExpiredAndRefreshed(accessToken: accessToken, refreshToken: refreshToken)
     }
     
     public func onRefreshTokenExpired(_ completionHandler: (((accessToken: String, refreshToken: String)?) -> Void)?) {
-        print("\(#function)-\(#file)")
         let apiData = LMFeedClient.shared.getAPIKey()
         
         if let apiKey = apiData.data,

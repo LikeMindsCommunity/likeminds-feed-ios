@@ -21,21 +21,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         submitBtn.layer.cornerRadius = 8
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(endEditing)))
-        
-        FeedTokenHandler.initiateSDK { [weak self] tokens in
-            LMFeedCore.shared.setupFeed(accessToken: tokens.accessToken, refreshToken: tokens.refreshToken) { result in
-                switch result {
-                case .success(_):
-                    guard let viewController = LMUniversalFeedViewModel.createModule() else { return }
-                    UIApplication.shared.windows.first?.rootViewController = UINavigationController(rootViewController: viewController)
-                    UIApplication.shared.windows.first?.makeKeyAndVisible()
-                case .failure(let error):
-                    let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                    alert.addAction(.init(title: "OK", style: .default))
-                    self?.present(alert, animated: true)
-                }
-            }
-        }
     }
     
     @IBAction private func submitBtnClicked(_ sender: UIButton) {
@@ -56,6 +41,8 @@ class ViewController: UIViewController {
         if userId.isEmpty {
             userId = "userId"
         }
+        
+        initateAPI(apiKey: apiKey, username: username, userId: userId)
     }
     
     @objc
