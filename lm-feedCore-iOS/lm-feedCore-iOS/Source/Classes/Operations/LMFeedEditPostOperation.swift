@@ -106,6 +106,7 @@ final class LMFeedEditPostOperation {
         
         if let poll {
             let attachmentMeta = AttachmentMeta()
+                .entityID(poll.id)
                 .title(poll.question)
                 .expiryTime(poll.expiryTime)
                 .pollOptions(poll.options.map({ $0.option }))

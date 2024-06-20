@@ -36,7 +36,7 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
         table.register(LMUIComponents.shared.postCell)
         table.register(LMUIComponents.shared.documentCell)
         table.register(LMUIComponents.shared.linkCell)
-        table.register(LMFeedPostPollCell.self)
+        table.register(LMUIComponents.shared.pollCell)
         table.registerHeaderFooter(LMUIComponents.shared.headerView)
         table.registerHeaderFooter(LMUIComponents.shared.footerView)
         return table
@@ -260,7 +260,7 @@ extension LMFeedPostListScreen: UITableViewDataSource, UITableViewDelegate, UITa
                 return cell
             }
         case .poll:
-            if let cell = tableView.dequeueReusableCell(LMFeedPostPollCell.self) {
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.pollCell) {
                 cell.configure(with: data[indexPath.section], delegate: self)
                 return cell
             }
@@ -458,7 +458,7 @@ extension LMFeedPostListScreen: LMFeedPostPollCellProtocol {
     }
     
     open func editVoteTapped(for postID: String, pollID: String) {
-        
+        viewModel?.editPoll(for: postID)
     }
     
     open func didTapAddOption(for postID: String, pollID: String) {

@@ -88,7 +88,7 @@ open class LMFeedPollResultScreen: LMViewController {
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setNavigationTitleAndSubtitle(with: "Poll Results", subtitle: nil, alignment: .center)
         viewmodel?.initializeView()
     }
     
@@ -144,7 +144,7 @@ extension LMFeedPollResultScreen: UICollectionViewDataSource, UICollectionViewDe
         if count < 3 {
             return .init(width: collectionView.frame.width / CGFloat(count), height: collectionView.frame.height)
         } else {
-            return .init(width: 150, height: collectionView.frame.height)
+            return .init(width: collectionView.frame.width * 0.3, height: collectionView.frame.height)
         }
     }
     
@@ -169,8 +169,9 @@ extension LMFeedPollResultScreen: LMFeedPollResultViewModelProtocol {
         userList.removeAll(keepingCapacity: true)
         voteView.reloadData()
         
-        indicatorView.center = voteView.center
         voteView.backgroundView = indicatorView
+        indicatorView.addConstraint(centerX: (voteView.centerXAnchor, 0),
+                                    centerY: (voteView.centerYAnchor, 0))
         indicatorView.startAnimating()
     }
     

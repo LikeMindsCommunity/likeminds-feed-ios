@@ -167,7 +167,8 @@ open class LMFeedCreateDisplayPollView: BaseDisplayPollView {
         optionStackView.removeAllArrangedSubviews()
         
         data.options.forEach { option in
-            let optionView = LMFeedDisplayCreatePollWidget().translatesAutoresizingMaskIntoConstraints()
+            let optionView = LMUIComponents.shared.createPollDisplayWidget.init()
+            optionView.translatesAutoresizingMaskIntoConstraints = false
             optionView.configure(with: option)
             optionStackView.addArrangedSubview(optionView)
         }

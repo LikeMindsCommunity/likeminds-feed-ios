@@ -11,7 +11,7 @@ public struct LMFeedPollDataModel {
     public struct Option {
         public let id: String
         public let option: String
-        public let isSelected: Bool
+        public var isSelected: Bool
         public let voteCount: Int
         public let percentage: Double
         public let addedBy: LMFeedUserDataModel
@@ -29,7 +29,7 @@ public struct LMFeedPollDataModel {
     public let id: String
     public let postID: String
     public let question: String
-    public let options: [Option]
+    public var options: [Option]
     public let pollDisplayText: String
     public let pollSelectType: LMFeedPollSelectState
     public let pollSelectCount: Int

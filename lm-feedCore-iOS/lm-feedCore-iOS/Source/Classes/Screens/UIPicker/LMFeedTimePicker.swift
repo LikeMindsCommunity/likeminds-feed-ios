@@ -79,6 +79,11 @@ open class LMFeedTimePicker: LMViewController {
         super.viewDidLoad()
         
         bottomConstraint?.constant = 300
+        
+        if #available(iOS 13.0, *) {
+            // Always adopt a light interface style.
+            overrideUserInterfaceStyle = .light
+        }
     }
     
     
@@ -154,6 +159,7 @@ open class LMFeedTimePicker: LMViewController {
         doneButton.addTarget(self, action: #selector(didTapDoneButton), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         dismissView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCancelButton)))
+        pickerView.addTarget(self, action: #selector(noKeypad), for: .editingDidBegin)
     }
     
     @objc
@@ -165,6 +171,11 @@ open class LMFeedTimePicker: LMViewController {
     @objc
     open func didTapCancelButton() {
         dismiss(animated: false)
+    }
+    
+    @objc
+    open func noKeypad(_ sender: UIDatePicker) {
+        sender.resignFirstResponder()
     }
     
     // MARK: configure

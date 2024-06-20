@@ -325,14 +325,12 @@ public extension LMFeedPostListViewModel {
         
         if poll.isAnonymous {
             delegate?.showError(with: "This being an anonymous poll, the names of the voters can not be disclosed.", isPopVC: false)
-            return
-        } else if !poll.showResults || poll.expiryTime > Int(Date().timeIntervalSince1970) {
+        } else if poll.showResults || poll.expiryTime < Int(Date().timeIntervalSince1970) {
+            let options = poll.options
+            delegate?.navigateToPollResultScreen(with: pollID, optionList: options, selectedOption: optionID)
+        } else {
             delegate?.showError(with: "The results will be visible after the poll has ended.", isPopVC: false)
-            return
         }
-        
-        let options = poll.options
-        delegate?.navigateToPollResultScreen(with: pollID, optionList: options, selectedOption: optionID)
     }
     
     func didTapAddOption(for postID: String, pollID: String) {
@@ -373,7 +371,7 @@ public extension LMFeedPostListViewModel {
         if poll.expiryTime < Int(Date().timeIntervalSince1970) {
             delegate?.showError(with: "Poll ended. Vote can not be submitted now.", isPopVC: false)
             return
-        } else if LMFeedConvertToFeedPost.isPollSubmitted(options: poll.options) && poll.isInstantPoll {
+        } else if LMFeedConvertToFeedPost.isPollSubmitted(options: poll.options) {
             return
         } else if !LMFeedConvertToFeedPost.isMultiChoicePoll(pollSelectCount: poll.pollSelectCount, pollSelectType: poll.pollSelectType) {
             submitPollVote(for: postID, pollID: pollID, options: [option])
@@ -416,5 +414,33 @@ public extension LMFeedPostListViewModel {
                 self?.getPost(for: postID)
             }
         }
+    }
+    
+    func editPoll(for postID: String) {
+        guard let index = postList.firstIndex(where: { $0.postId == postID }) else { return }
+        
+        var post = postList[index]
+        
+        guard var poll = post.pollAttachment else { return }
+        
+        var selectedOptions: [String] = []
+        
+        let count = poll.options.count
+        
+        for i in 0..<count {
+            if poll.options[i].isSelected {
+                selectedOptions.append(poll.options[i].id)
+            }
+            
+            poll.options[i].isSelected = false
+        }
+        
+        poll.userSelectedOptions = selectedOptions
+        
+        post.pollAttachment = poll
+        
+        postList[index] = post
+        
+        convertToViewData(for: .init(integer: index))
     }
 }

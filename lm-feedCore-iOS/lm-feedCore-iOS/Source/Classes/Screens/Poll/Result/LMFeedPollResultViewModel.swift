@@ -24,6 +24,10 @@ public final class LMFeedPollResultViewModel {
     var pageNo: Int
     let pageSize: Int
     var isAPIWorking: Bool
+    var shouldCallAPI: Bool
+    
+    let queue: DispatchQueue
+    var item: DispatchWorkItem?
     
     init(pollID: String, selectedOptionID: String? = nil, optionList: [LMFeedPollDataModel.Option], delegate: LMFeedPollResultViewModelProtocol? = nil) {
         self.pollID = pollID
@@ -34,6 +38,8 @@ public final class LMFeedPollResultViewModel {
         self.pageSize = 10
         self.userList = []
         self.isAPIWorking = false
+        self.shouldCallAPI = true
+        self.queue = DispatchQueue.global()
     }
     
     public static func createModule(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?) throws -> LMFeedPollResultScreen {
@@ -68,6 +74,8 @@ public final class LMFeedPollResultViewModel {
         self.selectedOptionID = optionID
         
         pageNo = 1
+        shouldCallAPI = true
+        isAPIWorking = false
         userList.removeAll(keepingCapacity: true)
         
         fetchOption(for: optionID)
@@ -81,7 +89,8 @@ public final class LMFeedPollResultViewModel {
     
     
     func fetchOption(for optionID: String) {
-        guard !isAPIWorking else { return }
+        guard !isAPIWorking,
+                shouldCallAPI else { return }
         
         isAPIWorking = true
         
@@ -102,8 +111,7 @@ public final class LMFeedPollResultViewModel {
         LMFeedClient.shared.getPollVotes(request) { [weak self] response in
             defer {
                 self?.isAPIWorking = false
-                self?.pageNo += 1
-                self?.reloadResults()
+                self?.reloadResults(with: self?.userList ?? [])
             }
             
             if let users = response.data?.users {
@@ -112,21 +120,36 @@ public final class LMFeedPollResultViewModel {
                     return .init(userName: user.name ?? "User", userUUID: uuid, userProfileImage: user.imageUrl, customTitle: user.customTitle)
                 }
                 
+                self?.shouldCallAPI = !users.isEmpty
                 self?.userList = transformedUsers
+                self?.pageNo += 1
             }
         }
     }
     
-    func reloadResults() {
-        let memberItems: [LMFeedMemberItem.ContentModel] = userList.map {
-            .init(
-                username: $0.userName,
-                uuid: $0.userUUID,
-                customTitle: $0.customTitle,
-                profileImage: $0.customTitle
-            )
+    func reloadResults(with transformedUsers: [LMFeedUserDataModel]) {
+        /// Cancelling the previous task, if any. this way when user is changing the user list from one vote section to another, data will always be up to date!
+        item?.cancel()
+        item = nil
+        
+        item = DispatchWorkItem { [weak self] in
+            self?.userList = transformedUsers
+            
+            let memberItems: [LMFeedMemberItem.ContentModel] = transformedUsers.map {
+                .init(
+                    username: $0.userName,
+                    uuid: $0.userUUID,
+                    customTitle: $0.customTitle,
+                    profileImage: $0.customTitle
+                )
+            }
+            
+            DispatchQueue.main.async {
+                self?.delegate?.reloadResults(with: memberItems)
+            }
         }
         
-        delegate?.reloadResults(with: memberItems)
+        guard let item else { return }
+        queue.async(execute: item)
     }
 }

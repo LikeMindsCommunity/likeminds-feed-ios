@@ -90,6 +90,11 @@ open class LMFeedGeneralPicker: LMViewController {
         super.viewDidLoad()
         
         bottomConstraint?.constant = 300
+        
+        if #available(iOS 13.0, *) {
+            // Always adopt a light interface style.
+            overrideUserInterfaceStyle = .light
+        }
     }
     
     

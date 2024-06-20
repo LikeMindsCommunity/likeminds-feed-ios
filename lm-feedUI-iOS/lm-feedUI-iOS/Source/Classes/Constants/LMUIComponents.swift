@@ -24,6 +24,7 @@ public struct LMUIComponents {
     public var headerView: LMFeedPostHeaderView.Type = LMFeedPostHeaderView.self
     public var linkCell: LMFeedPostLinkCell.Type = LMFeedPostLinkCell.self
     public var postCell: LMFeedPostMediaCell.Type = LMFeedPostMediaCell.self
+    public var pollCell: LMFeedPostPollCell.Type = LMFeedPostPollCell.self
     
     // MARK: Comment Components
     public var replyView: LMFeedReplyView.Type = LMFeedReplyView.self
@@ -34,6 +35,7 @@ public struct LMUIComponents {
     public var postDetailDocumentCell: LMFeedPostDetailDocumentCell.Type = LMFeedPostDetailDocumentCell.self
     public var postDetailLinkCell: LMFeedPostDetailLinkCell.Type = LMFeedPostDetailLinkCell.self
     public var postDetailMediaCell: LMFeedPostDetailMediaCell.Type = LMFeedPostDetailMediaCell.self
+    public var postDetailPollCell: LMFeedPostDetailPollCell.Type = LMFeedPostDetailPollCell.self
     public var postDetailHeaderView: LMFeedPostDetailHeaderView.Type = LMFeedPostDetailHeaderView.self
     public var postDetailFooterView: LMFeedPostDetailFooterView.Type = LMFeedPostDetailFooterView.self
     
@@ -50,6 +52,12 @@ public struct LMUIComponents {
     // MARK: Create Post Components
     public var addMediaView: LMFeedAddMediaView.Type = LMFeedAddMediaView.self
     public var createPostHeaderView: LMFeedCreatePostHeaderView.Type = LMFeedCreatePostHeaderView.self
+    public var createPollDisplayView: LMFeedCreateDisplayPollView.Type = LMFeedCreateDisplayPollView.self
+    public var createPollDisplayWidget: LMFeedDisplayCreatePollWidget.Type = LMFeedDisplayCreatePollWidget.self
+    public var createPollHeaderView: LMFeedCreatePollHeader.Type = LMFeedCreatePollHeader.self
+    public var createPollQuestionView: LMFeedCreatePollQuestionView.Type = LMFeedCreatePollQuestionView.self
+    public var createPollDateView: LMFeedCreatePollDateView.Type = LMFeedCreatePollDateView.self
+    public var createPollMetaView: LMFeedCreatePollMetaView.Type = LMFeedCreatePollMetaView.self
     
     // MARK: Like Count Screen Components
     public var memberItem: LMFeedMemberItem.Type = LMFeedMemberItem.self
@@ -59,4 +67,8 @@ public struct LMUIComponents {
     
     // MARK: Report Screen Components
     public var reportItem: LMFeedReportItem.Type = LMFeedReportItem.self
+    
+    // MARK: Display Poll Components
+    public var pollDisplayView: LMFeedDisplayPollView.Type = LMFeedDisplayPollView.self
+    public var pollDisplayWidget: LMFeedDisplayPollWidget.Type = LMFeedDisplayPollWidget.self
 }

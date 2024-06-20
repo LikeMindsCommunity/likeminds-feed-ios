@@ -79,7 +79,8 @@ open class LMFeedCreatePostScreen: LMViewController {
     }()
     
     open private(set) lazy var pollPreview: LMFeedCreateDisplayPollView = {
-        let view = LMFeedCreateDisplayPollView().translatesAutoresizingMaskIntoConstraints()
+        let view = LMUIComponents.shared.createPollDisplayView.init()
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -310,7 +311,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     
     @objc
     open func didTapAddPoll() {
-        LMFeedCore.analytics?.trackEvent(for: .postCreationAttachmentClicked, eventProperties: ["type": "pollx"])
+        LMFeedCore.analytics?.trackEvent(for: .postCreationAttachmentClicked, eventProperties: ["type": "poll"])
         viewModel?.updateCurrentSelection(to: .poll)
     }
     

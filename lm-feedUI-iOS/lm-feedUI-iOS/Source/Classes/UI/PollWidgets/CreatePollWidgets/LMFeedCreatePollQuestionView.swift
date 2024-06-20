@@ -123,6 +123,7 @@ open class LMFeedCreatePollQuestionView: LMView {
         super.setupAppearance()
         
         containerView.backgroundColor = Appearance.shared.colors.white
+        optionStack.backgroundColor = Appearance.shared.colors.clear
     }
     
     

@@ -914,6 +914,7 @@
 		E48E71958FB45E560FB048F302571359 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B927334489E1E8ACD27D8200BC21A25B /* User.swift */; };
 		E48EFB55CD6363C1EB1E2B52255D93B1 /* AssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126A6B8CA9AF139666B9108FEF28AE22 /* AssetsViewController.swift */; };
 		E4994C49D1E9E3E4E62AF9FA3DFC3057 /* AWSUICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8D132E720F59843F604E435A2296CF /* AWSUICKeyChainStore.m */; };
+		E50291AD2C2414CB00BBC160 /* LMFeedPostDetailPollCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50291AC2C2414CB00BBC160 /* LMFeedPostDetailPollCell.swift */; };
 		E53FFF352C219F3F00D770E1 /* LMFeedPollAddOptionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53FFF342C219F3F00D770E1 /* LMFeedPollAddOptionScreen.swift */; };
 		E53FFF372C229B7900D770E1 /* LMFeedPollAddOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53FFF362C229B7900D770E1 /* LMFeedPollAddOptionViewModel.swift */; };
 		E562AB1B2C2067B700B4346C /* LMFeedPollResultScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E562AB1A2C2067B700B4346C /* LMFeedPollResultScreen.swift */; };
@@ -2393,6 +2394,7 @@
 		E4ED9728EC0B624B1EBC96D303EE7A8A /* FIRMessagingTokenStore.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessagingTokenStore.h; path = FirebaseMessaging/Sources/Token/FIRMessagingTokenStore.h; sourceTree = "<group>"; };
 		E4EFD9880D75FC08E151398DA4510F8B /* GoogleUtilities-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "GoogleUtilities-umbrella.h"; sourceTree = "<group>"; };
 		E4FD60D35E7FDF9AC691073AC2B21F9A /* FIRComponentType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRComponentType.h; path = FirebaseCore/Extension/FIRComponentType.h; sourceTree = "<group>"; };
+		E50291AC2C2414CB00BBC160 /* LMFeedPostDetailPollCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LMFeedPostDetailPollCell.swift; sourceTree = "<group>"; };
 		E5206D437676DBF07F0D923CAFC94698 /* GetPostLikesRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GetPostLikesRequest.swift; sourceTree = "<group>"; };
 		E522AAF7388E58403E31C6B5F4660798 /* AWSS3Serializer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AWSS3Serializer.h; path = AWSS3/AWSS3Serializer.h; sourceTree = "<group>"; };
 		E533958C9725C7635A6D8A5ED58D4DF6 /* FIROptionsInternal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIROptionsInternal.h; path = FirebaseCore/Extension/FIROptionsInternal.h; sourceTree = "<group>"; };
@@ -4036,6 +4038,7 @@
 		A2C220F54E6F7B4B68C017310432467E /* PostDetailWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				E50291AB2C2414B200BBC160 /* PollCell */,
 				2A6C408FF0D465FE654C91B239C24649 /* CommentCells */,
 				09E80083331F89DA6243772A5A5FE3A2 /* DocumentCell */,
 				687F479D25A11298D62E1BCBF486AB06 /* LinkCell */,
@@ -4883,6 +4886,14 @@
 				AC1DF7AB4500243A865E60CC52CD6A0E /* LMResponse.swift */,
 			);
 			path = Response;
+			sourceTree = "<group>";
+		};
+		E50291AB2C2414B200BBC160 /* PollCell */ = {
+			isa = PBXGroup;
+			children = (
+				E50291AC2C2414CB00BBC160 /* LMFeedPostDetailPollCell.swift */,
+			);
+			path = PollCell;
 			sourceTree = "<group>";
 		};
 		E53FFF332C219EE900D770E1 /* AddOption */ = {
@@ -6722,6 +6733,7 @@
 				55E0AF6C77D23F157A7229AE0BFFF547 /* LMFeedPostHeaderView.swift in Sources */,
 				178E0F14484682198C9B2CB6C5641430 /* LMFeedPostLinkCell.swift in Sources */,
 				CD45F30CDA41CA813154C87F94B804F5 /* LMFeedPostMediaCell.swift in Sources */,
+				E50291AD2C2414CB00BBC160 /* LMFeedPostDetailPollCell.swift in Sources */,
 				0233F72F0922FD56A8C28E2E33542431 /* LMFeedReplyView.swift in Sources */,
 				C0340CA7C0876E6DD728876DE75BEDF4 /* LMFeedReportItem.swift in Sources */,
 				F301EA6B77F58945F16A1D6FDC0B82CB /* LMFeedSelectTopicViewCell.swift in Sources */,

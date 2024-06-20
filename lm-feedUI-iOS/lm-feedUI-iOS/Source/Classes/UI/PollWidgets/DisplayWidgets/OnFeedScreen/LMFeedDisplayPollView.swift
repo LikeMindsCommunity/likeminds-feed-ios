@@ -87,7 +87,7 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         stack.axis = .vertical
         stack.alignment = .leading
         stack.distribution = .fill
-        stack.spacing = 8
+        stack.spacing = 16
         return stack
     }()
     
@@ -118,6 +118,7 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
     
     open private(set) lazy var editVoteLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+        label.isUserInteractionEnabled = true
         label.textColor = Appearance.shared.colors.appTintColor
         label.font = Appearance.shared.fonts.textFont1
         label.text = "Edit Vote"
@@ -259,7 +260,8 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         optionStackView.removeAllArrangedSubviews()
         
         data.options.forEach { option in
-            let optionView = LMFeedDisplayPollWidget().translatesAutoresizingMaskIntoConstraints()
+            let optionView = LMUIComponents.shared.pollDisplayWidget.init()
+            optionView.translatesAutoresizingMaskIntoConstraints = false
             optionView.configure(with: option, delegate: self)
             optionStackView.addArrangedSubview(optionView)
         }

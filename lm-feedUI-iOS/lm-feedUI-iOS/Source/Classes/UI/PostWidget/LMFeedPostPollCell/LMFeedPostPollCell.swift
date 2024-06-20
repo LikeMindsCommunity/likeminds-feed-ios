@@ -18,7 +18,8 @@ public protocol LMFeedPostPollCellProtocol: LMPostWidgetTableViewCellProtocol {
 open class LMFeedPostPollCell: LMPostWidgetTableViewCell {
     // MARK: UI Elements
     open private(set) lazy var pollPreview: LMFeedDisplayPollView = {
-        let poll = LMFeedDisplayPollView().translatesAutoresizingMaskIntoConstraints()
+        let poll = LMUIComponents.shared.pollDisplayView.init()
+        poll.translatesAutoresizingMaskIntoConstraints = false
         return poll
     }()
     
@@ -48,6 +49,7 @@ open class LMFeedPostPollCell: LMPostWidgetTableViewCell {
     }
     
     open func configure(with data: LMFeedPostContentModel, delegate: LMFeedPostPollCellProtocol?) {
+        actionDelegate = delegate
         topicFeed.configure(with: data.topics)
         topicFeed.isHidden = data.topics.topics.isEmpty
         

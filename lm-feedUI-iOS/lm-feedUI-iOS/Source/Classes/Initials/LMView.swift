@@ -116,7 +116,7 @@ public extension UIView {
     func setWidthConstraint(
         with value: CGFloat,
         relatedBy: NSLayoutConstraint.Relation = .equal,
-        priority: UILayoutPriority = .defaultHigh
+        priority: UILayoutPriority = .required
     ) -> NSLayoutConstraint {
         let widthConstraint = NSLayoutConstraint(item: self, attribute: .width, relatedBy: relatedBy, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)
         widthConstraint.priority = priority

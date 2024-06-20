@@ -28,6 +28,9 @@ public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol 
     func navigateToEditPost(for postID: String)
     func navigateToDeleteScreen(for postID: String, commentID: String?)
     func navigateToReportScreen(for postID: String, creatorUUID: String, commentID: String?, replyCommentID: String?)
+    
+    func navigateToPollResultScreen(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?)
+    func navigateToAddOptionPoll(with postID: String, pollID: String, options: [String])
 }
 
 @IBDesignable
@@ -49,6 +52,7 @@ open class LMFeedPostDetailScreen: LMViewController {
         table.register(LMUIComponents.shared.postDetailMediaCell)
         table.register(LMUIComponents.shared.postDetailLinkCell)
         table.register(LMUIComponents.shared.postDetailDocumentCell)
+        table.register(LMUIComponents.shared.postDetailPollCell)
         table.register(LMUIComponents.shared.replyView)
         table.registerHeaderFooter(LMUIComponents.shared.loadMoreReplies)
         table.registerHeaderFooter(LMUIComponents.shared.commentView)
@@ -406,6 +410,11 @@ extension LMFeedPostDetailScreen: UITableViewDataSource, UITableViewDelegate {
                     cell.configure(for: indexPath, with: postData, delegate: self)
                     return cell
                 }
+            case .poll:
+                if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailPollCell) {
+                    cell.configure(with: postData, delegate: self)
+                    return cell
+                }
             default:
                 break
             }
@@ -739,6 +748,25 @@ extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
         inputTextView.becomeFirstResponder()
         contentHeightChanged()
     }
+    
+    public func navigateToPollResultScreen(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?) {
+        do {
+            let viewcontroller = try LMFeedPollResultViewModel.createModule(with: pollID, optionList: optionList, selectedOption: selectedOption)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch {
+            print("Error in \(#function)")
+        }
+    }
+    
+    public func navigateToAddOptionPoll(with postID: String, pollID: String, options: [String]) {
+        do {
+            let viewcontroller = try LMFeedPollAddOptionViewModel.createModule(for: postID, pollID: pollID, options: options, delegate: self)
+            viewcontroller.modalPresentationStyle = .overFullScreen
+            present(viewcontroller, animated: false)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
 }
 
 
@@ -846,5 +874,41 @@ extension LMFeedPostDetailScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProt
     open func didTapLinkPreview(with url: String) {
         guard let url = URL(string: url) else { return }
         openURL(with: url)
+    }
+}
+
+
+// MARK: LMFeedPostPollCellProtocol
+extension LMFeedPostDetailScreen: LMFeedPostPollCellProtocol {
+    public func didTapVoteCountButton(for postID: String, pollID: String, optionID: String?) {
+        viewModel?.didTapVoteCountButton(for: postID, pollID: pollID, optionID: optionID)
+    }
+    
+    public func didTapToVote(for postID: String, pollID: String, optionID: String) {
+        viewModel?.optionSelected(for: postID, pollID: pollID, option: optionID)
+    }
+    
+    public func didTapSubmitVote(for postID: String, pollID: String) {
+        viewModel?.pollSubmitButtonTapped(for: postID, pollID: pollID)
+    }
+    
+    public func editVoteTapped(for postID: String, pollID: String) {
+        viewModel?.editPoll(for: postID)
+    }
+    
+    public func didTapAddOption(for postID: String, pollID: String) {
+        viewModel?.didTapAddOption(for: postID, pollID: pollID)
+    }
+}
+
+
+// MARK: LMFeedAddOptionProtocol
+extension LMFeedPostDetailScreen: LMFeedAddOptionProtocol {
+    public func onAddOptionResponse(postID: String, success: Bool, errorMessage: String?) {
+        if !success {
+            showError(with: errorMessage ?? "Something went wrong", isPopVC: false)
+        } else {
+            viewModel?.getPost(isInitialFetch: true)
+        }
     }
 }

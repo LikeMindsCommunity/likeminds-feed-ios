@@ -42,23 +42,27 @@ open class LMFeedCreatePollScreen: LMViewController {
     }()
     
     open private(set) lazy var pollQuestionHeaderView: LMFeedCreatePollHeader = {
-        let header = LMFeedCreatePollHeader().translatesAutoresizingMaskIntoConstraints()
+        let header = LMUIComponents.shared.createPollHeaderView.init()
+        header.translatesAutoresizingMaskIntoConstraints = false
         return header
     }()
     
     open private(set) lazy var pollOptionView: LMFeedCreatePollQuestionView = {
-        let view = LMFeedCreatePollQuestionView().translatesAutoresizingMaskIntoConstraints()
+        let view = LMUIComponents.shared.createPollQuestionView.init()
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     open private(set) lazy var pollExpiryDateView: LMFeedCreatePollDateView = {
-        let view = LMFeedCreatePollDateView().translatesAutoresizingMaskIntoConstraints()
+        let view = LMUIComponents.shared.createPollDateView.init()
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.isUserInteractionEnabled = true
         return view
     }()
     
     open private(set) lazy var pollMetaOptionsView: LMFeedCreatePollMetaView = {
-        let view = LMFeedCreatePollMetaView().translatesAutoresizingMaskIntoConstraints()
+        let view = LMUIComponents.shared.createPollMetaView.init()
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.isHidden = true
         return view
     }()

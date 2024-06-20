@@ -80,15 +80,15 @@ open class LMFeedPollResultCollectionCell: LMCollectionViewCell {
         contentView.pinSubView(subView: containerView)
         
         stackView.addConstraint(top: (containerView.topAnchor, 8),
-                                leading: (containerView.leadingAnchor, 8),
-                                trailing: (containerView.trailingAnchor, -8))
+                                leading: (containerView.leadingAnchor, 0),
+                                trailing: (containerView.trailingAnchor, 0))
         
         sepratorView.addConstraint(top: (stackView.bottomAnchor, 0),
                                    bottom: (containerView.bottomAnchor, 0),
                                    leading: (containerView.leadingAnchor, 0),
                                    trailing: (containerView.trailingAnchor, 0))
-        sepratorView.setHeightConstraint(with: 4)
-        sepratorView.layer.cornerRadius = 2
+        sepratorView.setHeightConstraint(with: 2)
+        sepratorView.layer.cornerRadius = 1
         
         containerView.pinSubView(subView: stackView, padding: .init(top: 8, left: 8, bottom: -8, right: -8))
     }
