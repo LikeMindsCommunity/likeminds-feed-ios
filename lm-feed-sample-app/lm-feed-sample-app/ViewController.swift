@@ -9,6 +9,7 @@
 import UIKit
 import LikeMindsFeedUI
 import LikeMindsFeedCore
+import FirebaseMessaging
 
 class ViewController: UIViewController {
 
@@ -58,10 +59,25 @@ class ViewController: UIViewController {
                 guard let viewController = LMUniversalFeedViewModel.createModule() else { return }
                 UIApplication.shared.windows.first?.rootViewController = UINavigationController(rootViewController: viewController)
                 UIApplication.shared.windows.first?.makeKeyAndVisible()
+                
+                self?.registerNotification()
             case .failure(let error):
                 let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                 alert.addAction(.init(title: "OK", style: .default))
                 self?.present(alert, animated: true)
+            }
+        }
+    }
+    
+    func registerNotification() {
+        guard let fcmToken = AppDelegate.fcmToken,
+            let deviceID = UIDevice.current.identifierForVendor?.uuidString else { return }
+        
+        Messaging.messaging().token { token, error in
+            if let error {
+                debugPrint(error)
+            } else if let token {
+                LMFeedCore.shared.registerDeviceToken(with: token, deviceID: deviceID)
             }
         }
     }
