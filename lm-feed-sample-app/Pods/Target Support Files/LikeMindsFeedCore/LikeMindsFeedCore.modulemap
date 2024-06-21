@@ -1,6 +1,0 @@
-framework module LikeMindsFeedCore {
-  umbrella header "LikeMindsFeedCore-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -189,6 +189,7 @@ open class LMView: UIView {
         self.setupViews()
         self.setupLayouts()
         self.setupActions()
+        self.setupObservers()
     }
     
     @available(*, unavailable, renamed: "init(frame:)")

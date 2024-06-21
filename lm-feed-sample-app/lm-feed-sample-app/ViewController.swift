@@ -9,6 +9,7 @@
 import UIKit
 import LikeMindsFeedUI
 import LikeMindsFeedCore
+import FirebaseMessaging
 
 class ViewController: UIViewController {
 
@@ -21,13 +22,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         submitBtn.layer.cornerRadius = 8
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(endEditing)))
-        
-        if let apiKey = LocalPreferences.apiKey,
-           !apiKey.isEmpty,
-           let username = LocalPreferences.userObj?.name,
-           let uuid = LocalPreferences.userObj?.sdkClientInfo?.uuid {
-            initateAPI(apiKey: apiKey, username: username, userId: uuid)
-        }
     }
     
     @IBAction private func submitBtnClicked(_ sender: UIButton) {
@@ -59,17 +53,31 @@ class ViewController: UIViewController {
     
     
     func initateAPI(apiKey: String, username: String, userId: String) {
-        LMFeedCore.shared.setupLikeMindsFeed(apiKey: apiKey, analytics: DummyAnalytics())
-        LMFeedCore.shared.initiateLikeMindsFeed(username: username, userId: userId) { [weak self] result in
+        LMFeedCore.shared.setupFeed(apiKey: apiKey, username: username, uuid: userId) { [weak self] result in
             switch result {
             case .success(_):
                 guard let viewController = LMUniversalFeedViewModel.createModule() else { return }
                 UIApplication.shared.windows.first?.rootViewController = UINavigationController(rootViewController: viewController)
                 UIApplication.shared.windows.first?.makeKeyAndVisible()
+                
+                self?.registerNotification()
             case .failure(let error):
                 let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                 alert.addAction(.init(title: "OK", style: .default))
                 self?.present(alert, animated: true)
+            }
+        }
+    }
+    
+    func registerNotification() {
+        guard let fcmToken = AppDelegate.fcmToken,
+            let deviceID = UIDevice.current.identifierForVendor?.uuidString else { return }
+        
+        Messaging.messaging().token { token, error in
+            if let error {
+                debugPrint(error)
+            } else if let token {
+                LMFeedCore.shared.registerDeviceToken(with: token, deviceID: deviceID)
             }
         }
     }

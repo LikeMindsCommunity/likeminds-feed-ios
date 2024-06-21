@@ -47,7 +47,4 @@ public struct LocalPreferences {
     
     @Storage(key: "lm_device_uuid")
     public static var deviceUUID: String?
-    
-    @Storage(key: "lm_feed_api_key")
-    public static var apiKey: String?
 }
