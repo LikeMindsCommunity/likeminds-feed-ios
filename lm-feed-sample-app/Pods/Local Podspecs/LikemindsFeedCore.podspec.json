@@ -15,6 +15,8 @@
     "tag": "1.0.3"
   },
   "source_files": "lm-feedCore-iOS/lm-feedCore-iOS/Source/**/*.swift",
+  "readme": "https://github.com/LikeMindsCommunity/likeminds-feed-ios/blob/master/README.md",
+  "documentation_url": "https://docs.likeminds.community/feed/iOS/getting-started",
   "platforms": {
     "ios": "13.0"
   },

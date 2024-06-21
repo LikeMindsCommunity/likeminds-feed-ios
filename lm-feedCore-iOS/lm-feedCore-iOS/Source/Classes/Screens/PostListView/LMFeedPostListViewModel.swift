@@ -368,7 +368,13 @@ public extension LMFeedPostListViewModel {
         
         guard var poll = post.pollAttachment else { return }
         
-        if poll.expiryTime < Int(Date().timeIntervalSince1970) {
+        var expiryTime = poll.expiryTime
+        
+        if !DateUtility.isEpochTimeInSeconds(expiryTime) {
+            expiryTime = expiryTime / 1000
+        }
+        
+        if expiryTime < Int(Date().timeIntervalSince1970) {
             delegate?.showError(with: "Poll ended. Vote can not be submitted now.", isPopVC: false)
             return
         } else if LMFeedConvertToFeedPost.isPollSubmitted(options: poll.options) {

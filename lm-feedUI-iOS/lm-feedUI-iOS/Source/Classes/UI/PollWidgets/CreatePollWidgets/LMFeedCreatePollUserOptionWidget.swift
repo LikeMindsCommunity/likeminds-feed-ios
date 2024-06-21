@@ -21,7 +21,7 @@ open class LMFeedCreatePollUserOptionWidget: LMView {
     }()
     
     open private(set) lazy var downArrow: LMImageView = {
-        let image = Constants.shared.images.downArrowFilled.withConfiguration(UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont2))
+        let image = Constants.shared.images.downArrowFilled.withConfiguration(UIImage.SymbolConfiguration(font: Appearance.shared.fonts.subHeadingFont1))
         let imageView = LMImageView(image: image)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = Appearance.shared.colors.black

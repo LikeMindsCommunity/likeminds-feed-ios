@@ -24,10 +24,12 @@ public final class LMFeedPollResultViewModel {
     var pageNo: Int
     let pageSize: Int
     var isAPIWorking: Bool
-    var shouldCallAPI: Bool
+    var shouldCallAPI: Bool {
+        didSet {
+            print("Value changed: \(shouldCallAPI)")
+        }
+    }
     
-    let queue: DispatchQueue
-    var item: DispatchWorkItem?
     
     init(pollID: String, selectedOptionID: String? = nil, optionList: [LMFeedPollDataModel.Option], delegate: LMFeedPollResultViewModelProtocol? = nil) {
         self.pollID = pollID
@@ -39,7 +41,6 @@ public final class LMFeedPollResultViewModel {
         self.userList = []
         self.isAPIWorking = false
         self.shouldCallAPI = true
-        self.queue = DispatchQueue.global()
     }
     
     public static func createModule(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?) throws -> LMFeedPollResultScreen {
@@ -114,42 +115,53 @@ public final class LMFeedPollResultViewModel {
                 self?.reloadResults(with: self?.userList ?? [])
             }
             
-            if let users = response.data?.users {
-                let transformedUsers: [LMFeedUserDataModel] = users.values.compactMap { user in
-                    guard let uuid = user.sdkClientInfo?.uuid else { return nil }
-                    return .init(userName: user.name ?? "User", userUUID: uuid, userProfileImage: user.imageUrl, customTitle: user.customTitle)
+            if let users = response.data?.users,
+               let voterList = response.data?.votes?.first(where: { $0.id == optionID })?.users {
+                var transformedUsers: [LMFeedUserDataModel] = []
+                
+                voterList.forEach { id in
+                    if let user = users[id],
+                       let uuid = user.sdkClientInfo?.uuid {
+                        transformedUsers.append(.init(userName: user.name ?? "User", userUUID: uuid, userProfileImage: user.imageUrl, customTitle: user.customTitle))
+                    }
                 }
                 
-                self?.shouldCallAPI = !users.isEmpty
-                self?.userList = transformedUsers
+                self?.userList.append(contentsOf: transformedUsers)
+                self?.shouldCallAPI = !transformedUsers.isEmpty
                 self?.pageNo += 1
+            } else {
+                self?.shouldCallAPI = false
             }
         }
     }
     
+    
+    func sortItems(_ items: [LMFeedUserDataModel], basedOn sortedIDs: [String]) -> [LMFeedUserDataModel] {
+        // Create a dictionary to store the order of each id in the sortedIDs array
+        let orderDict = Dictionary(uniqueKeysWithValues: sortedIDs.enumerated().map { ($1, $0) })
+
+        // Sort the items array based on the order defined in the sortedIDs array
+        let sortedItems = items.sorted { (a, b) -> Bool in
+            let indexA = orderDict[a.userUUID] ?? Int.max
+            let indexB = orderDict[b.userUUID] ?? Int.max
+            return indexA < indexB
+        }
+
+        return sortedItems
+    }
+    
     func reloadResults(with transformedUsers: [LMFeedUserDataModel]) {
-        /// Cancelling the previous task, if any. this way when user is changing the user list from one vote section to another, data will always be up to date!
-        item?.cancel()
-        item = nil
+        userList = transformedUsers
         
-        item = DispatchWorkItem { [weak self] in
-            self?.userList = transformedUsers
-            
-            let memberItems: [LMFeedMemberItem.ContentModel] = transformedUsers.map {
-                .init(
-                    username: $0.userName,
-                    uuid: $0.userUUID,
-                    customTitle: $0.customTitle,
-                    profileImage: $0.customTitle
-                )
-            }
-            
-            DispatchQueue.main.async {
-                self?.delegate?.reloadResults(with: memberItems)
-            }
+        let memberItems: [LMFeedMemberItem.ContentModel] = transformedUsers.map {
+            .init(
+                username: $0.userName,
+                uuid: $0.userUUID,
+                customTitle: $0.customTitle,
+                profileImage: $0.customTitle
+            )
         }
         
-        guard let item else { return }
-        queue.async(execute: item)
+        delegate?.reloadResults(with: memberItems)
     }
 }

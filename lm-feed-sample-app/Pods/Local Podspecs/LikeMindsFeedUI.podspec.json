@@ -20,6 +20,8 @@
       "lm-feedUI-iOS/lm-feedUI-iOS/Source/Assets/*.{xcassets}"
     ]
   },
+  "readme": "https://github.com/LikeMindsCommunity/likeminds-feed-ios/blob/master/README.md",
+  "documentation_url": "https://docs.likeminds.community/feed/iOS/getting-started",
   "platforms": {
     "ios": "13.0"
   },

@@ -112,8 +112,8 @@ SPEC CHECKSUMS:
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
   Kingfisher: b9c985d864d43515f404f1ef4a8ce7d802ace3ac
   LikeMindsFeed: 09819cd3783c8983e14097907559d6019cc821d2
-  LikeMindsFeedCore: d0cd12e018e3061387e12bccd507da0faed6f85c
-  LikeMindsFeedUI: 2f1658ab3dfca91bc2c48e2b9a636c45dabe4225
+  LikeMindsFeedCore: 5214fc51577ce1bc83e1e17b545f23969a127a90
+  LikeMindsFeedUI: 299f3d99431e7bf597c7b027767a5380737dfe55
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
 

@@ -24,7 +24,11 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
         let textField = LMTextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.addDoneButtonOnKeyboard()
-        textField.placeholder = "Option"
+        textField.attributedPlaceholder = NSAttributedString(
+            string: "Option",
+            attributes: [NSAttributedString.Key.foregroundColor: Appearance.shared.colors.gray102]
+        )
+        textField.textColor = Appearance.shared.colors.black
         return textField
     }()
     

@@ -92,7 +92,7 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
     }()
     
     open private(set) lazy var submitButton: LMButton = {
-        let button = LMButton.createButton(with: Constants.shared.strings.submitVote, image: nil, textColor: Appearance.shared.colors.white, textFont: Appearance.shared.fonts.buttonFont2, contentSpacing: .init(top: 8, left: 16, bottom: 8, right: 16))
+        let button = LMButton.createButton(with: Constants.shared.strings.submitVote, image: nil, textColor: Appearance.shared.colors.white, textFont: Appearance.shared.fonts.buttonFont2, contentSpacing: .init(top: 12, left: 8, bottom: 12, right: 8))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Appearance.shared.colors.appTintColor
         return button

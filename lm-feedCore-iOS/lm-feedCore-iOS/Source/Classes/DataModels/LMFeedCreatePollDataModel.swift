@@ -17,7 +17,7 @@ public enum LMFeedPollSelectState: Int, CustomStringConvertible, CaseIterable {
         case .exactly:
             return "Exactly"
         case .atMax:
-            return "At max"
+            return "At most"
         case .atLeast:
             return "At least"
         }

@@ -247,7 +247,7 @@ open class LMFeedCreatePostScreen: LMViewController {
                                     trailing: (view.safeAreaLayoutGuide.trailingAnchor, 0))
         
         containerView.pinSubView(subView: containerStackView)
-        scrollView.pinSubView(subView: scrollStackView)
+        scrollView.pinSubView(subView: scrollStackView, padding: .init(top: 8, left: 8, bottom: -8, right: -8))
         headerView.setHeightConstraint(with: 64)
         topicView.setHeightConstraint(with: 2, priority: .defaultLow)
         linkPreview.setHeightConstraint(with: 1000, priority: .defaultLow)

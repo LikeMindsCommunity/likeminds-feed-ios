@@ -130,6 +130,7 @@ open class LMFeedCreatePollMetaView: LMView {
     open override func setupAppearance() {
         super.setupAppearance()
         containerView.backgroundColor = Appearance.shared.colors.white
+        equalSymbol.tintColor = Appearance.shared.colors.gray155
     }
     
     

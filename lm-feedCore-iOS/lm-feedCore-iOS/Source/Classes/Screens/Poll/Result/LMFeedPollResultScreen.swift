@@ -34,6 +34,8 @@ open class LMFeedPollResultScreen: LMViewController {
         table.register(LMUIComponents.shared.memberItem)
         table.dataSource = self
         table.delegate = self
+        table.showsVerticalScrollIndicator = false
+        table.showsHorizontalScrollIndicator = false
         table.separatorStyle = .none
         return table
     }()
@@ -82,6 +84,8 @@ open class LMFeedPollResultScreen: LMViewController {
         super.setupAppearance()
         
         view.backgroundColor = Appearance.shared.colors.white
+        optionView.backgroundColor = Appearance.shared.colors.clear
+        voteView.backgroundColor = Appearance.shared.colors.clear
     }
     
     
@@ -96,7 +100,7 @@ open class LMFeedPollResultScreen: LMViewController {
     open func onTapUser(with uuid: String) { }
 }
 
-extension LMFeedPollResultScreen: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
+extension LMFeedPollResultScreen: UITableViewDataSource, UITableViewDelegate {
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         userList.count
     }
@@ -115,8 +119,8 @@ extension LMFeedPollResultScreen: UITableViewDataSource, UITableViewDelegate, UI
     
     open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 72 }
     
-    open func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        if indexPaths.contains(where: { $0.row >= userList.count }) {
+    open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == userList.count - 1 {
             viewmodel?.fetchUserList()
         }
     }
@@ -197,6 +201,9 @@ extension LMFeedPollResultScreen: LMFeedPollResultViewModelProtocol {
     public func loadOptionList(with data: [LMFeedPollResultCollectionCell.ContentModel], index: Int) {
         self.optionList = data
         optionView.reloadData()
-        optionView.scrollToItem(at: .init(row: index, section: 0), at: .centeredHorizontally, animated: false)
+        
+        DispatchQueue.main.async { [weak optionView] in
+            optionView?.scrollToItem(at: .init(row: index, section: 0), at: .centeredHorizontally, animated: false)
+        }
     }
 }

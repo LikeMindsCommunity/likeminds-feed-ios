@@ -205,7 +205,11 @@ extension LMFeedConvertToFeedPost {
     }
     
     public static func hasPollEnded(time: Int) -> Bool {
-        Int(Date().timeIntervalSince1970) > time
+        if DateUtility.isEpochTimeInSeconds(time) {
+            Int(Date().timeIntervalSince1970) > time
+        } else {
+            Int(Date().timeIntervalSince1970) > (time / 1000)
+        }
     }
     
     public static func isMultiChoicePoll(pollSelectCount: Int, pollSelectType: LMFeedPollSelectState) -> Bool {
