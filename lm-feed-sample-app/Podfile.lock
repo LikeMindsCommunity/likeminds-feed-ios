@@ -58,16 +58,16 @@ PODS:
   - Kingfisher (7.11.0)
   - LikeMindsFeed (1.7.3):
     - Alamofire (~> 5.7.1)
-  - LikeMindsFeedCore (1.0.2):
+  - LikeMindsFeedCore (1.0.3):
     - AWSCognito
     - AWSCore
     - AWSS3
-    - BSImagePicker
+    - BSImagePicker (~> 3.3.3)
     - FirebaseCore
     - FirebaseMessaging
     - LikeMindsFeed
     - LikeMindsFeedUI
-  - LikeMindsFeedUI (1.0.2):
+  - LikeMindsFeedUI (1.0.3):
     - Kingfisher (~> 7.0)
   - nanopb (2.30910.0):
     - nanopb/decode (= 2.30910.0)
@@ -77,7 +77,7 @@ PODS:
   - PromisesObjC (2.4.0)
 
 DEPENDENCIES:
-  - LikeMindsFeed (from `../../LikeMinds-iOS-Feed-SDK/LikeMindsFeed.podspec`)
+  - LikeMindsFeed (from `/Users/devanshmohata/Desktop/likeminds-feed-ios-data/LikeMindsFeed.podspec`)
   - LikeMindsFeedCore (from `../LikeMindsFeedCore.podspec`)
   - LikeMindsFeedUI (from `../LikeMindsFeedUI.podspec`)
 
@@ -100,7 +100,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   LikeMindsFeed:
-    :path: "../../LikeMinds-iOS-Feed-SDK/LikeMindsFeed.podspec"
+    :path: "/Users/devanshmohata/Desktop/likeminds-feed-ios-data/LikeMindsFeed.podspec"
   LikeMindsFeedCore:
     :path: "../LikeMindsFeedCore.podspec"
   LikeMindsFeedUI:
@@ -120,11 +120,11 @@ SPEC CHECKSUMS:
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   Kingfisher: b9c985d864d43515f404f1ef4a8ce7d802ace3ac
   LikeMindsFeed: ae717d2cec80c16c00c106e87dee969cecb01994
-  LikeMindsFeedCore: fadfbd65dbc5bc5c739715006ccb56eac9bf0907
-  LikeMindsFeedUI: 3f1f2c8526ab84171a6f93f056ccf462d0634dfe
+  LikeMindsFeedCore: d0cd12e018e3061387e12bccd507da0faed6f85c
+  LikeMindsFeedUI: 2f1658ab3dfca91bc2c48e2b9a636c45dabe4225
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
 
-PODFILE CHECKSUM: a6b281fcf85fdc9c2e701384f1863d97b5d37864
+PODFILE CHECKSUM: 644cf93b6cc703feb6c89463323b97a34db3b9d2
 
 COCOAPODS: 1.15.2

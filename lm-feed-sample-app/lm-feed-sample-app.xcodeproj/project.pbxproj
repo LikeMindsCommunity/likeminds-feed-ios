@@ -37,7 +37,6 @@
 		E572B7BB2B4BE40700E36655 /* DummyUI1.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DummyUI1.xib; sourceTree = "<group>"; };
 		E57F61432B7BCC34005B0EEA /* DummyAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyAnalytics.swift; sourceTree = "<group>"; };
 		E59F9D1C2B57ACFA00E68030 /* DummyUI2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DummyUI2.xib; sourceTree = "<group>"; };
-		E5A79F332B7C9E6C00A9F7B3 /* lm-feed-sample-app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "lm-feed-sample-app.entitlements"; sourceTree = "<group>"; };
 		E5A79F3B2B7DE10D00A9F7B3 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -82,7 +81,6 @@
 		E572B6742B47105E00E36655 /* lm-feed-sample-app */ = {
 			isa = PBXGroup;
 			children = (
-				E5A79F332B7C9E6C00A9F7B3 /* lm-feed-sample-app.entitlements */,
 				E536512A2B7C9CFB00108573 /* GoogleService-Info.plist */,
 				E572B7802B480BF400E36655 /* ViewController.swift */,
 				E572B6752B47105E00E36655 /* AppDelegate.swift */,
@@ -375,7 +373,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "lm-feed-sample-app/lm-feed-sample-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = HPC929F5X6;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -392,7 +390,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.likeminds.lm-feed-sample-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -409,7 +407,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "lm-feed-sample-app/lm-feed-sample-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = HPC929F5X6;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -426,7 +424,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.likeminds.lm-feed-sample-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

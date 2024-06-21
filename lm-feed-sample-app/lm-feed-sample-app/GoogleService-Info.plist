@@ -3,28 +3,28 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDvMaW9c8XJpYqQx4dVjirJTSG7b04_y8o</string>
+	<string>AIzaSyAVmbe-8jgnO2MUnFotMdp2tmDVnwTZqfE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>38533399823</string>
+	<string>317419981427</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.likeminds.lm-feed-sample-app</string>
 	<key>PROJECT_ID</key>
-	<string>feed-sample-ios</string>
+	<string>likeminds-sdk-app</string>
 	<key>STORAGE_BUCKET</key>
-	<string>feed-sample-ios.appspot.com</string>
+	<string>likeminds-sdk-app.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<true/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:38533399823:ios:1bd0c525cc0a06a69baa7a</string>
+	<string>1:317419981427:ios:95c5fdbb838a5a8fd2f806</string>
 </dict>
 </plist>

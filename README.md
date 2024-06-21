@@ -1,29 +1,39 @@
-# likeminds-feed-iOS
+[![Version](https://img.shields.io/cocoapods/v/LikeMindsFeedCore.svg?style=flat)](https://cocoapods.org/pods/LikeMindsFeedCore)
+[![License](https://img.shields.io/cocoapods/l/LikeMindsFeedCore.svg?style=flat)](https://cocoapods.org/pods/LikeMindsFeedCore)
+[![Platform](https://img.shields.io/cocoapods/p/LikeMindsFeedCore.svg?style=flat)](https://cocoapods.org/pods/LikeMindsFeedCore)
 
-[![CI Status](https://img.shields.io/travis/Devansh Mohata/likeminds-feed-iOS.svg?style=flat)](https://travis-ci.org/Devansh Mohata/likeminds-feed-iOS)
-[![Version](https://img.shields.io/cocoapods/v/likeminds-feed-iOS.svg?style=flat)](https://cocoapods.org/pods/likeminds-feed-iOS)
-[![License](https://img.shields.io/cocoapods/l/likeminds-feed-iOS.svg?style=flat)](https://cocoapods.org/pods/likeminds-feed-iOS)
-[![Platform](https://img.shields.io/cocoapods/p/likeminds-feed-iOS.svg?style=flat)](https://cocoapods.org/pods/likeminds-feed-iOS)
+# LikeMindsFeedCore
+The LikeMinds Feed SDK allows you to seamlessly integrate personalized and engaging feeds into your iOS application. This can significantly enhance the user experience and drive user engagement within your app. 
 
-## Example
+## Features
+- Personalized Feed
+- Like, Comment on a post
+- Topic 
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
-
-## Requirements
+and many more coming soon!
 
 ## Installation
 
-likeminds-feed-iOS is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+In your `Podfile`, add the library `LikeMindsFeedCore`.
 
-```ruby
-pod 'likeminds-feed-iOS'
+```
+platform :ios, '13.0'
+
+target 'YourProjectName' do
+  use_frameworks!
+
+  pod 'LikeMindsFeedCore'
+end
 ```
 
-## Author
+## Contribute
+- Issue Tracker: https://github.com/LikeMindsCommunity/likeminds-feed-ios/issues
+- Source Code: https://github.com/LikeMindsCommunity/likeminds-feed-ios
 
-Devansh Mohata, devansh.mohata@likeminds.community
+## Support
+
+If you are having issues, please let us know.
+We have a mailing list located at: [iOS@likeminds.community](mailto:iOS@likeminds.community)
 
 ## License
-
-likeminds-feed-iOS is available under the MIT license. See the LICENSE file for more info.
+The project is licensed under the MIT license.

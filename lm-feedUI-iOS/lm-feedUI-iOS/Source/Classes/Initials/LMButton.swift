@@ -11,6 +11,7 @@ import UIKit
 public class LMButton: UIButton {
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        tintAdjustmentMode = .normal
     }
     
     @available(*, unavailable, renamed: "init(frame:)")

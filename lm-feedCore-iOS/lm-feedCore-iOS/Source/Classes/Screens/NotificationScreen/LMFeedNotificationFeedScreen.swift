@@ -28,8 +28,9 @@ open class LMFeedNotificationFeedScreen: LMViewController {
     
     open private(set) lazy var refreshControl: UIRefreshControl = UIRefreshControl()
     
-    open private(set) lazy var emptyNotificationView: LMFeedEmptyNotificationView = {
-        let view = LMFeedEmptyNotificationView()
+    open private(set) lazy var emptyNotificationView: LMFeedNoResultView = {
+        let view = LMFeedNoResultView()
+        view.configure(with: Constants.shared.strings.noNotificationFound)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -60,6 +61,13 @@ open class LMFeedNotificationFeedScreen: LMViewController {
         refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
     }
     
+    open override func setupAppearance() {
+        super.setupAppearance()
+        
+        view.backgroundColor = .white
+        notificationListView.backgroundColor = .clear
+    }
+    
     @objc
     open func pullToRefresh(_ refreshControl: UIRefreshControl) {
         viewModel?.getNotifications(isInitialFetch: true)
@@ -69,6 +77,7 @@ open class LMFeedNotificationFeedScreen: LMViewController {
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
+        
         setNavigationTitleAndSubtitle(with: "Notifications", subtitle: nil, alignment: .center)
         notificationListView.refreshControl = refreshControl
         viewModel?.getNotifications(isInitialFetch: true)

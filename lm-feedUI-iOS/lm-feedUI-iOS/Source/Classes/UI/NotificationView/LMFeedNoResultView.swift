@@ -1,5 +1,5 @@
 //
-//  LMFeedEmptyNotificationView.swift
+//  LMFeedNoResultView.swift
 //  lm-feedUI-iOS
 //
 //  Created by Devansh Mohata on 29/01/24.
@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedEmptyNotificationView: LMView {
+open class LMFeedNoResultView: LMView {
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
         return view
@@ -21,7 +21,7 @@ open class LMFeedEmptyNotificationView: LMView {
     
     open private(set) lazy var textLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.text = "Oops! You don't have any no notifications yet."
+        label.text = Constants.shared.strings.noResultsFound
         label.textColor = Appearance.shared.colors.gray51
         label.font = Appearance.shared.fonts.headingFont3
         label.textAlignment = .center
@@ -52,5 +52,9 @@ open class LMFeedEmptyNotificationView: LMView {
         super.setupAppearance()
         
         emptyImageView.image = Constants.shared.images.emptyViewIcon
+    }
+    
+    open func configure(with error: String) {
+        textLabel.text = error
     }
 }

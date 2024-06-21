@@ -39,7 +39,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
-//        handleNotification(notification: notification.request)
+        handleNotification(notification: notification.request)
         
         if #available(iOS 14.0, *) {
             return .sound
