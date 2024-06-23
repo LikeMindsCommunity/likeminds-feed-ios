@@ -37,14 +37,14 @@ public class LMFeedCore {
         LMAWSManager.shared.initialize()
     }
     
-    public func setupFeed(apiKey: String, username: String, uuid: String, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
+    public func showFeed(apiKey: String, username: String, uuid: String, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
         self.setupFeed()
         let tokens = LMFeedClient.shared.getTokens()
         
         if tokens.success,
            let accessToken = tokens.data?.accessToken,
            let refreshToken = tokens.data?.refreshToken {
-            setupFeed(accessToken: accessToken, refreshToken: refreshToken) { result in
+            showFeed(accessToken: accessToken, refreshToken: refreshToken) { result in
                 completionHandler?(result)
             }
         } else {
@@ -52,18 +52,24 @@ public class LMFeedCore {
         }
     }
     
-    public func setupFeed(accessToken: String?, refreshToken: String?, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
+    public func showFeed(accessToken: String?, refreshToken: String?, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
         self.setupFeed()
         
-        let tokens = LMFeedClient.shared.getTokens()
-        
-        guard let accessToken = accessToken ?? tokens.data?.accessToken,
-              let refreshToken = refreshToken ?? tokens.data?.refreshToken else {
+        if let accessToken,
+           let refreshToken {
+            showFeed(accessToken: accessToken, refreshToken: refreshToken, completionHandler: completionHandler)
+        } else if let accessToken = LMFeedClient.shared.getTokens().data?.accessToken,
+                  let refreshToken = LMFeedClient.shared.getTokens().data?.refreshToken {
+            showFeed(accessToken: accessToken, refreshToken: refreshToken, completionHandler: completionHandler)
+        } else {
             completionHandler?(.failure(.apiInitializationFailed(error: "Invalid Tokens")))
             return
         }
-        
-        let request = ValidateUserRequest.builder()
+    }
+    
+    func showFeed(accessToken: String, refreshToken: String, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
+        let request = ValidateUserRequest
+            .builder()
             .accessToken(accessToken)
             .refreshToken(refreshToken)
             .build()
