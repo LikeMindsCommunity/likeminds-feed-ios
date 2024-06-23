@@ -13,42 +13,6 @@ public protocol LMFeedLinkProtocol: LMPostWidgetTableViewCellProtocol {
 
 @IBDesignable
 open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
-    // MARK: Data Model
-    public struct ContentModel: LMFeedPostTableCellProtocol {
-        public var postID: String
-        public var userUUID: String
-        public var headerData: LMFeedPostHeaderView.ContentModel
-        public var postText: String
-        public var isShowMore: Bool
-        public var topics: LMFeedTopicView.ContentModel
-        public var mediaData: LMFeedLinkPreview.ContentModel
-        public var footerData: LMFeedPostFooterView.ContentModel
-        public var totalCommentCount: Int
-        
-        public init(
-            postID: String,
-            userUUID: String,
-            headerData: LMFeedPostHeaderView.ContentModel,
-            postText: String,
-            topics: LMFeedTopicView.ContentModel,
-            mediaData: LMFeedLinkPreview.ContentModel,
-            footerData: LMFeedPostFooterView.ContentModel,
-            totalCommentCount: Int,
-            isShowMore: Bool = true
-        ) {
-            self.postID = postID
-            self.userUUID = userUUID
-            self.headerData = headerData
-            self.postText = postText
-            self.topics = topics
-            self.mediaData = mediaData
-            self.footerData = footerData
-            self.totalCommentCount = totalCommentCount
-            self.isShowMore = isShowMore
-        }
-    }
-    
-    
     // MARK: UI Elements    
     open private(set) lazy var linkPreveiw: LMFeedLinkPreview = {
         let view = LMUIComponents.shared.linkPreview.init().translatesAutoresizingMaskIntoConstraints()
@@ -117,13 +81,13 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
     
     
     // MARK: configure
-    open func configure(with data: ContentModel, delegate: LMFeedLinkProtocol?) {
+    open func configure(with data: LMFeedPostContentModel, delegate: LMFeedLinkProtocol?) {
         postID = data.postID
         userUUID = data.userUUID
         
         self.delegate = delegate
         self.actionDelegate = delegate
-        postURL = data.mediaData.url
+        postURL = data.linkPreview?.url
         
         topicFeed.configure(with: data.topics)
         
@@ -131,8 +95,10 @@ open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
         
         setupPostText(text: data.postText, showMore: data.isShowMore)
         
-        linkPreveiw.configure(with: data.mediaData)
-        contentStack.addArrangedSubview(linkPreveiw)
+        if let linkPreview = data.linkPreview {
+            linkPreveiw.configure(with: linkPreview)
+            contentStack.addArrangedSubview(linkPreveiw)
+        }
         
         NSLayoutConstraint.activate([
             linkPreveiw.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor, constant: 16),

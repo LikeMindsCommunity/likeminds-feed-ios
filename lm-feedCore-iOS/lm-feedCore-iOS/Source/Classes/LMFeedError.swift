@@ -25,6 +25,8 @@ public enum LMFeedError: Error {
     case notificationRegisterationFailed(error: String?)
     case logoutFailed(error: String?)
     
+    case addPollOptionFailed(error: String?)
+    
     public var localizedDescription: String {
         switch self {
         case .apiInitializationFailed(let error),
@@ -35,7 +37,8 @@ public enum LMFeedError: Error {
                 .postDeleteFailed(let error),
                 .postEditFailed(let error),
                 .reportFailed(let error),
-                .routeError(let error):
+                .routeError(let error),
+                .addPollOptionFailed(let error):
             return error ?? LMStringConstants.shared.genericErrorMessage
         case .appAccessFalse:
             return "User does not have right access for app usage"

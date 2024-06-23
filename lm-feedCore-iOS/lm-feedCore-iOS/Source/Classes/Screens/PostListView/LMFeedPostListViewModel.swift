@@ -10,13 +10,15 @@ import LikeMindsFeed
 
 // MARK: LMUniversalFeedViewModelProtocol
 public protocol LMFeedPostListViewModelProtocol: LMBaseViewControllerProtocol {
-    func loadPosts(with data: [LMFeedPostTableCellProtocol], index: IndexSet?, reloadNow: Bool)
+    func loadPosts(with data: [LMFeedPostContentModel], index: IndexSet?, reloadNow: Bool)
     func showHideFooterLoader(isShow: Bool)
     func showActivityLoader()
     func navigateToEditScreen(for postID: String)
     func navigateToDeleteScreen(for postID: String)
     func navigateToReportScreen(for postID: String, creatorUUID: String)
-    func updateHeader(with data: [LMFeedPostTableCellProtocol], section: Int)
+    func updateHeader(with data: [LMFeedPostContentModel], section: Int)
+    func navigateToPollResultScreen(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?)
+    func navigateToAddOptionPoll(with postID: String, pollID: String, options: [String])
 }
 
 public class LMFeedPostListViewModel {
@@ -78,13 +80,13 @@ public extension LMFeedPostListViewModel {
         LMFeedPostOperation.shared.getFeed(currentPage: currentPage, pageSize: pageSize, selectedTopics: selectedTopics) { [weak self] response in
             guard let self else { return }
             
-            isFetchingFeed = false
             delegate?.showHideFooterLoader(isShow: false)
             
             guard response.success,
                   let posts = response.data?.posts,
                   let users = response.data?.users else {
                 convertToViewData()
+                isFetchingFeed = false
                 return
             }
             
@@ -96,24 +98,31 @@ public extension LMFeedPostListViewModel {
                 $0.value
             } ?? []
             
+            let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
+            
             let convertedData: [LMFeedPostDataModel] = posts.compactMap { post in
-                return .init(post: post, users: users, allTopics: topics)
+                return .init(post: post, users: users, allTopics: topics, widgets: widgets)
             }
             
             self.postList.append(contentsOf: convertedData)
             self.convertToViewData()
             
+            isFetchingFeed = false
         }
     }
     
     func convertToViewData(for section: IndexSet? = nil, reloadNow: Bool = true) {
-        var convertedViewData: [LMFeedPostTableCellProtocol] = []
+        var convertedViewData: [LMFeedPostContentModel] = []
         
-        postList.forEach { post in
-            convertedViewData.append(LMFeedConvertToFeedPost.convertToViewModel(for: post))
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.postList.forEach { post in
+                convertedViewData.append(LMFeedConvertToFeedPost.convertToViewModel(for: post))
+            }
+            
+            DispatchQueue.main.async {
+                self?.delegate?.loadPosts(with: convertedViewData, index: section, reloadNow: reloadNow)
+            }
         }
-        
-        delegate?.loadPosts(with: convertedViewData, index: section, reloadNow: reloadNow)
     }
 }
 
@@ -179,7 +188,7 @@ public extension LMFeedPostListViewModel {
                 
                 postList[index] = feed
                 
-                var convertedViewData: [LMFeedPostTableCellProtocol] = []
+                var convertedViewData: [LMFeedPostContentModel] = []
                 
                 postList.forEach { post in
                     convertedViewData.append(LMFeedConvertToFeedPost.convertToViewModel(for: post))
@@ -304,6 +313,140 @@ public extension LMFeedPostListViewModel {
     func updatePostData(for post: LMFeedPostDataModel) {
         guard let index = postList.firstIndex(where: { $0.postId == post.postId }) else { return }
         postList[index] = post
+        convertToViewData(for: .init(integer: index))
+    }
+}
+
+
+// MARK: Poll
+public extension LMFeedPostListViewModel {
+    func didTapVoteCountButton(for postID: String, pollID: String, optionID: String?) {
+        guard let poll = postList.first(where: { $0.postId == postID })?.pollAttachment else { return }
+        
+        if poll.isAnonymous {
+            delegate?.showError(with: "This being an anonymous poll, the names of the voters can not be disclosed.", isPopVC: false)
+        } else if poll.showResults || poll.expiryTime < Int(Date().timeIntervalSince1970) {
+            let options = poll.options
+            delegate?.navigateToPollResultScreen(with: pollID, optionList: options, selectedOption: optionID)
+        } else {
+            delegate?.showError(with: "The results will be visible after the poll has ended.", isPopVC: false)
+        }
+    }
+    
+    func didTapAddOption(for postID: String, pollID: String) {
+        guard let poll = postList.first(where: { $0.postId == postID }) else { return }
+        
+        let options = poll.pollAttachment?.options.map({ $0.option }) ?? []
+        
+        delegate?.navigateToAddOptionPoll(with: postID, pollID: pollID, options: options)
+    }
+    
+    func getPost(for id: String) {
+        LMFeedPostOperation.shared.getPost(for: id, currentPage: 1, pageSize: 10) { [weak self] response in
+            guard let self else { return }
+            
+            if response.success,
+               let post = response.data?.post,
+               let users = response.data?.users {
+                let allTopics = response.data?.topics?.compactMap({ $0.value }) ?? []
+                let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
+                
+                
+                guard let newData = LMFeedPostDataModel.init(post: post, users: users, allTopics: allTopics, widgets: widgets),
+                      let index = postList.firstIndex(where: { $0.postId == id }) else { return }
+                
+                postList[index] = newData
+                convertToViewData(for: .init(integer: index))
+            }
+        }
+    }
+    
+    func optionSelected(for postID: String, pollID: String, option: String) {
+        guard let index = postList.firstIndex(where: { $0.postId == postID }) else { return }
+        
+        var post = postList[index]
+        
+        guard var poll = post.pollAttachment else { return }
+        
+        var expiryTime = poll.expiryTime
+        
+        if !DateUtility.isEpochTimeInSeconds(expiryTime) {
+            expiryTime = expiryTime / 1000
+        }
+        
+        if expiryTime < Int(Date().timeIntervalSince1970) {
+            delegate?.showError(with: "Poll ended. Vote can not be submitted now.", isPopVC: false)
+            return
+        } else if LMFeedConvertToFeedPost.isPollSubmitted(options: poll.options) {
+            return
+        } else if !LMFeedConvertToFeedPost.isMultiChoicePoll(pollSelectCount: poll.pollSelectCount, pollSelectType: poll.pollSelectType) {
+            submitPollVote(for: postID, pollID: pollID, options: [option])
+        } else {
+            if let index = poll.userSelectedOptions.firstIndex(of: option) {
+                poll.userSelectedOptions.remove(at: index)
+            } else {
+                poll.userSelectedOptions.append(option)
+            }
+            
+            post.pollAttachment = poll
+            postList[index] = post
+            
+            convertToViewData(for: .init(integer: index))
+        }
+    }
+    
+    func pollSubmitButtonTapped(for postID: String, pollID: String) {
+        guard let post = postList.first(where: { $0.postId == postID }),
+              let poll = post.pollAttachment else { return }
+        
+        
+        guard poll.pollSelectType.checkValidity(with: poll.userSelectedOptions.count, allowedCount: poll.pollSelectCount) else {
+            delegate?.showError(with: "Please select \(poll.pollSelectType.description.lowercased()) \(poll.pollSelectCount) options", isPopVC: false)
+            return
+        }
+        
+        submitPollVote(for: postID, pollID: pollID, options: poll.userSelectedOptions)
+    }
+    
+    func submitPollVote(for postID: String, pollID: String, options: [String]) {
+        let request = SubmitPollVoteRequest
+            .builder()
+            .pollID(pollID)
+            .votes(options)
+            .build()
+        
+        LMFeedClient.shared.submitPollVoteRequest(request) { [weak self] response in
+            if response.success {
+                self?.getPost(for: postID)
+            }
+        }
+    }
+    
+    func editPoll(for postID: String) {
+        guard let index = postList.firstIndex(where: { $0.postId == postID }) else { return }
+        
+        var post = postList[index]
+        
+        guard var poll = post.pollAttachment else { return }
+        
+        var selectedOptions: [String] = []
+        
+        let count = poll.options.count
+        
+        for i in 0..<count {
+            if poll.options[i].isSelected {
+                selectedOptions.append(poll.options[i].id)
+            }
+            
+            poll.options[i].isSelected = false
+        }
+        
+        poll.userSelectedOptions = selectedOptions
+        
+        post.pollAttachment = poll
+        
+        postList[index] = post
+        
         convertToViewData(for: .init(integer: index))
     }
 }

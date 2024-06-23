@@ -78,6 +78,12 @@ open class LMFeedCreatePostScreen: LMViewController {
         return view
     }()
     
+    open private(set) lazy var pollPreview: LMFeedCreateDisplayPollView = {
+        let view = LMUIComponents.shared.createPollDisplayView.init()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     open private(set) lazy var mediaCollectionView: LMCollectionView = {
         let collection = LMCollectionView(frame: .zero, collectionViewLayout: LMCollectionView.mediaFlowLayout())
         collection.translatesAutoresizingMaskIntoConstraints = false
@@ -153,6 +159,12 @@ open class LMFeedCreatePostScreen: LMViewController {
         return view
     }()
     
+    open private(set) lazy var addPollTab: LMFeedAddMediaView = {
+        let view = LMUIComponents.shared.addMediaView.init().translatesAutoresizingMaskIntoConstraints()
+        view.isUserInteractionEnabled = true
+        return view
+    }()
+    
     open private(set) lazy var videoPlayer: AVPlayerViewController = {
         let player = AVPlayerViewController()
         player.view.translatesAutoresizingMaskIntoConstraints = false
@@ -184,6 +196,8 @@ open class LMFeedCreatePostScreen: LMViewController {
     public var textInputMinimumHeight: CGFloat = 80
     public var textInputMaximumHeight: CGFloat = 150
     
+    public var isPollFlow: Bool = false
+    
     public var mediaAttachmentData: [LMFeedMediaProtocol] = []
     
     public lazy var documentPicker: UIDocumentPickerViewController = {
@@ -198,12 +212,6 @@ open class LMFeedCreatePostScreen: LMViewController {
         }
     }()
     
-//    public lazy var imagePicker: ImagePickerController = {
-//        let imagePicker = ImagePickerController(selectedAssets: [])
-//        imagePicker.settings.theme.selectionStyle = .numbered
-//        imagePicker.settings.selection.unselectOnReachingMax = false
-//        return imagePicker
-//    }()
     
     // MARK: setupViews
     open override func setupViews() {
@@ -219,11 +227,11 @@ open class LMFeedCreatePostScreen: LMViewController {
         
         scrollView.addSubview(scrollStackView)
         
-        [headerView, topicView, inputTextView, linkPreview, mediaCollectionView, mediaPageControl ,documentTableView, addMoreButton].forEach { subView in
+        [headerView, topicView, inputTextView, linkPreview, pollPreview, mediaCollectionView, mediaPageControl ,documentTableView, addMoreButton].forEach { subView in
             scrollStackView.addArrangedSubview(subView)
         }
         
-        [addPhotosTab, addVideoTab, addDocumentsTab].forEach { subView in
+        [addPhotosTab, addVideoTab, addDocumentsTab, addPollTab].forEach { subView in
             addMediaStack.addArrangedSubview(subView)
         }
     }
@@ -239,7 +247,7 @@ open class LMFeedCreatePostScreen: LMViewController {
                                     trailing: (view.safeAreaLayoutGuide.trailingAnchor, 0))
         
         containerView.pinSubView(subView: containerStackView)
-        scrollView.pinSubView(subView: scrollStackView)
+        scrollView.pinSubView(subView: scrollStackView, padding: .init(top: 8, left: 8, bottom: -8, right: -8))
         headerView.setHeightConstraint(with: 64)
         topicView.setHeightConstraint(with: 2, priority: .defaultLow)
         linkPreview.setHeightConstraint(with: 1000, priority: .defaultLow)
@@ -278,6 +286,7 @@ open class LMFeedCreatePostScreen: LMViewController {
         addPhotosTab.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapAddPhoto)))
         addVideoTab.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapAddVideo)))
         addDocumentsTab.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapAddDocument)))
+        addPollTab.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapAddPoll)))
         addMoreButton.addTarget(self, action: #selector(didTapAddMoreButton), for: .touchUpInside)
         navigationItem.rightBarButtonItem = createPostButton
     }
@@ -298,6 +307,12 @@ open class LMFeedCreatePostScreen: LMViewController {
     open func didTapAddDocument() {
         LMFeedCore.analytics?.trackEvent(for: .postCreationAttachmentClicked, eventProperties: ["type": "file"])
         viewModel?.updateCurrentSelection(to: .document)
+    }
+    
+    @objc
+    open func didTapAddPoll() {
+        LMFeedCore.analytics?.trackEvent(for: .postCreationAttachmentClicked, eventProperties: ["type": "poll"])
+        viewModel?.updateCurrentSelection(to: .poll)
     }
     
     @objc
@@ -334,10 +349,12 @@ open class LMFeedCreatePostScreen: LMViewController {
         addPhotosTab.configure(with: LMStringConstants.shared.addPhotoText, image: Constants.shared.images.galleryIcon)
         addVideoTab.configure(with: LMStringConstants.shared.addVideoText, image: Constants.shared.images.videoIcon)
         addDocumentsTab.configure(with: LMStringConstants.shared.attachFiles, image: Constants.shared.images.paperclipIcon)
+        addPollTab.configure(with: LMStringConstants.shared.addPoll, image: Constants.shared.images.addPollIcon)
         taggingView.isHidden = true
     }
     
     open func setupInitialView() {
+        pollPreview.isHidden = true
         linkPreview.isHidden = true
         mediaCollectionView.isHidden = true
         mediaPageControl.isHidden = true
@@ -352,7 +369,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     }
     
     open func observeCreateButton() {
-        createPostButton.isEnabled = !mediaAttachmentData.isEmpty || !inputTextView.getText().isEmpty || !documentAttachmentData.isEmpty
+        createPostButton.isEnabled = !mediaAttachmentData.isEmpty || !inputTextView.getText().isEmpty || !documentAttachmentData.isEmpty || isPollFlow
     }
 }
 
@@ -498,8 +515,9 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
         
         observeCreateButton()
     }
-    
+        
     public func resetMediaView() {
+        pollPreview.isHidden = true
         mediaCollectionView.isHidden = true
         mediaPageControl.isHidden = true
         documentTableView.isHidden = true
@@ -520,7 +538,7 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
             }
         case .document:
             openDocumentPicker()
-        case .none:
+        case .none, .poll:
             break
         }
     }
@@ -543,6 +561,24 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
         default:
             callback?()
         }
+    }
+    
+    public func navigateToCreatePoll(with data: LMFeedCreatePollDataModel?) {
+        do {
+            let viewcontroller = try LMFeedCreatePollViewModel.createModule(with: self, data: data)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
+    public func showPoll(poll: LMFeedCreateDisplayPollView.ContentModel) {
+        isPollFlow = true
+        addMediaStack.isHidden = true
+        pollPreview.configure(with: poll, delegate: self)
+        pollPreview.isHidden = false
+        
+        observeCreateButton()
     }
 }
 
@@ -670,5 +706,30 @@ extension LMFeedCreatePostScreen: LMFeedTopicViewCellProtocol {
 extension LMFeedCreatePostScreen: LMFeedTopicSelectionViewProtocol {
     public func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         viewModel?.updateTopicFeed(with: topics)
+    }
+}
+
+
+// MARK: LMFeedCreatePollProtocol
+extension LMFeedCreatePostScreen: LMFeedCreatePollProtocol {
+    public func cancelledPollCreation() {
+        viewModel?.updateCurrentSelection(to: .none)
+    }
+    
+    public func updatePollDetails(with data: LMFeedCreatePollDataModel) {
+        viewModel?.updatePollPreview(with: data)
+    }
+}
+
+
+// MARK: LMFeedCreatePollViewProtocol
+extension LMFeedCreatePostScreen: LMFeedCreatePollViewProtocol {
+    public func onTapCrossButton() {
+        isPollFlow = false
+        viewModel?.removePoll()
+    }
+    
+    public func onTapEditButton() {
+        viewModel?.editPoll()
     }
 }

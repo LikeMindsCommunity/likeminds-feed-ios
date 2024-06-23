@@ -1,13 +1,13 @@
 //
-//  LMFeedUserDataModel.swift
-//  lm-feedCore-iOS
+//  LMFeedUserModel.swift
+//  LMFramework
 //
 //  Created by Devansh Mohata on 05/01/24.
 //
 
 import Foundation
 
-public struct LMFeedUserDataModel {
+public struct LMFeedUserModel {
     public let userName: String
     public let userUUID: String
     public let userProfileImage: String?

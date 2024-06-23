@@ -12,8 +12,8 @@ final class LMFeedEditPostOperation {
 
     static let shared = LMFeedEditPostOperation()
     
-    func editPostWithAttachments(postID: String, postCaption: String?, topics: [String], documents: [LMFeedPostDataModel.DocumentAttachment], media: [LMFeedPostDataModel.ImageVideoAttachment], linkAttachment: LMFeedPostDataModel.LinkAttachment?) {
-        let attachments = handleAttachments(documents: documents, media: media, linkAttachment: linkAttachment)
+    func editPostWithAttachments(postID: String, postCaption: String?, topics: [String], documents: [LMFeedPostDataModel.DocumentAttachment], media: [LMFeedPostDataModel.ImageVideoAttachment], linkAttachment: LMFeedPostDataModel.LinkAttachment?, poll: LMFeedPollDataModel?) {
+        let attachments = handleAttachments(documents: documents, media: media, linkAttachment: linkAttachment, poll: poll)
         
         let editPostRequest = EditPostRequest.builder()
             .postId(postID)
@@ -26,7 +26,12 @@ final class LMFeedEditPostOperation {
                let data = response.data?.post,
                let users = response.data?.users,
                
-               let post = LMFeedPostDataModel(post: data, users: users, allTopics: response.data?.topics?.compactMap({ $0.value }) ?? []) {
+                let post = LMFeedPostDataModel(
+                    post: data,
+                    users: users,
+                    allTopics: response.data?.topics?.compactMap({ $0.value }) ?? [],
+                    widgets: response.data?.widgets?.compactMap({ $0.value }) ?? []
+                ) {
                 NotificationCenter.default.post(name: .LMPostEdited, object: post)
             } else {
                 NotificationCenter.default.post(name: .LMPostEditError, object: LMFeedError.postEditFailed(error: response.errorMessage))
@@ -34,7 +39,7 @@ final class LMFeedEditPostOperation {
         }
     }
     
-    func handleAttachments(documents: [LMFeedPostDataModel.DocumentAttachment], media: [LMFeedPostDataModel.ImageVideoAttachment], linkAttachment: LMFeedPostDataModel.LinkAttachment?) -> [Attachment] {
+    func handleAttachments(documents: [LMFeedPostDataModel.DocumentAttachment], media: [LMFeedPostDataModel.ImageVideoAttachment], linkAttachment: LMFeedPostDataModel.LinkAttachment?, poll: LMFeedPollDataModel?) -> [Attachment] {
         var attachments: [Attachment] = []
         
         media.forEach { medium in
@@ -97,6 +102,25 @@ final class LMFeedEditPostOperation {
                 .attachmentMeta(attachmentMeta)
             
             attachments.append(attachment)
+        }
+        
+        if let poll {
+            let attachmentMeta = AttachmentMeta()
+                .entityID(poll.id)
+                .title(poll.question)
+                .expiryTime(poll.expiryTime)
+                .pollOptions(poll.options.map({ $0.option }))
+                .multiSelectState(poll.pollSelectType.apiKey)
+                .pollType(poll.isInstantPoll ? "instant" : "deferred")
+                .multSelectNo(poll.pollSelectCount)
+                .isAnonymous(poll.isAnonymous)
+                .allowAddOptions(poll.allowAddOptions)
+            
+            let attachmentRequest = Attachment()
+                .attachmentType(.poll)
+                .attachmentMeta(attachmentMeta)
+            
+            attachments.append(attachmentRequest)
         }
         
         return attachments

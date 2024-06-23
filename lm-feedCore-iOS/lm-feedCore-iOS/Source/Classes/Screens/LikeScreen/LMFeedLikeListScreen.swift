@@ -19,7 +19,7 @@ open class LMFeedLikeListScreen: LMViewController {
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.bounces = false
-        table.register(LMUIComponents.shared.likeUserItem)
+        table.register(LMUIComponents.shared.memberItem)
         table.separatorStyle = .none
         return table
     }()
@@ -71,7 +71,7 @@ extension LMFeedLikeListScreen: UITableViewDataSource, UITableViewDelegate {
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let data = userData[safe: indexPath.row],
-           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.likeUserItem) {
+           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.memberItem) {
             cell.configure(with: data) { [weak self] in
                 self?.didTapUser(uuid: data.uuid)
             }

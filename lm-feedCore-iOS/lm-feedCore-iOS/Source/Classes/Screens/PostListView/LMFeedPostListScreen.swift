@@ -23,6 +23,7 @@ public protocol LMFeedPostListVCToProtocol: AnyObject {
 
 @IBDesignable
 open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtocol {
+    // MARK: UI Elements
     open private(set) lazy var postList: LMTableView = {
         let table = LMTableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -35,6 +36,7 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
         table.register(LMUIComponents.shared.postCell)
         table.register(LMUIComponents.shared.documentCell)
         table.register(LMUIComponents.shared.linkCell)
+        table.register(LMUIComponents.shared.pollCell)
         table.registerHeaderFooter(LMUIComponents.shared.headerView)
         table.registerHeaderFooter(LMUIComponents.shared.footerView)
         return table
@@ -51,7 +53,7 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
     }()
     
     // MARK: Data Variables
-    public var data: [LMFeedPostTableCellProtocol] = []
+    public var data: [LMFeedPostContentModel] = []
     public var viewModel: LMFeedPostListViewModel?
     public weak var delegate: LMFeedPostListVCFromProtocol?
     
@@ -145,7 +147,7 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
     
     
     // MARK: LMFeedPostListViewModelProtocol
-    open func updateHeader(with data: [LMFeedPostTableCellProtocol], section: Int) {
+    open func updateHeader(with data: [LMFeedPostContentModel], section: Int) {
         self.data = data
         (postList.headerView(forSection: section) as? LMFeedPostHeaderView)?.pinButton.isHidden.toggle()
     }
@@ -155,7 +157,7 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
         navigationController?.pushViewController(viewcontroller, animated: true)
     }
     
-    open func loadPosts(with data: [LMFeedPostTableCellProtocol], index: IndexSet?, reloadNow: Bool) {
+    open func loadPosts(with data: [LMFeedPostContentModel], index: IndexSet?, reloadNow: Bool) {
         if data.isEmpty {
             emptyListView.configure { [weak self] in
                 do {
@@ -208,6 +210,29 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
             print(error.localizedDescription)
         }
     }
+    
+    open func handleCustomWidget(with data: LMFeedPostContentModel) -> LMTableViewCell {
+        return LMTableViewCell()
+    }
+    
+    open func navigateToPollResultScreen(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?) {
+        do {
+            let viewcontroller = try LMFeedPollResultViewModel.createModule(with: pollID, optionList: optionList, selectedOption: selectedOption)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch {
+            print("Error in \(#function)")
+        }
+    }
+    
+    open func navigateToAddOptionPoll(with postID: String, pollID: String, options: [String]) {
+        do {
+            let viewcontroller = try LMFeedPollAddOptionViewModel.createModule(for: postID, pollID: pollID, options: options, delegate: self)
+            viewcontroller.modalPresentationStyle = .overFullScreen
+            present(viewcontroller, animated: false)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
 }
 
 // MARK: UITableView
@@ -218,18 +243,29 @@ extension LMFeedPostListScreen: UITableViewDataSource, UITableViewDelegate, UITa
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1 }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cellData = data[indexPath.section] as? LMFeedPostMediaCell.ContentModel,
-           let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell, for: indexPath) {
-            cell.configure(with: cellData, delegate: self)
-            return cell
-        } else if let cellData = data[indexPath.section] as? LMFeedPostDocumentCell.ContentModel,
-            let cell = tableView.dequeueReusableCell(LMUIComponents.shared.documentCell, for: indexPath) {
-            cell.configure(for: indexPath, with: cellData, delegate: self)
-            return cell
-        } else if let cellData = data[indexPath.section] as? LMFeedPostLinkCell.ContentModel,
-                  let cell = tableView.dequeueReusableCell(LMUIComponents.shared.linkCell, for: indexPath) {
-            cell.configure(with: cellData, delegate: self)
-            return cell
+        switch data[indexPath.section].postType {
+        case .text, .media:
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell, for: indexPath) {
+                cell.configure(with: data[indexPath.section], delegate: self)
+                return cell
+            }
+        case .documents:
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.documentCell, for: indexPath) {
+                cell.configure(for: indexPath, with: data[indexPath.section], delegate: self)
+                return cell
+            }
+        case .link:
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.linkCell, for: indexPath) {
+                cell.configure(with: data[indexPath.section], delegate: self)
+                return cell
+            }
+        case .poll:
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.pollCell) {
+                cell.configure(with: data[indexPath.section], delegate: self)
+                return cell
+            }
+        default:
+            return handleCustomWidget(with: data[indexPath.section])
         }
         
         return UITableViewCell()
@@ -297,7 +333,7 @@ extension LMFeedPostListScreen: UITableViewDataSource, UITableViewDelegate, UITa
         scrollingFinished()
     }
 
-    func scrollingFinished() {
+    open func scrollingFinished() {
         for cell in postList.visibleCells {
             if type(of: cell) == LMFeedPostMediaCell.self,
                postList.percentVisibility(of: cell) >= 0.8 {
@@ -393,8 +429,8 @@ extension LMFeedPostListScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtoc
     }
     
     open func didTapShowMoreDocuments(for indexPath: IndexPath) {
-        if var docData = data[safe: indexPath.section] as? LMFeedPostDocumentCell.ContentModel {
-            docData.isShowAllDocuments.toggle()
+        if var docData = data[safe: indexPath.section] {
+            docData.isShowMoreDocuments.toggle()
             data[indexPath.section] = docData
             reloadTable(for: .init(integer: indexPath.section))
         }
@@ -402,5 +438,42 @@ extension LMFeedPostListScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtoc
     
     open func didTapDocument(with url: URL) {
         openURL(with: url)
+    }
+}
+
+
+// MARK: LMFeedPostPollCellProtocol
+@objc
+extension LMFeedPostListScreen: LMFeedPostPollCellProtocol {
+    open func didTapVoteCountButton(for postID: String, pollID: String, optionID: String?) {
+        viewModel?.didTapVoteCountButton(for: postID, pollID: pollID, optionID: optionID)
+    }
+    
+    open func didTapToVote(for postID: String, pollID: String, optionID: String) {
+        viewModel?.optionSelected(for: postID, pollID: pollID, option: optionID)
+    }
+    
+    open func didTapSubmitVote(for postID: String, pollID: String) {
+        viewModel?.pollSubmitButtonTapped(for: postID, pollID: pollID)
+    }
+    
+    open func editVoteTapped(for postID: String, pollID: String) {
+        viewModel?.editPoll(for: postID)
+    }
+    
+    open func didTapAddOption(for postID: String, pollID: String) {
+        viewModel?.didTapAddOption(for: postID, pollID: pollID)
+    }
+}
+
+
+// MARK: LMFeedAddOptionProtocol
+extension LMFeedPostListScreen: LMFeedAddOptionProtocol {
+    public func onAddOptionResponse(postID: String, success: Bool, errorMessage: String?) {
+        if !success {
+            showError(with: errorMessage ?? "Something went wrong", isPopVC: false)
+        } else {
+            viewModel?.getPost(for: postID)
+        }
     }
 }

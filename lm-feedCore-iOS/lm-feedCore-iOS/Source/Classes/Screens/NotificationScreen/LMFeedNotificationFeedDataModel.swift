@@ -32,9 +32,9 @@ public struct LMFeedNotificationFeedDataModel {
     public let createdAt: Int
     public let attachmentType: AttachmentType
     public var isRead: Bool
-    public let user: LMFeedUserDataModel
+    public let user: LMFeedUserModel
     
-    public init(id: String, activityText: String, cta: String, createdAt: Int, attachmentType: AttachmentType, isRead: Bool, user: LMFeedUserDataModel) {
+    public init(id: String, activityText: String, cta: String, createdAt: Int, attachmentType: AttachmentType, isRead: Bool, user: LMFeedUserModel) {
         self.id = id
         self.activityText = activityText
         self.cta = cta
