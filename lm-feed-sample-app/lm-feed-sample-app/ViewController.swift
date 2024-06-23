@@ -52,7 +52,7 @@ class ViewController: UIViewController {
     
     
     func initateAPI(apiKey: String, username: String, userId: String) {
-        LMFeedCore.shared.setupFeed(apiKey: apiKey, username: username, uuid: userId) { [weak self] result in
+        LMFeedCore.shared.showFeed(apiKey: apiKey, username: username, uuid: userId) { [weak self] result in
             switch result {
             case .success(_):
                 guard let viewController = LMUniversalFeedViewModel.createModule() else { return }
