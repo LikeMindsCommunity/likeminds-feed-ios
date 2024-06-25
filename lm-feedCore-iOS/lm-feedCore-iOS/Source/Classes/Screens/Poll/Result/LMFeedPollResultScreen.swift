@@ -192,6 +192,10 @@ extension LMFeedPollResultScreen: UIPageViewControllerDataSource, UIPageViewCont
             }
             
             optionView.reloadData()
+            
+            DispatchQueue.main.async { [weak optionView] in
+                optionView?.scrollToItem(at: .init(row: index, section: 0), at: .centeredHorizontally, animated: false)
+            }
         }
     }
 }

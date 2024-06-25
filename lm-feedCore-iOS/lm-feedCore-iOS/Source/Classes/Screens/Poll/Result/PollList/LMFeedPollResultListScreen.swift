@@ -27,6 +27,11 @@ open class LMFeedPollResultListScreen: LMViewController {
         return indicator
     }()
     
+    open private(set) lazy var noResultView: LMFeedNoResultView = {
+        let view = LMFeedNoResultView().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
     
     // MARK: Data Variables
     public var userList: [LMFeedMemberItem.ContentModel] = []
@@ -38,6 +43,7 @@ open class LMFeedPollResultListScreen: LMViewController {
         super.setupViews()
         
         view.addSubview(voteView)
+        view.addSubview(noResultView)
     }
     
     
@@ -46,6 +52,7 @@ open class LMFeedPollResultListScreen: LMViewController {
         super.setupLayouts()
         
         view.safePinSubView(subView: voteView)
+        view.safePinSubView(subView: noResultView)
     }
     
     
@@ -102,15 +109,8 @@ extension LMFeedPollResultListScreen: UITableViewDataSource, UITableViewDelegate
 // MARK: LMFeedPollResultListViewModelProtocol
 extension LMFeedPollResultListScreen: LMFeedPollResultListViewModelProtocol {
     public func reloadResults(with userList: [LMFeedMemberItem.ContentModel]) {
-        if userList.isEmpty {
-            let vc = LMFeedNoResultView(frame: voteView.bounds)
-            vc.translatesAutoresizingMaskIntoConstraints = false
-            vc.configure(with: "No Response")
-            
-            voteView.backgroundView = vc
-        } else {
-            voteView.backgroundView = nil
-        }
+        noResultView.isHidden = !userList.isEmpty
+        voteView.backgroundView = nil
         
         self.userList = userList
         voteView.reloadData()
