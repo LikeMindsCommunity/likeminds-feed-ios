@@ -8,13 +8,12 @@
 import FirebaseCore
 import FirebaseMessaging
 import Kingfisher
+import LikeMindsFeedUI
 import LikeMindsFeedCore
 import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    static var fcmToken: String?
-    
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
