@@ -70,8 +70,7 @@ class ViewController: UIViewController {
     }
     
     func registerNotification() {
-        guard let fcmToken = AppDelegate.fcmToken,
-            let deviceID = UIDevice.current.identifierForVendor?.uuidString else { return }
+        guard let deviceID = UIDevice.current.identifierForVendor?.uuidString else { return }
         
         Messaging.messaging().token { token, error in
             if let error {

@@ -43,7 +43,7 @@ open class LMFeedCreatePollMetaOptionWidget: LMView {
     
     open private(set) lazy var sepratorView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.gray155
+        view.backgroundColor = Appearance.shared.colors.backgroundColor
         return view
     }()
     

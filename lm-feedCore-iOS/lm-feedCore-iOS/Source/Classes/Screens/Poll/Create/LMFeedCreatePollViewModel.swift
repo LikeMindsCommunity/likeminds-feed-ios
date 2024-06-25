@@ -63,7 +63,7 @@ final public class LMFeedCreatePollViewModel {
     public static func createModule(with pollDelegate: LMFeedCreatePollProtocol, data: LMFeedCreatePollDataModel? = nil) throws -> LMFeedCreatePollScreen {
         guard LMFeedCore.isInitialized else { throw LMFeedError.feedNotInitialized }
         
-        let viewcontroller = LMFeedCreatePollScreen()
+        let viewcontroller = Components.shared.createPollScreen.init()
         let viewModel = LMFeedCreatePollViewModel(delegate: viewcontroller, prefilledData: data)
         
         viewcontroller.viewmodel = viewModel

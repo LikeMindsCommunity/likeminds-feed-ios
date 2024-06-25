@@ -15,6 +15,7 @@
 		E582CE372C25B2A100584442 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E582CE342C25B2A100584442 /* GoogleService-Info.plist */; };
 		E582CE382C25B2A100584442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E582CE352C25B2A100584442 /* Main.storyboard */; };
 		E582CE392C25B2A100584442 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582CE362C25B2A100584442 /* AppDelegate.swift */; };
+		E582CE3B2C29D24100584442 /* CustomCreatePoll.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582CE3A2C29D24100584442 /* CustomCreatePoll.swift */; };
 		E5A79F3C2B7DE10D00A9F7B3 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A79F3B2B7DE10D00A9F7B3 /* UIViewController+Extension.swift */; };
 		FD5CB9E2A34FD091BD685E91 /* Pods_lm_feed_sample_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2780BDCEA043802A42A35600 /* Pods_lm_feed_sample_app.framework */; };
 /* End PBXBuildFile section */
@@ -34,6 +35,7 @@
 		E582CE342C25B2A100584442 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E582CE352C25B2A100584442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		E582CE362C25B2A100584442 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E582CE3A2C29D24100584442 /* CustomCreatePoll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCreatePoll.swift; sourceTree = "<group>"; };
 		E5A79F3B2B7DE10D00A9F7B3 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -89,6 +91,7 @@
 				E572B7802B480BF400E36655 /* ViewController.swift */,
 				E572B67E2B47106000E36655 /* Assets.xcassets */,
 				E572B6802B47106000E36655 /* LaunchScreen.storyboard */,
+				E582CE3A2C29D24100584442 /* CustomCreatePoll.swift */,
 			);
 			path = "lm-feed-sample-app";
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 				E572B6782B47105E00E36655 /* SceneDelegate.swift in Sources */,
 				E5A79F3C2B7DE10D00A9F7B3 /* UIViewController+Extension.swift in Sources */,
 				E57F61442B7BCC34005B0EEA /* DummyAnalytics.swift in Sources */,
+				E582CE3B2C29D24100584442 /* CustomCreatePoll.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

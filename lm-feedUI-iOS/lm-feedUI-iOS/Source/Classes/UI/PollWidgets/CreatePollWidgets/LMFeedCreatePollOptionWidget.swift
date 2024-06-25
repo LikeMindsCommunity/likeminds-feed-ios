@@ -114,10 +114,10 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
     }
     
     // MARK: configure
-    open func configure(with data: ContentModel, onCrossButtonCallback: (() -> Void)?, onTextValueChanged: ((String?) -> Void)?) {
+    open func configure(with data: ContentModel, isShowCrossIcon: Bool, onCrossButtonCallback: (() -> Void)?, onTextValueChanged: ((String?) -> Void)?) {
         self.onCrossButtonCallback = onCrossButtonCallback
         self.onTextValueChanged = onTextValueChanged
-        
+        self.crossButton.isHidden = !isShowCrossIcon
         optionTextField.text = data.option
     }
     

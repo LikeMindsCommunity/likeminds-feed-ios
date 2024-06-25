@@ -116,7 +116,8 @@ open class LMFeedEditPostScreen: LMViewController {
     }()
     
     open private(set) lazy var pollPreview: LMFeedCreateDisplayPollView = {
-        let view = LMFeedCreateDisplayPollView().translatesAutoresizingMaskIntoConstraints()
+        let view = LMUIComponents.shared.createPollDisplayView.init()
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     

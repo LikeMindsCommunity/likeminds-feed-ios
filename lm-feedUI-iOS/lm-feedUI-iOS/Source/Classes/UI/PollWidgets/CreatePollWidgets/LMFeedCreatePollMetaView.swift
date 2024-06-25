@@ -37,7 +37,7 @@ open class LMFeedCreatePollMetaView: LMView {
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fillEqually
-        stack.spacing = 8
+        stack.spacing = 0
         return stack
     }()
     

@@ -35,7 +35,7 @@ open class LMFeedCreatePollQuestionView: LMView {
         table.isScrollEnabled = false
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
-        table.register(LMFeedCreatePollOptionWidget.self)
+        table.register(LMUIComponents.shared.createPollOptionCell)
         table.estimatedRowHeight = cellSize
         table.rowHeight = UITableView.automaticDimension
         table.separatorStyle = .none
@@ -164,9 +164,9 @@ extension LMFeedCreatePollQuestionView: UITableViewDataSource, UITableViewDelega
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(LMFeedCreatePollOptionWidget.self) {
+        if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.createPollOptionCell) {
             let datum = data[indexPath.row]
-            cell.configure(with: datum) { [weak delegate] in
+            cell.configure(with: datum, isShowCrossIcon: data.count > 2) { [weak delegate] in
                 delegate?.onCrossButtonTapped(for: datum.id)
             } onTextValueChanged: { [weak delegate] newValue in
                 delegate?.textValueChanged(for: datum.id, newValue: newValue)

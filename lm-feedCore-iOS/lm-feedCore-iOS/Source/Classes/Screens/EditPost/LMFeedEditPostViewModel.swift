@@ -227,7 +227,7 @@ extension LMFeedEditPostViewModel {
             optionState: poll.pollSelectType.description,
             optionCount: poll.pollSelectCount,
             options: poll.options.map {
-                .init(option: $0.option, addedBy: $0.addedBy.userName)
+                .init(option: $0.option, addedBy: poll.allowAddOptions ? $0.addedBy.userName : nil)
             }
         )
     }
