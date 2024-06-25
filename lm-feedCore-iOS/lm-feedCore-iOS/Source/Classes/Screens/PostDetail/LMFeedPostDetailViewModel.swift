@@ -641,10 +641,10 @@ public extension LMFeedPostDetailViewModel {
         guard let poll = postDetail?.pollAttachment else { return }
         
         if poll.isAnonymous {
-            delegate?.showError(with: "This being an anonymous poll, the names of the voters can not be disclosed.", isPopVC: false)
+            delegate?.showMessage(with: "This being an anonymous poll, the names of the voters can not be disclosed.", message: nil)
             return
         } else if !poll.showResults || poll.expiryTime > Int(Date().timeIntervalSince1970) {
-            delegate?.showError(with: "The results will be visible after the poll has ended.", isPopVC: false)
+            delegate?.showMessage(with: "The results will be visible after the poll has ended.", message: nil)
             return
         }
         
@@ -657,7 +657,7 @@ public extension LMFeedPostDetailViewModel {
               var poll = post.pollAttachment else { return }
         
         if poll.expiryTime < Int(Date().timeIntervalSince1970) {
-            delegate?.showError(with: "Poll ended. Vote can not be submitted now.", isPopVC: false)
+            delegate?.showMessage(with: "Poll ended. Vote can not be submitted now.", message: nil)
             return
         } else if LMFeedConvertToFeedPost.isPollSubmitted(options: poll.options) {
             return
@@ -683,7 +683,7 @@ public extension LMFeedPostDetailViewModel {
         
         
         guard poll.pollSelectType.checkValidity(with: poll.userSelectedOptions.count, allowedCount: poll.pollSelectCount) else {
-            delegate?.showError(with: "Please select \(poll.pollSelectType.description.lowercased()) \(poll.pollSelectCount) options", isPopVC: false)
+            delegate?.showMessage(with: "Please select \(poll.pollSelectType.description.lowercased()) \(poll.pollSelectCount) options", message: nil)
             return
         }
         

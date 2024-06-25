@@ -58,6 +58,7 @@ public struct LMUIComponents {
     public var createPollQuestionView: LMFeedCreatePollQuestionView.Type = LMFeedCreatePollQuestionView.self
     public var createPollDateView: LMFeedCreatePollDateView.Type = LMFeedCreatePollDateView.self
     public var createPollMetaView: LMFeedCreatePollMetaView.Type = LMFeedCreatePollMetaView.self
+    public var createPollOptionCell: LMFeedCreatePollOptionWidget.Type = LMFeedCreatePollOptionWidget.self
     
     // MARK: Like Count Screen Components
     public var memberItem: LMFeedMemberItem.Type = LMFeedMemberItem.self

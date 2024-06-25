@@ -29,28 +29,16 @@ open class LMFeedPollResultScreen: LMViewController {
         return collection
     }()
     
-    open private(set) lazy var voteView: LMTableView = {
-        let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
-        table.register(LMUIComponents.shared.memberItem)
-        table.dataSource = self
-        table.delegate = self
-        table.showsVerticalScrollIndicator = false
-        table.showsHorizontalScrollIndicator = false
-        table.separatorStyle = .none
-        return table
+    open private(set) lazy var pageController: UIPageViewController = {
+        let controller = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        controller.dataSource = self
+        controller.delegate = self
+        return controller
     }()
-    
-    open private(set) lazy var indicatorView: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        indicator.translatesAutoresizingMaskIntoConstraints = false
-        indicator.style = .large
-        return indicator
-    }()
-    
     
     // MARK: Data Variables
-    public var userList: [LMFeedMemberItem.ContentModel] = []
     public var optionList: [LMFeedPollResultCollectionCell.ContentModel] = []
+    public var userListVC: [UIViewController] = []
     public var viewmodel: LMFeedPollResultViewModel?
     
     
@@ -59,7 +47,10 @@ open class LMFeedPollResultScreen: LMViewController {
         
         view.addSubview(containerView)
         containerView.addSubview(optionView)
-        containerView.addSubview(voteView)
+        
+        self.addChild(pageController)
+        containerView.addSubview(pageController.view)
+        self.pageController.didMove(toParent: self)
     }
     
     open override func setupLayouts() {
@@ -70,12 +61,14 @@ open class LMFeedPollResultScreen: LMViewController {
         optionView.addConstraint(top: (containerView.topAnchor, 0),
                                  leading: (containerView.leadingAnchor, 16),
                                  trailing: (containerView.trailingAnchor, -16))
-        optionView.setHeightConstraint(with: 72)
+        optionView.setHeightConstraint(with: 72, priority: .required)
         
-        voteView.addConstraint(top: (optionView.bottomAnchor, 8),
-                               bottom: (containerView.bottomAnchor, 0),
-                               leading: (containerView.leadingAnchor, 0),
-                               trailing: (containerView.trailingAnchor, 0))
+        pageController.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        pageController.view.addConstraint(top: (optionView.bottomAnchor, 8),
+                                          bottom: (containerView.bottomAnchor, 8),
+                                          leading: (containerView.leadingAnchor, 0),
+                                          trailing: (containerView.trailingAnchor, 0))
     }
     
     
@@ -85,7 +78,6 @@ open class LMFeedPollResultScreen: LMViewController {
         
         view.backgroundColor = Appearance.shared.colors.white
         optionView.backgroundColor = Appearance.shared.colors.clear
-        voteView.backgroundColor = Appearance.shared.colors.clear
     }
     
     
@@ -95,38 +87,10 @@ open class LMFeedPollResultScreen: LMViewController {
         setNavigationTitleAndSubtitle(with: "Poll Results", subtitle: nil, alignment: .center)
         viewmodel?.initializeView()
     }
-    
-    // MARK: Actions
-    open func onTapUser(with uuid: String) { }
-}
-
-extension LMFeedPollResultScreen: UITableViewDataSource, UITableViewDelegate {
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        userList.count
-    }
-    
-    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let data = userList[safe: indexPath.row],
-            let cell = tableView.dequeueReusableCell(LMUIComponents.shared.memberItem) {
-            cell.configure(with: data) { [weak self] in
-                self?.onTapUser(with: data.uuid)
-            }
-            return cell
-        }
-        
-        return UITableViewCell()
-    }
-    
-    open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 72 }
-    
-    open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == userList.count - 1 {
-            viewmodel?.fetchUserList()
-        }
-    }
 }
 
 
+// MARK: Collection View
 extension LMFeedPollResultScreen: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         optionList.count
@@ -153,8 +117,6 @@ extension LMFeedPollResultScreen: UICollectionViewDataSource, UICollectionViewDe
     }
     
     open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let item = optionList[safe: indexPath.row] else { return }
-        
         let count = optionList.count
         
         for i in 0..<count {
@@ -162,48 +124,74 @@ extension LMFeedPollResultScreen: UICollectionViewDataSource, UICollectionViewDe
         }
         
         collectionView.reloadData()
-        viewmodel?.fetchUserList(for: item.optionID)
+        
+        pageController.setViewControllers([userListVC[indexPath.row]], direction: .forward, animated: false)
     }
 }
 
 
 // MARK: LMFeedPollResultViewModelProtocol
 extension LMFeedPollResultScreen: LMFeedPollResultViewModelProtocol {
-    public func showLoader() {
-        userList.removeAll(keepingCapacity: true)
-        voteView.reloadData()
-        
-        voteView.backgroundView = indicatorView
-        indicatorView.addConstraint(centerX: (voteView.centerXAnchor, 0),
-                                    centerY: (voteView.centerYAnchor, 0))
-        indicatorView.startAnimating()
-    }
-    
-    public func showHideTableFooter(isShow: Bool) {
-        voteView.showHideFooterLoader(isShow: isShow)
-    }
-    
-    public func reloadResults(with userList: [LikeMindsFeedUI.LMFeedMemberItem.ContentModel]) {
-        showHideTableFooter(isShow: false)
-        
-        guard !userList.isEmpty else {
-            let bgView = LMFeedNoResultView(frame: voteView.bounds)
-            bgView.configure(with: "No Responses")
-            voteView.backgroundView = bgView
-            return
-        }
-        
-        self.userList = userList
-        voteView.backgroundView = nil
-        voteView.reloadData()
-    }
-    
     public func loadOptionList(with data: [LMFeedPollResultCollectionCell.ContentModel], index: Int) {
         self.optionList = data
         optionView.reloadData()
         
         DispatchQueue.main.async { [weak optionView] in
             optionView?.scrollToItem(at: .init(row: index, section: 0), at: .centeredHorizontally, animated: false)
+        }
+    }
+    
+    public func setupViewControllers(with pollID: String, optionList: [String], selectedID: Int) {
+        optionList.forEach {
+            let viewController = LMFeedPollResultListViewModel.createModule(for: pollID, optionID: $0)
+            userListVC.append(viewController)
+        }
+        
+        pageController.setViewControllers([userListVC[selectedID]], direction: .forward, animated: false)
+    }
+}
+
+
+// MARK: UIPageViewControllerDataSource
+extension LMFeedPollResultScreen: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+    open func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        getViewController(forViewController: viewController, isNextController: false)
+    }
+    
+    open func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        getViewController(forViewController: viewController, isNextController: true)
+    }
+    
+    func getViewController(forViewController vc: UIViewController, isNextController: Bool) -> UIViewController? {
+        var index: Int = 0
+        
+        for (location, scene) in userListVC.enumerated() {
+            if scene == vc {
+                index = location
+                break
+            }
+        }
+     
+        index += isNextController ? 1 : -1
+        
+        if userListVC.indices.contains(index) {
+            return userListVC[index]
+        }
+        
+        return nil
+    }
+    
+    public func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        if completed,
+           let first = pageViewController.viewControllers?.first,
+           let index = userListVC.firstIndex(of: first) {
+            let count = optionList.count
+            
+            for i in 0..<count {
+                optionList[i].isSelected = index == i
+            }
+            
+            optionView.reloadData()
         }
     }
 }

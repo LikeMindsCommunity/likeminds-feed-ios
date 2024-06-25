@@ -241,17 +241,17 @@ open class LMFeedCreatePostScreen: LMViewController {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        containerView.addConstraint(top: (view.safeAreaLayoutGuide.topAnchor, 0),
-                                    bottom: (view.safeAreaLayoutGuide.bottomAnchor, 0),
-                                    leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
-                                    trailing: (view.safeAreaLayoutGuide.trailingAnchor, 0))
+        
+        view.safePinSubView(subView: containerView)
         
         containerView.pinSubView(subView: containerStackView)
-        scrollView.pinSubView(subView: scrollStackView, padding: .init(top: 8, left: 8, bottom: -8, right: -8))
+        scrollView.pinSubView(subView: scrollStackView, padding: .init(top: 8, left: 0, bottom: 8, right: 0))
         headerView.setHeightConstraint(with: 64)
         topicView.setHeightConstraint(with: 2, priority: .defaultLow)
         linkPreview.setHeightConstraint(with: 1000, priority: .defaultLow)
         addPhotosTab.setHeightConstraint(with: 40)
+        
+        scrollStackView.setWidthConstraint(with: containerView.widthAnchor, multiplier: 1)
         scrollStackView.setHeightConstraint(with: 1000, priority: .defaultLow)
         
         taggingView.addConstraint(top: (inputTextView.bottomAnchor, 0),
@@ -349,7 +349,7 @@ open class LMFeedCreatePostScreen: LMViewController {
         addPhotosTab.configure(with: LMStringConstants.shared.addPhotoText, image: Constants.shared.images.galleryIcon)
         addVideoTab.configure(with: LMStringConstants.shared.addVideoText, image: Constants.shared.images.videoIcon)
         addDocumentsTab.configure(with: LMStringConstants.shared.attachFiles, image: Constants.shared.images.paperclipIcon)
-        addPollTab.configure(with: LMStringConstants.shared.addPoll, image: Constants.shared.images.addPollIcon)
+        addPollTab.configure(with: LMStringConstants.shared.addPoll, image: Constants.shared.images.addPollIcon, hideSeprator: true)
         taggingView.isHidden = true
     }
     
@@ -556,7 +556,6 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
                 }
             }
         case .denied:
-            // TODO: Get Proper Message from Product
             showError(with: "Please Allow Media Access.\nSettings -> Privacy -> Photos -> \(LMStringConstants.shared.appName) -> All Photos", isPopVC: false)
         default:
             callback?()

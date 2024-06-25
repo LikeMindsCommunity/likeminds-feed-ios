@@ -37,6 +37,7 @@ public protocol LMBaseViewControllerProtocol: AnyObject {
     func showHideLoaderView(isShow: Bool, backgroundColor: UIColor)
     func showError(with message: String, isPopVC: Bool)
     func popViewController(animated: Bool)
+    func showMessage(with title: String, message: String?)
 }
 
 public extension LMBaseViewControllerProtocol {
@@ -247,6 +248,12 @@ extension LMViewController: LMBaseViewControllerProtocol {
     
     open func popViewController(animated: Bool) {
         navigationController?.popViewController(animated: animated)
+    }
+    
+    open func showMessage(with title: String, message: String?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
