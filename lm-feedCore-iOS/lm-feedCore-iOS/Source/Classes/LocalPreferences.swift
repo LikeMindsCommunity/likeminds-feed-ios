@@ -39,8 +39,9 @@ public struct Storage<T: Codable> {
 
 
 public struct LocalPreferences {
-    @Storage(key: "lm_username_key")
-    public static var userObj: User?
+    public static var userObj: User? {
+        LMFeedClient.shared.getUserDetails()
+    }
 
     @Storage(key: "lm_member_state")
     public static var memberState: GetMemberStateResponse?

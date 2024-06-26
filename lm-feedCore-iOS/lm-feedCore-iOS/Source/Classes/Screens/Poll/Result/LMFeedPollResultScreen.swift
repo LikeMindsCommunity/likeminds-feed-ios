@@ -61,11 +61,11 @@ open class LMFeedPollResultScreen: LMViewController {
         optionView.addConstraint(top: (containerView.topAnchor, 0),
                                  leading: (containerView.leadingAnchor, 16),
                                  trailing: (containerView.trailingAnchor, -16))
-        optionView.setHeightConstraint(with: 72, priority: .required)
+        optionView.setHeightConstraint(with: 56, priority: .required)
         
         pageController.view.translatesAutoresizingMaskIntoConstraints = false
         
-        pageController.view.addConstraint(top: (optionView.bottomAnchor, 8),
+        pageController.view.addConstraint(top: (optionView.bottomAnchor, 0),
                                           bottom: (containerView.bottomAnchor, 8),
                                           leading: (containerView.leadingAnchor, 0),
                                           trailing: (containerView.trailingAnchor, 0))

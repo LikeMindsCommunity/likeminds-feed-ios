@@ -29,7 +29,7 @@ open class LMFeedPollResultCollectionCell: LMCollectionViewCell {
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fillEqually
-        stack.spacing = 8
+        stack.spacing = 2
         return stack
     }()
     
@@ -80,17 +80,26 @@ open class LMFeedPollResultCollectionCell: LMCollectionViewCell {
         contentView.pinSubView(subView: containerView)
         
         stackView.addConstraint(top: (containerView.topAnchor, 8),
+                                bottom: (containerView.bottomAnchor, -2),
                                 leading: (containerView.leadingAnchor, 0),
                                 trailing: (containerView.trailingAnchor, 0))
         
-        sepratorView.addConstraint(top: (stackView.bottomAnchor, 0),
-                                   bottom: (containerView.bottomAnchor, 0),
+        sepratorView.addConstraint(bottom: (containerView.bottomAnchor, 0),
                                    leading: (containerView.leadingAnchor, 0),
                                    trailing: (containerView.trailingAnchor, 0))
-        sepratorView.setHeightConstraint(with: 2)
-        sepratorView.layer.cornerRadius = 1
+        sepratorView.setHeightConstraint(with: 4, priority: .required)
+        sepratorView.layer.cornerRadius = 2
         
         containerView.pinSubView(subView: stackView, padding: .init(top: 8, left: 8, bottom: -8, right: -8))
+    }
+    
+    
+    // MARK: setupAppearance
+    open override func setupAppearance() {
+        super.setupAppearance()
+        
+        sepratorView.clipsToBounds = true
+        sepratorView.layer.masksToBounds = true
     }
     
     open func configure(with data: ContentModel) {
