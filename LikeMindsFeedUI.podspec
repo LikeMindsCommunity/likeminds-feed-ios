@@ -2,7 +2,7 @@ Pod::Spec.new do |spec|
   spec.name         = 'LikeMindsFeedUI'
   spec.summary      = 'UI Components used in LikeMindsFeedCore'
   spec.homepage     = 'https://likeminds.community/'
-  spec.version      = '1.0.3'
+  spec.version      = '1.1.0'
   
   spec.license      = { :type => 'MIT', :file => 'LICENSE' }
   spec.authors      = { 'Devansh Mohata' => 'devansh.mohata@likeminds.community' }
