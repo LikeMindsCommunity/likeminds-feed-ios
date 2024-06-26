@@ -88,8 +88,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
 // MARK: Message
 extension AppDelegate: MessagingDelegate {
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        Self.fcmToken = fcmToken
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) { 
+        print("FCM TOKEN - \(fcmToken ?? "")")
     }
 }
 

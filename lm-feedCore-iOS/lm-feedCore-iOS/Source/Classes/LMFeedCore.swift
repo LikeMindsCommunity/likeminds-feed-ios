@@ -24,9 +24,6 @@ public class LMFeedCore {
     static private(set) var isInitialized: Bool = false
     private(set) var coreCallback: LMFeedCoreCallback?
     
-    public func setupFeedCoreCallback(with coreCallback: LMFeedCoreCallback) {
-        self.coreCallback = coreCallback
-    }
     
     public func setupAnalytics(_ analytics: LMFeedAnalyticsProtocol) {
         Self.analytics = analytics
@@ -67,7 +64,9 @@ public class LMFeedCore {
         }
     }
     
-    func showFeed(accessToken: String, refreshToken: String, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
+    func showFeed(accessToken: String, refreshToken: String, handler: LMFeedCoreCallback?, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
+        self.coreCallback = handler
+        
         let request = ValidateUserRequest
             .builder()
             .accessToken(accessToken)

@@ -217,12 +217,12 @@ extension LMFeedCreatePollScreen: LMFeedCreatePollViewModelProtocol {
         pollMetaOptionsView.configure(with: metaOptions, delegate: self)
         
         if let expiryDate {
-            pollExpiryDateView.configure(with: expiryDate, delegate: self)
+            pollExpiryDateView.configure(with: expiryDate)
         }
     }
     
     public func updateExpiryDate(with newDate: Date) {
-        pollExpiryDateView.updateExpiryDate(with: newDate)
+        pollExpiryDateView.configure(with: newDate)
     }
     
     public func updatePollOptions(with newData: [LikeMindsFeedUI.LMFeedCreatePollOptionWidget.ContentModel]) {
@@ -251,14 +251,6 @@ extension LMFeedCreatePollScreen: LMFeedCreatePollViewModelProtocol {
     public func updatePoll(with data: LMFeedCreatePollDataModel) {
         pollDelegate?.updatePollDetails(with: data)
         navigationController?.popViewController(animated: true)
-    }
-}
-
-
-// MARK: LMFeedCreatePollDateViewProtocol
-extension LMFeedCreatePollScreen: LMFeedCreatePollDateViewProtocol {
-    public func onDateChanged(newDate: Date) {
-        viewmodel?.updatePollExpiryDate(with: newDate)
     }
 }
 

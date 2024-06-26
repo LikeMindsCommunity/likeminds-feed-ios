@@ -7,10 +7,6 @@
 
 import UIKit
 
-public protocol LMFeedCreatePollDateViewProtocol: AnyObject {
-    func onDateChanged(newDate: Date)
-}
-
 open class LMFeedCreatePollDateView: LMView {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
@@ -34,9 +30,6 @@ open class LMFeedCreatePollDateView: LMView {
         return label
     }()
     
-    
-    // MARK: Data Variables
-    public weak var delegate: LMFeedCreatePollDateViewProtocol?
     
     // MARK: setupViews
     open override func setupViews() {
@@ -74,13 +67,8 @@ open class LMFeedCreatePollDateView: LMView {
     
     
     // MARK: configure
-    open func configure(with date: Date, delegate: LMFeedCreatePollDateViewProtocol?) {
-        self.delegate = delegate
-        updateExpiryDate(with: date)
-    }
-    
-    open func updateExpiryDate(with newDate: Date) {
+    open func configure(with date: Date) {
         dateLabel.textColor = Appearance.shared.colors.black
-        dateLabel.text = DateUtility.formatDate(newDate)
+        dateLabel.text = DateUtility.formatDate(date)
     }
 }
