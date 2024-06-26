@@ -13,11 +13,13 @@ import PDFKit
 public protocol LMFeedCreatePostViewModelProtocol: LMBaseViewControllerProtocol { 
     func showMedia(documents: [LMFeedDocumentPreview.ContentModel], isShowAddMore: Bool, isShowBottomTab: Bool)
     func showMedia(media: [LMFeedMediaProtocol], isShowAddMore: Bool, isShowBottomTab: Bool)
+    func showPoll(poll: LMFeedCreateDisplayPollView.ContentModel)
     func resetMediaView()
     func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int, selectedAssets: [PHAsset])
     func updateTopicView(with data: LMFeedTopicView.ContentModel)
     func navigateToTopicView(with topics: [LMFeedTopicDataModel])
     func setupLinkPreview(with data: LMFeedLinkPreview.ContentModel?)
+    func navigateToCreatePoll(with data: LMFeedCreatePollDataModel?)
 }
 
 public final class LMFeedCreatePostViewModel {
@@ -44,6 +46,7 @@ public final class LMFeedCreatePostViewModel {
     private var debounceForDecodeLink: Timer?
     private var selectedTopics: [LMFeedTopicDataModel]
     private var linkPreview: LMFeedPostDataModel.LinkAttachment?
+    private var pollDetails: LMFeedCreatePollDataModel?
     private var showLinkPreview: Bool {
         willSet {
             if !newValue {
@@ -84,7 +87,7 @@ public final class LMFeedCreatePostViewModel {
             attachments.append(.init(url: medium.url, data: medium.data, fileName: medium.url.lastPathComponent, awsFilePath: filePath, contentType: medium.mediaType))
         }
         
-        LMFeedCreatePostOperation.shared.createPost(with: text, topics: selectedTopics.map({ $0.topicID }), files: attachments, linkPreview: linkPreview)
+        LMFeedCreatePostOperation.shared.createPost(with: text, topics: selectedTopics.map({ $0.topicID }), files: attachments, linkPreview: linkPreview, poll: pollDetails)
         delegate?.popViewController(animated: true)
     }
 }
@@ -130,18 +133,22 @@ public extension LMFeedCreatePostViewModel {
     
     func updateCurrentSelection(to type: PostCreationAttachmentType) {
         currentMediaSelectionType = type
-        let selectedMedia = media.compactMap { $0.asset }
         
-        delegate?.openMediaPicker(type, isFirstPick: media.isEmpty, allowedNumber: maxMedia, selectedAssets: selectedMedia)
+        if currentMediaSelectionType == .poll {
+            delegate?.navigateToCreatePoll(with: pollDetails)
+        } else {
+            let selectedMedia = media.compactMap { $0.asset }
+            delegate?.openMediaPicker(type, isFirstPick: media.isEmpty, allowedNumber: maxMedia, selectedAssets: selectedMedia)
+        }
     }
     
     func addMoreButtonClicked() {
         switch currentMediaSelectionType {
         case .image, .video, .document:
             let selectedMedia = media.compactMap { $0.asset }
-            
             delegate?.openMediaPicker(currentMediaSelectionType, isFirstPick: media.isEmpty, allowedNumber: maxMedia, selectedAssets: selectedMedia)
-        case .none:
+        case .poll, 
+                .none:
             break
         }
     }
@@ -169,7 +176,8 @@ public extension LMFeedCreatePostViewModel {
                         isShowCrossButton: true
                     )
                 )
-            case .none:
+            case .poll,
+                    .none:
                 break
             }
         }
@@ -177,7 +185,7 @@ public extension LMFeedCreatePostViewModel {
         delegate?.resetMediaView()
         
         switch currentMediaSelectionType {
-        case .image, .video, .none:
+        case .image, .video, .none, .poll:
             delegate?.showMedia(media: mediaData, isShowAddMore: !media.isEmpty && media.count < maxMedia, isShowBottomTab: media.isEmpty)
         case .document:
             delegate?.showMedia(documents: docData, isShowAddMore: !media.isEmpty && media.count < maxMedia, isShowBottomTab: media.isEmpty)
@@ -277,5 +285,36 @@ extension LMFeedCreatePostViewModel {
     func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         self.selectedTopics = topics
         setupTopicFeed()
+    }
+}
+
+
+// MARK: Poll
+extension LMFeedCreatePostViewModel {
+    func updatePollPreview(with pollDetails: LMFeedCreatePollDataModel) {
+        self.pollDetails = pollDetails
+        delegate?.resetMediaView()
+        delegate?.showPoll(poll: convertToPollPreview(from: pollDetails))
+    }
+    
+    func convertToPollPreview(from poll: LMFeedCreatePollDataModel) -> LMFeedCreateDisplayPollView.ContentModel {
+        .init(
+            question: poll.pollQuestion,
+            showEditIcon: true,
+            showCrossIcon: true,
+            expiryDate: poll.expiryTime,
+            optionState: poll.selectState.description,
+            optionCount: poll.selectStateCount,
+            options: poll.pollOptions.map { .init(option: $0) }
+        )
+    }
+    
+    func removePoll() {
+        pollDetails = nil
+        reloadMedia()
+    }
+    
+    func editPoll() {
+        delegate?.navigateToCreatePoll(with: pollDetails)
     }
 }

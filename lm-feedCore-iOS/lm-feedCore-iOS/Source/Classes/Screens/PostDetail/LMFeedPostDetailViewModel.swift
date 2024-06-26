@@ -5,30 +5,8 @@
 //  Created by Devansh Mohata on 03/01/24.
 //
 
-import LikeMindsFeedUI
 import LikeMindsFeed
-
-public protocol LMFeedPostDetailViewModelProtocol: LMBaseViewControllerProtocol {
-    func showPostDetails(with post: LMFeedPostTableCellProtocol, comments: [LMFeedCommentContentModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool)
-    func reloadComments(with comments: [LMFeedCommentContentModel], index: IndexSet?)
-    func insertComment(at index: IndexSet, with comments: [LMFeedCommentContentModel], totalCommentCount: Int)
-    func deleteComment(at index: Int, with comments: [LMFeedCommentContentModel], totalCommentCount: Int)
-    func deleteRows(for section: Int, comments: [LMFeedCommentContentModel])
-    
-    func resetHeaderData()
-    func resetFooterData(isSaved: Bool, isLiked: Bool)
-    
-    func changeCommentLike(for indexPath: IndexPath)
-    func replyToComment(userName: String)
-    
-    func updateCommentStatus(isEnabled: Bool)
-    
-    func setEditCommentText(with text: String) 
-    
-    func navigateToEditPost(for postID: String)
-    func navigateToDeleteScreen(for postID: String, commentID: String?)
-    func navigateToReportScreen(for postID: String, creatorUUID: String, commentID: String?, replyCommentID: String?)
-}
+import LikeMindsFeedUI
 
 final public class LMFeedPostDetailViewModel {
     public let postID: String
@@ -36,7 +14,7 @@ final public class LMFeedPostDetailViewModel {
     public var pageSize: Int
     public var isFetchingData: Bool
     public var isDataAvailable: Bool
-    public var postDetail: LMFeedPostDataModel? 
+    public var postDetail: LMFeedPostDataModel?
     public var commentList: [LMFeedCommentDataModel]
     public var replyToComment:  LMFeedCommentDataModel?
     public var editCommentIndex: (commentID: String, indexPath: IndexPath)?
@@ -114,8 +92,9 @@ final public class LMFeedPostDetailViewModel {
         NotificationCenter.default.post(name: .LMPostUpdate, object: postDetail)
     }
     
-    func updatePostData(with data: LMFeedPostDataModel) {
+    func updatePostData(with data: LMFeedPostDataModel?) {
         postDetail = data
+        notifyObjectChange()
         convertToViewData()
     }
 }
@@ -141,12 +120,15 @@ public extension LMFeedPostDetailViewModel {
                let post = response.data?.post,
                let users = response.data?.users {
                 let allTopics = response.data?.topics?.compactMap({ $0.value }) ?? []
+                let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
                 
                 if currentPage == 1 {
                     commentList.removeAll(keepingCapacity: true)
                 }
                 
-                self.postDetail = .init(post: post, users: users, allTopics: allTopics)
+                let data = LMFeedPostDataModel.init(post: post, users: users, allTopics: allTopics, widgets: widgets)
+                
+                self.updatePostData(with: data)
                 
                 let newComments: [LMFeedCommentDataModel] = post.replies?.enumerated().compactMap { index, comment in
                     guard let user = users[comment.uuid ?? ""] else { return nil }
@@ -161,7 +143,7 @@ public extension LMFeedPostDetailViewModel {
                 } else if !newComments.isEmpty {
                     let old = commentList.count - newComments.count
                     let new = commentList.count
-                    delegate?.insertComment(at: IndexSet(integersIn: old..<new), with: convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
+                    delegate?.insertComment(at: IndexSet(integersIn: old..<new), with: LMFeedConvertToFeedPost.convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
                 }
                 self.currentPage += 1
             } else if postDetail == nil {
@@ -176,42 +158,15 @@ public extension LMFeedPostDetailViewModel {
         guard let postDetail else { return }
         let convertedPostDetail = LMFeedConvertToFeedPost.convertToViewModel(for: postDetail)
         
-        let convertedComments = convertToCommentModel(for: commentList)
+        let convertedComments = LMFeedConvertToFeedPost.convertToCommentModel(for: commentList)
         
         delegate?.showPostDetails(with: convertedPostDetail, comments: convertedComments, indexPath: indexPath, openCommentSection: openCommentSection, scrollToCommentSection: scrollToCommentSection)
         openCommentSection = false
         scrollToCommentSection = false
     }
     
-    func convertToCommentModel(for comments: [LMFeedCommentDataModel]) -> [LMFeedCommentContentModel] {
-        comments.enumerated().map { index, comment in
-            return convertToCommentModel(from: comment)
-        }
-    }
-    
-    func convertToCommentModel(from comment: LMFeedCommentDataModel) -> LMFeedCommentContentModel {
-        var replies: [LMFeedCommentContentModel] = []
-        
-        comment.replies.forEach { reply in
-            replies.append(convertToCommentModel(from: reply))
-        }
-        
-        return .init(
-            author: comment.userDetail,
-            commentId: comment.commentID,
-            tempCommentId: comment.temporaryCommentID,
-            comment: comment.commentText,
-            commentTime: comment.createdAtFormatted,
-            likeCount: comment.likeCount,
-            totalReplyCount: comment.totalRepliesCount,
-            replies: replies,
-            isEdited: comment.isEdited,
-            isLiked: comment.isLiked
-        )
-    }
-    
     func updateCommentSection(index: IndexSet? = nil) {
-        let updatedComments = convertToCommentModel(for: commentList)
+        let updatedComments = LMFeedConvertToFeedPost.convertToCommentModel(for: commentList)
         delegate?.reloadComments(with: updatedComments, index: index)
     }
 }
@@ -248,7 +203,7 @@ public extension LMFeedPostDetailViewModel {
         if isClose,
            !commentList[index].replies.isEmpty {
             commentList[index].replies.removeAll(keepingCapacity: true)
-            delegate?.deleteRows(for: index + 1, comments: convertToCommentModel(for: commentList))
+            delegate?.deleteRows(for: index + 1, comments: LMFeedConvertToFeedPost.convertToCommentModel(for: commentList))
             return
         }
         
@@ -394,9 +349,11 @@ public extension LMFeedPostDetailViewModel {
             updateCommentSection()
             postReplyOnComment(with: commentString, commentID: commentID, localComment: localComment)
         } else {
-            postDetail?.commentCount += 1
+            var newPost = postDetail
+            newPost?.commentCount += 1
+            updatePostData(with: newPost)
             commentList.insert(localComment, at: 0)
-            delegate?.insertComment(at: IndexSet(integer: 1), with: convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
+            delegate?.insertComment(at: IndexSet(integer: 1), with: LMFeedConvertToFeedPost.convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
             postReplyOnPost(with: commentString, localComment: localComment)
         }
         
@@ -417,7 +374,6 @@ public extension LMFeedPostDetailViewModel {
             if let idx = commentList.firstIndex(where: { $0.temporaryCommentID == localComment.temporaryCommentID }) {
                 commentList[idx] = newComment
                 updateCommentSection(index: IndexSet(integer: idx + 1))
-                notifyObjectChange()
             }
         }
     }
@@ -507,9 +463,10 @@ public extension LMFeedPostDetailViewModel {
             
             if response {
                 let newState = !(postDetail?.isLiked ?? true)
-                postDetail?.isLiked = newState
-                postDetail?.likeCount += newState ? 1 : -1
-                notifyObjectChange()
+                var newPost = postDetail
+                newPost?.isLiked = newState
+                newPost?.likeCount += newState ? 1 : -1
+                updatePostData(with: newPost)
             } else {
                 delegate?.resetFooterData(isSaved: false, isLiked: true)
             }
@@ -522,8 +479,9 @@ public extension LMFeedPostDetailViewModel {
             guard let self else { return }
             
             if response {
-                postDetail?.isSaved.toggle()
-                notifyObjectChange()
+                var newPost = postDetail
+                newPost?.isSaved.toggle()
+                updatePostData(with: newPost)
             } else {
                 delegate?.resetFooterData(isSaved: true, isLiked: false)
             }
@@ -536,9 +494,10 @@ public extension LMFeedPostDetailViewModel {
         LMFeedPostOperation.shared.pinUnpinPost(postId: postId) { [weak self] response in
             guard let self else { return }
             if response {
-                postDetail?.isPinned.toggle()
+                var newPost = postDetail
+                newPost?.isPinned.toggle()
+                updatePostData(with: newPost)
                 updatePinMenu()
-                notifyObjectChange()
                 delegate?.resetHeaderData()
             }
         }
@@ -546,11 +505,14 @@ public extension LMFeedPostDetailViewModel {
     
     func updatePinMenu() {
         guard let index = postDetail?.postMenu.firstIndex(where: { $0.id == .pinPost || $0.id == .unpinPost }) else { return }
-        if postDetail?.isPinned == true {
-            postDetail?.postMenu[index] = .init(id: .unpinPost, name: "Unpin this Post")
+        var newPost = postDetail
+        if newPost?.isPinned == true {
+            newPost?.postMenu[index] = .init(id: .unpinPost, name: "Unpin this Post")
         } else {
-            postDetail?.postMenu[index] = .init(id: .pinPost, name: "Pin this Post")
+            newPost?.postMenu[index] = .init(id: .pinPost, name: "Pin this Post")
         }
+        
+        updatePostData(with: newPost)
     }
     
     
@@ -656,14 +618,15 @@ public extension LMFeedPostDetailViewModel {
            let (_, index) = findCommentIndex(for: commentID, from: commentList) {
             if index.row == NSNotFound {
                 _ = commentList.remove(at: index.section)
-                postDetail?.commentCount -= 1
-                delegate?.deleteComment(at: index.section + 1, with: convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
+                var newPost = postDetail
+                newPost?.commentCount -= 1
+                updatePostData(with: newPost)
+                delegate?.deleteComment(at: index.section + 1, with: LMFeedConvertToFeedPost.convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
             } else {
                 commentList[index.section].replies.remove(at: index.row)
                 commentList[index.section].totalRepliesCount -= 1
                 updateCommentSection()
             }
-            notifyObjectChange()
             return
         }
         
@@ -671,3 +634,106 @@ public extension LMFeedPostDetailViewModel {
     }
 }
 
+
+// MARK: Poll
+public extension LMFeedPostDetailViewModel {
+    func didTapVoteCountButton(for postID: String, pollID: String, optionID: String?) {
+        guard let poll = postDetail?.pollAttachment else { return }
+        
+        if poll.isAnonymous {
+            delegate?.showMessage(with: "This being an anonymous poll, the names of the voters can not be disclosed.", message: nil)
+            return
+        } else if !poll.showResults || poll.expiryTime > Int(Date().timeIntervalSince1970) {
+            delegate?.showMessage(with: "The results will be visible after the poll has ended.", message: nil)
+            return
+        }
+        
+        let options = poll.options
+        delegate?.navigateToPollResultScreen(with: pollID, optionList: options, selectedOption: optionID)
+    }
+    
+    func optionSelected(for postID: String, pollID: String, option: String) {
+        guard var post = postDetail,
+              var poll = post.pollAttachment else { return }
+        
+        if poll.expiryTime < Int(Date().timeIntervalSince1970) {
+            delegate?.showMessage(with: "Poll ended. Vote can not be submitted now.", message: nil)
+            return
+        } else if LMFeedConvertToFeedPost.isPollSubmitted(options: poll.options) {
+            return
+        } else if !LMFeedConvertToFeedPost.isMultiChoicePoll(pollSelectCount: poll.pollSelectCount, pollSelectType: poll.pollSelectType) {
+            submitPollVote(for: postID, pollID: pollID, options: [option])
+        } else {
+            if let index = poll.userSelectedOptions.firstIndex(of: option) {
+                poll.userSelectedOptions.remove(at: index)
+            } else {
+                poll.userSelectedOptions.append(option)
+            }
+            
+            post.pollAttachment = poll
+            postDetail = post
+            
+            convertToViewData()
+        }
+    }
+    
+    func pollSubmitButtonTapped(for postID: String, pollID: String) {
+        guard let post = postDetail,
+              let poll = post.pollAttachment else { return }
+        
+        
+        guard poll.pollSelectType.checkValidity(with: poll.userSelectedOptions.count, allowedCount: poll.pollSelectCount) else {
+            delegate?.showMessage(with: "Please select \(poll.pollSelectType.description.lowercased()) \(poll.pollSelectCount) options", message: nil)
+            return
+        }
+        
+        submitPollVote(for: postID, pollID: pollID, options: poll.userSelectedOptions)
+    }
+    
+    func submitPollVote(for postID: String, pollID: String, options: [String]) {
+        let request = SubmitPollVoteRequest
+            .builder()
+            .pollID(pollID)
+            .votes(options)
+            .build()
+        
+        LMFeedClient.shared.submitPollVoteRequest(request) { [weak self] response in
+            if response.success {
+                self?.getPost(isInitialFetch: true)
+            }
+        }
+    }
+    
+    func editPoll(for postID: String) {
+        guard var post = postDetail,
+              var poll = post.pollAttachment else { return }
+        
+        var selectedOptions: [String] = []
+        
+        let count = poll.options.count
+        
+        for i in 0..<count {
+            if poll.options[i].isSelected {
+                selectedOptions.append(poll.options[i].id)
+            }
+            
+            poll.options[i].isSelected = false
+        }
+        
+        poll.userSelectedOptions = selectedOptions
+        
+        post.pollAttachment = poll
+        
+        postDetail = post
+        
+        convertToViewData()
+    }
+    
+    func didTapAddOption(for postID: String, pollID: String) {
+        guard let poll = postDetail else { return }
+        
+        let options = poll.pollAttachment?.options.map({ $0.option }) ?? []
+        
+        delegate?.navigateToAddOptionPoll(with: postID, pollID: pollID, options: options)
+    }
+}

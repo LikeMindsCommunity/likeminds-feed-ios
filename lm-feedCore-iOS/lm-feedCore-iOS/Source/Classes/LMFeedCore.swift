@@ -10,27 +10,88 @@ import FirebaseMessaging
 import LikeMindsFeedUI
 import LikeMindsFeed
 
+public protocol LMFeedCoreCallback: AnyObject {
+    func onAccessTokenExpiredAndRefreshed(accessToken: String, refreshToken: String)
+    func onRefreshTokenExpired(_ completionHandler: (((accessToken: String, refreshToken: String)) -> Void)?)
+}
+
 // Keep Only Auth Logic
 public class LMFeedCore {
-    
     private init() {}
     
     public static var shared: LMFeedCore = .init()
     static var analytics: LMFeedAnalyticsProtocol?
     static private(set) var isInitialized: Bool = false
+    private(set) var coreCallback: LMFeedCoreCallback?
     
-    public func setupLikeMindsFeed(apiKey: String, analytics: LMFeedAnalyticsProtocol? = nil) {
-        LocalPreferences.apiKey = apiKey
+    
+    public func setupAnalytics(_ analytics: LMFeedAnalyticsProtocol) {
         Self.analytics = analytics
+    }
+    
+    private func setupFeed() {
+        LMFeedClient.shared.setTokenManager(with: self)
         LMAWSManager.shared.initialize()
     }
     
-    public func initiateLikeMindsFeed(username: String, userId: String, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
-        guard let apiKey = LocalPreferences.apiKey else {
-            completionHandler?(.failure(.feedNotInitialized))
+    public func showFeed(apiKey: String, username: String, uuid: String, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
+        self.setupFeed()
+        let tokens = LMFeedClient.shared.getTokens()
+        
+        if tokens.success,
+           let accessToken = tokens.data?.accessToken,
+           let refreshToken = tokens.data?.refreshToken {
+            showFeed(accessToken: accessToken, refreshToken: refreshToken) { result in
+                completionHandler?(result)
+            }
+        } else {
+            initiateLikeMindsFeed(apiKey: apiKey, username: username, userId: uuid, completionHandler: completionHandler)
+        }
+    }
+    
+    public func showFeed(accessToken: String?, refreshToken: String?, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
+        self.setupFeed()
+        
+        if let accessToken,
+           let refreshToken {
+            showFeed(accessToken: accessToken, refreshToken: refreshToken, completionHandler: completionHandler)
+        } else if let accessToken = LMFeedClient.shared.getTokens().data?.accessToken,
+                  let refreshToken = LMFeedClient.shared.getTokens().data?.refreshToken {
+            showFeed(accessToken: accessToken, refreshToken: refreshToken, completionHandler: completionHandler)
+        } else {
+            completionHandler?(.failure(.apiInitializationFailed(error: "Invalid Tokens")))
             return
         }
+    }
+    
+    func showFeed(accessToken: String, refreshToken: String, handler: LMFeedCoreCallback?, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
+        self.coreCallback = handler
         
+        let request = ValidateUserRequest
+            .builder()
+            .accessToken(accessToken)
+            .refreshToken(refreshToken)
+            .build()
+        
+        LMFeedClient.shared.validateUser(request) { response in
+            guard response.success else {
+                completionHandler?(.failure(.apiInitializationFailed(error: response.errorMessage)))
+                return
+            }
+            
+            if response.data?.appAccess == false {
+                self.logout(refreshToken, deviceId: UIDevice.current.identifierForVendor?.uuidString ?? "")
+                completionHandler?(.failure(.appAccessFalse))
+                return
+            }
+            
+            Self.isInitialized = true
+            
+            completionHandler?(.success(()))
+        }
+    }
+    
+    private func initiateLikeMindsFeed(apiKey: String, username: String?, userId: String, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
         let request = InitiateUserRequest.builder()
             .apiKey(apiKey)
             .userName(username)
@@ -39,8 +100,7 @@ public class LMFeedCore {
             .build()
         
         LMFeedClient.shared.initiateUser(request: request) { [weak self] response in
-            guard response.success,
-                  let user = response.data?.user else {
+            guard response.success else {
                 completionHandler?(.failure(.apiInitializationFailed(error: response.errorMessage)))
                 return
             }
@@ -50,9 +110,6 @@ public class LMFeedCore {
                 completionHandler?(.failure(.appAccessFalse))
                 return
             }
-            
-            LocalPreferences.apiKey = apiKey
-            LocalPreferences.userObj = user
             
             Self.isInitialized = true
             
@@ -92,43 +149,50 @@ public class LMFeedCore {
     
     public func didReceiveNotification(_ notification: UNNotificationRequest, completion: ((Result<LMViewController, LMFeedError>) -> Void)?) {
         guard Self.isInitialized,
-              let apiKey = LocalPreferences.apiKey,
-              let userUUID = LocalPreferences.userObj?.clientUUID,
-              let userName = LocalPreferences.userObj?.name,
               let route = notification.content.userInfo["route"] as? String else {
             completion?(.failure(.feedNotInitialized))
             return
         }
         
-        let request = InitiateUserRequest.builder()
-            .apiKey(apiKey)
-            .userName(userName)
-            .uuid(userUUID)
-            .isGuest(false)
-            .build()
+        LMFeedRouter.fetchRoute(from: route) { result in
+            switch result {
+            case .success(let viewcontroller):
+                completion?(.success(viewcontroller))
+            case .failure(let error):
+                completion?(.failure(error))
+            }
+        }
+    }
+}
+
+
+extension LMFeedCore: LMFeedSDKCallback {
+    public func onAccessTokenExpiredAndRefreshed(accessToken: String, refreshToken: String) {
+        coreCallback?.onAccessTokenExpiredAndRefreshed(accessToken: accessToken, refreshToken: refreshToken)
+    }
+    
+    public func onRefreshTokenExpired(_ completionHandler: (((accessToken: String, refreshToken: String)?) -> Void)?) {
+        let apiData = LMFeedClient.shared.getAPIKey()
         
-        LMFeedClient.shared.initiateUser(request: request) { [weak self] response in
-            guard response.success else {
-                completion?(.failure(.apiInitializationFailed(error: response.errorMessage)))
-                return
-            }
-            
-            if response.data?.appAccess == false {
-                self?.logout(response.data?.refreshToken ?? "", deviceId: UIDevice.current.identifierForVendor?.uuidString ?? "")
-                completion?(.failure(.appAccessFalse))
-                return
-            }
-            
-            Self.isInitialized = true
-            
-            LMFeedRouter.fetchRoute(from: route) { result in
-                switch result {
-                case .success(let viewcontroller):
-                    completion?(.success(viewcontroller))
-                case .failure(let error):
-                    completion?(.failure(error))
+        if let apiKey = apiData.data,
+           let uuid =  LMFeedClient.shared.getUserDetails()?.sdkClientInfo?.uuid {
+            initiateLikeMindsFeed(apiKey: apiKey, username: nil, userId: uuid) { response in
+                switch response {
+                case .success():
+                    let tokens = LMFeedClient.shared.getTokens()
+                    if tokens.success,
+                       let accessToken = tokens.data?.accessToken,
+                       let refreshToken = tokens.data?.refreshToken {
+                        completionHandler?((accessToken, refreshToken))
+                        return
+                    }
+                case .failure(_):
+                    break
                 }
+                completionHandler?(nil)
             }
+        } else {
+            coreCallback?.onRefreshTokenExpired(completionHandler)
         }
     }
 }

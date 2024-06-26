@@ -152,7 +152,13 @@ extension LMFeedTopicSelectionScreen: LMFeedTopicSelectionViewModelProtocol {
         self.topicList = data
         topicSelectionListView.reloadData()
         
-        topicSelectionListView.backgroundView = selectedCount == .zero ? noResultsView : nil
+        var isEmpty = true
+        
+        data.forEach {
+            isEmpty = isEmpty && $0.isEmpty
+        }
+        
+        topicSelectionListView.backgroundView = isEmpty ? noResultsView : nil
         
         if selectedCount == .zero {
             setNavigationTitleAndSubtitle(with: Constants.shared.strings.selectTopic, subtitle: nil, alignment: .center)

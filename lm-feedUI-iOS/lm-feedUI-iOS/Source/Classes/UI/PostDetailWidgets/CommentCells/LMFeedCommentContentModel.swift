@@ -18,7 +18,7 @@ public protocol LMFeedPostCommentProtocol: AnyObject {
 
 // MARK: LMFeedCommentViewModel
 public struct LMFeedCommentContentModel {
-    public let author: LMFeedUserDataModel
+    public let author: LMFeedUserModel
     public let commentId: String?
     public let tempCommentId: String?
     public let comment: String
@@ -53,7 +53,7 @@ public struct LMFeedCommentContentModel {
     
     
     public init(
-        author: LMFeedUserDataModel,
+        author: LMFeedUserModel,
         commentId: String?,
         tempCommentId: String?,
         comment: String,

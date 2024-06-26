@@ -115,6 +115,12 @@ open class LMFeedEditPostScreen: LMViewController {
         return view
     }()
     
+    open private(set) lazy var pollPreview: LMFeedCreateDisplayPollView = {
+        let view = LMUIComponents.shared.createPollDisplayView.init()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     open private(set) lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(didTapSaveButton))
     
     
@@ -137,7 +143,7 @@ open class LMFeedEditPostScreen: LMViewController {
         scrollView.addSubview(scrollStackView)
         containerView.addSubview(taggingView)
         
-        [headerView, topicView, inputTextView, linkPreview, mediaCollectionView, mediaPageControl, documentTableView].forEach { subview in
+        [headerView, topicView, inputTextView, linkPreview, pollPreview, mediaCollectionView, mediaPageControl, documentTableView].forEach { subview in
             scrollStackView.addArrangedSubview(subview)
         }
     }
@@ -165,7 +171,7 @@ open class LMFeedEditPostScreen: LMViewController {
         mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
         
         
-        [headerView, topicView, inputTextView, mediaCollectionView, mediaPageControl, documentTableView].forEach { subView in
+        [headerView, topicView, inputTextView, mediaCollectionView, mediaPageControl, documentTableView, pollPreview].forEach { subView in
             NSLayoutConstraint.activate([
                 subView.leadingAnchor.constraint(equalTo: scrollStackView.leadingAnchor, constant: 16),
                 subView.trailingAnchor.constraint(equalTo: scrollStackView.trailingAnchor, constant: -16)
@@ -218,6 +224,7 @@ open class LMFeedEditPostScreen: LMViewController {
         mediaCollectionView.isHidden = true
         mediaPageControl.isHidden = true
         documentTableView.isHidden = true
+        pollPreview.isHidden = true
     }
 }
 
@@ -328,7 +335,7 @@ extension LMFeedEditPostScreen: LMFeedTaggingTextViewProtocol {
 
 
 // MARK: LMFeedEditPostViewModelProtocol
-extension LMFeedEditPostScreen: LMFeedEditPostViewModelProtocol {    
+extension LMFeedEditPostScreen: LMFeedEditPostViewModelProtocol {
     public func setupData(with userData: LMFeedCreatePostHeaderView.ContentModel, text: String) {
         headerView.configure(with: userData)
         inputTextView.setAttributedText(from: text, prefix: "@")
@@ -376,6 +383,11 @@ extension LMFeedEditPostScreen: LMFeedEditPostViewModelProtocol {
     public func setupTopicFeed(with data: LMFeedTopicView.ContentModel) {
         topicView.isHidden = false
         topicView.configure(with: data)
+    }
+    
+    public func setupPollPreview(with poll: LMFeedCreateDisplayPollView.ContentModel) {
+        pollPreview.configure(with: poll, delegate: nil)
+        pollPreview.isHidden = false
     }
 }
 

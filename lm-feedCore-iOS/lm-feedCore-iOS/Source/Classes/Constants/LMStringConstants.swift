@@ -24,4 +24,5 @@ public struct LMStringConstants {
     public var addPhotoText = "Add Photo"
     public var addVideoText = "Add Video"
     public var attachFiles = "Attach Files"
+    public var addPoll = "Add Poll"
 }

@@ -39,15 +39,13 @@ public struct Storage<T: Codable> {
 
 
 public struct LocalPreferences {
-    @Storage(key: "lm_username_key")
-    public static var userObj: User?
+    public static var userObj: User? {
+        LMFeedClient.shared.getUserDetails()
+    }
 
     @Storage(key: "lm_member_state")
     public static var memberState: GetMemberStateResponse?
     
     @Storage(key: "lm_device_uuid")
     public static var deviceUUID: String?
-    
-    @Storage(key: "lm_feed_api_key")
-    public static var apiKey: String?
 }
