@@ -44,4 +44,7 @@ public struct Components {
     // MARK: Poll Result
     public var pollResultScreen: LMFeedPollResultScreen.Type = LMFeedPollResultScreen.self
     public var pollResultList: LMFeedPollResultListScreen.Type = LMFeedPollResultListScreen.self
+    
+    // MARK: Search Screen
+    public var searchPostScreen: LMFeedSearchPostScreen.Type = LMFeedSearchPostScreen.self
 }

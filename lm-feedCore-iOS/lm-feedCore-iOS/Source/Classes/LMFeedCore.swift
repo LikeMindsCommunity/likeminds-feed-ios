@@ -41,7 +41,7 @@ public class LMFeedCore {
         if tokens.success,
            let accessToken = tokens.data?.accessToken,
            let refreshToken = tokens.data?.refreshToken {
-            showFeed(accessToken: accessToken, refreshToken: refreshToken) { result in
+            showFeed(accessToken: accessToken, refreshToken: refreshToken, coreCallback: nil) { result in
                 completionHandler?(result)
             }
         } else {
@@ -49,7 +49,8 @@ public class LMFeedCore {
         }
     }
     
-    public func showFeed(accessToken: String?, refreshToken: String?, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
+    public func showFeed(accessToken: String?, refreshToken: String?, coreCallback: LMFeedCoreCallback?, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
+        self.coreCallback = coreCallback
         self.setupFeed()
         
         if let accessToken,
@@ -64,9 +65,7 @@ public class LMFeedCore {
         }
     }
     
-    func showFeed(accessToken: String, refreshToken: String, handler: LMFeedCoreCallback?, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
-        self.coreCallback = handler
-        
+    func showFeed(accessToken: String, refreshToken: String, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
         let request = ValidateUserRequest
             .builder()
             .accessToken(accessToken)
