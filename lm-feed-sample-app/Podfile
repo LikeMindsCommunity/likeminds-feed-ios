@@ -7,7 +7,7 @@ target 'lm-feed-sample-app' do
   project 'lm-feed-sample-app.xcodeproj'
   use_frameworks!
   
-  pod 'LikeMindsFeed', path: '/Users/devanshmohata/Desktop/WORK/Feed/LikeMinds-iOS-Feed-SDK/LikeMindsFeed.podspec'
+  pod 'LikeMindsFeed', path: '../../LikeMinds-iOS-Feed-SDK/LikeMindsFeedDev.podspec'
   pod 'LikeMindsFeedUI', path: '../LikeMindsFeedUI.podspec'
   pod 'LikeMindsFeedCore', path: '../LikeMindsFeedCore.podspec'
 end

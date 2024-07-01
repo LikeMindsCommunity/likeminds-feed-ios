@@ -33,6 +33,18 @@ open class LMFeedSearchPostScreen: LMViewController {
         return search
     }()
     
+    open private(set) lazy var indicatorView: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.style = .large
+        return indicator
+    }()
+    
+    open private(set) lazy var noResultView: LMFeedNoResultView = {
+        let view = LMFeedNoResultView().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
     open private(set) lazy var dataSource: DataSource = {
         let dataSource = DataSource(tableView: postList) { tableView, indexPath, item in
             switch item.postType {
@@ -72,7 +84,6 @@ open class LMFeedSearchPostScreen: LMViewController {
     public typealias DataSource = UITableViewDiffableDataSource<String, LMFeedPostContentModel>
     public typealias Snapshot = NSDiffableDataSourceSnapshot<String, LMFeedPostContentModel>
     
-    
     open func handleCustomWidget(with data: LMFeedPostContentModel) -> LMTableViewCell {
         return LMTableViewCell()
     }
@@ -83,6 +94,7 @@ open class LMFeedSearchPostScreen: LMViewController {
         super.setupViews()
         
         view.addSubview(postList)
+        view.addSubview(noResultView)
     }
     
     
@@ -91,6 +103,7 @@ open class LMFeedSearchPostScreen: LMViewController {
         super.setupLayouts()
         
         view.safePinSubView(subView: postList)
+        view.safePinSubView(subView: noResultView)
     }
     
     
@@ -103,6 +116,20 @@ open class LMFeedSearchPostScreen: LMViewController {
     }
     
     
+    // MARK: setupObservers
+    open override func setupObservers() {
+        super.setupObservers()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostUpdate, object: nil)
+    }
+    
+    @objc
+    open func postUpdated(notification: Notification) {
+        if let data = notification.object as? LMFeedPostDataModel {
+            viewModel?.updatePostFromNotification(with: data)
+        }
+    }
+    
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,6 +137,10 @@ open class LMFeedSearchPostScreen: LMViewController {
         setupTableView()
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
+        
+        noResultView.isHidden = true
+        
+        overrideUserInterfaceStyle = .light
     }
     
     
@@ -150,7 +181,7 @@ open class LMFeedSearchPostScreen: LMViewController {
         var snapshot = Snapshot()
         
         // Append sections
-        snapshot.appendSections(Array(Set(data.map { $0.postID })))
+        snapshot.appendSections(Array(data.map { $0.postID }))
 
         // Append items
         for section in data {
@@ -231,6 +262,10 @@ extension LMFeedSearchPostScreen: UITableViewDelegate, UITableViewDataSourcePref
                 break
             }
         }
+    }
+    
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        searchController.searchBar.resignFirstResponder()
     }
 }
 
@@ -385,7 +420,14 @@ extension LMFeedSearchPostScreen: LMFeedSearchPostViewModelProtocol {
     }
     
     public func showLoader(isShow: Bool) {
-        // TODO:
+        if isShow {
+            postList.backgroundView = indicatorView
+            indicatorView.addConstraint(centerX: (postList.centerXAnchor, 0),
+                                        centerY: (postList.centerYAnchor, 0))
+            indicatorView.startAnimating()
+        } else {
+            postList.backgroundView = nil
+        }
     }
     
     public func showTableFooter(isShow: Bool) {
@@ -405,10 +447,11 @@ extension LMFeedSearchPostScreen: LMFeedSearchPostViewModelProtocol {
     public func updatePost(post: LMFeedPostContentModel) {
         guard let index = data.firstIndex(of: post) else { return }
         data[index] = post
+        applySnapshot()
     }
     
-    public func showEmptyView() {
-        // TODO:
+    public func toggleEmptyView(isShow: Bool) {
+        noResultView.isHidden = !isShow
     }
     
     public func removePreviousResults() {

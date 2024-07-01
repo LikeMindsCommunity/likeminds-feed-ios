@@ -271,7 +271,7 @@ open class LMUniversalFeedScreen: LMViewController {
         navigationController?.navigationBar.backgroundColor = Appearance.shared.colors.navigationBackgroundColor
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.appName, subtitle: nil, alignment: .center)
         
-        navigationItem.rightBarButtonItems = [UIBarButtonItem(image: Constants.shared.images.personIcon, style: .plain, target: self, action: #selector(didTapSearchButton)),
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(image: Constants.shared.images.searchIcon, style: .plain, target: self, action: #selector(didTapSearchButton)),
                                               UIBarButtonItem(image: Constants.shared.images.notificationBell, style: .plain, target: self, action: #selector(didTapNotificationButton))]
     }
     

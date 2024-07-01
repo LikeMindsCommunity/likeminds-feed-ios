@@ -14,7 +14,7 @@ public protocol LMFeedSearchPostViewModelProtocol: LMBaseViewControllerProtocol 
     func updatePostList(with post: [LMFeedPostContentModel])
     func removePost(postID: String)
     func updatePost(post: LMFeedPostContentModel)
-    func showEmptyView()
+    func toggleEmptyView(isShow: Bool)
     func removePreviousResults()
     
     func navigateToDeleteScreen(for postID: String)
@@ -62,6 +62,7 @@ public class LMFeedSearchPostViewModel {
         
         guard !search.isEmpty else {
             delegate.removePreviousResults()
+            delegate.toggleEmptyView(isShow: false)
             return
         }
         
@@ -129,10 +130,13 @@ public class LMFeedSearchPostViewModel {
     }
     
     func convertToViewData(for data: [LMFeedPostDataModel]) {
+        defer {
+            delegate.toggleEmptyView(isShow: postList.isEmpty)
+        }
+        
         postList.append(contentsOf: data)
         
         guard !postList.isEmpty else {
-            delegate.showEmptyView()
             return
         }
         
@@ -174,6 +178,15 @@ public class LMFeedSearchPostViewModel {
                 self?.delegate.updatePostList(with: convertedViewData)
             }
         }
+    }
+    
+    func notifyObjectChange(with post: LMFeedPostDataModel) {
+        NotificationCenter.default.post(name: .LMPostUpdate, object: post)
+    }
+    
+    func updatePost(with post: LMFeedPostDataModel) {
+        notifyObjectChange(with: post)
+        delegate.updatePost(post: LMFeedConvertToFeedPost.convertToViewModel(for: post))
     }
 }
 
@@ -274,6 +287,13 @@ public extension LMFeedSearchPostViewModel {
         postList.remove(at: index)
         delegate.removePost(postID: postID)
     }
+    
+    func updatePostFromNotification(with post: LMFeedPostDataModel) {
+        guard let index = postList.firstIndex(where: { $0.postId == post.postId }) else { return }
+        
+        postList[index] = post
+        delegate.updatePost(post: LMFeedConvertToFeedPost.convertToViewModel(for: post))
+    }
 }
 
 
@@ -295,8 +315,7 @@ public extension LMFeedSearchPostViewModel {
                 
                 postList[index] = feed
                 
-                var convertedPost = LMFeedConvertToFeedPost.convertToViewModel(for: feed)
-                delegate.updatePost(post: convertedPost)
+                updatePost(with: feed)
             }
         }
     }
@@ -315,6 +334,8 @@ public extension LMFeedSearchPostViewModel {
                 feed.isLiked.toggle()
                 feed.likeCount += feed.isLiked ? 1 : -1
                 postList[index] = feed
+                
+                notifyObjectChange(with: feed)
             } else {
                 self.reloadList()
             }
@@ -339,6 +360,8 @@ public extension LMFeedSearchPostViewModel {
                 var feed = postList[index]
                 feed.isSaved.toggle()
                 postList[index] = feed
+                
+                notifyObjectChange(with: feed)
             } else {
                 self.reloadList()
             }
@@ -385,7 +408,7 @@ public extension LMFeedSearchPostViewModel {
                       let index = postList.firstIndex(where: { $0.postId == id }) else { return }
                 
                 postList[index] = newData
-                delegate.updatePost(post: LMFeedConvertToFeedPost.convertToViewModel(for: newData))
+                updatePost(with: newData)
             }
         }
     }
