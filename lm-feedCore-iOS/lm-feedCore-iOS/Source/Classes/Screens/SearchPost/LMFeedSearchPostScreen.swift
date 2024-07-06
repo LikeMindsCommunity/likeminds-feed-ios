@@ -141,6 +141,8 @@ open class LMFeedSearchPostScreen: LMViewController {
         noResultView.isHidden = true
         
         overrideUserInterfaceStyle = .light
+        
+        setNavigationTitleAndSubtitle(with: "Search Posts", subtitle: nil, alignment: .center)
     }
     
     
@@ -150,6 +152,15 @@ open class LMFeedSearchPostScreen: LMViewController {
         
         DispatchQueue.main.async { [weak searchController] in
             searchController?.searchBar.becomeFirstResponder()
+        }
+    }
+    
+    
+    // MARK: viewWillDisappear
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        postList.visibleCells.forEach { cell in
+            (cell as? LMFeedPostMediaCell)?.tableViewScrolled()
         }
     }
     
