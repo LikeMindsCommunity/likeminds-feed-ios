@@ -330,7 +330,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Appearance.shared.colors.white
-        setNavigationTitleAndSubtitle(with: LMStringConstants.shared.createPostNavTitle, subtitle: nil, alignment: .center)
+        setNavigationTitleAndSubtitle(with: LMStringConstants.shared.createPostTitle, subtitle: nil, alignment: .center)
         inputTextView.setAttributedText(from: "")
         setupAddMedia()
         setupInitialView()

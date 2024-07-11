@@ -507,9 +507,9 @@ public extension LMFeedPostDetailViewModel {
         guard let index = postDetail?.postMenu.firstIndex(where: { $0.id == .pinPost || $0.id == .unpinPost }) else { return }
         var newPost = postDetail
         if newPost?.isPinned == true {
-            newPost?.postMenu[index] = .init(id: .unpinPost, name: "Unpin this Post")
+            newPost?.postMenu[index] = .init(id: .unpinPost, name: LMStringConstants.shared.unpinThisPost)
         } else {
-            newPost?.postMenu[index] = .init(id: .pinPost, name: "Pin this Post")
+            newPost?.postMenu[index] = .init(id: .pinPost, name: LMStringConstants.shared.pinThisPost)
         }
         
         updatePostData(with: newPost)

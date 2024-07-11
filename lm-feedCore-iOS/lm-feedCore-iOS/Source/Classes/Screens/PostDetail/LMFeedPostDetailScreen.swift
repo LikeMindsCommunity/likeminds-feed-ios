@@ -352,7 +352,7 @@ open class LMFeedPostDetailScreen: LMViewController {
     }
     
     public func setNavigationTitle(with commentCount: Int) {
-        setNavigationTitleAndSubtitle(with: "Post",
+        setNavigationTitleAndSubtitle(with: LMStringConstants.shared.postDetailTitle,
                                       subtitle: "\(commentCount) comment\(commentCount == 1 ? "" : "s")",
                                       alignment: .center)
     }

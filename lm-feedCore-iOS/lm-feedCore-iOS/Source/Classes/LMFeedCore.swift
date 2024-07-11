@@ -49,8 +49,9 @@ public class LMFeedCore {
         }
     }
     
-    public func showFeed(accessToken: String?, refreshToken: String?, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
+    public func showFeed(accessToken: String?, refreshToken: String?, handler: LMFeedCoreCallback?, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
         self.setupFeed()
+        self.coreCallback = handler
         
         if let accessToken,
            let refreshToken {
@@ -64,28 +65,27 @@ public class LMFeedCore {
         }
     }
     
-    func showFeed(accessToken: String, refreshToken: String, handler: LMFeedCoreCallback?, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
-        self.coreCallback = handler
-        
+    func showFeed(accessToken: String, refreshToken: String, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
         let request = ValidateUserRequest
             .builder()
             .accessToken(accessToken)
             .refreshToken(refreshToken)
             .build()
         
-        LMFeedClient.shared.validateUser(request) { response in
+        LMFeedClient.shared.validateUser(request) { [weak self] response in
             guard response.success else {
                 completionHandler?(.failure(.apiInitializationFailed(error: response.errorMessage)))
                 return
             }
             
             if response.data?.appAccess == false {
-                self.logout(refreshToken, deviceId: UIDevice.current.identifierForVendor?.uuidString ?? "")
+                self?.logout(refreshToken, deviceId: UIDevice.current.identifierForVendor?.uuidString ?? "")
                 completionHandler?(.failure(.appAccessFalse))
                 return
             }
             
             Self.isInitialized = true
+            self?.fetchCommunityConfiguration()
             
             completionHandler?(.success(()))
         }
@@ -112,6 +112,7 @@ public class LMFeedCore {
             }
             
             Self.isInitialized = true
+            self?.fetchCommunityConfiguration()
             
             completionHandler?(.success(()))
         }
@@ -161,6 +162,13 @@ public class LMFeedCore {
             case .failure(let error):
                 completion?(.failure(error))
             }
+        }
+    }
+    
+    func fetchCommunityConfiguration() {
+        LMFeedClient.shared.getCommunityConfiguration(GetCommunityConfigurationRequest.builder()) { response in
+            let configurations = response.data?.communityConfigurations ?? []
+            LocalPreferences.communityConfiguration = .init(configs: configurations)
         }
     }
 }

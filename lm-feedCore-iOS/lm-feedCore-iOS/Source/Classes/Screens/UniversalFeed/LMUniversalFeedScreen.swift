@@ -85,7 +85,7 @@ open class LMUniversalFeedScreen: LMViewController {
     
     open private(set) lazy var createPostButton: LMButton = {
         let button = LMButton.createButton(
-            with: "Create Post",
+            with: LMStringConstants.shared.newPost,
             image: Constants.shared.images.createPostIcon,
             textColor: Appearance.shared.colors.white,
             textFont: Appearance.shared.fonts.buttonFont1,
@@ -372,7 +372,7 @@ extension LMUniversalFeedScreen: LMFeedPostListVCFromProtocol {
         } else if lastVelocityYSign > 0,
                   createPostButtonWidth?.isActive != false {
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
-                self?.createPostButton.setTitle("Create Post", for: .normal)
+                self?.createPostButton.setTitle(LMStringConstants.shared.newPost, for: .normal)
                 self?.createPostButtonWidth?.isActive = false
                 self?.createPostButton.layoutIfNeeded()
             }, completion: nil)

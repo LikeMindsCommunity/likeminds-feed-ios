@@ -23,6 +23,6 @@ Pod::Spec.new do |spec|
   spec.dependency 'BSImagePicker', '~> 3.3.3'
   spec.dependency "FirebaseCore"
   spec.dependency "FirebaseMessaging"
-  spec.dependency 'LikeMindsFeed'
+  spec.dependency 'LikeMindsFeed', '1.7.3'
   spec.dependency 'LikeMindsFeedUI', spec.version.to_s
 end

@@ -197,6 +197,8 @@ open class LMFeedReportScreen: LMViewController {
         otherReasonTextView.font = Appearance.shared.fonts.textFont1
         
         setupButton(isEnabled: false)
+        subtitleLabel.text = LMStringConstants.shared.reportSubtitle(isComment: viewmodel?.contentType != .post)
+        
         viewmodel?.fetchReportTags()
     }
     

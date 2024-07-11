@@ -181,9 +181,9 @@ public extension LMFeedPostListViewModel {
                 var feed = postList[index]
                 feed.isPinned.toggle()
                 if let idx = feed.postMenu.firstIndex(where: { $0.id == .pinPost }) {
-                    feed.postMenu[idx] = .init(id: .unpinPost, name: "Unpin this Post")
+                    feed.postMenu[idx] = .init(id: .unpinPost, name: LMStringConstants.shared.unpinThisPost)
                 } else if let idx = feed.postMenu.firstIndex(where: { $0.id == .unpinPost }) {
-                    feed.postMenu[idx] = .init(id: .pinPost, name: "Pin this Post")
+                    feed.postMenu[idx] = .init(id: .pinPost, name: LMStringConstants.shared.pinThisPost)
                 }
                 
                 postList[index] = feed
