@@ -207,7 +207,7 @@ open class LMUniversalFeedScreen: LMViewController {
         guard isShowCreatePost else { return }
         
         guard !isPostCreationInProgress else {
-            showError(with: "A post is already uploading!", isPopVC: false)
+            showError(with: LMStringConstants.shared.postingInProgress, isPopVC: false)
             return
         }
         do {

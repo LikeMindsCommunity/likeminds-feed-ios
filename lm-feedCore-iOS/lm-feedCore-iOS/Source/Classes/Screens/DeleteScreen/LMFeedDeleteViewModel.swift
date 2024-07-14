@@ -57,10 +57,12 @@ public final class LMFeedDeleteViewModel {
     }
     
     func processTags(tags: [String]) {
+        let tagTitle: String = commentID != nil ? LMStringConstants.shared.commentVariable : LMStringConstants.shared.postVariable
+        
         delegate?.showTags(
             with: tags,
-            title: String(format: popupTitle, commentID != nil ? "Comment" : "Post"),
-            subtitle: String(format: popupMessage, commentID != nil ? "Comment" : "Post")
+            title: String(format: popupTitle, tagTitle),
+            subtitle: String(format: popupMessage, tagTitle)
         )
     }
     

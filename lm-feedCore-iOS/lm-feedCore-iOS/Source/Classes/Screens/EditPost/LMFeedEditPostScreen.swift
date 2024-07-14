@@ -207,7 +207,7 @@ open class LMFeedEditPostScreen: LMViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         setupInitialView()
-        setNavigationTitleAndSubtitle(with: "Edit Post", subtitle: nil, alignment: .center)
+        setNavigationTitleAndSubtitle(with: LMStringConstants.shared.editPost, subtitle: nil, alignment: .center)
         viewmodel?.getInitalData()
     }
     

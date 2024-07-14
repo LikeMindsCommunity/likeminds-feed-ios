@@ -23,12 +23,20 @@ open class LMFeedPostFooterView: LMTableViewHeaderFooterView {
         public var isLiked: Bool
         public var likeCount: Int
         public var commentCount: Int
+        public var likeText: String
+        public var likeMultipleText: String
+        public var commentText: String
+        public var commentMultipleText: String
         
-        public init(likeCount: Int, commentCount: Int, isSaved: Bool = false, isLiked: Bool = false) {
-            self.likeCount = likeCount
-            self.commentCount = commentCount
+        public init(isSaved: Bool, isLiked: Bool, likeCount: Int, commentCount: Int, likeText: String, likeMultipleText: String, commentText: String, commentMultipleText: String) {
             self.isSaved = isSaved
             self.isLiked = isLiked
+            self.likeCount = likeCount
+            self.commentCount = commentCount
+            self.likeText = likeText
+            self.likeMultipleText = likeMultipleText
+            self.commentText = commentText
+            self.commentMultipleText = commentMultipleText
         }
     }
     
@@ -108,6 +116,11 @@ open class LMFeedPostFooterView: LMTableViewHeaderFooterView {
     public var postID: String?
     public var likeCount: Int = 0
     
+    public var likeText: String = "Like"
+    public var likeMultipleText: String = "Likes"
+    public var commentText: String = "Comment"
+    public var commentMultipleText: String = "Comments"
+    
     // MARK: View Hierachy
     open override func setupViews() {
         super.setupViews()
@@ -150,6 +163,11 @@ open class LMFeedPostFooterView: LMTableViewHeaderFooterView {
     
     // MARK: configure
     open func configure(with data: ContentModel, postID: String, delegate: LMFeedPostFooterViewProtocol) {
+        self.likeText = data.likeText
+        self.likeMultipleText = data.likeMultipleText
+        self.commentText = data.commentText
+        self.commentMultipleText = data.commentMultipleText
+        
         self.postID = postID
         self.likeCount = data.likeCount
         self.delegate = delegate
@@ -165,22 +183,22 @@ open class LMFeedPostFooterView: LMTableViewHeaderFooterView {
     
     open func getLikeText(for likeCount: Int) -> String {
         if likeCount == .zero {
-            return "Like"
+            return likeText
         } else if likeCount == 1 {
-            return "1 Like"
+            return "1 \(likeText)"
         }
         
-        return "\(likeCount) Likes"
+        return "\(likeCount) \(likeMultipleText)"
     }
     
     open func getCommentText(for commentCount: Int) -> String {
         if commentCount == .zero {
-            return "Add Comment"
+            return "Add \(commentText)"
         } else if commentCount == 1 {
-            return "1 Comment"
+            return "1 \(commentText)"
         }
         
-        return "\(commentCount) Comments"
+        return "\(commentCount) \(commentMultipleText)"
     }
 }
 

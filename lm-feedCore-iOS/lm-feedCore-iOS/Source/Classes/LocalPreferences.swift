@@ -55,10 +55,4 @@ public struct LocalPreferences {
 
 public struct CommunityConfig: Codable {
     public let configs: [CommunityConfiguration]
-    
-//    var postVariable: String {
-//        guard let config = configs.first(where: { $0.type == "feed_metadata" })?.value?.post else { return "resource" }
-//        
-//        return config
-//    }
 }

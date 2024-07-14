@@ -112,7 +112,7 @@ public final class LMFeedReportViewModel {
             case .success():
                 handleTrackEvent(reason: reasonName)
                 
-                let contentTitle = contentType == .post ? "Post" : "Comment"
+                let contentTitle = contentType == .post ? LMStringConstants.shared.postVariable : LMStringConstants.shared.commentVariable
                 let title = "\(contentTitle) is reported for review"
                 let message = "Our team will look into your feedback and will take appropriate action on this \(contentTitle)"
                 

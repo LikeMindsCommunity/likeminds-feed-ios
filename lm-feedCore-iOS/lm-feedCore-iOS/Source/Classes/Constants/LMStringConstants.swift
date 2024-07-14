@@ -18,7 +18,7 @@ public struct LMStringConstants {
         case allCapitalPlural
         case allSmallPlural
     }
-
+    
     func pluralizeOrCapitalize(to value: String, withAction action: WordAction) -> String {
         switch action {
         case .firstLetterCapitalSingular:
@@ -35,16 +35,22 @@ public struct LMStringConstants {
             return value.pluralize().lowercased()
         }
     }
-
+    
     
     public var postVariable: String {
-        LocalPreferences.communityConfiguration?.configs.first(where: { $0.type == "feed_metadata" })?.value?.post ?? "post"
+        (LocalPreferences.communityConfiguration?.configs.first(where: { $0.type == "feed_metadata" })?.value?.post ?? "post").capitalized
     }
     
     public var commentVariable: String {
-        // TODO: Add comment variable
-//        LocalPreferences.communityConfiguration?.configs.first(where: { $0.type == "feed_metadata" })?.value?.post ??
-        "comment"
+        (LocalPreferences.communityConfiguration?.configs.first(where: { $0.type == "feed_metadata" })?.value?.comment ?? "comment").capitalized
+    }
+    
+    public var likeVariable: String {
+        (LocalPreferences.communityConfiguration?.configs.first(where: { $0.type == "feed_metadata" })?.value?.like?.entityName ?? "Like").capitalized
+    }
+    
+    public var pastLikeVariable: String {
+        (LocalPreferences.communityConfiguration?.configs.first(where: { $0.type == "feed_metadata" })?.value?.like?.pasTenseName ?? "Liked").capitalized
     }
     
     public static var shared = Self()
@@ -93,5 +99,21 @@ public struct LMStringConstants {
     
     public func reportSubtitle(isComment: Bool) -> String {
         String(format: "You would be able to report this %@ after selecting a problem.", pluralizeOrCapitalize(to: isComment ? commentVariable : postVariable, withAction: .allSmallSingular))
+    }
+    
+    public var deletePost: String {
+        String(format: "Delete %@", pluralizeOrCapitalize(to: postVariable, withAction: .firstLetterCapitalSingular))
+    }
+    
+    public var deletePostMessage: String {
+        String(format: "Are you sure you want to delete this %@? This action cannot be reversed", pluralizeOrCapitalize(to: postVariable, withAction: .allSmallSingular))
+    }
+    
+    public var writeComment: String {
+        String(format: "Write a %@", pluralizeOrCapitalize(to: commentVariable, withAction: .allSmallSingular))
+    }
+    
+    public var noCommentPermission: String {
+        String(format: "You do not have permission to %@", pluralizeOrCapitalize(to: commentVariable, withAction: .allSmallSingular))
     }
 }

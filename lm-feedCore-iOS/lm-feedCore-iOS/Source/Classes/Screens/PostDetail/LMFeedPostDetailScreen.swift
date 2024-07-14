@@ -126,7 +126,7 @@ open class LMFeedPostDetailScreen: LMViewController {
         textView.textColor = Appearance.shared.colors.textColor
         textView.contentMode = .center
         textView.font = Appearance.shared.fonts.textFont1
-        textView.placeHolderText = "Write a Comment"
+        textView.placeHolderText = LMStringConstants.shared.writeComment
         return textView
     }()
     
@@ -353,7 +353,7 @@ open class LMFeedPostDetailScreen: LMViewController {
     
     public func setNavigationTitle(with commentCount: Int) {
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.postDetailTitle,
-                                      subtitle: "\(commentCount) comment\(commentCount == 1 ? "" : "s")",
+                                      subtitle: "\(commentCount) \(LMStringConstants.shared.commentVariable.pluralize(count: commentCount))",
                                       alignment: .center)
     }
 }
@@ -722,7 +722,7 @@ extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
     public func updateCommentStatus(isEnabled: Bool) {
         isCommentingEnabled = isEnabled
         
-        inputTextView.placeHolderText = isCommentingEnabled ? "Write a Comment" : "You do not have permission to comment."
+        inputTextView.placeHolderText = isCommentingEnabled ? LMStringConstants.shared.writeComment : LMStringConstants.shared.noCommentPermission
         inputTextView.setAttributedText(from: "")
         inputTextView.isUserInteractionEnabled = isCommentingEnabled
         sendButton.isHidden = !isCommentingEnabled
