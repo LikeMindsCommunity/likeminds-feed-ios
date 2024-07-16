@@ -105,7 +105,6 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
         noCommentContainerView.isHidden = commentCount != 0
         commentContainerView.isHidden = commentCount == 0
         
-        let commentText = commentCount == 1 ? Constants.shared.strings.comment : Constants.shared.strings.comments
-        totalCommentLabel.text = "\(commentCount) \(commentText)"
+        totalCommentLabel.text = "\(commentCount) \(commentText.pluralize(count: commentCount))"
     }
 }

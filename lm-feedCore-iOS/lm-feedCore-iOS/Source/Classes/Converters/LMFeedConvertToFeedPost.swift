@@ -81,9 +81,7 @@ public struct LMFeedConvertToFeedPost {
             likeCount: data.likeCount,
             commentCount: data.commentCount,
             likeText: LMStringConstants.shared.likeVariable,
-            likeMultipleText: LMStringConstants.shared.likeVariable.pluralize(),
-            commentText: LMStringConstants.shared.commentVariable,
-            commentMultipleText: LMStringConstants.shared.commentVariable.pluralize()
+            commentText: LMStringConstants.shared.commentVariable
         )
     }
     
@@ -134,7 +132,8 @@ public struct LMFeedConvertToFeedPost {
             totalReplyCount: comment.totalRepliesCount,
             replies: replies,
             isEdited: comment.isEdited,
-            isLiked: comment.isLiked
+            isLiked: comment.isLiked, 
+            likeKeyword: LMStringConstants.shared.likeVariable
         )
     }
     

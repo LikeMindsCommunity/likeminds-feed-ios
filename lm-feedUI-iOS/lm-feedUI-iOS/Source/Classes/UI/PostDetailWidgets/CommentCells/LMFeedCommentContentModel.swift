@@ -29,6 +29,7 @@ public struct LMFeedCommentContentModel {
     public let totalReplyCount: Int
     public var replies: [LMFeedCommentContentModel]
     public var isShowMore: Bool
+    public var likeKeyword: String
     
     public var authorName: String { author.userName }
     
@@ -44,7 +45,7 @@ public struct LMFeedCommentContentModel {
     }
     
     public var likeText: String {
-        likeCount > 1 ? "\(likeCount) \(Constants.shared.strings.likes)" : "\(likeCount) \(Constants.shared.strings.like)"
+        "\(likeCount) \(likeKeyword.pluralize(count: likeCount))"
     }
     
     public var commentText: String {
@@ -63,7 +64,8 @@ public struct LMFeedCommentContentModel {
         replies: [LMFeedCommentContentModel],
         isEdited: Bool,
         isLiked: Bool,
-        isShowMore: Bool = true
+        isShowMore: Bool = true,
+        likeKeyword: String
     ) {
         self.author = author
         self.commentId = commentId
@@ -76,5 +78,6 @@ public struct LMFeedCommentContentModel {
         self.totalReplyCount = totalReplyCount
         self.replies = replies
         self.isShowMore = isShowMore
+        self.likeKeyword = likeKeyword
     }
 }

@@ -120,7 +120,14 @@ open class LMUniversalFeedScreen: LMViewController {
         
         createPostLoaderView.isHidden = true
         topicContainerView.isHidden = true
+        
         viewModel?.initialSetup()
+    }
+    
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        createPostButton.setTitle(LMStringConstants.shared.newPost, for: .normal)
     }
     
     // MARK: setupViews
