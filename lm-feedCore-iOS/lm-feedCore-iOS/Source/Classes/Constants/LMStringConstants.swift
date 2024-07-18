@@ -10,7 +10,7 @@ import Foundation
 public struct LMStringConstants {
     private init() { }
     
-    enum WordAction: Int {
+    enum LMWordAction: Int {
         case firstLetterCapitalSingular
         case allCapitalSingular
         case allSmallSingular
@@ -19,7 +19,7 @@ public struct LMStringConstants {
         case allSmallPlural
     }
     
-    func pluralizeOrCapitalize(to value: String, withAction action: WordAction) -> String {
+    func pluralizeOrCapitalize(to value: String, withAction action: LMWordAction) -> String {
         switch action {
         case .firstLetterCapitalSingular:
             return value.capitalized
@@ -114,6 +114,6 @@ public struct LMStringConstants {
     }
     
     public var noCommentPermission: String {
-        String(format: "You do not have permission to %@", pluralizeOrCapitalize(to: commentVariable, withAction: .allSmallSingular))
+        String(format: "You do not have permission to create a %@", pluralizeOrCapitalize(to: commentVariable, withAction: .allSmallSingular))
     }
 }

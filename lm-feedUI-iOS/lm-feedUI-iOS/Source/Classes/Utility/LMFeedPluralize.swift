@@ -1,5 +1,5 @@
 //
-//  Pluralize.swift
+//  LMFeedPluralize.swift
 //  LikeMindsFeedCore
 //
 //  Created by Devansh Mohata on 10/07/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Pluralize {
+public class LMFeedPluralize {
     var uncountables:[String] = []
     var rules:[(rule: String, template: String)] = []
     
@@ -133,8 +133,8 @@ public class Pluralize {
         sharedInstance.unchanging(word: word)
     }
     
-    class var sharedInstance : Pluralize {
-        return Pluralize()
+    class var sharedInstance : LMFeedPluralize {
+        return LMFeedPluralize()
     }
     
     private class func regexReplace(input: String, pattern: String, template: String) -> String {
@@ -160,7 +160,7 @@ public class Pluralize {
 extension String {
     public func pluralize(count: Int = 2, with: String = "") -> String {
         guard !(count == 1) else { return self }
-        guard with.count != 0 else { return Pluralize.apply(word: self) }
+        guard with.count != 0 else { return LMFeedPluralize.apply(word: self) }
         return with
     }
 }
