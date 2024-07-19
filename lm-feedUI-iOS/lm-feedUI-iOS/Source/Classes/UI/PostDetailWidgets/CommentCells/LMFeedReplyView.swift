@@ -106,6 +106,7 @@ open class LMFeedReplyView: LMTableViewCell {
     public var userUUID: String?
     public var indexPath: IndexPath?
     public var likeCount: Int = 0
+    public var likeText: String = Constants.shared.strings.like
     public var commentUserUUID: String?
     public var seeMoreAction: (() -> Void)?
     
@@ -184,11 +185,9 @@ open class LMFeedReplyView: LMTableViewCell {
         
         likeTextButton.isHidden = likeCount == 0
         if likeCount == 0 {
-            likeTextButton.setTitle(Constants.shared.strings.like, for: .normal)
-        } else if likeCount == 1 {
-            likeTextButton.setTitle("1 \(Constants.shared.strings.like)", for: .normal)
+            likeTextButton.setTitle(likeText, for: .normal)
         } else {
-            likeTextButton.setTitle("\(likeCount) \(Constants.shared.strings.likes)", for: .normal)
+            likeTextButton.setTitle("\(likeCount) \(likeText.pluralize(count: likeCount))", for: .normal)
         }
         
         
@@ -277,5 +276,7 @@ open class LMFeedReplyView: LMTableViewCell {
         
         likeTextButton.isHidden = data.likeCount == .zero
         likeTextButton.setTitle(data.likeText, for: .normal)
+        
+        self.likeText = data.likeKeyword
     }
 }

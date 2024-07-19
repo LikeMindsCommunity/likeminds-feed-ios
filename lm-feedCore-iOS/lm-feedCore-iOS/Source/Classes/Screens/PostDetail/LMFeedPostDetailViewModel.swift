@@ -507,9 +507,9 @@ public extension LMFeedPostDetailViewModel {
         guard let index = postDetail?.postMenu.firstIndex(where: { $0.id == .pinPost || $0.id == .unpinPost }) else { return }
         var newPost = postDetail
         if newPost?.isPinned == true {
-            newPost?.postMenu[index] = .init(id: .unpinPost, name: "Unpin this Post")
+            newPost?.postMenu[index] = .init(id: .unpinPost, name: LMStringConstants.shared.unpinThisPost)
         } else {
-            newPost?.postMenu[index] = .init(id: .pinPost, name: "Pin this Post")
+            newPost?.postMenu[index] = .init(id: .pinPost, name: LMStringConstants.shared.pinThisPost)
         }
         
         updatePostData(with: newPost)
@@ -566,7 +566,7 @@ public extension LMFeedPostDetailViewModel {
         guard let postDetail else { return }
         // Case of Self Deletion
         if postDetail.userDetails.userUUID == LocalPreferences.userObj?.sdkClientInfo?.uuid {
-            let alert = UIAlertController(title: "Delete Post?", message: "Are you sure you want to delete this post? This action cannot be reversed", preferredStyle: .alert)
+            let alert = UIAlertController(title: LMStringConstants.shared.deletePost, message: LMStringConstants.shared.deletePostMessage, preferredStyle: .alert)
             
             let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
                 self?.deletePost(reason: nil)

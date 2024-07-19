@@ -22,7 +22,7 @@ public struct Storage<T: Codable> {
             guard let data = UserDefaults.standard.object(forKey: key) as? Data else {
                 return nil
             }
-
+            
             // Convert data to the desire data type
             let value = try? JSONDecoder().decode(T.self, from: data)
             return value
@@ -48,4 +48,11 @@ public struct LocalPreferences {
     
     @Storage(key: "lm_device_uuid")
     public static var deviceUUID: String?
+    
+    @Storage(key: "community_configuration")
+    public static var communityConfiguration: CommunityConfig?
+}
+
+public struct CommunityConfig: Codable {
+    public let configs: [CommunityConfiguration]
 }

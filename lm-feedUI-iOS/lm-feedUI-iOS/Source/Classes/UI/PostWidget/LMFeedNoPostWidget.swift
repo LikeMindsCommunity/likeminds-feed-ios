@@ -121,7 +121,8 @@ open class LMFeedNoPostWidget: LMView {
     
     
     // MARK: configure
-    open func configure(_ createAction: (() -> Void)?) {
+    open func configure(title: String, _ createAction: (() -> Void)?) {
+        createPostButton.setTitle(title, for: .normal)
         self.createAction = createAction
     }
 }

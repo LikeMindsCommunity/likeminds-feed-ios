@@ -181,9 +181,9 @@ public extension LMFeedPostListViewModel {
                 var feed = postList[index]
                 feed.isPinned.toggle()
                 if let idx = feed.postMenu.firstIndex(where: { $0.id == .pinPost }) {
-                    feed.postMenu[idx] = .init(id: .unpinPost, name: "Unpin this Post")
+                    feed.postMenu[idx] = .init(id: .unpinPost, name: LMStringConstants.shared.unpinThisPost)
                 } else if let idx = feed.postMenu.firstIndex(where: { $0.id == .unpinPost }) {
-                    feed.postMenu[idx] = .init(id: .pinPost, name: "Pin this Post")
+                    feed.postMenu[idx] = .init(id: .pinPost, name: LMStringConstants.shared.pinThisPost)
                 }
                 
                 postList[index] = feed
@@ -258,7 +258,7 @@ public extension LMFeedPostListViewModel {
     func handleDeletePost(for post: LMFeedPostDataModel) {
         // Case of Self Deletion
         if post.userDetails.userUUID == LocalPreferences.userObj?.sdkClientInfo?.uuid {
-            let alert = UIAlertController(title: "Delete Post?", message: "Are you sure you want to delete this post? This action cannot be reversed", preferredStyle: .alert)
+            let alert = UIAlertController(title: "\(LMStringConstants.shared.deletePost)?", message: LMStringConstants.shared.deletePostMessage, preferredStyle: .alert)
             
             let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
                 self?.deletePost(postID: post.postId, reason: nil)
