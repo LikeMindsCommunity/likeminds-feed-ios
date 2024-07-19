@@ -127,7 +127,7 @@ public class LMFeedCore {
     }
     
     // This function extracts FCM Token and calls registerDevice api
-    private func registerDevice(deviceId: String, completion: ((Result<Void, LMChatError>) -> Void)? = nil) {
+    private func registerDevice(deviceId: String, completion: ((Result<Void, LMFeedError>) -> Void)? = nil) {
         Messaging.messaging().token { token, error in
           if let error {
             debugPrint(error)
@@ -154,13 +154,13 @@ public class LMFeedCore {
     /// 2. Sends the registration request to LikeMinds system using `LMChatClient.shared.registerDevice`.
     /// 3. Prints an error message if the registration fails.I
     ///
-    public func registerDevice(with token: String, deviceId: String, completion: ((Result<Void, LMChatError>) -> Void)? = nil){
+    public func registerDevice(with token: String, deviceId: String, completion: ((Result<Void, LMFeedError>) -> Void)? = nil){
         let request = RegisterDeviceRequest.builder()
             .token(token)
             .deviceId(deviceId)
             .build()
         
-        LMFeedCLient.shared.registerDevice(request: request) { response in
+        LMFeedClient.shared.registerDevice(request: request) { response in
             if response.success {
                 completion?(.success(()))
             } else {
