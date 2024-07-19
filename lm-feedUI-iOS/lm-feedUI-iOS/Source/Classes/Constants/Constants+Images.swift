@@ -53,6 +53,7 @@ public extension Constants {
         public var equalIcon = loadSystemImage(with: "equal")
         public var chevronDownIcon = loadSystemImage(with: "chevron.down")
         public var chevronUpIcon = loadSystemImage(with: "chevron.up")
+        public var searchIcon = loadSystemImage(with: "magnifyingglass")
         
         public var pencilIcon = loadImage(with: "editIcon")
         public var pdfIcon = loadImage(with: "pdfIcon")

@@ -105,7 +105,6 @@ open class LMUniversalFeedScreen: LMViewController {
     
     
     // MARK: Data Variables
-    public var data: [LMFeedPostTableCellProtocol] = []
     public var selectedTopics: [LMFeedTopicCollectionCellDataModel] = []
     public var isShowCreatePost: Bool = false
     public var isPostCreationInProgress: Bool = false
@@ -272,7 +271,7 @@ open class LMUniversalFeedScreen: LMViewController {
         navigationController?.navigationBar.backgroundColor = Appearance.shared.colors.navigationBackgroundColor
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.appName, subtitle: nil, alignment: .center)
         
-        navigationItem.rightBarButtonItems = [UIBarButtonItem(image: Constants.shared.images.personIcon, style: .plain, target: nil, action: nil),
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(image: Constants.shared.images.searchIcon, style: .plain, target: self, action: #selector(didTapSearchButton)),
                                               UIBarButtonItem(image: Constants.shared.images.notificationBell, style: .plain, target: self, action: #selector(didTapNotificationButton))]
     }
     
@@ -280,6 +279,16 @@ open class LMUniversalFeedScreen: LMViewController {
     open func didTapNotificationButton() {
         let viewcontroller = LMFeedNotificationFeedViewModel.createModule()
         navigationController?.pushViewController(viewcontroller, animated: true)
+    }
+    
+    @objc
+    open func didTapSearchButton() {
+        do {
+            let viewcontroller = try LMFeedSearchPostViewModel.createModule()
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }
 
