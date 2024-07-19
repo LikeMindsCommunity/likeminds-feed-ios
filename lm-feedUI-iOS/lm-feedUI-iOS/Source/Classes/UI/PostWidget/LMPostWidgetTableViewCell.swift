@@ -17,7 +17,7 @@ public enum LMFeedPostType {
          other
 }
 
-public protocol LMFeedPostTableCellProtocol {
+public protocol LMFeedPostTableCellProtocol: Hashable {
     var postType: LMFeedPostType { get }
     var postID: String { get }
     var userUUID: String { get }
@@ -44,6 +44,14 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
     public var linkPreview: LMFeedLinkPreview.ContentModel?
     public var mediaData: [LMFeedMediaProtocol]
     public var pollWidget: LMFeedDisplayPollView.ContentModel?
+    
+    public static func == (lhs: LMFeedPostContentModel, rhs: LMFeedPostContentModel) -> Bool {
+        lhs.postID == rhs.postID
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(postID)
+    }
     
     public init(
         postType: LMFeedPostType,
