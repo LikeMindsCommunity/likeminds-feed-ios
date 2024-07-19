@@ -19,6 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Messaging.messaging().delegate = self
         registerForPushNotifications(application: application)
         
+        var deviceId: String? = UIDevice.current.identifierForVendor?.uuidString
+        
+        LMFeedCore.shared.setupFeed(deviceId: deviceId)
+        
         ImageCache.default.memoryStorage.config.totalCostLimit = 1 //1 in bytes
         return true
     }
