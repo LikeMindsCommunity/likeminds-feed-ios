@@ -76,7 +76,7 @@ open class LMFeedPostFooterView: LMTableViewHeaderFooterView {
         let button = LMButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(Constants.Images.shared.commentIcon, for: .normal)
-        button.setTitle(Constants.shared.strings.comment, for: .normal)
+        button.setTitle("", for: .normal)
         button.setTitleColor(Appearance.shared.colors.gray2, for: .normal)
         button.tintColor = Appearance.shared.colors.gray2
         button.centerTextAndImage(spacing: 4)
