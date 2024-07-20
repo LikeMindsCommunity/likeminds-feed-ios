@@ -16,6 +16,12 @@ public struct LMFeedConvertToFeedPost {
         var linkPreview: LMFeedLinkPreview.ContentModel?
         let pollPreview = convertToPollModel(from: post)
         
+        var topResponse: LMFeedCommentContentModel?
+        
+        if let topResponseData = post.topResponse {
+            topResponse = convertToCommentModel(from: topResponseData)
+        }
+        
         if let link = post.linkAttachment {
             linkPreview = .init(linkPreview: link.previewImage, title: link.title, description: link.description, url: link.url)
         }
@@ -49,7 +55,8 @@ public struct LMFeedConvertToFeedPost {
             documents: documents,
             linkPreview: linkPreview,
             mediaData: media,
-            pollWidget: pollPreview
+            pollWidget: pollPreview, 
+            topResponse: topResponse
         )
         
         return transformedData
@@ -109,6 +116,14 @@ public struct LMFeedConvertToFeedPost {
         }
     }
     
+    public static func convertToUserModel(from user: LMFeedUserDataModel) -> LMFeedUserModel {
+        .init(userName: user.userName, userUUID: user.userUUID, userProfileImage: user.userProfileImage, customTitle: user.customTitle)
+    }
+}
+
+
+// MARK: Comment Specific
+extension LMFeedConvertToFeedPost {
     public static func convertToCommentModel(for comments: [LMFeedCommentDataModel]) -> [LMFeedCommentContentModel] {
         comments.enumerated().map { index, comment in
             return convertToCommentModel(from: comment)
@@ -132,15 +147,15 @@ public struct LMFeedConvertToFeedPost {
             totalReplyCount: comment.totalRepliesCount,
             replies: replies,
             isEdited: comment.isEdited,
-            isLiked: comment.isLiked, 
+            isLiked: comment.isLiked,
             likeKeyword: LMStringConstants.shared.likeVariable
         )
     }
-    
-    public static func convertToUserModel(from user: LMFeedUserDataModel) -> LMFeedUserModel {
-        .init(userName: user.userName, userUUID: user.userUUID, userProfileImage: user.userProfileImage, customTitle: user.customTitle)
-    }
-    
+}
+
+
+// MARK: Poll Specific
+extension LMFeedConvertToFeedPost {
     public static func convertToPollModel(from data: LMFeedPostDataModel) -> LMFeedDisplayPollView.ContentModel? {
         guard let pollAttachment = data.pollAttachment else { return nil }
         
@@ -168,7 +183,7 @@ public struct LMFeedConvertToFeedPost {
             isInstantPoll: pollAttachment.isInstantPoll,
             isPollSubmitted: isPollSubmitted,
             isAllowAddOption: pollAttachment.allowAddOptions,
-            isPollEnded: isPollEnded, 
+            isPollEnded: isPollEnded,
             optionCount: optionCount
         )
         
@@ -182,7 +197,7 @@ public struct LMFeedConvertToFeedPost {
                 votePercentage: $0.percentage,
                 isSelected: $0.isSelected || pollAttachment.userSelectedOptions.contains($0.id),
                 showVoteCount: pollAttachment.showResults,
-                showProgressBar: pollAttachment.showResults && (isPollEnded || isPollSubmitted), 
+                showProgressBar: pollAttachment.showResults && (isPollEnded || isPollSubmitted),
                 showTickButton: ($0.isSelected || pollAttachment.userSelectedOptions.contains($0.id)) && (isMultiChoice || !pollAttachment.isInstantPoll)
             )
         })
@@ -203,11 +218,7 @@ public struct LMFeedConvertToFeedPost {
             isShowEditVote: !isPollEnded && isPollSubmitted && !pollAttachment.isInstantPoll
         )
     }
-}
-
-
-// MARK: Poll Specific
-extension LMFeedConvertToFeedPost {
+    
     public static func isPollSubmitted(options: [LMFeedPollDataModel.Option]) -> Bool {
         options.contains(where: { $0.isSelected })
     }

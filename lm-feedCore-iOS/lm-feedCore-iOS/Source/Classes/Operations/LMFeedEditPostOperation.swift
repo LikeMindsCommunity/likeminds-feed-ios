@@ -30,7 +30,8 @@ final class LMFeedEditPostOperation {
                     post: data,
                     users: users,
                     allTopics: response.data?.topics?.compactMap({ $0.value }) ?? [],
-                    widgets: response.data?.widgets?.compactMap({ $0.value }) ?? []
+                    widgets: response.data?.widgets?.compactMap({ $0.value }) ?? [], 
+                    filteredComments: [:]
                 ) {
                 NotificationCenter.default.post(name: .LMPostEdited, object: post)
             } else {

@@ -7,14 +7,6 @@
 
 import UIKit
 
-public protocol LMFeedPostPollCellProtocol: LMPostWidgetTableViewCellProtocol {
-    func didTapVoteCountButton(for postID: String, pollID: String, optionID: String?)
-    func didTapToVote(for postID: String, pollID: String, optionID: String)
-    func didTapSubmitVote(for postID: String, pollID: String)
-    func editVoteTapped(for postID: String, pollID: String)
-    func didTapAddOption(for postID: String, pollID: String)
-}
-
 open class LMFeedPostPollCell: LMPostWidgetTableViewCell {
     // MARK: UI Elements
     open private(set) lazy var pollPreview: LMFeedDisplayPollView = {

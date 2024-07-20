@@ -27,6 +27,7 @@ public struct LMFeedPostDataModel {
     public var pollAttachment: LMFeedPollDataModel?
     public var isShowFullText: Bool
     public var isShowAllDocuments: Bool
+    public let topResponse: LMFeedCommentDataModel?
     
     public init(
         postId: String,
@@ -46,7 +47,8 @@ public struct LMFeedPostDataModel {
         linkAttachment: LMFeedPostDataModel.LinkAttachment? = .none, 
         pollAttachment: LMFeedPollDataModel? = .none,
         isShowFullText: Bool = false,
-        isShowAllDocuments: Bool = false
+        isShowAllDocuments: Bool = false,
+        topResponse: LMFeedCommentDataModel?
     ) {
         self.postId = postId
         self.postContent = postContent
@@ -66,11 +68,12 @@ public struct LMFeedPostDataModel {
         self.pollAttachment = pollAttachment
         self.isShowFullText = isShowFullText
         self.isShowAllDocuments = isShowAllDocuments
+        self.topResponse = topResponse
     }
 }
 
 extension LMFeedPostDataModel {
-    init?(post: Post, users: [String: User], allTopics: [TopicFeedResponse.TopicResponse], widgets: [Widget]) {
+    init?(post: Post, users: [String: User], allTopics: [TopicFeedResponse.TopicResponse], widgets: [Widget], filteredComments: [String: Comment] = [:]) {
         guard let user = users[post.uuid ?? ""],
               let username = user.name,
               let userID = user.sdkClientInfo?.uuid,
@@ -102,6 +105,7 @@ extension LMFeedPostDataModel {
             return .init(topicName: name, topicID: topicID, isEnabled: topic.isEnabled ?? false)
         } ?? []
         
+        self.topResponse = Self.fetchTopResponse(for: post, users: users, filteredComments: filteredComments)
         
         let attachments = handleAttachments(for: postId, attachments: post.attachments ?? [], widgets: widgets, users: users)
         self.imageVideoAttachment = attachments.images
@@ -147,6 +151,14 @@ extension LMFeedPostDataModel {
         }
         
         return (tempImageVideoAttachment, tempDocumentAttachment, tempLinkAttachment, poll)
+    }
+    
+    static func fetchTopResponse(for post: Post, users: [String: User], filteredComments: [String: Comment]) -> LMFeedCommentDataModel? {
+        guard let commentID = post.filteredComments?.first,
+              let filteredComment = filteredComments[commentID],
+              let user = users[filteredComment.uuid ?? ""] else { return nil }
+        
+        return LMFeedCommentDataModel.init(comment: filteredComment, user: user)
     }
 }
 

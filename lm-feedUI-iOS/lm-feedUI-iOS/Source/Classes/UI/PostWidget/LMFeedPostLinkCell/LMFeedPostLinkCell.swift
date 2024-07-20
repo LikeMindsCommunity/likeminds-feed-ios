@@ -7,10 +7,6 @@
 
 import UIKit
 
-public protocol LMFeedLinkProtocol: LMPostWidgetTableViewCellProtocol {
-    func didTapLinkPreview(with url: String)
-}
-
 @IBDesignable
 open class LMFeedPostLinkCell: LMPostWidgetTableViewCell {
     // MARK: UI Elements    

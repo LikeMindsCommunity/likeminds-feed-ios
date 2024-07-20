@@ -7,11 +7,6 @@
 
 import UIKit
 
-public protocol LMFeedPostDocumentCellProtocol: LMPostWidgetTableViewCellProtocol {
-    func didTapShowMoreDocuments(for indexPath: IndexPath)
-    func didTapDocument(with url: URL)
-}
-
 @IBDesignable
 open class LMFeedPostDocumentCell: LMPostWidgetTableViewCell {
     // MARK: UI Elements

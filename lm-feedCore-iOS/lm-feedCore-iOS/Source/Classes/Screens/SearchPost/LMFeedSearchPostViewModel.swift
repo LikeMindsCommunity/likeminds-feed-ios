@@ -120,7 +120,7 @@ public class LMFeedSearchPostViewModel {
             let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
             
             let convertedData: [LMFeedPostDataModel] = posts.compactMap { post in
-                return .init(post: post, users: users, allTopics: topics, widgets: widgets)
+                return .init(post: post, users: users, allTopics: topics, widgets: widgets, filteredComments: [:])
             }
             
             self?.page += 1
@@ -404,7 +404,7 @@ public extension LMFeedSearchPostViewModel {
                 let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
                 
                 
-                guard let newData = LMFeedPostDataModel.init(post: post, users: users, allTopics: allTopics, widgets: widgets),
+                guard let newData = LMFeedPostDataModel.init(post: post, users: users, allTopics: allTopics, widgets: widgets, filteredComments: [:]),
                       let index = postList.firstIndex(where: { $0.postId == id }) else { return }
                 
                 postList[index] = newData

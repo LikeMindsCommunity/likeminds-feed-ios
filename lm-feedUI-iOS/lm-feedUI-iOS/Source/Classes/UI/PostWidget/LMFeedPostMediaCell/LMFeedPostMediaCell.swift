@@ -8,8 +8,6 @@
 import AVKit
 import UIKit
 
-public protocol LMFeedMediaProtocol { }
-
 @IBDesignable
 open class LMFeedPostMediaCell: LMPostWidgetTableViewCell {
     // MARK: UI Elements
