@@ -78,6 +78,7 @@ open class LMFeedTopResponseView: LMView {
     
     open var profilePictureHeight: CGFloat { 40 }
     
+    
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
@@ -97,6 +98,8 @@ open class LMFeedTopResponseView: LMView {
         contentStackView.addArrangedSubview(contentLabel)
     }
     
+    
+    // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
         
@@ -118,6 +121,7 @@ open class LMFeedTopResponseView: LMView {
     }
     
     
+    // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
         
@@ -126,5 +130,11 @@ open class LMFeedTopResponseView: LMView {
         
         contentStackView.clipsToBounds = true
         contentStackView.layer.masksToBounds = true
+    }
+    
+    
+    // MARK: configure
+    open func configure(with data: LMFeedCommentContentModel) {
+        
     }
 }
