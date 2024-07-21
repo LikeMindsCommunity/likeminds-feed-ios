@@ -22,94 +22,33 @@ public protocol LMFeedPostListVCToProtocol: AnyObject {
 }
 
 @IBDesignable
-open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtocol {
-    // MARK: UI Elements
-    open private(set) lazy var postList: LMTableView = {
-        let table = LMTableView(frame: .zero, style: .grouped)
-        table.translatesAutoresizingMaskIntoConstraints = false
-        table.dataSource = self
-        table.delegate = self
-        table.prefetchDataSource = self
-        table.separatorStyle = .none
-        table.showsVerticalScrollIndicator = false
-        table.showsHorizontalScrollIndicator = false
-        table.register(LMUIComponents.shared.postCell)
-        table.register(LMUIComponents.shared.documentCell)
-        table.register(LMUIComponents.shared.linkCell)
-        table.register(LMUIComponents.shared.pollCell)
-        table.registerHeaderFooter(LMUIComponents.shared.headerView)
-        table.registerHeaderFooter(LMUIComponents.shared.footerView)
-        return table
-    }()
-    
-    open private(set) lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        return refreshControl
-    }()
-    
-    open private(set) lazy var emptyListView: LMFeedNoPostWidget = {
-        let view = LMFeedNoPostWidget(frame: .zero).translatesAutoresizingMaskIntoConstraints()
-        return view
-    }()
-    
+open class LMFeedPostListScreen: LMFeedPostListBase, LMFeedPostListViewModelProtocol {
     // MARK: Data Variables
-    public var data: [LMFeedPostContentModel] = []
     public var viewModel: LMFeedPostListViewModel?
     public weak var delegate: LMFeedPostListVCFromProtocol?
     
     
-    // MARK: setupViews
-    open override func setupViews() {
-        super.setupViews()
-        view.addSubview(postList)
+    // MARK: setup table view
+    open override func setupTableView() {
+        super.setupTableView()
+        
+        postList.dataSource = self
+        postList.delegate = self
+        postList.prefetchDataSource = self
     }
     
-    
-    // MARK: setupLayouts
-    open override func setupLayouts() {
-        super.setupLayouts()
-        view.pinSubView(subView: postList)
-    }
-    
-    
-    // MARK: setupActions
-    open override func setupActions() {
-        super.setupActions()
-        postList.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
-    }
-    
-    @objc
-    open func pullToRefresh() {
+    open override func pullToRefresh() {
         refreshControl.endRefreshing()
         viewModel?.getFeed(fetchInitialPage: true)
     }
     
-    
-    // MARK: setupAppearance
-    open override func setupAppearance() {
-        super.setupAppearance()
-        view.backgroundColor = Appearance.shared.colors.backgroundColor
-        postList.backgroundColor = Appearance.shared.colors.clear
-    }
-    
-    
-    // MARK: setupObservers
-    open override func setupObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostEdited, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostUpdate, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(postDelete), name: .LMPostDeleted, object: nil)
-    }
-    
-    @objc 
-    open func postUpdated(notification: Notification) {
+    open override func postUpdated(notification: Notification) {
         if let data = notification.object as? LMFeedPostDataModel {
             viewModel?.updatePostData(for: data)
         }
     }
     
-    @objc
-    open func postDelete(notification: Notification) {
+    open override func postDelete(notification: Notification) {
         if let postID = notification.object as? String {
             viewModel?.removePost(for: postID)
         }
@@ -119,6 +58,7 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
+        
         viewModel?.getFeed()
         
         // Analytics
