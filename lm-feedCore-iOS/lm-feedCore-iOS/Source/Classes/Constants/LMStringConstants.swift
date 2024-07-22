@@ -116,4 +116,12 @@ public struct LMStringConstants {
     public var noCommentPermission: String {
         String(format: "You do not have permission to create a %@", pluralizeOrCapitalize(to: commentVariable, withAction: .allSmallSingular))
     }
+    
+    public var deleteComment: String {
+        String(format: "Delete %@", pluralizeOrCapitalize(to: commentVariable, withAction: .firstLetterCapitalSingular))
+    }
+    
+    public var deleteCommentMessage: String {
+        String(format: "Are you sure you want to delete this %@? This action cannot be reversed", pluralizeOrCapitalize(to: commentVariable, withAction: .allSmallSingular))
+    }
 }

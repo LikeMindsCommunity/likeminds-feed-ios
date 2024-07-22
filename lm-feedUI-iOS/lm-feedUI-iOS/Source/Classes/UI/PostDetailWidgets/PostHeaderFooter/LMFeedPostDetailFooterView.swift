@@ -37,14 +37,14 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
     
     open private(set) lazy var noCommenTitleLabel: LMLabel = {
         let label =  LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.text = Constants.shared.strings.noCommentsFound
+        label.text = ""
         label.textColor = Appearance.shared.colors.gray51
         return label
     }()
     
     open private(set) lazy var noCommentSubtitleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.text = Constants.shared.strings.beFirstComment
+        label.text = ""
         label.textColor = Appearance.shared.colors.gray102
         return label
     }()
@@ -104,6 +104,11 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
         
         noCommentContainerView.isHidden = commentCount != 0
         commentContainerView.isHidden = commentCount == 0
+        
+        if commentCount == 0 {
+            noCommenTitleLabel.text = "No \(commentText.pluralize()) Found"
+            noCommentSubtitleLabel.text = "Be the first one to create a \(commentText)"
+        }
         
         totalCommentLabel.text = "\(commentCount) \(commentText.pluralize(count: commentCount))"
     }

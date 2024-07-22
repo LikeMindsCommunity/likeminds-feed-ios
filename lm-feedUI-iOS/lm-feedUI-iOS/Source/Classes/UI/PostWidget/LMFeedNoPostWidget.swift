@@ -38,7 +38,7 @@ open class LMFeedNoPostWidget: LMView {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = Appearance.shared.colors.gray1
         label.font = Appearance.shared.fonts.buttonFont1
-        label.text = Constants.shared.strings.noPostsFound
+        label.text = ""
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -48,7 +48,7 @@ open class LMFeedNoPostWidget: LMView {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = Appearance.shared.colors.gray2
         label.font = Appearance.shared.fonts.buttonFont1
-        label.text = Constants.shared.strings.beFirstPost
+        label.text = ""
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -56,7 +56,7 @@ open class LMFeedNoPostWidget: LMView {
     
     open private(set) lazy var createPostButton: LMButton = {
         let button = LMButton.createButton(
-            with: Constants.shared.strings.newPost,
+            with: "",
             image: Constants.shared.images.createPostIcon,
             textColor: Appearance.shared.colors.white,
             textFont: Appearance.shared.fonts.buttonFont1,
@@ -122,7 +122,10 @@ open class LMFeedNoPostWidget: LMView {
     
     // MARK: configure
     open func configure(title: String, _ createAction: (() -> Void)?) {
-        createPostButton.setTitle(title, for: .normal)
+        createPostButton.setTitle("New \(title)", for: .normal)
+        emptyTitleLabel.text = "No \(title.pluralize().lowercased()) to show"
+        emptySubtitleLabel.text = "Be the first one to \(title.lowercased()) here"
+        
         self.createAction = createAction
     }
 }
