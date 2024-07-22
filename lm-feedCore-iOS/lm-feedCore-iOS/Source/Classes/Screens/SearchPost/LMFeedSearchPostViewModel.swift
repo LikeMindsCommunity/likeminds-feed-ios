@@ -1,97 +1,116 @@
 //
-//  LMFeedPostListViewModel.swift
-//  likeminds-feed-iOS
+//  LMFeedSearchPostViewModel.swift
+//  LikeMindsFeedCore
 //
-//  Created by Devansh Mohata on 02/01/24.
+//  Created by Devansh Mohata on 29/06/24.
 //
 
-import LikeMindsFeedUI
 import LikeMindsFeed
+import LikeMindsFeedUI
 
-// MARK: LMUniversalFeedViewModelProtocol
-public protocol LMFeedPostListViewModelProtocol: LMBaseViewControllerProtocol {
-    func loadPosts(with data: [LMFeedPostContentModel], index: IndexSet?, reloadNow: Bool)
-    func showHideFooterLoader(isShow: Bool)
-    func showActivityLoader()
-    func navigateToEditScreen(for postID: String)
+public protocol LMFeedSearchPostViewModelProtocol: LMBaseViewControllerProtocol {
+    func showLoader(isShow: Bool)
+    func showTableFooter(isShow: Bool)
+    func updatePostList(with post: [LMFeedPostContentModel])
+    func removePost(postID: String)
+    func updatePost(post: LMFeedPostContentModel)
+    func toggleEmptyView(isShow: Bool)
+    func removePreviousResults()
+    
     func navigateToDeleteScreen(for postID: String)
     func navigateToReportScreen(for postID: String, creatorUUID: String)
-    func updateHeader(with data: [LMFeedPostContentModel], section: Int)
     func navigateToPollResultScreen(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?)
     func navigateToAddOptionPoll(with postID: String, pollID: String, options: [String])
 }
 
-public class LMFeedPostListViewModel {
-    public var currentPage: Int
-    public var pageSize: Int
-    public var selectedTopics: [String] = []
-    public var isLastPostReached: Bool = false
-    public var isFetchingFeed: Bool = false
-    public var postList: [LMFeedPostDataModel] = []
+public class LMFeedSearchPostViewModel {
+    var timer: Timer?
+    unowned var delegate: LMFeedSearchPostViewModelProtocol
+    var postList: [LMFeedPostDataModel]
+    var page: Int
+    var searchString: String
+    let pageSize: Int
+    let searchType: String
+    var isFetchingResults: Bool
+    var isLastPage: Bool
     
-    public weak var delegate: LMFeedPostListViewModelProtocol?
-    
-    init(delegate: LMFeedPostListViewModelProtocol) {
-        self.currentPage = 1
-        self.pageSize = 10
-        self.selectedTopics = []
-        self.isLastPostReached = false
-        self.isFetchingFeed = false
-        self.postList = []
+    init(delegate: LMFeedSearchPostViewModelProtocol) {
+        self.timer = nil
         self.delegate = delegate
+        self.postList = []
+        self.page = 1
+        self.pageSize = 10
+        self.searchString = ""
+        self.searchType = "text"
+        self.isFetchingResults = false
+        self.isLastPage = false
     }
     
-    public static func createModule(with delegate: LMFeedPostListVCFromProtocol?) throws -> LMFeedPostListScreen {
+    public static func createModule() throws -> LMFeedSearchPostScreen {
         guard LMFeedCore.isInitialized else { throw LMFeedError.feedNotInitialized }
         
-        let viewController = Components.shared.feedListScreen.init()
-        let viewModel: LMFeedPostListViewModel = .init(delegate: viewController)
+        let viewController = Components.shared.searchPostScreen.init()
+        let viewModel = LMFeedSearchPostViewModel.init(delegate: viewController)
         
         viewController.viewModel = viewModel
-        viewController.delegate = delegate
+        
         return viewController
     }
-}
-
-// MARK: Get Feed 
-public extension LMFeedPostListViewModel {
-    func updateTopics(with selectedTopics: [String]) {
-        self.selectedTopics = selectedTopics
-        getFeed(fetchInitialPage: true)
+    
+    public func searchPosts(with search: String) {
+        timer?.invalidate()
+        
+        guard !search.isEmpty else {
+            delegate.removePreviousResults()
+            delegate.toggleEmptyView(isShow: false)
+            return
+        }
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
+            self?.postList.removeAll(keepingCapacity: true)
+            
+            self?.page = 1
+            self?.isLastPage = false
+            self?.isFetchingResults = false
+            
+            self?.searchString = search
+            
+            self?.fetchPosts()
+            
+            self?.delegate.removePreviousResults()
+        }
     }
     
-    func getFeed(fetchInitialPage: Bool = false) {
-        if fetchInitialPage {
-            isLastPostReached = false
-            isFetchingFeed = false
-            currentPage = 1
-            postList.removeAll(keepingCapacity: true)
-        }
+    public func fetchPaginated() {
+        fetchPosts()
+    }
+    
+    func fetchPosts() {
+        guard !isFetchingResults,
+              !isLastPage else { return }
         
-        guard !isLastPostReached,
-              !isFetchingFeed else { return }
+        isFetchingResults = true
+        handleLoader(isShow: true)
         
-        if currentPage != 1 {
-            delegate?.showHideFooterLoader(isShow: true)
-        }
+        let request = SearchPostsRequest
+            .builder()
+            .search(searchString)
+            .searchType(searchType)
+            .page(page)
+            .pageSize(pageSize)
+            .build()
         
-        isFetchingFeed = true
-        
-        LMFeedPostOperation.shared.getFeed(currentPage: currentPage, pageSize: pageSize, selectedTopics: selectedTopics) { [weak self] response in
-            guard let self else { return }
-            
-            delegate?.showHideFooterLoader(isShow: false)
+        LMFeedClient.shared.searchPosts(request) { [weak self] response in
+            defer {
+                self?.isFetchingResults = false
+                self?.handleLoader(isShow: false)
+            }
             
             guard response.success,
                   let posts = response.data?.posts,
                   let users = response.data?.users else {
-                convertToViewData()
-                isFetchingFeed = false
                 return
             }
-            
-            self.isLastPostReached = posts.isEmpty
-            self.currentPage += 1
             
             
             let topics: [TopicFeedResponse.TopicResponse] = response.data?.topics?.compactMap {
@@ -104,104 +123,76 @@ public extension LMFeedPostListViewModel {
                 return .init(post: post, users: users, allTopics: topics, widgets: widgets)
             }
             
-            self.postList.append(contentsOf: convertedData)
-            self.convertToViewData()
-            
-            isFetchingFeed = false
+            self?.page += 1
+            self?.isLastPage = convertedData.isEmpty
+            self?.convertToViewData(for: convertedData)
         }
     }
     
-    func convertToViewData(for section: IndexSet? = nil, reloadNow: Bool = true) {
-        var convertedViewData: [LMFeedPostContentModel] = []
+    func convertToViewData(for data: [LMFeedPostDataModel]) {
+        defer {
+            delegate.toggleEmptyView(isShow: postList.isEmpty)
+        }
         
+        postList.append(contentsOf: data)
+        
+        guard !postList.isEmpty else {
+            return
+        }
+        
+        DispatchQueue.global(qos: .background).async { [weak delegate] in
+            var convertedViewData: [LMFeedPostContentModel] = []
+            
+            data.forEach { post in
+                convertedViewData.append(LMFeedConvertToFeedPost.convertToViewModel(for: post))
+            }
+            
+            DispatchQueue.main.async {
+                delegate?.updatePostList(with: convertedViewData)
+            }
+        }
+    }
+    
+    func handleLoader(isShow: Bool) {
+        if isShow {
+            if page == 1 {
+                delegate.showLoader(isShow: isShow)
+            } else {
+                delegate.showTableFooter(isShow: isShow)
+            }
+        } else {
+            delegate.showLoader(isShow: isShow)
+            delegate.showTableFooter(isShow: isShow)
+        }
+    }
+    
+    func reloadList() {
         DispatchQueue.global(qos: .background).async { [weak self] in
+            var convertedViewData: [LMFeedPostContentModel] = []
+            
             self?.postList.forEach { post in
                 convertedViewData.append(LMFeedConvertToFeedPost.convertToViewModel(for: post))
             }
             
             DispatchQueue.main.async {
-                self?.delegate?.loadPosts(with: convertedViewData, index: section, reloadNow: reloadNow)
-            }
-        }
-    }
-}
-
-
-// MARK: Like Post
-public extension LMFeedPostListViewModel {
-    func likePost(for postId: String) {
-        LMFeedPostOperation.shared.likePost(for: postId) { [weak self] response in
-            guard let self,
-                  let index = postList.firstIndex(where: { $0.postId == postId }) else { return }
-            
-            if response {
-                var feed = postList[index]
-                feed.isLiked.toggle()
-                feed.likeCount += feed.isLiked ? 1 : -1
-                postList[index] = feed
-            } else {
-                convertToViewData(for: IndexSet(integer: index), reloadNow: false)
+                self?.delegate.updatePostList(with: convertedViewData)
             }
         }
     }
     
-    func allowPostLikeView(for postId: String) -> Bool {
-        guard let likeCount = postList.first(where: { $0.postId == postId })?.likeCount else { return false }
-        return likeCount > 0
+    func notifyObjectChange(with post: LMFeedPostDataModel) {
+        NotificationCenter.default.post(name: .LMPostUpdate, object: post)
     }
-}
-
-// MARK: Save Post
-public extension LMFeedPostListViewModel {
-    func savePost(for postId: String) {
-        LMFeedPostOperation.shared.savePost(for: postId) { [weak self] response in
-            guard let self,
-                  let index = postList.firstIndex(where: { $0.postId == postId }) else { return }
-            
-            if response {
-                var feed = postList[index]
-                feed.isSaved.toggle()
-                postList[index] = feed
-            } else {
-                convertToViewData(for: IndexSet(integer: index), reloadNow: false)
-            }
-        }
+    
+    func updatePost(with post: LMFeedPostDataModel) {
+        notifyObjectChange(with: post)
+        delegate.updatePost(post: LMFeedConvertToFeedPost.convertToViewModel(for: post))
     }
 }
 
 
-// MARK: Toggle Post Pin
-public extension LMFeedPostListViewModel {
-    func togglePostPin(for postID: String) {
-        LMFeedPostOperation.shared.pinUnpinPost(postId: postID) { [weak self] response in
-            guard let self,
-                  let index = postList.firstIndex(where: { $0.postId == postID }) else { return }
-            
-            if response {
-                var feed = postList[index]
-                feed.isPinned.toggle()
-                if let idx = feed.postMenu.firstIndex(where: { $0.id == .pinPost }) {
-                    feed.postMenu[idx] = .init(id: .unpinPost, name: LMStringConstants.shared.unpinThisPost)
-                } else if let idx = feed.postMenu.firstIndex(where: { $0.id == .unpinPost }) {
-                    feed.postMenu[idx] = .init(id: .pinPost, name: LMStringConstants.shared.pinThisPost)
-                }
-                
-                postList[index] = feed
-                
-                var convertedViewData: [LMFeedPostContentModel] = []
-                
-                postList.forEach { post in
-                    convertedViewData.append(LMFeedConvertToFeedPost.convertToViewModel(for: post))
-                }
-                
-                delegate?.updateHeader(with: convertedViewData, section: index)
-            }
-        }
-    }
-}
-
-// MARK: Show Menu
-public extension LMFeedPostListViewModel {
+// MARK: Action Handling
+extension LMFeedSearchPostViewModel {
     func showMenu(for postID: String) {
         guard let post = postList.first(where: { $0.postId == postID }) else { return }
         
@@ -228,17 +219,7 @@ public extension LMFeedPostListViewModel {
                 alert.addAction(action)
             case .reportPost:
                 let action = UIAlertAction(title: menu.name, style: .destructive) { [weak self] _ in
-                    self?.delegate?.navigateToReportScreen(for: postID, creatorUUID: post.userDetails.userUUID)
-                }
-                alert.addAction(action)
-            case .editPost:
-                let action = UIAlertAction(title: menu.name, style: .default) { [weak self] _ in
-                    self?.delegate?.navigateToEditScreen(for: postID)
-                    
-                    LMFeedCore.analytics?.trackEvent(for: .postEdited, eventProperties: [
-                        "post_id": postID,
-                        "post_type": post.getPostType()
-                    ])
+                    self?.delegate.navigateToReportScreen(for: postID, creatorUUID: post.userDetails.userUUID)
                 }
                 alert.addAction(action)
             default:
@@ -246,19 +227,19 @@ public extension LMFeedPostListViewModel {
             }
         }
         
-        alert.addAction(.init(title: "Cancel", style: .default))
+        alert.addAction(.init(title: "Cancel", style: .cancel))
         
-        delegate?.presentAlert(with: alert, animated: true)
+        delegate.presentAlert(with: alert, animated: true)
     }
 }
 
 
 // MARK: Delete Post
-public extension LMFeedPostListViewModel {
+public extension LMFeedSearchPostViewModel {
     func handleDeletePost(for post: LMFeedPostDataModel) {
         // Case of Self Deletion
         if post.userDetails.userUUID == LocalPreferences.userObj?.sdkClientInfo?.uuid {
-            let alert = UIAlertController(title: "\(LMStringConstants.shared.deletePost)?", message: LMStringConstants.shared.deletePostMessage, preferredStyle: .alert)
+            let alert = UIAlertController(title: "Delete Post?", message: "Are you sure you want to delete this post? This action cannot be reversed", preferredStyle: .alert)
             
             let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
                 self?.deletePost(postID: post.postId, reason: nil)
@@ -269,7 +250,7 @@ public extension LMFeedPostListViewModel {
             alert.addAction(cancelAction)
             alert.addAction(deleteAction)
             
-            delegate?.presentAlert(with: alert, animated: true)
+            delegate.presentAlert(with: alert, animated: true)
             
             LMFeedCore.analytics?.trackEvent(for: .postDeleted, eventProperties: [
                 "user_state": "member",
@@ -278,7 +259,7 @@ public extension LMFeedPostListViewModel {
                 "post_type": post.getPostType()
             ])
         } else if LocalPreferences.memberState?.state == 1 {
-            delegate?.navigateToDeleteScreen(for: post.postId)
+            delegate.navigateToDeleteScreen(for: post.postId)
             
             LMFeedCore.analytics?.trackEvent(for: .postDeleted, eventProperties: [
                 "user_state": "CM",
@@ -296,40 +277,111 @@ public extension LMFeedPostListViewModel {
             case .success():
                 removePost(for: postID)
             case .failure(let error):
-                delegate?.showError(with: error.localizedDescription, isPopVC: false)
+                delegate.showError(with: error.localizedDescription, isPopVC: false)
             }
         }
     }
     
     func removePost(for postID: String) {
         guard let index = postList.firstIndex(where: { $0.postId == postID }) else { return }
-        _ = postList.remove(at: index)
-        convertToViewData()
+        postList.remove(at: index)
+        delegate.removePost(postID: postID)
+    }
+    
+    func updatePostFromNotification(with post: LMFeedPostDataModel) {
+        guard let index = postList.firstIndex(where: { $0.postId == post.postId }) else { return }
+        
+        postList[index] = post
+        delegate.updatePost(post: LMFeedConvertToFeedPost.convertToViewModel(for: post))
     }
 }
 
-// MARK: Update Post Content
-public extension LMFeedPostListViewModel {
-    func updatePostData(for post: LMFeedPostDataModel) {
-        guard let index = postList.firstIndex(where: { $0.postId == post.postId }) else { return }
-        postList[index] = post
-        convertToViewData(for: .init(integer: index))
+
+// MARK: Pin Post
+public extension LMFeedSearchPostViewModel {
+    func togglePostPin(for postID: String) {
+        LMFeedPostOperation.shared.pinUnpinPost(postId: postID) { [weak self] response in
+            guard let self,
+                  let index = postList.firstIndex(where: { $0.postId == postID }) else { return }
+            
+            if response {
+                var feed = postList[index]
+                feed.isPinned.toggle()
+                if let idx = feed.postMenu.firstIndex(where: { $0.id == .pinPost }) {
+                    feed.postMenu[idx] = .init(id: .unpinPost, name: "Unpin this Post")
+                } else if let idx = feed.postMenu.firstIndex(where: { $0.id == .unpinPost }) {
+                    feed.postMenu[idx] = .init(id: .pinPost, name: "Pin this Post")
+                }
+                
+                postList[index] = feed
+                
+                updatePost(with: feed)
+            }
+        }
+    }
+}
+
+
+// MARK: Like Post
+public extension LMFeedSearchPostViewModel {
+    func likePost(for postId: String) {
+        LMFeedPostOperation.shared.likePost(for: postId) { [weak self] response in
+            guard let self,
+                  let index = postList.firstIndex(where: { $0.postId == postId }) else { return }
+            
+            if response {
+                var feed = postList[index]
+                feed.isLiked.toggle()
+                feed.likeCount += feed.isLiked ? 1 : -1
+                postList[index] = feed
+                
+                notifyObjectChange(with: feed)
+            } else {
+                self.reloadList()
+            }
+        }
+    }
+    
+    func allowPostLikeView(for postId: String) -> Bool {
+        guard let likeCount = postList.first(where: { $0.postId == postId })?.likeCount else { return false }
+        return likeCount > 0
+    }
+}
+
+
+// MARK: Save Post
+public extension LMFeedSearchPostViewModel {
+    func savePost(for postId: String) {
+        LMFeedPostOperation.shared.savePost(for: postId) { [weak self] response in
+            guard let self,
+                  let index = postList.firstIndex(where: { $0.postId == postId }) else { return }
+            
+            if response {
+                var feed = postList[index]
+                feed.isSaved.toggle()
+                postList[index] = feed
+                
+                notifyObjectChange(with: feed)
+            } else {
+                self.reloadList()
+            }
+        }
     }
 }
 
 
 // MARK: Poll
-public extension LMFeedPostListViewModel {
+public extension LMFeedSearchPostViewModel {
     func didTapVoteCountButton(for postID: String, pollID: String, optionID: String?) {
         guard let poll = postList.first(where: { $0.postId == postID })?.pollAttachment else { return }
         
         if poll.isAnonymous {
-            delegate?.showMessage(with: "This being an anonymous poll, the names of the voters can not be disclosed.", message: nil)
+            delegate.showMessage(with: "This being an anonymous poll, the names of the voters can not be disclosed.", message: nil)
         } else if poll.showResults || poll.expiryTime < Int(Date().timeIntervalSince1970) {
             let options = poll.options
-            delegate?.navigateToPollResultScreen(with: pollID, optionList: options, selectedOption: optionID)
+            delegate.navigateToPollResultScreen(with: pollID, optionList: options, selectedOption: optionID)
         } else {
-            delegate?.showMessage(with: "The results will be visible after the poll has ended.", message: nil)
+            delegate.showMessage(with: "The results will be visible after the poll has ended.", message: nil)
         }
     }
     
@@ -338,7 +390,7 @@ public extension LMFeedPostListViewModel {
         
         let options = poll.pollAttachment?.options.map({ $0.option }) ?? []
         
-        delegate?.navigateToAddOptionPoll(with: postID, pollID: pollID, options: options)
+        delegate.navigateToAddOptionPoll(with: postID, pollID: pollID, options: options)
     }
     
     func getPost(for id: String) {
@@ -356,7 +408,7 @@ public extension LMFeedPostListViewModel {
                       let index = postList.firstIndex(where: { $0.postId == id }) else { return }
                 
                 postList[index] = newData
-                convertToViewData(for: .init(integer: index))
+                updatePost(with: newData)
             }
         }
     }
@@ -375,7 +427,7 @@ public extension LMFeedPostListViewModel {
         }
         
         if expiryTime < Int(Date().timeIntervalSince1970) {
-            delegate?.showMessage(with: "Poll ended. Vote can not be submitted now.", message: nil)
+            delegate.showMessage(with: "Poll ended. Vote can not be submitted now.", message: nil)
             return
         } else if LMFeedConvertToFeedPost.isPollSubmitted(options: poll.options) {
             return
@@ -391,7 +443,7 @@ public extension LMFeedPostListViewModel {
             post.pollAttachment = poll
             postList[index] = post
             
-            convertToViewData(for: .init(integer: index))
+            delegate.updatePost(post: LMFeedConvertToFeedPost.convertToViewModel(for: post))
         }
     }
     
@@ -401,7 +453,7 @@ public extension LMFeedPostListViewModel {
         
         
         guard poll.pollSelectType.checkValidity(with: poll.userSelectedOptions.count, allowedCount: poll.pollSelectCount) else {
-            delegate?.showMessage(with: "Please select \(poll.pollSelectType.description.lowercased()) \(poll.pollSelectCount) options", message: nil)
+            delegate.showMessage(with: "Please select \(poll.pollSelectType.description.lowercased()) \(poll.pollSelectCount) options", message: nil)
             return
         }
         
@@ -447,6 +499,6 @@ public extension LMFeedPostListViewModel {
         
         postList[index] = post
         
-        convertToViewData(for: .init(integer: index))
+        delegate.updatePost(post: LMFeedConvertToFeedPost.convertToViewModel(for: post))
     }
 }
