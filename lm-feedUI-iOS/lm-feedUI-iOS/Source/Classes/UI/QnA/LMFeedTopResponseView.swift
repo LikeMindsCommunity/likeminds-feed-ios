@@ -5,6 +5,7 @@
 //  Created by Devansh Mohata on 21/07/24.
 //
 
+import Kingfisher
 import UIKit
 
 open class LMFeedTopResponseView: LMView {
@@ -135,6 +136,10 @@ open class LMFeedTopResponseView: LMView {
     
     // MARK: configure
     open func configure(with data: LMFeedCommentContentModel) {
+        profilePicture.kf.setImage(with: URL(string: data.author.userProfileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.authorName))
         
+        usernameLabel.text = data.authorName
+        timeStampLabel.text = data.commentTime
+        contentLabel.text = data.comment
     }
 }

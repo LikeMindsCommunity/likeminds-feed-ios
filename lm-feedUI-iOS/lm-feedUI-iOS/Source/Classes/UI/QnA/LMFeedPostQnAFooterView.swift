@@ -37,6 +37,7 @@ open class LMFeedPostQnAFooterView: LMFeedPostBaseFooterView {
         
         contentView.addSubview(containerView)
         containerView.addSubview(containerStackView)
+        containerStackView.addArrangedSubview(topResponseView)
         containerStackView.addSubview(actionStackView)
         [likeButton, likeTextButton, commentButton, spacer, saveButton, shareButton].forEach { actionStackView.addArrangedSubview($0) }
     }
@@ -57,8 +58,10 @@ open class LMFeedPostQnAFooterView: LMFeedPostBaseFooterView {
         configure(with: data, postID: postID, delegate: delegate)
         
         if let topComment {
-            containerStackView.insertSubview(topResponseView, aboveSubview: actionStackView)
+            topResponseView.isHidden = false
             topResponseView.configure(with: topComment)
+        } else {
+            topResponseView.isHidden = true
         }
     }
 }

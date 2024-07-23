@@ -10,6 +10,7 @@ import LikeMindsFeed
 
 public struct LMFeedPostDataModel {
     public let postId: String
+    public let postQuestion: String
     public let postContent: String
     public var likeCount: Int
     public var isLiked: Bool
@@ -31,6 +32,7 @@ public struct LMFeedPostDataModel {
     
     public init(
         postId: String,
+        postQuestion: String,
         postContent: String,
         likeCount: Int,
         isLiked: Bool,
@@ -51,6 +53,7 @@ public struct LMFeedPostDataModel {
         topResponse: LMFeedCommentDataModel?
     ) {
         self.postId = postId
+        self.postQuestion = postQuestion
         self.postContent = postContent
         self.likeCount = likeCount
         self.isLiked = isLiked
@@ -81,6 +84,7 @@ extension LMFeedPostDataModel {
         
         self.postId = post.id
         self.postContent = post.text ?? ""
+        self.postQuestion = post.heading ?? ""
         self.likeCount = post.likesCount ?? .zero
         self.isLiked = post.isLiked ?? false
         self.isPinned = post.isPinned ?? false

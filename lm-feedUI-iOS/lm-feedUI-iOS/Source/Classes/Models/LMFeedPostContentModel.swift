@@ -36,6 +36,7 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
     public var postID: String
     public var userUUID: String
     public var headerData: LMFeedPostHeaderView.ContentModel
+    public var postQuestion: String
     public var postText: String
     public var isShowMore: Bool
     public var topics: LMFeedTopicView.ContentModel
@@ -61,6 +62,7 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
         postID: String,
         userUUID: String,
         headerData: LMFeedPostHeaderView.ContentModel,
+        postQuestion: String,
         postText: String,
         topics: LMFeedTopicView.ContentModel,
         footerData: LMFeedPostFooterView.ContentModel,
@@ -77,6 +79,7 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
         self.postID = postID
         self.userUUID = userUUID
         self.headerData = headerData
+        self.postQuestion = postQuestion
         self.postText = postText
         self.isShowMore = isShowMore
         self.topics = topics

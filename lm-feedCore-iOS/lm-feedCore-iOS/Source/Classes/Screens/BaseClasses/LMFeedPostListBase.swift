@@ -7,6 +7,20 @@
 
 import LikeMindsFeedUI
 
+// MARK: LMFeedPostListVCProtocol
+// This contains list of functions that are triggered from Child View Controller aka `LMFeedPostListBase` to be handled by Parent View Controller
+public protocol LMFeedPostListVCFromProtocol: AnyObject {
+    func onPostListScrolled(_ scrollView: UIScrollView)
+    func onPostDataFetched(isEmpty: Bool)
+}
+
+// MARK: LMFeedPostListVCToProtocol
+// This contains list of functions that are triggered from Parent View Controller to be handled by Child View Controller aka `LMFeedPostListBase`
+public protocol LMFeedPostListVCToProtocol: AnyObject {
+    func loadPostsWithTopics(_ topics: [String])
+}
+
+
 open class LMFeedPostListBase: LMViewController {
     open private(set) lazy var postList: LMTableView = {
         let table = LMTableView(frame: .zero, style: .grouped)
@@ -29,39 +43,9 @@ open class LMFeedPostListBase: LMViewController {
     
     // MARK: Data Variables
     public var data: [LMFeedPostContentModel] = []
+    public weak var delegate: LMFeedPostListVCFromProtocol?
     
-    public var postCell: LMFeedPostMediaCell.Type {
-        LMUIComponents.shared.postCell
-    }
-    
-    public var linkCell: LMFeedPostLinkCell.Type {
-        LMUIComponents.shared.linkCell
-    }
-    
-    public var documentCell: LMFeedPostDocumentCell.Type {
-        LMUIComponents.shared.documentCell
-    }
-    
-    public var pollCell: LMFeedPostPollCell.Type {
-        LMUIComponents.shared.pollCell
-    }
-    
-    public var headerView: LMFeedPostHeaderView.Type {
-        LMUIComponents.shared.headerView
-    }
-    
-    public var footerView: LMFeedPostFooterView.Type {
-        LMUIComponents.shared.footerView
-    }
-    
-    open func setupTableView() {
-        postList.register(postCell)
-        postList.register(documentCell)
-        postList.register(linkCell)
-        postList.register(pollCell)
-        postList.registerHeaderFooter(headerView)
-        postList.registerHeaderFooter(footerView)
-    }
+    open func setupTableView() { }
     
     // MARK: setupViews
     open override func setupViews() {
@@ -117,4 +101,15 @@ open class LMFeedPostListBase: LMViewController {
         
         setupTableView()
     }
+    
+    open func handleCustomWidget(with data: LMFeedPostContentModel) -> LMTableViewCell {
+        return LMTableViewCell()
+    }
+}
+
+
+// MARK: LMFeedPostListVCToProtocol
+@objc
+extension LMFeedPostListBase: LMFeedPostListVCToProtocol {
+    open func loadPostsWithTopics(_ topics: [String]) { }
 }

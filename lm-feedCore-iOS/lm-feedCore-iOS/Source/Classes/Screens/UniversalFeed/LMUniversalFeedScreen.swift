@@ -73,9 +73,9 @@ open class LMUniversalFeedScreen: LMViewController {
         return button
     }()
     
-    open private(set) lazy var postList: LMFeedPostListScreen? = {
+    open private(set) lazy var postList: LMFeedQnAPostListScreen? = {
         do {
-            let vc = try LMFeedPostListViewModel.createModule(with: self)
+            let vc = try LMFeedQnAPostListViewModel.createModule(with: self)
             return vc
         } catch let error {
             print(error.localizedDescription)

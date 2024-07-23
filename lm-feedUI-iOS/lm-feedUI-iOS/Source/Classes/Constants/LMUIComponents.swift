@@ -72,4 +72,11 @@ public struct LMUIComponents {
     // MARK: Display Poll Components
     public var pollDisplayView: LMFeedDisplayPollView.Type = LMFeedDisplayPollView.self
     public var pollDisplayWidget: LMFeedDisplayPollWidget.Type = LMFeedDisplayPollWidget.self
+    
+    
+    // MARK: QA Theme
+    public var qnaPostCell: LMFeedPostQnAMediaCell.Type = LMFeedPostQnAMediaCell.self
+    public var qnaLinkCell: LMFeedPostQnALinkCell.Type = LMFeedPostQnALinkCell.self
+    public var qnaDocumentCell: LMFeedPostQnADocumentCell.Type = LMFeedPostQnADocumentCell.self
+    public var qnaFooterView: LMFeedPostQnAFooterView.Type = LMFeedPostQnAFooterView.self
 }

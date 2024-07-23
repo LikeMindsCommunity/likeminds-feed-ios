@@ -8,24 +8,10 @@
 import UIKit
 import LikeMindsFeedUI
 
-// MARK: LMFeedPostListVCProtocol
-// This contains list of functions that are triggered from Child View Controller aka `LMFeedPostListScreen` to be handled by Parent View Controller
-public protocol LMFeedPostListVCFromProtocol: AnyObject {
-    func onPostListScrolled(_ scrollView: UIScrollView)
-    func onPostDataFetched(isEmpty: Bool)
-}
-
-// MARK: LMFeedPostListVCToProtocol
-// This contains list of functions that are triggered from Parent View Controller to be handled by Child View Controller aka `LMFeedPostListScreen`
-public protocol LMFeedPostListVCToProtocol: AnyObject {
-    func loadPostsWithTopics(_ topics: [String])
-}
-
 @IBDesignable
-open class LMFeedPostListScreen: LMFeedPostListBase, LMFeedPostListViewModelProtocol {
+open class LMFeedPostListScreen: LMFeedPostListBase, LMFeedBaseViewModelProtocol {
     // MARK: Data Variables
     public var viewModel: LMFeedPostListViewModel?
-    public weak var delegate: LMFeedPostListVCFromProtocol?
     
     
     // MARK: setup table view
@@ -35,6 +21,13 @@ open class LMFeedPostListScreen: LMFeedPostListBase, LMFeedPostListViewModelProt
         postList.dataSource = self
         postList.delegate = self
         postList.prefetchDataSource = self
+        
+        postList.register(LMUIComponents.shared.postCell)
+        postList.register(LMUIComponents.shared.linkCell)
+        postList.register(LMUIComponents.shared.documentCell)
+        postList.register(LMUIComponents.shared.pollCell)
+        postList.registerHeaderFooter(LMUIComponents.shared.headerView)
+        postList.registerHeaderFooter(LMUIComponents.shared.footerView)
     }
     
     open override func pullToRefresh() {
@@ -86,7 +79,7 @@ open class LMFeedPostListScreen: LMFeedPostListBase, LMFeedPostListViewModelProt
     }
     
     
-    // MARK: LMFeedPostListViewModelProtocol
+    // MARK: LMFeedBaseViewModelProtocol
     open func updateHeader(with data: [LMFeedPostContentModel], section: Int) {
         self.data = data
         (postList.headerView(forSection: section) as? LMFeedPostHeaderView)?.pinButton.isHidden.toggle()
@@ -149,10 +142,6 @@ open class LMFeedPostListScreen: LMFeedPostListBase, LMFeedPostListViewModelProt
         } catch let error {
             print(error.localizedDescription)
         }
-    }
-    
-    open func handleCustomWidget(with data: LMFeedPostContentModel) -> LMTableViewCell {
-        return LMTableViewCell()
     }
     
     open func navigateToPollResultScreen(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?) {
@@ -287,8 +276,8 @@ extension LMFeedPostListScreen: UITableViewDataSource, UITableViewDelegate, UITa
 
 // MARK: LMFeedPostListVCToProtocol
 @objc
-extension LMFeedPostListScreen: LMFeedPostListVCToProtocol {
-    open func loadPostsWithTopics(_ topics: [String]) {
+extension LMFeedPostListScreen {
+    open override func loadPostsWithTopics(_ topics: [String]) {
         viewModel?.updateTopics(with: topics)
     }
 }
