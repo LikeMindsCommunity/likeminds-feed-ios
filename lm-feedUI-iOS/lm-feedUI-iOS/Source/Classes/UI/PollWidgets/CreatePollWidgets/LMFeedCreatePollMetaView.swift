@@ -65,7 +65,7 @@ open class LMFeedCreatePollMetaView: LMView {
     }()
     
     open private(set) lazy var equalSymbol: LMImageView = {
-        let image = Constants.shared.images.equalIcon.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 24)))
+        let image = LMFeedConstants.shared.images.equalIcon.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 24)))
         let imageView = LMImageView(image: image)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView

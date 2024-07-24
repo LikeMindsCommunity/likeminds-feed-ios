@@ -35,7 +35,7 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
     open private(set) lazy var crossButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.xmarkIcon, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 24)), forImageIn: .normal)
         button.tintColor = UIColor(red: 208 / 255, green: 216 / 255, blue: 226 / 255, alpha: 1)
         return button

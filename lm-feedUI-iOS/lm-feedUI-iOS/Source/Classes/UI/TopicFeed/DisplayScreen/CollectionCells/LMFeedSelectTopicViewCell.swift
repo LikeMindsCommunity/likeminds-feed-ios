@@ -15,7 +15,7 @@ open class LMFeedSelectTopicViewCell: LMCollectionViewCell {
         button.setTitle("Select Topics", for: .normal)
         button.setTitleColor(LMFeedAppearance.shared.colors.appTintColor, for: .normal)
         button.setFont(LMFeedAppearance.shared.fonts.buttonFont1)
-        button.setImage(Constants.shared.images.plusIcon, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.plusIcon, for: .normal)
         button.setPreferredSymbolConfiguration(.init(font: LMFeedAppearance.shared.fonts.buttonFont1), forImageIn: .normal)
         button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         return button

@@ -59,7 +59,7 @@ open class LMFeedDocumentPreview: LMView {
     open private(set) lazy var documentIcon: LMImageView = {
         let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
         image.contentMode = .scaleAspectFit
-        image.image = Constants.shared.images.pdfIcon
+        image.image = LMFeedConstants.shared.images.pdfIcon
         return image
     }()
     
@@ -101,8 +101,8 @@ open class LMFeedDocumentPreview: LMView {
         let button = LMButton()
         button.setTitle(nil, for: .normal)
         button.setTitle(nil, for: .selected)
-        button.setImage(Constants.shared.images.crossIcon, for: .normal)
-        button.setImage(Constants.shared.images.crossIcon, for: .selected)
+        button.setImage(LMFeedConstants.shared.images.crossIcon, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.crossIcon, for: .selected)
         return button
     }()
     

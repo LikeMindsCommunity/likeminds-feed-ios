@@ -44,7 +44,7 @@ open class LMFeedLinkPreview: LMView {
     open private(set) lazy var crossButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.xmarkIcon, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
         button.backgroundColor = LMFeedAppearance.shared.colors.white
         button.tintColor = LMFeedAppearance.shared.colors.gray51
         button.contentMode = .scaleAspectFit

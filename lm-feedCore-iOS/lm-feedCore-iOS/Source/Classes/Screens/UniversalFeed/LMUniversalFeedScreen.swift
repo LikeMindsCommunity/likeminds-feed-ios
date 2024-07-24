@@ -39,8 +39,8 @@ open class LMUniversalFeedScreen: LMViewController {
     
     open private(set) lazy var topicSelectionButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
-        button.setTitle(Constants.shared.strings.allTopics, for: .normal)
-        button.setImage(Constants.shared.images.downArrow, for: .normal)
+        button.setTitle(LMFeedConstants.shared.strings.allTopics, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.downArrow, for: .normal)
         button.setFont(LMFeedAppearance.shared.fonts.buttonFont2)
         button.setTitleColor(LMFeedAppearance.shared.colors.gray102, for: .normal)
         button.tintColor = LMFeedAppearance.shared.colors.gray102
@@ -86,7 +86,7 @@ open class LMUniversalFeedScreen: LMViewController {
     open private(set) lazy var createPostButton: LMButton = {
         let button = LMButton.createButton(
             with: LMStringConstants.shared.newPost,
-            image: Constants.shared.images.createPostIcon,
+            image: LMFeedConstants.shared.images.createPostIcon,
             textColor: LMFeedAppearance.shared.colors.white,
             textFont: LMFeedAppearance.shared.fonts.buttonFont1,
             contentSpacing: .init(top: 8, left: 8, bottom: 8, right: 8),
@@ -278,8 +278,8 @@ open class LMUniversalFeedScreen: LMViewController {
         navigationController?.navigationBar.backgroundColor = LMFeedAppearance.shared.colors.navigationBackgroundColor
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.appName, subtitle: nil, alignment: .center)
         
-        navigationItem.rightBarButtonItems = [UIBarButtonItem(image: Constants.shared.images.searchIcon, style: .plain, target: self, action: #selector(didTapSearchButton)),
-                                              UIBarButtonItem(image: Constants.shared.images.notificationBell, style: .plain, target: self, action: #selector(didTapNotificationButton))]
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(image: LMFeedConstants.shared.images.searchIcon, style: .plain, target: self, action: #selector(didTapSearchButton)),
+                                              UIBarButtonItem(image: LMFeedConstants.shared.images.notificationBell, style: .plain, target: self, action: #selector(didTapNotificationButton))]
     }
     
     @objc

@@ -28,7 +28,7 @@ open class LMFeedNoPostWidget: LMView {
     open private(set) lazy var emptyImageView: LMImageView = {
         let imageView = LMImageView().translatesAutoresizingMaskIntoConstraints()
         imageView.clipsToBounds = true
-        imageView.image = Constants.shared.images.docImageIcon
+        imageView.image = LMFeedConstants.shared.images.docImageIcon
         imageView.tintColor = LMFeedAppearance.shared.colors.gray102
         imageView.preferredSymbolConfiguration = .init(pointSize: 40, weight: .light, scale: .medium)
         return imageView
@@ -57,7 +57,7 @@ open class LMFeedNoPostWidget: LMView {
     open private(set) lazy var createPostButton: LMButton = {
         let button = LMButton.createButton(
             with: "",
-            image: Constants.shared.images.createPostIcon,
+            image: LMFeedConstants.shared.images.createPostIcon,
             textColor: LMFeedAppearance.shared.colors.white,
             textFont: LMFeedAppearance.shared.fonts.buttonFont1,
             contentSpacing: .init(top: 8, left: 16, bottom: 8, right: 16),

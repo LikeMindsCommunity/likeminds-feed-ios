@@ -50,7 +50,7 @@ open class LMFeedCreatePollQuestionView: LMView {
     }()
     
     open private(set) lazy var addOptionImage: LMImageView = {
-        let image = LMImageView(image: Constants.shared.images.plusCircleIcon.withConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.buttonFont2)))
+        let image = LMImageView(image: LMFeedConstants.shared.images.plusCircleIcon.withConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.buttonFont2)))
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()

@@ -104,7 +104,7 @@ open class LMFeedPostDetailScreen: LMViewController {
     open private(set) lazy var removeReplyButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.xmarkIcon, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
         button.tintColor = LMFeedAppearance.shared.colors.gray3
         return button
     }()
@@ -133,7 +133,7 @@ open class LMFeedPostDetailScreen: LMViewController {
     open private(set) lazy var sendButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.planeIconFilled, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.planeIconFilled, for: .normal)
         button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         button.isEnabled = false
         return button
@@ -449,7 +449,7 @@ extension LMFeedPostDetailScreen: UITableViewDataSource, UITableViewDelegate {
     
     open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
-            return Constants.shared.number.postHeaderSize
+            return LMFeedConstants.shared.number.postHeaderSize
         } else if (commentsData[safe: section - 1]) != nil {
             return UITableView.automaticDimension
         }

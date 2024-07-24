@@ -13,7 +13,7 @@ open class LMFeedTopicEditIcon: LMCollectionViewCell {
     open private(set) lazy var editIcon: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.pencilIcon, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.pencilIcon, for: .normal)
         button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
         button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         return button

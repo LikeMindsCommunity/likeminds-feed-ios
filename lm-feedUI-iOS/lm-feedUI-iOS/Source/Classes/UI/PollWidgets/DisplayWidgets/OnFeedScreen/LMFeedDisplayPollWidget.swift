@@ -91,7 +91,7 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
     }()
     
     open private(set) lazy var checkmarkIcon: LMImageView = {
-        let image = Constants.shared.images.checkmarkIconFilled
+        let image = LMFeedConstants.shared.images.checkmarkIconFilled
             .applyingSymbolConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.headingFont1))
         
         let imageView = LMImageView(image: image)

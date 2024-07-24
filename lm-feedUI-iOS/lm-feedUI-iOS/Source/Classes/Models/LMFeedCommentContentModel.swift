@@ -50,7 +50,7 @@ public struct LMFeedCommentContentModel {
     }
     
     public var commentText: String {
-        "• \(totalReplyCount) \(totalReplyCount > 1 ? Constants.shared.strings.replies : Constants.shared.strings.reply)"
+        "• \(totalReplyCount) \(totalReplyCount > 1 ? LMFeedConstants.shared.strings.replies : LMFeedConstants.shared.strings.reply)"
     }
     
     

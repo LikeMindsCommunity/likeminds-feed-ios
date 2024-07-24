@@ -162,7 +162,7 @@ open class LMFeedNotificationItem: LMTableViewCell {
         titleLabel.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.notification)
         timeLabel.text = data.time
         userImage.kf.setImage(with: URL(string: data.user.userProfileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.user.userName))
-        mediaImage.image = Constants.Images.loadSystemImage(with: data.mediaImage ?? "")
+        mediaImage.image = LMFeedConstants.Images.loadSystemImage(with: data.mediaImage ?? "")
         mediaContainerView.isHidden = data.mediaImage?.isEmpty != false
         
         containerView.backgroundColor = data.isRead ? LMFeedAppearance.shared.colors.white : LMFeedAppearance.shared.colors.notificationBackgroundColor

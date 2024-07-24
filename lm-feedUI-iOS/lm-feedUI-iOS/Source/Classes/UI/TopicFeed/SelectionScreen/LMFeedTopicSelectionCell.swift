@@ -72,6 +72,6 @@ open class LMFeedTopicSelectionCell: LMTableViewCell {
     // MARK: configure
     open func configure(with data: ContentModel) {
         topicLabel.text = data.topic
-        tickButton.image = data.isSelected ? Constants.shared.images.checkmarkIconFilled : nil
+        tickButton.image = data.isSelected ? LMFeedConstants.shared.images.checkmarkIconFilled : nil
     }
 }

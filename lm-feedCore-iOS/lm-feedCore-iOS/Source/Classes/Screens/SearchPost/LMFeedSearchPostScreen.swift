@@ -27,7 +27,7 @@ open class LMFeedSearchPostScreen: LMViewController {
     
     open private(set) lazy var searchController: UISearchController = {
         let search = UISearchController(searchResultsController: nil)
-        search.searchBar.placeholder = Constants.shared.strings.searchTopic
+        search.searchBar.placeholder = LMFeedConstants.shared.strings.searchTopic
         search.delegate = self
         search.searchBar.delegate = self
         return search
@@ -220,7 +220,7 @@ extension LMFeedSearchPostScreen: UITableViewDelegate, UITableViewDataSourcePref
     }
     
     open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        Constants.shared.number.postHeaderSize
+        LMFeedConstants.shared.number.postHeaderSize
     }
     
     open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

@@ -77,9 +77,9 @@ open class LMFeedCreatePollScreen: LMViewController {
     
     open var chevronIcon: UIImage {
         if pollMetaOptionsView.isHidden {
-            return Constants.shared.images.chevronDownIcon.withConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.buttonFont3))
+            return LMFeedConstants.shared.images.chevronDownIcon.withConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.buttonFont3))
         } else {
-            return Constants.shared.images.chevronUpIcon.withConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.buttonFont3))
+            return LMFeedConstants.shared.images.chevronUpIcon.withConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.buttonFont3))
         }
     }
     

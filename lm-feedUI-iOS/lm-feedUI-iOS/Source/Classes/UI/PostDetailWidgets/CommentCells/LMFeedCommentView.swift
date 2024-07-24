@@ -67,7 +67,7 @@ open class LMFeedCommentView: LMTableViewHeaderFooterView {
     open private(set) lazy var menuButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.ellipsis, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.ellipsis, for: .normal)
         button.tintColor = LMFeedAppearance.shared.colors.gray102
         return button
     }()
@@ -84,8 +84,8 @@ open class LMFeedCommentView: LMTableViewHeaderFooterView {
     open private(set) lazy var likeButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.heart, for: .normal)
-        button.setImage(Constants.shared.images.heartFilled, for: .selected)
+        button.setImage(LMFeedConstants.shared.images.heart, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.heartFilled, for: .selected)
         button.tintColor = LMFeedAppearance.shared.colors.gray3
         return button
     }()
@@ -136,7 +136,7 @@ open class LMFeedCommentView: LMTableViewHeaderFooterView {
     public var commentId: String?
     public var indexPath: IndexPath?
     public var likeCount: Int = 0
-    public var likeText: String = Constants.shared.strings.like
+    public var likeText: String = LMFeedConstants.shared.strings.like
     public var commentUserUUID: String?
     public var seeMoreAction: (() -> Void)?
     
@@ -305,7 +305,7 @@ open class LMFeedCommentView: LMTableViewHeaderFooterView {
         
         authorNameLabel.text = data.authorName
         
-        commentLabel.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.comment.trimmingCharacters(in: .whitespacesAndNewlines), andPrefix: Constants.shared.strings.taggingCharacter)
+        commentLabel.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.comment.trimmingCharacters(in: .whitespacesAndNewlines), andPrefix: LMFeedConstants.shared.strings.taggingCharacter)
         
         seeMoreText.isHidden = true // !(commentLabel.numberOfLines > 4 && data.isShowMore)
         commentLabel.textContainer.maximumNumberOfLines = 0 // commentLabel.numberOfLines > 4 && !data.isShowMore ? .zero : 4

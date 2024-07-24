@@ -123,7 +123,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     }()
     
     open private(set) lazy var addMoreButton: LMButton = {
-        let button = LMButton.createButton(with: LMStringConstants.shared.addMoreText, image: Constants.shared.images.plusIcon, textColor: LMFeedAppearance.shared.colors.appTintColor, textFont: LMFeedAppearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 16, bottom: 8, right: 16))
+        let button = LMButton.createButton(with: LMStringConstants.shared.addMoreText, image: LMFeedConstants.shared.images.plusIcon, textColor: LMFeedAppearance.shared.colors.appTintColor, textFont: LMFeedAppearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 16, bottom: 8, right: 16))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         button.layer.borderColor = LMFeedAppearance.shared.colors.appTintColor.cgColor
@@ -346,10 +346,10 @@ open class LMFeedCreatePostScreen: LMViewController {
     }
     
     open func setupAddMedia() {
-        addPhotosTab.configure(with: LMStringConstants.shared.addPhotoText, image: Constants.shared.images.galleryIcon)
-        addVideoTab.configure(with: LMStringConstants.shared.addVideoText, image: Constants.shared.images.videoIcon)
-        addDocumentsTab.configure(with: LMStringConstants.shared.attachFiles, image: Constants.shared.images.paperclipIcon)
-        addPollTab.configure(with: LMStringConstants.shared.addPoll, image: Constants.shared.images.addPollIcon, hideSeprator: true)
+        addPhotosTab.configure(with: LMStringConstants.shared.addPhotoText, image: LMFeedConstants.shared.images.galleryIcon)
+        addVideoTab.configure(with: LMStringConstants.shared.addVideoText, image: LMFeedConstants.shared.images.videoIcon)
+        addDocumentsTab.configure(with: LMStringConstants.shared.attachFiles, image: LMFeedConstants.shared.images.paperclipIcon)
+        addPollTab.configure(with: LMStringConstants.shared.addPoll, image: LMFeedConstants.shared.images.addPollIcon, hideSeprator: true)
         taggingView.isHidden = true
     }
     

@@ -46,7 +46,7 @@ open class LMFeedCreateDisplayPollView: BaseDisplayPollView {
     open private(set) lazy var crossButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.crossIcon, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.crossIcon, for: .normal)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.headingFont1), forImageIn: .normal)
         button.contentHorizontalAlignment = .fill
         button.contentVerticalAlignment = .fill
@@ -57,7 +57,7 @@ open class LMFeedCreateDisplayPollView: BaseDisplayPollView {
     open private(set) lazy var editButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.pencilIcon, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.pencilIcon, for: .normal)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.headingFont1), forImageIn: .normal)
         button.contentHorizontalAlignment = .fill
         button.contentVerticalAlignment = .fill

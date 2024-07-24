@@ -92,7 +92,7 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
     }()
     
     open private(set) lazy var submitButton: LMButton = {
-        let button = LMButton.createButton(with: Constants.shared.strings.submitVote, image: nil, textColor: LMFeedAppearance.shared.colors.white, textFont: LMFeedAppearance.shared.fonts.buttonFont2, contentSpacing: .init(top: 12, left: 8, bottom: 12, right: 8))
+        let button = LMButton.createButton(with: LMFeedConstants.shared.strings.submitVote, image: nil, textColor: LMFeedAppearance.shared.colors.white, textFont: LMFeedAppearance.shared.fonts.buttonFont2, contentSpacing: .init(top: 12, left: 8, bottom: 12, right: 8))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = LMFeedAppearance.shared.colors.appTintColor
         return button
@@ -126,7 +126,7 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
     }()
     
     open private(set) lazy var addOptionButton: LMButton = {
-        let button = LMButton.createButton(with: "Add an Option", image: Constants.shared.images.plusIcon, textColor: LMFeedAppearance.shared.colors.black, textFont: LMFeedAppearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 0, bottom: 8, right: 0), imageSpacing: 4)
+        let button = LMButton.createButton(with: "Add an Option", image: LMFeedConstants.shared.images.plusIcon, textColor: LMFeedAppearance.shared.colors.black, textFont: LMFeedAppearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 0, bottom: 8, right: 0), imageSpacing: 4)
         button.tintColor = LMFeedAppearance.shared.colors.black
         button.translatesAutoresizingMaskIntoConstraints = false
         return button

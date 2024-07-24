@@ -13,7 +13,7 @@ extension UIImage {
     }
 }
 
-public extension Constants {
+public extension LMFeedConstants {
     struct Images {
         private init() { }
         

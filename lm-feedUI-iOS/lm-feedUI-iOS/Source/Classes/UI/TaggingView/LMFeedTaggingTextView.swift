@@ -29,7 +29,7 @@ open class LMFeedTaggingTextView: LMTextView {
     }
     public var spaceChar: Character = " "
     public var newLineChar: Character = "\n"
-    public var taggingCharacter: Character = Constants.shared.strings.taggingCharacter
+    public var taggingCharacter: Character = LMFeedConstants.shared.strings.taggingCharacter
     public var isSpaceAdded: Bool = false
     public var startIndex: Int?
     public var characters: [Character] = []

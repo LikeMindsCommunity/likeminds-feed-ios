@@ -169,7 +169,7 @@ extension LMFeedQnAPostListScreen: UITableViewDataSource, UITableViewDelegate, U
     }
     
     open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        Constants.shared.number.postHeaderSize
+        LMFeedConstants.shared.number.postHeaderSize
     }
     
     open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

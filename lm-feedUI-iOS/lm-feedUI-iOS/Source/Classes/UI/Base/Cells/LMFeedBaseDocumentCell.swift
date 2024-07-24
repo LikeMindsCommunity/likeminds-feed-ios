@@ -70,10 +70,10 @@ open class LMFeedBaseDocumentCell: LMPostWidgetTableViewCell {
         documentContainerStack.removeAllArrangedSubviews()
         
         data.documents.enumerated().forEach { index, document in
-            guard index < Constants.shared.number.maxDocumentView || data.isShowMoreDocuments else { return }
+            guard index < LMFeedConstants.shared.number.maxDocumentView || data.isShowMoreDocuments else { return }
             let documentView = LMUIComponents.shared.documentPreview.init()
             
-            documentView.setHeightConstraint(with: Constants.shared.number.documentPreviewSize)
+            documentView.setHeightConstraint(with: LMFeedConstants.shared.number.documentPreviewSize)
             
             documentView.configure(with: document, delegate: self)
             documentContainerStack.addArrangedSubview(documentView)
@@ -84,8 +84,8 @@ open class LMFeedBaseDocumentCell: LMPostWidgetTableViewCell {
             ])
         }
         
-        if data.documents.count > Constants.shared.number.maxDocumentView && !data.isShowMoreDocuments {
-            seeMoreDocumentsButton.setTitle("+\(data.documents.count - Constants.shared.number.maxDocumentView) more", for: .normal)
+        if data.documents.count > LMFeedConstants.shared.number.maxDocumentView && !data.isShowMoreDocuments {
+            seeMoreDocumentsButton.setTitle("+\(data.documents.count - LMFeedConstants.shared.number.maxDocumentView) more", for: .normal)
             seeMoreDocumentsButton.setImage(nil, for: .normal)
             
             documentContainerStack.addArrangedSubview(seeMoreDocumentsButton)

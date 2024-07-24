@@ -30,7 +30,7 @@ open class LMFeedTopicEditViewCell: LMCollectionViewCell {
     open private(set) lazy var crossButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.xmarkIcon, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
         button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         return button
     }()

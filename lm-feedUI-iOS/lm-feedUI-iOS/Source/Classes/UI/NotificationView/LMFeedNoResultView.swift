@@ -21,7 +21,7 @@ open class LMFeedNoResultView: LMView {
     
     open private(set) lazy var textLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.text = Constants.shared.strings.noResultsFound
+        label.text = LMFeedConstants.shared.strings.noResultsFound
         label.textColor = LMFeedAppearance.shared.colors.gray51
         label.font = LMFeedAppearance.shared.fonts.headingFont3
         label.textAlignment = .center
@@ -51,7 +51,7 @@ open class LMFeedNoResultView: LMView {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        emptyImageView.image = Constants.shared.images.emptyViewIcon
+        emptyImageView.image = LMFeedConstants.shared.images.emptyViewIcon
     }
     
     open func configure(with error: String) {

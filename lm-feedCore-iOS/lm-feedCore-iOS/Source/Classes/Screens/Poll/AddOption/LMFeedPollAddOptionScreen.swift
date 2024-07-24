@@ -65,7 +65,7 @@ open class LMFeedPollAddOptionScreen: LMViewController {
     
     open private(set) lazy var submitButton: LMLoadingButton = {
         let button = LMLoadingButton().translatesAutoresizingMaskIntoConstraints()
-        button.setTitle(Constants.shared.strings.submit.uppercased(), for: .normal)
+        button.setTitle(LMFeedConstants.shared.strings.submit.uppercased(), for: .normal)
         button.setImage(nil, for: .normal)
         button.setTitleColor(.white, for: .normal)
         return button

@@ -76,7 +76,7 @@ open class LMFeedDeleteScreen: LMViewController {
     
     open private(set) lazy var downArrowImage: LMImageView = {
         let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
-        image.image = Constants.shared.images.downArrowFilled
+        image.image = LMFeedConstants.shared.images.downArrowFilled
         image.tintColor = LMFeedAppearance.shared.colors.gray1
         return image
     }()
