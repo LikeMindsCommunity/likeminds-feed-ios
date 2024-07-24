@@ -68,7 +68,7 @@ open class LMFeedPostDetailScreen: LMViewController {
     
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
@@ -83,7 +83,7 @@ open class LMFeedPostDetailScreen: LMViewController {
     
     open private(set) lazy var taggingView: LMFeedTaggingListView = {
         let view = LMFeedTaggingListViewModel.createModule(delegate: self)
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         view.isUserInteractionEnabled = true
         return view
     }()
@@ -96,8 +96,8 @@ open class LMFeedPostDetailScreen: LMViewController {
     open private(set) lazy var replyNameLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Replying To XYZ"
-        label.font = Appearance.shared.fonts.textFont1
-        label.textColor = Appearance.shared.colors.gray3
+        label.font = LMFeedAppearance.shared.fonts.textFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray3
         return label
     }()
     
@@ -105,7 +105,7 @@ open class LMFeedPostDetailScreen: LMViewController {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(Constants.shared.images.xmarkIcon, for: .normal)
-        button.tintColor = Appearance.shared.colors.gray3
+        button.tintColor = LMFeedAppearance.shared.colors.gray3
         return button
     }()
     
@@ -114,7 +114,7 @@ open class LMFeedPostDetailScreen: LMViewController {
         stack.axis = .horizontal
         stack.alignment = .center
         stack.distribution = .fill
-        stack.backgroundColor = Appearance.shared.colors.clear
+        stack.backgroundColor = LMFeedAppearance.shared.colors.clear
         return stack
     }()
     
@@ -122,10 +122,10 @@ open class LMFeedPostDetailScreen: LMViewController {
         let textView = LMFeedTaggingTextView().translatesAutoresizingMaskIntoConstraints()
         textView.isEditable = true
         textView.isScrollEnabled = false
-        textView.backgroundColor = Appearance.shared.colors.clear
-        textView.textColor = Appearance.shared.colors.textColor
+        textView.backgroundColor = LMFeedAppearance.shared.colors.clear
+        textView.textColor = LMFeedAppearance.shared.colors.textColor
         textView.contentMode = .center
-        textView.font = Appearance.shared.fonts.textFont1
+        textView.font = LMFeedAppearance.shared.fonts.textFont1
         textView.placeHolderText = LMStringConstants.shared.writeComment
         return textView
     }()
@@ -134,14 +134,14 @@ open class LMFeedPostDetailScreen: LMViewController {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(Constants.shared.images.planeIconFilled, for: .normal)
-        button.tintColor = Appearance.shared.colors.appTintColor
+        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         button.isEnabled = false
         return button
     }()
     
     open private(set) lazy var replySepratorView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.sepratorColor
+        view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
         return view
     }()
     
@@ -277,8 +277,8 @@ open class LMFeedPostDetailScreen: LMViewController {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        postDetailListView.backgroundColor = Appearance.shared.colors.backgroundColor
-        view.backgroundColor = Appearance.shared.colors.white
+        postDetailListView.backgroundColor = LMFeedAppearance.shared.colors.backgroundColor
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
     
@@ -709,11 +709,11 @@ extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
     }
     
     public func replyToComment(userName: String) {
-        let replyLabelText = NSMutableAttributedString(string: "Replying To ", attributes: [.font: Appearance.shared.fonts.textFont2,
-                                                                                           .foregroundColor: Appearance.shared.colors.gray51])
+        let replyLabelText = NSMutableAttributedString(string: "Replying To ", attributes: [.font: LMFeedAppearance.shared.fonts.textFont2,
+                                                                                           .foregroundColor: LMFeedAppearance.shared.colors.gray51])
         
-        replyLabelText.append(NSAttributedString(string: userName, attributes: [.font: Appearance.shared.fonts.textFont2,
-                                                                                .foregroundColor: Appearance.shared.colors.appTintColor]))
+        replyLabelText.append(NSAttributedString(string: userName, attributes: [.font: LMFeedAppearance.shared.fonts.textFont2,
+                                                                                .foregroundColor: LMFeedAppearance.shared.colors.appTintColor]))
         
         replyNameLabel.attributedText = replyLabelText
         replyView.isHidden = false

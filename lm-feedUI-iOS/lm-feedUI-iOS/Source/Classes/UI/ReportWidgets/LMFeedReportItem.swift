@@ -12,8 +12,8 @@ open class LMFeedReportItem: LMCollectionViewCell {
     // MARK: UI Elements
     open private(set) lazy var textLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.textFont1
-        label.textColor = Appearance.shared.colors.gray102
+        label.font = LMFeedAppearance.shared.fonts.textFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray102
         label.text = "Tag"
         return label
     }()
@@ -61,10 +61,10 @@ open class LMFeedReportItem: LMCollectionViewCell {
         
         containerView.clipsToBounds = true
         containerView.layer.cornerRadius = contentView.bounds.height / 2
-        containerView.layer.borderColor = isCellSelected ? Appearance.shared.colors.appTintColor.cgColor : Appearance.shared.colors.gray155.cgColor
+        containerView.layer.borderColor = isCellSelected ? LMFeedAppearance.shared.colors.appTintColor.cgColor : LMFeedAppearance.shared.colors.gray155.cgColor
         containerView.layer.borderWidth = 1
         
-        textLabel.textColor = isCellSelected ? Appearance.shared.colors.appTintColor : Appearance.shared.colors.gray102
+        textLabel.textColor = isCellSelected ? LMFeedAppearance.shared.colors.appTintColor : LMFeedAppearance.shared.colors.gray102
     }
     
     // MARK: configure

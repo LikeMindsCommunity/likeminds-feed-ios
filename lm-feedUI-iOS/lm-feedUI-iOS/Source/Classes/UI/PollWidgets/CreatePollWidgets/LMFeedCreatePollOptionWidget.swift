@@ -26,9 +26,9 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
         textField.addDoneButtonOnKeyboard()
         textField.attributedPlaceholder = NSAttributedString(
             string: "Option",
-            attributes: [NSAttributedString.Key.foregroundColor: Appearance.shared.colors.gray102]
+            attributes: [NSAttributedString.Key.foregroundColor: LMFeedAppearance.shared.colors.gray102]
         )
-        textField.textColor = Appearance.shared.colors.black
+        textField.textColor = LMFeedAppearance.shared.colors.black
         return textField
     }()
     
@@ -91,7 +91,7 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        containerView.backgroundColor = Appearance.shared.colors.white
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
     

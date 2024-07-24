@@ -23,14 +23,14 @@ open class LMFeedAddMediaView: LMView {
     
     open private(set) lazy var titleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.buttonFont1
-        label.textColor = Appearance.shared.colors.gray1
+        label.font = LMFeedAppearance.shared.fonts.buttonFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray1
         return label
     }()
     
     open private(set) lazy var sepratorView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.sepratorColor
+        view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
         return view
     }()
     

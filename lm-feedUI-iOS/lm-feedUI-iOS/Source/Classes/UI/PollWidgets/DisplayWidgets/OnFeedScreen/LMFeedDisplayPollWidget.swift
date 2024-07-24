@@ -62,15 +62,15 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
     
     open private(set) lazy var progressView: UIProgressView = {
         let progress = UIProgressView(progressViewStyle: .default)
-        progress.progressTintColor = Appearance.shared.colors.appTintColor.withAlphaComponent(0.1)
-        progress.trackTintColor = Appearance.shared.colors.clear
+        progress.progressTintColor = LMFeedAppearance.shared.colors.appTintColor.withAlphaComponent(0.1)
+        progress.trackTintColor = LMFeedAppearance.shared.colors.clear
         progress.translatesAutoresizingMaskIntoConstraints = false
         return progress
     }()
     
     open private(set) lazy var voteCountContainer: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
@@ -78,26 +78,26 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle("Vote Count", for: .normal)
         button.setImage(nil, for: .normal)
-        button.setFont(Appearance.shared.fonts.buttonFont1)
-        button.setTitleColor(Appearance.shared.colors.gray155, for: .normal)
+        button.setFont(LMFeedAppearance.shared.fonts.buttonFont1)
+        button.setTitleColor(LMFeedAppearance.shared.colors.gray155, for: .normal)
         return button
     }()
     
     open private(set) lazy var innerContainerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         view.isUserInteractionEnabled = true
         return view
     }()
     
     open private(set) lazy var checkmarkIcon: LMImageView = {
         let image = Constants.shared.images.checkmarkIconFilled
-            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(font: Appearance.shared.fonts.headingFont1))
+            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.headingFont1))
         
         let imageView = LMImageView(image: image)
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.tintColor = Appearance.shared.colors.appTintColor
+        imageView.tintColor = LMFeedAppearance.shared.colors.appTintColor
         return imageView
     }()
     
@@ -216,6 +216,6 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
         progressView.progressTintColor = data.isOptionSelectedByUser ? selectedPollColor.withAlphaComponent(0.2) : notSelectedPollColor
         
         innerContainerView.layer.borderColor = data.isOptionSelectedByUser ? selectedPollColor.cgColor : notSelectedPollColor.cgColor
-        optionLabel.textColor = data.isOptionSelectedByUser ? selectedPollColor : Appearance.shared.colors.black
+        optionLabel.textColor = data.isOptionSelectedByUser ? selectedPollColor : LMFeedAppearance.shared.colors.black
     }
 }

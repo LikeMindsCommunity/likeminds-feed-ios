@@ -17,13 +17,13 @@ open class LMFeedTopicSelectionScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
     open private(set) lazy var topicSelectionListView: LMTableView = {
         let table = LMTableView(frame: .zero, style: .grouped).translatesAutoresizingMaskIntoConstraints()
-        table.backgroundColor = Appearance.shared.colors.clear
+        table.backgroundColor = LMFeedAppearance.shared.colors.clear
         table.dataSource = self
         table.delegate = self
         table.register(LMFeedTopicSelectionCell.self)
@@ -59,7 +59,7 @@ open class LMFeedTopicSelectionScreen: LMViewController {
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Appearance.shared.colors.backgroundColor
+        view.backgroundColor = LMFeedAppearance.shared.colors.backgroundColor
         setNavigationTitleAndSubtitle(with: Constants.shared.strings.selectTopic, subtitle: nil, alignment: .center)
         viewModel?.getTopics(for: searchController.searchBar.text, isFreshSearch: true)
     }

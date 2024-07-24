@@ -35,7 +35,7 @@ open class LMFeedCreatePostDocumentPreviewCell: LMTableViewCell {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        backgroundColor = Appearance.shared.colors.clear
+        backgroundColor = LMFeedAppearance.shared.colors.clear
     }
     
     // MARK: configure

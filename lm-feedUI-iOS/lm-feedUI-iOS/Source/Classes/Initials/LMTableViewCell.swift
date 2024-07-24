@@ -12,7 +12,7 @@ open class LMTableViewCell: UITableViewCell {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
@@ -51,7 +51,7 @@ extension LMTableViewCell: LMViewLifeCycle {
     
     open func setupAppearance() { 
         selectionStyle = .none
-        contentView.backgroundColor = Appearance.shared.colors.clear
+        contentView.backgroundColor = LMFeedAppearance.shared.colors.clear
     }
     
     open func setupObservers() { }

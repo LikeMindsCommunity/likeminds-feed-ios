@@ -16,42 +16,42 @@ open class LMFeedPollAddOptionScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var dismissView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.black.withAlphaComponent(0.5)
+        view.backgroundColor = LMFeedAppearance.shared.colors.black.withAlphaComponent(0.5)
         return view
     }()
     
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
     open private(set) lazy var sepratorView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.sepratorColor
+        view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
         return view
     }()
     
     open private(set) lazy var titleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.headingFont1
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.text = "Add new poll option"
-        label.textColor = Appearance.shared.colors.gray51
+        label.textColor = LMFeedAppearance.shared.colors.gray51
         return label
     }()
     
     open private(set) lazy var subtitleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.subHeadingFont2
+        label.font = LMFeedAppearance.shared.fonts.subHeadingFont2
         label.text = "Enter an option that you think is missing in this poll. This can not be undone."
-        label.textColor = Appearance.shared.colors.gray51
+        label.textColor = LMFeedAppearance.shared.colors.gray51
         label.numberOfLines = 0
         return label
     }()
     
     open private(set) lazy var optionTextContainer: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
@@ -59,7 +59,7 @@ open class LMFeedPollAddOptionScreen: LMViewController {
         let text = LMTextField()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.placeholder = "Type new option"
-        text.textColor = Appearance.shared.colors.gray51
+        text.textColor = LMFeedAppearance.shared.colors.gray51
         return text
     }()
     
@@ -148,7 +148,7 @@ open class LMFeedPollAddOptionScreen: LMViewController {
         
         optionTextContainer.layer.cornerRadius = optionTextField.frame.height / 4
         optionTextContainer.layer.borderWidth = 1
-        optionTextContainer.layer.borderColor = Appearance.shared.colors.gray4.cgColor
+        optionTextContainer.layer.borderColor = LMFeedAppearance.shared.colors.gray4.cgColor
         optionTextField.addDoneButtonOnKeyboard()
     }
     
@@ -232,7 +232,7 @@ open class LMFeedPollAddOptionScreen: LMViewController {
 extension LMFeedPollAddOptionScreen: LMFeedPollAddOptionViewModelProtocol {
     public func setSubmitButton(isEnabled: Bool) {
         submitButton.isEnabled = isEnabled
-        submitButton.backgroundColor = isEnabled ? Appearance.shared.colors.appTintColor : Appearance.shared.colors.backgroundColor
+        submitButton.backgroundColor = isEnabled ? LMFeedAppearance.shared.colors.appTintColor : LMFeedAppearance.shared.colors.backgroundColor
     }
     
     public func showButtonLoader() {

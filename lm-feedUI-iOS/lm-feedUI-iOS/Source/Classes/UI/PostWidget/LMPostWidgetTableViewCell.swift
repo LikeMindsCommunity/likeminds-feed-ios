@@ -31,15 +31,15 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
         textView.isUserInteractionEnabled = true
         textView.isEditable = false
         textView.isSelectable = false
-        textView.font = Appearance.shared.fonts.textFont1
-        textView.textColor = Appearance.shared.colors.textColor
+        textView.font = LMFeedAppearance.shared.fonts.textFont1
+        textView.textColor = LMFeedAppearance.shared.colors.textColor
         textView.backgroundColor = .clear
         textView.smartInsertDeleteType = .no
         return textView
     }()
     
     open private(set) lazy var seeMoreButton: LMButton = {
-        let button = LMButton.createButton(with: "See More", image: nil, textColor: Appearance.shared.colors.textColor, textFont: Appearance.shared.fonts.textFont1)
+        let button = LMButton.createButton(with: "See More", image: nil, textColor: LMFeedAppearance.shared.colors.textColor, textFont: LMFeedAppearance.shared.fonts.textFont1)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

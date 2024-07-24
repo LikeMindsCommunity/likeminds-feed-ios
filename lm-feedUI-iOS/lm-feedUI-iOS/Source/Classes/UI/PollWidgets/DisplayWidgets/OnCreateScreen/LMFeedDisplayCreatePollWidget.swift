@@ -49,7 +49,7 @@ open class LMFeedDisplayCreatePollWidget: BaseDisplayPollWidget {
         super.setupAppearance()
         
         containerView.layer.cornerRadius = 8
-        containerView.layer.borderColor = Appearance.shared.colors.gray155.cgColor
+        containerView.layer.borderColor = LMFeedAppearance.shared.colors.gray155.cgColor
         containerView.layer.borderWidth = 1
     }
     

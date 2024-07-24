@@ -48,8 +48,8 @@ open class LMFeedCreatePollMetaView: LMView {
     
     open private(set) lazy var titleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.buttonFont1
-        label.textColor = Appearance.shared.colors.gray155
+        label.font = LMFeedAppearance.shared.fonts.buttonFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray155
         label.text = "User can vote for"
         return label
     }()
@@ -129,8 +129,8 @@ open class LMFeedCreatePollMetaView: LMView {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        containerView.backgroundColor = Appearance.shared.colors.white
-        equalSymbol.tintColor = Appearance.shared.colors.gray155
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.white
+        equalSymbol.tintColor = LMFeedAppearance.shared.colors.gray155
     }
     
     

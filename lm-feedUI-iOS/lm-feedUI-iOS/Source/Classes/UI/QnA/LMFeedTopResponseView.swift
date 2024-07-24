@@ -18,8 +18,8 @@ open class LMFeedTopResponseView: LMView {
     open private(set) lazy var titleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Top Response"
-        label.font = Appearance.shared.fonts.textFont2
-        label.textColor = Appearance.shared.colors.gray51
+        label.font = LMFeedAppearance.shared.fonts.textFont2
+        label.textColor = LMFeedAppearance.shared.colors.gray51
         label.textAlignment = .left
         return label
     }()
@@ -54,24 +54,24 @@ open class LMFeedTopResponseView: LMView {
     
     open private(set) lazy var usernameLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.headingFont3
-        label.textColor = Appearance.shared.colors.gray51
+        label.font = LMFeedAppearance.shared.fonts.headingFont3
+        label.textColor = LMFeedAppearance.shared.colors.gray51
         label.text = "Author"
         return label
     }()
     
     open private(set) lazy var timeStampLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.textFont2
-        label.textColor = Appearance.shared.colors.gray155
+        label.font = LMFeedAppearance.shared.fonts.textFont2
+        label.textColor = LMFeedAppearance.shared.colors.gray155
         label.text = "Timestamp"
         return label
     }()
     
     open private(set) lazy var contentLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.textFont2
-        label.textColor = Appearance.shared.colors.gray51
+        label.font = LMFeedAppearance.shared.fonts.textFont2
+        label.textColor = LMFeedAppearance.shared.colors.gray51
         label.text = "Dummy Comment"
         return label
     }()
@@ -126,7 +126,7 @@ open class LMFeedTopResponseView: LMView {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        contentContainerView.backgroundColor = Appearance.shared.colors.backgroundColor
+        contentContainerView.backgroundColor = LMFeedAppearance.shared.colors.backgroundColor
         contentContainerView.layer.cornerRadius = 8
         
         contentStackView.clipsToBounds = true

@@ -39,7 +39,7 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         let view = LMView()
         view.contentMode = .scaleToFill
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
 
@@ -59,7 +59,7 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .fill
-        stackView.backgroundColor = Appearance.shared.colors.clear
+        stackView.backgroundColor = LMFeedAppearance.shared.colors.clear
         stackView.spacing = 8
         return stackView
     }()
@@ -69,7 +69,7 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .fill
-        stackView.backgroundColor = Appearance.shared.colors.clear
+        stackView.backgroundColor = LMFeedAppearance.shared.colors.clear
         return stackView
     }()
 
@@ -79,7 +79,7 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         button.contentHorizontalAlignment = .center
         button.contentVerticalAlignment = .center
-        button.tintColor = Appearance.shared.colors.gray2
+        button.tintColor = LMFeedAppearance.shared.colors.gray2
         button.setImage(UIImage(systemName: "pin.circle"), for: .normal)
         return button
     }()
@@ -90,7 +90,7 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         button.contentHorizontalAlignment = .center
         button.contentVerticalAlignment = .center
-        button.tintColor = Appearance.shared.colors.gray2
+        button.tintColor = LMFeedAppearance.shared.colors.gray2
         button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         return button
     }()
@@ -101,7 +101,7 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         stackView.alignment = .fill
         stackView.distribution = .fill
         stackView.spacing = 4
-        stackView.backgroundColor = Appearance.shared.colors.clear
+        stackView.backgroundColor = LMFeedAppearance.shared.colors.clear
         return stackView
     }()
 
@@ -114,8 +114,8 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         label.lineBreakMode = .byTruncatingTail
         label.baselineAdjustment = .alignBaselines
         label.adjustsFontSizeToFitWidth = false
-        label.font = Appearance.shared.fonts.subHeadingFont1
-        label.textColor = Appearance.shared.colors.gray3
+        label.font = LMFeedAppearance.shared.fonts.subHeadingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray3
         return label
     }()
 
@@ -125,8 +125,8 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         label.text = "Theresa Webb"
         label.textAlignment = .natural
         label.lineBreakMode = .byTruncatingTail
-        label.font = Appearance.shared.fonts.headingFont1
-        label.textColor = Appearance.shared.colors.gray1
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray1
         label.isUserInteractionEnabled = true
         return label
     }()
@@ -137,21 +137,21 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         label.text = "Admin"
         label.clipsToBounds = true
-        label.textColor = Appearance.shared.colors.white
+        label.textColor = LMFeedAppearance.shared.colors.white
         label.adjustsFontSizeToFitWidth = true
         label.setPadding(with: .init(top: 2, left: 8, bottom: 2, right: 8))
         label.layer.cornerRadius = 2
         label.textAlignment = .natural
         label.lineBreakMode = .byTruncatingTail
         label.adjustsFontSizeToFitWidth = true
-        label.font = Appearance.shared.fonts.headingFont1
-        label.backgroundColor = Appearance.shared.colors.appTintColor
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
+        label.backgroundColor = LMFeedAppearance.shared.colors.appTintColor
         return label
     }()
     
     open private(set) lazy var spacerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
 

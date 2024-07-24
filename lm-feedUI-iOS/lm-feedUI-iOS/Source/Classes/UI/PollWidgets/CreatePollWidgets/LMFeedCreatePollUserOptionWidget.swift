@@ -15,22 +15,22 @@ open class LMFeedCreatePollUserOptionWidget: LMView {
     
     open private(set) lazy var titleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.textColor = Appearance.shared.colors.black
-        label.font = Appearance.shared.fonts.buttonFont2
+        label.textColor = LMFeedAppearance.shared.colors.black
+        label.font = LMFeedAppearance.shared.fonts.buttonFont2
         return label
     }()
     
     open private(set) lazy var downArrow: LMImageView = {
-        let image = Constants.shared.images.downArrowFilled.withConfiguration(UIImage.SymbolConfiguration(font: Appearance.shared.fonts.subHeadingFont1))
+        let image = Constants.shared.images.downArrowFilled.withConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.subHeadingFont1))
         let imageView = LMImageView(image: image)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.tintColor = Appearance.shared.colors.black
+        imageView.tintColor = LMFeedAppearance.shared.colors.black
         return imageView
     }()
     
     open private(set) lazy var sepratorView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.gray4
+        view.backgroundColor = LMFeedAppearance.shared.colors.gray4
         return view
     }()
     

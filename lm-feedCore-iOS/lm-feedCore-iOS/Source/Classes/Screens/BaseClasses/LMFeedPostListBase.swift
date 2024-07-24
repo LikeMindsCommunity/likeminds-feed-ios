@@ -66,8 +66,8 @@ open class LMFeedPostListBase: LMViewController {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        view.backgroundColor = Appearance.shared.colors.backgroundColor
-        postList.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.backgroundColor
+        postList.backgroundColor = LMFeedAppearance.shared.colors.clear
     }
     
     

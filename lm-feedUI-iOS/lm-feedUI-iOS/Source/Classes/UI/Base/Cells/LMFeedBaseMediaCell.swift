@@ -18,7 +18,7 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
         collection.showsHorizontalScrollIndicator = false
         collection.showsVerticalScrollIndicator = false
         collection.bounces = false
-        collection.backgroundColor = Appearance.shared.colors.clear
+        collection.backgroundColor = LMFeedAppearance.shared.colors.clear
         collection.registerCell(type: LMUIComponents.shared.imagePreview)
         collection.registerCell(type: LMUIComponents.shared.videoPreview)
         return collection
@@ -28,8 +28,8 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
         let pageControl = UIPageControl()
         pageControl.isEnabled = false
         pageControl.numberOfPages = mediaCellsData.count
-        pageControl.currentPageIndicatorTintColor = Appearance.shared.colors.appTintColor
-        pageControl.pageIndicatorTintColor = Appearance.shared.colors.gray155
+        pageControl.currentPageIndicatorTintColor = LMFeedAppearance.shared.colors.appTintColor
+        pageControl.pageIndicatorTintColor = LMFeedAppearance.shared.colors.gray155
         pageControl.hidesForSinglePage = true
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
@@ -43,9 +43,9 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        backgroundColor = Appearance.shared.colors.clear
-        contentView.backgroundColor = Appearance.shared.colors.clear
-        containerView.backgroundColor = Appearance.shared.colors.white
+        backgroundColor = LMFeedAppearance.shared.colors.clear
+        contentView.backgroundColor = LMFeedAppearance.shared.colors.clear
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
     

@@ -13,7 +13,7 @@ open class LMUniversalFeedScreen: LMViewController {
     
     open private(set) lazy var contentStack: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
-        stack.backgroundColor = Appearance.shared.colors.clear
+        stack.backgroundColor = LMFeedAppearance.shared.colors.clear
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fill
@@ -23,13 +23,13 @@ open class LMUniversalFeedScreen: LMViewController {
     
     open private(set) lazy var topicContainerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
     open private(set) lazy var topicStackView: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
-        stack.backgroundColor = Appearance.shared.colors.white
+        stack.backgroundColor = LMFeedAppearance.shared.colors.white
         stack.axis = .horizontal
         stack.alignment = .center
         stack.distribution = .fill
@@ -41,9 +41,9 @@ open class LMUniversalFeedScreen: LMViewController {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(Constants.shared.strings.allTopics, for: .normal)
         button.setImage(Constants.shared.images.downArrow, for: .normal)
-        button.setFont(Appearance.shared.fonts.buttonFont2)
-        button.setTitleColor(Appearance.shared.colors.gray102, for: .normal)
-        button.tintColor = Appearance.shared.colors.gray102
+        button.setFont(LMFeedAppearance.shared.fonts.buttonFont2)
+        button.setTitleColor(LMFeedAppearance.shared.colors.gray102, for: .normal)
+        button.tintColor = LMFeedAppearance.shared.colors.gray102
         button.semanticContentAttribute = .forceRightToLeft
         return button
     }()
@@ -59,17 +59,17 @@ open class LMUniversalFeedScreen: LMViewController {
         collection.registerCell(type: LMUIComponents.shared.topicFeedEditView)
         collection.showsHorizontalScrollIndicator = false
         collection.showsVerticalScrollIndicator = false
-        collection.backgroundColor = Appearance.shared.colors.clear
+        collection.backgroundColor = LMFeedAppearance.shared.colors.clear
         return collection
     }()
     
     open private(set) lazy var clearButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
-        button.setFont(Appearance.shared.fonts.buttonFont2)
-        button.setTitleColor(Appearance.shared.colors.gray102, for: .normal)
+        button.setFont(LMFeedAppearance.shared.fonts.buttonFont2)
+        button.setTitleColor(LMFeedAppearance.shared.colors.gray102, for: .normal)
         button.setTitle("Clear", for: .normal)
         button.setImage(nil, for: .normal)
-        button.tintColor = Appearance.shared.colors.gray102
+        button.tintColor = LMFeedAppearance.shared.colors.gray102
         return button
     }()
     
@@ -87,13 +87,13 @@ open class LMUniversalFeedScreen: LMViewController {
         let button = LMButton.createButton(
             with: LMStringConstants.shared.newPost,
             image: Constants.shared.images.createPostIcon,
-            textColor: Appearance.shared.colors.white,
-            textFont: Appearance.shared.fonts.buttonFont1,
+            textColor: LMFeedAppearance.shared.colors.white,
+            textFont: LMFeedAppearance.shared.fonts.buttonFont1,
             contentSpacing: .init(top: 8, left: 8, bottom: 8, right: 8),
             imageSpacing: 8
         )
-        button.tintColor = Appearance.shared.colors.appTintColor
-        button.backgroundColor = Appearance.shared.colors.appTintColor
+        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
+        button.backgroundColor = LMFeedAppearance.shared.colors.appTintColor
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -266,7 +266,7 @@ open class LMUniversalFeedScreen: LMViewController {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        view.backgroundColor = Appearance.shared.colors.backgroundColor
+        view.backgroundColor = LMFeedAppearance.shared.colors.backgroundColor
         createPostButton.layer.cornerRadius = createPostButton.frame.height / 2
     }
     
@@ -275,7 +275,7 @@ open class LMUniversalFeedScreen: LMViewController {
     open override func setupNavigationBar() {
         super.setupNavigationBar()
         
-        navigationController?.navigationBar.backgroundColor = Appearance.shared.colors.navigationBackgroundColor
+        navigationController?.navigationBar.backgroundColor = LMFeedAppearance.shared.colors.navigationBackgroundColor
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.appName, subtitle: nil, alignment: .center)
         
         navigationItem.rightBarButtonItems = [UIBarButtonItem(image: Constants.shared.images.searchIcon, style: .plain, target: self, action: #selector(didTapSearchButton)),
@@ -317,7 +317,7 @@ extension LMUniversalFeedScreen: UICollectionViewDataSource, UICollectionViewDel
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = selectedTopics[indexPath.row].topic.sizeOfString(with: Appearance.shared.fonts.textFont1)
+        let size = selectedTopics[indexPath.row].topic.sizeOfString(with: LMFeedAppearance.shared.fonts.textFont1)
         return .init(width: size.width + 40, height: 30)
     }
 }
@@ -327,7 +327,7 @@ extension LMUniversalFeedScreen: UICollectionViewDataSource, UICollectionViewDel
 extension LMUniversalFeedScreen: LMUniversalFeedViewModelProtocol {
     public func setupInitialView(isShowTopicFeed: Bool, isShowCreatePost: Bool) {
         self.isShowCreatePost = isShowCreatePost
-        createPostButton.backgroundColor = isShowCreatePost ? Appearance.shared.colors.appTintColor : Appearance.shared.colors.gray51
+        createPostButton.backgroundColor = isShowCreatePost ? LMFeedAppearance.shared.colors.appTintColor : LMFeedAppearance.shared.colors.gray51
         
         topicContainerView.isHidden = !isShowTopicFeed
         

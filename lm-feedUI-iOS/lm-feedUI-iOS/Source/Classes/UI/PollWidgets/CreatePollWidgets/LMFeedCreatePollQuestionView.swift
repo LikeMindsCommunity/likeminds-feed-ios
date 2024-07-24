@@ -23,8 +23,8 @@ open class LMFeedCreatePollQuestionView: LMView {
     open private(set) lazy var answerLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Answer options"
-        label.font = Appearance.shared.fonts.buttonFont2
-        label.textColor = Appearance.shared.colors.appTintColor
+        label.font = LMFeedAppearance.shared.fonts.buttonFont2
+        label.textColor = LMFeedAppearance.shared.colors.appTintColor
         return label
     }()
     
@@ -50,7 +50,7 @@ open class LMFeedCreatePollQuestionView: LMView {
     }()
     
     open private(set) lazy var addOptionImage: LMImageView = {
-        let image = LMImageView(image: Constants.shared.images.plusCircleIcon.withConfiguration(UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont2)))
+        let image = LMImageView(image: Constants.shared.images.plusCircleIcon.withConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.buttonFont2)))
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -58,8 +58,8 @@ open class LMFeedCreatePollQuestionView: LMView {
     open private(set) lazy var addOptionText: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Add an option..."
-        label.font = Appearance.shared.fonts.buttonFont2
-        label.textColor = Appearance.shared.colors.appTintColor
+        label.font = LMFeedAppearance.shared.fonts.buttonFont2
+        label.textColor = LMFeedAppearance.shared.colors.appTintColor
         return label
     }()
     
@@ -122,8 +122,8 @@ open class LMFeedCreatePollQuestionView: LMView {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        containerView.backgroundColor = Appearance.shared.colors.white
-        optionStack.backgroundColor = Appearance.shared.colors.clear
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.white
+        optionStack.backgroundColor = LMFeedAppearance.shared.colors.clear
     }
     
     

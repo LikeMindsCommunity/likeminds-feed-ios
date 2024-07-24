@@ -1,5 +1,5 @@
 //
-//  Appearance.swift
+//  LMFeedAppearance.swift
 //  LMFramework
 //
 //  Created by Devansh Mohata on 07/12/23.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-public struct Appearance {
+public struct LMFeedAppearance {
     private init() { }
     
     // Shared Instance

@@ -15,7 +15,7 @@ open class LMFeedTopicEditIcon: LMCollectionViewCell {
         button.setTitle(nil, for: .normal)
         button.setImage(Constants.shared.images.pencilIcon, for: .normal)
         button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
-        button.tintColor = Appearance.shared.colors.appTintColor
+        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         return button
     }()
     
@@ -51,7 +51,7 @@ open class LMFeedTopicEditIcon: LMCollectionViewCell {
         
         containerView.clipsToBounds = true
         containerView.layer.cornerRadius = 4
-        containerView.backgroundColor = Appearance.shared.colors.appTintColor.withAlphaComponent(0.1)
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.appTintColor.withAlphaComponent(0.1)
     }
     
     

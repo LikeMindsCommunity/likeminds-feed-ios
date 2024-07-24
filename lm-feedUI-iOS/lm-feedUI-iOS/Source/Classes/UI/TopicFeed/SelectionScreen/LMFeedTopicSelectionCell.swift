@@ -25,8 +25,8 @@ open class LMFeedTopicSelectionCell: LMTableViewCell {
     // MARK: UI Elements
     open private(set) lazy var topicLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.headingFont1
-        label.textColor = Appearance.shared.colors.gray51
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray51
         label.text = "Topic #1"
         return label
     }()
@@ -34,7 +34,7 @@ open class LMFeedTopicSelectionCell: LMTableViewCell {
     open private(set) lazy var tickButton: LMImageView = {
         let button = LMImageView().translatesAutoresizingMaskIntoConstraints()
         button.image = nil
-        button.tintColor = Appearance.shared.colors.appTintColor
+        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         return button
     }()
     

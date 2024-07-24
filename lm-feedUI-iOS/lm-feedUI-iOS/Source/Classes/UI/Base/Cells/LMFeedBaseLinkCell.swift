@@ -23,8 +23,8 @@ open class LMFeedBaseLinkCell: LMPostWidgetTableViewCell {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        backgroundColor = Appearance.shared.colors.clear
-        contentView.backgroundColor = Appearance.shared.colors.clear
+        backgroundColor = LMFeedAppearance.shared.colors.clear
+        contentView.backgroundColor = LMFeedAppearance.shared.colors.clear
     }
     
     

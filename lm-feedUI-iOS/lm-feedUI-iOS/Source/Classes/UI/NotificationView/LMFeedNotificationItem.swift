@@ -38,14 +38,14 @@ open class LMFeedNotificationItem: LMTableViewCell {
     
     open private(set) lazy var mediaContainerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.appTintColor
+        view.backgroundColor = LMFeedAppearance.shared.colors.appTintColor
         return view
     }()
     
     open private(set) lazy var mediaImage: LMImageView = {
         let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
         image.clipsToBounds = true
-        image.tintColor = Appearance.shared.colors.white
+        image.tintColor = LMFeedAppearance.shared.colors.white
         image.contentMode = .scaleAspectFit
         return image
     }()
@@ -61,16 +61,16 @@ open class LMFeedNotificationItem: LMTableViewCell {
     
     open private(set) lazy var titleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.headingFont3
-        label.textColor = Appearance.shared.colors.black
+        label.font = LMFeedAppearance.shared.fonts.headingFont3
+        label.textColor = LMFeedAppearance.shared.colors.black
         label.numberOfLines = 4
         return label
     }()
     
     open private(set) lazy var timeLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.subHeadingFont2
-        label.textColor = Appearance.shared.colors.gray155
+        label.font = LMFeedAppearance.shared.fonts.subHeadingFont2
+        label.textColor = LMFeedAppearance.shared.colors.gray155
         return label
     }()
     
@@ -165,6 +165,6 @@ open class LMFeedNotificationItem: LMTableViewCell {
         mediaImage.image = Constants.Images.loadSystemImage(with: data.mediaImage ?? "")
         mediaContainerView.isHidden = data.mediaImage?.isEmpty != false
         
-        containerView.backgroundColor = data.isRead ? Appearance.shared.colors.white : Appearance.shared.colors.notificationBackgroundColor
+        containerView.backgroundColor = data.isRead ? LMFeedAppearance.shared.colors.white : LMFeedAppearance.shared.colors.notificationBackgroundColor
     }
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-public extension Appearance {
+public extension LMFeedAppearance {
     struct Colors {
         private init() { }
         

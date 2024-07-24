@@ -19,9 +19,9 @@ open class LMFeedBaseDocumentCell: LMPostWidgetTableViewCell {
     }()
         
     open private(set) lazy var seeMoreDocumentsButton: LMButton = {
-        let button = LMButton.createButton(with: "See More", image: nil, textColor: Appearance.shared.colors.appTintColor, textFont: Appearance.shared.fonts.headingFont1, contentSpacing: .init(top: 8, left: 8, bottom: 8, right: 8))
+        let button = LMButton.createButton(with: "See More", image: nil, textColor: LMFeedAppearance.shared.colors.appTintColor, textFont: LMFeedAppearance.shared.fonts.headingFont1, contentSpacing: .init(top: 8, left: 8, bottom: 8, right: 8))
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = Appearance.shared.colors.appTintColor
+        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         return button
     }()
     
@@ -34,8 +34,8 @@ open class LMFeedBaseDocumentCell: LMPostWidgetTableViewCell {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        backgroundColor = Appearance.shared.colors.clear
-        contentView.backgroundColor = Appearance.shared.colors.clear
+        backgroundColor = LMFeedAppearance.shared.colors.clear
+        contentView.backgroundColor = LMFeedAppearance.shared.colors.clear
     }
     
     

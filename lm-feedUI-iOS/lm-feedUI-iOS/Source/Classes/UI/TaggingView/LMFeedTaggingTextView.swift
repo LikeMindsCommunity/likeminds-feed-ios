@@ -36,8 +36,8 @@ open class LMFeedTaggingTextView: LMTextView {
     
     public weak var mentionDelegate: LMFeedTaggingTextViewProtocol?
     
-    public var textAttributes: [NSAttributedString.Key: Any] = [.font: Appearance.shared.fonts.textFont1,
-                                                                .foregroundColor: Appearance.shared.colors.textColor]
+    public var textAttributes: [NSAttributedString.Key: Any] = [.font: LMFeedAppearance.shared.fonts.textFont1,
+                                                                .foregroundColor: LMFeedAppearance.shared.colors.textColor]
     
     public override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
@@ -101,8 +101,8 @@ open class LMFeedTaggingTextView: LMTextView {
             let partTwoString = NSMutableAttributedString(attributedString: attributedText.attributedSubstring(from: NSRange(location: startIndex + 1 + characters.count, length: attributedText.length - startIndex - 1 - characters.count)))
             
             let attrName = NSAttributedString(string: "\(taggingCharacter)\(username.trimmingCharacters(in: .whitespacesAndNewlines))", attributes: [
-                .font: Appearance.shared.fonts.textFont1,
-                .foregroundColor: Appearance.shared.colors.linkColor,
+                .font: LMFeedAppearance.shared.fonts.textFont1,
+                .foregroundColor: LMFeedAppearance.shared.colors.linkColor,
                 .route: route
             ])
             

@@ -16,7 +16,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
@@ -49,7 +49,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     
     open private(set) lazy var headerView: LMFeedCreatePostHeaderView = {
         let view = LMUIComponents.shared.createPostHeaderView.init().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
@@ -63,18 +63,18 @@ open class LMFeedCreatePostScreen: LMViewController {
         let textView = LMFeedTaggingTextView().translatesAutoresizingMaskIntoConstraints()
         textView.dataDetectorTypes = [.link]
         textView.mentionDelegate = self
-        textView.backgroundColor = Appearance.shared.colors.clear
+        textView.backgroundColor = LMFeedAppearance.shared.colors.clear
         textView.isScrollEnabled = true
         textView.isEditable = true
         textView.placeHolderText = "Write Something here..."
-        textView.backgroundColor = Appearance.shared.colors.clear
+        textView.backgroundColor = LMFeedAppearance.shared.colors.clear
         textView.addDoneButtonOnKeyboard()
         return textView
     }()
     
     open private(set) lazy var linkPreview: LMFeedLinkPreview = {
         let view = LMUIComponents.shared.linkPreview.init().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
@@ -101,9 +101,9 @@ open class LMFeedCreatePostScreen: LMViewController {
         let pageControl = UIPageControl()
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.hidesForSinglePage = true
-        pageControl.tintColor = Appearance.shared.colors.appTintColor
-        pageControl.currentPageIndicatorTintColor = Appearance.shared.colors.appTintColor
-        pageControl.pageIndicatorTintColor = Appearance.shared.colors.gray155
+        pageControl.tintColor = LMFeedAppearance.shared.colors.appTintColor
+        pageControl.currentPageIndicatorTintColor = LMFeedAppearance.shared.colors.appTintColor
+        pageControl.pageIndicatorTintColor = LMFeedAppearance.shared.colors.gray155
         return pageControl
     }()
     
@@ -118,15 +118,15 @@ open class LMFeedCreatePostScreen: LMViewController {
         table.dataSource = self
         table.delegate = self
         table.separatorStyle = .none
-        table.backgroundColor = Appearance.shared.colors.clear
+        table.backgroundColor = LMFeedAppearance.shared.colors.clear
         return table
     }()
     
     open private(set) lazy var addMoreButton: LMButton = {
-        let button = LMButton.createButton(with: LMStringConstants.shared.addMoreText, image: Constants.shared.images.plusIcon, textColor: Appearance.shared.colors.appTintColor, textFont: Appearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 16, bottom: 8, right: 16))
+        let button = LMButton.createButton(with: LMStringConstants.shared.addMoreText, image: Constants.shared.images.plusIcon, textColor: LMFeedAppearance.shared.colors.appTintColor, textFont: LMFeedAppearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 16, bottom: 8, right: 16))
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = Appearance.shared.colors.appTintColor
-        button.layer.borderColor = Appearance.shared.colors.appTintColor.cgColor
+        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
+        button.layer.borderColor = LMFeedAppearance.shared.colors.appTintColor.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 8
         return button
@@ -180,7 +180,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     
     open private(set) lazy var createPostButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: LMStringConstants.shared.doneText, style: .plain, target: self, action: #selector(didTapCreateButton))
-        button.tintColor = Appearance.shared.colors.appTintColor
+        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         return button
     }()
     
@@ -329,7 +329,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.createPostTitle, subtitle: nil, alignment: .center)
         inputTextView.setAttributedText(from: "")
         setupAddMedia()

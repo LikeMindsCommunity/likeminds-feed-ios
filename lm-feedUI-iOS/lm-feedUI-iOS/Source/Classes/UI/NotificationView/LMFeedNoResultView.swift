@@ -22,8 +22,8 @@ open class LMFeedNoResultView: LMView {
     open private(set) lazy var textLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = Constants.shared.strings.noResultsFound
-        label.textColor = Appearance.shared.colors.gray51
-        label.font = Appearance.shared.fonts.headingFont3
+        label.textColor = LMFeedAppearance.shared.colors.gray51
+        label.font = LMFeedAppearance.shared.fonts.headingFont3
         label.textAlignment = .center
         return label
     }()

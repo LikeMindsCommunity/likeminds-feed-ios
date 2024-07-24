@@ -14,7 +14,7 @@ open class LMFeedEditPostScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
@@ -39,7 +39,7 @@ open class LMFeedEditPostScreen: LMViewController {
     
     open private(set) lazy var headerView: LMFeedCreatePostHeaderView = {
         let view = LMUIComponents.shared.createPostHeaderView.init().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
@@ -61,7 +61,7 @@ open class LMFeedEditPostScreen: LMViewController {
     
     open private(set) lazy var linkPreview: LMFeedLinkPreview = {
         let view = LMUIComponents.shared.linkPreview.init().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
@@ -82,9 +82,9 @@ open class LMFeedEditPostScreen: LMViewController {
         let pageControl = UIPageControl()
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.hidesForSinglePage = true
-        pageControl.tintColor = Appearance.shared.colors.appTintColor
-        pageControl.currentPageIndicatorTintColor = Appearance.shared.colors.appTintColor
-        pageControl.pageIndicatorTintColor = Appearance.shared.colors.gray155
+        pageControl.tintColor = LMFeedAppearance.shared.colors.appTintColor
+        pageControl.currentPageIndicatorTintColor = LMFeedAppearance.shared.colors.appTintColor
+        pageControl.pageIndicatorTintColor = LMFeedAppearance.shared.colors.gray155
         return pageControl
     }()
     
@@ -186,7 +186,7 @@ open class LMFeedEditPostScreen: LMViewController {
     open override func setupActions() {
         super.setupActions()
         
-        saveButton.tintColor = Appearance.shared.colors.appTintColor
+        saveButton.tintColor = LMFeedAppearance.shared.colors.appTintColor
         navigationItem.rightBarButtonItem = saveButton
     }
     
@@ -199,7 +199,7 @@ open class LMFeedEditPostScreen: LMViewController {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
     

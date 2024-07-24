@@ -12,8 +12,8 @@ open class LMFeedReplyView: LMTableViewCell {
     // MARK: UI Elements    
     open private(set) lazy var authorNameLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.textColor = Appearance.shared.colors.gray1
-        label.font = Appearance.shared.fonts.headingFont3
+        label.textColor = LMFeedAppearance.shared.colors.gray1
+        label.font = LMFeedAppearance.shared.fonts.headingFont3
         label.text = "Ronald Richards"
         label.isUserInteractionEnabled = true
         return label
@@ -41,17 +41,17 @@ open class LMFeedReplyView: LMTableViewCell {
         label.isScrollEnabled = false
         label.isEditable = false
         label.textContainer.lineBreakMode = .byTruncatingTail
-        label.backgroundColor = Appearance.shared.colors.clear
-        label.textColor = Appearance.shared.colors.gray1
-        label.font = Appearance.shared.fonts.subHeadingFont2
+        label.backgroundColor = LMFeedAppearance.shared.colors.clear
+        label.textColor = LMFeedAppearance.shared.colors.gray1
+        label.font = LMFeedAppearance.shared.fonts.subHeadingFont2
         return label
     }()
     
     open private(set) lazy var seeMoreText: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle("See More", for: .normal)
-        button.setTitleColor(Appearance.shared.colors.gray155, for: .normal)
-        button.setFont(Appearance.shared.fonts.buttonFont1)
+        button.setTitleColor(LMFeedAppearance.shared.colors.gray155, for: .normal)
+        button.setFont(LMFeedAppearance.shared.fonts.buttonFont1)
         button.setImage(nil, for: .normal)
         return button
     }()
@@ -60,7 +60,7 @@ open class LMFeedReplyView: LMTableViewCell {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(Constants.shared.images.ellipsis, for: .normal)
-        button.tintColor = Appearance.shared.colors.gray102
+        button.tintColor = LMFeedAppearance.shared.colors.gray102
         return button
     }()
     
@@ -78,7 +78,7 @@ open class LMFeedReplyView: LMTableViewCell {
         button.setTitle(nil, for: .normal)
         button.setImage(Constants.shared.images.heart, for: .normal)
         button.setImage(Constants.shared.images.heartFilled, for: .selected)
-        button.tintColor = Appearance.shared.colors.gray3
+        button.tintColor = LMFeedAppearance.shared.colors.gray3
         return button
     }()
     
@@ -86,15 +86,15 @@ open class LMFeedReplyView: LMTableViewCell {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(nil, for: .normal)
-        button.setTitleColor(Appearance.shared.colors.gray3, for: .normal)
-        button.setFont(Appearance.shared.fonts.buttonFont1)
+        button.setTitleColor(LMFeedAppearance.shared.colors.gray3, for: .normal)
+        button.setFont(LMFeedAppearance.shared.fonts.buttonFont1)
         return button
     }()
     
     open private(set) lazy var commentTimeLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.textColor = Appearance.shared.colors.gray3
-        label.font = Appearance.shared.fonts.subHeadingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray3
+        label.font = LMFeedAppearance.shared.fonts.subHeadingFont1
         label.text = "20m"
         return label
     }()
@@ -180,7 +180,7 @@ open class LMFeedReplyView: LMTableViewCell {
         guard let commentId,
               let indexPath else { return }
         likeButton.isSelected.toggle()
-        likeButton.tintColor = likeButton.isSelected ? Appearance.shared.colors.red : Appearance.shared.colors.gray3
+        likeButton.tintColor = likeButton.isSelected ? LMFeedAppearance.shared.colors.red : LMFeedAppearance.shared.colors.gray3
         likeCount += likeButton.isSelected ? 1 : -1
         
         likeTextButton.isHidden = likeCount == 0
@@ -241,9 +241,9 @@ open class LMFeedReplyView: LMTableViewCell {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        backgroundColor = Appearance.shared.colors.clear
-        contentView.backgroundColor = Appearance.shared.colors.white
-        containerView.backgroundColor = Appearance.shared.colors.clear
+        backgroundColor = LMFeedAppearance.shared.colors.clear
+        contentView.backgroundColor = LMFeedAppearance.shared.colors.white
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.clear
         
         commentLabel.textContainer.lineFragmentPadding = .zero
         commentLabel.textContainerInset = .zero
@@ -271,7 +271,7 @@ open class LMFeedReplyView: LMTableViewCell {
         commentTimeLabel.text = data.commentTimeFormatted
         
         likeButton.isSelected = data.isLiked
-        likeButton.tintColor = data.isLiked ? Appearance.shared.colors.red : Appearance.shared.colors.gray3
+        likeButton.tintColor = data.isLiked ? LMFeedAppearance.shared.colors.red : LMFeedAppearance.shared.colors.gray3
         likeButton.isEnabled = data.commentId != nil
         
         likeTextButton.isHidden = data.likeCount == .zero

@@ -26,7 +26,7 @@ open class LMFeedCreatePollHeader: LMView {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
@@ -39,16 +39,16 @@ open class LMFeedCreatePollHeader: LMView {
     
     open private(set) lazy var userNameLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.headingFont1
-        label.textColor = Appearance.shared.colors.gray1
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray1
         label.text = "Devansh Mohata"
         return label
     }()
     
     open private(set) lazy var pollQuestionTitle: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.buttonFont2
-        label.textColor = .blue // Appearance.shared.colors.appTintColor
+        label.font = LMFeedAppearance.shared.fonts.buttonFont2
+        label.textColor = .blue // LMFeedAppearance.shared.colors.appTintColor
         label.text = "Poll question"
         return label
     }()
@@ -59,9 +59,9 @@ open class LMFeedCreatePollHeader: LMView {
         textView.addDoneButtonOnKeyboard()
         textView.delegate = self
         textView.isUserInteractionEnabled = true
-        textView.textColor = Appearance.shared.colors.gray4.withAlphaComponent(1)
+        textView.textColor = LMFeedAppearance.shared.colors.gray4.withAlphaComponent(1)
         textView.text = textFieldPlaceholderText
-        textView.font = Appearance.shared.fonts.textFont1
+        textView.font = LMFeedAppearance.shared.fonts.textFont1
         return textView
     }()
     
@@ -134,7 +134,7 @@ open class LMFeedCreatePollHeader: LMView {
         
         if let question = data.pollQuestion,
            !question.isEmpty {
-            pollQuestionTextField.textColor = Appearance.shared.colors.black
+            pollQuestionTextField.textColor = LMFeedAppearance.shared.colors.black
             pollQuestionTextField.text = question
         }
     }
@@ -152,14 +152,14 @@ open class LMFeedCreatePollHeader: LMView {
 extension LMFeedCreatePollHeader: UITextViewDelegate {
     open func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) == textFieldPlaceholderText {
-            textView.textColor = Appearance.shared.colors.black
+            textView.textColor = LMFeedAppearance.shared.colors.black
             textView.text = ""
         }
     }
     
     open func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            textView.textColor = Appearance.shared.colors.gray4.withAlphaComponent(1)
+            textView.textColor = LMFeedAppearance.shared.colors.gray4.withAlphaComponent(1)
             textView.text = textFieldPlaceholderText
         }
     }

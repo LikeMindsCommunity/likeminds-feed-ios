@@ -12,7 +12,7 @@ open class LMFeedNoPostWidget: LMView {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
@@ -29,15 +29,15 @@ open class LMFeedNoPostWidget: LMView {
         let imageView = LMImageView().translatesAutoresizingMaskIntoConstraints()
         imageView.clipsToBounds = true
         imageView.image = Constants.shared.images.docImageIcon
-        imageView.tintColor = Appearance.shared.colors.gray102
+        imageView.tintColor = LMFeedAppearance.shared.colors.gray102
         imageView.preferredSymbolConfiguration = .init(pointSize: 40, weight: .light, scale: .medium)
         return imageView
     }()
     
     open private(set) lazy var emptyTitleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.textColor = Appearance.shared.colors.gray1
-        label.font = Appearance.shared.fonts.buttonFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray1
+        label.font = LMFeedAppearance.shared.fonts.buttonFont1
         label.text = ""
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -46,8 +46,8 @@ open class LMFeedNoPostWidget: LMView {
     
     open private(set) lazy var emptySubtitleLabel: UILabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.textColor = Appearance.shared.colors.gray2
-        label.font = Appearance.shared.fonts.buttonFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray2
+        label.font = LMFeedAppearance.shared.fonts.buttonFont1
         label.text = ""
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -58,13 +58,13 @@ open class LMFeedNoPostWidget: LMView {
         let button = LMButton.createButton(
             with: "",
             image: Constants.shared.images.createPostIcon,
-            textColor: Appearance.shared.colors.white,
-            textFont: Appearance.shared.fonts.buttonFont1,
+            textColor: LMFeedAppearance.shared.colors.white,
+            textFont: LMFeedAppearance.shared.fonts.buttonFont1,
             contentSpacing: .init(top: 8, left: 16, bottom: 8, right: 16),
             imageSpacing: 8
         )
-        button.tintColor = Appearance.shared.colors.white
-        button.backgroundColor = Appearance.shared.colors.appTintColor
+        button.tintColor = LMFeedAppearance.shared.colors.white
+        button.backgroundColor = LMFeedAppearance.shared.colors.appTintColor
         return button
     }()
     

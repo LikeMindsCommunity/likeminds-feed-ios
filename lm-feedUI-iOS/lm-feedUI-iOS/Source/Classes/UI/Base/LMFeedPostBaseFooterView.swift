@@ -58,8 +58,8 @@ open class LMFeedPostBaseFooterView: LMTableViewHeaderFooterView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(Constants.shared.images.heart, for: .normal)
         button.setImage(Constants.shared.images.heartFilled, for: .selected)
-        button.tintColor = Appearance.shared.colors.gray2
-        button.setPreferredSymbolConfiguration(.init(font: Appearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
+        button.tintColor = LMFeedAppearance.shared.colors.gray2
+        button.setPreferredSymbolConfiguration(.init(font: LMFeedAppearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
         return button
     }()
     
@@ -67,8 +67,8 @@ open class LMFeedPostBaseFooterView: LMTableViewHeaderFooterView {
         let button = LMButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(Constants.shared.strings.like, for: .normal)
-        button.setTitleColor(Appearance.shared.colors.gray2, for: .normal)
-        button.tintColor = Appearance.shared.colors.gray2
+        button.setTitleColor(LMFeedAppearance.shared.colors.gray2, for: .normal)
+        button.tintColor = LMFeedAppearance.shared.colors.gray2
         return button
     }()
     
@@ -76,11 +76,11 @@ open class LMFeedPostBaseFooterView: LMTableViewHeaderFooterView {
         let button = LMButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(Constants.Images.shared.commentIcon, for: .normal)
-        button.setTitle(Constants.shared.strings.comment, for: .normal)
-        button.setTitleColor(Appearance.shared.colors.gray2, for: .normal)
-        button.tintColor = Appearance.shared.colors.gray2
+        button.setTitle("", for: .normal)
+        button.setTitleColor(LMFeedAppearance.shared.colors.gray2, for: .normal)
+        button.tintColor = LMFeedAppearance.shared.colors.gray2
         button.centerTextAndImage(spacing: 4)
-        button.setPreferredSymbolConfiguration(.init(font: Appearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
+        button.setPreferredSymbolConfiguration(.init(font: LMFeedAppearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
         return button
     }()
     
@@ -89,8 +89,8 @@ open class LMFeedPostBaseFooterView: LMTableViewHeaderFooterView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(Constants.shared.images.bookmark, for: .normal)
         button.setImage(Constants.shared.images.bookmarkFilled, for: .selected)
-        button.tintColor = Appearance.shared.colors.gray2
-        button.setPreferredSymbolConfiguration(.init(font: Appearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
+        button.tintColor = LMFeedAppearance.shared.colors.gray2
+        button.setPreferredSymbolConfiguration(.init(font: LMFeedAppearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
         return button
     }()
     
@@ -98,8 +98,8 @@ open class LMFeedPostBaseFooterView: LMTableViewHeaderFooterView {
         let button = LMButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(Constants.shared.images.shareIcon, for: .normal)
-        button.tintColor = Appearance.shared.colors.gray2
-        button.setPreferredSymbolConfiguration(.init(font: Appearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
+        button.tintColor = LMFeedAppearance.shared.colors.gray2
+        button.setPreferredSymbolConfiguration(.init(font: LMFeedAppearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
         return button
     }()
     
@@ -133,7 +133,7 @@ open class LMFeedPostBaseFooterView: LMTableViewHeaderFooterView {
     // MARK: Appearance
     open override func setupAppearance() {
         super.setupAppearance()
-        containerView.backgroundColor = Appearance.shared.colors.white
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
     
@@ -147,7 +147,7 @@ open class LMFeedPostBaseFooterView: LMTableViewHeaderFooterView {
         self.delegate = delegate
         
         likeButton.isSelected = data.isLiked
-        likeButton.tintColor = data.isLiked ? Appearance.shared.colors.red : Appearance.shared.colors.gray2
+        likeButton.tintColor = data.isLiked ? LMFeedAppearance.shared.colors.red : LMFeedAppearance.shared.colors.gray2
         
         likeTextButton.setTitle(getLikeText(for: data.likeCount), for: .normal)
         commentButton.setTitle(getCommentText(for: data.commentCount), for: .normal)
@@ -175,7 +175,7 @@ extension LMFeedPostBaseFooterView {
     open func didTapLikeButton() {
         guard let postID else { return }
         likeButton.isSelected.toggle()
-        likeButton.tintColor = likeButton.isSelected ? Appearance.shared.colors.red : Appearance.shared.colors.gray2
+        likeButton.tintColor = likeButton.isSelected ? LMFeedAppearance.shared.colors.red : LMFeedAppearance.shared.colors.gray2
         likeCount += likeButton.isSelected ? 1 : -1
         likeTextButton.setTitle(getLikeText(for: likeCount), for: .normal)
         delegate?.didTapLikeButton(for: postID)

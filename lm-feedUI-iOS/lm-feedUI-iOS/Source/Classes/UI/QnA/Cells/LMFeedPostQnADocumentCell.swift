@@ -10,8 +10,8 @@ import UIKit
 open class LMFeedPostQnADocumentCell: LMFeedBaseDocumentCell {
     open private(set) lazy var questionTitle: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.headingFont1
-        label.textColor = Appearance.shared.colors.gray51
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray51
         label.numberOfLines = 0
         return label
     }()
@@ -47,8 +47,8 @@ open class LMFeedPostQnADocumentCell: LMFeedBaseDocumentCell {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        postText.font = Appearance.shared.fonts.textFont2
-        postText.textColor = Appearance.shared.colors.gray102
+        postText.font = LMFeedAppearance.shared.fonts.textFont2
+        postText.textColor = LMFeedAppearance.shared.colors.gray102
     }
     
     // MARK: configure
