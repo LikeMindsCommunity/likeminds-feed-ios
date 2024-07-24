@@ -75,7 +75,14 @@ public struct LMFeedConvertToFeedPost {
     }
     
     public static func convertToFooterViewData(from data: LMFeedPostDataModel) -> LMFeedPostFooterView.ContentModel {
-        .init(likeCount: data.likeCount, commentCount: data.commentCount, isSaved: data.isSaved, isLiked: data.isLiked)
+        .init(
+            isSaved: data.isSaved,
+            isLiked: data.isLiked,
+            likeCount: data.likeCount,
+            commentCount: data.commentCount,
+            likeText: LMStringConstants.shared.likeVariable,
+            commentText: LMStringConstants.shared.commentVariable
+        )
     }
     
     public static func convertToDocument(from data: [LMFeedPostDataModel.DocumentAttachment]) -> [LMFeedDocumentPreview.ContentModel] {
@@ -125,7 +132,8 @@ public struct LMFeedConvertToFeedPost {
             totalReplyCount: comment.totalRepliesCount,
             replies: replies,
             isEdited: comment.isEdited,
-            isLiked: comment.isLiked
+            isLiked: comment.isLiked, 
+            likeKeyword: LMStringConstants.shared.likeVariable
         )
     }
     

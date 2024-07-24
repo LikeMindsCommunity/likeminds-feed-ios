@@ -23,25 +23,26 @@ public class LMFeedCore {
     static var analytics: LMFeedAnalyticsProtocol?
     static private(set) var isInitialized: Bool = false
     private(set) var coreCallback: LMFeedCoreCallback?
+    var deviceId: String?
     
     
     public func setupAnalytics(_ analytics: LMFeedAnalyticsProtocol) {
         Self.analytics = analytics
     }
     
-    private func setupFeed() {
+    public func setupFeed(deviceId: String? = nil) {
+        self.deviceId = deviceId
         LMFeedClient.shared.setTokenManager(with: self)
         LMAWSManager.shared.initialize()
     }
     
     public func showFeed(apiKey: String, username: String, uuid: String, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
-        self.setupFeed()
         let tokens = LMFeedClient.shared.getTokens()
         
         if tokens.success,
            let accessToken = tokens.data?.accessToken,
            let refreshToken = tokens.data?.refreshToken {
-            showFeed(accessToken: accessToken, refreshToken: refreshToken) { result in
+            validateUser(accessToken: accessToken, refreshToken: refreshToken) { result in
                 completionHandler?(result)
             }
         } else {
@@ -49,43 +50,46 @@ public class LMFeedCore {
         }
     }
     
-    public func showFeed(accessToken: String?, refreshToken: String?, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
-        self.setupFeed()
+    public func showFeed(accessToken: String?, refreshToken: String?, handler: LMFeedCoreCallback?, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
+        self.coreCallback = handler
         
         if let accessToken,
            let refreshToken {
-            showFeed(accessToken: accessToken, refreshToken: refreshToken, completionHandler: completionHandler)
+            validateUser(accessToken: accessToken, refreshToken: refreshToken, completionHandler: completionHandler)
         } else if let accessToken = LMFeedClient.shared.getTokens().data?.accessToken,
                   let refreshToken = LMFeedClient.shared.getTokens().data?.refreshToken {
-            showFeed(accessToken: accessToken, refreshToken: refreshToken, completionHandler: completionHandler)
+            validateUser(accessToken: accessToken, refreshToken: refreshToken, completionHandler: completionHandler)
         } else {
             completionHandler?(.failure(.apiInitializationFailed(error: "Invalid Tokens")))
             return
         }
     }
     
-    func showFeed(accessToken: String, refreshToken: String, handler: LMFeedCoreCallback?, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
-        self.coreCallback = handler
-        
+    private func validateUser(accessToken: String, refreshToken: String, completionHandler: ((Result<Void, LMFeedError>) -> Void)?) {
         let request = ValidateUserRequest
             .builder()
             .accessToken(accessToken)
             .refreshToken(refreshToken)
             .build()
         
-        LMFeedClient.shared.validateUser(request) { response in
+        LMFeedClient.shared.validateUser(request) { [weak self] response in
             guard response.success else {
                 completionHandler?(.failure(.apiInitializationFailed(error: response.errorMessage)))
                 return
             }
             
             if response.data?.appAccess == false {
-                self.logout(refreshToken, deviceId: UIDevice.current.identifierForVendor?.uuidString ?? "")
+                self?.logout(refreshToken, deviceId: UIDevice.current.identifierForVendor?.uuidString ?? "")
                 completionHandler?(.failure(.appAccessFalse))
                 return
             }
             
+            if let deviceId = self?.deviceId, !deviceId.isEmpty{
+                self?.registerDevice(deviceId: deviceId)
+            }
+            
             Self.isInitialized = true
+            self?.fetchCommunityConfiguration()
             
             completionHandler?(.success(()))
         }
@@ -111,16 +115,49 @@ public class LMFeedCore {
                 return
             }
             
+            if let deviceId = self?.deviceId, !deviceId.isEmpty{
+                self?.registerDevice(deviceId: deviceId)
+            }
+            
             Self.isInitialized = true
+            self?.fetchCommunityConfiguration()
             
             completionHandler?(.success(()))
         }
     }
     
-    public func registerDeviceToken(with fcmToken: String, deviceID: String, completion: ((Result<Void, LMFeedError>) -> Void)? = nil) {
+    // This function extracts FCM Token and calls registerDevice api
+    private func registerDevice(deviceId: String, completion: ((Result<Void, LMFeedError>) -> Void)? = nil) {
+        Messaging.messaging().token { token, error in
+          if let error {
+            debugPrint(error)
+          } else if let token {
+              self.registerDevice(with: token, deviceId: deviceId)
+          }
+        }
+    }
+    
+    /// Registers the current device for push notifications with the LikeMinds system.
+    ///
+    /// This function performs two main tasks:
+    /// 1. Registers the device with the chat system using the obtained FCM token and provided device ID.
+    ///
+    /// - Parameter deviceId: A unique identifier for the current device.
+    /// - Parameter fcmToken: FCM Token
+    ///
+    /// - Note: This function relies on Firebase Messaging to obtain the FCM token. Ensure that Firebase is properly configured in your project before calling this function.
+    ///
+    /// - Important: This function does not handle Firebase initialization. Make sure Firebase is initialized before calling this function.
+    ///
+    /// The function follows these steps:
+    /// 1. If the token is successfully retrieved, it creates a `RegisterDeviceRequest` with the device ID and FCM token.
+    /// 2. Sends the registration request to LikeMinds system using `LMChatClient.shared.registerDevice`.
+    /// 3. Prints an error message if the registration fails.I
+    ///
+    public func registerDevice(with token: String, deviceId: String, completion: ((Result<Void, LMFeedError>) -> Void)? = nil){
         let request = RegisterDeviceRequest.builder()
-            .token(fcmToken)
-            .deviceId(deviceID)
+            .token(token)
+            .deviceId(deviceId)
             .build()
         
         LMFeedClient.shared.registerDevice(request: request) { response in
@@ -161,6 +198,13 @@ public class LMFeedCore {
             case .failure(let error):
                 completion?(.failure(error))
             }
+        }
+    }
+    
+    func fetchCommunityConfiguration() {
+        LMFeedClient.shared.getCommunityConfiguration(GetCommunityConfigurationRequest.builder()) { response in
+            let configurations = response.data?.communityConfigurations ?? []
+            LocalPreferences.communityConfiguration = .init(configs: configurations)
         }
     }
 }

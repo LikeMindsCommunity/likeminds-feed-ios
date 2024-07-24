@@ -126,7 +126,7 @@ open class LMFeedPostDetailScreen: LMViewController {
         textView.textColor = Appearance.shared.colors.textColor
         textView.contentMode = .center
         textView.font = Appearance.shared.fonts.textFont1
-        textView.placeHolderText = "Write a Comment"
+        textView.placeHolderText = LMStringConstants.shared.writeComment
         return textView
     }()
     
@@ -284,10 +284,14 @@ open class LMFeedPostDetailScreen: LMViewController {
     
     // MARK: setupObservers
     open override func setupObservers() {
+        super.setupObservers()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostEdited, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostEditError, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(postDeleted), name: .LMPostDeleted, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(commentDeleted), name: .LMCommentDeleted, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc
@@ -322,9 +326,6 @@ open class LMFeedPostDetailScreen: LMViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
         updateCommentStatus(isEnabled: LocalPreferences.memberState?.memberRights?.contains(where: { $0.state == .commentOrReplyOnPost }) ?? false)
         
         replyView.isHidden = true
@@ -352,8 +353,8 @@ open class LMFeedPostDetailScreen: LMViewController {
     }
     
     public func setNavigationTitle(with commentCount: Int) {
-        setNavigationTitleAndSubtitle(with: "Post",
-                                      subtitle: "\(commentCount) comment\(commentCount == 1 ? "" : "s")",
+        setNavigationTitleAndSubtitle(with: LMStringConstants.shared.postDetailTitle,
+                                      subtitle: "\(commentCount) \(LMStringConstants.shared.commentVariable.pluralize(count: commentCount))",
                                       alignment: .center)
     }
 }
@@ -722,7 +723,7 @@ extension LMFeedPostDetailScreen: LMFeedPostDetailViewModelProtocol {
     public func updateCommentStatus(isEnabled: Bool) {
         isCommentingEnabled = isEnabled
         
-        inputTextView.placeHolderText = isCommentingEnabled ? "Write a Comment" : "You do not have permission to comment."
+        inputTextView.placeHolderText = isCommentingEnabled ? LMStringConstants.shared.writeComment : LMStringConstants.shared.noCommentPermission
         inputTextView.setAttributedText(from: "")
         inputTextView.isUserInteractionEnabled = isCommentingEnabled
         sendButton.isHidden = !isCommentingEnabled

@@ -159,7 +159,7 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
     
     open func loadPosts(with data: [LMFeedPostContentModel], index: IndexSet?, reloadNow: Bool) {
         if data.isEmpty {
-            emptyListView.configure { [weak self] in
+            emptyListView.configure(title: LMStringConstants.shared.newPost) { [weak self] in
                 do {
                     let viewcontroller = try LMFeedCreatePostViewModel.createModule()
                     self?.navigationController?.pushViewController(viewcontroller, animated: true)

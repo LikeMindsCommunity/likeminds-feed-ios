@@ -96,8 +96,8 @@ extension LMFeedLikeListScreen: LMFeedLikeViewModelProtocol {
         userData = data
         memberListView.reloadData()
         totalLikes = totalCount
-        setNavigationTitleAndSubtitle(with: "Likes",
-                                      subtitle: "\(totalLikes) Like\(totalLikes == 1 ? "" : "s")",
+        setNavigationTitleAndSubtitle(with: LMStringConstants.shared.likeVariable.pluralize(),
+                                      subtitle: "\(totalLikes) \(LMStringConstants.shared.likeVariable.pluralize(count: totalLikes))",
                                       alignment: .center)
     }
     
@@ -105,3 +105,4 @@ extension LMFeedLikeListScreen: LMFeedLikeViewModelProtocol {
         memberListView.showHideFooterLoader(isShow: isShow)
     }
 }
+ 
