@@ -177,6 +177,11 @@ open class LMViewController: UIViewController {
         super.didReceiveMemoryWarning()
         ImageCache.default.clearMemoryCache()
     }
+    
+    open func showErrorAlert(_ title: String? = "Error", message: String?) {
+        guard let message = message else { return }
+        self.showError(with: message, isPopVC: false)
+    }
 }
 
 

@@ -13,6 +13,7 @@ public protocol LMFeedPostListViewModelProtocol: LMBaseViewControllerProtocol {
     func loadPosts(with data: [LMFeedPostContentModel], index: IndexSet?, reloadNow: Bool)
     func showHideFooterLoader(isShow: Bool)
     func showActivityLoader()
+    func navigateToMediaPreviewScreen(with data: [LMFeedPostContentModel])
     func navigateToEditScreen(for postID: String)
     func navigateToDeleteScreen(for postID: String)
     func navigateToReportScreen(for postID: String, creatorUUID: String)

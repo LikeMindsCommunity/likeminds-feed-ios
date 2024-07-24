@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA999A47AE0D02176EE48052 /* Pods_lm_feed_sample_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE89720BDE33DA4910D8DF65 /* Pods_lm_feed_sample_app.framework */; };
 		E572B6782B47105E00E36655 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B6772B47105E00E36655 /* SceneDelegate.swift */; };
 		E572B67F2B47106000E36655 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E572B67E2B47106000E36655 /* Assets.xcassets */; };
 		E572B6822B47106000E36655 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E572B6802B47106000E36655 /* LaunchScreen.storyboard */; };
@@ -16,11 +17,11 @@
 		E582CE382C25B2A100584442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E582CE352C25B2A100584442 /* Main.storyboard */; };
 		E582CE392C25B2A100584442 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582CE362C25B2A100584442 /* AppDelegate.swift */; };
 		E5A79F3C2B7DE10D00A9F7B3 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A79F3B2B7DE10D00A9F7B3 /* UIViewController+Extension.swift */; };
-		E8AABA7612391282D65C078A /* Pods_lm_feed_sample_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBCA65805000DE7822BD69DB /* Pods_lm_feed_sample_app.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C6E558F794472673F2192F23 /* Pods-lm-feed-sample-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lm-feed-sample-app.release.xcconfig"; path = "Target Support Files/Pods-lm-feed-sample-app/Pods-lm-feed-sample-app.release.xcconfig"; sourceTree = "<group>"; };
+		793445DB45C833012B6256EA /* Pods-lm-feed-sample-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lm-feed-sample-app.release.xcconfig"; path = "Target Support Files/Pods-lm-feed-sample-app/Pods-lm-feed-sample-app.release.xcconfig"; sourceTree = "<group>"; };
+		AE89720BDE33DA4910D8DF65 /* Pods_lm_feed_sample_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_lm_feed_sample_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E572B6722B47105E00E36655 /* lm-feed-sample-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "lm-feed-sample-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E572B6772B47105E00E36655 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E572B67E2B47106000E36655 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -33,8 +34,7 @@
 		E582CE352C25B2A100584442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		E582CE362C25B2A100584442 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E5A79F3B2B7DE10D00A9F7B3 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
-		FBCA65805000DE7822BD69DB /* Pods_lm_feed_sample_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_lm_feed_sample_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FFA34DFF8C6665A3797C8359 /* Pods-lm-feed-sample-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lm-feed-sample-app.debug.xcconfig"; path = "Target Support Files/Pods-lm-feed-sample-app/Pods-lm-feed-sample-app.debug.xcconfig"; sourceTree = "<group>"; };
+		EE0A8E5B602DBCC0EFDD715F /* Pods-lm-feed-sample-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lm-feed-sample-app.debug.xcconfig"; path = "Target Support Files/Pods-lm-feed-sample-app/Pods-lm-feed-sample-app.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,17 +42,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E8AABA7612391282D65C078A /* Pods_lm_feed_sample_app.framework in Frameworks */,
+				CA999A47AE0D02176EE48052 /* Pods_lm_feed_sample_app.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		066FF9C51565909D8347723D /* Frameworks */ = {
+		59B902BE324C566F0BC1CF9C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FBCA65805000DE7822BD69DB /* Pods_lm_feed_sample_app.framework */,
+				AE89720BDE33DA4910D8DF65 /* Pods_lm_feed_sample_app.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -63,7 +63,7 @@
 				E572B6742B47105E00E36655 /* lm-feed-sample-app */,
 				E572B6732B47105E00E36655 /* Products */,
 				F193759EE58B33EFA87A7AA3 /* Pods */,
-				066FF9C51565909D8347723D /* Frameworks */,
+				59B902BE324C566F0BC1CF9C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,8 +96,8 @@
 		F193759EE58B33EFA87A7AA3 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				FFA34DFF8C6665A3797C8359 /* Pods-lm-feed-sample-app.debug.xcconfig */,
-				C6E558F794472673F2192F23 /* Pods-lm-feed-sample-app.release.xcconfig */,
+				EE0A8E5B602DBCC0EFDD715F /* Pods-lm-feed-sample-app.debug.xcconfig */,
+				793445DB45C833012B6256EA /* Pods-lm-feed-sample-app.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -109,11 +109,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E572B6862B47106000E36655 /* Build configuration list for PBXNativeTarget "lm-feed-sample-app" */;
 			buildPhases = (
-				D6C8AA787B61DC33CACAFA7A /* [CP] Check Pods Manifest.lock */,
+				6E44CCB8E90B03480D61E62A /* [CP] Check Pods Manifest.lock */,
 				E572B66E2B47105E00E36655 /* Sources */,
 				E572B66F2B47105E00E36655 /* Frameworks */,
 				E572B6702B47105E00E36655 /* Resources */,
-				4E0102DFAFC4D71CA97511EA /* [CP] Embed Pods Frameworks */,
+				59C1066B744AC6AE3FCFF709 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -172,7 +172,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4E0102DFAFC4D71CA97511EA /* [CP] Embed Pods Frameworks */ = {
+		59C1066B744AC6AE3FCFF709 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -189,7 +189,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-lm-feed-sample-app/Pods-lm-feed-sample-app-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D6C8AA787B61DC33CACAFA7A /* [CP] Check Pods Manifest.lock */ = {
+		6E44CCB8E90B03480D61E62A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -361,7 +361,7 @@
 		};
 		E572B6872B47106000E36655 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FFA34DFF8C6665A3797C8359 /* Pods-lm-feed-sample-app.debug.xcconfig */;
+			baseConfigurationReference = EE0A8E5B602DBCC0EFDD715F /* Pods-lm-feed-sample-app.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -395,7 +395,7 @@
 		};
 		E572B6882B47106000E36655 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C6E558F794472673F2192F23 /* Pods-lm-feed-sample-app.release.xcconfig */;
+			baseConfigurationReference = 793445DB45C833012B6256EA /* Pods-lm-feed-sample-app.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
