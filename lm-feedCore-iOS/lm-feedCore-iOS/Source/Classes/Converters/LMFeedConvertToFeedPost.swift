@@ -148,7 +148,7 @@ extension LMFeedConvertToFeedPost {
             totalReplyCount: comment.totalRepliesCount,
             replies: replies,
             isEdited: comment.isEdited,
-            isLiked: comment.isLiked,
+            isLiked: comment.isLiked, 
             likeKeyword: LMStringConstants.shared.likeVariable
         )
     }

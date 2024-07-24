@@ -407,7 +407,7 @@ public extension LMFeedPostDetailViewModel {
         
         // Case of Self Deletion
         if comment.userDetail.userUUID == LocalPreferences.userObj?.sdkClientInfo?.uuid {
-            let alert = UIAlertController(title: Constants.shared.strings.deleteComment, message: Constants.shared.strings.deleteCommentReview, preferredStyle: .alert)
+            let alert = UIAlertController(title: LMStringConstants.shared.deleteComment, message: LMStringConstants.shared.deleteCommentMessage, preferredStyle: .alert)
             
             let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
                 self?.deleteComment(for: commentID, index: index, reason: nil)
