@@ -1,5 +1,5 @@
 //
-//  LMFeedCreatePollQuestionView.swift
+//  LMFeedCreatePollOptionsView.swift
 //  LikeMindsFeedUI
 //
 //  Created by Devansh Mohata on 06/06/24.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-public protocol LMFeedCreatePollQuestionViewProtocol: AnyObject {
+public protocol LMFeedCreatePollOptionsViewProtocol: AnyObject {
     func onCrossButtonTapped(for id: Int)
     func textValueChanged(for id: Int, newValue: String?)
     func onAddNewOptionTapped()
 }
 
-open class LMFeedCreatePollQuestionView: LMView {
+open class LMFeedCreatePollOptionsView: LMView {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
@@ -67,7 +67,7 @@ open class LMFeedCreatePollQuestionView: LMView {
     // MARK: Data Variables
     open var addOptionImageSize: CGFloat { 20 }
     open var cellSize: CGFloat { 56 }
-    public weak var delegate: LMFeedCreatePollQuestionViewProtocol?
+    public weak var delegate: LMFeedCreatePollOptionsViewProtocol?
     public var data: [LMFeedCreatePollOptionWidget.ContentModel] = []
     
     public var tableViewHeightConstraint: NSLayoutConstraint?
@@ -140,7 +140,7 @@ open class LMFeedCreatePollQuestionView: LMView {
     }
     
     // MARK: configure
-    open func configure(with data: [LMFeedCreatePollOptionWidget.ContentModel], delegate: LMFeedCreatePollQuestionViewProtocol?) {
+    open func configure(with data: [LMFeedCreatePollOptionWidget.ContentModel], delegate: LMFeedCreatePollOptionsViewProtocol?) {
         self.delegate = delegate
         updateOptions(with: data)
     }
@@ -158,7 +158,7 @@ open class LMFeedCreatePollQuestionView: LMView {
     }
 }
 
-extension LMFeedCreatePollQuestionView: UITableViewDataSource, UITableViewDelegate {
+extension LMFeedCreatePollOptionsView: UITableViewDataSource, UITableViewDelegate {
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         data.count
     }

@@ -55,7 +55,7 @@ public struct LMUIComponents {
     public var createPollDisplayView: LMFeedCreateDisplayPollView.Type = LMFeedCreateDisplayPollView.self
     public var createPollDisplayWidget: LMFeedDisplayCreatePollWidget.Type = LMFeedDisplayCreatePollWidget.self
     public var createPollHeaderView: LMFeedCreatePollHeader.Type = LMFeedCreatePollHeader.self
-    public var createPollQuestionView: LMFeedCreatePollQuestionView.Type = LMFeedCreatePollQuestionView.self
+    public var createPollQuestionView: LMFeedCreatePollOptionsView.Type = LMFeedCreatePollOptionsView.self
     public var createPollDateView: LMFeedCreatePollDateView.Type = LMFeedCreatePollDateView.self
     public var createPollMetaView: LMFeedCreatePollMetaView.Type = LMFeedCreatePollMetaView.self
     public var createPollOptionCell: LMFeedCreatePollOptionWidget.Type = LMFeedCreatePollOptionWidget.self
@@ -71,7 +71,7 @@ public struct LMUIComponents {
     
     // MARK: Display Poll Components
     public var pollDisplayView: LMFeedDisplayPollView.Type = LMFeedDisplayPollView.self
-    public var pollDisplayWidget: LMFeedDisplayPollWidget.Type = LMFeedDisplayPollWidget.self
+    public var pollDisplayWidget: LMFeedDisplayPollOptionWidget.Type = LMFeedDisplayPollOptionWidget.self
     
     
     // MARK: QA Theme

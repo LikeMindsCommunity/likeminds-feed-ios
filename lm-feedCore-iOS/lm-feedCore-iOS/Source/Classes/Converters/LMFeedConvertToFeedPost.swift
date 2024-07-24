@@ -188,7 +188,7 @@ extension LMFeedConvertToFeedPost {
             optionCount: optionCount
         )
         
-        let options: [LMFeedDisplayPollWidget.ContentModel] = pollAttachment.options.map({
+        let options: [LMFeedDisplayPollOptionWidget.ContentModel] = pollAttachment.options.map({
             .init(
                 pollId: pollID,
                 optionId: $0.id,

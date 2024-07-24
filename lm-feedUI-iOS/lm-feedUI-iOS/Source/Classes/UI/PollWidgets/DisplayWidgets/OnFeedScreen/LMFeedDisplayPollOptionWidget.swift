@@ -1,5 +1,5 @@
 //
-//  LMFeedDisplayPollWidget.swift
+//  LMFeedDisplayPollOptionWidget.swift
 //  LikeMindsFeedUI
 //
 //  Created by Devansh Mohata on 13/06/24.
@@ -7,12 +7,12 @@
 
 import UIKit
 
-public protocol LMFeedDisplayPollWidgetProtocol: AnyObject {
+public protocol LMFeedDisplayPollOptionWidgetProtocol: AnyObject {
     func didTapVoteCountButton(optionID: String)
     func didTapToVote(optionID: String)
 }
 
-open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
+open class LMFeedDisplayPollOptionWidget: BaseDisplayPollWidget {
     public struct ContentModel {
         public let pollId: String
         public let optionId: String
@@ -111,7 +111,7 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
         return UIColor(r: 230, g: 235, b: 245)
     }
     
-    public weak var delegate: LMFeedDisplayPollWidgetProtocol?
+    public weak var delegate: LMFeedDisplayPollOptionWidgetProtocol?
     public var optionID: String?
     
     // MARK: setupViews
@@ -197,7 +197,7 @@ open class LMFeedDisplayPollWidget: BaseDisplayPollWidget {
         delegate?.didTapToVote(optionID: optionID)
     }
     
-    open func configure(with data: ContentModel, delegate: LMFeedDisplayPollWidgetProtocol?) {
+    open func configure(with data: ContentModel, delegate: LMFeedDisplayPollOptionWidgetProtocol?) {
         self.delegate = delegate
         self.optionID = data.optionId
         

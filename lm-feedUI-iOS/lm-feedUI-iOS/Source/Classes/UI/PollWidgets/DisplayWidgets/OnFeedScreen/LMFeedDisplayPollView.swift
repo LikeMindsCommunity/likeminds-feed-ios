@@ -12,7 +12,7 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         public let postID: String
         public let pollID: String
         public var question: String
-        public var options: [LMFeedDisplayPollWidget.ContentModel]
+        public var options: [LMFeedDisplayPollOptionWidget.ContentModel]
         public var expiryDate: Date
         public var optionState: String
         public var optionCount: Int
@@ -28,7 +28,7 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
             pollID: String,
             question: String,
             answerText: String,
-            options: [LMFeedDisplayPollWidget.ContentModel],
+            options: [LMFeedDisplayPollOptionWidget.ContentModel],
             expiryDate: Date,
             optionState: String,
             optionCount: Int,
@@ -280,8 +280,8 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
 }
 
 
-// MARK: LMFeedDisplayPollWidgetProtocol
-extension LMFeedDisplayPollView: LMFeedDisplayPollWidgetProtocol {
+// MARK: LMFeedDisplayPollOptionWidgetProtocol
+extension LMFeedDisplayPollView: LMFeedDisplayPollOptionWidgetProtocol {
     public func didTapVoteCountButton(optionID: String) {
         guard let postID,
               let pollID else { return }

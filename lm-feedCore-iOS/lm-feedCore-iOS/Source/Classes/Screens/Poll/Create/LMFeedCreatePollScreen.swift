@@ -47,7 +47,7 @@ open class LMFeedCreatePollScreen: LMViewController {
         return header
     }()
     
-    open private(set) lazy var pollOptionView: LMFeedCreatePollQuestionView = {
+    open private(set) lazy var pollOptionView: LMFeedCreatePollOptionsView = {
         let view = LMUIComponents.shared.createPollQuestionView.init()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -255,8 +255,8 @@ extension LMFeedCreatePollScreen: LMFeedCreatePollViewModelProtocol {
 }
 
 
-// MARK: LMFeedCreatePollQuestionViewProtocol
-extension LMFeedCreatePollScreen: LMFeedCreatePollQuestionViewProtocol {
+// MARK: LMFeedCreatePollOptionsViewProtocol
+extension LMFeedCreatePollScreen: LMFeedCreatePollOptionsViewProtocol {
     public func textValueChanged(for id: Int, newValue: String?) {
         viewmodel?.updatePollOption(for: id, option: newValue)
     }
