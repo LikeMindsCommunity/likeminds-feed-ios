@@ -23,6 +23,7 @@ public protocol LMFeedPostListVCToProtocol: AnyObject {
 
 @IBDesignable
 open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtocol {
+    
     // MARK: UI Elements
     open private(set) lazy var postList: LMTableView = {
         let table = LMTableView(frame: .zero, style: .grouped)
@@ -155,6 +156,11 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
     open func navigateToEditScreen(for postID: String) {
         guard let viewcontroller = LMFeedEditPostViewModel.createModule(for: postID) else { return }
         navigationController?.pushViewController(viewcontroller, animated: true)
+    }
+    
+    public func navigateToMediaPreviewScreen(with data: LikeMindsFeedUI.LMFeedPostContentModel) {
+        // TODO: Add navigation to Media Preview Screen
+        // guard let viewController = LMFeedMediaPreviewViewModel.createModule()
     }
     
     open func loadPosts(with data: [LMFeedPostContentModel], index: IndexSet?, reloadNow: Bool) {

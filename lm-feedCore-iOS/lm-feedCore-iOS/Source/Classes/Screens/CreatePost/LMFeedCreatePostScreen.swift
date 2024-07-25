@@ -515,7 +515,7 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
         
         observeCreateButton()
     }
-        
+    
     public func resetMediaView() {
         pollPreview.isHidden = true
         mediaCollectionView.isHidden = true
@@ -656,8 +656,42 @@ public extension LMFeedCreatePostScreen {
         }
         
         dispatchGroup.notify(queue: .main) { [weak self] in
-            // Remove nil values before passing to handleAssets
-            let filteredAssets = currentAssets.compactMap { $0 }
+            var value = LocalPreferences.communityConfiguration?.configs.first?.value
+            let imageSizeLimit: Int64 = Int64(value?.maxImageSize ?? 5 * 1024)  // 5MB in bytes
+            let videoSizeLimit: Int64 = Int64(value?.maxVideoSize ?? 100 * 1024)  // 100MB in bytes
+            
+            var sizeLimitErrorShown : Bool = false
+            
+            let filteredAssets = currentAssets.filter { assetTuple in
+                guard let (asset, url, data) = assetTuple else {
+                    return false
+                }
+                let fileSize = Int64(data.count/1024) // Converts Byte into Kilobytes
+                switch asset.mediaType {
+                case .image:
+                    if(fileSize <= imageSizeLimit){
+                        return true
+                    }else{
+                        if(!sizeLimitErrorShown){
+                            self?.showError(with: "Please select image smaller than \(imageSizeLimit/1024)MB", isPopVC: false)
+                        }
+                        return false
+                    }
+                
+                case .video:
+                    if(fileSize <= videoSizeLimit){
+                        return true
+                    }else{
+                        if(!sizeLimitErrorShown){
+                            self?.showError(with: "Please select videos smaller than \(videoSizeLimit/1024)MB", isPopVC: false)
+                        }
+                        return false
+                    }
+                default:
+                    return false
+                }
+            }.map{ $0! }
+            
             self?.viewModel?.handleAssets(assets: filteredAssets.map { ($0.asset, $0.url, $0.data) })
         }
     }
