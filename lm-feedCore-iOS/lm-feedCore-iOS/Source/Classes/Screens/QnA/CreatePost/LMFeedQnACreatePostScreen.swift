@@ -1,8 +1,8 @@
 //
-//  LMFeedCreatePostScreen.swift
-//  lm-feedCore-iOS
+//  LMFeedQnACreatePostScreen.swift
+//  LikeMindsFeedCore
 //
-//  Created by Devansh Mohata on 16/01/24.
+//  Created by Devansh Mohata on 25/07/24.
 //
 
 import AVKit
@@ -11,8 +11,7 @@ import LikeMindsFeedUI
 import UIKit
 import Photos
 
-
-open class LMFeedCreatePostScreen: LMViewController {
+open class LMFeedQnACreatePostScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
@@ -56,6 +55,23 @@ open class LMFeedCreatePostScreen: LMViewController {
     open private(set) lazy var topicView: LMFeedTopicView = {
         let view = LMUIComponents.shared.topicFeedView.init().translatesAutoresizingMaskIntoConstraints()
         view.delegate = self
+        return view
+    }()
+    
+    open private(set) lazy var headingTextView: LMTextView = {
+        let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
+        textView.backgroundColor = LMFeedAppearance.shared.colors.clear
+        textView.isScrollEnabled = true
+        textView.isEditable = true
+        textView.placeHolderText = "Add your question here"
+        textView.textAttributes[.font] = LMFeedAppearance.shared.fonts.headingFont1
+        textView.placeholderAttributes[.font] = LMFeedAppearance.shared.fonts.headingFont1
+        return textView
+    }()
+    
+    open private(set) lazy var headerSepratorView: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
         return view
     }()
     
@@ -186,15 +202,15 @@ open class LMFeedCreatePostScreen: LMViewController {
     
     
     // MARK: Data Variables
-    public var viewModel: LMFeedCreatePostViewModel?
+    public var viewModel: LMFeedQnACreatePostViewModel?
     public var documentAttachmentData: [LMFeedDocumentPreview.ContentModel] = []
     public var documenTableHeight: NSLayoutConstraint?
     public var documentAttachmentHeight: CGFloat = 90
     
     public var taggingViewHeight: NSLayoutConstraint?
     public var inputTextViewHeightConstraint: NSLayoutConstraint?
-    public var textInputMinimumHeight: CGFloat = 80
-    public var textInputMaximumHeight: CGFloat = 150
+    public var textInputMinimumHeight: CGFloat { 80 }
+    public var textInputMaximumHeight: CGFloat { 150 }
     
     public var isPollFlow: Bool = false
     
@@ -227,7 +243,7 @@ open class LMFeedCreatePostScreen: LMViewController {
         
         scrollView.addSubview(scrollStackView)
         
-        [headerView, topicView, inputTextView, linkPreview, pollPreview, mediaCollectionView, mediaPageControl ,documentTableView, addMoreButton].forEach { subView in
+        [headerView, topicView, headingTextView, headerSepratorView, inputTextView, linkPreview, pollPreview, mediaCollectionView, mediaPageControl ,documentTableView, addMoreButton].forEach { subView in
             scrollStackView.addArrangedSubview(subView)
         }
         
@@ -262,6 +278,8 @@ open class LMFeedCreatePostScreen: LMViewController {
         taggingViewHeight = taggingView.setHeightConstraint(with: 10)
         
         inputTextViewHeightConstraint = inputTextView.setHeightConstraint(with: textInputMinimumHeight)
+        headingTextView.setHeightConstraint(with: 100)
+        headerSepratorView.setHeightConstraint(with: 1)
         
         documenTableHeight = documentTableView.setHeightConstraint(with: documentAttachmentHeight)
         scrollView.setWidthConstraint(with: containerStackView.widthAnchor)
@@ -322,7 +340,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     
     @objc
     open func didTapCreateButton() {
-        viewModel?.createPost(with: inputTextView.getText())
+        viewModel?.createPost(question: headingTextView.getText(), text: inputTextView.getText())
     }
     
     
@@ -331,6 +349,7 @@ open class LMFeedCreatePostScreen: LMViewController {
         super.viewDidLoad()
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.createPostTitle, subtitle: nil, alignment: .center)
+        headingTextView.setAttributedText(from: "")
         inputTextView.setAttributedText(from: "")
         setupAddMedia()
         setupInitialView()
@@ -369,13 +388,13 @@ open class LMFeedCreatePostScreen: LMViewController {
     }
     
     open func observeCreateButton() {
-        createPostButton.isEnabled = !mediaAttachmentData.isEmpty || !inputTextView.getText().isEmpty || !documentAttachmentData.isEmpty || isPollFlow
+        createPostButton.isEnabled = !headingTextView.getText().isEmpty
     }
 }
 
 
 // MARK: UITableView
-extension LMFeedCreatePostScreen: UITableViewDataSource, UITableViewDelegate {
+extension LMFeedQnACreatePostScreen: UITableViewDataSource, UITableViewDelegate {
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { documentAttachmentData.count }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -393,7 +412,7 @@ extension LMFeedCreatePostScreen: UITableViewDataSource, UITableViewDelegate {
 
 
 // MARK: LMFeedDocumentPreviewProtocol
-extension LMFeedCreatePostScreen: LMFeedDocumentPreviewProtocol {
+extension LMFeedQnACreatePostScreen: LMFeedDocumentPreviewProtocol {
     public func didTapCrossButton(documentID: URL) {
         viewModel?.removeAsset(url: documentID.absoluteString)
     }
@@ -405,7 +424,7 @@ extension LMFeedCreatePostScreen: LMFeedDocumentPreviewProtocol {
 
 
 // MARK: UICollectionView
-extension LMFeedCreatePostScreen: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension LMFeedQnACreatePostScreen: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { mediaAttachmentData.count }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -460,8 +479,8 @@ extension LMFeedCreatePostScreen: UICollectionViewDataSource, UICollectionViewDe
 }
 
 
-// MARK: LMFeedCreatePostViewModelProtocol
-extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
+// MARK: LMFeedQnACreatePostViewModelProtocol
+extension LMFeedQnACreatePostScreen: LMFeedQnACreatePostViewModelProtocol {
     public func setupLinkPreview(with data: LMFeedLinkPreview.ContentModel?) {
         linkPreview.isHidden = data == nil
         if let data {
@@ -583,7 +602,7 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
 
 
 // MARK: LMFeedTaggingTextViewProtocol
-extension LMFeedCreatePostScreen: LMFeedTaggingTextViewProtocol {
+extension LMFeedQnACreatePostScreen: LMFeedTaggingTextViewProtocol {
     public func mentionStarted(with text: String) {
         taggingView.isHidden = false
         taggingView.getUsers(for: text)
@@ -608,7 +627,7 @@ extension LMFeedCreatePostScreen: LMFeedTaggingTextViewProtocol {
 
 
 // MARK: Media Control
-public extension LMFeedCreatePostScreen {
+public extension LMFeedQnACreatePostScreen {
     func openImagePicker(_ mediaType: Settings.Fetch.Assets.MediaTypes, isFirstTime: Bool, maxSelection: Int, selectedAssets: [PHAsset]) {
         let imagePicker = ImagePickerController(selectedAssets: selectedAssets)
         imagePicker.settings.selection.max = maxSelection
@@ -665,7 +684,7 @@ public extension LMFeedCreatePostScreen {
 
 
 // MARK: UIDocumentPickerDelegate
-extension LMFeedCreatePostScreen: UIDocumentPickerDelegate {
+extension LMFeedQnACreatePostScreen: UIDocumentPickerDelegate {
     open func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         viewModel?.handleAssets(assets: urls)
         controller.dismiss(animated: true)
@@ -678,7 +697,7 @@ extension LMFeedCreatePostScreen: UIDocumentPickerDelegate {
 
 
 // MARK: LMFeedTaggedUserFoundProtocol
-extension LMFeedCreatePostScreen: LMFeedTaggedUserFoundProtocol {
+extension LMFeedQnACreatePostScreen: LMFeedTaggedUserFoundProtocol {
     public func userSelected(with route: String, and userName: String) {
         inputTextView.addTaggedUser(with: userName, route: route)
     }
@@ -690,7 +709,7 @@ extension LMFeedCreatePostScreen: LMFeedTaggedUserFoundProtocol {
 
 
 // MARK: LMFeedTopicViewCellProtocol
-extension LMFeedCreatePostScreen: LMFeedTopicViewCellProtocol {
+extension LMFeedQnACreatePostScreen: LMFeedTopicViewCellProtocol {
     public func didTapEditButton() {
         viewModel?.didTapTopicSelection()
     }
@@ -702,7 +721,7 @@ extension LMFeedCreatePostScreen: LMFeedTopicViewCellProtocol {
 
 
 // MARK: LMFeedTopicSelectionViewProtocol
-extension LMFeedCreatePostScreen: LMFeedTopicSelectionViewProtocol {
+extension LMFeedQnACreatePostScreen: LMFeedTopicSelectionViewProtocol {
     public func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         viewModel?.updateTopicFeed(with: topics)
     }
@@ -710,7 +729,7 @@ extension LMFeedCreatePostScreen: LMFeedTopicSelectionViewProtocol {
 
 
 // MARK: LMFeedCreatePollProtocol
-extension LMFeedCreatePostScreen: LMFeedCreatePollProtocol {
+extension LMFeedQnACreatePostScreen: LMFeedCreatePollProtocol {
     public func cancelledPollCreation() {
         viewModel?.updateCurrentSelection(to: .none)
     }
@@ -722,7 +741,7 @@ extension LMFeedCreatePostScreen: LMFeedCreatePollProtocol {
 
 
 // MARK: LMFeedCreatePollViewProtocol
-extension LMFeedCreatePostScreen: LMFeedCreatePollViewProtocol {
+extension LMFeedQnACreatePostScreen: LMFeedCreatePollViewProtocol {
     public func onTapCrossButton() {
         isPollFlow = false
         viewModel?.removePoll()

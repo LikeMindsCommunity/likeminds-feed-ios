@@ -17,6 +17,12 @@ open class LMTextView: UITextView {
         }
     }
     
+    public var placeholderAttributes: [NSAttributedString.Key: Any] = [.font: LMFeedAppearance.shared.fonts.textFont1,
+                                                                .foregroundColor: LMFeedAppearance.shared.colors.textColor]
+    
+    public var textAttributes: [NSAttributedString.Key: Any] = [.font: LMFeedAppearance.shared.fonts.textFont1,
+                                                                .foregroundColor: LMFeedAppearance.shared.colors.gray51]
+    
     public var numberOfLines: Int {
         let numberOfGlyphs = layoutManager.numberOfGlyphs
         var index : Int = 0
@@ -43,11 +49,13 @@ open class LMTextView: UITextView {
     public override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         backgroundColor = LMFeedAppearance.shared.colors.clear
+        delegate = self
     }
     
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
         backgroundColor = LMFeedAppearance.shared.colors.clear
+        delegate = self
     }
     
     open func translatesAutoresizingMaskIntoConstraints() -> Self {
@@ -72,5 +80,43 @@ open class LMTextView: UITextView {
     @objc
     public func doneButtonAction() {
         self.resignFirstResponder()
+    }
+    
+    public func setAttributedText(from content: String, prefix: Character? = nil) {
+        if !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            text = content
+            textColor = textAttributes[.foregroundColor] as? UIColor
+            font = textAttributes[.font] as? UIFont
+        } else {
+            text = placeHolderText
+            textColor = placeholderAttributes[.foregroundColor] as? UIColor
+            font = placeholderAttributes[.font] as? UIFont
+        }
+    }
+    
+    public func getText() -> String {
+        if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+            text == placeHolderText {
+            return ""
+        } else {
+            return text.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+    }
+}
+
+
+extension LMTextView: UITextViewDelegate {
+    open func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == placeHolderText {
+            textView.text = nil
+            textColor = textAttributes[.foregroundColor] as? UIColor
+            font = textAttributes[.font] as? UIFont
+        }
+    }
+    
+    open func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            textView.attributedText = NSAttributedString(string: placeHolderText, attributes: placeholderAttributes)
+        }
     }
 }
