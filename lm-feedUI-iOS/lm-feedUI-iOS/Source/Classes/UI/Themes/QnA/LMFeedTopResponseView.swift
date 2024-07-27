@@ -76,6 +76,12 @@ open class LMFeedTopResponseView: LMView {
         return label
     }()
     
+    open private(set) lazy var sepratorView: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
+        return view
+    }()
+    
     
     open var profilePictureHeight: CGFloat { 40 }
     
@@ -88,6 +94,7 @@ open class LMFeedTopResponseView: LMView {
         
         containerView.addSubview(titleLabel)
         containerView.addSubview(containerStackView)
+        containerView.addSubview(sepratorView)
         
         containerStackView.addArrangedSubview(profilePicture)
         containerStackView.addArrangedSubview(contentContainerView)
@@ -119,6 +126,11 @@ open class LMFeedTopResponseView: LMView {
         profilePicture.setHeightConstraint(with: profilePicture.widthAnchor)
         
         contentContainerView.pinSubView(subView: contentStackView, padding: .init(top: 16, left: 16, bottom: -16, right: -16))
+        
+        sepratorView.setHeightConstraint(with: 1)
+        sepratorView.addConstraint(bottom: (containerView.bottomAnchor, 0),
+                                   leading: (containerView.leadingAnchor, 0),
+                                   trailing: (containerView.trailingAnchor, 0))
     }
     
     

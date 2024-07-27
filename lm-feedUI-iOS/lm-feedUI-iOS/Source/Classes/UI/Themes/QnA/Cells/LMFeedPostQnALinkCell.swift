@@ -1,5 +1,5 @@
 //
-//  LMFeedPostQnADocumentCell.swift
+//  LMFeedPostQnALinkCell.swift
 //  LikeMindsFeedUI
 //
 //  Created by Devansh Mohata on 23/07/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-open class LMFeedPostQnADocumentCell: LMFeedBaseDocumentCell {
+open class LMFeedPostQnALinkCell: LMFeedBaseLinkCell {
     open private(set) lazy var questionTitle: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.headingFont1
@@ -16,6 +16,12 @@ open class LMFeedPostQnADocumentCell: LMFeedBaseDocumentCell {
         return label
     }()
     
+    open private(set) lazy var topResponseView: LMFeedTopResponseView = {
+        let view = LMFeedTopResponseView().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
+    
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
@@ -23,7 +29,7 @@ open class LMFeedPostQnADocumentCell: LMFeedBaseDocumentCell {
         contentView.addSubview(containerView)
         containerView.addSubview(contentStack)
         
-        [topicFeed, questionTitle, postText, seeMoreButton, documentContainerStack].forEach { subView in
+        [topicFeed, questionTitle, postText, seeMoreButton].forEach { subView in
             contentStack.addArrangedSubview(subView)
         }
     }
@@ -35,11 +41,13 @@ open class LMFeedPostQnADocumentCell: LMFeedBaseDocumentCell {
         
         contentView.pinSubView(subView: containerView)
         containerView.pinSubView(subView: contentStack)
-        
+
         topicFeed.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         questionTitle.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         postText.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
-        documentContainerStack.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
+        
+        linkPreveiw.setHeightConstraint(with: 1000, priority: .defaultLow)
+        linkPreveiw.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
     }
     
     
@@ -47,13 +55,25 @@ open class LMFeedPostQnADocumentCell: LMFeedBaseDocumentCell {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        postText.font = LMFeedAppearance.shared.fonts.textFont2
-        postText.textColor = LMFeedAppearance.shared.colors.gray102
+        questionTitle.textColor = LMFeedAppearance.shared.colors.gray51
+        questionTitle.font = LMFeedAppearance.shared.fonts.headingFont1
     }
     
+    
     // MARK: configure
-    open override func configure(for indexPath: IndexPath, with data: LMFeedPostContentModel, delegate: (any LMFeedPostDocumentCellProtocol)?) {
-        super.configure(for: indexPath, with: data, delegate: delegate)
+    open override func configure(with data: LMFeedPostContentModel, delegate: (any LMFeedLinkProtocol)?) {
+        super.configure(with: data, delegate: delegate)
+        
         questionTitle.text = data.postQuestion
+        
+        if let topComment = data.topResponse {
+            topResponseView.configure(with: topComment)
+            contentStack.addArrangedSubview(topResponseView)
+            
+            NSLayoutConstraint.activate([
+                topResponseView.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor, constant: 8),
+                topResponseView.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor, constant: -8)
+            ])
+        }
     }
 }

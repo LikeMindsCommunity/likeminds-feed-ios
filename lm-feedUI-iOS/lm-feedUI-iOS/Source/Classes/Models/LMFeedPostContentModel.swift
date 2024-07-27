@@ -40,7 +40,7 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
     public var postText: String
     public var isShowMore: Bool
     public var topics: LMFeedTopicView.ContentModel
-    public var footerData: LMFeedPostFooterView.ContentModel
+    public var footerData: LMFeedBasePostFooterView.ContentModel
     public var totalCommentCount: Int
     public var documents: [LMFeedDocumentPreview.ContentModel]
     public var isShowMoreDocuments: Bool
@@ -65,7 +65,7 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
         postQuestion: String,
         postText: String,
         topics: LMFeedTopicView.ContentModel,
-        footerData: LMFeedPostFooterView.ContentModel,
+        footerData: LMFeedBasePostFooterView.ContentModel,
         totalCommentCount: Int,
         documents: [LMFeedDocumentPreview.ContentModel],
         linkPreview: LMFeedLinkPreview.ContentModel?,

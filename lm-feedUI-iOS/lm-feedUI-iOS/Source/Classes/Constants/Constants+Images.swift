@@ -65,5 +65,7 @@ public extension LMFeedConstants {
         public var emptyViewIcon = loadImage(with: "emptyView")
         public var docImageIcon = loadImage(with: "docTexImage")
         public var addPollIcon = loadImage(with: "addpoll")
+        public var upvoteIcon = loadImage(with: "upvote")
+        public var upvoteFilledIcon = loadImage(with: "upvotefilled")
     }
 }

@@ -16,6 +16,11 @@ open class LMFeedPostQnAMediaCell: LMFeedBaseMediaCell {
         return label
     }()
     
+    open private(set) lazy var topResponseView: LMFeedTopResponseView = {
+        let view = LMFeedTopResponseView().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
     
     // MARK: setupViews
     open override func setupViews() {
@@ -57,8 +62,8 @@ open class LMFeedPostQnAMediaCell: LMFeedBaseMediaCell {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        postText.font = LMFeedAppearance.shared.fonts.textFont2
-        postText.textColor = LMFeedAppearance.shared.colors.gray102
+        questionTitle.textColor = LMFeedAppearance.shared.colors.gray51
+        questionTitle.font = LMFeedAppearance.shared.fonts.headingFont1
     }
     
     
@@ -67,5 +72,15 @@ open class LMFeedPostQnAMediaCell: LMFeedBaseMediaCell {
         super.configure(with: data, delegate: delegate)
         
         questionTitle.text = data.postQuestion
+        
+        if let topComment = data.topResponse {
+            topResponseView.configure(with: topComment)
+            contentStack.addArrangedSubview(topResponseView)
+            
+            NSLayoutConstraint.activate([
+                topResponseView.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor, constant: 8),
+                topResponseView.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor, constant: -8)
+            ])
+        }
     }
 }

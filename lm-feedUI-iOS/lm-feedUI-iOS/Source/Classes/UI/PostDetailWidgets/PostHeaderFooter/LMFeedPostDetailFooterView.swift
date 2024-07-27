@@ -100,7 +100,7 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
     }
     
     open func updateCommentCount(with commentCount: Int) {
-        commentButton.setTitle(getCommentText(for: commentCount), for: .normal)
+        updateCommentText(for: commentCount)
         
         noCommentContainerView.isHidden = commentCount != 0
         commentContainerView.isHidden = commentCount == 0

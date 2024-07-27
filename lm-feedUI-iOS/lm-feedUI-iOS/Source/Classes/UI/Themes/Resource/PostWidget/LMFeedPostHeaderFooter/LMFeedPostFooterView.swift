@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedPostFooterView: LMFeedPostBaseFooterView {
+open class LMFeedPostFooterView: LMFeedBasePostFooterView {
     // MARK: View Hierachy
     open override func setupViews() {
         super.setupViews()
@@ -28,5 +28,25 @@ open class LMFeedPostFooterView: LMFeedPostBaseFooterView {
         [likeButton, likeTextButton, commentButton, saveButton, shareButton].forEach { btn in
             btn.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         }
+    }
+    
+    open override func updateLikeText(for likeCount: Int) {
+        var setText = likeText
+        
+        if likeCount != .zero {
+            setText = "\(likeCount) \(likeText.pluralize(count: likeCount))"
+        }
+        
+        likeTextButton.setTitle(setText, for: .normal)
+    }
+    
+    open override func updateCommentText(for commentCount: Int) {
+        var setText = commentText
+        
+        if commentCount != .zero {
+            setText = "\(commentCount) \(commentText.pluralize(count: commentCount))"
+        }
+        
+        commentButton.setTitle(setText, for: .normal)
     }
 }

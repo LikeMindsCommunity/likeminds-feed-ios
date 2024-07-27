@@ -1,5 +1,5 @@
 //
-//  LMFeedBasePostListViewModel.swift
+//  LMFeedPostListViewModel.swift
 //  likeminds-feed-iOS
 //
 //  Created by Devansh Mohata on 02/01/24.
@@ -9,7 +9,7 @@ import LikeMindsFeedUI
 import LikeMindsFeed
 
 // MARK: LMUniversalFeedViewModelProtocol
-public protocol LMFeedBaseViewModelProtocol: LMBaseViewControllerProtocol {
+public protocol LMFeedBasePostListViewModelProtocol: LMBaseViewControllerProtocol {
     func loadPosts(with data: [LMFeedPostContentModel], index: IndexSet?, reloadNow: Bool)
     func showHideFooterLoader(isShow: Bool)
     func showActivityLoader()
@@ -29,9 +29,9 @@ public class LMFeedBasePostListViewModel {
     public var isFetchingFeed: Bool = false
     public var postList: [LMFeedPostDataModel] = []
     
-    public weak var delegate: LMFeedBaseViewModelProtocol?
+    public weak var delegate: LMFeedBasePostListViewModelProtocol?
     
-    init(delegate: LMFeedBaseViewModelProtocol) {
+    init(delegate: LMFeedBasePostListViewModelProtocol) {
         self.currentPage = 1
         self.pageSize = 10
         self.selectedTopics = []
@@ -42,7 +42,7 @@ public class LMFeedBasePostListViewModel {
     }
 }
 
-// MARK: Get Feed 
+// MARK: Get Feed
 public extension LMFeedBasePostListViewModel {
     func updateTopics(with selectedTopics: [String]) {
         self.selectedTopics = selectedTopics
@@ -89,10 +89,8 @@ public extension LMFeedBasePostListViewModel {
             
             let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
             
-            let filteredComments = response.data?.filteredComments ?? [:]
-            
             let convertedData: [LMFeedPostDataModel] = posts.compactMap { post in
-                return .init(post: post, users: users, allTopics: topics, widgets: widgets, filteredComments: filteredComments)
+                return .init(post: post, users: users, allTopics: topics, widgets: widgets)
             }
             
             self.postList.append(contentsOf: convertedData)
@@ -342,7 +340,8 @@ public extension LMFeedBasePostListViewModel {
                 let allTopics = response.data?.topics?.compactMap({ $0.value }) ?? []
                 let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
                 
-                guard let newData = LMFeedPostDataModel.init(post: post, users: users, allTopics: allTopics, widgets: widgets, filteredComments: [:]),
+                
+                guard let newData = LMFeedPostDataModel.init(post: post, users: users, allTopics: allTopics, widgets: widgets),
                       let index = postList.firstIndex(where: { $0.postId == id }) else { return }
                 
                 postList[index] = newData

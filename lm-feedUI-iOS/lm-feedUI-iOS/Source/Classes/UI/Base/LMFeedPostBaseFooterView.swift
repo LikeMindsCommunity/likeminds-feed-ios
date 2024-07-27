@@ -18,7 +18,7 @@ public protocol LMFeedPostFooterViewProtocol: AnyObject {
 }
 
 
-open class LMFeedPostBaseFooterView: LMTableViewHeaderFooterView {
+open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
     public struct ContentModel {
         public var isSaved: Bool
         public var isLiked: Bool
@@ -37,7 +37,8 @@ open class LMFeedPostBaseFooterView: LMTableViewHeaderFooterView {
         }
     }
     
-    // MARK: UI Elements
+    
+    // MARK: Common UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
         return view
@@ -58,7 +59,7 @@ open class LMFeedPostBaseFooterView: LMTableViewHeaderFooterView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(LMFeedConstants.shared.images.heart, for: .normal)
         button.setImage(LMFeedConstants.shared.images.heartFilled, for: .selected)
-        button.tintColor = LMFeedAppearance.shared.colors.gray2
+        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         button.setPreferredSymbolConfiguration(.init(font: LMFeedAppearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
         return button
     }()
@@ -107,15 +108,51 @@ open class LMFeedPostBaseFooterView: LMTableViewHeaderFooterView {
         LMView().translatesAutoresizingMaskIntoConstraints()
     }()
     
-    
-    // MARK: Data Variables
+    // MARK: Common Data Variables
+    public weak var delegate: LMFeedPostFooterViewProtocol?
     public var postID: String?
     public var likeCount: Int = 0
-    public weak var delegate: LMFeedPostFooterViewProtocol?
     
-    public var likeText: String = "Like"
-    public var commentText: String = "Comment"
+    // Private stored properties
+    private var _likeText: String = "Like"
+    private var _commentText: String = "Comment"
     
+    // Public computed properties that can be overridden
+    open var likeText: String {
+        get {
+            _likeText
+        } set { 
+            _likeText = newValue
+        }
+    }
+    
+    open var commentText: String {
+        get {
+            _commentText
+        } set {
+            _commentText = newValue
+        }
+    }
+    
+    // MARK: View Hierarchy
+    open override func setupViews() {
+        super.setupViews()
+        
+        contentView.addSubview(containerView)
+        containerView.addSubview(actionStackView)
+    }
+    
+    // MARK: Constraints
+    open override func setupLayouts() {
+        super.setupLayouts()
+        
+        contentView.pinSubView(subView: containerView, padding: .init(top: 0, left: 0, bottom: -8, right: 0))
+        containerView.pinSubView(subView: actionStackView, padding: .init(top: 8, left: 16, bottom: -8, right: -16))
+        
+        [likeButton, likeTextButton, commentButton, saveButton, shareButton].forEach { btn in
+            btn.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        }
+    }
     
     // MARK: Actions
     open override func setupActions() {
@@ -136,74 +173,76 @@ open class LMFeedPostBaseFooterView: LMTableViewHeaderFooterView {
         containerView.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
-    
-    // MARK: configure
+    // MARK: Configure
     open func configure(with data: ContentModel, postID: String, delegate: LMFeedPostFooterViewProtocol) {
         self.likeText = data.likeText
         self.commentText = data.commentText
-        
         self.postID = postID
         self.likeCount = data.likeCount
         self.delegate = delegate
         
         likeButton.isSelected = data.isLiked
-        likeButton.tintColor = data.isLiked ? LMFeedAppearance.shared.colors.red : LMFeedAppearance.shared.colors.gray2
-        
-        likeTextButton.setTitle(getLikeText(for: data.likeCount), for: .normal)
-        commentButton.setTitle(getCommentText(for: data.commentCount), for: .normal)
-        
         saveButton.isSelected = data.isSaved
-    }
-    
-    open func getLikeText(for likeCount: Int) -> String {
-        if likeCount == .zero {
-            return likeText
-        }
         
-        return "\(likeCount) \(likeText.pluralize(count: likeCount))"
+        updateLikeText(for: data.likeCount)
+        updateCommentText(for: data.commentCount)
     }
     
-    open func getCommentText(for commentCount: Int) -> String {
-        commentCount == .zero ? "Add \(commentText)" : "\(commentCount) \(commentText.pluralize(count: commentCount))"
+    // MARK: Helper Methods
+    open func updateLikeText(for likeCount: Int) {
+        // To be implemented by subclasses
     }
-}
-
-
-// MARK: Actions
-@objc
-extension LMFeedPostBaseFooterView {
-    open func didTapLikeButton() {
-        guard let postID else { return }
+    
+    open func updateCommentText(for commentCount: Int) {
+        // To be implemented by subclasses
+    }
+    
+    open func formattedText(for count: Int) -> String {
+        if count == 0 {
+            return ""
+        } else if count <= 999 {
+            return "\(count)"
+        } else {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            formatter.maximumFractionDigits = 0
+            let formattedNumber = formatter.string(from: NSNumber(value: count / 1000)) ?? ""
+            return "\(formattedNumber)k"
+        }
+    }
+    
+    // MARK: Action Methods
+    @objc open func didTapLikeButton() {
+        guard let postID = postID else { return }
         likeButton.isSelected.toggle()
-        likeButton.tintColor = likeButton.isSelected ? LMFeedAppearance.shared.colors.red : LMFeedAppearance.shared.colors.gray2
         likeCount += likeButton.isSelected ? 1 : -1
-        likeTextButton.setTitle(getLikeText(for: likeCount), for: .normal)
+        updateLikeText(for: likeCount)
         delegate?.didTapLikeButton(for: postID)
     }
     
-    open func didTapLikeTextButton() {
-        guard let postID else { return }
+    @objc open func didTapLikeTextButton() {
+        guard let postID = postID else { return }
         delegate?.didTapLikeTextButton(for: postID)
     }
     
-    open func didTapCommentButton() {
-        guard let postID else { return }
+    @objc open func didTapCommentButton() {
+        guard let postID = postID else { return }
         delegate?.didTapCommentButton(for: postID)
     }
     
-    open func didTapSaveButton() {
-        guard let postID else { return }
+    @objc open func didTapSaveButton() {
+        guard let postID = postID else { return }
         saveButton.isSelected.toggle()
         delegate?.didTapSaveButton(for: postID)
     }
     
-    open func didTapShareButton() {
-        guard let postID else { return }
+    @objc open func didTapShareButton() {
+        guard let postID = postID else { return }
         delegate?.didTapShareButton(for: postID)
     }
     
-    open func didTapPost() {
-        guard let postID else { return }
+    @objc open func didTapPost() {
+        guard let postID = postID else { return }
         delegate?.didTapPost(postID: postID)
     }
 }
