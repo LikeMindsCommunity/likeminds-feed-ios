@@ -59,7 +59,7 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(LMFeedConstants.shared.images.heart, for: .normal)
         button.setImage(LMFeedConstants.shared.images.heartFilled, for: .selected)
-        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
+        button.tintColor = LMFeedAppearance.shared.colors.gray102
         button.setPreferredSymbolConfiguration(.init(font: LMFeedAppearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
         return button
     }()
@@ -134,6 +134,10 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
         }
     }
     
+    open var likeButtonTintColor: UIColor {
+        likeButton.isSelected ? LMFeedAppearance.shared.colors.red : LMFeedAppearance.shared.colors.gray102
+    }
+    
     // MARK: View Hierarchy
     open override func setupViews() {
         super.setupViews()
@@ -170,6 +174,7 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
     // MARK: Appearance
     open override func setupAppearance() {
         super.setupAppearance()
+        
         containerView.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
@@ -215,6 +220,7 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
     @objc open func didTapLikeButton() {
         guard let postID = postID else { return }
         likeButton.isSelected.toggle()
+        likeButton.tintColor = likeButtonTintColor
         likeCount += likeButton.isSelected ? 1 : -1
         updateLikeText(for: likeCount)
         delegate?.didTapLikeButton(for: postID)

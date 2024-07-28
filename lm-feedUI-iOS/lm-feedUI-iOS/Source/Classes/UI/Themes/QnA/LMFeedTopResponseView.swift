@@ -143,6 +143,8 @@ open class LMFeedTopResponseView: LMView {
         
         contentStackView.clipsToBounds = true
         contentStackView.layer.masksToBounds = true
+        
+        profilePicture.layer.cornerRadius = profilePictureHeight / 2
     }
     
     
