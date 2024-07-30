@@ -28,7 +28,7 @@ open class LMFeedPostQnADocumentCell: LMFeedBaseDocumentCell {
         contentView.addSubview(containerView)
         containerView.addSubview(contentStack)
         
-        [topicFeed, questionTitle, postText, seeMoreButton, documentContainerStack].forEach { subView in
+        [topicFeed, questionTitle, postText, seeMoreButton, documentContainerStack, topResponseView].forEach { subView in
             contentStack.addArrangedSubview(subView)
         }
     }
@@ -63,13 +63,10 @@ open class LMFeedPostQnADocumentCell: LMFeedBaseDocumentCell {
         questionTitle.text = data.postQuestion
         
         if let topComment = data.topResponse {
+            topResponseView.isHidden = false
             topResponseView.configure(with: topComment)
-            contentStack.addArrangedSubview(topResponseView)
-            
-            NSLayoutConstraint.activate([
-                topResponseView.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor, constant: 8),
-                topResponseView.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor, constant: -8)
-            ])
+        } else {
+            topResponseView.isHidden = true
         }
     }
 }

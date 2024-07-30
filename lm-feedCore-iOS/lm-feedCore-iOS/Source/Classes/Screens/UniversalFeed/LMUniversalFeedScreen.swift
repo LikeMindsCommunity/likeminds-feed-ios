@@ -217,7 +217,7 @@ open class LMUniversalFeedScreen: LMViewController {
             return
         }
         do {
-            let viewcontroller = try LMFeedQnACreatePostViewModel.createModule()
+            let viewcontroller = try LMFeedCreatePostViewModel.createModule(showHeading: true)
             navigationController?.pushViewController(viewcontroller, animated: true)
             
             LMFeedCore.analytics?.trackEvent(for: .postCreationStarted, eventProperties: [:])

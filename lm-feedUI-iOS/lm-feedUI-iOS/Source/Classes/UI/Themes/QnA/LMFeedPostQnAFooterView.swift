@@ -13,7 +13,7 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .fill
-        stack.distribution = .fillEqually
+        stack.distribution = .fill
         stack.spacing = 8
         return stack
     }()
@@ -53,6 +53,7 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
     
     open private(set) lazy var profileView: LMImageView = {
         let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
+        image.backgroundColor = .black
         return image
     }()
     
@@ -108,7 +109,14 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        contentView.pinSubView(subView: containerView, padding: .init(top: 0, left: 0, bottom: -8, right: 0))
+//        contentView.pinSubView(subView: containerView, padding: .init(top: 0, left: 0, bottom: -8, right: 0))
+        
+        containerView.addConstraint(top: (contentView.topAnchor, 0),
+                                    leading: (contentView.leadingAnchor, 0),
+                                    trailing: (contentView.trailingAnchor, 0))
+        
+        containerView.bottomAnchor.constraint(greaterThanOrEqualTo: contentView.bottomAnchor).isActive = true
+        
         containerView.pinSubView(subView: footerContainerView, padding: .init(top: 8, left: 16, bottom: -8, right: -16))
         
         [likeContainerView, commentButton, saveButton, shareButton].forEach { btn in
@@ -124,15 +132,19 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
                                    trailing: (addCommentView.trailingAnchor, 0))
         sepratorView.setHeightConstraint(with: 1)
         
-        placeholderLabel.addConstraint(top: (addCommentView.topAnchor, 8),
-                                       bottom: (addCommentView.bottomAnchor, -8),
-                                       trailing: (addCommentView.trailingAnchor, -8))
+        profileView.addConstraint(top: (addCommentView.topAnchor, 8),
+                                  bottom: (addCommentView.bottomAnchor, -8),
+            leading: (addCommentView.leadingAnchor, 8),
+                                  trailing: (placeholderLabel.leadingAnchor, -8),
+                                  centerY: (placeholderLabel.centerYAnchor, 0)
+        )
+        profileView.setHeightConstraint(with: 30)
+        profileView.setWidthConstraint(with: 30)
         
-        profileView.addConstraint(leading: (addCommentView.leadingAnchor, 8),
-                                  trailing: (addCommentView.leadingAnchor, -8),
-                                  centerY: (placeholderLabel.centerYAnchor, 0))
-        profileView.setHeightConstraint(with: 20)
-        profileView.setWidthConstraint(with: 20)
+        placeholderLabel.addConstraint(trailing: (addCommentView.trailingAnchor, -8))
+        
+//        actionStackView.setHeightConstraint(with: 56, priority: .required)
+//        addCommentView.setHeightConstraint(with: 56, priority: .required)
     }
     
     
@@ -159,6 +171,8 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         likeContainerView.layer.borderWidth = 1
         
         actionStackView.spacing = 16
+        
+        likeButton.tintColor = LMFeedAppearance.shared.colors.appTintColor
     }
     
     
@@ -171,6 +185,6 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         commentButton.isHidden = commentCount == .zero
         commentButton.setTitle(formattedText(for: commentCount), for: .normal)
         
-//        addCommentView.isHidden = commentCount != .zero
+        addCommentView.isHidden = commentCount != .zero
     }
 }

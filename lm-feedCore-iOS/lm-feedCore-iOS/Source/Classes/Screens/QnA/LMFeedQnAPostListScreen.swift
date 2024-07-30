@@ -17,6 +17,7 @@ open class LMFeedQnAPostListScreen: LMFeedBasePostListScreen {
         tableView.register(LMUIComponents.shared.pollCell)
         tableView.registerHeaderFooter(LMUIComponents.shared.headerView)
         tableView.registerHeaderFooter(LMUIComponents.shared.qnaFooterView)
+        tableView.estimatedSectionFooterHeight = 100
     }
     
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

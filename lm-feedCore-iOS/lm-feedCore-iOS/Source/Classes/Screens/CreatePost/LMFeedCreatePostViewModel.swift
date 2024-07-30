@@ -65,16 +65,17 @@ public final class LMFeedCreatePostViewModel {
         self.delegate = delegate
     }
     
-    public static func createModule() throws -> LMFeedCreatePostScreen {
+    public static func createModule(showHeading: Bool) throws -> LMFeedCreatePostScreen {
         guard LMFeedCore.isInitialized else { throw LMFeedError.feedNotInitialized }
         let viewcontroller = Components.shared.createPostScreen.init()
         let viewModel = LMFeedCreatePostViewModel(delegate: viewcontroller)
         
         viewcontroller.viewModel = viewModel
+        viewcontroller.showQuestionHeading = showHeading
         return viewcontroller
     }
     
-    func createPost(with text: String) {
+    func createPost(with text: String, question: String?) {
         var attachments: [LMFeedCreatePostOperation.LMAWSRequestModel] = []
         let filePath = "files/post/\(LocalPreferences.userObj?.clientUUID ?? "user")/\(Int(Date().timeIntervalSince1970))/"
         
@@ -87,7 +88,7 @@ public final class LMFeedCreatePostViewModel {
             attachments.append(.init(url: medium.url, data: medium.data, fileName: medium.url.lastPathComponent, awsFilePath: filePath, contentType: medium.mediaType))
         }
         
-        LMFeedCreatePostOperation.shared.createPost(with: text, topics: selectedTopics.map({ $0.topicID }), files: attachments, linkPreview: linkPreview, poll: pollDetails)
+        LMFeedCreatePostOperation.shared.createPost(with: text, heading: question, topics: selectedTopics.map({ $0.topicID }), files: attachments, linkPreview: linkPreview, poll: pollDetails)
         delegate?.popViewController(animated: true)
     }
 }

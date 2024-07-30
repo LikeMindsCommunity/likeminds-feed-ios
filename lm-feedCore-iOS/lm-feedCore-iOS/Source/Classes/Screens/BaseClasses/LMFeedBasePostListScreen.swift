@@ -222,7 +222,7 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
     open func configureEmptyListView() {
         emptyListView.configure(title: LMStringConstants.shared.newPost) { [weak self] in
             do {
-                let viewcontroller = try LMFeedCreatePostViewModel.createModule()
+                let viewcontroller = try LMFeedCreatePostViewModel.createModule(showHeading: true)
                 self?.navigationController?.pushViewController(viewcontroller, animated: true)
             } catch let error {
                 print(error.localizedDescription)

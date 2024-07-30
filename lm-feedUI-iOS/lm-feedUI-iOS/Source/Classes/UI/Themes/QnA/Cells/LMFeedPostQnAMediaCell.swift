@@ -37,6 +37,7 @@ open class LMFeedPostQnAMediaCell: LMFeedBaseMediaCell {
         contentStack.addArrangedSubview(seeMoreButton)
         contentStack.addArrangedSubview(mediaCollectionView)
         contentStack.addArrangedSubview(pageControl)
+        contentStack.addArrangedSubview(topResponseView)
     }
     
     
@@ -50,6 +51,7 @@ open class LMFeedPostQnAMediaCell: LMFeedBaseMediaCell {
         topicFeed.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         questionTitle.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         postText.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
+        topResponseView.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         
         mediaCollectionView.setWidthConstraint(with: contentStack.widthAnchor)
         mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor, multiplier: 2/3)
@@ -75,12 +77,9 @@ open class LMFeedPostQnAMediaCell: LMFeedBaseMediaCell {
         
         if let topComment = data.topResponse {
             topResponseView.configure(with: topComment)
-            contentStack.addArrangedSubview(topResponseView)
-            
-            NSLayoutConstraint.activate([
-                topResponseView.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor, constant: 8),
-                topResponseView.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor, constant: -8)
-            ])
+            topResponseView.isHidden = false
+        } else {
+            topResponseView.isHidden = true
         }
     }
 }

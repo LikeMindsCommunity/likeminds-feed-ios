@@ -44,6 +44,7 @@ open class LMFeedPostQnAPollCell: LMFeedBasePollCell {
 
         topicFeed.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         postText.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
+        topResponseView.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
     }
     
     open override func setupAppearance() {
@@ -60,12 +61,9 @@ open class LMFeedPostQnAPollCell: LMFeedBasePollCell {
         
         if let topComment = data.topResponse {
             topResponseView.configure(with: topComment)
-            contentStack.addArrangedSubview(topResponseView)
-            
-            NSLayoutConstraint.activate([
-                topResponseView.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor, constant: 8),
-                topResponseView.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor, constant: -8)
-            ])
+            topResponseView.isHidden = false
+        } else {
+            topResponseView.isHidden = true
         }
     }
 }

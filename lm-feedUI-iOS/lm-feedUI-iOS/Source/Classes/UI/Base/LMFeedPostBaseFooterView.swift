@@ -49,7 +49,7 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
         stack.spacing = 8
-        stack.alignment = .fill
+        stack.alignment = .center
         stack.distribution = .fill
         return stack
     }()

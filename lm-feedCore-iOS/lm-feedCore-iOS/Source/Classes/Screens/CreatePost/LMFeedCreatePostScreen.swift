@@ -185,6 +185,28 @@ open class LMFeedCreatePostScreen: LMViewController {
     }()
     
     
+    open private(set) lazy var headingTextContainer: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
+    open private(set) lazy var headingTextView: LMTextView = {
+        let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
+        textView.backgroundColor = LMFeedAppearance.shared.colors.clear
+        textView.isScrollEnabled = true
+        textView.isEditable = true
+        textView.placeHolderText = "Add your question here"
+        textView.textAttributes[.font] = LMFeedAppearance.shared.fonts.headingFont1
+        textView.placeholderAttributes[.font] = LMFeedAppearance.shared.fonts.headingFont1
+        return textView
+    }()
+    
+    open private(set) lazy var headerSepratorView: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
+        return view
+    }()
+    
     // MARK: Data Variables
     public var viewModel: LMFeedCreatePostViewModel?
     public var documentAttachmentData: [LMFeedDocumentPreview.ContentModel] = []
@@ -199,6 +221,8 @@ open class LMFeedCreatePostScreen: LMViewController {
     public var isPollFlow: Bool = false
     
     public var mediaAttachmentData: [LMFeedMediaProtocol] = []
+    
+    public var showQuestionHeading: Bool = false
     
     public lazy var documentPicker: UIDocumentPickerViewController = {
         if #available(iOS 14, *) {
@@ -227,7 +251,16 @@ open class LMFeedCreatePostScreen: LMViewController {
         
         scrollView.addSubview(scrollStackView)
         
-        [headerView, topicView, inputTextView, linkPreview, pollPreview, mediaCollectionView, mediaPageControl ,documentTableView, addMoreButton].forEach { subView in
+        headingTextContainer.addSubview(headerSepratorView)
+        headingTextContainer.addSubview(headingTextView)
+        
+        var subViews = [headerView, topicView, headingTextContainer, inputTextView, linkPreview, pollPreview, mediaCollectionView, mediaPageControl ,documentTableView, addMoreButton]
+        
+        if !showQuestionHeading {
+            subViews.remove(at: 2)
+        }
+        
+        subViews.forEach { subView in
             scrollStackView.addArrangedSubview(subView)
         }
         
@@ -267,6 +300,17 @@ open class LMFeedCreatePostScreen: LMViewController {
         scrollView.setWidthConstraint(with: containerStackView.widthAnchor)
         scrollStackView.setWidthConstraint(with: containerStackView.widthAnchor)
         mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
+        
+        if showQuestionHeading {
+            headingTextContainer.pinSubView(subView: headingTextView)
+            
+            headerSepratorView.addConstraint(bottom: (headingTextContainer.bottomAnchor, 0),
+                                             leading: (headingTextContainer.leadingAnchor, 0),
+                                             trailing: (headingTextContainer.trailingAnchor, 0))
+            headerSepratorView.setHeightConstraint(with: 1)
+            
+            headingTextContainer.setHeightConstraint(with: 100)
+        }
         
         scrollStackView.subviews.forEach { subView in
             if subView != addMoreButton {
@@ -322,7 +366,13 @@ open class LMFeedCreatePostScreen: LMViewController {
     
     @objc
     open func didTapCreateButton() {
-        viewModel?.createPost(with: inputTextView.getText())
+        var question: String? = nil
+        
+        if showQuestionHeading {
+            question = headingTextView.getText()
+        }
+        
+        viewModel?.createPost(with: inputTextView.getText(), question: question)
     }
     
     
@@ -331,11 +381,18 @@ open class LMFeedCreatePostScreen: LMViewController {
         super.viewDidLoad()
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.createPostTitle, subtitle: nil, alignment: .center)
+        headingTextView.setAttributedText(from: "")
         inputTextView.setAttributedText(from: "")
         setupAddMedia()
         setupInitialView()
         setupProfileData()
         viewModel?.getTopics()
+        
+        if showQuestionHeading {
+            headingTextView.textChangedObserver = { [weak self] in
+                self?.observeCreateButton()
+            }
+        }
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
@@ -369,7 +426,11 @@ open class LMFeedCreatePostScreen: LMViewController {
     }
     
     open func observeCreateButton() {
-        createPostButton.isEnabled = !mediaAttachmentData.isEmpty || !inputTextView.getText().isEmpty || !documentAttachmentData.isEmpty || isPollFlow
+        if showQuestionHeading {
+            createPostButton.isEnabled = !headingTextView.getText().isEmpty
+        } else {
+            createPostButton.isEnabled = !mediaAttachmentData.isEmpty || !inputTextView.getText().isEmpty || !documentAttachmentData.isEmpty || isPollFlow
+        }
     }
 }
 

@@ -46,6 +46,8 @@ open class LMTextView: UITextView {
         return currentNumOfLines
     }
     
+    public var textChangedObserver: (() -> Void)?
+    
     public override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         backgroundColor = LMFeedAppearance.shared.colors.clear
@@ -118,5 +120,11 @@ extension LMTextView: UITextViewDelegate {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             textView.attributedText = NSAttributedString(string: placeHolderText, attributes: placeholderAttributes)
         }
+    }
+    
+    open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        textChangedObserver?()
+        
+        return true
     }
 }

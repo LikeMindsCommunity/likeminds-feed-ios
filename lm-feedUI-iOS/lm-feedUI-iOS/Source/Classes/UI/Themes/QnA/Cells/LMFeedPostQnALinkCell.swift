@@ -29,7 +29,7 @@ open class LMFeedPostQnALinkCell: LMFeedBaseLinkCell {
         contentView.addSubview(containerView)
         containerView.addSubview(contentStack)
         
-        [topicFeed, questionTitle, postText, seeMoreButton].forEach { subView in
+        [topicFeed, questionTitle, postText, seeMoreButton, topResponseView].forEach { subView in
             contentStack.addArrangedSubview(subView)
         }
     }
@@ -45,6 +45,7 @@ open class LMFeedPostQnALinkCell: LMFeedBaseLinkCell {
         topicFeed.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         questionTitle.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         postText.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
+        topResponseView.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         
         linkPreveiw.setHeightConstraint(with: 1000, priority: .defaultLow)
         linkPreveiw.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
@@ -67,13 +68,10 @@ open class LMFeedPostQnALinkCell: LMFeedBaseLinkCell {
         questionTitle.text = data.postQuestion
         
         if let topComment = data.topResponse {
+            topResponseView.isHidden = false
             topResponseView.configure(with: topComment)
-            contentStack.addArrangedSubview(topResponseView)
-            
-            NSLayoutConstraint.activate([
-                topResponseView.leadingAnchor.constraint(equalTo: contentStack.leadingAnchor, constant: 8),
-                topResponseView.trailingAnchor.constraint(equalTo: contentStack.trailingAnchor, constant: -8)
-            ])
+        } else {
+            topResponseView.isHidden = true
         }
     }
 }

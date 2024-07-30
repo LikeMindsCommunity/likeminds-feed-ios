@@ -148,7 +148,7 @@ open class LMFeedTaggingTextView: LMTextView {
 
 // MARK: UITextViewDelegate
 extension LMFeedTaggingTextView {
-    open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    open override func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text.isEmpty {
             if isMentioning {
                 if range.length <= characters.count {
