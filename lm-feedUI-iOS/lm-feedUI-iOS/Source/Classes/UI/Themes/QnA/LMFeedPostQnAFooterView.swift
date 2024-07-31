@@ -80,8 +80,6 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
     
     // MARK: setupViews
     open override func setupViews() {
-        super.setupViews()
-        
         contentView.addSubview(containerView)
         
         containerView.addSubview(footerContainerView)
@@ -107,15 +105,11 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
     
     // MARK: setupLayouts
     open override func setupLayouts() {
-        super.setupLayouts()
-        
-//        contentView.pinSubView(subView: containerView, padding: .init(top: 0, left: 0, bottom: -8, right: 0))
-        
         containerView.addConstraint(top: (contentView.topAnchor, 0),
                                     leading: (contentView.leadingAnchor, 0),
                                     trailing: (contentView.trailingAnchor, 0))
         
-        containerView.bottomAnchor.constraint(greaterThanOrEqualTo: contentView.bottomAnchor).isActive = true
+        containerView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -8).isActive = true
         
         containerView.pinSubView(subView: footerContainerView, padding: .init(top: 8, left: 16, bottom: -8, right: -16))
         
@@ -134,17 +128,15 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         
         profileView.addConstraint(top: (addCommentView.topAnchor, 8),
                                   bottom: (addCommentView.bottomAnchor, -8),
-            leading: (addCommentView.leadingAnchor, 8),
-                                  trailing: (placeholderLabel.leadingAnchor, -8),
-                                  centerY: (placeholderLabel.centerYAnchor, 0)
-        )
-        profileView.setHeightConstraint(with: 30)
-        profileView.setWidthConstraint(with: 30)
+                                  leading: (addCommentView.leadingAnchor, 8))
         
-        placeholderLabel.addConstraint(trailing: (addCommentView.trailingAnchor, -8))
+        profileView.setWidthConstraint(with: profileView.heightAnchor)
         
-//        actionStackView.setHeightConstraint(with: 56, priority: .required)
-//        addCommentView.setHeightConstraint(with: 56, priority: .required)
+        placeholderLabel.addConstraint(leading: (profileView.trailingAnchor, 8),
+            trailing: (addCommentView.trailingAnchor, -8),
+                                       centerY: (profileView.centerYAnchor, 0))
+        
+        addCommentView.setHeightConstraint(with: 46, priority: .required)
     }
     
     

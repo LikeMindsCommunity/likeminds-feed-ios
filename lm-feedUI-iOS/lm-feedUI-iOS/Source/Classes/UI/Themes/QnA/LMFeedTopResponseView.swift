@@ -113,19 +113,19 @@ open class LMFeedTopResponseView: LMView {
         
         pinSubView(subView: containerView)
         
-        titleLabel.addConstraint(top: (containerView.topAnchor, 16),
-                                 leading: (containerView.leadingAnchor, 16),
-                                 trailing: (containerView.trailingAnchor, -16))
+        titleLabel.addConstraint(top: (containerView.topAnchor, 8),
+                                 leading: (containerView.leadingAnchor, 8),
+                                 trailing: (containerView.trailingAnchor, -8))
         
         containerStackView.addConstraint(top: (titleLabel.bottomAnchor, 16),
-                                         bottom: (containerView.bottomAnchor, -16),
+                                         bottom: (containerView.bottomAnchor, -8),
                                          leading: (titleLabel.leadingAnchor, 0),
                                          trailing: (titleLabel.trailingAnchor, 0))
         
         profilePicture.setWidthConstraint(with: profilePictureHeight)
         profilePicture.setHeightConstraint(with: profilePicture.widthAnchor)
         
-        contentContainerView.pinSubView(subView: contentStackView, padding: .init(top: 16, left: 16, bottom: -16, right: -16))
+        contentContainerView.pinSubView(subView: contentStackView, padding: .init(top: 8, left: 8, bottom: -8, right: -8))
         
         sepratorView.setHeightConstraint(with: 1)
         sepratorView.addConstraint(bottom: (containerView.bottomAnchor, 0),
