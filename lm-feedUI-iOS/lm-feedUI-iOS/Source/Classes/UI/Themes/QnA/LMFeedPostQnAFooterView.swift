@@ -82,11 +82,20 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
     open override func setupViews() {
         contentView.addSubview(containerView)
         
+        setupActionStackViews()
+        
         containerView.addSubview(footerContainerView)
         
         footerContainerView.addArrangedSubview(actionStackView)
         footerContainerView.addArrangedSubview(addCommentView)
         
+        
+        addCommentView.addSubview(sepratorView)
+        addCommentView.addSubview(profileView)
+        addCommentView.addSubview(placeholderLabel)
+    }
+    
+    open func setupActionStackViews() {
         likeContainerView.addSubview(likeContainerStack)
         likeContainerStack.addArrangedSubview(likeButton)
         likeContainerStack.addArrangedSubview(likeCountButton)
@@ -96,10 +105,16 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         
         likeButton.setImage(LMFeedConstants.shared.images.upvoteIcon, for: .normal)
         likeButton.setImage(LMFeedConstants.shared.images.upvoteFilledIcon, for: .selected)
+    }
+    
+    open func setupActionStackLayout() {
+        [likeContainerView, commentButton, saveButton, shareButton].forEach { btn in
+            btn.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        }
         
-        addCommentView.addSubview(sepratorView)
-        addCommentView.addSubview(profileView)
-        addCommentView.addSubview(placeholderLabel)
+        likeContainerView.pinSubView(subView: likeContainerStack, padding: .init(top: 0, left: 8, bottom: 0, right: -8))
+        likeButton.setWidthConstraint(with: 24)
+        likeButton.setHeightConstraint(with: 24)
     }
     
     
@@ -113,13 +128,7 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         
         containerView.pinSubView(subView: footerContainerView, padding: .init(top: 8, left: 16, bottom: -8, right: -16))
         
-        [likeContainerView, commentButton, saveButton, shareButton].forEach { btn in
-            btn.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-        }
-        
-        likeContainerView.pinSubView(subView: likeContainerStack, padding: .init(top: 0, left: 8, bottom: 0, right: -8))
-        likeButton.setWidthConstraint(with: 24)
-        likeButton.setHeightConstraint(with: 24)
+        setupActionStackLayout()
         
         sepratorView.addConstraint(top: (addCommentView.topAnchor, 0),
                                    leading: (addCommentView.leadingAnchor, 0),
