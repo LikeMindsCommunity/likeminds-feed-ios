@@ -222,7 +222,7 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
     open func configureEmptyListView() {
         emptyListView.configure(title: LMStringConstants.shared.newPost) { [weak self] in
             do {
-                let viewcontroller = try LMFeedCreatePostViewModel.createModule(showHeading: true)
+                let viewcontroller = try LMFeedCreatePostViewModel.createModule(showHeading: false)
                 self?.navigationController?.pushViewController(viewcontroller, animated: true)
             } catch let error {
                 print(error.localizedDescription)
@@ -328,6 +328,7 @@ extension LMFeedBasePostListScreen: LMFeedPostHeaderViewProtocol {
 }
 
 // MARK: - LMFeedPostFooterViewProtocol
+@objc
 extension LMFeedBasePostListScreen: LMFeedPostFooterViewProtocol {
     public func didTapLikeButton(for postID: String) {
         if let index = data.firstIndex(where: { $0.postID == postID }) {
@@ -349,8 +350,7 @@ extension LMFeedBasePostListScreen: LMFeedPostFooterViewProtocol {
     }
     
     public func didTapCommentButton(for postID: String) {
-        guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: true) else { return }
-        navigationController?.pushViewController(viewController, animated: true)
+        fatalError("needs to be implemented by subclass")
     }
     
     public func didTapShareButton(for postID: String) {
@@ -366,10 +366,10 @@ extension LMFeedBasePostListScreen: LMFeedPostFooterViewProtocol {
 }
 
 // MARK: - LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol
+@objc
 extension LMFeedBasePostListScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol {
     public func didTapPost(postID: String) {
-        guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: false) else { return }
-        navigationController?.pushViewController(viewController, animated: true)
+        fatalError("Needs to be implemented by subclass")
     }
     
     public func didTapURL(url: URL) {

@@ -79,4 +79,5 @@ public struct LMUIComponents {
     public var qnaLinkCell: LMFeedPostQnALinkCell.Type = LMFeedPostQnALinkCell.self
     public var qnaDocumentCell: LMFeedPostQnADocumentCell.Type = LMFeedPostQnADocumentCell.self
     public var qnaFooterView: LMFeedPostQnAFooterView.Type = LMFeedPostQnAFooterView.self
+    public var qnaFooterDetailView: LMFeedPostDetailFooterView.Type = LMFeedPostDetailFooterView.self
 }

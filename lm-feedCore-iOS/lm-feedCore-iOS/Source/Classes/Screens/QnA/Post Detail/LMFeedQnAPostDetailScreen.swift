@@ -1,43 +1,42 @@
 //
-//  LMFeedPostDetailScreen.swift
-//  LMFramework
+//  LMFeedQnAPostDetailScreen.swift
+//  LikeMindsFeedCore
 //
-//  Created by Devansh Mohata on 15/12/23.
+//  Created by Devansh Mohata on 31/07/24.
 //
 
 import LikeMindsFeedUI
 import UIKit
 
-open class LMFeedPostDetailScreen: LMFeedBasePostDetailScreen {
+open class LMFeedQnAPostDetailScreen: LMFeedBasePostDetailScreen {
     open override func setupTableView(_ table: UITableView) {
-        table.register(LMUIComponents.shared.postDetailMediaCell)
-        table.register(LMUIComponents.shared.postDetailLinkCell)
-        table.register(LMUIComponents.shared.postDetailDocumentCell)
+        table.register(LMUIComponents.shared.qnaPostCell)
+        table.register(LMUIComponents.shared.qnaLinkCell)
+        table.register(LMUIComponents.shared.qnaDocumentCell)
         table.register(LMUIComponents.shared.postDetailPollCell)
         table.register(LMUIComponents.shared.replyView)
         table.registerHeaderFooter(LMUIComponents.shared.loadMoreReplies)
         table.registerHeaderFooter(LMUIComponents.shared.commentView)
         table.registerHeaderFooter(LMUIComponents.shared.postDetailHeaderView)
-        table.registerHeaderFooter(LMUIComponents.shared.postDetailFooterView)
+        table.registerHeaderFooter(LMUIComponents.shared.qnaFooterDetailView)
     }
-    
     
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0,
            let postData {
             switch postData.postType {
             case .text, .media:
-                if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailMediaCell) {
+                if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.qnaPostCell) {
                     cell.configure(with: postData, delegate: self)
                     return cell
                 }
             case .link:
-                if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailLinkCell) {
+                if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.qnaLinkCell) {
                     cell.configure(with: postData, delegate: self)
                     return cell
                 }
             case .documents:
-                if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailDocumentCell) {
+                if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.qnaDocumentCell) {
                     cell.configure(for: indexPath, with: postData, delegate: self)
                     return cell
                 }
@@ -62,7 +61,7 @@ open class LMFeedPostDetailScreen: LMFeedBasePostDetailScreen {
     open override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 0,
            let postData,
-           let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.postDetailFooterView) {
+           let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.qnaFooterDetailView) {
             footer.configure(with: postData.footerData, postID: postData.postID, delegate: self, commentCount: postData.totalCommentCount)
             return footer
         } else if let data = commentsData[safe: section - 1],

@@ -56,4 +56,14 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
         }
         return nil
     }
+    
+    public override func didTapPost(postID: String) {
+        guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: false) else { return }
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    public override func didTapCommentButton(for postID: String) {
+        guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: true) else { return }
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 }
