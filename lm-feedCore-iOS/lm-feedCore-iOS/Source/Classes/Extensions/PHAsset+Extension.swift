@@ -32,3 +32,13 @@ extension PHAsset {
         }
     }
 }
+
+public enum MediaType: String {
+    case image
+    case gif
+    case video
+    case livePhoto
+    case pdf
+    case audio
+    case voice_note
+}
