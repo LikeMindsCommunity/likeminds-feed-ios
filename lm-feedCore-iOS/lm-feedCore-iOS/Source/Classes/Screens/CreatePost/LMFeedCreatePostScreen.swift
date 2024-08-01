@@ -9,6 +9,7 @@ import AVKit
 import BSImagePicker
 import LikeMindsFeedUI
 import UIKit
+import Kingfisher
 import Photos
 
 @IBDesignable
@@ -621,6 +622,7 @@ public extension LMFeedCreatePostScreen {
         }, deselect: { asset in
         }, cancel: { _ in
         }, finish: { [weak self] assets in
+            
             self?.handleMultiMedia(with: assets)
         })
     }
@@ -656,14 +658,14 @@ public extension LMFeedCreatePostScreen {
         }
         
         dispatchGroup.notify(queue: .main) { [weak self] in
-            var value = LocalPreferences.communityConfiguration?.configs.first?.value
-            let imageSizeLimit: Int64 = Int64(value?.maxImageSize ?? 5 * 1024)  // 5MB in bytes
-            let videoSizeLimit: Int64 = Int64(value?.maxVideoSize ?? 100 * 1024)  // 100MB in bytes
+            let value = LocalPreferences.communityConfiguration?.configs.first?.value
+            let imageSizeLimit: Int64 = Int64(value?.maxImageSize ?? 5 * 1024)  // 5MB in Kilobytes
+            let videoSizeLimit: Int64 = Int64(value?.maxVideoSize ?? 100 * 1024)  // 100MB in Kilobytes
             
             var sizeLimitErrorShown : Bool = false
             
             let filteredAssets = currentAssets.filter { assetTuple in
-                guard let (asset, url, data) = assetTuple else {
+                guard let (asset, _, data) = assetTuple else {
                     return false
                 }
                 let fileSize = Int64(data.count/1024) // Converts Byte into Kilobytes
@@ -673,6 +675,7 @@ public extension LMFeedCreatePostScreen {
                         return true
                     }else{
                         if(!sizeLimitErrorShown){
+                            sizeLimitErrorShown = true
                             self?.showError(with: "Please select image smaller than \(imageSizeLimit/1024)MB", isPopVC: false)
                         }
                         return false
@@ -683,6 +686,7 @@ public extension LMFeedCreatePostScreen {
                         return true
                     }else{
                         if(!sizeLimitErrorShown){
+                            sizeLimitErrorShown = true
                             self?.showError(with: "Please select videos smaller than \(videoSizeLimit/1024)MB", isPopVC: false)
                         }
                         return false
@@ -690,7 +694,7 @@ public extension LMFeedCreatePostScreen {
                 default:
                     return false
                 }
-            }.map{ $0! }
+            }.compactMap{ $0 }
             
             self?.viewModel?.handleAssets(assets: filteredAssets.map { ($0.asset, $0.url, $0.data) })
         }
