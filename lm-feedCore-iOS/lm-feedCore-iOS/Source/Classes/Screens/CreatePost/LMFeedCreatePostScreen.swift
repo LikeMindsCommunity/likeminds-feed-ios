@@ -301,16 +301,17 @@ open class LMFeedCreatePostScreen: LMViewController {
         scrollStackView.setWidthConstraint(with: containerStackView.widthAnchor)
         mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
         
-        if showQuestionHeading {
-            headingTextContainer.pinSubView(subView: headingTextView)
-            
-            headerSepratorView.addConstraint(bottom: (headingTextContainer.bottomAnchor, 0),
-                                             leading: (headingTextContainer.leadingAnchor, 0),
-                                             trailing: (headingTextContainer.trailingAnchor, 0))
-            headerSepratorView.setHeightConstraint(with: 1)
-            
-            headingTextContainer.setHeightConstraint(with: 100)
-        }
+        headingTextContainer.pinSubView(subView: headingTextView)
+        
+        headerSepratorView.addConstraint(bottom: (headingTextContainer.bottomAnchor, 0),
+                                         leading: (headingTextContainer.leadingAnchor, 0),
+                                         trailing: (headingTextContainer.trailingAnchor, 0))
+        headerSepratorView.setHeightConstraint(with: 1)
+        
+        headingTextContainer.setHeightConstraint(with: 100)
+        
+        
+        headingTextContainer.isHidden = !showQuestionHeading
         
         scrollStackView.subviews.forEach { subView in
             if subView != addMoreButton {

@@ -10,7 +10,7 @@ import LikeMindsFeedUI
 
 public protocol LMFeedEditPostViewModelProtocol: LMBaseViewControllerProtocol {
     func navigateToTopicView(with topics: [LMFeedTopicDataModel])
-    func setupData(with userData: LMFeedCreatePostHeaderView.ContentModel, text: String)
+    func setupData(with userData: LMFeedCreatePostHeaderView.ContentModel, question: String, text: String)
     func setupDocumentPreview(with data: [LMFeedDocumentPreview.ContentModel])
     func setupLinkPreview(with data: LMFeedLinkPreview.ContentModel?)
     func setupMediaPreview(with mediaCells: [LMFeedMediaProtocol])
@@ -138,7 +138,7 @@ public final class LMFeedEditPostViewModel {
         
         let headerData: LMFeedCreatePostHeaderView.ContentModel = .init(profileImage: postDetail.userDetails.userProfileImage, username: postDetail.userDetails.userName)
         
-        delegate?.setupData(with: headerData, text: postDetail.postContent)
+        delegate?.setupData(with: headerData, question: postDetail.postQuestion, text: postDetail.postContent)
         
         
         if !media.isEmpty {
@@ -236,7 +236,7 @@ extension LMFeedEditPostViewModel {
 
 // MARK: Update Post
 extension LMFeedEditPostViewModel {
-    func updatePost(with text: String) {
+    func updatePost(with text: String, question: String) {
         let disabledTopics = selectedTopics.filter({ !$0.isEnabled }).map({ $0.topicName })
         
         guard disabledTopics.isEmpty else {
@@ -245,7 +245,8 @@ extension LMFeedEditPostViewModel {
         }
         
         LMFeedEditPostOperation.shared.editPostWithAttachments(
-            postID: postID,
+            postID: postID, 
+            heading: question,
             postCaption: text,
             topics: selectedTopics.map({ $0.topicID }),
             documents: documents,

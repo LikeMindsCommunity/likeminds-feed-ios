@@ -97,12 +97,13 @@ open class LMTextView: UITextView {
     }
     
     public func getText() -> String {
-        if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-            text == placeHolderText {
+        let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if trimmedText.isEmpty || trimmedText == placeHolderText {
             return ""
-        } else {
-            return text.trimmingCharacters(in: .whitespacesAndNewlines)
         }
+        
+        return trimmedText
     }
 }
 

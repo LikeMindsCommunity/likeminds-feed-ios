@@ -12,15 +12,17 @@ final class LMFeedEditPostOperation {
 
     static let shared = LMFeedEditPostOperation()
     
-    func editPostWithAttachments(postID: String, postCaption: String?, topics: [String], documents: [LMFeedPostDataModel.DocumentAttachment], media: [LMFeedPostDataModel.ImageVideoAttachment], linkAttachment: LMFeedPostDataModel.LinkAttachment?, poll: LMFeedPollDataModel?) {
+    func editPostWithAttachments(postID: String, heading: String?, postCaption: String?, topics: [String], documents: [LMFeedPostDataModel.DocumentAttachment], media: [LMFeedPostDataModel.ImageVideoAttachment], linkAttachment: LMFeedPostDataModel.LinkAttachment?, poll: LMFeedPollDataModel?) {
         let attachments = handleAttachments(documents: documents, media: media, linkAttachment: linkAttachment, poll: poll)
         
         let editPostRequest = EditPostRequest.builder()
             .postId(postID)
+            .heading(heading)
             .text(postCaption)
             .attachments(attachments)
             .addTopics(topics)
             .build()
+        
         LMFeedClient.shared.editPost(editPostRequest) { response in
             if response.success,
                let data = response.data?.post,

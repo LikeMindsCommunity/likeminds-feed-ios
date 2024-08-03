@@ -49,7 +49,11 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
     public typealias Snapshot = NSDiffableDataSourceSnapshot<String, LMFeedPostContentModel>
     
     // MARK: Data Variables
-    public var data: [LMFeedPostContentModel] = []
+    public var data: [LMFeedPostContentModel] = [] {
+        didSet {
+            print(data.count)
+        }
+    }
     public var viewModel: LMFeedBasePostListViewModel?
     public weak var delegate: LMFeedPostListVCFromProtocol?
     
@@ -116,7 +120,9 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
     }
     
     // MARK: Helper Methods
-    open func configureTableViewCells(_ tableView: LMTableView) { }
+    open func configureTableViewCells(_ tableView: LMTableView) {
+        fatalError("Needs to be implemented by subclass")
+    }
     
     open func reloadTable(for index: IndexSet? = nil) {
         postList.visibleCells.forEach { cell in
@@ -176,10 +182,6 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
             configureEmptyListView()
         } else {
             postList.backgroundView = nil
-        }
-        
-        if isInitialPage {
-        
         }
         
         applySnapshot()
