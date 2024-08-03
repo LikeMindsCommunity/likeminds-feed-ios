@@ -10,13 +10,14 @@ import LikeMindsFeed
 
 // MARK: LMUniversalFeedViewModelProtocol
 public protocol LMFeedBasePostListViewModelProtocol: LMBaseViewControllerProtocol {
-    func loadPosts(with data: [LMFeedPostContentModel], index: IndexSet?, reloadNow: Bool)
+    func updatePostList(with post: [LMFeedPostContentModel], isInitialPage: Bool)
+    func updatePost(with post: LMFeedPostContentModel)
+    func removePost(with postID: String)
     func showHideFooterLoader(isShow: Bool)
     func showActivityLoader()
     func navigateToEditScreen(for postID: String)
     func navigateToDeleteScreen(for postID: String)
     func navigateToReportScreen(for postID: String, creatorUUID: String)
-    func updateHeader(with data: [LMFeedPostContentModel], section: Int)
     func navigateToPollResultScreen(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?)
     func navigateToAddOptionPoll(with postID: String, pollID: String, options: [String])
 }
@@ -74,14 +75,9 @@ public extension LMFeedBasePostListViewModel {
             guard response.success,
                   let posts = response.data?.posts,
                   let users = response.data?.users else {
-                convertToViewData()
                 isFetchingFeed = false
                 return
             }
-            
-            self.isLastPostReached = posts.isEmpty
-            self.currentPage += 1
-            
             
             let topics: [TopicFeedResponse.TopicResponse] = response.data?.topics?.compactMap {
                 $0.value
@@ -95,23 +91,49 @@ public extension LMFeedBasePostListViewModel {
                 return .init(post: post, users: users, allTopics: topics, widgets: widgets, filteredComments: comments)
             }
             
-            self.postList.append(contentsOf: convertedData)
-            self.convertToViewData()
-            
-            isFetchingFeed = false
+            self.updatePostList(with: convertedData)
         }
     }
     
-    func convertToViewData(for section: IndexSet? = nil, reloadNow: Bool = true) {
-        var convertedViewData: [LMFeedPostContentModel] = []
+    func updatePostList(with data: [LMFeedPostDataModel]) {
+        guard !data.isEmpty else {
+            isFetchingFeed = false
+            return
+        }
         
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            self?.postList.forEach { post in
-                convertedViewData.append(LMFeedConvertToFeedPost.convertToViewModel(for: post))
+        postList.append(contentsOf: data)
+        
+        Task {
+            let convertedData = await convertToViewData(from: data)
+            await MainActor.run {
+                self.isFetchingFeed = false
+                delegate?.updatePostList(with: convertedData, isInitialPage: currentPage == 1)
+                isLastPostReached = postList.isEmpty
+                currentPage += 1
             }
-            
-            DispatchQueue.main.async {
-                self?.delegate?.loadPosts(with: convertedViewData, index: section, reloadNow: reloadNow)
+        }
+    }
+    
+    func updatePost(for postID: String) {
+        guard let post = postList.first(where: { $0.postId == postID }) else { return }
+        
+        let convertedPost = LMFeedConvertToFeedPost.convertToViewModel(for: post)
+        delegate?.updatePost(with: convertedPost)
+    }
+    
+    func convertToViewData(from data: [LMFeedPostDataModel]) async -> [LMFeedPostContentModel] {
+        return await withCheckedContinuation { continuation in
+            Task.detached(priority: .background) { [weak self] in
+                guard let self = self else {
+                    continuation.resume(returning: [])
+                    return
+                }
+                
+                let convertedViewData = self.postList.map { post in
+                    LMFeedConvertToFeedPost.convertToViewModel(for: post)
+                }
+                
+                continuation.resume(returning: convertedViewData)
             }
         }
     }
@@ -131,7 +153,7 @@ public extension LMFeedBasePostListViewModel {
                 feed.likeCount += feed.isLiked ? 1 : -1
                 postList[index] = feed
             } else {
-                convertToViewData(for: IndexSet(integer: index), reloadNow: false)
+                updatePost(for: postId)
             }
         }
     }
@@ -154,7 +176,7 @@ public extension LMFeedBasePostListViewModel {
                 feed.isSaved.toggle()
                 postList[index] = feed
             } else {
-                convertToViewData(for: IndexSet(integer: index), reloadNow: false)
+                updatePost(for: postId)
             }
         }
     }
@@ -179,13 +201,7 @@ public extension LMFeedBasePostListViewModel {
                 
                 postList[index] = feed
                 
-                var convertedViewData: [LMFeedPostContentModel] = []
-                
-                postList.forEach { post in
-                    convertedViewData.append(LMFeedConvertToFeedPost.convertToViewModel(for: post))
-                }
-                
-                delegate?.updateHeader(with: convertedViewData, section: index)
+                updatePost(for: postID)
             }
         }
     }
@@ -293,21 +309,16 @@ public extension LMFeedBasePostListViewModel {
     }
     
     func removePost(for postID: String) {
-        guard let index = postList.firstIndex(where: { $0.postId == postID }) else { return }
-        _ = postList.remove(at: index)
-        convertToViewData()
+        postList.removeAll(where: { $0.postId == postID })
+        delegate?.removePost(with: postID)
     }
-}
-
-// MARK: Update Post Content
-public extension LMFeedBasePostListViewModel {
+    
     func updatePostData(for post: LMFeedPostDataModel) {
         guard let index = postList.firstIndex(where: { $0.postId == post.postId }) else { return }
         postList[index] = post
-        convertToViewData(for: .init(integer: index))
+        updatePost(for: post.postId)
     }
 }
-
 
 // MARK: Poll
 public extension LMFeedBasePostListViewModel {
@@ -347,7 +358,7 @@ public extension LMFeedBasePostListViewModel {
                       let index = postList.firstIndex(where: { $0.postId == id }) else { return }
                 
                 postList[index] = newData
-                convertToViewData(for: .init(integer: index))
+                updatePost(for: id)
             }
         }
     }
@@ -382,7 +393,7 @@ public extension LMFeedBasePostListViewModel {
             post.pollAttachment = poll
             postList[index] = post
             
-            convertToViewData(for: .init(integer: index))
+            updatePost(for: postID)
         }
     }
     
@@ -438,6 +449,6 @@ public extension LMFeedBasePostListViewModel {
         
         postList[index] = post
         
-        convertToViewData(for: .init(integer: index))
+        updatePost(for: postID)
     }
 }

@@ -102,7 +102,6 @@ open class LMFeedQnADetailFooterView: LMFeedPostQnAFooterView {
         
         noCommenTitleLabel.text = "Hello World"
         noCommentSubtitleLabel.text = "WELCOME!!!"
-        totalCommentLabel.text = "fHfsidfjsdfsd"
     }
     
     
@@ -115,8 +114,6 @@ open class LMFeedQnADetailFooterView: LMFeedPostQnAFooterView {
         actionStackContainer.backgroundColor = LMFeedAppearance.shared.colors.white
         addCommentView.backgroundColor = LMFeedAppearance.shared.colors.clear
         commentContainerView.backgroundColor = LMFeedAppearance.shared.colors.white
-        
-        addCommentView.isHidden = true
     }
     
     open override func updateCommentText(for commentCount: Int) {
@@ -124,5 +121,14 @@ open class LMFeedQnADetailFooterView: LMFeedPostQnAFooterView {
         
         totalCommentLabel.text = "\(formattedText(for: commentCount)) \(commentText.pluralize(count: commentCount))"
         commentContainerView.isHidden = commentCount == .zero
+    }
+    
+    open override func configure(with data: LMFeedBasePostFooterView.ContentModel, postID: String, delegate: any LMFeedPostFooterViewProtocol) {
+        super.configure(with: data, postID: postID, delegate: delegate)
+        
+        addCommentView.isHidden = data.commentCount != .zero
+        
+        noCommenTitleLabel.text = "No \(commentText) found!"
+        noCommentSubtitleLabel.text = "Be the first to create a \(commentText)"
     }
 }

@@ -609,7 +609,6 @@ public extension LMFeedBasePostDetailViewModel {
                 var newPost = postDetail
                 newPost?.commentCount -= 1
                 updatePostData(with: newPost)
-                delegate?.deleteComment(at: index.section + 1, with: LMFeedConvertToFeedPost.convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
             } else {
                 commentList[index.section].replies.remove(at: index.row)
                 commentList[index.section].totalRepliesCount -= 1

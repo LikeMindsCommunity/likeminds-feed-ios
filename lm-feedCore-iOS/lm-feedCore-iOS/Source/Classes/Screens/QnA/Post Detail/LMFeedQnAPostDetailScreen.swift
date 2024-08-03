@@ -62,7 +62,7 @@ open class LMFeedQnAPostDetailScreen: LMFeedBasePostDetailScreen {
         if section == 0,
            let postData,
            let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.qnaFooterDetailView) {
-            footer.configure(with: postData.footerData, postID: postData.postID, delegate: self, commentCount: postData.totalCommentCount)
+            footer.configure(with: postData.footerData, postID: postData.postID, delegate: self)
             return footer
         } else if let data = commentsData[safe: section - 1],
                   data.repliesCount != 0,

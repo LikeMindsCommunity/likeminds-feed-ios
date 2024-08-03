@@ -19,30 +19,30 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
         tableView.registerHeaderFooter(LMUIComponents.shared.footerView)
     }
     
-    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch data[indexPath.section].postType {
+    open override func cellForItem(_ item: LMFeedPostContentModel, at indexPath: IndexPath, tableView: UITableView) -> UITableViewCell {
+        switch item.postType {
         case .text, .media:
             if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell, for: indexPath) {
-                cell.configure(with: data[indexPath.section], delegate: self)
+                cell.configure(with: item, delegate: self)
                 return cell
             }
         case .documents:
             if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.documentCell, for: indexPath) {
-                cell.configure(for: indexPath, with: data[indexPath.section], delegate: self)
+                cell.configure(for: indexPath, with: item, delegate: self)
                 return cell
             }
         case .link:
             if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.linkCell, for: indexPath) {
-                cell.configure(with: data[indexPath.section], delegate: self)
+                cell.configure(with: item, delegate: self)
                 return cell
             }
         case .poll:
             if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.pollCell) {
-                cell.configure(with: data[indexPath.section], delegate: self)
+                cell.configure(with: item, delegate: self)
                 return cell
             }
         default:
-            return handleCustomWidget(with: data[indexPath.section])
+            return handleCustomWidget(with: item)
         }
         
         return UITableViewCell()

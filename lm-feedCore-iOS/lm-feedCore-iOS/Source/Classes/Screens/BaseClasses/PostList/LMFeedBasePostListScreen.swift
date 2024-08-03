@@ -28,9 +28,6 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
     open lazy var postList: LMTableView = {
         let table = LMTableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
-        table.dataSource = self
-        table.delegate = self
-        table.prefetchDataSource = self
         table.separatorStyle = .none
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
@@ -48,10 +45,20 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
         return view
     }()
     
+    public typealias DataSource = UITableViewDiffableDataSource<String, LMFeedPostContentModel>
+    public typealias Snapshot = NSDiffableDataSourceSnapshot<String, LMFeedPostContentModel>
+    
     // MARK: Data Variables
     public var data: [LMFeedPostContentModel] = []
     public var viewModel: LMFeedBasePostListViewModel?
     public weak var delegate: LMFeedPostListVCFromProtocol?
+    
+    public private(set) lazy var dataSource: DataSource = {
+        let dataSource = DataSource(tableView: postList) { [unowned self] tableView, indexPath, item in
+            cellForItem(item, at: indexPath, tableView: tableView)
+        }
+        return dataSource
+    }()
     
     // MARK: Setup Methods
     open override func setupViews() {
@@ -85,6 +92,11 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
     // MARK: Lifecycle Methods
     open override func viewDidLoad() {
         super.viewDidLoad()
+        
+        postList.dataSource = dataSource
+        postList.delegate = self
+        postList.prefetchDataSource = self
+        
         viewModel?.getFeed()
         
         // Analytics
@@ -152,23 +164,65 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
         navigationController?.pushViewController(viewcontroller, animated: true)
     }
     
-    open func loadPosts(with data: [LMFeedPostContentModel], index: IndexSet?, reloadNow: Bool) {
+    public func updatePostList(with post: [LMFeedPostContentModel], isInitialPage: Bool) {
+        if isInitialPage {
+            data.removeAll(keepingCapacity: true)
+            applySnapshot()
+        }
+        
+        data.append(contentsOf: post)
+        
         if data.isEmpty {
             configureEmptyListView()
         } else {
             postList.backgroundView = nil
         }
         
-        guard reloadNow else { return }
+        if isInitialPage {
         
-        self.data = data
-        
-        if let index {
-            reloadTable(for: index)
-        } else {
-            reloadTable()
         }
-        delegate?.onPostDataFetched(isEmpty: self.data.isEmpty)
+        
+        applySnapshot()
+    }
+    
+    public func updatePost(with post: LMFeedPostContentModel) {
+        guard let index = data.firstIndex(where: { $0.postID == post.postID }) else { return }
+        
+        data[index] = post
+        applySnapshot()
+    }
+    
+    public func removePost(with postID: String) {
+        data.removeAll(where: { $0.postID == postID })
+        applySnapshot()
+    }
+    
+    private func applySnapshot(animatingDifferences: Bool = false) {
+        var snapshot = Snapshot()
+        
+        // Use a Set to track added post objects directly
+        var addedPosts = Set<LMFeedPostContentModel>()
+        
+        for post in data {
+            // Check if the post is already added
+            if !addedPosts.contains(post) {
+                // Add the section and the item for this unique post
+                snapshot.appendSections([post.postID])
+                snapshot.appendItems([post], toSection: post.postID)
+                
+                // Track this post as added
+                addedPosts.insert(post)
+            }
+        }
+        
+        // Apply the snapshot
+        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
+    }
+
+    private func clearSnapshot() {
+        var snapshot = dataSource.snapshot()
+        snapshot.deleteAllItems() // This clears all sections and items
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
     
     open func showHideFooterLoader(isShow: Bool) {
@@ -233,23 +287,14 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
         emptyListView.setHeightConstraint(with: postList.heightAnchor)
         emptyListView.setWidthConstraint(with: postList.widthAnchor)
     }
+    
+    open func cellForItem(_ item: LMFeedPostContentModel, at indexPath: IndexPath, tableView: UITableView) -> UITableViewCell {
+        fatalError("Must be implemented by subclass")
+    }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching
-extension LMFeedBasePostListScreen: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
-    open func numberOfSections(in tableView: UITableView) -> Int {
-        return data.count
-    }
-    
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // To be implemented by subclasses
-        fatalError("Must be implemented by subclass")
-    }
-    
+extension LMFeedBasePostListScreen: UITableViewDelegate, UITableViewDataSourcePrefetching {
     open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let cellData = data[safe: section],
            let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.headerView) {
