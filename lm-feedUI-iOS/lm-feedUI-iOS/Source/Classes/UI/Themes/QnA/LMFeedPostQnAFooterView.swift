@@ -5,6 +5,7 @@
 //  Created by Devansh Mohata on 21/07/24.
 //
 
+import Kingfisher
 import UIKit
 
 open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
@@ -174,6 +175,9 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         actionStackView.spacing = 16
         
         likeButton.tintColor = LMFeedAppearance.shared.colors.appTintColor
+        
+        profileView.clipsToBounds = true
+        profileView.layer.cornerRadius = profileView.frame.size.height / 2
     }
     
     
@@ -187,5 +191,11 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         commentButton.setTitle(formattedText(for: commentCount), for: .normal)
         
         addCommentView.isHidden = commentCount != .zero
+    }
+    
+    open override func configure(with data: LMFeedBasePostFooterView.ContentModel, postID: String, delegate: any LMFeedPostFooterViewProtocol) {
+        super.configure(with: data, postID: postID, delegate: delegate)
+        
+        profileView.kf.setImage(with: URL(string: data.user?.userProfileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.user?.userName))
     }
 }

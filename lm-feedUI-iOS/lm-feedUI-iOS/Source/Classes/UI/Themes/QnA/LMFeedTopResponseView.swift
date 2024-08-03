@@ -123,7 +123,7 @@ open class LMFeedTopResponseView: LMView {
                                          trailing: (titleLabel.trailingAnchor, 0))
         
         profilePicture.setWidthConstraint(with: profilePictureHeight)
-        profilePicture.setHeightConstraint(with: profilePicture.widthAnchor)
+        profilePicture.setHeightConstraint(with: profilePictureHeight)
         
         contentContainerView.pinSubView(subView: contentStackView, padding: .init(top: 8, left: 8, bottom: -8, right: -8))
         
@@ -144,6 +144,7 @@ open class LMFeedTopResponseView: LMView {
         contentStackView.clipsToBounds = true
         contentStackView.layer.masksToBounds = true
         
+        profilePicture.clipsToBounds = true
         profilePicture.layer.cornerRadius = profilePictureHeight / 2
     }
     

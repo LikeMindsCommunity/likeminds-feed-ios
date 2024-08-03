@@ -83,13 +83,20 @@ public struct LMFeedConvertToFeedPost {
     }
     
     public static func convertToFooterViewData(from data: LMFeedPostDataModel) -> LMFeedPostFooterView.ContentModel {
-        .init(
+        var loggedInUser: LMFeedUserModel?
+        
+        if let user = LikeMindsFeed.UserDetails.userDetails {
+            loggedInUser = .init(userName: user.name ?? "User", userUUID: user.sdkClientInfo?.uuid ?? "uuid", userProfileImage: user.imageUrl, customTitle: user.customTitle)
+        }
+        
+        return .init(
             isSaved: data.isSaved,
             isLiked: data.isLiked,
             likeCount: data.likeCount,
             commentCount: data.commentCount,
             likeText: LMStringConstants.shared.likeVariable,
-            commentText: LMStringConstants.shared.commentVariable
+            commentText: LMStringConstants.shared.commentVariable,
+            user: loggedInUser
         )
     }
     

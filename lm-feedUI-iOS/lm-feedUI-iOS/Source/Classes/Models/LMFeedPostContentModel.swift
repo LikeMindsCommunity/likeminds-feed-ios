@@ -55,6 +55,8 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(postID)
+        hasher.combine(postQuestion)
+        hasher.combine(postText)
     }
     
     public init(

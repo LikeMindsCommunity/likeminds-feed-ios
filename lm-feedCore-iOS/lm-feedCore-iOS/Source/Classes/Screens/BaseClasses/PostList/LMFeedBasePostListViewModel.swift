@@ -25,10 +25,10 @@ public protocol LMFeedBasePostListViewModelProtocol: LMBaseViewControllerProtoco
 public class LMFeedBasePostListViewModel {
     public var currentPage: Int
     public var pageSize: Int
-    public var selectedTopics: [String] = []
-    public var isLastPostReached: Bool = false
-    public var isFetchingFeed: Bool = false
-    public var postList: [LMFeedPostDataModel] = []
+    public var selectedTopics: [String]
+    public var isLastPostReached: Bool
+    public var isFetchingFeed: Bool
+    public var postList: [LMFeedPostDataModel]
     
     public weak var delegate: LMFeedBasePostListViewModelProtocol?
     
@@ -129,7 +129,7 @@ public extension LMFeedBasePostListViewModel {
                     return
                 }
                 
-                let convertedViewData = self.postList.map { post in
+                let convertedViewData = data.map { post in
                     LMFeedConvertToFeedPost.convertToViewModel(for: post)
                 }
                 

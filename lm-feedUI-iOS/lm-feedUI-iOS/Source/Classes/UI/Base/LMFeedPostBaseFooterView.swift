@@ -26,14 +26,16 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
         public var commentCount: Int
         public var likeText: String
         public var commentText: String
+        public let user: LMFeedUserModel?
         
-        public init(isSaved: Bool, isLiked: Bool, likeCount: Int, commentCount: Int, likeText: String, commentText: String) {
+        public init(isSaved: Bool, isLiked: Bool, likeCount: Int, commentCount: Int, likeText: String, commentText: String, user: LMFeedUserModel?) {
             self.isSaved = isSaved
             self.isLiked = isLiked
             self.likeCount = likeCount
             self.commentCount = commentCount
             self.likeText = likeText
             self.commentText = commentText
+            self.user = user
         }
     }
     
