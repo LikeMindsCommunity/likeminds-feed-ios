@@ -57,6 +57,7 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
         hasher.combine(postID)
         hasher.combine(postQuestion)
         hasher.combine(postText)
+        hasher.combine(totalCommentCount)
     }
     
     public init(

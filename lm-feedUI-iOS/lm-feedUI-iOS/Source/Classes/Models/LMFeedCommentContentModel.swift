@@ -18,7 +18,7 @@ public protocol LMFeedPostCommentProtocol: AnyObject {
 }
 
 // MARK: LMFeedCommentViewModel
-public struct LMFeedCommentContentModel {
+public struct LMFeedCommentContentModel: Hashable {
     public let author: LMFeedUserModel
     public let commentId: String?
     public let tempCommentId: String?
@@ -53,6 +53,15 @@ public struct LMFeedCommentContentModel {
         "• \(totalReplyCount) \(totalReplyCount > 1 ? LMFeedConstants.shared.strings.replies : LMFeedConstants.shared.strings.reply)"
     }
     
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(commentId)
+        hasher.combine(comment)
+        hasher.combine(replies)
+    }
+    
+    public static func == (lhs: LMFeedCommentContentModel, rhs: LMFeedCommentContentModel) -> Bool {
+        lhs.commentId == rhs.commentId
+    }
     
     public init(
         author: LMFeedUserModel,

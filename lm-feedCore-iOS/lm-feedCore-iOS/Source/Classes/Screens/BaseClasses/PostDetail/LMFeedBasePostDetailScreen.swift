@@ -9,16 +9,13 @@ import LikeMindsFeedUI
 import UIKit
 
 public protocol LMFeedBasePostDetailViewModelProtocol: LMBaseViewControllerProtocol {
-    func showPostDetails(with post: LMFeedPostContentModel, comments: [LMFeedCommentContentModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool)
-    func reloadComments(with comments: [LMFeedCommentContentModel], index: IndexSet?)
-    func insertComment(at index: IndexSet, with comments: [LMFeedCommentContentModel], totalCommentCount: Int)
-    func deleteComment(at index: Int, with comments: [LMFeedCommentContentModel], totalCommentCount: Int)
-    func deleteRows(for section: Int, comments: [LMFeedCommentContentModel])
+    func updatePostDetails(with post: LMFeedPostContentModel, comments: [LMFeedCommentContentModel], isInitialPage: Bool)
+    func scrollToComment(openCommentSection: Bool, scrollToCommentSection: Bool)
+    func updateComment(comment: LMFeedCommentContentModel)
+    func updateReply(reply: LMFeedCommentContentModel, parentCommentID: String)
+    func deleteComment(commentID: String)
+    func deleteReply(commentID: String, parentCommentID: String)
     
-    func resetHeaderData()
-    func resetFooterData(isSaved: Bool, isLiked: Bool)
-    
-    func changeCommentLike(for indexPath: IndexPath)
     func replyToComment(userName: String)
     
     func updateCommentStatus(isEnabled: Bool)
@@ -46,8 +43,6 @@ open class LMFeedBasePostDetailScreen: LMViewController {
         table.sectionHeaderHeight = UITableView.automaticDimension
         table.estimatedSectionFooterHeight = 1
         table.sectionFooterHeight = UITableView.automaticDimension
-        table.dataSource = self
-        table.delegate = self
         return table
     }()
     
@@ -135,13 +130,22 @@ open class LMFeedBasePostDetailScreen: LMViewController {
         return view
     }()
     
+    
+    public var dataSource: DataSource!
+    
     open var inputTextViewBottomConstraint: NSLayoutConstraint?
     open var inputTextViewHeightConstraint: NSLayoutConstraint?
     open var tagsTableViewHeightConstraint: NSLayoutConstraint?
     
     
+    
+    // MARK: Type Alias
+    public typealias DataSource = UITableViewDiffableDataSource<Section, Item>
+    public typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
+    
+    
     // MARK: Data Variables
-    public var postData: LMFeedPostContentModel?
+    public var postData: LMFeedPostContentModel!
     public var commentsData: [LMFeedCommentContentModel] = []
     public var textInputMaximumHeight: CGFloat = 100
     public var viewModel: LMFeedBasePostDetailViewModel?
@@ -321,6 +325,7 @@ open class LMFeedBasePostDetailScreen: LMViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupTableViewDataSource()
         setupTableView(postDetailListView)
         
         updateCommentStatus(isEnabled: LocalPreferences.memberState?.memberRights?.contains(where: { $0.state == .commentOrReplyOnPost }) ?? false)
@@ -354,7 +359,37 @@ open class LMFeedBasePostDetailScreen: LMViewController {
                                       subtitle: "\(commentCount) \(LMStringConstants.shared.commentVariable.pluralize(count: commentCount))",
                                       alignment: .center)
     }
+    
+    
+    // MARK: Table View
+    public func setupTableViewDataSource() {
+        dataSource = DataSource(tableView: postDetailListView) { [unowned self] tableView, indexPath, item in
+            switch item {
+            case .postContent(let post):
+                cellForPost(tableView: tableView, indexPath: indexPath, post: post)
+            case .reply(let reply):
+                cellForReply(tableView: tableView, indexPath: indexPath, reply: reply)
+            }
+        }
+        
+        postDetailListView.dataSource = dataSource
+        postDetailListView.delegate = self
+        
+    }
+    
+    open func cellForPost(tableView: UITableView, indexPath: IndexPath, post: LMFeedPostContentModel) -> UITableViewCell {
+        fatalError("Needs to be implemented by subclass")
+    }
+    
+    open func cellForReply(tableView: UITableView, indexPath: IndexPath, reply: LMFeedCommentContentModel) -> UITableViewCell {
+        fatalError("Needs to be implemented by subclass")
+    }
+    
+    open func handleCustomCell(tableView: UITableView, indexPath: IndexPath, post: LMFeedPostContentModel) -> UITableViewCell {
+        fatalError("Needs to be implemented by subclass")
+    }
 }
+
 
 // MARK: Keyboard Extension
 @objc
@@ -374,23 +409,80 @@ extension LMFeedBasePostDetailScreen {
     }
 }
 
-// MARK: UITableViewDataSource, UITableViewDelegate
-@objc
-extension LMFeedBasePostDetailScreen: UITableViewDataSource, UITableViewDelegate {
-    open func numberOfSections(in tableView: UITableView) -> Int {
-        guard postData != nil else { return .zero }
-        return commentsData.count + 1
+// MARK: Table View
+extension LMFeedBasePostDetailScreen: UITableViewDelegate {
+    public func updateComment(comment: LMFeedCommentContentModel) {
+        guard let index = commentsData.firstIndex(where: { $0.commentId == comment.commentId }) else { return }
+        
+        commentsData[index] = comment
+        updateCommentSnapshot(comment: comment)
     }
     
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let comment = commentsData[safe: section - 1] {
-            return comment.replies.count
+    public func updateReply(reply: LMFeedCommentContentModel, parentCommentID: String) {
+        guard let parentIndex = commentsData.firstIndex(where: { $0.commentId == parentCommentID }),
+              let index = commentsData[parentIndex].replies.firstIndex(where: { $0.commentId == reply.commentId }) else { return }
+        
+        commentsData[parentIndex].replies[index] = reply
+        updateCommentSnapshot(comment: commentsData[parentIndex])
+    }
+    
+    public func updateCommentSnapshot(comment: LMFeedCommentContentModel) {
+        var snapshot = dataSource.snapshot()
+        
+        // Find the correct section
+        if let section = snapshot.sectionIdentifiers.first(where: {
+            if case .comments(let commenter) = $0, commenter.commentId == comment.commentId {
+                return true
+            }
+            return false
+        }) {
+            // Update the section with the new comment data
+            snapshot.reloadSections([section])
+            
+            // If the number of replies has changed, we need to update the items in the section
+            let currentItems = snapshot.itemIdentifiers(inSection: section)
+            let updatedItems = comment.replies.map { Item.reply($0) }
+            
+            if currentItems.count != updatedItems.count {
+                snapshot.deleteItems(currentItems)
+                snapshot.appendItems(updatedItems, toSection: section)
+            } else {
+                snapshot.reloadItems(currentItems)
+            }
+            
+            dataSource.apply(snapshot, animatingDifferences: true)
         }
-        return 1
     }
     
-    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        fatalError("Needs to be implemented by subclass")
+    public func deleteComment(commentID: String) {
+        guard let index = commentsData.firstIndex(where: { $0.commentId == commentID }) else { return }
+        
+        commentsData.remove(at: index)
+        applySnapshot()
+    }
+    
+    public func deleteReply(commentID: String, parentCommentID: String) {
+        guard let parentIndex = commentsData.firstIndex(where: { $0.commentId == parentCommentID }),
+              let index = commentsData[parentIndex].replies.firstIndex(where: { $0.commentId == commentID }) else { return }
+        
+        commentsData[parentIndex].replies.remove(at: index)
+        
+        updateCommentSnapshot(comment: commentsData[parentIndex])
+    }
+    
+    public func applySnapshot(animatingDifferences: Bool = false) {
+        var snapshot = Snapshot()
+        
+        snapshot.appendSections([.post])
+        snapshot.appendItems([.postContent(postData)], toSection: .post)
+        
+        for comment in commentsData {
+            let commentSection = Section.comments(comment)
+            snapshot.appendSections([commentSection])
+            snapshot.appendItems(comment.replies.map { Item.reply($0) }, toSection: commentSection)
+        }
+        
+        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
     
     open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -596,24 +688,30 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
         navigationController?.pushViewController(viewcontroller, animated: true)
     }
     
-    public func showPostDetails(with post: LMFeedPostContentModel, comments: [LMFeedCommentContentModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool) {
+    public func updatePostDetails(with post: LMFeedPostContentModel, comments: [LMFeedCommentContentModel], isInitialPage: Bool) {
+        if isInitialPage {
+            commentsData.removeAll(keepingCapacity: true)
+        }
+        
         setNavigationTitle(with: post.totalCommentCount)
         showHideLoaderView(isShow: false)
         
-        self.postData = post
-        self.commentsData = comments
+        postData = post
+        commentsData.append(contentsOf: comments)
         
-        reloadTable(for: indexPath)
-        
-        if openCommentSection,
-           isCommentingEnabled {
+        applySnapshot()
+    }
+    
+    public func scrollToComment(openCommentSection: Bool, scrollToCommentSection: Bool) {
+        if isCommentingEnabled,
+           openCommentSection {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 self?.inputTextView.becomeFirstResponder()
             }
         }
         
-        if postDetailListView.numberOfSections >= 1,
-           scrollToCommentSection {
+        if scrollToCommentSection,
+           !commentsData.isEmpty {
             postDetailListView.scrollToRow(at: IndexPath(row: NSNotFound, section: 1), at: .bottom, animated: true)
         }
     }
@@ -858,6 +956,50 @@ extension LMFeedBasePostDetailScreen: LMFeedAddOptionProtocol {
             showError(with: errorMessage ?? "Something went wrong", isPopVC: false)
         } else {
             viewModel?.getPost(isInitialFetch: true)
+        }
+    }
+}
+
+
+public extension LMFeedBasePostDetailScreen {
+    enum Section: Hashable {
+        case post
+        case comments(LMFeedCommentContentModel) // Each comment is its own section
+        
+        public static func == (lhs: LMFeedBasePostDetailScreen.Section, rhs: LMFeedBasePostDetailScreen.Section) -> Bool {
+            switch (lhs, rhs) {
+            case (.post, .post):
+                return true
+            case (.comments(let lhsComment), .comments(let rhsComment)):
+                return lhsComment.commentId == rhsComment.commentId
+            default:
+                return false
+            }
+        }
+    }
+    
+    enum Item: Hashable {
+        case postContent(LMFeedPostContentModel)
+        case reply(LMFeedCommentContentModel)
+        
+        public func hash(into hasher: inout Hasher) {
+            switch self {
+            case .postContent(let post):
+                hasher.combine(post.postID)
+            case .reply(let reply):
+                hasher.combine(reply.commentId)
+            }
+        }
+        
+        public static func == (lhs: Item, rhs: Item) -> Bool {
+            switch (lhs, rhs) {
+            case (.postContent(let post1), .postContent(let post2)):
+                return post1.postID == post2.postID
+            case (.reply(let reply1), .reply(let reply2)):
+                return reply1.commentId == reply2.commentId
+            default:
+                return false
+            }
         }
     }
 }

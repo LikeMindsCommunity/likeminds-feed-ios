@@ -220,12 +220,6 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
         // Apply the snapshot
         dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
-
-    private func clearSnapshot() {
-        var snapshot = dataSource.snapshot()
-        snapshot.deleteAllItems() // This clears all sections and items
-        dataSource.apply(snapshot, animatingDifferences: false)
-    }
     
     open func showHideFooterLoader(isShow: Bool) {
         postList.showHideFooterLoader(isShow: isShow)

@@ -123,12 +123,7 @@ public extension LMFeedBasePostListViewModel {
     
     func convertToViewData(from data: [LMFeedPostDataModel]) async -> [LMFeedPostContentModel] {
         return await withCheckedContinuation { continuation in
-            Task.detached(priority: .background) { [weak self] in
-                guard let self = self else {
-                    continuation.resume(returning: [])
-                    return
-                }
-                
+            Task.detached(priority: .background) {
                 let convertedViewData = data.map { post in
                     LMFeedConvertToFeedPost.convertToViewModel(for: post)
                 }
