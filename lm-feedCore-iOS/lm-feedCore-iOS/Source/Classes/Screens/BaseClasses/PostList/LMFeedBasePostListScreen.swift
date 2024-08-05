@@ -57,12 +57,6 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
     public var viewModel: LMFeedBasePostListViewModel?
     public weak var delegate: LMFeedPostListVCFromProtocol?
     
-    public private(set) lazy var dataSource: DataSource = {
-        let dataSource = DataSource(tableView: postList) { [unowned self] tableView, indexPath, item in
-            cellForItem(item, at: indexPath, tableView: tableView)
-        }
-        return dataSource
-    }()
     
     // MARK: Setup Methods
     open override func setupViews() {
@@ -97,7 +91,7 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        postList.dataSource = dataSource
+        postList.dataSource = self
         postList.delegate = self
         postList.prefetchDataSource = self
         
@@ -173,10 +167,11 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
     public func updatePostList(with post: [LMFeedPostContentModel], isInitialPage: Bool) {
         if isInitialPage {
             data.removeAll(keepingCapacity: true)
-            applySnapshot()
         }
         
+        let oldIndex = data.count
         data.append(contentsOf: post)
+        let newIndex = data.count - 1
         
         if data.isEmpty {
             configureEmptyListView()
@@ -184,41 +179,40 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
             postList.backgroundView = nil
         }
         
-        applySnapshot()
+        if isInitialPage {
+            postList.reloadTable()
+        } else {
+            postList.beginUpdates()
+            let indexSet = IndexSet(integersIn: oldIndex...newIndex)
+            postList.insertSections(indexSet, with: .none)
+            postList.endUpdates()
+        }
     }
     
-    public func updatePost(with post: LMFeedPostContentModel) {
+    public func updatePost(with post: LMFeedPostContentModel, onlyHeader: Bool, onlyFooter: Bool) {
         guard let index = data.firstIndex(where: { $0.postID == post.postID }) else { return }
         
         data[index] = post
-        applySnapshot()
+        
+        if onlyHeader {
+            (postList.headerView(forSection: index) as? LMFeedPostHeaderView)?.togglePinStatus(isPinned: post.headerData.isPinned)
+        } else if onlyFooter {
+            (postList.footerView(forSection: index) as? LMFeedBasePostFooterView)?.configure(with: post.footerData, postID: post.postID, delegate: self)
+        } else {
+            postList.beginUpdates()
+            postList.reloadSections(.init(integer: index), with: .none)
+            postList.endUpdates()
+        }
     }
     
     public func removePost(with postID: String) {
-        data.removeAll(where: { $0.postID == postID })
-        applySnapshot()
-    }
-    
-    private func applySnapshot(animatingDifferences: Bool = false) {
-        var snapshot = Snapshot()
+        guard let index = data.firstIndex(where: { $0.postID == postID }) else { return }
         
-        // Use a Set to track added post objects directly
-        var addedPosts = Set<LMFeedPostContentModel>()
+        data.remove(at: index)
         
-        for post in data {
-            // Check if the post is already added
-            if !addedPosts.contains(post) {
-                // Add the section and the item for this unique post
-                snapshot.appendSections([post.postID])
-                snapshot.appendItems([post], toSection: post.postID)
-                
-                // Track this post as added
-                addedPosts.insert(post)
-            }
-        }
-        
-        // Apply the snapshot
-        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
+        postList.beginUpdates()
+        postList.deleteSections(.init(integer: index), with: .none)
+        postList.endUpdates()
     }
     
     open func showHideFooterLoader(isShow: Bool) {
@@ -283,14 +277,18 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
         emptyListView.setHeightConstraint(with: postList.heightAnchor)
         emptyListView.setWidthConstraint(with: postList.widthAnchor)
     }
-    
-    open func cellForItem(_ item: LMFeedPostContentModel, at indexPath: IndexPath, tableView: UITableView) -> UITableViewCell {
-        fatalError("Must be implemented by subclass")
-    }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching
-extension LMFeedBasePostListScreen: UITableViewDelegate, UITableViewDataSourcePrefetching {
+extension LMFeedBasePostListScreen: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
+    open func numberOfSections(in tableView: UITableView) -> Int { data.count }
+    
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1 }
+    
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        fatalError("Needs to be implemented by subclass")
+    }
+    
     open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let cellData = data[safe: section],
            let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.headerView) {

@@ -24,12 +24,10 @@ open class LMFeedPostQnAPollCell: LMFeedBasePollCell {
     
     // MARK: setupViews
     open override func setupViews() {
-        super.setupViews()
-        
         contentView.addSubview(containerView)
         containerView.addSubview(contentStack)
         
-        [topicFeed, questionTitle, postText].forEach { subView in
+        [topicFeed, questionTitle, postText, topResponseView].forEach { subView in
             contentStack.addArrangedSubview(subView)
         }
     }
@@ -37,8 +35,6 @@ open class LMFeedPostQnAPollCell: LMFeedBasePollCell {
     
     // MARK: setupLayouts
     open override func setupLayouts() {
-        super.setupLayouts()
-        
         contentView.pinSubView(subView: containerView)
         containerView.pinSubView(subView: contentStack)
 

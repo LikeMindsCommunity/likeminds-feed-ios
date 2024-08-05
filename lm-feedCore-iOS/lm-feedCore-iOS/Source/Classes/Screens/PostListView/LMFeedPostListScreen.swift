@@ -19,7 +19,9 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
         tableView.registerHeaderFooter(LMUIComponents.shared.footerView)
     }
     
-    open override func cellForItem(_ item: LMFeedPostContentModel, at indexPath: IndexPath, tableView: UITableView) -> UITableViewCell {
+    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let item = data[indexPath.section]
+        
         switch item.postType {
         case .text, .media:
             if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell, for: indexPath) {

@@ -255,8 +255,8 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         menuButton.isHidden = !data.showMenu
     }
     
-    open func togglePinStatus() {
-        pinButton.isHidden.toggle()
+    open func togglePinStatus(isPinned: Bool) {
+        pinButton.isHidden = !isPinned
     }
 }
 

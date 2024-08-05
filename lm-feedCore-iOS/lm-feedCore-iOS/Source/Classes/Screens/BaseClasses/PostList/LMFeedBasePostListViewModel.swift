@@ -11,7 +11,7 @@ import LikeMindsFeed
 // MARK: LMUniversalFeedViewModelProtocol
 public protocol LMFeedBasePostListViewModelProtocol: LMBaseViewControllerProtocol {
     func updatePostList(with post: [LMFeedPostContentModel], isInitialPage: Bool)
-    func updatePost(with post: LMFeedPostContentModel)
+    func updatePost(with post: LMFeedPostContentModel, onlyHeader: Bool, onlyFooter: Bool)
     func removePost(with postID: String)
     func showHideFooterLoader(isShow: Bool)
     func showActivityLoader()
@@ -114,11 +114,11 @@ public extension LMFeedBasePostListViewModel {
         }
     }
     
-    func updatePost(for postID: String) {
+    func updatePost(for postID: String, onlyHeader: Bool = false, onlyFooter: Bool = false) {
         guard let post = postList.first(where: { $0.postId == postID }) else { return }
         
         let convertedPost = LMFeedConvertToFeedPost.convertToViewModel(for: post)
-        delegate?.updatePost(with: convertedPost)
+        delegate?.updatePost(with: convertedPost, onlyHeader: onlyHeader, onlyFooter: onlyFooter)
     }
     
     func convertToViewData(from data: [LMFeedPostDataModel]) async -> [LMFeedPostContentModel] {
@@ -148,7 +148,7 @@ public extension LMFeedBasePostListViewModel {
                 feed.likeCount += feed.isLiked ? 1 : -1
                 postList[index] = feed
             } else {
-                updatePost(for: postId)
+                updatePost(for: postId, onlyFooter: true)
             }
         }
     }
@@ -171,7 +171,7 @@ public extension LMFeedBasePostListViewModel {
                 feed.isSaved.toggle()
                 postList[index] = feed
             } else {
-                updatePost(for: postId)
+                updatePost(for: postId, onlyFooter: true)
             }
         }
     }
@@ -196,7 +196,7 @@ public extension LMFeedBasePostListViewModel {
                 
                 postList[index] = feed
                 
-                updatePost(for: postID)
+                updatePost(for: postID, onlyHeader: true)
             }
         }
     }
