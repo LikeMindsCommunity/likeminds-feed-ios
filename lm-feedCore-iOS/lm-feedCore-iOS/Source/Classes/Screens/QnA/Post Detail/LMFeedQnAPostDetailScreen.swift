@@ -13,7 +13,7 @@ open class LMFeedQnAPostDetailScreen: LMFeedBasePostDetailScreen {
         table.register(LMUIComponents.shared.qnaPostCell)
         table.register(LMUIComponents.shared.qnaLinkCell)
         table.register(LMUIComponents.shared.qnaDocumentCell)
-        table.register(LMUIComponents.shared.postDetailPollCell)
+        table.register(LMUIComponents.shared.qnaPollCell)
         table.register(LMUIComponents.shared.replyView)
         table.registerHeaderFooter(LMUIComponents.shared.loadMoreReplies)
         table.registerHeaderFooter(LMUIComponents.shared.commentView)
@@ -39,7 +39,7 @@ open class LMFeedQnAPostDetailScreen: LMFeedBasePostDetailScreen {
                 return cell
             }
         case .poll:
-            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailPollCell) {
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.qnaPollCell) {
                 cell.configure(with: postData, delegate: self)
                 return cell
             }

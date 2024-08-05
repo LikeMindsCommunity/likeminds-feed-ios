@@ -14,7 +14,7 @@ open class LMFeedQnAPostListScreen: LMFeedBasePostListScreen {
         tableView.register(LMUIComponents.shared.qnaPostCell)
         tableView.register(LMUIComponents.shared.qnaDocumentCell)
         tableView.register(LMUIComponents.shared.qnaLinkCell)
-        tableView.register(LMUIComponents.shared.pollCell)
+        tableView.register(LMUIComponents.shared.qnaPollCell)
         tableView.registerHeaderFooter(LMUIComponents.shared.headerView)
         tableView.registerHeaderFooter(LMUIComponents.shared.qnaFooterView)
     }
@@ -37,7 +37,7 @@ open class LMFeedQnAPostListScreen: LMFeedBasePostListScreen {
                 return cell
             }
         case .poll:
-            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.pollCell) {
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.qnaPollCell) {
                 cell.configure(with: item, delegate: self)
                 return cell
             }
