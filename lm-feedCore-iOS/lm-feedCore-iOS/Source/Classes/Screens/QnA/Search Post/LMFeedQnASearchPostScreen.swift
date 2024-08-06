@@ -1,44 +1,44 @@
 //
-//  LMFeedSearchPostScreen.swift
+//  LMFeedQnASearchPostScreen.swift
 //  LikeMindsFeedCore
 //
-//  Created by Devansh Mohata on 29/06/24.
+//  Created by Devansh Mohata on 06/08/24.
 //
 
 import LikeMindsFeedUI
 import UIKit
 
-open class LMFeedSearchPostScreen: LMFeedBaseSearchPostScreen {
+open class LMFeedQnASearchPostScreen: LMFeedBaseSearchPostScreen {
     open override func setupTableView(_ tableView: LMTableView) {
         super.setupTableView(tableView)
         
-        tableView.register(LMUIComponents.shared.postCell)
-        tableView.register(LMUIComponents.shared.documentCell)
-        tableView.register(LMUIComponents.shared.linkCell)
-        tableView.register(LMUIComponents.shared.pollCell)
+        tableView.register(LMUIComponents.shared.qnaPostCell)
+        tableView.register(LMUIComponents.shared.qnaDocumentCell)
+        tableView.register(LMUIComponents.shared.qnaLinkCell)
+        tableView.register(LMUIComponents.shared.qnaPollCell)
         tableView.registerHeaderFooter(LMUIComponents.shared.headerView)
-        tableView.registerHeaderFooter(LMUIComponents.shared.footerView)
+        tableView.registerHeaderFooter(LMUIComponents.shared.qnaFooterView)
     }
     
     open override func cellForItem(tableView: UITableView, indexPath: IndexPath, item: LMFeedPostContentModel) -> UITableViewCell {
         switch item.postType {
         case .text, .media:
-            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell) {
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.qnaPostCell) {
                 cell.configure(with: item, delegate: self)
                 return cell
             }
         case .documents:
-            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.documentCell) {
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.qnaDocumentCell) {
                 cell.configure(for: indexPath, with: item, delegate: self)
                 return cell
             }
         case .link:
-            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.linkCell) {
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.qnaLinkCell) {
                 cell.configure(with: item, delegate: self)
                 return cell
             }
         case .poll:
-            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.pollCell) {
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.qnaPollCell) {
                 cell.configure(with: item, delegate: self)
                 return cell
             }
@@ -50,7 +50,7 @@ open class LMFeedSearchPostScreen: LMFeedBaseSearchPostScreen {
     
     open override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if let cellData = data[safe: section],
-           let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.footerView) {
+           let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.qnaFooterView) {
             footer.configure(with: cellData.footerData, postID: cellData.postID, delegate: self)
             return footer
         }
@@ -58,12 +58,12 @@ open class LMFeedSearchPostScreen: LMFeedBaseSearchPostScreen {
     }
     
     public override func didTapPost(postID: String) {
-        guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: false) else { return }
+        guard let viewController = LMFeedQnAPostDetailViewModel.createModule(for: postID, openCommentSection: false) else { return }
         navigationController?.pushViewController(viewController, animated: true)
     }
     
     public override func didTapCommentButton(for postID: String) {
-        guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: true) else { return }
+        guard let viewController = LMFeedQnAPostDetailViewModel.createModule(for: postID, openCommentSection: true) else { return }
         navigationController?.pushViewController(viewController, animated: true)
     }
 }
