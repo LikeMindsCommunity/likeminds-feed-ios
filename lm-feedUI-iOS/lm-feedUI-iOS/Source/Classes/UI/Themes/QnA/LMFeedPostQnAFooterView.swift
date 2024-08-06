@@ -155,7 +155,6 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         super.setupActions()
         
         likeText = "Upvote"
-        likeCountButton.setTitle(likeText, for: .normal)
         likeCountButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
     }
     
@@ -195,6 +194,8 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
     
     open override func configure(with data: LMFeedBasePostFooterView.ContentModel, postID: String, delegate: any LMFeedPostFooterViewProtocol) {
         super.configure(with: data, postID: postID, delegate: delegate)
+        
+        likeCountButton.setTitle(likeText, for: .normal)
         
         profileView.kf.setImage(with: URL(string: data.user?.userProfileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.user?.userName))
     }

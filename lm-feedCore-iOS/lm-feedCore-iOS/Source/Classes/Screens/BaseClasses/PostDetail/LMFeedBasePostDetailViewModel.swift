@@ -80,23 +80,17 @@ public class LMFeedBasePostDetailViewModel {
         NotificationCenter.default.post(name: .LMPostUpdate, object: postDetail)
     }
     
-    func updatePostData(with data: LMFeedPostDataModel?) {
+    func updatePostData(data: LMFeedPostDataModel?) {
         postDetail = data
         notifyObjectChange()
-        convertToViewData()
     }
     
-    func convertToViewData(for indexPath: IndexPath? = nil) {
-        guard let postDetail else { return }
-        let convertedPostDetail = LMFeedConvertToFeedPost.convertToViewModel(for: postDetail)
-        
-        let convertedComments = LMFeedConvertToFeedPost.convertToCommentModel(for: commentList)
-        
-        delegate?.showPostDetails(with: convertedPostDetail, comments: convertedComments, indexPath: indexPath, openCommentSection: openCommentSection, scrollToCommentSection: scrollToCommentSection)
-        openCommentSection = false
-        scrollToCommentSection = false
+    func updatePost(data: LMFeedPostDataModel, onlyHeader: Bool = false, onlyFooter: Bool = false) {
+        updatePostData(data: data)
+        delegate?.updatePost(post: LMFeedConvertToFeedPost.convertToViewModel(for: data), onlyHeader: onlyHeader, onlyFooter: onlyFooter)
     }
 }
+
 
 // MARK: Get Post Details
 public extension LMFeedPostDetailViewModel {
@@ -113,6 +107,10 @@ public extension LMFeedPostDetailViewModel {
         self.isFetchingData = true
         
         LMFeedPostOperation.shared.getPost(for: postID, currentPage: currentPage, pageSize: pageSize) { [weak self] response in
+            defer {
+                self?.isFetchingData = false
+            }
+            
             guard let self else { return }
             
             if response.success,
@@ -127,7 +125,9 @@ public extension LMFeedPostDetailViewModel {
                 
                 let data = LMFeedPostDataModel.init(post: post, users: users, allTopics: allTopics, widgets: widgets)
                 
-                self.updatePostData(with: data)
+                guard let data else { return }
+                
+                self.updatePostData(data: data)
                 
                 let newComments: [LMFeedCommentDataModel] = post.replies?.enumerated().compactMap { index, comment in
                     guard let user = users[comment.uuid ?? ""] else { return nil }
@@ -135,27 +135,17 @@ public extension LMFeedPostDetailViewModel {
                 } ?? []
                 
                 commentList.append(contentsOf: newComments)
-                isDataAvailable = !newComments.isEmpty
                 
-                if currentPage == 1 {
-                    self.convertToViewData()
-                } else if !newComments.isEmpty {
-                    let old = commentList.count - newComments.count
-                    let new = commentList.count
-                    delegate?.insertComment(at: IndexSet(integersIn: old..<new), with: LMFeedConvertToFeedPost.convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
-                }
-                self.currentPage += 1
+                let newPostConverted = LMFeedConvertToFeedPost.convertToViewModel(for: data)
+                let newCommentsConverted = LMFeedConvertToFeedPost.convertToCommentModel(for: newComments)
+                
+                delegate?.showPostDetails(with: newPostConverted, comments: newCommentsConverted, isInitialPage: currentPage == 1)
+                
+                currentPage += 1
             } else if postDetail == nil {
                 delegate?.showError(with: response.errorMessage ?? LMStringConstants.shared.genericErrorMessage, isPopVC: true)
             }
-            
-            self.isFetchingData = false
         }
-    }
-    
-    func updateCommentSection(index: IndexSet? = nil) {
-        let updatedComments = LMFeedConvertToFeedPost.convertToCommentModel(for: commentList)
-        delegate?.reloadComments(with: updatedComments, index: index)
     }
 }
 
@@ -180,7 +170,8 @@ public extension LMFeedPostDetailViewModel {
                     commentList[commentIndex.section].replies[commentIndex.row] = comment
                 }
             } else {
-                delegate?.changeCommentLike(for: indexPath)
+                let comment = commentList[indexPath.section - 1]
+                delegate?.updateComment(comment: LMFeedConvertToFeedPost.convertToCommentModel(from: comment))
             }
         }
     }
@@ -191,7 +182,7 @@ public extension LMFeedPostDetailViewModel {
         if isClose,
            !commentList[index].replies.isEmpty {
             commentList[index].replies.removeAll(keepingCapacity: true)
-            delegate?.deleteRows(for: index + 1, comments: LMFeedConvertToFeedPost.convertToCommentModel(for: commentList))
+            delegate?.updateComment(comment: LMFeedConvertToFeedPost.convertToCommentModel(from: commentList[index]))
             return
         }
         
@@ -220,7 +211,7 @@ public extension LMFeedPostDetailViewModel {
                 }
             }
             
-            self.updateCommentSection(index: IndexSet(integer: index + 1))
+            delegate?.updateComment(comment: LMFeedConvertToFeedPost.convertToCommentModel(from: commentList[index]))
         }
     }
     
@@ -300,7 +291,7 @@ public extension LMFeedPostDetailViewModel {
                     }
                 }
                 
-                self?.updateCommentSection()
+                self?.delegate?.updateComment(comment: LMFeedConvertToFeedPost.convertToCommentModel(from: newComment))
                 return
             }
             
@@ -334,14 +325,13 @@ public extension LMFeedPostDetailViewModel {
            let (_, commentIndex) = findCommentIndex(for: commentID, from: commentList) {
             commentList[commentIndex.section].replies.insert(localComment, at: 0)
             commentList[commentIndex.section].totalRepliesCount += 1
-            updateCommentSection()
+            delegate?.updateComment(comment: LMFeedConvertToFeedPost.convertToCommentModel(from: commentList[commentIndex.section]))
             postReplyOnComment(with: commentString, commentID: commentID, localComment: localComment)
-        } else {
-            var newPost = postDetail
-            newPost?.commentCount += 1
-            updatePostData(with: newPost)
+        } else if var newPost = postDetail {
+            newPost.commentCount += 1
+            updatePost(data: newPost, onlyFooter: true)
             commentList.insert(localComment, at: 0)
-            delegate?.insertComment(at: IndexSet(integer: 1), with: LMFeedConvertToFeedPost.convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
+            delegate?.insertComment(comment: LMFeedConvertToFeedPost.convertToCommentModel(from: localComment), index: 0)
             postReplyOnPost(with: commentString, localComment: localComment)
         }
         
@@ -361,7 +351,7 @@ public extension LMFeedPostDetailViewModel {
             
             if let idx = commentList.firstIndex(where: { $0.temporaryCommentID == localComment.temporaryCommentID }) {
                 commentList[idx] = newComment
-                updateCommentSection(index: IndexSet(integer: idx + 1))
+                delegate?.updateComment(comment: LMFeedConvertToFeedPost.convertToCommentModel(from: newComment))
             }
         }
     }
@@ -385,7 +375,7 @@ public extension LMFeedPostDetailViewModel {
             if let idx = commentList.firstIndex(where: { $0.commentID == commentID }),
                let tempIdx = commentList[idx].replies.firstIndex(where: { $0.temporaryCommentID == localComment.temporaryCommentID }) {
                 commentList[idx].replies[tempIdx] = newComment
-                updateCommentSection(index: IndexSet(integer: idx + 1))
+                delegate?.updateComment(comment: LMFeedConvertToFeedPost.convertToCommentModel(from: commentList[idx]))
             }
         }
     }
@@ -447,32 +437,30 @@ public extension LMFeedPostDetailViewModel {
     // MARK: Like Post
     func likePost(for postId: String) {
         LMFeedPostOperation.shared.likePost(for: postId) { [weak self] response in
-            guard let self else { return }
+            guard let self,
+                  var newPost = postDetail else { return }
             
             if response {
-                let newState = !(postDetail?.isLiked ?? true)
-                var newPost = postDetail
-                newPost?.isLiked = newState
-                newPost?.likeCount += newState ? 1 : -1
-                updatePostData(with: newPost)
-            } else {
-                delegate?.resetFooterData(isSaved: false, isLiked: true)
+                let newState = !newPost.isLiked
+                newPost.isLiked = newState
+                newPost.likeCount += newState ? 1 : -1
             }
+            
+            updatePost(data: newPost, onlyFooter: true)
         }
     }
     
     // MARK: Save Post
     func savePost(for postId: String) {
         LMFeedPostOperation.shared.savePost(for: postId) { [weak self] response in
-            guard let self else { return }
+            guard let self,
+                  var newPost = postDetail else { return }
             
             if response {
-                var newPost = postDetail
-                newPost?.isSaved.toggle()
-                updatePostData(with: newPost)
-            } else {
-                delegate?.resetFooterData(isSaved: true, isLiked: false)
+                newPost.isSaved.toggle()
             }
+            
+            updatePost(data: newPost, onlyFooter: true)
         }
     }
     
@@ -480,14 +468,15 @@ public extension LMFeedPostDetailViewModel {
     // MARK: Un/Pin Post
     func pinUnpinPost(postId: String) {
         LMFeedPostOperation.shared.pinUnpinPost(postId: postId) { [weak self] response in
-            guard let self else { return }
+            guard let self,
+                  var newPost = postDetail else { return }
+            
             if response {
-                var newPost = postDetail
-                newPost?.isPinned.toggle()
-                updatePostData(with: newPost)
+                newPost.isPinned.toggle()
                 updatePinMenu()
-                delegate?.resetHeaderData()
             }
+            
+            updatePost(data: newPost, onlyHeader: true)
         }
     }
     
@@ -499,8 +488,6 @@ public extension LMFeedPostDetailViewModel {
         } else {
             newPost?.postMenu[index] = .init(id: .pinPost, name: LMStringConstants.shared.pinThisPost)
         }
-        
-        updatePostData(with: newPost)
     }
     
     
@@ -608,12 +595,12 @@ public extension LMFeedPostDetailViewModel {
                 _ = commentList.remove(at: index.section)
                 var newPost = postDetail
                 newPost?.commentCount -= 1
-                updatePostData(with: newPost)
-                delegate?.deleteComment(at: index.section + 1, with: LMFeedConvertToFeedPost.convertToCommentModel(for: commentList), totalCommentCount: postDetail?.commentCount ?? 0)
+                updatePost(data: newPost!, onlyFooter: true)
+                delegate?.deleteComment(commentID: commentID)
             } else {
                 commentList[index.section].replies.remove(at: index.row)
                 commentList[index.section].totalRepliesCount -= 1
-                updateCommentSection()
+                delegate?.updateComment(comment: LMFeedConvertToFeedPost.convertToCommentModel(from: commentList[index.section]))
             }
             return
         }
@@ -661,7 +648,7 @@ public extension LMFeedPostDetailViewModel {
             post.pollAttachment = poll
             postDetail = post
             
-            convertToViewData()
+            updatePost(data: post)
         }
     }
     
@@ -714,7 +701,7 @@ public extension LMFeedPostDetailViewModel {
         
         postDetail = post
         
-        convertToViewData()
+        updatePost(data: post)
     }
     
     func didTapAddOption(for postID: String, pollID: String) {

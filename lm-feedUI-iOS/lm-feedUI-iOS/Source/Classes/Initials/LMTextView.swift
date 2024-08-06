@@ -123,9 +123,15 @@ extension LMTextView: UITextViewDelegate {
         }
     }
     
-    open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+//    open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+//        defer {
+//            
+//        }
+//        
+//        return true
+//    }
+    
+    open func textViewDidChange(_ textView: UITextView) {
         textChangedObserver?()
-        
-        return true
     }
 }

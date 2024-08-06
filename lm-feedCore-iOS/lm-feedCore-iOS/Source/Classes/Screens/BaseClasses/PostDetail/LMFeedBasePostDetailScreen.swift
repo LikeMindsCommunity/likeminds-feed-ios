@@ -9,28 +9,27 @@ import LikeMindsFeedUI
 import UIKit
 
 public protocol LMFeedBasePostDetailViewModelProtocol: LMBaseViewControllerProtocol {
-    func showPostDetails(with post: LMFeedPostContentModel, comments: [LMFeedCommentContentModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool)
-        func reloadComments(with comments: [LMFeedCommentContentModel], index: IndexSet?)
-        func insertComment(at index: IndexSet, with comments: [LMFeedCommentContentModel], totalCommentCount: Int)
-        func deleteComment(at index: Int, with comments: [LMFeedCommentContentModel], totalCommentCount: Int)
-        func deleteRows(for section: Int, comments: [LMFeedCommentContentModel])
-        
-        func resetHeaderData()
-        func resetFooterData(isSaved: Bool, isLiked: Bool)
-        
-        func changeCommentLike(for indexPath: IndexPath)
-        func replyToComment(userName: String)
-        
-        func updateCommentStatus(isEnabled: Bool)
-        
-        func setEditCommentText(with text: String)
-        
-        func navigateToEditPost(for postID: String)
-        func navigateToDeleteScreen(for postID: String, commentID: String?)
-        func navigateToReportScreen(for postID: String, creatorUUID: String, commentID: String?, replyCommentID: String?)
-        
-        func navigateToPollResultScreen(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?)
-        func navigateToAddOptionPoll(with postID: String, pollID: String, options: [String])
+    func showPostDetails(with post: LMFeedPostContentModel, comments: [LMFeedCommentContentModel], isInitialPage: Bool)
+    func updatePost(post: LMFeedPostContentModel, onlyHeader: Bool, onlyFooter: Bool)
+    func updateComment(comment: LMFeedCommentContentModel)
+    
+    func deleteComment(commentID: String)
+    func deleteReply(commentID: String, parentCommentID: String)
+    
+    func insertComment(comment: LMFeedCommentContentModel, index: Int)
+    
+    func replyToComment(userName: String)
+    
+    func updateCommentStatus(isEnabled: Bool)
+    
+    func setEditCommentText(with text: String)
+    
+    func navigateToEditPost(for postID: String)
+    func navigateToDeleteScreen(for postID: String, commentID: String?)
+    func navigateToReportScreen(for postID: String, creatorUUID: String, commentID: String?, replyCommentID: String?)
+    
+    func navigateToPollResultScreen(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?)
+    func navigateToAddOptionPoll(with postID: String, pollID: String, options: [String])
 }
 
 
@@ -288,7 +287,7 @@ open class LMFeedBasePostDetailScreen: LMViewController {
     @objc
     open func postUpdated(notification: Notification) {
         if let data = notification.object as? LMFeedPostDataModel {
-            viewModel?.updatePostData(with: data)
+            viewModel?.updatePostData(data: data)
         }
     }
     
@@ -536,120 +535,110 @@ extension LMFeedBasePostDetailScreen: LMFeedPostCommentProtocol {
 
 // MARK: LMFeedPostDetailViewModelProtocol
 extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
-    public func deleteRows(for section: Int, comments: [LMFeedCommentContentModel]) {
-        commentsData = comments
-        if section < postDetailListView.numberOfSections {
-            var rows: [IndexPath] = []
-            for i in 0..<postDetailListView.numberOfRows(inSection: section) {
-                rows.append(.init(row: i, section: section))
-            }
-            
-            UIView.performWithoutAnimation { [weak self] in
-                self?.postDetailListView.beginUpdates()
-                self?.postDetailListView.deleteRows(at: rows, with: .none)
-                self?.postDetailListView.endUpdates()
-            }
-            
-            frozenContentOffsetForRowAnimation = postDetailListView.contentOffset
-        }
-    }
-    
-    public func insertComment(at index: IndexSet, with comments: [LikeMindsFeedUI.LMFeedCommentContentModel], totalCommentCount: Int) {
-        commentsData = comments
-        setNavigationTitle(with: totalCommentCount)
-        postData?.totalCommentCount = totalCommentCount
-        (postDetailListView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.updateCommentCount(with: totalCommentCount)
-        UIView.performWithoutAnimation { [weak self] in
-            self?.postDetailListView.beginUpdates()
-            self?.postDetailListView.setContentOffset(self?.postDetailListView.contentOffset ?? .zero, animated: false)
-            self?.postDetailListView.insertSections(index, with: .none)
-            self?.postDetailListView.endUpdates()
-        }
-        
-        for idx in index {
-            postDetailListView.scrollToRow(at: IndexPath(row: NSNotFound, section: idx), at: .top, animated: true)
-        }
-    }
-    
-    public func deleteComment(at index: Int, with comments: [LikeMindsFeedUI.LMFeedCommentContentModel], totalCommentCount: Int) {
-        commentsData = comments
-        setNavigationTitle(with: totalCommentCount)
-        (postDetailListView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.updateCommentCount(with: totalCommentCount)
-        UIView.performWithoutAnimation { [weak self] in
-            self?.postDetailListView.beginUpdates()
-            self?.postDetailListView.deleteSections(IndexSet(integer: index), with: .none)
-            self?.postDetailListView.endUpdates()
-        }
-    }
-    
-    public func reloadComments(with comments: [LMFeedCommentContentModel], index: IndexSet?) {
-        commentsData = comments
-        let originalContentOffset = postDetailListView.contentOffset
-        if let index {
-            UIView.performWithoutAnimation { [weak self] in
-                self?.postDetailListView.reloadSections(index, with: .none)
-            }
-        } else {
-            let indexSet = IndexSet(integersIn: 1..<postDetailListView.numberOfSections)
-            UIView.performWithoutAnimation { [weak self] in
-                self?.postDetailListView.beginUpdates()
-                self?.postDetailListView.setContentOffset(self?.postDetailListView.contentOffset ?? .zero, animated: false)
-                self?.postDetailListView.reloadSections(indexSet, with: .none)
-                self?.postDetailListView.endUpdates()
-            }
-        }
-        
-        if postDetailListView.contentOffset != originalContentOffset {
-            frozenContentOffsetForRowAnimation = originalContentOffset
-        }
-    }
-    
-    public func navigateToEditPost(for postID: String) {
-        guard let viewcontroller = LMFeedEditPostViewModel.createModule(for: postID) else { return }
-        navigationController?.pushViewController(viewcontroller, animated: true)
-    }
-    
-    public func showPostDetails(with post: LMFeedPostContentModel, comments: [LMFeedCommentContentModel], indexPath: IndexPath?, openCommentSection: Bool, scrollToCommentSection: Bool) {
+    /// Using this function to show post detail, fetch paginated comments
+    public func showPostDetails(with post: LMFeedPostContentModel, comments: [LMFeedCommentContentModel], isInitialPage: Bool) {
         setNavigationTitle(with: post.totalCommentCount)
         showHideLoaderView(isShow: false)
         
+        if isInitialPage {
+            commentsData.removeAll(keepingCapacity: true)
+        }
+        
         self.postData = post
-        self.commentsData = comments
+        self.commentsData.append(contentsOf: comments)
         
-        reloadTable(for: indexPath)
+        if isInitialPage {
+            postDetailListView.reloadData()
+        } else {
+            insertNewComments(commentCount: comments.count)
+            (postDetailListView.footerView(forSection: 0) as? LMFeedBasePostFooterView)?.configure(with: post.footerData, postID: post.postID, delegate: self)
+        }
+    }
+    
+    public func insertNewComments(commentCount: Int) {
+        guard commentCount > 0 else { return }
         
-        if openCommentSection,
-           isCommentingEnabled {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-                self?.inputTextView.becomeFirstResponder()
+        let startIndex = commentsData.count
+        let endIndex = commentsData.count + commentCount - 1
+        
+        postDetailListView.beginUpdates()
+        postDetailListView.insertSections(IndexSet(integersIn: startIndex...endIndex), with: .none)
+        postDetailListView.endUpdates()
+    }
+    
+    public func updatePost(post: LMFeedPostContentModel, onlyHeader: Bool, onlyFooter: Bool) {
+        postData = post
+        
+        setNavigationTitle(with: post.totalCommentCount)
+        
+        if onlyFooter {
+            (postDetailListView.footerView(forSection: 0) as? LMFeedBasePostFooterView)?.configure(with: post.footerData, postID: post.postID, delegate: self)
+        } else if onlyHeader {
+            (postDetailListView.headerView(forSection: 0) as? LMFeedPostHeaderView)?.togglePinStatus(isPinned: post.headerData.isPinned)
+        } else {
+            postDetailListView.reloadSections(.init(integer: 0), with: .none)
+        }
+    }
+    
+    
+    /// Using this function to insert new replies, fetch replies, update comment, update reply
+    public func updateComment(comment: LMFeedCommentContentModel) {
+        guard let index = commentsData.firstIndex(where: { $0.commentId == comment.commentId || $0.tempCommentId == comment.tempCommentId }) else { return }
+        
+        commentsData[index] = comment
+        postDetailListView.reloadSections(.init(integer: index + 1), with: .none)
+    }
+    
+    
+    /// Using this function to delete reply
+    public func deleteReply(commentID: String, parentCommentID: String) {
+        guard let parentIndex = commentsData.firstIndex(where: { $0.commentId == parentCommentID }),
+              let commentIndex = commentsData[parentIndex].replies.firstIndex(where: { $0.commentId == commentID }) else { return }
+        
+        commentsData[parentIndex].replies.remove(at: commentIndex)
+        
+        postDetailListView.beginUpdates()
+        postDetailListView.deleteRows(at: [.init(row: commentIndex, section: parentIndex + 1)], with: .none)
+        postDetailListView.endUpdates()
+    }
+    
+    
+    /// Using this function to delete comment
+    public func deleteComment(commentID: String) {
+        guard let index = commentsData.firstIndex(where: { $0.commentId == commentID }) else { return }
+        
+        commentsData.remove(at: index)
+        
+        postDetailListView.beginUpdates()
+        postDetailListView.deleteSections(.init(integer: index + 1), with: .none)
+        postDetailListView.endUpdates()
+    }
+    
+    
+    /// Using this function to insert comment
+    public func insertComment(comment: LMFeedCommentContentModel, index: Int) {
+        guard index >= 0 && index <= commentsData.count else {
+            print("Invalid index for comment insertion")
+            return
+        }
+        
+        // Insert the new comment in the array
+        commentsData.insert(comment, at: index)
+        
+        let sectionIndex = index + 1  // +1 because section 0 is the post
+        
+        postDetailListView.performBatchUpdates({
+            // Insert a new section for the new comment
+            let newSectionIndex = IndexSet(integer: sectionIndex)
+            self.postDetailListView.insertSections(newSectionIndex, with: .none)
+            
+            // Shift all subsequent sections down by 1
+            if sectionIndex < self.postDetailListView.numberOfSections - 1 {
+                for i in (sectionIndex + 1..<self.postDetailListView.numberOfSections).reversed() {
+                    self.postDetailListView.moveSection(i, toSection: i + 1)
+                }
             }
-        }
-        
-        if postDetailListView.numberOfSections >= 1,
-           scrollToCommentSection {
-            postDetailListView.scrollToRow(at: IndexPath(row: NSNotFound, section: 1), at: .bottom, animated: true)
-        }
-    }
-    
-    public func resetHeaderData() {
-        postData?.headerData.isPinned.toggle()
-        (postDetailListView.headerView(forSection: 0) as? LMFeedPostDetailHeaderView)?.togglePinStatus(isPinned: postData?.headerData.isPinned ?? false)
-    }
-    
-    public func resetFooterData(isSaved: Bool, isLiked: Bool) {
-        if isSaved {
-            postData?.footerData.isSaved.toggle()
-        }
-        
-        if isLiked {
-            postData?.footerData.isLiked.toggle()
-            let newStatus = postData?.footerData.isLiked == true
-            postData?.footerData.likeCount += newStatus ? 1 : -1
-        }
-        
-        guard let postData else { return }
-        
-        (postDetailListView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)?.configure(with: postData.footerData, postID: postData.postID, delegate: self, commentCount: postData.totalCommentCount)
+        }, completion: nil)
     }
     
     public func changeCommentLike(for indexPath: IndexPath) {
@@ -728,6 +717,11 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
         } catch let error {
             print(error.localizedDescription)
         }
+    }
+    
+    public func navigateToEditPost(for postID: String) {
+        guard let viewcontroller = LMFeedEditPostViewModel.createModule(for: postID) else { return }
+        navigationController?.pushViewController(viewcontroller, animated: true)
     }
 }
 

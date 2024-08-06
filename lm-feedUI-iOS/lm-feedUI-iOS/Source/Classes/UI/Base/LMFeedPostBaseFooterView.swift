@@ -197,11 +197,11 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
     
     // MARK: Helper Methods
     open func updateLikeText(for likeCount: Int) {
-        // To be implemented by subclasses
+        fatalError("Needs to be implemented by subclass")
     }
     
     open func updateCommentText(for commentCount: Int) {
-        // To be implemented by subclasses
+        fatalError("Needs to be implemented by subclass")
     }
     
     open func formattedText(for count: Int) -> String {
