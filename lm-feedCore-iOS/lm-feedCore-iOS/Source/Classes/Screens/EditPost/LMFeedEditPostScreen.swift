@@ -54,7 +54,7 @@ open class LMFeedEditPostScreen: LMViewController {
         textView.mentionDelegate = self
         textView.isScrollEnabled = false
         textView.isEditable = true
-        textView.placeHolderText = "Write Something here..."
+        textView.placeHolderText = "Write something here..."
         textView.addDoneButtonOnKeyboard()
         return textView
     }()

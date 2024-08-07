@@ -21,7 +21,7 @@ open class LMFeedBaseSearchPostScreen: LMViewController {
     
     open private(set) lazy var searchController: UISearchController = {
         let search = UISearchController(searchResultsController: nil)
-        search.searchBar.placeholder = LMFeedConstants.shared.strings.searchTopic
+        search.searchBar.placeholder = LMFeedConstants.shared.strings.search
         search.delegate = self
         search.searchBar.delegate = self
         return search
@@ -114,7 +114,7 @@ open class LMFeedBaseSearchPostScreen: LMViewController {
         
         overrideUserInterfaceStyle = .light
         
-        setNavigationTitleAndSubtitle(with: "Search Posts", subtitle: nil, alignment: .center)
+        setNavigationTitleAndSubtitle(with: LMStringConstants.shared.searchPostNavTitle, subtitle: nil, alignment: .center)
     }
     
     

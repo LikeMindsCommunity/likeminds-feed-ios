@@ -136,9 +136,9 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
                                    trailing: (addCommentView.trailingAnchor, 0))
         sepratorView.setHeightConstraint(with: 1)
         
-        profileView.addConstraint(top: (addCommentView.topAnchor, 8),
+        profileView.addConstraint(top: (addCommentView.topAnchor, 16),
                                   bottom: (addCommentView.bottomAnchor, -8),
-                                  leading: (addCommentView.leadingAnchor, 8))
+                                  leading: (addCommentView.leadingAnchor, 0))
         
         profileView.setWidthConstraint(with: profileView.heightAnchor)
         
@@ -146,7 +146,7 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
             trailing: (addCommentView.trailingAnchor, -8),
                                        centerY: (profileView.centerYAnchor, 0))
         
-        addCommentView.setHeightConstraint(with: 46, priority: .required)
+        addCommentView.setHeightConstraint(with: 54, priority: .required)
     }
     
     
@@ -156,6 +156,9 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         
         likeText = "Upvote"
         likeCountButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
+        
+        addCommentView.isUserInteractionEnabled = true
+        addCommentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCommentButton)))
     }
     
     // MARK: setupAppearance
@@ -176,7 +179,7 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         likeButton.tintColor = LMFeedAppearance.shared.colors.appTintColor
         
         profileView.clipsToBounds = true
-        profileView.layer.cornerRadius = profileView.frame.size.height / 2
+        profileView.layer.cornerRadius = 15
     }
     
     

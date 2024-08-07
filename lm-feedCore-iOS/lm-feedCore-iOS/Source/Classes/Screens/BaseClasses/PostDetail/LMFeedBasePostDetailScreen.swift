@@ -28,6 +28,8 @@ public protocol LMFeedBasePostDetailViewModelProtocol: LMBaseViewControllerProto
     func navigateToDeleteScreen(for postID: String, commentID: String?)
     func navigateToReportScreen(for postID: String, creatorUUID: String, commentID: String?, replyCommentID: String?)
     
+    func handleCommentScroll(openCommentSection: Bool, scrollToCommentSection: Bool)
+    
     func navigateToPollResultScreen(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?)
     func navigateToAddOptionPoll(with postID: String, pollID: String, options: [String])
 }
@@ -345,7 +347,7 @@ open class LMFeedBasePostDetailScreen: LMViewController {
     
     public func setNavigationTitle(with commentCount: Int) {
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.postDetailTitle,
-                                      subtitle: "\(commentCount) \(LMStringConstants.shared.commentVariable.pluralize(count: commentCount))",
+                                      subtitle: "\(commentCount) \(LMStringConstants.shared.commentVariable.pluralize(count: commentCount > 1 ? commentCount : 1))",
                                       alignment: .center)
     }
     
@@ -639,6 +641,20 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
                 }
             }
         }, completion: nil)
+    }
+    
+    public func handleCommentScroll(openCommentSection: Bool, scrollToCommentSection: Bool) {
+        if openCommentSection,
+           isCommentingEnabled {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.inputTextView.becomeFirstResponder()
+            }
+        }
+        
+        if postDetailListView.numberOfSections >= 1,
+           scrollToCommentSection {
+            postDetailListView.scrollToRow(at: IndexPath(row: NSNotFound, section: 1), at: .bottom, animated: true)
+        }
     }
     
     public func changeCommentLike(for indexPath: IndexPath) {

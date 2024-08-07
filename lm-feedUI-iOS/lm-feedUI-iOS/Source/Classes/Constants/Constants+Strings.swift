@@ -25,6 +25,7 @@ public extension LMFeedConstants {
         public var noResultsFound = "No Results Found!"
         public var noNotificationFound = "Oops! You don't have any notifications yet."
         
+        public var search = "Search"
         public var searchTopic = "Search Topic"
         public var selectTopic = "Select Topic"
         

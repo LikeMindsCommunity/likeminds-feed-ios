@@ -80,7 +80,7 @@ open class LMFeedBaseUniversalFeed: LMViewController {
             image: LMFeedConstants.shared.images.createPostIcon,
             textColor: LMFeedAppearance.shared.colors.white,
             textFont: LMFeedAppearance.shared.fonts.buttonFont1,
-            contentSpacing: .init(top: 8, left: 8, bottom: 8, right: 8),
+            contentSpacing: .init(top: 8, left: 8, bottom: 8, right: 12),
             imageSpacing: 8
         )
         button.tintColor = LMFeedAppearance.shared.colors.appTintColor
@@ -118,6 +118,12 @@ open class LMFeedBaseUniversalFeed: LMViewController {
         super.viewDidAppear(animated)
         
         createPostButton.setTitle(LMStringConstants.shared.newPost, for: .normal)
+    }
+    
+    open override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        createPostButtonWidth?.isActive = false
     }
     
     open override func setupActions() {

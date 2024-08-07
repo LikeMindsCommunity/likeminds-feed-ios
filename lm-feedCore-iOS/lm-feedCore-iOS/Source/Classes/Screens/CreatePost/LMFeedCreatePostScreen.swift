@@ -66,7 +66,7 @@ open class LMFeedCreatePostScreen: LMViewController {
         textView.backgroundColor = LMFeedAppearance.shared.colors.clear
         textView.isScrollEnabled = true
         textView.isEditable = true
-        textView.placeHolderText = "Write Something here..."
+        textView.placeHolderText = "Write something here..."
         textView.backgroundColor = LMFeedAppearance.shared.colors.clear
         textView.addDoneButtonOnKeyboard()
         return textView
@@ -193,7 +193,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     open private(set) lazy var headingTextView: LMTextView = {
         let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
         textView.backgroundColor = LMFeedAppearance.shared.colors.clear
-        textView.isScrollEnabled = true
+        textView.isScrollEnabled = false
         textView.isEditable = true
         textView.placeHolderText = "Add your question here"
         textView.textAttributes[.font] = LMFeedAppearance.shared.fonts.headingFont1
@@ -214,6 +214,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     public var documentAttachmentHeight: CGFloat = 90
     
     public var taggingViewHeight: NSLayoutConstraint?
+    public var questionViewHeightConstraint: NSLayoutConstraint?
     public var inputTextViewHeightConstraint: NSLayoutConstraint?
     public var textInputMinimumHeight: CGFloat = 80
     public var textInputMaximumHeight: CGFloat = 150
@@ -301,14 +302,14 @@ open class LMFeedCreatePostScreen: LMViewController {
         scrollStackView.setWidthConstraint(with: containerStackView.widthAnchor)
         mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
         
-        headingTextContainer.pinSubView(subView: headingTextView)
+        headingTextContainer.pinSubView(subView: headingTextView, padding: .init(top: 0, left: 0, bottom: -8, right: 0))
         
-        headerSepratorView.addConstraint(bottom: (headingTextContainer.bottomAnchor, 0),
+        headerSepratorView.addConstraint(bottom: (headingTextContainer.bottomAnchor, -6),
                                          leading: (headingTextContainer.leadingAnchor, 0),
                                          trailing: (headingTextContainer.trailingAnchor, 0))
         headerSepratorView.setHeightConstraint(with: 1)
         
-        headingTextContainer.setHeightConstraint(with: 100)
+        questionViewHeightConstraint = headingTextContainer.setHeightConstraint(with: textInputMinimumHeight)
         
         
         headingTextContainer.isHidden = !showQuestionHeading
@@ -382,17 +383,24 @@ open class LMFeedCreatePostScreen: LMViewController {
         super.viewDidLoad()
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.createPostTitle, subtitle: nil, alignment: .center)
+        
         headingTextView.setAttributedText(from: "")
         inputTextView.setAttributedText(from: "")
+        
         setupAddMedia()
         setupInitialView()
         setupProfileData()
+        
         viewModel?.getTopics()
         
         if showQuestionHeading {
             headingTextView.textChangedObserver = { [weak self] in
                 self?.observeCreateButton()
+                self?.observeHeadingHeight()
             }
+            
+            createPostButton.title = LMStringConstants.shared.doneText.uppercased()
+            setNavigationTitleAndSubtitle(with: "Ask a question", subtitle: nil, alignment: .center)
         }
     }
     
@@ -665,6 +673,14 @@ extension LMFeedCreatePostScreen: LMFeedTaggingTextViewProtocol {
         
         viewModel?.handleLinkDetection(in: inputTextView.text)
         observeCreateButton()
+    }
+    
+    public func observeHeadingHeight() {
+        let width = headingTextView.frame.size.width
+        let newSize = headingTextView.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
+        
+        headingTextView.isScrollEnabled = newSize.height > textInputMaximumHeight
+        questionViewHeightConstraint?.constant = min(max(newSize.height, textInputMinimumHeight), textInputMaximumHeight)
     }
 }
 

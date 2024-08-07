@@ -140,11 +140,20 @@ public extension LMFeedPostDetailViewModel {
                 let newCommentsConverted = LMFeedConvertToFeedPost.convertToCommentModel(for: newComments)
                 
                 delegate?.showPostDetails(with: newPostConverted, comments: newCommentsConverted, isInitialPage: currentPage == 1)
+                handleCommentScroll()
                 
                 currentPage += 1
             } else if postDetail == nil {
                 delegate?.showError(with: response.errorMessage ?? LMStringConstants.shared.genericErrorMessage, isPopVC: true)
             }
+        }
+    }
+    
+    func handleCommentScroll() {
+        if openCommentSection || scrollToCommentSection {
+            delegate?.handleCommentScroll(openCommentSection: openCommentSection, scrollToCommentSection: scrollToCommentSection)
+            openCommentSection = false
+            scrollToCommentSection = false
         }
     }
 }

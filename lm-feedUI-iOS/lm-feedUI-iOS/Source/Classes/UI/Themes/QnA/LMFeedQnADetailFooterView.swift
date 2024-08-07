@@ -128,7 +128,7 @@ open class LMFeedQnADetailFooterView: LMFeedPostQnAFooterView {
         
         addCommentView.isHidden = data.commentCount != .zero
         
-        noCommenTitleLabel.text = "No \(commentText) found!"
-        noCommentSubtitleLabel.text = "Be the first to create a \(commentText)"
+        noCommenTitleLabel.text = "No \(commentText.lowercased()) found!"
+        noCommentSubtitleLabel.text = "Be the first to create a \(commentText.lowercased())"
     }
 }
