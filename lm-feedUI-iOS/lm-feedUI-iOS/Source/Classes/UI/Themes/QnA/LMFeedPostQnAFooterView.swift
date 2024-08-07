@@ -178,6 +178,8 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         
         likeButton.tintColor = LMFeedAppearance.shared.colors.appTintColor
         
+        likeTextButton.setTitleColor(LMFeedAppearance.shared.colors.gray102, for: .normal)
+        
         profileView.clipsToBounds = true
         profileView.layer.cornerRadius = 15
     }

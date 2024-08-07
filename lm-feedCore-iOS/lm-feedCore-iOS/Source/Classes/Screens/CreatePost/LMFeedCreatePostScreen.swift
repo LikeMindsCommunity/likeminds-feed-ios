@@ -196,7 +196,6 @@ open class LMFeedCreatePostScreen: LMViewController {
         textView.isScrollEnabled = false
         textView.isEditable = true
         textView.placeHolderText = "Add your question here"
-        textView.setDisabledCharacters(["\n"])
         textView.textAttributes[.font] = LMFeedAppearance.shared.fonts.headingFont1
         textView.placeholderAttributes[.font] = LMFeedAppearance.shared.fonts.headingFont1
         return textView
