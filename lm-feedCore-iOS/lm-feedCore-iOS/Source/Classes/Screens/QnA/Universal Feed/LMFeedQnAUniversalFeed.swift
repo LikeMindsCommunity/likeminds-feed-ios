@@ -88,4 +88,24 @@ open class LMFeedQnAUniversalFeed: LMFeedBaseUniversalFeed {
             print(error.localizedDescription)
         }
     }
+    
+    
+    open override func setupNavigationBar() {
+        super.setupNavigationBar()
+        
+        let searchButton = UIBarButtonItem(image: LMFeedConstants.shared.images.searchIcon,
+                                           style: .plain,
+                                           target: self,
+                                           action: #selector(didTapSearchButton))
+        searchButton.tintColor = .black
+        
+        let notificationBell =  UIBarButtonItem(
+            image: LMFeedConstants.shared.images.notificationBell,
+            style: .plain,
+            target: self,
+            action: #selector(didTapNotificationButton))
+        notificationBell.tintColor = .black
+        
+        navigationItem.rightBarButtonItems = [searchButton, notificationBell]
+    }
 }

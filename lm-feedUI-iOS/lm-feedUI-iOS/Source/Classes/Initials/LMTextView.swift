@@ -9,6 +9,8 @@ import UIKit
 
 @IBDesignable
 open class LMTextView: UITextView {
+    private var disabledCharacters: Set<String> = []
+    
     public var placeHolderText: String = "" {
         didSet {
             if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
@@ -58,6 +60,10 @@ open class LMTextView: UITextView {
         super.init(coder: coder)
         backgroundColor = LMFeedAppearance.shared.colors.clear
         delegate = self
+    }
+    
+    public func setDisabledCharacters(_ disabledCharacters: Set<String>) {
+        self.disabledCharacters = disabledCharacters
     }
     
     open func translatesAutoresizingMaskIntoConstraints() -> Self {
@@ -123,13 +129,9 @@ extension LMTextView: UITextViewDelegate {
         }
     }
     
-//    open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-//        defer {
-//            
-//        }
-//        
-//        return true
-//    }
+    open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        !disabledCharacters.contains(text)
+    }
     
     open func textViewDidChange(_ textView: UITextView) {
         textChangedObserver?()
