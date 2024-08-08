@@ -11,6 +11,7 @@ public class LMFeedQnASearchPostViewModel: LMFeedBaseSearchPostViewModel {
         
         let viewcontroller = Components.shared.qnaSearchPostScreen.init()
         let viewModel = LMFeedQnASearchPostViewModel(delegate: viewcontroller)
+        viewModel.searchType = "heading"
         
         viewcontroller.viewModel = viewModel
         return viewcontroller

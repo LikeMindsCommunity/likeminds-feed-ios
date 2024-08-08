@@ -31,7 +31,7 @@ public class LMFeedBaseSearchPostViewModel {
     var page: Int
     var searchString: String
     let pageSize: Int
-    let searchType: String
+    var searchType: String
     var isFetchingResults: Bool
     var isLastPage: Bool
     

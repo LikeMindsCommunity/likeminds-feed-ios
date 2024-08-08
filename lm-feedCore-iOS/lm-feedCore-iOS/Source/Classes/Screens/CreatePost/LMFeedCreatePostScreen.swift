@@ -193,8 +193,9 @@ open class LMFeedCreatePostScreen: LMViewController {
     open private(set) lazy var headingTextView: LMTextView = {
         let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
         textView.backgroundColor = LMFeedAppearance.shared.colors.clear
-        textView.isScrollEnabled = false
+        textView.isScrollEnabled = true
         textView.isEditable = true
+        textView.setDisabledCharacters(["\n"])
         textView.placeHolderText = "Add your question here"
         textView.textAttributes[.font] = LMFeedAppearance.shared.fonts.headingFont1
         textView.placeholderAttributes[.font] = LMFeedAppearance.shared.fonts.headingFont1
