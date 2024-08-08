@@ -10,7 +10,6 @@ import UIKit
 
 public struct LMFeedMediaPreviewContentModel {
     let mediaURL: String
-    let thumbnailURL: String?
     let isVideo: Bool
 }
 
@@ -73,7 +72,7 @@ open class LMFeedMediaVideoPreview: LMCollectionViewCell {
     // MARK: configure
     open func configure(with data: LMFeedMediaPreviewContentModel, onTapCallback: (() -> Void)?) {
         self.onTapCallback = onTapCallback
-        videoPreview.kf.setImage(with: URL(string: data.thumbnailURL ?? ""))
+        // videoPreview.kf.setImage(with: URL(string: data.thumbnailURL ?? ""))
     }
 }
 

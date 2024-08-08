@@ -16,54 +16,30 @@ public protocol LMMediaViewModelDelegate: AnyObject {
 }
 
 public final class LMFeedMediaPreviewViewModel {
-    public struct DataModel {
-        let userName: String
-        let date: String
-        let media: [MediaModel]
-
-        public init(userName: String, senDate: String, media: [MediaModel]) {
-            self.userName = userName
-            self.date = senDate
-            self.media = media
-        }
-        
-        public struct MediaModel {
-            let mediaType: MediaType
-            let thumbnailURL: String?
-            let mediaURL: String
-            
-            public init(mediaType: MediaType, thumbnailURL: String?, mediaURL: String) {
-                self.mediaType = mediaType
-                self.thumbnailURL = thumbnailURL
-                self.mediaURL = mediaURL
-            }
-        }
-    }
     
-    let data: DataModel
+    let data: LMFeedPostDataModel
     var startIndex: Int?
     weak var delegate: LMMediaViewModelDelegate?
     
-    init(data: DataModel, startIndex: Int, delegate: LMMediaViewModelDelegate?) {
+    init(data: LMFeedPostDataModel, startIndex: Int, delegate: LMMediaViewModelDelegate?) {
         self.data = data
         self.startIndex = startIndex
         self.delegate = delegate
     }
     
-    public static func createModule(with data: DataModel, startIndex: Int = 0) -> LMFeedMediaPreviewScreen {
+    public static func createModule(with data: LMFeedPostDataModel, startIndex: Int = 0) -> LMFeedMediaPreviewScreen? {
         let viewController = LMFeedMediaPreviewScreen()
         let viewModel = Self.init(data: data, startIndex: startIndex, delegate: viewController)
-        
         viewController.viewModel = viewModel
         return viewController
     }
     
     public func showMediaPreview() {
-        let viewData: [LMFeedMediaPreviewContentModel] = data.media.map {
-            .init(mediaURL: $0.mediaURL, thumbnailURL: $0.thumbnailURL, isVideo: $0.mediaType == .video)
+        let viewData: [LMFeedMediaPreviewContentModel] = data.imageVideoAttachment.map {
+            .init(mediaURL: $0.url, isVideo: $0.isVideo)
         }
         
-        delegate?.showImages(with: viewData, userName: data.userName, date: data.date)
+        delegate?.showImages(with: viewData, userName: data.userDetails.userName, date: data.createTime)
     }
     
     public func scrollToMediaPreview() {

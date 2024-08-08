@@ -158,9 +158,9 @@ open class LMFeedPostListScreen: LMViewController, LMFeedPostListViewModelProtoc
         navigationController?.pushViewController(viewcontroller, animated: true)
     }
     
-    public func navigateToMediaPreviewScreen(with data: LikeMindsFeedUI.LMFeedPostContentModel) {
-        // TODO: Add navigation to Media Preview Screen
-        // guard let viewController = LMFeedMediaPreviewViewModel.createModule()
+    public func navigateToMediaPreviewScreen(with data: LMFeedPostDataModel) {
+        guard let mediaPreviewViewController = LMFeedMediaPreviewViewModel.createModule(with: data) else { return }
+        navigationController?.pushViewController(mediaPreviewViewController, animated: true)
     }
     
     open func loadPosts(with data: [LMFeedPostContentModel], index: IndexSet?, reloadNow: Bool) {

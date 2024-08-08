@@ -6,25 +6,28 @@
 //
 
 import AVFoundation
+import AVKit
 
 public final class LMFeedLoopedVideoPlayer: UIView {
     public var videoURL: URL?
-    public var queuePlayer: AVQueuePlayer?
+    public var videoPlayerController: AVPlayerViewController?
     public var playerLayer: AVPlayerLayer?
-    public var playbackLooper: AVPlayerLooper?
     
     func prepareVideo(_ videoURL: URL) {
-        if queuePlayer == nil,
-           playerLayer == nil,
-           playbackLooper == nil {
-            let playerItem = AVPlayerItem(url: videoURL)
+        
+        let request = LMFeedGetVideoControllerRequest.Builder()
+            .setPostId(UUID().uuidString)
+            .setVideoSource(videoURL.absoluteString)
+            .setPosition(0)
+            .setVideoType(.network)
+            .setAutoPlay(false)
+            .build()
+        
+        if let response = LMFeedVideoProvider.shared.videoController(for: request) {
+            self.videoPlayerController = response.videoPlayerController
+            self.playerLayer = AVPlayerLayer(player: response.videoPlayerController.player)
             
-            self.queuePlayer = AVQueuePlayer(playerItem: playerItem)
-            self.playerLayer = AVPlayerLayer(player: self.queuePlayer)
-            
-            if let queuePlayer,
-               let playerLayer {
-                self.playbackLooper = AVPlayerLooper.init(player: queuePlayer, templateItem: playerItem)
+            if let playerLayer = self.playerLayer {
                 playerLayer.videoGravity = .resizeAspectFill
                 playerLayer.frame = self.frame
                 self.layer.addSublayer(playerLayer)
@@ -33,26 +36,23 @@ public final class LMFeedLoopedVideoPlayer: UIView {
     }
     
     func play() {
-        self.queuePlayer?.play()
+        self.videoPlayerController?.player?.play()
     }
     
     func pause() {
-        self.queuePlayer?.pause()
+        self.videoPlayerController?.player?.pause()
     }
     
     func stop() {
         pause()
-        self.queuePlayer?.seek(to: CMTime.init(seconds: 0, preferredTimescale: 1))
+        self.videoPlayerController?.player?.seek(to: CMTime(seconds: 0, preferredTimescale: 1))
     }
     
     func unload() {
         self.playerLayer?.removeFromSuperlayer()
-        queuePlayer?.replaceCurrentItem(with: nil)
+        self.videoPlayerController?.player = nil
         self.playerLayer = nil
-        self.queuePlayer = nil
-        self.playbackLooper = nil
     }
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)

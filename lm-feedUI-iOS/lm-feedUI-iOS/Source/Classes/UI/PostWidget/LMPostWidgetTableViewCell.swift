@@ -92,11 +92,13 @@ public protocol LMPostWidgetTableViewCellProtocol: AnyObject {
     func didTapURL(url: URL)
     func didTapRoute(route: String)
     func didTapSeeMoreButton(for postID: String)
+    func didTapPostMedia(for postID: String)
 }
 
 public extension LMPostWidgetTableViewCellProtocol {
     func didTapPost(postID: String) { }
     func didTapSeeMoreButton(for postID: String) { }
+    func didTapPostMedia(for postID: String) { }
 }
 
 

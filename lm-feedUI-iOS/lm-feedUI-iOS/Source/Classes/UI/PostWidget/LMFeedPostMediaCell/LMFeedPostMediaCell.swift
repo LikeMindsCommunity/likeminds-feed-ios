@@ -170,10 +170,6 @@ extension LMFeedPostMediaCell: UICollectionViewDataSource,
         return UICollectionViewCell()
     }
     
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO: Add NAVIGATION TO MEDIA PREVIEW SCREEN
-    }
-    
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: collectionView.frame.width, height: collectionView.frame.height)
     }
