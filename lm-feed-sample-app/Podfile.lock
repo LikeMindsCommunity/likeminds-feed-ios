@@ -77,7 +77,7 @@ PODS:
   - PromisesObjC (2.4.0)
 
 DEPENDENCIES:
-  - LikeMindsFeed (from `../../LikeMinds-iOS-Feed-SDK/LikeMindsFeedDev.podspec`)
+  - LikeMindsFeed (from `../../likeminds-feed-ios-data/LikeMindsFeedDev.podspec`)
   - LikeMindsFeedCore (from `../LikeMindsFeedCore.podspec`)
   - LikeMindsFeedUI (from `../LikeMindsFeedUI.podspec`)
 
@@ -100,7 +100,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   LikeMindsFeed:
-    :path: "../../LikeMinds-iOS-Feed-SDK/LikeMindsFeedDev.podspec"
+    :path: "../../likeminds-feed-ios-data/LikeMindsFeedDev.podspec"
   LikeMindsFeedCore:
     :path: "../LikeMindsFeedCore.podspec"
   LikeMindsFeedUI:
@@ -125,6 +125,6 @@ SPEC CHECKSUMS:
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
 
-PODFILE CHECKSUM: 25e92666b8d043da762ef1dcbce06528a46eeb83
+PODFILE CHECKSUM: 1bd7ac4becf0d17426226adf22edd80981531bf4
 
 COCOAPODS: 1.15.2
