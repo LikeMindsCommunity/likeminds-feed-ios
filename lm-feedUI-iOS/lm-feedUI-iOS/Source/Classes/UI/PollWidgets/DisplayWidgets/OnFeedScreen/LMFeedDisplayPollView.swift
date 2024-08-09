@@ -12,7 +12,7 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         public let postID: String
         public let pollID: String
         public var question: String
-        public var options: [LMFeedDisplayPollWidget.ContentModel]
+        public var options: [LMFeedDisplayPollOptionWidget.ContentModel]
         public var expiryDate: Date
         public var optionState: String
         public var optionCount: Int
@@ -28,7 +28,7 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
             pollID: String,
             question: String,
             answerText: String,
-            options: [LMFeedDisplayPollWidget.ContentModel],
+            options: [LMFeedDisplayPollOptionWidget.ContentModel],
             expiryDate: Date,
             optionState: String,
             optionCount: Int,
@@ -92,9 +92,9 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
     }()
     
     open private(set) lazy var submitButton: LMButton = {
-        let button = LMButton.createButton(with: Constants.shared.strings.submitVote, image: nil, textColor: Appearance.shared.colors.white, textFont: Appearance.shared.fonts.buttonFont2, contentSpacing: .init(top: 12, left: 8, bottom: 12, right: 8))
+        let button = LMButton.createButton(with: LMFeedConstants.shared.strings.submitVote, image: nil, textColor: LMFeedAppearance.shared.colors.white, textFont: LMFeedAppearance.shared.fonts.buttonFont2, contentSpacing: .init(top: 12, left: 8, bottom: 12, right: 8))
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Appearance.shared.colors.appTintColor
+        button.backgroundColor = LMFeedAppearance.shared.colors.appTintColor
         return button
     }()
     
@@ -109,8 +109,8 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
     
     open private(set) lazy var answerTitleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.textColor = Appearance.shared.colors.appTintColor
-        label.font = Appearance.shared.fonts.textFont1
+        label.textColor = LMFeedAppearance.shared.colors.appTintColor
+        label.font = LMFeedAppearance.shared.fonts.textFont1
         label.text = "Be the first one to vote"
         label.isUserInteractionEnabled = true
         return label
@@ -119,15 +119,15 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
     open private(set) lazy var editVoteLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.isUserInteractionEnabled = true
-        label.textColor = Appearance.shared.colors.appTintColor
-        label.font = Appearance.shared.fonts.textFont1
+        label.textColor = LMFeedAppearance.shared.colors.appTintColor
+        label.font = LMFeedAppearance.shared.fonts.textFont1
         label.text = "Edit Vote"
         return label
     }()
     
     open private(set) lazy var addOptionButton: LMButton = {
-        let button = LMButton.createButton(with: "Add an Option", image: Constants.shared.images.plusIcon, textColor: Appearance.shared.colors.black, textFont: Appearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 0, bottom: 8, right: 0), imageSpacing: 4)
-        button.tintColor = Appearance.shared.colors.black
+        let button = LMButton.createButton(with: "Add an Option", image: LMFeedConstants.shared.images.plusIcon, textColor: LMFeedAppearance.shared.colors.black, textFont: LMFeedAppearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 0, bottom: 8, right: 0), imageSpacing: 4)
+        button.tintColor = LMFeedAppearance.shared.colors.black
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -193,11 +193,11 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        addOptionButton.layer.borderColor = Appearance.shared.colors.gray155.cgColor
+        addOptionButton.layer.borderColor = LMFeedAppearance.shared.colors.gray155.cgColor
         addOptionButton.layer.borderWidth = 1
         addOptionButton.layer.cornerRadius = 8
         
-        expiryDateLabel.font = Appearance.shared.fonts.textFont1
+        expiryDateLabel.font = LMFeedAppearance.shared.fonts.textFont1
         
         submitButton.layer.cornerRadius = 8
     }
@@ -280,8 +280,8 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
 }
 
 
-// MARK: LMFeedDisplayPollWidgetProtocol
-extension LMFeedDisplayPollView: LMFeedDisplayPollWidgetProtocol {
+// MARK: LMFeedDisplayPollOptionWidgetProtocol
+extension LMFeedDisplayPollView: LMFeedDisplayPollOptionWidgetProtocol {
     public func didTapVoteCountButton(optionID: String) {
         guard let postID,
               let pollID else { return }

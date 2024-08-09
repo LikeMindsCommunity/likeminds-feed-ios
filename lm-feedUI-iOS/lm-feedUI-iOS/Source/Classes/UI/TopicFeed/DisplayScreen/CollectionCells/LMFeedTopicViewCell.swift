@@ -12,8 +12,8 @@ open class LMFeedTopicViewCell: LMCollectionViewCell {
     // MARK: UI Elements
     open private(set) lazy var textLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.textFont2
-        label.textColor = Appearance.shared.colors.appTintColor
+        label.font = LMFeedAppearance.shared.fonts.textFont2
+        label.textColor = LMFeedAppearance.shared.colors.appTintColor
         return label
     }()
     
@@ -48,7 +48,7 @@ open class LMFeedTopicViewCell: LMCollectionViewCell {
         
         containerView.clipsToBounds = true
         containerView.layer.cornerRadius = 4
-        containerView.backgroundColor = Appearance.shared.colors.appTintColor.withAlphaComponent(0.1)
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.appTintColor.withAlphaComponent(0.1)
     }
     
     // MARK: configure

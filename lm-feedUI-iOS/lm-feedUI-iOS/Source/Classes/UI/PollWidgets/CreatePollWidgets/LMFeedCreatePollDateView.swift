@@ -17,16 +17,16 @@ open class LMFeedCreatePollDateView: LMView {
     open private(set) lazy var titleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Poll expires on"
-        label.font = Appearance.shared.fonts.buttonFont2
-        label.textColor = Appearance.shared.colors.appTintColor
+        label.font = LMFeedAppearance.shared.fonts.buttonFont2
+        label.textColor = LMFeedAppearance.shared.colors.appTintColor
         return label
     }()
     
     open private(set) lazy var dateLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "DD-MM-YYYY hh:mm"
-        label.font = Appearance.shared.fonts.textFont1
-        label.textColor = Appearance.shared.colors.gray155
+        label.font = LMFeedAppearance.shared.fonts.textFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray155
         return label
     }()
     
@@ -62,13 +62,13 @@ open class LMFeedCreatePollDateView: LMView {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        containerView.backgroundColor = Appearance.shared.colors.white
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
     
     // MARK: configure
     open func configure(with date: Date) {
-        dateLabel.textColor = Appearance.shared.colors.black
+        dateLabel.textColor = LMFeedAppearance.shared.colors.black
         dateLabel.text = DateUtility.formatDate(date)
     }
 }

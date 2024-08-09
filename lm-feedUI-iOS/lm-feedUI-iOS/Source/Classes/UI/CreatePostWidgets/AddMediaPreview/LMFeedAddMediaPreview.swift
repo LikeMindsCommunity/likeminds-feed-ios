@@ -35,15 +35,15 @@ open class LMFeedAddMediaPreview: LMView {
     open private(set) lazy var titleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Posting"
-        label.font = Appearance.shared.fonts.textFont2
-        label.textColor = Appearance.shared.colors.gray51
+        label.font = LMFeedAppearance.shared.fonts.textFont2
+        label.textColor = LMFeedAppearance.shared.colors.gray51
         return label
     }()
     
     open private(set) lazy var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .medium)
         indicator.translatesAutoresizingMaskIntoConstraints = false
-        indicator.tintColor = Appearance.shared.colors.gray51
+        indicator.tintColor = LMFeedAppearance.shared.colors.gray51
         return indicator
     }()
     
@@ -81,7 +81,7 @@ open class LMFeedAddMediaPreview: LMView {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        containerView.backgroundColor = Appearance.shared.colors.white
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
     open func configure(with image: UIImage?) {

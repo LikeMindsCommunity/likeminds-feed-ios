@@ -60,8 +60,8 @@ open class LMFeedPollResultListScreen: LMViewController {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        voteView.backgroundColor = Appearance.shared.colors.clear
-        view.backgroundColor = Appearance.shared.colors.clear
+        voteView.backgroundColor = LMFeedAppearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
     }
     
     // MARK: viewDidLoad

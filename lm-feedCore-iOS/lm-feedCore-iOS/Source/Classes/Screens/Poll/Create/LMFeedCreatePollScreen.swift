@@ -47,7 +47,7 @@ open class LMFeedCreatePollScreen: LMViewController {
         return header
     }()
     
-    open private(set) lazy var pollOptionView: LMFeedCreatePollQuestionView = {
+    open private(set) lazy var pollOptionView: LMFeedCreatePollOptionsView = {
         let view = LMUIComponents.shared.createPollQuestionView.init()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -68,8 +68,8 @@ open class LMFeedCreatePollScreen: LMViewController {
     }()
     
     open private(set) lazy var advancedOptionButton: LMButton = {
-        let button = LMButton.createButton(with: "ADVANCED", image: chevronIcon, textColor: Appearance.shared.colors.gray102, textFont: Appearance.shared.fonts.buttonFont3, imageSpacing: 4)
-        button.tintColor = Appearance.shared.colors.gray102
+        let button = LMButton.createButton(with: "ADVANCED", image: chevronIcon, textColor: LMFeedAppearance.shared.colors.gray102, textFont: LMFeedAppearance.shared.fonts.buttonFont3, imageSpacing: 4)
+        button.tintColor = LMFeedAppearance.shared.colors.gray102
         button.semanticContentAttribute = .forceRightToLeft
         
         return button
@@ -77,9 +77,9 @@ open class LMFeedCreatePollScreen: LMViewController {
     
     open var chevronIcon: UIImage {
         if pollMetaOptionsView.isHidden {
-            return Constants.shared.images.chevronDownIcon.withConfiguration(UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont3))
+            return LMFeedConstants.shared.images.chevronDownIcon.withConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.buttonFont3))
         } else {
-            return Constants.shared.images.chevronUpIcon.withConfiguration(UIImage.SymbolConfiguration(font: Appearance.shared.fonts.buttonFont3))
+            return LMFeedConstants.shared.images.chevronUpIcon.withConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.buttonFont3))
         }
     }
     
@@ -127,7 +127,7 @@ open class LMFeedCreatePollScreen: LMViewController {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        view.backgroundColor = Appearance.shared.colors.backgroundColor
+        view.backgroundColor = LMFeedAppearance.shared.colors.backgroundColor
     }
     
     
@@ -255,8 +255,8 @@ extension LMFeedCreatePollScreen: LMFeedCreatePollViewModelProtocol {
 }
 
 
-// MARK: LMFeedCreatePollQuestionViewProtocol
-extension LMFeedCreatePollScreen: LMFeedCreatePollQuestionViewProtocol {
+// MARK: LMFeedCreatePollOptionsViewProtocol
+extension LMFeedCreatePollScreen: LMFeedCreatePollOptionsViewProtocol {
     public func textValueChanged(for id: Int, newValue: String?) {
         viewmodel?.updatePollOption(for: id, option: newValue)
     }

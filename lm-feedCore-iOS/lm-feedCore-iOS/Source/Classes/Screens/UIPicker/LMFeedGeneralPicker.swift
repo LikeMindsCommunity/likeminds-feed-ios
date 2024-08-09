@@ -57,7 +57,7 @@ open class LMFeedGeneralPicker: LMViewController {
     open private(set) lazy var doneButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle("Done", for: .normal)
-        button.setTitleColor(Appearance.shared.colors.appTintColor, for: .normal)
+        button.setTitleColor(LMFeedAppearance.shared.colors.appTintColor, for: .normal)
         button.setImage(nil, for: .normal)
         return button
     }()
@@ -65,14 +65,14 @@ open class LMFeedGeneralPicker: LMViewController {
     open private(set) lazy var cancelButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle("Cancel", for: .normal)
-        button.setTitleColor(Appearance.shared.colors.appTintColor, for: .normal)
+        button.setTitleColor(LMFeedAppearance.shared.colors.appTintColor, for: .normal)
         button.setImage(nil, for: .normal)
         return button
     }()
     
     open private(set) lazy var spacerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         view.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return view
     }()
@@ -154,7 +154,7 @@ open class LMFeedGeneralPicker: LMViewController {
         view.backgroundColor = .clear
         
         dismissView.backgroundColor = .black.withAlphaComponent(0.5)
-        pickerView.backgroundColor = Appearance.shared.colors.white
+        pickerView.backgroundColor = LMFeedAppearance.shared.colors.white
         containerView.backgroundColor = UIColor(r: 247, g: 247, b: 247)
         
         containerView.layer.cornerRadius = 8

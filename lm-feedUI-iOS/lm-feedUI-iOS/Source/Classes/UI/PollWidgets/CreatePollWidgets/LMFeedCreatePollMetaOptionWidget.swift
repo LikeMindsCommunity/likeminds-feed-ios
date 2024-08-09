@@ -29,21 +29,21 @@ open class LMFeedCreatePollMetaOptionWidget: LMView {
     
     open private(set) lazy var optionTitleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.textColor = Appearance.shared.colors.black
-        label.font = Appearance.shared.fonts.buttonFont2
+        label.textColor = LMFeedAppearance.shared.colors.black
+        label.font = LMFeedAppearance.shared.fonts.buttonFont2
         return label
     }()
     
     open private(set) lazy var optionSwitcher: UISwitch = {
         let switcher = UISwitch()
         switcher.translatesAutoresizingMaskIntoConstraints = false
-        switcher.tintColor = Appearance.shared.colors.appTintColor
+        switcher.tintColor = LMFeedAppearance.shared.colors.appTintColor
         return switcher
     }()
     
     open private(set) lazy var sepratorView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.backgroundColor
+        view.backgroundColor = LMFeedAppearance.shared.colors.backgroundColor
         return view
     }()
     

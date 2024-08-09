@@ -124,4 +124,8 @@ public struct LMStringConstants {
     public var deleteCommentMessage: String {
         String(format: "Are you sure you want to delete this %@? This action cannot be reversed", pluralizeOrCapitalize(to: commentVariable, withAction: .allSmallSingular))
     }
+    
+    public var searchPostNavTitle: String {
+        String(format: "Search %@", postVariable)
+    }
 }

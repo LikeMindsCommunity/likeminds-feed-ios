@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension Constants {
+public extension LMFeedConstants {
     struct Numbers {
         private init() { }
         

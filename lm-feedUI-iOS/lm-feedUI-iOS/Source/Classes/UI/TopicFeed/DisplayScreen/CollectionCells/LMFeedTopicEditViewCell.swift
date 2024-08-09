@@ -22,16 +22,16 @@ open class LMFeedTopicEditViewCell: LMCollectionViewCell {
     // MARK: UI Elements
     open private(set) lazy var textLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.textColor = Appearance.shared.colors.appTintColor
-        label.font = Appearance.shared.fonts.textFont1
+        label.textColor = LMFeedAppearance.shared.colors.appTintColor
+        label.font = LMFeedAppearance.shared.fonts.textFont1
         return label
     }()
     
     open private(set) lazy var crossButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.xmarkIcon, for: .normal)
-        button.tintColor = Appearance.shared.colors.appTintColor
+        button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
+        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         return button
     }()
     
@@ -90,7 +90,7 @@ open class LMFeedTopicEditViewCell: LMCollectionViewCell {
         
         containerView.clipsToBounds = true
         containerView.layer.cornerRadius = 4
-        containerView.layer.borderColor = Appearance.shared.colors.appTintColor.cgColor
+        containerView.layer.borderColor = LMFeedAppearance.shared.colors.appTintColor.cgColor
         containerView.layer.borderWidth = 1
     }
     

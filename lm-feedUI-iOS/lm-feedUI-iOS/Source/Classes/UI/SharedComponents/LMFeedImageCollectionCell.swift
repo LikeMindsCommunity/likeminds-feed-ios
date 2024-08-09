@@ -26,16 +26,16 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
         let image = LMImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFit
-        image.backgroundColor = Appearance.shared.colors.black
+        image.backgroundColor = LMFeedAppearance.shared.colors.black
         return image
     }()
     
     open private(set) lazy var crossButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.xmarkIcon, for: .normal)
-        button.backgroundColor = Appearance.shared.colors.white
-        button.tintColor = Appearance.shared.colors.gray51
+        button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
+        button.backgroundColor = LMFeedAppearance.shared.colors.white
+        button.tintColor = LMFeedAppearance.shared.colors.gray51
         button.contentMode = .scaleAspectFit
         return button
     }()
@@ -84,7 +84,7 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
     open override func setupAppearance() {
         super.setupAppearance()
         crossButton.layer.cornerRadius = crossButtonHeight / 2
-        crossButton.layer.borderColor = Appearance.shared.colors.gray51.cgColor
+        crossButton.layer.borderColor = LMFeedAppearance.shared.colors.gray51.cgColor
         crossButton.layer.borderWidth = 1
     }
     
@@ -94,6 +94,6 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
         self.url = data.image
         self.crossButtonAction = crossButtonAction
         crossButton.isHidden = crossButtonAction == nil
-        imageView.kf.setImage(with: URL(string: data.image), placeholder: Constants.shared.images.placeholderImage)
+        imageView.kf.setImage(with: URL(string: data.image), placeholder: LMFeedConstants.shared.images.placeholderImage)
     }
 }
