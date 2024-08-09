@@ -49,7 +49,7 @@ final class LMFeedCreatePostOperation {
     let dispatchGroup = DispatchGroup()
     
     
-    func createPost(with content: String, topics: [String], files: [LMAWSRequestModel], linkPreview: LMFeedPostDataModel.LinkAttachment?, poll: LMFeedCreatePollDataModel?) {
+    func createPost(with content: String, heading: String? = nil, topics: [String], files: [LMAWSRequestModel], linkPreview: LMFeedPostDataModel.LinkAttachment?, poll: LMFeedCreatePollDataModel?) {
         postMessageForPostCreationStart(files.first)
         
         if let linkPreview {
@@ -64,7 +64,7 @@ final class LMFeedCreatePostOperation {
                 .attachmentType(.link)
                 .attachmentMeta(attachmentMeta)
             
-            createPost(with: content, attachments: [attachmentRequest], topics: topics)
+            createPost(with: content, heading: heading, attachments: [attachmentRequest], topics: topics)
         } else if let poll {
             let attachmentMeta = AttachmentMeta()
                 .title(poll.pollQuestion)
@@ -80,7 +80,7 @@ final class LMFeedCreatePostOperation {
                 .attachmentType(.poll)
                 .attachmentMeta(attachmentMeta)
             
-            createPost(with: content, attachments: [attachmentRequest], topics: topics)
+            createPost(with: content, heading: heading, attachments: [attachmentRequest], topics: topics)
         } else if !files.isEmpty {
             var tempFiles = files
             
@@ -122,15 +122,16 @@ final class LMFeedCreatePostOperation {
                     postMessageForCompleteCreatePost(with: "Files Upload Error!")
                     return
                 }
-                self.createPost(with: content, attachments: attachments, topics: topics)
+                self.createPost(with: content, heading: heading, attachments: attachments, topics: topics)
             }
         } else {
-            createPost(with: content, attachments: [], topics: topics)
+            createPost(with: content, heading: heading, attachments: [], topics: topics)
         }
     }
     
-    private func createPost(with content: String, attachments: [Attachment], topics: [String]) {
+    private func createPost(with content: String, heading: String?, attachments: [Attachment], topics: [String]) {
         let addPostRequest = AddPostRequest.builder()
+            .heading(heading)
             .text(content)
             .attachments(attachments)
             .addTopics(topics)

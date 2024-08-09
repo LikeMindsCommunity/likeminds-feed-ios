@@ -23,28 +23,28 @@ open class LMFeedDeleteScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var contentView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.black.withAlphaComponent(0.5)
+        view.backgroundColor = LMFeedAppearance.shared.colors.black.withAlphaComponent(0.5)
         return view
     }()
     
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
     open private(set) lazy var titleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.textColor = Appearance.shared.colors.gray51
-        label.font = Appearance.shared.fonts.headingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray51
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.text = "Delete Post"
         return label
     }()
     
     open private(set) lazy var subtitleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.textColor = Appearance.shared.colors.gray102
-        label.font = Appearance.shared.fonts.headingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray102
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.numberOfLines = 0
         label.text = "Delete Post"
         return label
@@ -61,7 +61,7 @@ open class LMFeedDeleteScreen: LMViewController {
     
     open private(set) lazy var reasonContainerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         view.clipsToBounds = true
         return view
     }()
@@ -69,15 +69,15 @@ open class LMFeedDeleteScreen: LMViewController {
     open private(set) lazy var reasonTitleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Reason for deletion"
-        label.font = Appearance.shared.fonts.textFont1
-        label.textColor = Appearance.shared.colors.gray155
+        label.font = LMFeedAppearance.shared.fonts.textFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray155
         return label
     }()
     
     open private(set) lazy var downArrowImage: LMImageView = {
         let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
-        image.image = Constants.shared.images.downArrowFilled
-        image.tintColor = Appearance.shared.colors.gray1
+        image.image = LMFeedConstants.shared.images.downArrowFilled
+        image.tintColor = LMFeedAppearance.shared.colors.gray1
         return image
     }()
     
@@ -96,7 +96,7 @@ open class LMFeedDeleteScreen: LMViewController {
     
     open private(set) lazy var sepratorView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.gray1
+        view.backgroundColor = LMFeedAppearance.shared.colors.gray1
         return view
     }()
     
@@ -106,21 +106,21 @@ open class LMFeedDeleteScreen: LMViewController {
         stack.alignment = .fill
         stack.distribution = .fillEqually
         stack.spacing = 2
-        stack.backgroundColor = Appearance.shared.colors.gray1
+        stack.backgroundColor = LMFeedAppearance.shared.colors.gray1
         return stack
     }()
     
     open private(set) lazy var cancelButton: LMButton = {
-        let button = LMButton.createButton(with: "Cancel", image: nil, textColor: Appearance.shared.colors.blueGray, textFont: Appearance.shared.fonts.buttonFont2)
-        button.backgroundColor = Appearance.shared.colors.white
+        let button = LMButton.createButton(with: "Cancel", image: nil, textColor: LMFeedAppearance.shared.colors.blueGray, textFont: LMFeedAppearance.shared.fonts.buttonFont2)
+        button.backgroundColor = LMFeedAppearance.shared.colors.white
         button.translatesAutoresizingMaskIntoConstraints = false
         button.clipsToBounds = true
         return button
     }()
     
     open private(set) lazy var deleteButton: LMButton = {
-        let button = LMButton.createButton(with: "Delete", image: nil, textColor: Appearance.shared.colors.red, textFont: Appearance.shared.fonts.buttonFont2)
-        button.backgroundColor = Appearance.shared.colors.white
+        let button = LMButton.createButton(with: "Delete", image: nil, textColor: LMFeedAppearance.shared.colors.red, textFont: LMFeedAppearance.shared.fonts.buttonFont2)
+        button.backgroundColor = LMFeedAppearance.shared.colors.white
         button.translatesAutoresizingMaskIntoConstraints = false
         button.clipsToBounds = true
         return button
@@ -251,7 +251,7 @@ open class LMFeedDeleteScreen: LMViewController {
                otherReasonTextView.text.trimmingCharacters(in: .whitespacesAndNewlines) != placeholderText {
                 viewmodel?.initateDeleteAction(with: otherReasonTextView.text)
             } else {
-                otherReasonTextView.layer.borderColor = Appearance.shared.colors.red.cgColor
+                otherReasonTextView.layer.borderColor = LMFeedAppearance.shared.colors.red.cgColor
             }
         } else {
             viewmodel?.initateDeleteAction(with: tagsData[pickerView.selectedRow(inComponent: 0)])
@@ -270,7 +270,7 @@ open class LMFeedDeleteScreen: LMViewController {
         containerView.isHidden = true
         otherReasonTextView.isHidden = true
         
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         
         containerView.clipsToBounds = true
         containerView.layer.cornerRadius = 8
@@ -278,17 +278,17 @@ open class LMFeedDeleteScreen: LMViewController {
         reasonContainerView.clipsToBounds = true
         reasonContainerView.layer.cornerRadius = 8
         reasonContainerView.layer.borderWidth = 1
-        reasonContainerView.layer.borderColor = Appearance.shared.colors.black.cgColor
+        reasonContainerView.layer.borderColor = LMFeedAppearance.shared.colors.black.cgColor
         
         otherReasonTextView.layer.cornerRadius = 8
         otherReasonTextView.layer.borderWidth = 1
-        otherReasonTextView.layer.borderColor = Appearance.shared.colors.black.cgColor
+        otherReasonTextView.layer.borderColor = LMFeedAppearance.shared.colors.black.cgColor
         
         otherReasonTextView.addDoneButtonOnKeyboard()
         
         otherReasonTextView.text = placeholderText
-        otherReasonTextView.textColor = Appearance.shared.colors.gray155
-        otherReasonTextView.font = Appearance.shared.fonts.textFont1
+        otherReasonTextView.textColor = LMFeedAppearance.shared.colors.gray155
+        otherReasonTextView.font = LMFeedAppearance.shared.fonts.textFont1
     }
     
     public override func showError(with message: String, isPopVC: Bool) {
@@ -329,7 +329,7 @@ extension LMFeedDeleteScreen: LMFeedDeleteViewModelProtocol {
     
     public func setNewReason(with title: String, isShowTextField: Bool) {
         reasonTitleLabel.text = title
-        reasonTitleLabel.textColor = Appearance.shared.colors.gray51
+        reasonTitleLabel.textColor = LMFeedAppearance.shared.colors.gray51
         
         otherReasonTextView.isHidden = !isShowTextField
         
@@ -349,8 +349,8 @@ extension LMFeedDeleteScreen: UIPickerViewDataSource, UIPickerViewDelegate {
     open func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int { tagsData.count }
     
     open func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        NSAttributedString(string: tagsData[row], attributes: [.font: Appearance.shared.fonts.buttonFont1,
-                                                           .foregroundColor: Appearance.shared.colors.gray51])
+        NSAttributedString(string: tagsData[row], attributes: [.font: LMFeedAppearance.shared.fonts.buttonFont1,
+                                                           .foregroundColor: LMFeedAppearance.shared.colors.gray51])
     }
     
     open func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -364,20 +364,20 @@ extension LMFeedDeleteScreen: UITextViewDelegate {
     open func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) == placeholderText {
             otherReasonTextView.text = nil
-            otherReasonTextView.textColor = Appearance.shared.colors.gray51
-            otherReasonTextView.font = Appearance.shared.fonts.textFont1
+            otherReasonTextView.textColor = LMFeedAppearance.shared.colors.gray51
+            otherReasonTextView.font = LMFeedAppearance.shared.fonts.textFont1
         }
     }
     
     open func textViewDidChange(_ textView: UITextView) {
-        textView.layer.borderColor = Appearance.shared.colors.black.cgColor
+        textView.layer.borderColor = LMFeedAppearance.shared.colors.black.cgColor
     }
     
     open func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             textView.text = placeholderText
-            textView.textColor = Appearance.shared.colors.gray155
-            textView.font = Appearance.shared.fonts.textFont1
+            textView.textColor = LMFeedAppearance.shared.colors.gray155
+            textView.font = LMFeedAppearance.shared.fonts.textFont1
         }
     }
 }

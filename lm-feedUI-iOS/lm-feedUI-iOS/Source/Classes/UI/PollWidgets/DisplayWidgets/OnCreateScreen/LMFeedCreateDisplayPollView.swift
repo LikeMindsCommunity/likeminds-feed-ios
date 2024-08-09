@@ -46,22 +46,22 @@ open class LMFeedCreateDisplayPollView: BaseDisplayPollView {
     open private(set) lazy var crossButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.crossIcon, for: .normal)
-        button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(font: Appearance.shared.fonts.headingFont1), forImageIn: .normal)
+        button.setImage(LMFeedConstants.shared.images.crossIcon, for: .normal)
+        button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.headingFont1), forImageIn: .normal)
         button.contentHorizontalAlignment = .fill
         button.contentVerticalAlignment = .fill
-        button.tintColor = Appearance.shared.colors.gray51
+        button.tintColor = LMFeedAppearance.shared.colors.gray51
         return button
     }()
     
     open private(set) lazy var editButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.pencilIcon, for: .normal)
-        button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(font: Appearance.shared.fonts.headingFont1), forImageIn: .normal)
+        button.setImage(LMFeedConstants.shared.images.pencilIcon, for: .normal)
+        button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.headingFont1), forImageIn: .normal)
         button.contentHorizontalAlignment = .fill
         button.contentVerticalAlignment = .fill
-        button.tintColor = Appearance.shared.colors.gray51
+        button.tintColor = LMFeedAppearance.shared.colors.gray51
         return button
     }()
     
@@ -132,7 +132,7 @@ open class LMFeedCreateDisplayPollView: BaseDisplayPollView {
         super.setupAppearance()
         
         containerView.layer.cornerRadius = 8
-        containerView.layer.borderColor = Appearance.shared.colors.gray4.withAlphaComponent(1).cgColor
+        containerView.layer.borderColor = LMFeedAppearance.shared.colors.gray4.withAlphaComponent(1).cgColor
         containerView.layer.borderWidth = 1
     }
     

@@ -10,6 +10,7 @@ import LikeMindsFeed
 
 public struct LMFeedPostDataModel {
     public let postId: String
+    public let postQuestion: String
     public let postContent: String
     public var likeCount: Int
     public var isLiked: Bool
@@ -27,9 +28,11 @@ public struct LMFeedPostDataModel {
     public var pollAttachment: LMFeedPollDataModel?
     public var isShowFullText: Bool
     public var isShowAllDocuments: Bool
+    public let topResponse: LMFeedCommentDataModel?
     
     public init(
         postId: String,
+        postQuestion: String,
         postContent: String,
         likeCount: Int,
         isLiked: Bool,
@@ -46,9 +49,11 @@ public struct LMFeedPostDataModel {
         linkAttachment: LMFeedPostDataModel.LinkAttachment? = .none, 
         pollAttachment: LMFeedPollDataModel? = .none,
         isShowFullText: Bool = false,
-        isShowAllDocuments: Bool = false
+        isShowAllDocuments: Bool = false,
+        topResponse: LMFeedCommentDataModel?
     ) {
         self.postId = postId
+        self.postQuestion = postQuestion
         self.postContent = postContent
         self.likeCount = likeCount
         self.isLiked = isLiked
@@ -66,11 +71,12 @@ public struct LMFeedPostDataModel {
         self.pollAttachment = pollAttachment
         self.isShowFullText = isShowFullText
         self.isShowAllDocuments = isShowAllDocuments
+        self.topResponse = topResponse
     }
 }
 
 extension LMFeedPostDataModel {
-    init?(post: Post, users: [String: User], allTopics: [TopicFeedResponse.TopicResponse], widgets: [Widget]) {
+    init?(post: Post, users: [String: User], allTopics: [TopicFeedResponse.TopicResponse], widgets: [Widget], filteredComments: [String: Comment] = [:]) {
         guard let user = users[post.uuid ?? ""],
               let username = user.name,
               let userID = user.sdkClientInfo?.uuid,
@@ -78,6 +84,7 @@ extension LMFeedPostDataModel {
         
         self.postId = post.id
         self.postContent = post.text ?? ""
+        self.postQuestion = post.heading ?? ""
         self.likeCount = post.likesCount ?? .zero
         self.isLiked = post.isLiked ?? false
         self.isPinned = post.isPinned ?? false
@@ -102,6 +109,7 @@ extension LMFeedPostDataModel {
             return .init(topicName: name, topicID: topicID, isEnabled: topic.isEnabled ?? false)
         } ?? []
         
+        self.topResponse = Self.fetchTopResponse(for: post, users: users, filteredComments: filteredComments)
         
         let attachments = handleAttachments(for: postId, attachments: post.attachments ?? [], widgets: widgets, users: users)
         self.imageVideoAttachment = attachments.images
@@ -147,6 +155,14 @@ extension LMFeedPostDataModel {
         }
         
         return (tempImageVideoAttachment, tempDocumentAttachment, tempLinkAttachment, poll)
+    }
+    
+    static func fetchTopResponse(for post: Post, users: [String: User], filteredComments: [String: Comment]) -> LMFeedCommentDataModel? {
+        guard let commentID = post.filteredComments?.first,
+              let filteredComment = filteredComments[commentID],
+              let user = users[filteredComment.uuid ?? ""] else { return nil }
+        
+        return LMFeedCommentDataModel.init(comment: filteredComment, user: user)
     }
 }
 

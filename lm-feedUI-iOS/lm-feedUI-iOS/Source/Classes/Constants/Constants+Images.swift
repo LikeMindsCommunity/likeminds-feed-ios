@@ -13,7 +13,7 @@ extension UIImage {
     }
 }
 
-public extension Constants {
+public extension LMFeedConstants {
     struct Images {
         private init() { }
         
@@ -60,10 +60,12 @@ public extension Constants {
         public var placeholderImage = loadImage(with: "placeholderImage")
         public var brokenLink = loadImage(with: "brokenLink")
         public var videoIcon = loadImage(with: "videoIcon")
-        public var paperclipIcon = loadImage(with: "paperclip")
+        public var paperclipIcon = loadImage(with: "paperClip")
         public var createPostIcon = loadImage(with: "createPostIcon")
         public var emptyViewIcon = loadImage(with: "emptyView")
         public var docImageIcon = loadImage(with: "docTexImage")
         public var addPollIcon = loadImage(with: "addpoll")
+        public var upvoteIcon = loadImage(with: "upvote")
+        public var upvoteFilledIcon = loadImage(with: "upvotefilled")
     }
 }

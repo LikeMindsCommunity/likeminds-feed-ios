@@ -38,7 +38,7 @@ open class LMFeedTopicView: LMView {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
@@ -48,7 +48,7 @@ open class LMFeedTopicView: LMView {
         stack.alignment = .fill
         stack.distribution = .fill
         stack.spacing = 8
-        stack.backgroundColor = Appearance.shared.colors.clear
+        stack.backgroundColor = LMFeedAppearance.shared.colors.clear
         return stack
     }()
     
@@ -57,7 +57,7 @@ open class LMFeedTopicView: LMView {
         collection.isScrollEnabled = false
         collection.dataSource = self
         collection.delegate = self
-        collection.backgroundColor = Appearance.shared.colors.clear
+        collection.backgroundColor = LMFeedAppearance.shared.colors.clear
         collection.registerCell(type: LMUIComponents.shared.topicFeedDisplayView)
         collection.registerCell(type: LMUIComponents.shared.topicFeedEditIconView)
         collection.registerCell(type: LMUIComponents.shared.topicSelectIconView)
@@ -66,7 +66,7 @@ open class LMFeedTopicView: LMView {
     
     open private(set) lazy var sepratorView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.sepratorColor
+        view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
         return view
     }()
     
@@ -139,7 +139,7 @@ extension LMFeedTopicView: UICollectionViewDataSource, UICollectionViewDelegateF
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = topics[safe: indexPath.row]?.topic.sizeOfString(with: Appearance.shared.fonts.textFont2)
+        let size = topics[safe: indexPath.row]?.topic.sizeOfString(with: LMFeedAppearance.shared.fonts.textFont2)
         let width = size?.width ?? 50
         
         return .init(width: width, height: 50)

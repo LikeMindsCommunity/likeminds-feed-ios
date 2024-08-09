@@ -59,7 +59,7 @@ open class LMFeedDocumentPreview: LMView {
     open private(set) lazy var documentIcon: LMImageView = {
         let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
         image.contentMode = .scaleAspectFit
-        image.image = Constants.shared.images.pdfIcon
+        image.image = LMFeedConstants.shared.images.pdfIcon
         return image
     }()
     
@@ -82,9 +82,9 @@ open class LMFeedDocumentPreview: LMView {
     open private(set) lazy var titleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Title Text"
-        label.font = Appearance.shared.fonts.headingFont1
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.lineBreakMode = .byTruncatingTail
-        label.textColor = Appearance.shared.colors.gray102
+        label.textColor = LMFeedAppearance.shared.colors.gray102
         return label
     }()
     
@@ -92,8 +92,8 @@ open class LMFeedDocumentPreview: LMView {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Subtitle Text"
         label.lineBreakMode = .byTruncatingTail
-        label.font = Appearance.shared.fonts.subHeadingFont2
-        label.textColor = Appearance.shared.colors.gray102
+        label.font = LMFeedAppearance.shared.fonts.subHeadingFont2
+        label.textColor = LMFeedAppearance.shared.colors.gray102
         return label
     }()
     
@@ -101,8 +101,8 @@ open class LMFeedDocumentPreview: LMView {
         let button = LMButton()
         button.setTitle(nil, for: .normal)
         button.setTitle(nil, for: .selected)
-        button.setImage(Constants.shared.images.crossIcon, for: .normal)
-        button.setImage(Constants.shared.images.crossIcon, for: .selected)
+        button.setImage(LMFeedConstants.shared.images.crossIcon, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.crossIcon, for: .selected)
         return button
     }()
     
@@ -171,7 +171,7 @@ open class LMFeedDocumentPreview: LMView {
         
         containerView.layer.cornerRadius = 8
         containerView.layer.borderWidth = 1
-        containerView.layer.borderColor = Appearance.shared.colors.sepratorColor.cgColor
+        containerView.layer.borderColor = LMFeedAppearance.shared.colors.sepratorColor.cgColor
     }
     
     

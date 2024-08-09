@@ -60,14 +60,14 @@ open class LMViewController: UIViewController {
     // MARK: UI Elements
     open private(set) lazy var loaderScreen: LMView = {
         let view = LMView(frame: view.bounds).translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
     open private(set) lazy var loaderView: UIActivityIndicatorView = {
         let loader = UIActivityIndicatorView(style: .large)
         loader.translatesAutoresizingMaskIntoConstraints = false
-        loader.tintColor = Appearance.shared.colors.gray51
+        loader.tintColor = LMFeedAppearance.shared.colors.gray51
         return loader
     }()
     
@@ -107,10 +107,10 @@ open class LMViewController: UIViewController {
         if #available(iOS 15, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = Appearance.shared.colors.navigationBackgroundColor
+            appearance.backgroundColor = LMFeedAppearance.shared.colors.navigationBackgroundColor
             navigationController?.navigationBar.standardAppearance = appearance
             navigationController?.navigationBar.scrollEdgeAppearance = appearance
-            navigationController?.navigationBar.barTintColor = Appearance.shared.colors.navigationBackgroundColor
+            navigationController?.navigationBar.barTintColor = LMFeedAppearance.shared.colors.navigationBackgroundColor
         }
         
         navigationController?.navigationBar.isTranslucent = false
@@ -135,8 +135,8 @@ open class LMViewController: UIViewController {
            !title.isEmpty {
             let titleLabel = LMLabel().translatesAutoresizingMaskIntoConstraints()
             titleLabel.text = title
-            titleLabel.textColor = Appearance.shared.colors.gray51
-            titleLabel.font = Appearance.shared.fonts.navigationTitleFont
+            titleLabel.textColor = LMFeedAppearance.shared.colors.gray51
+            titleLabel.font = LMFeedAppearance.shared.fonts.navigationTitleFont
             stackView.addArrangedSubview(titleLabel)
         }
         
@@ -144,8 +144,8 @@ open class LMViewController: UIViewController {
            !subtitle.isEmpty {
             let subtitleLabel = LMLabel().translatesAutoresizingMaskIntoConstraints()
             subtitleLabel.text = subtitle
-            subtitleLabel.textColor = Appearance.shared.colors.gray51
-            subtitleLabel.font = Appearance.shared.fonts.navigationSubtitleFont
+            subtitleLabel.textColor = LMFeedAppearance.shared.colors.gray51
+            subtitleLabel.font = LMFeedAppearance.shared.fonts.navigationSubtitleFont
             stackView.addArrangedSubview(subtitleLabel)
         }
         

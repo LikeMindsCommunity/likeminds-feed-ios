@@ -33,7 +33,7 @@ open class LMFeedMemberItem: LMTableViewCell {
     
     open private(set) lazy var userTitleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.buttonFont1
+        label.font = LMFeedAppearance.shared.fonts.buttonFont1
         return label
     }()
     
@@ -92,13 +92,13 @@ open class LMFeedMemberItem: LMTableViewCell {
     }
     
     public func setUsername(with username: String, customTitle: String?) -> NSMutableAttributedString {
-        let attrString = NSMutableAttributedString(string: username, attributes: [.font: Appearance.shared.fonts.headingFont1,
-                                                                                  .foregroundColor: Appearance.shared.colors.black])
+        let attrString = NSMutableAttributedString(string: username, attributes: [.font: LMFeedAppearance.shared.fonts.headingFont1,
+                                                                                  .foregroundColor: LMFeedAppearance.shared.colors.black])
         
         if let customTitle,
            !customTitle.isEmpty {
-            attrString.append(NSAttributedString(string: " • \(customTitle)", attributes: [.font: Appearance.shared.fonts.subHeadingFont2,
-                                                                                   .foregroundColor: Appearance.shared.colors.appTintColor]))
+            attrString.append(NSAttributedString(string: " • \(customTitle)", attributes: [.font: LMFeedAppearance.shared.fonts.subHeadingFont2,
+                                                                                   .foregroundColor: LMFeedAppearance.shared.colors.appTintColor]))
         }
         
         return attrString

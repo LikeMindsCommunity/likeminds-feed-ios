@@ -51,8 +51,8 @@ open class LMFeedCreatePostHeaderView: LMView {
     
     open private(set) lazy var userNameLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.headingFont1
-        label.textColor = Appearance.shared.colors.gray1
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray1
         label.text = "Devansh Mohata"
         return label
     }()

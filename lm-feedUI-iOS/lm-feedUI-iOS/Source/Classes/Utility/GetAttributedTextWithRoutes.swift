@@ -48,7 +48,7 @@ public struct GetAttributedTextWithRoutes {
                 if let url = match.url,
                    !attributedString.containsAttribute(.route, in: match.range) {
                     let range = match.range
-                    attributedString.addAttribute(.foregroundColor, value: Appearance.shared.colors.linkColor, range: range)
+                    attributedString.addAttribute(.foregroundColor, value: LMFeedAppearance.shared.colors.linkColor, range: range)
                     attributedString.addAttribute(.link, value: url, range: range)
                 }
             }
@@ -72,7 +72,7 @@ public struct GetAttributedTextWithRoutes {
                     let hashtag = String(text[range])
                     
                     attributedString.addAttribute(.hashtags, value: hashtag, range: match.range)
-                    attributedString.addAttribute(.foregroundColor, value: Appearance.shared.colors.hashtagColor, range: match.range)
+                    attributedString.addAttribute(.foregroundColor, value: LMFeedAppearance.shared.colors.hashtagColor, range: match.range)
                 }
             }
         } catch {
@@ -106,8 +106,8 @@ public struct GetAttributedTextWithRoutes {
         let nameWithRoutes = getUserNames(in: answer)
         
         let attrString = NSMutableAttributedString(string: answer, attributes: [
-            .foregroundColor: Appearance.shared.colors.textColor,
-            .font: Appearance.shared.fonts.textFont1
+            .foregroundColor: LMFeedAppearance.shared.colors.textColor,
+            .font: LMFeedAppearance.shared.fonts.textFont1
         ])
         
         for nameWithRoute in nameWithRoutes {
@@ -120,8 +120,8 @@ public struct GetAttributedTextWithRoutes {
             }
             
             let replaceAttributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: Appearance.shared.colors.userProfileColor,
-                .font: Appearance.shared.fonts.textFont1,
+                .foregroundColor: LMFeedAppearance.shared.colors.userProfileColor,
+                .font: LMFeedAppearance.shared.fonts.textFont1,
                 .route: routeString
             ]
             

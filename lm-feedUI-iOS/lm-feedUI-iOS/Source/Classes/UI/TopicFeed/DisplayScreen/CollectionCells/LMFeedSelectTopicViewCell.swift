@@ -13,11 +13,11 @@ open class LMFeedSelectTopicViewCell: LMCollectionViewCell {
     open private(set) lazy var selectTopicIcon: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle("Select Topics", for: .normal)
-        button.setTitleColor(Appearance.shared.colors.appTintColor, for: .normal)
-        button.setFont(Appearance.shared.fonts.buttonFont1)
-        button.setImage(Constants.shared.images.plusIcon, for: .normal)
-        button.setPreferredSymbolConfiguration(.init(font: Appearance.shared.fonts.buttonFont1), forImageIn: .normal)
-        button.tintColor = Appearance.shared.colors.appTintColor
+        button.setTitleColor(LMFeedAppearance.shared.colors.appTintColor, for: .normal)
+        button.setFont(LMFeedAppearance.shared.fonts.buttonFont1)
+        button.setImage(LMFeedConstants.shared.images.plusIcon, for: .normal)
+        button.setPreferredSymbolConfiguration(.init(font: LMFeedAppearance.shared.fonts.buttonFont1), forImageIn: .normal)
+        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         return button
     }()
     
@@ -53,7 +53,7 @@ open class LMFeedSelectTopicViewCell: LMCollectionViewCell {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        containerView.backgroundColor = Appearance.shared.colors.appTintColor.withAlphaComponent(0.1)
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.appTintColor.withAlphaComponent(0.1)
         containerView.layer.cornerRadius = 4
     }
     

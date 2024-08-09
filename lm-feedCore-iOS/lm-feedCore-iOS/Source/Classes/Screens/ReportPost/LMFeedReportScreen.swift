@@ -18,7 +18,7 @@ open class LMFeedReportScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
@@ -40,8 +40,8 @@ open class LMFeedReportScreen: LMViewController {
     open private(set) lazy var titleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Please specify the problem to continue"
-        label.font = Appearance.shared.fonts.headingFont1
-        label.textColor = Appearance.shared.colors.gray51
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray51
         return label
     }()
     
@@ -49,8 +49,8 @@ open class LMFeedReportScreen: LMViewController {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "You would be able to report this comment after selecting a problem."
         label.numberOfLines = 0
-        label.textColor = Appearance.shared.colors.gray102
-        label.font = Appearance.shared.fonts.textFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray102
+        label.font = LMFeedAppearance.shared.fonts.textFont1
         return label
     }()
     
@@ -59,7 +59,7 @@ open class LMFeedReportScreen: LMViewController {
         collection.isScrollEnabled = true
         collection.dataSource = self
         collection.delegate = self
-        collection.backgroundColor = Appearance.shared.colors.clear
+        collection.backgroundColor = LMFeedAppearance.shared.colors.clear
         collection.registerCell(type: LMUIComponents.shared.reportItem)
         return collection
     }()
@@ -68,21 +68,21 @@ open class LMFeedReportScreen: LMViewController {
         let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
         textView.delegate = self
         textView.addDoneButtonOnKeyboard()
-        textView.backgroundColor = Appearance.shared.colors.clear
+        textView.backgroundColor = LMFeedAppearance.shared.colors.clear
         return textView
     }()
     
     open private(set) lazy var sepratorView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.appTintColor
+        view.backgroundColor = LMFeedAppearance.shared.colors.appTintColor
         return view
     }()
     
     open private(set) lazy var submitButton: LMButton = {
-        let button = LMButton.createButton(with: "REPORT", image: nil, textColor: .white, textFont: Appearance.shared.fonts.buttonFont3, contentSpacing: .init(top: 16, left: 60, bottom: 16, right: 60))
+        let button = LMButton.createButton(with: "REPORT", image: nil, textColor: .white, textFont: LMFeedAppearance.shared.fonts.buttonFont3, contentSpacing: .init(top: 16, left: 60, bottom: 16, right: 60))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.clipsToBounds = true
-        button.backgroundColor = Appearance.shared.colors.red
+        button.backgroundColor = LMFeedAppearance.shared.colors.red
         return button
     }()
     
@@ -150,7 +150,7 @@ open class LMFeedReportScreen: LMViewController {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         submitButton.layer.cornerRadius = submitButton.frame.height / 2
     }
     
@@ -193,8 +193,8 @@ open class LMFeedReportScreen: LMViewController {
         setNavigationTitleAndSubtitle(with: "Report Abuse", subtitle: nil, alignment: .center)
         
         otherReasonTextView.text = placeholderText
-        otherReasonTextView.textColor = Appearance.shared.colors.gray155
-        otherReasonTextView.font = Appearance.shared.fonts.textFont1
+        otherReasonTextView.textColor = LMFeedAppearance.shared.colors.gray155
+        otherReasonTextView.font = LMFeedAppearance.shared.fonts.textFont1
         
         setupButton(isEnabled: false)
         subtitleLabel.text = LMStringConstants.shared.reportSubtitle(isComment: viewmodel?.contentType != .post)
@@ -204,7 +204,7 @@ open class LMFeedReportScreen: LMViewController {
     
     open func setupButton(isEnabled: Bool) {
         submitButton.isEnabled = isEnabled
-        submitButton.backgroundColor = isEnabled ? Appearance.shared.colors.red : Appearance.shared.colors.gray4
+        submitButton.backgroundColor = isEnabled ? LMFeedAppearance.shared.colors.red : LMFeedAppearance.shared.colors.gray4
     }
     
     
@@ -245,7 +245,7 @@ extension LMFeedReportScreen: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = tagsData[indexPath.row].0.sizeOfString(with: Appearance.shared.fonts.textFont1).width + 32
+        let width = tagsData[indexPath.row].0.sizeOfString(with: LMFeedAppearance.shared.fonts.textFont1).width + 32
         return .init(width: width, height: 50)
     }
 }
@@ -256,16 +256,16 @@ extension LMFeedReportScreen: UITextViewDelegate {
     open func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) == placeholderText {
             textView.text = nil
-            textView.textColor = Appearance.shared.colors.gray51
-            textView.font = Appearance.shared.fonts.textFont1
+            textView.textColor = LMFeedAppearance.shared.colors.gray51
+            textView.font = LMFeedAppearance.shared.fonts.textFont1
         }
     }
     
     open func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             textView.text = placeholderText
-            textView.textColor = Appearance.shared.colors.gray155
-            textView.font = Appearance.shared.fonts.textFont1
+            textView.textColor = LMFeedAppearance.shared.colors.gray155
+            textView.font = LMFeedAppearance.shared.fonts.textFont1
         }
     }
 }

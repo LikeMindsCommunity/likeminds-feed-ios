@@ -47,4 +47,10 @@ public struct Components {
     
     // MARK: Search Screen
     public var searchPostScreen: LMFeedSearchPostScreen.Type = LMFeedSearchPostScreen.self
+    
+    // MARK: QnA Feed
+    public var qnaPostListScreen: LMFeedQnAPostListScreen.Type = LMFeedQnAPostListScreen.self
+    public var qnaPostDetailScreen: LMFeedQnAPostDetailScreen.Type = LMFeedQnAPostDetailScreen.self
+    public var qnaSearchPostScreen: LMFeedQnASearchPostScreen.Type = LMFeedQnASearchPostScreen.self
+    public var qnaUniversalFeed: LMFeedQnAUniversalFeed.Type = LMFeedQnAUniversalFeed.self
 }

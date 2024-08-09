@@ -13,9 +13,9 @@ open class LMFeedTopicEditIcon: LMCollectionViewCell {
     open private(set) lazy var editIcon: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.pencilIcon, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.pencilIcon, for: .normal)
         button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
-        button.tintColor = Appearance.shared.colors.appTintColor
+        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         return button
     }()
     
@@ -51,7 +51,7 @@ open class LMFeedTopicEditIcon: LMCollectionViewCell {
         
         containerView.clipsToBounds = true
         containerView.layer.cornerRadius = 4
-        containerView.backgroundColor = Appearance.shared.colors.appTintColor.withAlphaComponent(0.1)
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.appTintColor.withAlphaComponent(0.1)
     }
     
     

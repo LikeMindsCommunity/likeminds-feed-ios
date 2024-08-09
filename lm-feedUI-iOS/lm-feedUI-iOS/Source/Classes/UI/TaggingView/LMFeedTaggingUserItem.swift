@@ -84,14 +84,14 @@ open class LMFeedTaggingUserItem: LMTableViewCell {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        sepratorView.backgroundColor = Appearance.shared.colors.gray4
+        sepratorView.backgroundColor = LMFeedAppearance.shared.colors.gray4
         userImage.layer.cornerRadius = userImage.bounds.height / 2
-        userNameLabel.font = Appearance.shared.fonts.textFont1
-        userNameLabel.textColor = Appearance.shared.colors.textColor
+        userNameLabel.font = LMFeedAppearance.shared.fonts.textFont1
+        userNameLabel.textColor = LMFeedAppearance.shared.colors.textColor
         
-        backgroundColor = Appearance.shared.colors.clear
-        contentView.backgroundColor = Appearance.shared.colors.clear
-        containerView.backgroundColor = Appearance.shared.colors.clear
+        backgroundColor = LMFeedAppearance.shared.colors.clear
+        contentView.backgroundColor = LMFeedAppearance.shared.colors.clear
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.clear
     }
     
     

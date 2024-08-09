@@ -29,25 +29,12 @@ open class LMFeedTaggingTextView: LMTextView {
     }
     public var spaceChar: Character = " "
     public var newLineChar: Character = "\n"
-    public var taggingCharacter: Character = Constants.shared.strings.taggingCharacter
+    public var taggingCharacter: Character = LMFeedConstants.shared.strings.taggingCharacter
     public var isSpaceAdded: Bool = false
     public var startIndex: Int?
     public var characters: [Character] = []
     
     public weak var mentionDelegate: LMFeedTaggingTextViewProtocol?
-    
-    public var textAttributes: [NSAttributedString.Key: Any] = [.font: Appearance.shared.fonts.textFont1,
-                                                                .foregroundColor: Appearance.shared.colors.textColor]
-    
-    public override init(frame: CGRect, textContainer: NSTextContainer?) {
-        super.init(frame: frame, textContainer: textContainer)
-        delegate = self
-    }
-    
-    public required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        delegate = self
-    }
     
     public func handleTagging() {
         let selectedLocation = selectedRange.location
@@ -101,8 +88,8 @@ open class LMFeedTaggingTextView: LMTextView {
             let partTwoString = NSMutableAttributedString(attributedString: attributedText.attributedSubstring(from: NSRange(location: startIndex + 1 + characters.count, length: attributedText.length - startIndex - 1 - characters.count)))
             
             let attrName = NSAttributedString(string: "\(taggingCharacter)\(username.trimmingCharacters(in: .whitespacesAndNewlines))", attributes: [
-                .font: Appearance.shared.fonts.textFont1,
-                .foregroundColor: Appearance.shared.colors.linkColor,
+                .font: LMFeedAppearance.shared.fonts.textFont1,
+                .foregroundColor: LMFeedAppearance.shared.colors.linkColor,
                 .route: route
             ])
             
@@ -122,7 +109,7 @@ open class LMFeedTaggingTextView: LMTextView {
                 if attr.contains(where: { $0.key == .route }) {
                     attrString.addAttributes(linkTextAttributes, range: range)
                 } else {
-                    attrString.addAttributes(textAttributes, range: range)
+                    attrString.addAttributes(placeholderAttributes, range: range)
                 }
             }
             
@@ -133,7 +120,7 @@ open class LMFeedTaggingTextView: LMTextView {
         }
     }
     
-    public func getText() -> String {
+    public override func getText() -> String {
         var message = ""
         
         attributedText.enumerateAttributes(in: NSRange(location: 0, length: attributedText.length)) { attr, range, _ in
@@ -147,21 +134,21 @@ open class LMFeedTaggingTextView: LMTextView {
         return message != placeHolderText ? message : ""
     }
     
-    public func setAttributedText(from content: String, prefix: Character? = nil) {
+    public override func setAttributedText(from content: String, prefix: Character? = nil) {
         if !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             attributedText = GetAttributedTextWithRoutes.getAttributedText(from: content, andPrefix: prefix, allowLink: false, allowHashtags: false)
         } else {
             text = placeHolderText
-            textColor = textAttributes[.foregroundColor] as? UIColor
-            font = textAttributes[.font] as? UIFont
+            textColor = placeholderAttributes[.foregroundColor] as? UIColor
+            font = placeholderAttributes[.font] as? UIFont
         }
     }
 }
 
 
 // MARK: UITextViewDelegate
-extension LMFeedTaggingTextView: UITextViewDelegate {
-    open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+extension LMFeedTaggingTextView {
+    open override func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text.isEmpty {
             if isMentioning {
                 if range.length <= characters.count {
@@ -230,7 +217,7 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
             if attr.contains(where: { $0.key == .route }) {
                 attrString.addAttributes(linkTextAttributes, range: range)
             } else {
-                attrString.addAttributes(textAttributes, range: range)
+                attrString.addAttributes(placeholderAttributes, range: range)
             }
         }
         
@@ -241,20 +228,13 @@ extension LMFeedTaggingTextView: UITextViewDelegate {
         }
     }
     
-    open func textViewDidChange(_ textView: UITextView) {
+    open override func textViewDidChange(_ textView: UITextView) {
         mentionDelegate?.contentHeightChanged()
     }
     
-    open func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == placeHolderText {
-            textView.text = nil
-        }
-    }
-    
-    open func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            textView.attributedText = NSAttributedString(string: placeHolderText, attributes: textAttributes)
-        }
+    open override func textViewDidEndEditing(_ textView: UITextView) {
+        super.textViewDidEndEditing(textView)
+        
         mentionDelegate?.contentHeightChanged()
     }
 }

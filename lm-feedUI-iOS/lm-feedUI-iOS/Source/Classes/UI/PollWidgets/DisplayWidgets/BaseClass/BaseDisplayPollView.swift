@@ -22,7 +22,7 @@ open class BaseDisplayPollView: LMView {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
@@ -38,15 +38,15 @@ open class BaseDisplayPollView: LMView {
     open private(set) lazy var questionTitle: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.numberOfLines = 0
-        label.textColor = Appearance.shared.colors.gray51
-        label.font = Appearance.shared.fonts.headingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray51
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
         return label
     }()
     
     open private(set) lazy var optionSelectCountLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.textColor = Appearance.shared.colors.gray155
-        label.font = Appearance.shared.fonts.buttonFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray155
+        label.font = LMFeedAppearance.shared.fonts.buttonFont1
         label.numberOfLines = 0
         return label
     }()
@@ -62,8 +62,8 @@ open class BaseDisplayPollView: LMView {
     
     open private(set) lazy var expiryDateLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.textColor = Appearance.shared.colors.gray102
-        label.font = Appearance.shared.fonts.subHeadingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray102
+        label.font = LMFeedAppearance.shared.fonts.subHeadingFont1
         return label
     }()
 }
