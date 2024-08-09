@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Messaging.messaging().delegate = self
         registerForPushNotifications(application: application)
         
-        var deviceId: String? = UIDevice.current.identifierForVendor?.uuidString
+        let deviceId: String? = UIDevice.current.identifierForVendor?.uuidString
         
         LMFeedCore.shared.setupFeed(deviceId: deviceId)
         

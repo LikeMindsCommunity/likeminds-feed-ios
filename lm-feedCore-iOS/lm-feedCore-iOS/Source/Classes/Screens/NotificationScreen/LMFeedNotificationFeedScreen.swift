@@ -30,7 +30,7 @@ open class LMFeedNotificationFeedScreen: LMViewController {
     
     open private(set) lazy var emptyNotificationView: LMFeedNoResultView = {
         let view = LMFeedNoResultView()
-        view.configure(with: Constants.shared.strings.noNotificationFound)
+        view.configure(with: LMFeedConstants.shared.strings.noNotificationFound)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

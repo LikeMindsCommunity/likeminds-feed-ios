@@ -17,22 +17,22 @@ open class LMFeedMoreRepliesView: LMTableViewHeaderFooterView {
     
     open private(set) lazy var staticLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.headingFont3
-        label.textColor = Appearance.shared.colors.blueGray
+        label.font = LMFeedAppearance.shared.fonts.headingFont3
+        label.textColor = LMFeedAppearance.shared.colors.blueGray
         label.text = "View more replies"
         return label
     }()
     
     open private(set) lazy var countLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.subHeadingFont1
-        label.textColor = Appearance.shared.colors.gray155
+        label.font = LMFeedAppearance.shared.fonts.subHeadingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray155
         return label
     }()
     
     open private(set) lazy var sepratorView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.backgroundColor
+        view.backgroundColor = LMFeedAppearance.shared.colors.backgroundColor
         return view
     }()
     
@@ -89,7 +89,7 @@ open class LMFeedMoreRepliesView: LMTableViewHeaderFooterView {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        containerView.backgroundColor = Appearance.shared.colors.white
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
     

@@ -58,16 +58,16 @@ PODS:
   - Kingfisher (7.12.0)
   - LikeMindsFeed (1.8.0):
     - Alamofire (~> 5.7.1)
-  - LikeMindsFeedCore (1.1.0):
+  - LikeMindsFeedCore (1.2.0):
     - AWSCognito
     - AWSCore
     - AWSS3
     - BSImagePicker (~> 3.3.3)
     - FirebaseCore
     - FirebaseMessaging
-    - LikeMindsFeed
-    - LikeMindsFeedUI (= 1.1.0)
-  - LikeMindsFeedUI (1.1.0):
+    - LikeMindsFeed (~> 1.8.0)
+    - LikeMindsFeedUI (= 1.2.0)
+  - LikeMindsFeedUI (1.2.0):
     - Kingfisher (~> 7.0)
   - nanopb (2.30910.0):
     - nanopb/decode (= 2.30910.0)
@@ -120,8 +120,8 @@ SPEC CHECKSUMS:
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   Kingfisher: 53a10ea35051a436b5fb626ca2dd8f3144d755e9
   LikeMindsFeed: 767514183a6ed9e7c3c76be0e6c8b53be0f4c87f
-  LikeMindsFeedCore: 36ea24109ff3d1d7d27ef1e90a91cdad6e5f296a
-  LikeMindsFeedUI: 8ddd602ae8da5c55ae9348a0fadd207ed17463a4
+  LikeMindsFeedCore: a3592ad45226deea1c11bb8dbd1132353b4dcde8
+  LikeMindsFeedUI: 2e00255ae1107ca3f28373f1398ca008a4f8d5ed
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
 

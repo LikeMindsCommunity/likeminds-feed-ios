@@ -15,7 +15,7 @@ open class LMFeedLikeListScreen: LMViewController {
         let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
         table.dataSource = self
         table.delegate = self
-        table.backgroundColor = Appearance.shared.colors.clear
+        table.backgroundColor = LMFeedAppearance.shared.colors.clear
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.bounces = false
@@ -51,7 +51,7 @@ open class LMFeedLikeListScreen: LMViewController {
         viewModel?.getLikes()
         setNavigationTitleAndSubtitle(with: "Likes", subtitle: "0 Likes", alignment: .center)
         
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         
         // Analytics
         LMFeedCore.analytics?.trackEvent(for: .postLikeListOpened, eventProperties: ["post_id": viewModel?.postID ?? ""])

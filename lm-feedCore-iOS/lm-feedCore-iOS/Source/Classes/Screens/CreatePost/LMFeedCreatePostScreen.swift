@@ -11,12 +11,12 @@ import LikeMindsFeedUI
 import UIKit
 import Photos
 
-@IBDesignable
+
 open class LMFeedCreatePostScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
@@ -49,7 +49,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     
     open private(set) lazy var headerView: LMFeedCreatePostHeaderView = {
         let view = LMUIComponents.shared.createPostHeaderView.init().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
@@ -63,18 +63,18 @@ open class LMFeedCreatePostScreen: LMViewController {
         let textView = LMFeedTaggingTextView().translatesAutoresizingMaskIntoConstraints()
         textView.dataDetectorTypes = [.link]
         textView.mentionDelegate = self
-        textView.backgroundColor = Appearance.shared.colors.clear
+        textView.backgroundColor = LMFeedAppearance.shared.colors.clear
         textView.isScrollEnabled = true
         textView.isEditable = true
-        textView.placeHolderText = "Write Something here..."
-        textView.backgroundColor = Appearance.shared.colors.clear
+        textView.placeHolderText = "Write something here..."
+        textView.backgroundColor = LMFeedAppearance.shared.colors.clear
         textView.addDoneButtonOnKeyboard()
         return textView
     }()
     
     open private(set) lazy var linkPreview: LMFeedLinkPreview = {
         let view = LMUIComponents.shared.linkPreview.init().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
@@ -101,9 +101,9 @@ open class LMFeedCreatePostScreen: LMViewController {
         let pageControl = UIPageControl()
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.hidesForSinglePage = true
-        pageControl.tintColor = Appearance.shared.colors.appTintColor
-        pageControl.currentPageIndicatorTintColor = Appearance.shared.colors.appTintColor
-        pageControl.pageIndicatorTintColor = Appearance.shared.colors.gray155
+        pageControl.tintColor = LMFeedAppearance.shared.colors.appTintColor
+        pageControl.currentPageIndicatorTintColor = LMFeedAppearance.shared.colors.appTintColor
+        pageControl.pageIndicatorTintColor = LMFeedAppearance.shared.colors.gray155
         return pageControl
     }()
     
@@ -118,15 +118,15 @@ open class LMFeedCreatePostScreen: LMViewController {
         table.dataSource = self
         table.delegate = self
         table.separatorStyle = .none
-        table.backgroundColor = Appearance.shared.colors.clear
+        table.backgroundColor = LMFeedAppearance.shared.colors.clear
         return table
     }()
     
     open private(set) lazy var addMoreButton: LMButton = {
-        let button = LMButton.createButton(with: LMStringConstants.shared.addMoreText, image: Constants.shared.images.plusIcon, textColor: Appearance.shared.colors.appTintColor, textFont: Appearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 16, bottom: 8, right: 16))
+        let button = LMButton.createButton(with: LMStringConstants.shared.addMoreText, image: LMFeedConstants.shared.images.plusIcon, textColor: LMFeedAppearance.shared.colors.appTintColor, textFont: LMFeedAppearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 16, bottom: 8, right: 16))
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = Appearance.shared.colors.appTintColor
-        button.layer.borderColor = Appearance.shared.colors.appTintColor.cgColor
+        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
+        button.layer.borderColor = LMFeedAppearance.shared.colors.appTintColor.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 8
         return button
@@ -180,10 +180,33 @@ open class LMFeedCreatePostScreen: LMViewController {
     
     open private(set) lazy var createPostButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: LMStringConstants.shared.doneText, style: .plain, target: self, action: #selector(didTapCreateButton))
-        button.tintColor = Appearance.shared.colors.appTintColor
+        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         return button
     }()
     
+    
+    open private(set) lazy var headingTextContainer: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
+    open private(set) lazy var headingTextView: LMTextView = {
+        let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
+        textView.backgroundColor = LMFeedAppearance.shared.colors.clear
+        textView.isScrollEnabled = true
+        textView.isEditable = true
+        textView.setDisabledCharacters(["\n"])
+        textView.placeHolderText = "Add your question here"
+        textView.textAttributes[.font] = LMFeedAppearance.shared.fonts.headingFont1
+        textView.placeholderAttributes[.font] = LMFeedAppearance.shared.fonts.headingFont1
+        return textView
+    }()
+    
+    open private(set) lazy var headerSepratorView: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
+        return view
+    }()
     
     // MARK: Data Variables
     public var viewModel: LMFeedCreatePostViewModel?
@@ -192,6 +215,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     public var documentAttachmentHeight: CGFloat = 90
     
     public var taggingViewHeight: NSLayoutConstraint?
+    public var questionViewHeightConstraint: NSLayoutConstraint?
     public var inputTextViewHeightConstraint: NSLayoutConstraint?
     public var textInputMinimumHeight: CGFloat = 80
     public var textInputMaximumHeight: CGFloat = 150
@@ -199,6 +223,8 @@ open class LMFeedCreatePostScreen: LMViewController {
     public var isPollFlow: Bool = false
     
     public var mediaAttachmentData: [LMFeedMediaProtocol] = []
+    
+    public var showQuestionHeading: Bool = false
     
     public lazy var documentPicker: UIDocumentPickerViewController = {
         if #available(iOS 14, *) {
@@ -227,7 +253,16 @@ open class LMFeedCreatePostScreen: LMViewController {
         
         scrollView.addSubview(scrollStackView)
         
-        [headerView, topicView, inputTextView, linkPreview, pollPreview, mediaCollectionView, mediaPageControl ,documentTableView, addMoreButton].forEach { subView in
+        headingTextContainer.addSubview(headerSepratorView)
+        headingTextContainer.addSubview(headingTextView)
+        
+        var subViews = [headerView, topicView, headingTextContainer, inputTextView, linkPreview, pollPreview, mediaCollectionView, mediaPageControl ,documentTableView, addMoreButton]
+        
+        if !showQuestionHeading {
+            subViews.remove(at: 2)
+        }
+        
+        subViews.forEach { subView in
             scrollStackView.addArrangedSubview(subView)
         }
         
@@ -245,7 +280,7 @@ open class LMFeedCreatePostScreen: LMViewController {
         view.safePinSubView(subView: containerView)
         
         containerView.pinSubView(subView: containerStackView)
-        scrollView.pinSubView(subView: scrollStackView, padding: .init(top: 8, left: 0, bottom: 8, right: 0))
+        scrollView.pinSubView(subView: scrollStackView, padding: .init(top: 8, left: 0, bottom: -8, right: 0))
         headerView.setHeightConstraint(with: 64)
         topicView.setHeightConstraint(with: 2, priority: .defaultLow)
         linkPreview.setHeightConstraint(with: 1000, priority: .defaultLow)
@@ -267,6 +302,18 @@ open class LMFeedCreatePostScreen: LMViewController {
         scrollView.setWidthConstraint(with: containerStackView.widthAnchor)
         scrollStackView.setWidthConstraint(with: containerStackView.widthAnchor)
         mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
+        
+        headingTextContainer.pinSubView(subView: headingTextView, padding: .init(top: 0, left: 0, bottom: -8, right: 0))
+        
+        headerSepratorView.addConstraint(bottom: (headingTextContainer.bottomAnchor, -6),
+                                         leading: (headingTextContainer.leadingAnchor, 0),
+                                         trailing: (headingTextContainer.trailingAnchor, 0))
+        headerSepratorView.setHeightConstraint(with: 1)
+        
+        questionViewHeightConstraint = headingTextContainer.setHeightConstraint(with: textInputMinimumHeight)
+        
+        
+        headingTextContainer.isHidden = !showQuestionHeading
         
         scrollStackView.subviews.forEach { subView in
             if subView != addMoreButton {
@@ -322,20 +369,40 @@ open class LMFeedCreatePostScreen: LMViewController {
     
     @objc
     open func didTapCreateButton() {
-        viewModel?.createPost(with: inputTextView.getText())
+        var question: String? = nil
+        
+        if showQuestionHeading {
+            question = headingTextView.getText()
+        }
+        
+        viewModel?.createPost(with: inputTextView.getText(), question: question)
     }
     
     
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.createPostTitle, subtitle: nil, alignment: .center)
+        
+        headingTextView.setAttributedText(from: "")
         inputTextView.setAttributedText(from: "")
+        
         setupAddMedia()
         setupInitialView()
         setupProfileData()
+        
         viewModel?.getTopics()
+        
+        if showQuestionHeading {
+            headingTextView.textChangedObserver = { [weak self] in
+                self?.observeCreateButton()
+                self?.observeHeadingHeight()
+            }
+            
+            createPostButton.title = LMStringConstants.shared.doneText.uppercased()
+            setNavigationTitleAndSubtitle(with: "Ask a question", subtitle: nil, alignment: .center)
+        }
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
@@ -346,10 +413,10 @@ open class LMFeedCreatePostScreen: LMViewController {
     }
     
     open func setupAddMedia() {
-        addPhotosTab.configure(with: LMStringConstants.shared.addPhotoText, image: Constants.shared.images.galleryIcon)
-        addVideoTab.configure(with: LMStringConstants.shared.addVideoText, image: Constants.shared.images.videoIcon)
-        addDocumentsTab.configure(with: LMStringConstants.shared.attachFiles, image: Constants.shared.images.paperclipIcon)
-        addPollTab.configure(with: LMStringConstants.shared.addPoll, image: Constants.shared.images.addPollIcon, hideSeprator: true)
+        addPhotosTab.configure(with: LMStringConstants.shared.addPhotoText, image: LMFeedConstants.shared.images.galleryIcon)
+        addVideoTab.configure(with: LMStringConstants.shared.addVideoText, image: LMFeedConstants.shared.images.videoIcon)
+        addDocumentsTab.configure(with: LMStringConstants.shared.attachFiles, image: LMFeedConstants.shared.images.paperclipIcon)
+        addPollTab.configure(with: LMStringConstants.shared.addPoll, image: LMFeedConstants.shared.images.addPollIcon, hideSeprator: true)
         taggingView.isHidden = true
     }
     
@@ -369,7 +436,11 @@ open class LMFeedCreatePostScreen: LMViewController {
     }
     
     open func observeCreateButton() {
-        createPostButton.isEnabled = !mediaAttachmentData.isEmpty || !inputTextView.getText().isEmpty || !documentAttachmentData.isEmpty || isPollFlow
+        if showQuestionHeading {
+            createPostButton.isEnabled = !headingTextView.getText().isEmpty
+        } else {
+            createPostButton.isEnabled = !mediaAttachmentData.isEmpty || !inputTextView.getText().isEmpty || !documentAttachmentData.isEmpty || isPollFlow
+        }
     }
 }
 
@@ -603,6 +674,14 @@ extension LMFeedCreatePostScreen: LMFeedTaggingTextViewProtocol {
         
         viewModel?.handleLinkDetection(in: inputTextView.text)
         observeCreateButton()
+    }
+    
+    public func observeHeadingHeight() {
+        let width = headingTextView.frame.size.width
+        let newSize = headingTextView.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
+        
+        headingTextView.isScrollEnabled = newSize.height > textInputMaximumHeight
+        questionViewHeightConstraint?.constant = min(max(newSize.height, textInputMinimumHeight), textInputMaximumHeight)
     }
 }
 

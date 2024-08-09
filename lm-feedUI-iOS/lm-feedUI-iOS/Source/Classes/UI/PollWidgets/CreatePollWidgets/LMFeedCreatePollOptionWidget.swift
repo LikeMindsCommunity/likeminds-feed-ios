@@ -26,16 +26,16 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
         textField.addDoneButtonOnKeyboard()
         textField.attributedPlaceholder = NSAttributedString(
             string: "Option",
-            attributes: [NSAttributedString.Key.foregroundColor: Appearance.shared.colors.gray102]
+            attributes: [NSAttributedString.Key.foregroundColor: LMFeedAppearance.shared.colors.gray102]
         )
-        textField.textColor = Appearance.shared.colors.black
+        textField.textColor = LMFeedAppearance.shared.colors.black
         return textField
     }()
     
     open private(set) lazy var crossButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.xmarkIcon, for: .normal)
+        button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 24)), forImageIn: .normal)
         button.tintColor = UIColor(red: 208 / 255, green: 216 / 255, blue: 226 / 255, alpha: 1)
         return button
@@ -91,7 +91,7 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        containerView.backgroundColor = Appearance.shared.colors.white
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
     

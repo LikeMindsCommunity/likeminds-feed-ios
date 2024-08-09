@@ -28,7 +28,7 @@ open class LMFeedLinkPreview: LMView {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         view.clipsToBounds = true
         return view
     }()
@@ -44,9 +44,9 @@ open class LMFeedLinkPreview: LMView {
     open private(set) lazy var crossButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.xmarkIcon, for: .normal)
-        button.backgroundColor = Appearance.shared.colors.white
-        button.tintColor = Appearance.shared.colors.gray51
+        button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
+        button.backgroundColor = LMFeedAppearance.shared.colors.white
+        button.tintColor = LMFeedAppearance.shared.colors.gray51
         button.contentMode = .scaleAspectFit
         return button
     }()
@@ -61,13 +61,13 @@ open class LMFeedLinkPreview: LMView {
     
     open private(set) lazy var sepratorView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.gray3
+        view.backgroundColor = LMFeedAppearance.shared.colors.gray3
         return view
     }()
     
     open private(set) lazy var metaDataContainerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
@@ -84,8 +84,8 @@ open class LMFeedLinkPreview: LMView {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Trial Text"
         label.numberOfLines = 2
-        label.font = Appearance.shared.fonts.headingFont1
-        label.textColor = Appearance.shared.colors.gray102
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray102
         return label
     }()
     
@@ -93,16 +93,16 @@ open class LMFeedLinkPreview: LMView {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Trial Description"
         label.numberOfLines = 2
-        label.font = Appearance.shared.fonts.subHeadingFont2
-        label.textColor = Appearance.shared.colors.gray102
+        label.font = LMFeedAppearance.shared.fonts.subHeadingFont2
+        label.textColor = LMFeedAppearance.shared.colors.gray102
         return label
     }()
     
     open private(set) lazy var urlLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Trial URL"
-        label.font = Appearance.shared.fonts.subHeadingFont1
-        label.textColor = Appearance.shared.colors.gray102
+        label.font = LMFeedAppearance.shared.fonts.subHeadingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray102
         return label
     }()
     
@@ -159,10 +159,10 @@ open class LMFeedLinkPreview: LMView {
         super.setupAppearance()
         containerView.layer.cornerRadius = 16
         containerView.layer.borderWidth = 1
-        containerView.layer.borderColor = Appearance.shared.colors.sepratorColor.cgColor
-        sepratorView.backgroundColor = Appearance.shared.colors.sepratorColor
+        containerView.layer.borderColor = LMFeedAppearance.shared.colors.sepratorColor.cgColor
+        sepratorView.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
         crossButton.layer.cornerRadius = crossButtonSize / 2
-        crossButton.layer.borderColor = Appearance.shared.colors.gray51.cgColor
+        crossButton.layer.borderColor = LMFeedAppearance.shared.colors.gray51.cgColor
         crossButton.layer.borderWidth = 1
     }
     

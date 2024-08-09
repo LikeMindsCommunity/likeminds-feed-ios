@@ -35,21 +35,21 @@ open class LMFeedPollResultCollectionCell: LMCollectionViewCell {
     
     open private(set) lazy var voteCountLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.headingFont1
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.textAlignment = .center
         return label
     }()
     
     open private(set) lazy var voteTitleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.headingFont1
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.textAlignment = .center
         return label
     }()
     
     open private(set) lazy var sepratorView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
@@ -108,6 +108,6 @@ open class LMFeedPollResultCollectionCell: LMCollectionViewCell {
         
         voteCountLabel.textColor = data.isSelected ? selectedPollColor : notSelectedPollColor
         voteTitleLabel.textColor = data.isSelected ? selectedPollColor : notSelectedPollColor
-        sepratorView.backgroundColor = data.isSelected ? selectedPollColor : Appearance.shared.colors.clear
+        sepratorView.backgroundColor = data.isSelected ? selectedPollColor : LMFeedAppearance.shared.colors.clear
     }
 }
