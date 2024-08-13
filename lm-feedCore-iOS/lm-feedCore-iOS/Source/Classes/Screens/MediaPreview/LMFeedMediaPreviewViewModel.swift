@@ -27,7 +27,7 @@ public final class LMFeedMediaPreviewViewModel {
         self.delegate = delegate
     }
     
-    public static func createModule(with data: LMFeedPostDataModel, startIndex: Int = 0) -> LMFeedMediaPreviewScreen? {
+    public static func createModule(with data: LMFeedPostDataModel, postID: String, startIndex: Int = 0) -> LMFeedMediaPreviewScreen? {
         let viewController = LMFeedMediaPreviewScreen()
         let viewModel = Self.init(data: data, startIndex: startIndex, delegate: viewController)
         viewController.viewModel = viewModel

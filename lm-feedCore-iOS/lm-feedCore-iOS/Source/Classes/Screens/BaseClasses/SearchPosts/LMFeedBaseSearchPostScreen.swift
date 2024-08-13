@@ -255,7 +255,11 @@ extension LMFeedBaseSearchPostScreen: UITableViewDelegate, UITableViewDataSource
 
 // MARK: LMFeedPostDocumentCellProtocol
 @objc
-extension LMFeedBaseSearchPostScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol {
+extension LMFeedBaseSearchPostScreen: LMFeedPostMediaCellProtocol, LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol {
+    public func didTapMedia(postID: String, index: Int) {
+        
+    }
+    
     open func didTapPost(postID: String) {
         fatalError("Needs to be implemented by subclass")
     }

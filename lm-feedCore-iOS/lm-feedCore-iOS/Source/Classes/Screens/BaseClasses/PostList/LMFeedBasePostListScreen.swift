@@ -406,7 +406,11 @@ extension LMFeedBasePostListScreen: LMFeedPostFooterViewProtocol {
 
 // MARK: - LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol
 @objc
-extension LMFeedBasePostListScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol {
+extension LMFeedBasePostListScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol, LMFeedPostMediaCellProtocol {
+    public func didTapMedia(postID: String, index: Int) {
+        // Add Navigation To Media Preview Screen
+    }
+    
     public func didTapPost(postID: String) {
         fatalError("Needs to be implemented by subclass")
     }

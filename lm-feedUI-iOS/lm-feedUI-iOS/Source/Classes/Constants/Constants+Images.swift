@@ -83,6 +83,7 @@ public extension LMFeedConstants {
         public var annoucementIcon = loadSystemImage(with: "speaker.zzz.fill")
         public var personCircleFillIcon = loadSystemImage(with: "person.circle.fill")
         public var muteFillIcon = loadSystemImage(with: "speaker.slash.fill")
+        public var unMuteFillIcon = loadSystemImage(with: "speaker.fill")
         public var tagFillIcon = loadSystemImage(with: "tag.fill")
         public var rightArrowIcon = loadSystemImage(with: "chevron.right")
         public var checkmarkCircleIcon = loadSystemImage(with: "checkmark.circle")

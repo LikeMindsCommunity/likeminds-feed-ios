@@ -10,14 +10,21 @@ import UIKit
 
 @IBDesignable
 open class LMFeedVideoCollectionCell: LMCollectionViewCell {
+    
     public struct ContentModel: LMFeedMediaProtocol {
         public let videoURL: String
         public let isFilePath: Bool
+        public let postID: String
         
-        public init(videoURL: String, isFilePath: Bool = false) {
+        public init(videoURL: String, isFilePath: Bool = false, postID: String) {
             self.videoURL = videoURL
             self.isFilePath = isFilePath
+            self.postID = postID
         }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     
@@ -38,6 +45,16 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         return button
     }()
     
+    open private(set) lazy var volumeButton: LMButton = {
+        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+        button.setTitle(nil, for: .normal)
+        button.setImage(LMFeedVideoProvider.isMuted ? LMFeedConstants.shared.images.unMuteFillIcon : LMFeedConstants.shared.images.muteFillIcon , for: .normal)
+        button.backgroundColor = LMFeedAppearance.shared.colors.white
+        button.tintColor = LMFeedAppearance.shared.colors.gray51
+        button.contentMode = .scaleAspectFit
+        return button
+    }()
+    
     
     // MARK: Data Variables
     public var crossButtonHeight: CGFloat = 24
@@ -47,7 +64,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     
     // MARK: prepareForReuse
     open override func prepareForReuse() {
-        videoPlayer.unload()
+        videoPlayer.pause()
         super.prepareForReuse()
     }
     
@@ -59,6 +76,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         contentView.addSubview(containerView)
         containerView.addSubview(videoPlayer)
         containerView.addSubview(crossButton)
+        containerView.addSubview(volumeButton)
     }
     
     
@@ -68,6 +86,10 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         
         contentView.pinSubView(subView: containerView)
         containerView.pinSubView(subView: videoPlayer)
+        volumeButton.addConstraint(bottom: (containerView.bottomAnchor, -16),
+                                   trailing: (containerView.trailingAnchor, -16))
+        volumeButton.setHeightConstraint(with: crossButtonHeight)
+        volumeButton.setWidthConstraint(with: crossButton.heightAnchor)
         crossButton.addConstraint(top: (containerView.topAnchor, 16),
                                   trailing: (containerView.trailingAnchor, -16))
         crossButton.setHeightConstraint(with: crossButtonHeight)
@@ -82,13 +104,28 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         crossButton.layer.cornerRadius = crossButtonHeight / 2
         crossButton.layer.borderColor = LMFeedAppearance.shared.colors.gray51.cgColor
         crossButton.layer.borderWidth = 1
+        volumeButton.layer.cornerRadius = crossButtonHeight / 2
+        volumeButton.layer.borderColor = LMFeedAppearance.shared.colors.gray51.cgColor
+        volumeButton.layer.borderWidth = 1
     }
     
     
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
+        setupObserver()
         crossButton.addTarget(self, action: #selector(didTapCrossButton), for: .touchUpInside)
+        volumeButton.addTarget(self, action: #selector(didTapVolumeButton), for: .touchUpInside)
+    }
+    
+    private func setupObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(setVolumeButtonImageBasedOnMuteState), name: .volumeStateChanged, object: nil)
+    }
+    
+    @objc
+    open func setVolumeButtonImageBasedOnMuteState(){
+        volumeButton.setImage(LMFeedVideoProvider.isMuted ? LMFeedConstants.shared.images.unMuteFillIcon : LMFeedConstants.shared.images.muteFillIcon , for: .normal)
+        toggleVolumeState()
     }
     
     @objc
@@ -98,12 +135,17 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         crossButtonAction?(videoURL.absoluteString)
     }
     
+    @objc
+    open func didTapVolumeButton(){
+        LMFeedVideoProvider.isMuted.toggle()
+    }
+    
     // MARK: configure
-    open func configure(with data: ContentModel, crossButtonAction: ((String) -> Void)? = nil) {
+    open func configure(with data: ContentModel, index: Int, crossButtonAction: ((String) -> Void)? = nil) {
         guard let url = URL(string: data.videoURL) else { return }
         videoURL = url
         
-        videoPlayer.prepareVideo(url)
+        videoPlayer.prepareVideo(url, data.postID, index)
         self.crossButtonAction = crossButtonAction
         crossButton.isHidden = crossButtonAction == nil
         if crossButtonAction != nil {
@@ -112,6 +154,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     }
     
     open func playVideo() {
+        videoPlayer.videoPlayerController?.player?.isMuted = LMFeedVideoProvider.isMuted
         videoPlayer.play()
     }
     
@@ -121,5 +164,9 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     
     open func unload() {
         videoPlayer.unload()
+    }
+    
+    open func toggleVolumeState(){
+        videoPlayer.toggleVolumeState()
     }
 }

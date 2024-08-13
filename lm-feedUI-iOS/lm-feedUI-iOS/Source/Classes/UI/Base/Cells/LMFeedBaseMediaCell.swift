@@ -38,6 +38,7 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
     
     //MARK: Data Variables
     public var mediaCellsData: [LMFeedMediaProtocol] = []
+    public weak var delegate: LMFeedPostMediaCellProtocol?
     
     
     // MARK: setupAppearance
@@ -53,6 +54,12 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
     open override func setupActions() {
         super.setupActions()
         pageControl.addTarget(self, action: #selector(didChangePageControl), for: .primaryActionTriggered)
+    }
+    
+    open override func setupLayouts() {
+        super.setupLayouts()
+        mediaCollectionView.setWidthConstraint(with: contentStack.widthAnchor)
+        mediaCollectionView.setHeightConstraint(with: contentStack.widthAnchor)
     }
     
     @objc
@@ -75,8 +82,9 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
     
     
     // MARK: Configure Function
-    open func configure(with data: LMFeedPostContentModel, delegate: LMPostWidgetTableViewCellProtocol?) {
+    open func configure(with data: LMFeedPostContentModel, delegate: LMFeedPostMediaCellProtocol?) {
         actionDelegate = delegate
+        self.delegate = delegate
         postID = data.postID
         userUUID = data.userUUID
         
@@ -116,7 +124,7 @@ extension LMFeedBaseMediaCell: UICollectionViewDataSource,
             return cell
         } else if let data = mediaCellsData[indexPath.row] as? LMFeedVideoCollectionCell.ContentModel,
                   let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreview, for: indexPath) {
-            cell.configure(with: data)
+            cell.configure(with: data, index: indexPath.row)
             return cell
         }
         
@@ -143,6 +151,12 @@ extension LMFeedBaseMediaCell: UICollectionViewDataSource,
     
     open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
+    }
+    
+    open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let postID else { return }
+        delegate?.didTapMedia(postID: postID, index: indexPath.row)
+        
     }
     
     public func scrollingFinished() {

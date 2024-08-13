@@ -12,7 +12,7 @@ public struct LMFeedConvertToFeedPost {
     public static func convertToViewModel(for post: LMFeedPostDataModel) -> LMFeedPostContentModel {
         
         let documents = convertToDocument(from: post.documentAttachment)
-        let media = convertToMediaProtocol(from: post.imageVideoAttachment)
+        let media = convertToMediaProtocol(from: post.imageVideoAttachment, postID: post.postId)
         var linkPreview: LMFeedLinkPreview.ContentModel?
         let pollPreview = convertToPollModel(from: post)
         
@@ -114,10 +114,10 @@ public struct LMFeedConvertToFeedPost {
         }
     }
     
-    public static func convertToMediaProtocol(from data: [LMFeedPostDataModel.ImageVideoAttachment]) -> [LMFeedMediaProtocol] {
+    public static func convertToMediaProtocol(from data: [LMFeedPostDataModel.ImageVideoAttachment], postID: String) -> [LMFeedMediaProtocol] {
         data.map { datum in
             if datum.isVideo {
-                return LMFeedVideoCollectionCell.ContentModel(videoURL: datum.url)
+                return LMFeedVideoCollectionCell.ContentModel(videoURL: datum.url, postID: postID)
             } else {
                 return LMFeedImageCollectionCell.ContentModel(image: datum.url)
             }

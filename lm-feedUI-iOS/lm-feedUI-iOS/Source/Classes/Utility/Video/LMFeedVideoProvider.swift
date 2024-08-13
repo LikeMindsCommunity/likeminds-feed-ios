@@ -18,7 +18,11 @@ public enum LMFeedVideoSourceType {
 /// Class for managing video controllers for posts
 public class LMFeedVideoProvider {
     /// Static property to control mute state of all video controllers
-    static var isMuted = false
+    static var isMuted = false {
+        didSet {
+            NotificationCenter.default.post(name: .volumeStateChanged, object: nil, userInfo: ["isMuted": isMuted])
+        }
+    }
     
     /// Shared instance for singleton access
     static let shared = LMFeedVideoProvider()
@@ -199,34 +203,6 @@ public class LMFeedVideoProvider {
     }
     
     /**
-     Mutes all active video controllers.
-     
-     Example usage:
-     ```
-     LMFeedPostVideoProvider.shared.muteAllControllers()
-     ```
-     */
-    func muteAllControllers() {
-        cacheOrder.forEach { key in
-            cache.object(forKey: key as NSString)?.player?.isMuted = true
-        }
-    }
-    
-    /**
-     Unmutes all active video controllers.
-     
-     Example usage:
-     ```
-     LMFeedPostVideoProvider.shared.unmuteAllControllers()
-     ```
-     */
-    func unmuteAllControllers() {
-        cacheOrder.forEach { key in
-            cache.object(forKey: key as NSString)?.player?.isMuted = false
-        }
-    }
-    
-    /**
      Pauses playback on all active video controllers.
      
      Example usage:
@@ -239,4 +215,8 @@ public class LMFeedVideoProvider {
             cache.object(forKey: key as NSString)?.player?.pause()
         }
     }
+}
+
+extension Notification.Name {
+    static let volumeStateChanged = Notification.Name("volumeStateChanged")
 }

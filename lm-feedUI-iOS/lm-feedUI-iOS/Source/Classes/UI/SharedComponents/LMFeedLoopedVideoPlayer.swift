@@ -13,12 +13,12 @@ public final class LMFeedLoopedVideoPlayer: UIView {
     public var videoPlayerController: AVPlayerViewController?
     public var playerLayer: AVPlayerLayer?
     
-    func prepareVideo(_ videoURL: URL) {
+    func prepareVideo(_ videoURL: URL,_ postID: String,_ index: Int = 0) {
         
         let request = LMFeedGetVideoControllerRequest.Builder()
-            .setPostId(UUID().uuidString)
+            .setPostId(postID)
             .setVideoSource(videoURL.absoluteString)
-            .setPosition(0)
+            .setPosition(index)
             .setVideoType(.network)
             .setAutoPlay(false)
             .build()
@@ -27,7 +27,8 @@ public final class LMFeedLoopedVideoPlayer: UIView {
             self.videoPlayerController = response.videoPlayerController
             self.playerLayer = AVPlayerLayer(player: response.videoPlayerController.player)
             
-            if let playerLayer = self.playerLayer {
+            if let playerLayer {
+                playerLayer.frame = self.bounds
                 playerLayer.videoGravity = .resizeAspectFill
                 playerLayer.frame = self.frame
                 self.layer.addSublayer(playerLayer)
@@ -36,6 +37,7 @@ public final class LMFeedLoopedVideoPlayer: UIView {
     }
     
     func play() {
+        videoPlayerController?.player?.isMuted = LMFeedVideoProvider.isMuted
         self.videoPlayerController?.player?.play()
     }
     
@@ -52,6 +54,10 @@ public final class LMFeedLoopedVideoPlayer: UIView {
         self.playerLayer?.removeFromSuperlayer()
         self.videoPlayerController?.player = nil
         self.playerLayer = nil
+    }
+    
+    func toggleVolumeState(){
+        videoPlayerController?.player?.isMuted = LMFeedVideoProvider.isMuted
     }
     
     override init(frame: CGRect) {

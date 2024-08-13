@@ -490,7 +490,7 @@ extension LMFeedCreatePostScreen: UICollectionViewDataSource, UICollectionViewDe
             return cell
         } else if let data = mediaAttachmentData[indexPath.row] as? LMFeedVideoCollectionCell.ContentModel,
                   let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreview, for: indexPath) {
-            cell.configure(with: data) { [weak self] videoID in
+            cell.configure(with: data, index: indexPath.row) { [weak self] videoID in
                 guard let self else { return }
                 viewModel?.removeAsset(url: videoID)
             }

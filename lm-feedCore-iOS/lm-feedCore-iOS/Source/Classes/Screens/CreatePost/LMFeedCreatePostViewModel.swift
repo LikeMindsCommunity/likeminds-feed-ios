@@ -165,7 +165,8 @@ public extension LMFeedCreatePostViewModel {
             case .image:
                 mediaData.append(LMFeedImageCollectionCell.ContentModel(image: medium.url.absoluteString, isFilePath: medium.url.isFileURL))
             case .video:
-                mediaData.append(LMFeedVideoCollectionCell.ContentModel(videoURL: medium.url.absoluteString, isFilePath: medium.url.isFileURL))
+                let timestamp = Date().millisecondsSince1970
+                mediaData.append(LMFeedVideoCollectionCell.ContentModel(videoURL: medium.url.absoluteString, isFilePath: medium.url.isFileURL, postID: "-\(timestamp)"))
             case .document:
                 docData.append(
                     .init(
