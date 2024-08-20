@@ -11,6 +11,8 @@ import UIKit
 public struct LMFeedMediaPreviewContentModel {
     let mediaURL: String
     let isVideo: Bool
+    let postID: String
+    let index: Int
 }
 
 open class LMFeedMediaVideoPreview: LMCollectionViewCell {

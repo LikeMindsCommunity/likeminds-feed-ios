@@ -120,7 +120,12 @@ extension LMFeedBaseMediaCell: UICollectionViewDataSource,
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let data = mediaCellsData[indexPath.row] as? LMFeedImageCollectionCell.ContentModel,
            let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreview, for: indexPath) {
-            cell.configure(with: data)
+            cell.configure(with: data, didTapImage: {
+                guard let postID = self.postID else{
+                    return
+                }
+                self.delegate?.didTapMedia(postID: postID, index: indexPath.row)
+            })
             return cell
         } else if let data = mediaCellsData[indexPath.row] as? LMFeedVideoCollectionCell.ContentModel,
                   let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreview, for: indexPath) {
@@ -156,7 +161,6 @@ extension LMFeedBaseMediaCell: UICollectionViewDataSource,
     open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let postID else { return }
         delegate?.didTapMedia(postID: postID, index: indexPath.row)
-        
     }
     
     public func scrollingFinished() {

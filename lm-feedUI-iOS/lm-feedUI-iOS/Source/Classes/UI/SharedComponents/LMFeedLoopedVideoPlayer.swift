@@ -10,10 +10,13 @@ import AVKit
 
 public final class LMFeedLoopedVideoPlayer: UIView {
     public var videoURL: URL?
+    public var postID: String?
     public var videoPlayerController: AVPlayerViewController?
     public var playerLayer: AVPlayerLayer?
     
     func prepareVideo(_ videoURL: URL,_ postID: String,_ index: Int = 0) {
+        
+        self.postID = postID
         
         let request = LMFeedGetVideoControllerRequest.Builder()
             .setPostId(postID)
@@ -28,7 +31,6 @@ public final class LMFeedLoopedVideoPlayer: UIView {
             self.playerLayer = AVPlayerLayer(player: response.videoPlayerController.player)
             
             if let playerLayer {
-                playerLayer.frame = self.bounds
                 playerLayer.videoGravity = .resizeAspectFill
                 playerLayer.frame = self.frame
                 self.layer.addSublayer(playerLayer)
@@ -37,8 +39,14 @@ public final class LMFeedLoopedVideoPlayer: UIView {
     }
     
     func play() {
+        if videoPlayerController == nil {
+            guard let videoURL else {
+                return
+            }
+            prepareVideo(videoURL, postID ?? "")
+        }
         videoPlayerController?.player?.isMuted = LMFeedVideoProvider.isMuted
-        self.videoPlayerController?.player?.play()
+        videoPlayerController?.player?.play()
     }
     
     func pause() {

@@ -257,7 +257,16 @@ extension LMFeedBaseSearchPostScreen: UITableViewDelegate, UITableViewDataSource
 @objc
 extension LMFeedBaseSearchPostScreen: LMFeedPostMediaCellProtocol, LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol {
     public func didTapMedia(postID: String, index: Int) {
+        guard let postData = data.first(where: { $0.postID == postID }) else {
+            return
+        }
         
+        do {
+            let viewcontroller = try LMFeedMediaPreviewViewModel.createModule(with: postData, postID: postData.postID)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
     
     open func didTapPost(postID: String) {

@@ -828,7 +828,15 @@ extension LMFeedBasePostDetailScreen: LMFeedPostHeaderViewProtocol, LMFeedPostFo
 @objc
 extension LMFeedBasePostDetailScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol, LMFeedPostMediaCellProtocol {
     public func didTapMedia(postID: String, index: Int) {
-        // TODO: Add Navigation to Media Preview Screen
+        guard let postData else {
+            return
+        }
+        do {
+            let viewcontroller = try LMFeedMediaPreviewViewModel.createModule(with: postData, postID: postData.postID)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
     
     open func didTapShowMoreDocuments(for indexPath: IndexPath) {

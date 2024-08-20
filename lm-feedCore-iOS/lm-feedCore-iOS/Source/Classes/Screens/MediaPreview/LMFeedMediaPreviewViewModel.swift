@@ -17,17 +17,19 @@ public protocol LMMediaViewModelDelegate: AnyObject {
 
 public final class LMFeedMediaPreviewViewModel {
     
-    let data: LMFeedPostDataModel
+    let data: LMFeedPostContentModel
     var startIndex: Int?
     weak var delegate: LMMediaViewModelDelegate?
     
-    init(data: LMFeedPostDataModel, startIndex: Int, delegate: LMMediaViewModelDelegate?) {
+    init(data: LMFeedPostContentModel, startIndex: Int, delegate: LMMediaViewModelDelegate?) {
         self.data = data
         self.startIndex = startIndex
         self.delegate = delegate
     }
     
-    public static func createModule(with data: LMFeedPostDataModel, postID: String, startIndex: Int = 0) -> LMFeedMediaPreviewScreen? {
+    public static func createModule(with data: LMFeedPostContentModel, postID: String, startIndex: Int = 0) throws -> LMFeedMediaPreviewScreen {
+        guard LMFeedCore.isInitialized else { throw LMFeedError.feedNotInitialized }
+        
         let viewController = LMFeedMediaPreviewScreen()
         let viewModel = Self.init(data: data, startIndex: startIndex, delegate: viewController)
         viewController.viewModel = viewModel
@@ -35,11 +37,16 @@ public final class LMFeedMediaPreviewViewModel {
     }
     
     public func showMediaPreview() {
-        let viewData: [LMFeedMediaPreviewContentModel] = data.imageVideoAttachment.map {
-            .init(mediaURL: $0.url, isVideo: $0.isVideo)
+        let viewData: [LMFeedMediaPreviewContentModel] = data.mediaData.compactMap {
+            if let mediaData = $0 as? LMFeedImageCollectionCell.ContentModel {
+               return .init(mediaURL: mediaData.image, isVideo: false, postID: data.postID, index: startIndex ?? 0)
+            } else if let mediaData = $0 as? LMFeedVideoCollectionCell.ContentModel {
+               return .init(mediaURL: mediaData.videoURL , isVideo: true, postID: data.postID, index: startIndex ?? 0)
+            }
+            return nil
         }
-        
-        delegate?.showImages(with: viewData, userName: data.userDetails.userName, date: data.createTime)
+        // TODO: Add created at date
+        delegate?.showImages(with: viewData, userName: data.headerData.authorName, date: "")
     }
     
     public func scrollToMediaPreview() {

@@ -408,7 +408,17 @@ extension LMFeedBasePostListScreen: LMFeedPostFooterViewProtocol {
 @objc
 extension LMFeedBasePostListScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol, LMFeedPostMediaCellProtocol {
     public func didTapMedia(postID: String, index: Int) {
-        // Add Navigation To Media Preview Screen
+        
+        guard let postData = data.first(where: { $0.postID == postID }) else {
+            return
+        }
+        
+        do {
+            let viewcontroller = try LMFeedMediaPreviewViewModel.createModule(with: postData, postID: postData.postID)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
     
     public func didTapPost(postID: String) {

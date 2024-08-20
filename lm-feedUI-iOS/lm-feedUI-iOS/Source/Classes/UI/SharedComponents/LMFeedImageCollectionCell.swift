@@ -44,11 +44,13 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
     // MARK: Data Variables
     public var crossButtonHeight: CGFloat = 24
     public var crossButtonAction: ((String) -> Void)?
+    public var didTapImage: (() -> Void)?
     public var url: String?
     
     
     // MARK: setupViews
     public override func setupViews() {
+        imageView.isUserInteractionEnabled = false
         contentView.addSubview(containerView)
         containerView.addSubview(imageView)
         containerView.addSubview(crossButton)
@@ -71,12 +73,19 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
     open override func setupActions() {
         super.setupActions()
         crossButton.addTarget(self, action: #selector(didTapCrossButton), for: .touchUpInside)
+        let containerGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapCell))
+        containerView.addGestureRecognizer(containerGestureRecognizer)
     }
     
     @objc
     open func didTapCrossButton() {
         guard let url else { return }
         crossButtonAction?(url)
+    }
+    
+    @objc
+    open func didTapCell(){
+        didTapImage?()
     }
     
     
@@ -90,10 +99,11 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
     
     
     // MARK: configure
-    open func configure(with data: ContentModel, crossButtonAction: ((String) -> Void)? = nil) {
+    open func configure(with data: ContentModel, crossButtonAction: ((String) -> Void)? = nil, didTapImage: (() -> Void)? = nil) {
         self.url = data.image
         self.crossButtonAction = crossButtonAction
         crossButton.isHidden = crossButtonAction == nil
+        self.didTapImage = didTapImage
         imageView.kf.setImage(with: URL(string: data.image), placeholder: LMFeedConstants.shared.images.placeholderImage)
     }
 }

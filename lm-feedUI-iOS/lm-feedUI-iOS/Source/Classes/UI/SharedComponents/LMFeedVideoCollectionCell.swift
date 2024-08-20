@@ -11,6 +11,17 @@ import UIKit
 @IBDesignable
 open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     
+    open private(set) var playPauseButton: UIButton = {
+        var playPauseButton = UIButton(type: .system)
+        playPauseButton.setImage(LMFeedConstants.shared.images.playFilled, for: .normal)
+        playPauseButton.backgroundColor = LMFeedAppearance.shared.colors.black4
+        playPauseButton.tintColor = LMFeedAppearance.shared.colors.white
+        playPauseButton.contentMode = .scaleAspectFit
+        playPauseButton.translatesAutoresizingMaskIntoConstraints = false
+        return playPauseButton
+    }()
+    open private(set) var buttonHideTimer: Timer?
+    
     public struct ContentModel: LMFeedMediaProtocol {
         public let videoURL: String
         public let isFilePath: Bool
@@ -25,6 +36,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+        buttonHideTimer?.invalidate()
     }
     
     
@@ -39,8 +51,8 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
-        button.backgroundColor = LMFeedAppearance.shared.colors.white
-        button.tintColor = LMFeedAppearance.shared.colors.gray51
+        button.backgroundColor = LMFeedAppearance.shared.colors.black4
+        button.tintColor = LMFeedAppearance.shared.colors.white
         button.contentMode = .scaleAspectFit
         return button
     }()
@@ -49,8 +61,8 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(LMFeedVideoProvider.isMuted ? LMFeedConstants.shared.images.unMuteFillIcon : LMFeedConstants.shared.images.muteFillIcon , for: .normal)
-        button.backgroundColor = LMFeedAppearance.shared.colors.white
-        button.tintColor = LMFeedAppearance.shared.colors.gray51
+        button.backgroundColor = LMFeedAppearance.shared.colors.black4
+        button.tintColor = LMFeedAppearance.shared.colors.white
         button.contentMode = .scaleAspectFit
         return button
     }()
@@ -58,6 +70,8 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     
     // MARK: Data Variables
     public var crossButtonHeight: CGFloat = 24
+    public var volumeButtonHeight: CGFloat = 30
+    public var playPauseButtonHeight : CGFloat = 50
     public var crossButtonAction: ((String) -> Void)?
     public var videoURL: URL?
     
@@ -65,6 +79,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     // MARK: prepareForReuse
     open override func prepareForReuse() {
         videoPlayer.pause()
+        updateButtonIcon(isPlaying: false)
         super.prepareForReuse()
     }
     
@@ -77,6 +92,9 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         containerView.addSubview(videoPlayer)
         containerView.addSubview(crossButton)
         containerView.addSubview(volumeButton)
+        containerView.addSubview(playPauseButton)
+        
+        startButtonHideTimer()
     }
     
     
@@ -86,14 +104,25 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         
         contentView.pinSubView(subView: containerView)
         containerView.pinSubView(subView: videoPlayer)
+        
         volumeButton.addConstraint(bottom: (containerView.bottomAnchor, -16),
                                    trailing: (containerView.trailingAnchor, -16))
-        volumeButton.setHeightConstraint(with: crossButtonHeight)
-        volumeButton.setWidthConstraint(with: crossButton.heightAnchor)
+        volumeButton.setHeightConstraint(with: volumeButtonHeight)
+        volumeButton.setWidthConstraint(with: volumeButton.heightAnchor)
+        
         crossButton.addConstraint(top: (containerView.topAnchor, 16),
                                   trailing: (containerView.trailingAnchor, -16))
-        crossButton.setHeightConstraint(with: crossButtonHeight)
         crossButton.setWidthConstraint(with: crossButton.heightAnchor)
+        crossButton.setHeightConstraint(with: crossButtonHeight)
+        
+        playPauseButton.setHeightConstraint(with: playPauseButtonHeight)
+        playPauseButton.setWidthConstraint(with: playPauseButton.heightAnchor)
+        
+        
+        NSLayoutConstraint.activate([
+            playPauseButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            playPauseButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+        ])
     }
     
     
@@ -104,9 +133,8 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         crossButton.layer.cornerRadius = crossButtonHeight / 2
         crossButton.layer.borderColor = LMFeedAppearance.shared.colors.gray51.cgColor
         crossButton.layer.borderWidth = 1
-        volumeButton.layer.cornerRadius = crossButtonHeight / 2
-        volumeButton.layer.borderColor = LMFeedAppearance.shared.colors.gray51.cgColor
-        volumeButton.layer.borderWidth = 1
+        volumeButton.layer.cornerRadius = volumeButtonHeight / 2
+        playPauseButton.layer.cornerRadius = playPauseButtonHeight / 2
     }
     
     
@@ -116,10 +144,14 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         setupObserver()
         crossButton.addTarget(self, action: #selector(didTapCrossButton), for: .touchUpInside)
         volumeButton.addTarget(self, action: #selector(didTapVolumeButton), for: .touchUpInside)
+        playPauseButton.addTarget(self, action: #selector(didTapPlayPauseButton), for: .touchUpInside)
     }
     
     private func setupObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(setVolumeButtonImageBasedOnMuteState), name: .volumeStateChanged, object: nil)
+        // Gesture Detector for showing and hiding play pause button
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        addGestureRecognizer(tapGestureRecognizer)
     }
     
     @objc
@@ -156,10 +188,12 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     open func playVideo() {
         videoPlayer.videoPlayerController?.player?.isMuted = LMFeedVideoProvider.isMuted
         videoPlayer.play()
+        updateButtonIcon(isPlaying: true)
     }
     
     open func pauseVideo() {
         videoPlayer.pause()
+        updateButtonIcon(isPlaying: false)
     }
     
     open func unload() {
@@ -168,5 +202,44 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     
     open func toggleVolumeState(){
         videoPlayer.toggleVolumeState()
+    }
+    
+    @objc private func viewTapped() {
+        // Show the button and reset the auto-hide timer
+        showButton()
+        startButtonHideTimer()
+    }
+    
+    private func startButtonHideTimer() {
+        // Invalidate any existing timer
+        buttonHideTimer?.invalidate()
+        
+        // Start a new timer to hide the button after 500ms
+        buttonHideTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(hideButton), userInfo: nil, repeats: false)
+    }
+    
+    @objc private func hideButton() {
+        playPauseButton.isHidden = true
+        volumeButton.isHidden = true
+    }
+    
+    private func showButton() {
+        playPauseButton.isHidden = false
+        volumeButton.isHidden = false
+    }
+    
+    @objc private func didTapPlayPauseButton() {
+        if videoPlayer.playerLayer?.player?.timeControlStatus == .playing {
+            pauseVideo()
+        } else {
+            playVideo()
+        }
+        
+        startButtonHideTimer()
+    }
+    
+    private func updateButtonIcon(isPlaying: Bool) {
+        let iconImage = isPlaying ? LMFeedConstants.shared.images.pauseFilled : LMFeedConstants.shared.images.playFilled
+        playPauseButton.setImage(iconImage, for: .normal)
     }
 }
