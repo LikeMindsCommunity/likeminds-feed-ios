@@ -73,6 +73,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     public var volumeButtonHeight: CGFloat = 30
     public var playPauseButtonHeight : CGFloat = 50
     public var crossButtonAction: ((String) -> Void)?
+    public var didTapVideo: (() -> Void)? = nil
     public var videoURL: URL?
     
     
@@ -173,10 +174,11 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     }
     
     // MARK: configure
-    open func configure(with data: ContentModel, index: Int, crossButtonAction: ((String) -> Void)? = nil) {
+    open func configure(with data: ContentModel, index: Int, crossButtonAction: ((String) -> Void)? = nil, didTapVideo: (() -> Void)? = nil) {
         guard let url = URL(string: data.videoURL) else { return }
         videoURL = url
         
+        self.didTapVideo = didTapVideo
         videoPlayer.prepareVideo(url, data.postID, index)
         self.crossButtonAction = crossButtonAction
         crossButton.isHidden = crossButtonAction == nil
@@ -206,8 +208,12 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     
     @objc private func viewTapped() {
         // Show the button and reset the auto-hide timer
-        showButton()
-        startButtonHideTimer()
+        if playPauseButton.isHidden == true {
+            showButton()
+            startButtonHideTimer()
+        }else{
+            didTapVideo?()
+        }
     }
     
     private func startButtonHideTimer() {

@@ -129,7 +129,12 @@ extension LMFeedBaseMediaCell: UICollectionViewDataSource,
             return cell
         } else if let data = mediaCellsData[indexPath.row] as? LMFeedVideoCollectionCell.ContentModel,
                   let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreview, for: indexPath) {
-            cell.configure(with: data, index: indexPath.row)
+            cell.configure(with: data, index: indexPath.row, didTapVideo: {
+                guard let postID = self.postID else{
+                    return
+                }
+                self.delegate?.didTapMedia(postID: postID, index: indexPath.row)
+            })
             return cell
         }
         
