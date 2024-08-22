@@ -58,8 +58,48 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
     
     open override func setupLayouts() {
         super.setupLayouts()
-        mediaCollectionView.setWidthConstraint(with: contentStack.widthAnchor)
-        mediaCollectionView.setHeightConstraint(with: contentStack.widthAnchor)
+        
+    //    var aspectRatio: Double?
+//        var mediaHavingSameAspectRation = true
+//        
+//        if mediaCellsData.count > 0 {
+//            
+//            for index in 0...max(mediaCellsData.count-2, 0) {
+//                var currentAspectRatio: Double = 1
+//                if let currentImageData = mediaCellsData[index] as? LMFeedImageCollectionCell.ContentModel {
+//                    currentAspectRatio = Double((currentImageData.width ?? 1)/(currentImageData.height ?? 1))
+//                }else if let currentVideoData = mediaCellsData[index] as? LMFeedVideoCollectionCell.ContentModel {
+//                    currentAspectRatio = Double((currentVideoData.width ?? 1)/(currentVideoData.height ?? 1))
+//                }
+//                
+//                var nextAspectRatio: Double = 1
+//                if let nextImageData = mediaCellsData[index] as? LMFeedImageCollectionCell.ContentModel {
+//                    nextAspectRatio = Double((nextImageData.width ?? 1)/(nextImageData.height ?? 1))
+//                }else if let nextVideoData = mediaCellsData[index] as? LMFeedVideoCollectionCell.ContentModel {
+//                    nextAspectRatio = Double((nextVideoData.width ?? 1)/(nextVideoData.height ?? 1))
+//                }
+//                
+//                if currentAspectRatio != nextAspectRatio {
+//                    mediaHavingSameAspectRation = false
+//                    break
+//                }
+//                
+//                aspectRatio = currentAspectRatio
+//                
+//            }
+//        }else{
+//            mediaHavingSameAspectRation = false
+//            aspectRatio = 1
+//        }
+//        
+        
+//        
+//        if mediaHavingSameAspectRation {
+//            contentStack.widthAnchor.constraint(equalTo: contentStack.widthAnchor, multiplier: max(1, aspectRatio ?? 0.0)).isActive = true
+//        }else{
+            mediaCollectionView.setWidthConstraint(with: contentStack.widthAnchor)
+            mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
+        //}
     }
     
     @objc

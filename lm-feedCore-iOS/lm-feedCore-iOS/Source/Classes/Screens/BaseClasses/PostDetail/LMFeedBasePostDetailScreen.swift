@@ -832,7 +832,7 @@ extension LMFeedBasePostDetailScreen: LMFeedLinkProtocol, LMFeedPostDocumentCell
             return
         }
         do {
-            let viewcontroller = try LMFeedMediaPreviewViewModel.createModule(with: postData, postID: postData.postID)
+            let viewcontroller = try LMFeedMediaPreviewViewModel.createModule(with: postData, postID: postData.postID, startIndex: index)
             navigationController?.pushViewController(viewcontroller, animated: true)
         } catch let error {
             print(error.localizedDescription)

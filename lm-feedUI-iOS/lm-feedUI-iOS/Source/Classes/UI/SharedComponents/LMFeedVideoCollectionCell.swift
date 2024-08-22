@@ -26,11 +26,15 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         public let videoURL: String
         public let isFilePath: Bool
         public let postID: String
+        public let width: Int?
+        public let height: Int?
         
-        public init(videoURL: String, isFilePath: Bool = false, postID: String) {
+        public init(videoURL: String, isFilePath: Bool = false, postID: String, width: Int?, height: Int?) {
             self.videoURL = videoURL
             self.isFilePath = isFilePath
             self.postID = postID
+            self.height = height
+            self.width = width
         }
     }
     
@@ -119,7 +123,6 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         playPauseButton.setHeightConstraint(with: playPauseButtonHeight)
         playPauseButton.setWidthConstraint(with: playPauseButton.heightAnchor)
         
-        
         NSLayoutConstraint.activate([
             playPauseButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             playPauseButton.centerYAnchor.constraint(equalTo: centerYAnchor),
@@ -179,7 +182,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         videoURL = url
         
         self.didTapVideo = didTapVideo
-        videoPlayer.prepareVideo(url, data.postID, index)
+        videoPlayer.prepareVideo(with: data, index)
         self.crossButtonAction = crossButtonAction
         crossButton.isHidden = crossButtonAction == nil
         if crossButtonAction != nil {

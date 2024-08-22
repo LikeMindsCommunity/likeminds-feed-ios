@@ -46,7 +46,7 @@ public struct LMFeedPostDataModel {
         topics: [LMFeedTopicDataModel],
         imageVideoAttachment: [LMFeedPostDataModel.ImageVideoAttachment] = [],
         documentAttachment: [LMFeedPostDataModel.DocumentAttachment] = [],
-        linkAttachment: LMFeedPostDataModel.LinkAttachment? = .none, 
+        linkAttachment: LMFeedPostDataModel.LinkAttachment? = .none,
         pollAttachment: LMFeedPollDataModel? = .none,
         isShowFullText: Bool = false,
         isShowAllDocuments: Bool = false,
@@ -133,8 +133,8 @@ extension LMFeedPostDataModel {
                             name: attachment.attachmentMeta?.name ?? "",
                             url: url,
                             isVideo: type == .video,
-                            size: attachment.attachmentMeta?.size ?? 0, 
-                            duration: attachment.attachmentMeta?.duration
+                            size: attachment.attachmentMeta?.size ?? 0,
+                            duration: attachment.attachmentMeta?.duration,height: attachment.attachmentMeta?.height, width: attachment.attachmentMeta?.width
                         ))
                     }
                 case .doc:
@@ -175,13 +175,17 @@ public extension LMFeedPostDataModel {
         public let isVideo: Bool
         public let size: Int
         public let duration: Int?
+        public let width: Int?
+        public let height: Int?
         
-        public init(name: String, url: String, isVideo: Bool, size: Int, duration: Int?) {
+        public init(name: String, url: String, isVideo: Bool, size: Int, duration: Int?, height: Int?, width: Int?) {
             self.name = name
             self.url = url
             self.isVideo = isVideo
             self.size = size
             self.duration = duration
+            self.height = height
+            self.width = width
         }
     }
 }

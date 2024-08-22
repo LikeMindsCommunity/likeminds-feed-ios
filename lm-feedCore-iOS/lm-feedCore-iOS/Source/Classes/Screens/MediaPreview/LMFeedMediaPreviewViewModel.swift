@@ -39,9 +39,9 @@ public final class LMFeedMediaPreviewViewModel {
     public func showMediaPreview() {
         let viewData: [LMFeedMediaPreviewContentModel] = data.mediaData.compactMap {
             if let mediaData = $0 as? LMFeedImageCollectionCell.ContentModel {
-               return .init(mediaURL: mediaData.image, isVideo: false, postID: data.postID, index: startIndex ?? 0)
+                return .init(mediaURL: mediaData.image, isVideo: false, postID: data.postID, index: startIndex ?? 0, width: mediaData.width, height: mediaData.height)
             } else if let mediaData = $0 as? LMFeedVideoCollectionCell.ContentModel {
-               return .init(mediaURL: mediaData.videoURL , isVideo: true, postID: data.postID, index: startIndex ?? 0)
+                return .init(mediaURL: mediaData.videoURL , isVideo: true, postID: data.postID, index: startIndex ?? 0, width: mediaData.width, height: mediaData.height)
             }
             return nil
         }

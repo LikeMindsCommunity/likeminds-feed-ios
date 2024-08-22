@@ -117,9 +117,9 @@ public struct LMFeedConvertToFeedPost {
     public static func convertToMediaProtocol(from data: [LMFeedPostDataModel.ImageVideoAttachment], postID: String) -> [LMFeedMediaProtocol] {
         data.map { datum in
             if datum.isVideo {
-                return LMFeedVideoCollectionCell.ContentModel(videoURL: datum.url, postID: postID)
+                return LMFeedVideoCollectionCell.ContentModel(videoURL: datum.url, postID: postID, width: datum.width, height: datum.height)
             } else {
-                return LMFeedImageCollectionCell.ContentModel(image: datum.url)
+                return LMFeedImageCollectionCell.ContentModel(image: datum.url, width: datum.width, height: datum.height)
             }
         }
     }

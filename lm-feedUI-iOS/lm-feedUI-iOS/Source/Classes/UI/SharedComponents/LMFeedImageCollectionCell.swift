@@ -13,10 +13,14 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
     public struct ContentModel: LMFeedMediaProtocol {
         public let image: String
         public let isFilePath: Bool
+        public let width: Int?
+        public let height: Int?
         
-        public init(image: String, isFilePath: Bool = false) {
+        public init(image: String, isFilePath: Bool = false, width: Int?, height: Int?) {
             self.image = image
             self.isFilePath = isFilePath
+            self.height = height
+            self.width = width
         }
     }
     

@@ -9,18 +9,19 @@ import AVFoundation
 import AVKit
 
 public final class LMFeedLoopedVideoPlayer: UIView {
-    public var videoURL: URL?
-    public var postID: String?
+    public var data: LMFeedVideoCollectionCell.ContentModel?
+    public var index: Int?
     public var videoPlayerController: AVPlayerViewController?
     public var playerLayer: AVPlayerLayer?
     
-    func prepareVideo(_ videoURL: URL,_ postID: String,_ index: Int = 0) {
+    func prepareVideo(with data: LMFeedVideoCollectionCell.ContentModel, _ index: Int = 0) {
         
-        self.postID = postID
+        self.data = data
+        self.index = index
         
         let request = LMFeedGetVideoControllerRequest.Builder()
-            .setPostId(postID)
-            .setVideoSource(videoURL.absoluteString)
+            .setPostId(data.postID)
+            .setVideoSource(data.videoURL)
             .setPosition(index)
             .setVideoType(.network)
             .setAutoPlay(false)
@@ -30,9 +31,16 @@ public final class LMFeedLoopedVideoPlayer: UIView {
             self.videoPlayerController = response.videoPlayerController
             self.playerLayer = AVPlayerLayer(player: response.videoPlayerController.player)
             
+            self.layer.sublayers?.forEach { sublayer in
+                    if sublayer is AVPlayerLayer {
+                        sublayer.removeFromSuperlayer()
+                    }
+                }
+            
             if let playerLayer {
-                playerLayer.videoGravity = .resizeAspectFill
+                playerLayer.videoGravity = .resizeAspect
                 playerLayer.frame = self.frame
+                
                 self.layer.addSublayer(playerLayer)
             }
         }
@@ -40,10 +48,10 @@ public final class LMFeedLoopedVideoPlayer: UIView {
     
     func play() {
         if videoPlayerController == nil {
-            guard let videoURL else {
+            guard let data else {
                 return
             }
-            prepareVideo(videoURL, postID ?? "")
+            prepareVideo(with: data, index ?? 0)
         }
         videoPlayerController?.player?.isMuted = LMFeedVideoProvider.isMuted
         videoPlayerController?.player?.play()
