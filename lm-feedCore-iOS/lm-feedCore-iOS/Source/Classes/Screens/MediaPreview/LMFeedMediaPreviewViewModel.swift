@@ -46,7 +46,7 @@ public final class LMFeedMediaPreviewViewModel {
             return nil
         }
         // TODO: Add created at date
-        delegate?.showImages(with: viewData, userName: data.headerData.authorName, date: "")
+        delegate?.showImages(with: viewData, userName: data.headerData.authorName, date: data.createdAt)
     }
     
     public func scrollToMediaPreview() {

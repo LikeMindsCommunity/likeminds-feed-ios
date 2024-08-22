@@ -41,6 +41,10 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     deinit {
         NotificationCenter.default.removeObserver(self)
         buttonHideTimer?.invalidate()
+        if let timeObserverToken = timeObserverToken {
+            videoPlayer.playerLayer?.player?.removeTimeObserver(timeObserverToken)
+            self.timeObserverToken = nil
+        }
     }
     
     
@@ -71,6 +75,13 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         return button
     }()
     
+    open private(set) lazy var seekBar: UISlider = {
+       let slider = UISlider()
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        slider.minimumValue = 0
+        return slider
+    }()
+    
     
     // MARK: Data Variables
     public var crossButtonHeight: CGFloat = 24
@@ -79,6 +90,8 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     public var crossButtonAction: ((String) -> Void)?
     public var didTapVideo: (() -> Void)? = nil
     public var videoURL: URL?
+    var timeObserverToken: Any?
+    var showControls: Bool = true
     
     
     // MARK: prepareForReuse
@@ -98,8 +111,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         containerView.addSubview(crossButton)
         containerView.addSubview(volumeButton)
         containerView.addSubview(playPauseButton)
-        
-        startButtonHideTimer()
+        containerView.addSubview(seekBar)
     }
     
     
@@ -122,11 +134,10 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         
         playPauseButton.setHeightConstraint(with: playPauseButtonHeight)
         playPauseButton.setWidthConstraint(with: playPauseButton.heightAnchor)
-        
-        NSLayoutConstraint.activate([
-            playPauseButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            playPauseButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-        ])
+        playPauseButton.addConstraint(centerX: (centerXAnchor, 0), centerY: (centerYAnchor, 0))
+   
+        seekBar.addConstraint( bottom: (containerView.bottomAnchor, -16), leading: (containerView.leadingAnchor, 16) , trailing: (volumeButton.leadingAnchor, -16))
+        seekBar.setHeightConstraint(with: 30)
     }
     
     
@@ -149,6 +160,7 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         crossButton.addTarget(self, action: #selector(didTapCrossButton), for: .touchUpInside)
         volumeButton.addTarget(self, action: #selector(didTapVolumeButton), for: .touchUpInside)
         playPauseButton.addTarget(self, action: #selector(didTapPlayPauseButton), for: .touchUpInside)
+        seekBar.addTarget(self, action: #selector(seekBarChanged(_:)), for: .valueChanged)
     }
     
     private func setupObserver() {
@@ -177,17 +189,21 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     }
     
     // MARK: configure
-    open func configure(with data: ContentModel, index: Int, crossButtonAction: ((String) -> Void)? = nil, didTapVideo: (() -> Void)? = nil) {
+    open func configure(with data: ContentModel, index: Int, crossButtonAction: ((String) -> Void)? = nil, didTapVideo: (() -> Void)? = nil, showControls: Bool = false) {
         guard let url = URL(string: data.videoURL) else { return }
         videoURL = url
-        
+        self.showControls = showControls
         self.didTapVideo = didTapVideo
-        videoPlayer.prepareVideo(with: data, index)
+        videoPlayer.prepareVideo(with: data, index, showControls: showControls)
         self.crossButtonAction = crossButtonAction
         crossButton.isHidden = crossButtonAction == nil
         if crossButtonAction != nil {
             containerView.bringSubviewToFront(crossButton)
         }
+        seekBar.isHidden = !showControls
+        addPeriodicTimeObserver()
+        // Start timer to hide playpause button
+        startButtonHideTimer()
     }
     
     open func playVideo() {
@@ -228,11 +244,13 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     }
     
     @objc private func hideButton() {
+        seekBar.isHidden = true
         playPauseButton.isHidden = true
         volumeButton.isHidden = true
     }
     
     private func showButton() {
+        seekBar.isHidden = !showControls
         playPauseButton.isHidden = false
         volumeButton.isHidden = false
     }
@@ -250,5 +268,24 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     private func updateButtonIcon(isPlaying: Bool) {
         let iconImage = isPlaying ? LMFeedConstants.shared.images.pauseFilled : LMFeedConstants.shared.images.playFilled
         playPauseButton.setImage(iconImage, for: .normal)
+    }
+    
+    // Seek bar value changed
+    @objc func seekBarChanged(_ sender: UISlider) {
+        let duration = videoPlayer.playerLayer?.player?.currentItem?.duration
+        let seconds = Float64(sender.value) * CMTimeGetSeconds(duration!)
+        let time = CMTimeMakeWithSeconds(seconds, preferredTimescale: 600)
+        videoPlayer.playerLayer?.player?.seek(to: time)
+    }
+    
+    // Add a periodic time observer to update the seek bar as the video plays
+    func addPeriodicTimeObserver() {
+        let interval = CMTime(seconds: 1, preferredTimescale: 600)
+        timeObserverToken = videoPlayer.playerLayer?.player?.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
+            guard let self = self, let duration = videoPlayer.playerLayer?.player?.currentItem?.duration else { return }
+            let currentTime = CMTimeGetSeconds(time)
+            let totalTime = CMTimeGetSeconds(duration)
+            self.seekBar.value = Float(currentTime / totalTime)
+        }
     }
 }

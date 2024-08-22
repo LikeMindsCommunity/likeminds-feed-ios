@@ -35,7 +35,6 @@ open class LMFeedMediaVideoPreview: LMCollectionViewCell {
         contentView.addSubviewWithDefaultConstraints(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubviewWithDefaultConstraints(videoCell)
-        
     }
     
     
@@ -69,7 +68,8 @@ open class LMFeedMediaVideoPreview: LMCollectionViewCell {
     open func configure(with data: LMFeedMediaPreviewContentModel, index: Int?) {
         videoContentModel = LMFeedVideoCollectionCell.ContentModel(videoURL: data.mediaURL, postID: data.postID, width: data.width, height: data.height)
         self.index = index ?? 1
-        videoCell.configure(with: videoContentModel, index: index ?? 0)
+        videoCell.configure(with: videoContentModel, index: index ?? 0, showControls: true)
     }
+
 }
 

@@ -48,6 +48,9 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
     public var mediaData: [LMFeedMediaProtocol]
     public var pollWidget: LMFeedDisplayPollView.ContentModel?
     public let topResponse: LMFeedCommentContentModel?
+    public let aspectRatio: Double
+    public let mediaHaveSameAspectRatio: Bool
+    public let createdAt: String
     
     public static func == (lhs: LMFeedPostContentModel, rhs: LMFeedPostContentModel) -> Bool {
         lhs.postID == rhs.postID
@@ -76,7 +79,10 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
         pollWidget: LMFeedDisplayPollView.ContentModel?,
         isShowMore: Bool = true,
         isShowMoreDocuments: Bool = false,
-        topResponse: LMFeedCommentContentModel?
+        topResponse: LMFeedCommentContentModel?,
+        mediaHaveSameAspectRatio: Bool,
+        aspectRatio: Double,
+        createdAt: String
     ) {
         self.postType = postType
         self.postID = postID
@@ -94,5 +100,8 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
         self.mediaData = mediaData
         self.pollWidget = pollWidget
         self.topResponse = topResponse
+        self.mediaHaveSameAspectRatio = mediaHaveSameAspectRatio
+        self.aspectRatio = aspectRatio
+        self.createdAt = createdAt
     }
 }

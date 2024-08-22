@@ -31,7 +31,7 @@ public class LMFeedVideoProvider {
     private let maxVideoSize: Int64 = 100 * 1024 * 1024
     
     /// Maximum number of controllers that can be stored in the cache
-    private let maxCacheSize = 10
+    private let maxCacheSize = 3
     
     /// LRU cache for storing video controllers
     private let cache = NSCache<NSString, AVPlayerViewController>()

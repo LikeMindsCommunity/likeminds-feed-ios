@@ -57,7 +57,10 @@ public struct LMFeedConvertToFeedPost {
             linkPreview: linkPreview,
             mediaData: media,
             pollWidget: pollPreview, 
-            topResponse: topResponse
+            topResponse: topResponse,
+            mediaHaveSameAspectRatio: post.mediaHaveSameAspectRatio,
+            aspectRatio: post.aspectRatio,
+            createdAt: post.createTime
         )
         
         return transformedData

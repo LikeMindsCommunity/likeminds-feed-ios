@@ -214,6 +214,9 @@ open class LMFeedCreatePostScreen: LMViewController {
     public var documentAttachmentData: [LMFeedDocumentPreview.ContentModel] = []
     public var documenTableHeight: NSLayoutConstraint?
     public var documentAttachmentHeight: CGFloat = 90
+    public var mediaHaveSameAspectRatio: Bool = false
+    public var mediaAspectRatio: Double = 1.0
+    private var mediaCollectionViewHeightConstraint: NSLayoutConstraint?
     
     public var taggingViewHeight: NSLayoutConstraint?
     public var questionViewHeightConstraint: NSLayoutConstraint?
@@ -302,7 +305,9 @@ open class LMFeedCreatePostScreen: LMViewController {
         documenTableHeight = documentTableView.setHeightConstraint(with: documentAttachmentHeight)
         scrollView.setWidthConstraint(with: containerStackView.widthAnchor)
         scrollStackView.setWidthConstraint(with: containerStackView.widthAnchor)
-        mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
+        mediaCollectionView.setWidthConstraint(with: containerStackView.widthAnchor)
+        mediaCollectionViewHeightConstraint = mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
+        mediaCollectionView.addConstraint(leading: (containerStackView.leadingAnchor,0), trailing: (containerStackView.trailingAnchor, 0))
         
         headingTextContainer.pinSubView(subView: headingTextView, padding: .init(top: 0, left: 0, bottom: -8, right: 0))
         
@@ -759,7 +764,7 @@ public extension LMFeedCreatePostScreen {
                         }
                         return false
                     }
-                
+                    
                 case .video:
                     if(fileSize <= videoSizeLimit){
                         return true
@@ -775,8 +780,59 @@ public extension LMFeedCreatePostScreen {
                 }
             }.compactMap{ $0 }
             
-            self?.viewModel?.handleAssets(assets: filteredAssets.map { ($0.asset, $0.url, $0.data) })
+            var mappedMedia: [(asset: PHAsset, url: URL, data: Data)]
+            mappedMedia = filteredAssets.map { ($0.asset, $0.url, $0.data) }
+            
+            self?.handleMediaAspectRatio(assets: mappedMedia)
+            self?.viewModel?.handleAssets(assets: mappedMedia)
+            
         }
+    }
+    
+    func handleMediaAspectRatio(assets: [(asset: PHAsset, url: URL, data: Data)]) {
+        guard !assets.isEmpty else {
+            // If there are no assets, reset the flags
+            self.mediaHaveSameAspectRatio = false
+            self.mediaAspectRatio = 1.0
+            return
+        }
+        
+        // Calculate the aspect ratio of the first asset
+        let firstAsset = assets[0].asset
+        let firstAspectRatio = Double(firstAsset.pixelWidth) / Double(firstAsset.pixelHeight)
+        
+        var allSameAspectRatio = true
+        
+        // Iterate over the remaining assets and compare aspect ratios
+        for assetInfo in assets {
+            let asset = assetInfo.asset
+            let aspectRatio = Double(asset.pixelWidth) / Double(asset.pixelHeight)
+            
+            if aspectRatio != firstAspectRatio { // Allow for minor floating-point differences
+                allSameAspectRatio = false
+                break
+            }
+        }
+        
+        // Set the properties accordingly
+        self.mediaHaveSameAspectRatio = allSameAspectRatio
+        self.mediaAspectRatio = allSameAspectRatio ? max(1.0, firstAspectRatio) : 1.0
+        
+        adjustMediaCollectionViewConstraintsBasedOnAspectRatio()
+    }
+    
+    func adjustMediaCollectionViewConstraintsBasedOnAspectRatio(){
+        // Remove old height constraint if it exists
+        if let heightConstraint = self.mediaCollectionViewHeightConstraint {
+            self.mediaCollectionView.removeConstraint(heightConstraint)
+        }
+        let heightFactor = 1 / self.mediaAspectRatio
+
+        // Create and add the new height constraint
+        self.mediaCollectionViewHeightConstraint = self.mediaCollectionView.setHeightConstraint(with: self.mediaCollectionView.widthAnchor, multiplier: min(1,heightFactor))
+        self.mediaCollectionViewHeightConstraint?.isActive = true
+        
+        self.mediaCollectionView.reloadData()
     }
 }
 

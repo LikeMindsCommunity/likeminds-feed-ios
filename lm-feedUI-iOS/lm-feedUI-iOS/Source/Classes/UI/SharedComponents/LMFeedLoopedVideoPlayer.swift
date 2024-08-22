@@ -13,11 +13,13 @@ public final class LMFeedLoopedVideoPlayer: UIView {
     public var index: Int?
     public var videoPlayerController: AVPlayerViewController?
     public var playerLayer: AVPlayerLayer?
+    public var showControls: Bool = false
     
-    func prepareVideo(with data: LMFeedVideoCollectionCell.ContentModel, _ index: Int = 0) {
+    func prepareVideo(with data: LMFeedVideoCollectionCell.ContentModel, _ index: Int = 0, showControls: Bool = false) {
         
         self.data = data
         self.index = index
+        self.showControls = showControls
         
         let request = LMFeedGetVideoControllerRequest.Builder()
             .setPostId(data.postID)
@@ -31,6 +33,8 @@ public final class LMFeedLoopedVideoPlayer: UIView {
             self.videoPlayerController = response.videoPlayerController
             self.playerLayer = AVPlayerLayer(player: response.videoPlayerController.player)
             
+            self.videoPlayerController?.showsPlaybackControls = showControls
+            
             self.layer.sublayers?.forEach { sublayer in
                     if sublayer is AVPlayerLayer {
                         sublayer.removeFromSuperlayer()
@@ -39,7 +43,7 @@ public final class LMFeedLoopedVideoPlayer: UIView {
             
             if let playerLayer {
                 playerLayer.videoGravity = .resizeAspect
-                playerLayer.frame = self.frame
+                playerLayer.frame = self.bounds
                 
                 self.layer.addSublayer(playerLayer)
             }
@@ -51,7 +55,7 @@ public final class LMFeedLoopedVideoPlayer: UIView {
             guard let data else {
                 return
             }
-            prepareVideo(with: data, index ?? 0)
+            prepareVideo(with: data, index ?? 0, showControls: showControls)
         }
         videoPlayerController?.player?.isMuted = LMFeedVideoProvider.isMuted
         videoPlayerController?.player?.play()
@@ -85,6 +89,7 @@ public final class LMFeedLoopedVideoPlayer: UIView {
     }
     
     public override func layoutSubviews() {
+        super.layoutSubviews()
         self.playerLayer?.frame = self.bounds
     }
 }

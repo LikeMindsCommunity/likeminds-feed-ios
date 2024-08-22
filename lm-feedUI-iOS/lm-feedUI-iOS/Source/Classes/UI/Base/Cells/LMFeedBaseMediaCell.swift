@@ -39,6 +39,7 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
     //MARK: Data Variables
     public var mediaCellsData: [LMFeedMediaProtocol] = []
     public weak var delegate: LMFeedPostMediaCellProtocol?
+    private var mediaCollectionViewHeightConstraint: NSLayoutConstraint?
     
     
     // MARK: setupAppearance
@@ -49,7 +50,6 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
         containerView.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
-    
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
@@ -58,48 +58,8 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
     
     open override func setupLayouts() {
         super.setupLayouts()
-        
-    //    var aspectRatio: Double?
-//        var mediaHavingSameAspectRation = true
-//        
-//        if mediaCellsData.count > 0 {
-//            
-//            for index in 0...max(mediaCellsData.count-2, 0) {
-//                var currentAspectRatio: Double = 1
-//                if let currentImageData = mediaCellsData[index] as? LMFeedImageCollectionCell.ContentModel {
-//                    currentAspectRatio = Double((currentImageData.width ?? 1)/(currentImageData.height ?? 1))
-//                }else if let currentVideoData = mediaCellsData[index] as? LMFeedVideoCollectionCell.ContentModel {
-//                    currentAspectRatio = Double((currentVideoData.width ?? 1)/(currentVideoData.height ?? 1))
-//                }
-//                
-//                var nextAspectRatio: Double = 1
-//                if let nextImageData = mediaCellsData[index] as? LMFeedImageCollectionCell.ContentModel {
-//                    nextAspectRatio = Double((nextImageData.width ?? 1)/(nextImageData.height ?? 1))
-//                }else if let nextVideoData = mediaCellsData[index] as? LMFeedVideoCollectionCell.ContentModel {
-//                    nextAspectRatio = Double((nextVideoData.width ?? 1)/(nextVideoData.height ?? 1))
-//                }
-//                
-//                if currentAspectRatio != nextAspectRatio {
-//                    mediaHavingSameAspectRation = false
-//                    break
-//                }
-//                
-//                aspectRatio = currentAspectRatio
-//                
-//            }
-//        }else{
-//            mediaHavingSameAspectRation = false
-//            aspectRatio = 1
-//        }
-//        
-        
-//        
-//        if mediaHavingSameAspectRation {
-//            contentStack.widthAnchor.constraint(equalTo: contentStack.widthAnchor, multiplier: max(1, aspectRatio ?? 0.0)).isActive = true
-//        }else{
-            mediaCollectionView.setWidthConstraint(with: contentStack.widthAnchor)
-            mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
-        //}
+        mediaCollectionView.setWidthConstraint(with: contentStack.widthAnchor)
+        mediaCollectionViewHeightConstraint = mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
     }
     
     @objc
@@ -134,17 +94,44 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
         topicFeed.isHidden = data.topics.topics.isEmpty
         
         mediaCellsData = data.mediaData
-        setupMediaCells()
+        setupMediaCells(mediaHaveSameAspectRatio: data.mediaHaveSameAspectRatio, aspectRatio: data.aspectRatio)
     }
     
-    open func setupMediaCells() {
+    private func updateMediaCollectionViewHeight(mediaHaveSameAspectRatio: Bool, aspectRatio: Double) {
+        // Remove old height constraint if it exists
+        if let heightConstraint = mediaCollectionViewHeightConstraint {
+            mediaCollectionView.removeConstraint(heightConstraint)
+        }
+        let heightFactor = 1/aspectRatio
+        
+        // Create and add the new height constraint
+        mediaCollectionViewHeightConstraint = mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor, multiplier: min(1,heightFactor))
+        mediaCollectionViewHeightConstraint?.isActive = true
+        
+        mediaCollectionView.layoutIfNeeded()
+    }
+    
+    
+    open func setupMediaCells(mediaHaveSameAspectRatio: Bool, aspectRatio: Double) {
         mediaCollectionView.isHidden = mediaCellsData.isEmpty
-        mediaCollectionView.reloadData()
         
-        pageControl.isHidden = mediaCellsData.count < 2
-        pageControl.numberOfPages = mediaCellsData.count
+        guard !mediaCellsData.isEmpty else {
+            return
+        }
         
-        tableViewScrolled()
+        updateMediaCollectionViewHeight(mediaHaveSameAspectRatio: mediaHaveSameAspectRatio, aspectRatio: aspectRatio)
+        DispatchQueue.main.async { [weak self] in
+            guard let self else {
+                return
+            }
+            
+            self.mediaCollectionView.reloadData()
+            
+            self.pageControl.isHidden = self.mediaCellsData.count < 2
+            self.pageControl.numberOfPages = self.mediaCellsData.count
+            
+            self.tableViewScrolled()
+        }
     }
 }
 
@@ -158,6 +145,7 @@ extension LMFeedBaseMediaCell: UICollectionViewDataSource,
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         if let data = mediaCellsData[indexPath.row] as? LMFeedImageCollectionCell.ContentModel,
            let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreview, for: indexPath) {
             cell.configure(with: data, didTapImage: {
@@ -181,8 +169,10 @@ extension LMFeedBaseMediaCell: UICollectionViewDataSource,
         return UICollectionViewCell()
     }
     
+    
+    
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        .init(width: collectionView.frame.width, height: collectionView.frame.height)
+        .init(width: collectionView.bounds.width, height: collectionView.bounds.height)
     }
     
     open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
