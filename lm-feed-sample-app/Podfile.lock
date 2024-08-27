@@ -56,18 +56,18 @@ PODS:
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
   - Kingfisher (7.12.0)
-  - LikeMindsFeed (1.8.0):
+  - LikeMindsFeed (1.9.0):
     - Alamofire (~> 5.7.1)
-  - LikeMindsFeedCore (1.2.0):
+  - LikeMindsFeedCore (1.3.0):
     - AWSCognito
     - AWSCore
     - AWSS3
     - BSImagePicker (~> 3.3.3)
     - FirebaseCore
     - FirebaseMessaging
-    - LikeMindsFeed (~> 1.8.0)
-    - LikeMindsFeedUI (= 1.2.0)
-  - LikeMindsFeedUI (1.2.0):
+    - LikeMindsFeed (~> 1.9.0)
+    - LikeMindsFeedUI (= 1.3.0)
+  - LikeMindsFeedUI (1.3.0):
     - Kingfisher (~> 7.0)
   - nanopb (2.30910.0):
     - nanopb/decode (= 2.30910.0)
@@ -77,7 +77,7 @@ PODS:
   - PromisesObjC (2.4.0)
 
 DEPENDENCIES:
-  - LikeMindsFeed (from `../../LikeMinds-iOS-Feed-SDK/LikeMindsFeedDev.podspec`)
+  - LikeMindsFeed (from `../../likeminds-feed-ios-data/LikeMindsFeedDev.podspec`)
   - LikeMindsFeedCore (from `../LikeMindsFeedCore.podspec`)
   - LikeMindsFeedUI (from `../LikeMindsFeedUI.podspec`)
 
@@ -100,7 +100,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   LikeMindsFeed:
-    :path: "../../LikeMinds-iOS-Feed-SDK/LikeMindsFeedDev.podspec"
+    :path: "../../likeminds-feed-ios-data/LikeMindsFeedDev.podspec"
   LikeMindsFeedCore:
     :path: "../LikeMindsFeedCore.podspec"
   LikeMindsFeedUI:
@@ -119,12 +119,12 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   Kingfisher: 53a10ea35051a436b5fb626ca2dd8f3144d755e9
-  LikeMindsFeed: 767514183a6ed9e7c3c76be0e6c8b53be0f4c87f
-  LikeMindsFeedCore: a3592ad45226deea1c11bb8dbd1132353b4dcde8
-  LikeMindsFeedUI: 2e00255ae1107ca3f28373f1398ca008a4f8d5ed
+  LikeMindsFeed: e98860ad8cce0867e67f580a51e873f50075bd3e
+  LikeMindsFeedCore: 8b8818391d395b8b55942eaaae398da7a542b7fd
+  LikeMindsFeedUI: 682b1aa8f28be322f061c18311a8187f08abbe1b
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
 
-PODFILE CHECKSUM: 25e92666b8d043da762ef1dcbce06528a46eeb83
+PODFILE CHECKSUM: 1bd7ac4becf0d17426226adf22edd80981531bf4
 
 COCOAPODS: 1.15.2
