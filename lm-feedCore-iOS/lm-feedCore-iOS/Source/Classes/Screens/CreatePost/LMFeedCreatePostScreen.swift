@@ -101,6 +101,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     open private(set) lazy var mediaPageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.isUserInteractionEnabled = false
         pageControl.hidesForSinglePage = true
         pageControl.tintColor = LMFeedAppearance.shared.colors.appTintColor
         pageControl.currentPageIndicatorTintColor = LMFeedAppearance.shared.colors.appTintColor

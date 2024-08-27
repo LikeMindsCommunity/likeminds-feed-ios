@@ -138,6 +138,7 @@ extension LMFeedPostDataModel {
                 if let commonRatio = commonAspectRatio {
                     if aspectRatio != commonRatio {
                         allSameAspectRatio = false
+                        commonAspectRatio = nil
                         break
                     }
                 } else {

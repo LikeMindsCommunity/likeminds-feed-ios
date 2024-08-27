@@ -38,8 +38,8 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
-        button.backgroundColor = LMFeedAppearance.shared.colors.white
-        button.tintColor = LMFeedAppearance.shared.colors.gray51
+        button.backgroundColor = LMFeedAppearance.shared.colors.black4
+        button.tintColor = LMFeedAppearance.shared.colors.white
         button.contentMode = .scaleAspectFit
         return button
     }()
