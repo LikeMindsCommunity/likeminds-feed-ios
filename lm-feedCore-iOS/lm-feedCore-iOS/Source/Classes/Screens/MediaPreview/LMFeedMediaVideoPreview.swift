@@ -19,15 +19,15 @@ open class LMFeedMediaVideoPreview: LMCollectionViewCell {
     open private(set) lazy var videoPreview: LMImageView = {
         let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
         image.contentMode = .scaleAspectFit
-        image.backgroundColor = Appearance.shared.colors.black
+        image.backgroundColor = LMFeedAppearance.shared.colors.black
         return image
     }()
     
     open private(set) lazy var playButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.playFilled, for: .normal)
-        button.tintColor = Appearance.shared.colors.white
+        button.setImage(LMFeedConstants.shared.images.playFilled, for: .normal)
+        button.tintColor = LMFeedAppearance.shared.colors.white
         button.contentVerticalAlignment = .fill
         button.contentHorizontalAlignment = .fill
         return button
