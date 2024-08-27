@@ -778,6 +778,54 @@ public extension LMFeedCreatePostScreen {
             self?.viewModel?.handleAssets(assets: filteredAssets.map { ($0.asset, $0.url, $0.data) })
         }
     }
+    
+    func handleMediaAspectRatio(assets: [(asset: PHAsset, url: URL, data: Data)]) {
+        guard !assets.isEmpty else {
+            // If there are no assets, reset the flags
+            self.mediaHaveSameAspectRatio = false
+            self.mediaAspectRatio = 1.0
+            return
+        }
+        
+        // Calculate the aspect ratio of the first asset
+        let firstAsset = assets[0].asset
+        let firstAspectRatio = Double(firstAsset.pixelWidth) / Double(firstAsset.pixelHeight)
+        
+        var allSameAspectRatio = true
+        
+        // Iterate over the remaining assets and compare aspect ratios
+        for assetInfo in assets {
+            let asset = assetInfo.asset
+            let aspectRatio = Double(asset.pixelWidth) / Double(asset.pixelHeight)
+            
+            if aspectRatio != firstAspectRatio { // Allow for minor floating-point differences
+                allSameAspectRatio = false
+                break
+            }
+        }
+        
+        // Set the properties accordingly
+        self.mediaHaveSameAspectRatio = allSameAspectRatio
+        self.mediaAspectRatio = allSameAspectRatio ? max(1.0, firstAspectRatio) : 1.0
+        
+        adjustMediaCollectionViewConstraintsBasedOnAspectRatio()
+    }
+    
+    func adjustMediaCollectionViewConstraintsBasedOnAspectRatio(){
+        // Remove old height constraint if it exists
+        if let heightConstraint = self.mediaCollectionViewHeightConstraint {
+            self.mediaCollectionView.removeConstraint(heightConstraint)
+        }
+        let heightFactor = 1 / self.mediaAspectRatio
+
+        // Create and add the new height constraint
+        self.mediaCollectionViewHeightConstraint = self.mediaCollectionView.setHeightConstraint(with: self.mediaCollectionView.widthAnchor, multiplier: min(1,heightFactor))
+        self.mediaCollectionViewHeightConstraint?.isActive = true
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.mediaCollectionView.reloadData()
+        }
+    }
 }
 
 

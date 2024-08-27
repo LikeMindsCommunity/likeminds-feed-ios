@@ -6,12 +6,11 @@
 //
 
 import Kingfisher
-import LikeMindsFeedUI
 import UIKit
 
 open class LMFeedMediaImagePreview: LMCollectionViewCell {
     open private(set) lazy var previewImageView: LMFeedZoomImageViewContainer = {
-        let image = LMFeedZoomImageViewContainer()
+        let image = LMUIComponents.shared.mediaImageZoomPreview.init()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.backgroundColor = .black
         return image

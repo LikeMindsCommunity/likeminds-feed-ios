@@ -15,8 +15,8 @@ open class LMFeedMediaPreviewScreen: LMViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.registerCell(type: LMFeedMediaImagePreview.self)
-        collectionView.registerCell(type: LMFeedMediaVideoPreview.self)
+        collectionView.registerCell(type: LMUIComponents.shared.mediaImagePreviewCell.self)
+        collectionView.registerCell(type: LMUIComponents.shared.mediaVideoPreviewCell.self)
         collectionView.isPagingEnabled = true
         collectionView.bounces = false
         collectionView.showsVerticalScrollIndicator = false
@@ -95,13 +95,10 @@ extension LMFeedMediaPreviewScreen: UICollectionViewDataSource, UICollectionView
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if mediaData[indexPath.row].isVideo,
-           let cell = collectionView.dequeueReusableCell(with: LMFeedMediaVideoPreview.self, for: indexPath) {
-            cell.configure(with: mediaData[indexPath.row]) { [weak self] in
-                guard let self else { return }
-                navigateToVideoPlayer(with: mediaData[indexPath.row].mediaURL)
-            }
+           let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.mediaVideoPreviewCell.self, for: indexPath) {
+            cell.configure(with: mediaData[indexPath.row], index: indexPath.row)
             return cell
-        } else if let cell = collectionView.dequeueReusableCell(with: LMFeedMediaImagePreview.self, for: indexPath) {
+        } else if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.mediaImagePreviewCell.self, for: indexPath) {
             cell.configure(with: mediaData[indexPath.row])
             return cell
         }

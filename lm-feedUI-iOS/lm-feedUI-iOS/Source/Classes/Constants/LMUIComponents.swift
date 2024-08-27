@@ -18,6 +18,11 @@ public struct LMUIComponents {
     public var linkPreview: LMFeedLinkPreview.Type = LMFeedLinkPreview.self
     public var videoPreview: LMFeedVideoCollectionCell.Type = LMFeedVideoCollectionCell.self
     
+    // MARK: Media Preview Components
+    public var mediaImageZoomPreview: LMFeedZoomImageViewContainer.Type = LMFeedZoomImageViewContainer.self
+    public var mediaVideoPreviewCell: LMFeedMediaVideoPreview.Type = LMFeedMediaVideoPreview.self
+    public var mediaImagePreviewCell: LMFeedMediaImagePreview.Type = LMFeedMediaImagePreview.self
+    
     // MARK: Universal Feed Components
     public var documentCell: LMFeedPostDocumentCell.Type = LMFeedPostDocumentCell.self
     public var footerView: LMFeedPostFooterView.Type = LMFeedPostFooterView.self

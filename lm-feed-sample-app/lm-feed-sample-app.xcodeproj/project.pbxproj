@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		35C7ED8D7E675043FA1E1550 /* Pods_lm_feed_sample_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F75E7ED7E98DAD9920C1C432 /* Pods_lm_feed_sample_app.framework */; };
+		63CE3A1D076732EF12995647 /* Pods_lm_feed_sample_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCBB1BBD8857F496860283A9 /* Pods_lm_feed_sample_app.framework */; };
 		E572B6782B47105E00E36655 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B6772B47105E00E36655 /* SceneDelegate.swift */; };
 		E572B67F2B47106000E36655 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E572B67E2B47106000E36655 /* Assets.xcassets */; };
 		E572B6822B47106000E36655 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E572B6802B47106000E36655 /* LaunchScreen.storyboard */; };
@@ -20,7 +20,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		AA52927F329F35CF731BF29C /* Pods-lm-feed-sample-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lm-feed-sample-app.release.xcconfig"; path = "Target Support Files/Pods-lm-feed-sample-app/Pods-lm-feed-sample-app.release.xcconfig"; sourceTree = "<group>"; };
+		2528D5B5F55C7A72CAF0830A /* Pods-lm-feed-sample-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lm-feed-sample-app.debug.xcconfig"; path = "Target Support Files/Pods-lm-feed-sample-app/Pods-lm-feed-sample-app.debug.xcconfig"; sourceTree = "<group>"; };
+		CCBB1BBD8857F496860283A9 /* Pods_lm_feed_sample_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_lm_feed_sample_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF5201C01A4730E8C029DBEA /* Pods-lm-feed-sample-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lm-feed-sample-app.release.xcconfig"; path = "Target Support Files/Pods-lm-feed-sample-app/Pods-lm-feed-sample-app.release.xcconfig"; sourceTree = "<group>"; };
 		E572B6722B47105E00E36655 /* lm-feed-sample-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "lm-feed-sample-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E572B6772B47105E00E36655 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E572B67E2B47106000E36655 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -42,20 +44,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35C7ED8D7E675043FA1E1550 /* Pods_lm_feed_sample_app.framework in Frameworks */,
+				63CE3A1D076732EF12995647 /* Pods_lm_feed_sample_app.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CD62B1E7E44C74816D396F3A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CCBB1BBD8857F496860283A9 /* Pods_lm_feed_sample_app.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E572B6692B47105E00E36655 = {
 			isa = PBXGroup;
 			children = (
 				E572B6742B47105E00E36655 /* lm-feed-sample-app */,
 				E572B6732B47105E00E36655 /* Products */,
 				F193759EE58B33EFA87A7AA3 /* Pods */,
-				F0BFD6EF9F0D2FB43D3AC9E2 /* Frameworks */,
+				CD62B1E7E44C74816D396F3A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,8 +106,8 @@
 		F193759EE58B33EFA87A7AA3 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				EC1BA8F0B96944D0EC86B08E /* Pods-lm-feed-sample-app.debug.xcconfig */,
-				AA52927F329F35CF731BF29C /* Pods-lm-feed-sample-app.release.xcconfig */,
+				2528D5B5F55C7A72CAF0830A /* Pods-lm-feed-sample-app.debug.xcconfig */,
+				CF5201C01A4730E8C029DBEA /* Pods-lm-feed-sample-app.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -109,11 +119,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E572B6862B47106000E36655 /* Build configuration list for PBXNativeTarget "lm-feed-sample-app" */;
 			buildPhases = (
-				7A48E89B32679EAB0DEBFE9B /* [CP] Check Pods Manifest.lock */,
+				F725EFB061F0520D4FE79E99 /* [CP] Check Pods Manifest.lock */,
 				E572B66E2B47105E00E36655 /* Sources */,
 				E572B66F2B47105E00E36655 /* Frameworks */,
 				E572B6702B47105E00E36655 /* Resources */,
-				42DFD383EEFC589B8D71DAE9 /* [CP] Embed Pods Frameworks */,
+				AC18A930773C3EC7BF0E2B1E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -172,7 +182,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		42DFD383EEFC589B8D71DAE9 /* [CP] Embed Pods Frameworks */ = {
+		AC18A930773C3EC7BF0E2B1E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -189,7 +199,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-lm-feed-sample-app/Pods-lm-feed-sample-app-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7A48E89B32679EAB0DEBFE9B /* [CP] Check Pods Manifest.lock */ = {
+		F725EFB061F0520D4FE79E99 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -361,7 +371,7 @@
 		};
 		E572B6872B47106000E36655 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EC1BA8F0B96944D0EC86B08E /* Pods-lm-feed-sample-app.debug.xcconfig */;
+			baseConfigurationReference = 2528D5B5F55C7A72CAF0830A /* Pods-lm-feed-sample-app.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -395,7 +405,7 @@
 		};
 		E572B6882B47106000E36655 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AA52927F329F35CF731BF29C /* Pods-lm-feed-sample-app.release.xcconfig */;
+			baseConfigurationReference = CF5201C01A4730E8C029DBEA /* Pods-lm-feed-sample-app.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

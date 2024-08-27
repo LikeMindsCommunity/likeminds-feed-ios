@@ -5,13 +5,24 @@
 //  Created by Anurag Tyagi on 24/07/24.
 //
 
-import LikeMindsFeedUI
 import UIKit
 
 public struct LMFeedMediaPreviewContentModel {
-    let mediaURL: String
-    let thumbnailURL: String?
-    let isVideo: Bool
+    public let mediaURL: String
+    public let isVideo: Bool
+    public let postID: String
+    public let index: Int
+    public let width: Int?
+    public let height: Int?
+    
+    public init(mediaURL: String, isVideo: Bool, postID: String, index: Int, width: Int?, height: Int?) {
+        self.mediaURL = mediaURL
+        self.isVideo = isVideo
+        self.postID = postID
+        self.index = index
+        self.width = width
+        self.height = height
+    }    
 }
 
 open class LMFeedMediaVideoPreview: LMCollectionViewCell {

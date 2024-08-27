@@ -50,8 +50,10 @@ public final class LMFeedMediaPreviewViewModel {
         self.delegate = delegate
     }
     
-    public static func createModule(with data: DataModel, startIndex: Int = 0) -> LMFeedMediaPreviewScreen {
-        let viewController = LMFeedMediaPreviewScreen()
+    public static func createModule(with data: LMFeedPostContentModel, postID: String, startIndex: Int = 0) throws -> LMFeedMediaPreviewScreen {
+        guard LMFeedCore.isInitialized else { throw LMFeedError.feedNotInitialized }
+        
+        let viewController = Components.shared.mediaPreviewScreen.init()
         let viewModel = Self.init(data: data, startIndex: startIndex, delegate: viewController)
         
         viewController.viewModel = viewModel

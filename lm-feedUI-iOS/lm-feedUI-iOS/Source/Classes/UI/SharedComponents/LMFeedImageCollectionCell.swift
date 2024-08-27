@@ -96,4 +96,5 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
         crossButton.isHidden = crossButtonAction == nil
         imageView.kf.setImage(with: URL(string: data.image), placeholder: LMFeedConstants.shared.images.placeholderImage)
     }
+    
 }
