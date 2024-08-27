@@ -98,10 +98,7 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
     }
     
     private func updateMediaCollectionViewHeight(mediaHaveSameAspectRatio: Bool, aspectRatio: Double) {
-        // Remove old height constraint if it exists
-        if let heightConstraint = mediaCollectionViewHeightConstraint {
-            mediaCollectionView.removeConstraint(heightConstraint)
-        }
+        mediaCollectionViewHeightConstraint?.isActive = false
         let heightFactor = 1/aspectRatio
         
         // Create and add the new height constraint
@@ -114,6 +111,7 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
     
     open func setupMediaCells(mediaHaveSameAspectRatio: Bool, aspectRatio: Double) {
         mediaCollectionView.isHidden = mediaCellsData.isEmpty
+        pageControl.isHidden = mediaCellsData.count < 2
         
         guard !mediaCellsData.isEmpty else {
             return

@@ -32,9 +32,13 @@ open class LMFeedMediaVideoPreview: LMCollectionViewCell {
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
-        contentView.addSubviewWithDefaultConstraints(containerView)
+        contentView.addSubview(containerView)
+        contentView.pinSubView(subView: containerView)
+        
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubviewWithDefaultConstraints(videoCell)
+    
+        containerView.addSubview(videoCell)
+        containerView.pinSubView(subView: videoCell)
     }
     
     

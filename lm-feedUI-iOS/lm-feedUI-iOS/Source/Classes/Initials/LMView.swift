@@ -178,11 +178,6 @@ public extension UIView {
             return width
         }
     }
-    
-    func addSubviewWithDefaultConstraints(_ subView: UIView) {
-        addSubview(subView)
-        pinSubView(subView: subView)
-    }
 }
 
 @IBDesignable
