@@ -56,10 +56,13 @@ class ViewController: UIViewController {
         LMFeedCore.shared.showFeed(apiKey: apiKey, username: username, uuid: userId) { [weak self] result in
             switch result {
             case .success(_):
-                guard let viewController = LMUniversalFeedViewModel.createModule() else { return }
-                UIApplication.shared.windows.first?.rootViewController = UINavigationController(rootViewController: viewController)
-                UIApplication.shared.windows.first?.makeKeyAndVisible()
-                
+                do {
+                    let viewController = try LMFeedQnAUniversalFeedViewModel.createModule()
+                    UIApplication.shared.windows.first?.rootViewController = UINavigationController(rootViewController: viewController)
+                    UIApplication.shared.windows.first?.makeKeyAndVisible()
+                } catch {
+                    print(error.localizedDescription)
+                }
             case .failure(let error):
                 let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                 alert.addAction(.init(title: "OK", style: .default))

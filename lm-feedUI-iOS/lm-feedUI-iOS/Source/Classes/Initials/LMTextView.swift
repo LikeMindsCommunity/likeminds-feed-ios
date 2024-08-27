@@ -9,6 +9,8 @@ import UIKit
 
 @IBDesignable
 open class LMTextView: UITextView {
+    private var disabledCharacters: Set<String> = []
+    
     public var placeHolderText: String = "" {
         didSet {
             if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
@@ -16,6 +18,12 @@ open class LMTextView: UITextView {
             }
         }
     }
+    
+    public var placeholderAttributes: [NSAttributedString.Key: Any] = [.font: LMFeedAppearance.shared.fonts.textFont1,
+                                                                .foregroundColor: LMFeedAppearance.shared.colors.textColor]
+    
+    public var textAttributes: [NSAttributedString.Key: Any] = [.font: LMFeedAppearance.shared.fonts.textFont1,
+                                                                .foregroundColor: LMFeedAppearance.shared.colors.gray51]
     
     public var numberOfLines: Int {
         let numberOfGlyphs = layoutManager.numberOfGlyphs
@@ -40,14 +48,22 @@ open class LMTextView: UITextView {
         return currentNumOfLines
     }
     
+    public var textChangedObserver: (() -> Void)?
+    
     public override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
-        backgroundColor = Appearance.shared.colors.clear
+        backgroundColor = LMFeedAppearance.shared.colors.clear
+        delegate = self
     }
     
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
-        backgroundColor = Appearance.shared.colors.clear
+        backgroundColor = LMFeedAppearance.shared.colors.clear
+        delegate = self
+    }
+    
+    public func setDisabledCharacters(_ disabledCharacters: Set<String>) {
+        self.disabledCharacters = disabledCharacters
     }
     
     open func translatesAutoresizingMaskIntoConstraints() -> Self {
@@ -72,5 +88,52 @@ open class LMTextView: UITextView {
     @objc
     public func doneButtonAction() {
         self.resignFirstResponder()
+    }
+    
+    public func setAttributedText(from content: String, prefix: Character? = nil) {
+        if !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            text = content
+            textColor = textAttributes[.foregroundColor] as? UIColor
+            font = textAttributes[.font] as? UIFont
+        } else {
+            text = placeHolderText
+            textColor = placeholderAttributes[.foregroundColor] as? UIColor
+            font = placeholderAttributes[.font] as? UIFont
+        }
+    }
+    
+    public func getText() -> String {
+        let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if trimmedText.isEmpty || trimmedText == placeHolderText {
+            return ""
+        }
+        
+        return trimmedText
+    }
+}
+
+
+extension LMTextView: UITextViewDelegate {
+    open func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == placeHolderText {
+            textView.text = nil
+            textColor = textAttributes[.foregroundColor] as? UIColor
+            font = textAttributes[.font] as? UIFont
+        }
+    }
+    
+    open func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            textView.attributedText = NSAttributedString(string: placeHolderText, attributes: placeholderAttributes)
+        }
+    }
+    
+    open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        !disabledCharacters.contains(text)
+    }
+    
+    open func textViewDidChange(_ textView: UITextView) {
+        textChangedObserver?()
     }
 }

@@ -64,11 +64,11 @@ open class LMFeedTaggingListView: LMView {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        backgroundColor = Appearance.shared.colors.clear
-        containerView.backgroundColor = Appearance.shared.colors.clear
-        containerView.layer.borderColor = Appearance.shared.colors.gray4.cgColor
+        backgroundColor = LMFeedAppearance.shared.colors.clear
+        containerView.backgroundColor = LMFeedAppearance.shared.colors.clear
+        containerView.layer.borderColor = LMFeedAppearance.shared.colors.gray4.cgColor
         containerView.layer.borderWidth = 1
-        tableView.backgroundColor = Appearance.shared.colors.white
+        tableView.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
     

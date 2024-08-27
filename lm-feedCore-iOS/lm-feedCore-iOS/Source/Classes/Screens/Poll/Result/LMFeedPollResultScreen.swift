@@ -76,8 +76,8 @@ open class LMFeedPollResultScreen: LMViewController {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        view.backgroundColor = Appearance.shared.colors.white
-        optionView.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
+        optionView.backgroundColor = LMFeedAppearance.shared.colors.clear
     }
     
     

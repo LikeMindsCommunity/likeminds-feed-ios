@@ -14,7 +14,7 @@ open class LMFeedEditPostScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
@@ -39,7 +39,7 @@ open class LMFeedEditPostScreen: LMViewController {
     
     open private(set) lazy var headerView: LMFeedCreatePostHeaderView = {
         let view = LMUIComponents.shared.createPostHeaderView.init().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
@@ -54,14 +54,14 @@ open class LMFeedEditPostScreen: LMViewController {
         textView.mentionDelegate = self
         textView.isScrollEnabled = false
         textView.isEditable = true
-        textView.placeHolderText = "Write Something here..."
+        textView.placeHolderText = "Write something here..."
         textView.addDoneButtonOnKeyboard()
         return textView
     }()
     
     open private(set) lazy var linkPreview: LMFeedLinkPreview = {
         let view = LMUIComponents.shared.linkPreview.init().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
@@ -82,9 +82,9 @@ open class LMFeedEditPostScreen: LMViewController {
         let pageControl = UIPageControl()
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.hidesForSinglePage = true
-        pageControl.tintColor = Appearance.shared.colors.appTintColor
-        pageControl.currentPageIndicatorTintColor = Appearance.shared.colors.appTintColor
-        pageControl.pageIndicatorTintColor = Appearance.shared.colors.gray155
+        pageControl.tintColor = LMFeedAppearance.shared.colors.appTintColor
+        pageControl.currentPageIndicatorTintColor = LMFeedAppearance.shared.colors.appTintColor
+        pageControl.pageIndicatorTintColor = LMFeedAppearance.shared.colors.gray155
         return pageControl
     }()
     
@@ -123,6 +123,28 @@ open class LMFeedEditPostScreen: LMViewController {
     
     open private(set) lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(didTapSaveButton))
     
+    open private(set) lazy var headingTextContainer: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
+    open private(set) lazy var headingTextView: LMTextView = {
+        let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
+        textView.backgroundColor = LMFeedAppearance.shared.colors.clear
+        textView.isScrollEnabled = true
+        textView.isEditable = true
+        textView.placeHolderText = "Add your question here"
+        textView.textAttributes[.font] = LMFeedAppearance.shared.fonts.headingFont1
+        textView.placeholderAttributes[.font] = LMFeedAppearance.shared.fonts.headingFont1
+        return textView
+    }()
+    
+    open private(set) lazy var headerSepratorView: LMView = {
+        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+        view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
+        return view
+    }()
+    
     
     // MARK: Data Variables
     public var viewmodel: LMFeedEditPostViewModel?
@@ -132,7 +154,11 @@ open class LMFeedEditPostScreen: LMViewController {
     public var taggingUserViewHeightConstraint: NSLayoutConstraint?
     public var inputTextViewHeightConstraint: NSLayoutConstraint?
     public var textInputMaximumHeight: CGFloat = 150
-    
+    public var showQuestionHeading: Bool = false {
+        didSet {
+            headingTextContainer.isHidden = !showQuestionHeading
+        }
+    }
     
     // MARK: setupViews
     open override func setupViews() {
@@ -143,7 +169,10 @@ open class LMFeedEditPostScreen: LMViewController {
         scrollView.addSubview(scrollStackView)
         containerView.addSubview(taggingView)
         
-        [headerView, topicView, inputTextView, linkPreview, pollPreview, mediaCollectionView, mediaPageControl, documentTableView].forEach { subview in
+        headingTextContainer.addSubview(headerSepratorView)
+        headingTextContainer.addSubview(headingTextView)
+        
+        [headerView, topicView, headingTextContainer, inputTextView, linkPreview, pollPreview, mediaCollectionView, mediaPageControl, documentTableView].forEach { subview in
             scrollStackView.addArrangedSubview(subview)
         }
     }
@@ -170,8 +199,16 @@ open class LMFeedEditPostScreen: LMViewController {
         scrollStackView.setWidthConstraint(with: containerView.widthAnchor)
         mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
         
+        headingTextContainer.pinSubView(subView: headingTextView)
         
-        [headerView, topicView, inputTextView, mediaCollectionView, mediaPageControl, documentTableView, pollPreview].forEach { subView in
+        headerSepratorView.addConstraint(bottom: (headingTextContainer.bottomAnchor, 0),
+                                         leading: (headingTextContainer.leadingAnchor, 0),
+                                         trailing: (headingTextContainer.trailingAnchor, 0))
+        headerSepratorView.setHeightConstraint(with: 1)
+        
+        headingTextContainer.setHeightConstraint(with: 100)
+        
+        [headerView, topicView, headingTextContainer, inputTextView, mediaCollectionView, mediaPageControl, documentTableView, pollPreview].forEach { subView in
             NSLayoutConstraint.activate([
                 subView.leadingAnchor.constraint(equalTo: scrollStackView.leadingAnchor, constant: 16),
                 subView.trailingAnchor.constraint(equalTo: scrollStackView.trailingAnchor, constant: -16)
@@ -186,20 +223,20 @@ open class LMFeedEditPostScreen: LMViewController {
     open override func setupActions() {
         super.setupActions()
         
-        saveButton.tintColor = Appearance.shared.colors.appTintColor
+        saveButton.tintColor = LMFeedAppearance.shared.colors.appTintColor
         navigationItem.rightBarButtonItem = saveButton
     }
     
     @objc
     open func didTapSaveButton() {
-        viewmodel?.updatePost(with: inputTextView.getText())
+        viewmodel?.updatePost(with: inputTextView.getText(), question: headingTextView.getText())
     }
     
     
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        view.backgroundColor = Appearance.shared.colors.white
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
     
@@ -207,8 +244,15 @@ open class LMFeedEditPostScreen: LMViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         setupInitialView()
+        headingTextView.setAttributedText(from: "")
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.editPost, subtitle: nil, alignment: .center)
         viewmodel?.getInitalData()
+        
+        if showQuestionHeading {
+            headingTextView.textChangedObserver = { [weak self] in
+                self?.observeSaveButton()
+            }
+        }
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
@@ -225,6 +269,7 @@ open class LMFeedEditPostScreen: LMViewController {
         mediaPageControl.isHidden = true
         documentTableView.isHidden = true
         pollPreview.isHidden = true
+        showQuestionHeading = false
     }
 }
 
@@ -329,15 +374,25 @@ extension LMFeedEditPostScreen: LMFeedTaggingTextViewProtocol {
         inputTextViewHeightConstraint?.constant = min(max(newSize.height, 80), textInputMaximumHeight)
         
         viewmodel?.handleLinkDetection(in: inputTextView.text)
-        saveButton.isEnabled = !inputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !documentCells.isEmpty || !mediaCells.isEmpty
+        observeSaveButton()
+    }
+    
+    public func observeSaveButton() {
+        if showQuestionHeading {
+            saveButton.isEnabled = !headingTextView.getText().isEmpty
+        } else {
+            saveButton.isEnabled = !inputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !documentCells.isEmpty || !mediaCells.isEmpty
+        }
     }
 }
 
 
 // MARK: LMFeedEditPostViewModelProtocol
 extension LMFeedEditPostScreen: LMFeedEditPostViewModelProtocol {
-    public func setupData(with userData: LMFeedCreatePostHeaderView.ContentModel, text: String) {
+    public func setupData(with userData: LMFeedCreatePostHeaderView.ContentModel, question: String, text: String) {
         headerView.configure(with: userData)
+        showQuestionHeading = !question.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        headingTextView.text = question
         inputTextView.setAttributedText(from: text, prefix: "@")
         contentHeightChanged()
     }

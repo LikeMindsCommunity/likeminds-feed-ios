@@ -17,13 +17,13 @@ open class LMFeedTopicSelectionScreen: LMViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMView = {
         let view = LMView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = Appearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
     open private(set) lazy var topicSelectionListView: LMTableView = {
         let table = LMTableView(frame: .zero, style: .grouped).translatesAutoresizingMaskIntoConstraints()
-        table.backgroundColor = Appearance.shared.colors.clear
+        table.backgroundColor = LMFeedAppearance.shared.colors.clear
         table.dataSource = self
         table.delegate = self
         table.register(LMFeedTopicSelectionCell.self)
@@ -37,7 +37,7 @@ open class LMFeedTopicSelectionScreen: LMViewController {
     
     open private(set) lazy var searchController: UISearchController = {
         let search = UISearchController(searchResultsController: nil)
-        search.searchBar.placeholder = Constants.shared.strings.searchTopic
+        search.searchBar.placeholder = LMFeedConstants.shared.strings.searchTopic
         search.delegate = self
         search.searchBar.delegate = self
         return search
@@ -45,7 +45,7 @@ open class LMFeedTopicSelectionScreen: LMViewController {
     
     open private(set) lazy var noResultsView: LMFeedNoResultView = {
         let view = LMFeedNoResultView()
-        view.configure(with: Constants.shared.strings.noResultsFound)
+        view.configure(with: LMFeedConstants.shared.strings.noResultsFound)
         return view
     }()
 
@@ -59,8 +59,8 @@ open class LMFeedTopicSelectionScreen: LMViewController {
     // MARK: viewDidLoad
     open override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Appearance.shared.colors.backgroundColor
-        setNavigationTitleAndSubtitle(with: Constants.shared.strings.selectTopic, subtitle: nil, alignment: .center)
+        view.backgroundColor = LMFeedAppearance.shared.colors.backgroundColor
+        setNavigationTitleAndSubtitle(with: LMFeedConstants.shared.strings.selectTopic, subtitle: nil, alignment: .center)
         viewModel?.getTopics(for: searchController.searchBar.text, isFreshSearch: true)
     }
     
@@ -161,9 +161,9 @@ extension LMFeedTopicSelectionScreen: LMFeedTopicSelectionViewModelProtocol {
         topicSelectionListView.backgroundView = isEmpty ? noResultsView : nil
         
         if selectedCount == .zero {
-            setNavigationTitleAndSubtitle(with: Constants.shared.strings.selectTopic, subtitle: nil, alignment: .center)
+            setNavigationTitleAndSubtitle(with: LMFeedConstants.shared.strings.selectTopic, subtitle: nil, alignment: .center)
         } else {
-            setNavigationTitleAndSubtitle(with: Constants.shared.strings.selectTopic, subtitle: "\(selectedCount) Selected", alignment: .center)
+            setNavigationTitleAndSubtitle(with: LMFeedConstants.shared.strings.selectTopic, subtitle: "\(selectedCount) Selected", alignment: .center)
         }
     }
     

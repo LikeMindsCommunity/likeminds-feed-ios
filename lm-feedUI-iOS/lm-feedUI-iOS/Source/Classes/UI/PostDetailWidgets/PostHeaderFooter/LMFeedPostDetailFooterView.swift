@@ -25,8 +25,8 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
     
     open private(set) lazy var totalCommentLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
-        label.font = Appearance.shared.fonts.headingFont3
-        label.textColor = Appearance.shared.colors.gray1
+        label.font = LMFeedAppearance.shared.fonts.headingFont3
+        label.textColor = LMFeedAppearance.shared.colors.gray1
         return label
     }()
     
@@ -38,14 +38,14 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
     open private(set) lazy var noCommenTitleLabel: LMLabel = {
         let label =  LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = ""
-        label.textColor = Appearance.shared.colors.gray51
+        label.textColor = LMFeedAppearance.shared.colors.gray51
         return label
     }()
     
     open private(set) lazy var noCommentSubtitleLabel: LMLabel = {
         let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = ""
-        label.textColor = Appearance.shared.colors.gray102
+        label.textColor = LMFeedAppearance.shared.colors.gray102
         return label
     }()
     
@@ -91,7 +91,7 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
     
     open override func setupAppearance() {
         super.setupAppearance()
-        commentContainerView.backgroundColor = Appearance.shared.colors.white
+        commentContainerView.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
     open func configure(with data: LMFeedPostFooterView.ContentModel, postID: String, delegate: LMFeedPostFooterViewProtocol, commentCount: Int) {
@@ -100,7 +100,7 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
     }
     
     open func updateCommentCount(with commentCount: Int) {
-        commentButton.setTitle(getCommentText(for: commentCount), for: .normal)
+        updateCommentText(for: commentCount)
         
         noCommentContainerView.isHidden = commentCount != 0
         commentContainerView.isHidden = commentCount == 0

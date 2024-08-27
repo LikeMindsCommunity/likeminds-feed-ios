@@ -31,9 +31,9 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     open private(set) lazy var crossButton: LMButton = {
         let button = LMButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
-        button.setImage(Constants.shared.images.xmarkIcon, for: .normal)
-        button.backgroundColor = Appearance.shared.colors.white
-        button.tintColor = Appearance.shared.colors.gray51
+        button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
+        button.backgroundColor = LMFeedAppearance.shared.colors.white
+        button.tintColor = LMFeedAppearance.shared.colors.gray51
         button.contentMode = .scaleAspectFit
         return button
     }()
@@ -78,9 +78,9 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        videoPlayer.backgroundColor = Appearance.shared.colors.black
+        videoPlayer.backgroundColor = LMFeedAppearance.shared.colors.black
         crossButton.layer.cornerRadius = crossButtonHeight / 2
-        crossButton.layer.borderColor = Appearance.shared.colors.gray51.cgColor
+        crossButton.layer.borderColor = LMFeedAppearance.shared.colors.gray51.cgColor
         crossButton.layer.borderWidth = 1
     }
     
