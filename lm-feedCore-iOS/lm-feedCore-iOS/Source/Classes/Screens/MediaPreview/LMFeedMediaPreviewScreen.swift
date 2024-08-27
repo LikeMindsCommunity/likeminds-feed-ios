@@ -69,23 +69,7 @@ open class LMFeedMediaPreviewScreen: LMViewController {
         super.viewDidAppear(animated)
         viewModel.scrollToMediaPreview()
     }
-        
-    open func navigateToVideoPlayer(with url: String) {
-        guard let videoURL = URL(string: url) else {
-            showErrorAlert(message: "Unable to play video")
-            return
-        }
-        
-        let player = AVPlayer(url: videoURL)
-        let playerViewController = AVPlayerViewController()
-        playerViewController.player = player
-        playerViewController.allowsPictureInPicturePlayback = false
-        playerViewController.showsPlaybackControls = true
-        
-        present(playerViewController, animated: false) {
-            player.play()
-        }
-    }
+
 }
 
 extension LMFeedMediaPreviewScreen: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -96,10 +80,7 @@ extension LMFeedMediaPreviewScreen: UICollectionViewDataSource, UICollectionView
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if mediaData[indexPath.row].isVideo,
            let cell = collectionView.dequeueReusableCell(with: LMFeedMediaVideoPreview.self, for: indexPath) {
-            cell.configure(with: mediaData[indexPath.row]) { [weak self] in
-                guard let self else { return }
-                navigateToVideoPlayer(with: mediaData[indexPath.row].mediaURL)
-            }
+            cell.configure(with: mediaData[indexPath.row], index: indexPath.row)
             return cell
         } else if let cell = collectionView.dequeueReusableCell(with: LMFeedMediaImagePreview.self, for: indexPath) {
             cell.configure(with: mediaData[indexPath.row])

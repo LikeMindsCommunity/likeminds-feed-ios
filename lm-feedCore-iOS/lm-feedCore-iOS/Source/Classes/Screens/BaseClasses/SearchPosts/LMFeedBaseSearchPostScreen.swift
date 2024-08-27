@@ -255,7 +255,20 @@ extension LMFeedBaseSearchPostScreen: UITableViewDelegate, UITableViewDataSource
 
 // MARK: LMFeedPostDocumentCellProtocol
 @objc
-extension LMFeedBaseSearchPostScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol {
+extension LMFeedBaseSearchPostScreen: LMFeedPostMediaCellProtocol, LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol {
+    public func didTapMedia(postID: String, index: Int) {
+        guard let postData = data.first(where: { $0.postID == postID }) else {
+            return
+        }
+        
+        do {
+            let viewcontroller = try LMFeedMediaPreviewViewModel.createModule(with: postData, postID: postData.postID, startIndex: index)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
     open func didTapPost(postID: String) {
         fatalError("Needs to be implemented by subclass")
     }

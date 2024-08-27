@@ -38,6 +38,8 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
     
     //MARK: Data Variables
     public var mediaCellsData: [LMFeedMediaProtocol] = []
+    public weak var delegate: LMFeedPostMediaCellProtocol?
+    private var mediaCollectionViewHeightConstraint: NSLayoutConstraint?
     
     
     // MARK: setupAppearance
@@ -48,11 +50,16 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
         containerView.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
-    
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
         pageControl.addTarget(self, action: #selector(didChangePageControl), for: .primaryActionTriggered)
+    }
+    
+    open override func setupLayouts() {
+        super.setupLayouts()
+        mediaCollectionView.setWidthConstraint(with: contentStack.widthAnchor)
+        mediaCollectionViewHeightConstraint = mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
     }
     
     @objc
@@ -75,8 +82,9 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
     
     
     // MARK: Configure Function
-    open func configure(with data: LMFeedPostContentModel, delegate: LMPostWidgetTableViewCellProtocol?) {
+    open func configure(with data: LMFeedPostContentModel, delegate: LMFeedPostMediaCellProtocol?) {
         actionDelegate = delegate
+        self.delegate = delegate
         postID = data.postID
         userUUID = data.userUUID
         
@@ -86,17 +94,42 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
         topicFeed.isHidden = data.topics.topics.isEmpty
         
         mediaCellsData = data.mediaData
-        setupMediaCells()
+        setupMediaCells(mediaHaveSameAspectRatio: data.mediaHaveSameAspectRatio, aspectRatio: data.aspectRatio)
     }
     
-    open func setupMediaCells() {
+    private func updateMediaCollectionViewHeight(mediaHaveSameAspectRatio: Bool, aspectRatio: Double) {
+        mediaCollectionViewHeightConstraint?.isActive = false
+        let heightFactor = 1/aspectRatio
+        
+        // Create and add the new height constraint
+        mediaCollectionViewHeightConstraint = mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor, multiplier: min(1,heightFactor))
+        mediaCollectionViewHeightConstraint?.isActive = true
+        
+        mediaCollectionView.layoutIfNeeded()
+    }
+    
+    
+    open func setupMediaCells(mediaHaveSameAspectRatio: Bool, aspectRatio: Double) {
         mediaCollectionView.isHidden = mediaCellsData.isEmpty
-        mediaCollectionView.reloadData()
-        
         pageControl.isHidden = mediaCellsData.count < 2
-        pageControl.numberOfPages = mediaCellsData.count
         
-        tableViewScrolled()
+        guard !mediaCellsData.isEmpty else {
+            return
+        }
+        
+        updateMediaCollectionViewHeight(mediaHaveSameAspectRatio: mediaHaveSameAspectRatio, aspectRatio: aspectRatio)
+        DispatchQueue.main.async { [weak self] in
+            guard let self else {
+                return
+            }
+            
+            self.mediaCollectionView.reloadData()
+            
+            self.pageControl.isHidden = self.mediaCellsData.count < 2
+            self.pageControl.numberOfPages = self.mediaCellsData.count
+            
+            self.tableViewScrolled()
+        }
     }
 }
 
@@ -110,25 +143,34 @@ extension LMFeedBaseMediaCell: UICollectionViewDataSource,
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         if let data = mediaCellsData[indexPath.row] as? LMFeedImageCollectionCell.ContentModel,
            let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.imagePreview, for: indexPath) {
-            cell.configure(with: data)
+            cell.configure(with: data, didTapImage: {
+                guard let postID = self.postID else{
+                    return
+                }
+                self.delegate?.didTapMedia(postID: postID, index: indexPath.row)
+            })
             return cell
         } else if let data = mediaCellsData[indexPath.row] as? LMFeedVideoCollectionCell.ContentModel,
                   let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreview, for: indexPath) {
-            cell.configure(with: data)
+            cell.configure(with: data, index: indexPath.row, didTapVideo: {
+                guard let postID = self.postID else{
+                    return
+                }
+                self.delegate?.didTapMedia(postID: postID, index: indexPath.row)
+            })
             return cell
         }
         
         return UICollectionViewCell()
     }
     
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO: Add NAVIGATION TO MEDIA PREVIEW SCREEN
-    }
+    
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        .init(width: collectionView.frame.width, height: collectionView.frame.height)
+        .init(width: collectionView.bounds.width, height: collectionView.bounds.height)
     }
     
     open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -147,6 +189,11 @@ extension LMFeedBaseMediaCell: UICollectionViewDataSource,
     
     open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
+    }
+    
+    open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let postID else { return }
+        delegate?.didTapMedia(postID: postID, index: indexPath.row)
     }
     
     public func scrollingFinished() {

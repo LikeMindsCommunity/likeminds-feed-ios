@@ -10,40 +10,35 @@ import UIKit
 
 public struct LMFeedMediaPreviewContentModel {
     let mediaURL: String
-    let thumbnailURL: String?
     let isVideo: Bool
+    let postID: String
+    let index: Int
+    let width: Int?
+    let height: Int?
 }
 
 open class LMFeedMediaVideoPreview: LMCollectionViewCell {
     // MARK: UI Elements
-    open private(set) lazy var videoPreview: LMImageView = {
-        let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
-        image.contentMode = .scaleAspectFit
-        image.backgroundColor = LMFeedAppearance.shared.colors.black
-        return image
+    open private(set) lazy var videoCell: LMFeedVideoCollectionCell = {
+        let videoCell = LMFeedVideoCollectionCell()
+        videoCell.translatesAutoresizingMaskIntoConstraints = false
+        return videoCell
     }()
     
-    open private(set) lazy var playButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
-        button.setTitle(nil, for: .normal)
-        button.setImage(LMFeedConstants.shared.images.playFilled, for: .normal)
-        button.tintColor = LMFeedAppearance.shared.colors.white
-        button.contentVerticalAlignment = .fill
-        button.contentHorizontalAlignment = .fill
-        return button
-    }()
-    
-    
-    // MARK: callback
-    public var onTapCallback: (() -> Void)?
+    var videoContentModel: LMFeedVideoCollectionCell.ContentModel!
+    var index: Int!
     
     
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
-        contentView.addSubviewWithDefaultConstraints(containerView)
-        containerView.addSubviewWithDefaultConstraints(videoPreview)
-        containerView.addSubview(playButton)
+        contentView.addSubview(containerView)
+        contentView.pinSubView(subView: containerView)
+        
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+    
+        containerView.addSubview(videoCell)
+        containerView.pinSubView(subView: videoCell)
     }
     
     
@@ -51,29 +46,34 @@ open class LMFeedMediaVideoPreview: LMCollectionViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        playButton.setWidthConstraint(with: 36)
-        playButton.setHeightConstraint(with: playButton.widthAnchor)
-        playButton.addConstraint(centerX: (containerView.centerXAnchor, 0),
-                                 centerY: (containerView.centerYAnchor, 0))
+        NSLayoutConstraint.activate([
+            // ContainerView should fill the entire contentView
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            
+            // VideoCell should fill the entire containerView
+            videoCell.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            videoCell.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            videoCell.topAnchor.constraint(equalTo: containerView.topAnchor),
+            videoCell.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
     }
     
     
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
-        playButton.addTarget(self, action: #selector(onTapPlayButton), for: .touchUpInside)
-    }
-    
-    @objc
-    open func onTapPlayButton() {
-        onTapCallback?()
     }
     
     
     // MARK: configure
-    open func configure(with data: LMFeedMediaPreviewContentModel, onTapCallback: (() -> Void)?) {
-        self.onTapCallback = onTapCallback
-        videoPreview.kf.setImage(with: URL(string: data.thumbnailURL ?? ""))
+    open func configure(with data: LMFeedMediaPreviewContentModel, index: Int?) {
+        videoContentModel = LMFeedVideoCollectionCell.ContentModel(videoURL: data.mediaURL, postID: data.postID, width: data.width, height: data.height)
+        self.index = index ?? 1
+        videoCell.configure(with: videoContentModel, index: index ?? 0, showControls: true)
     }
+
 }
 
