@@ -809,18 +809,31 @@ public extension LMFeedCreatePostScreen {
             let asset = assetInfo.asset
             let aspectRatio = Double(asset.pixelWidth) / Double(asset.pixelHeight)
             
-            if aspectRatio != firstAspectRatio { // Allow for minor floating-point differences
+            // Allow for minor floating-point differences
+            if aspectRatio == firstAspectRatio {
                 allSameAspectRatio = false
                 break
             }
         }
         
         // Set the properties accordingly
+        if allSameAspectRatio {
+            // Handle aspect ratios within the range 1.91:1 to 4:5
+            let minAspectRatio: Double = 4/5 // Corresponding to 4:5
+            let maxAspectRatio: Double = 1.91 // Corresponding to 1.91:1
+            
+            // Clamp the aspect ratio within the valid range
+            self.mediaAspectRatio = min(max(firstAspectRatio, minAspectRatio), maxAspectRatio)
+        } else {
+            // If the aspect ratios are not the same, set the aspect ratio to 1.0
+            self.mediaAspectRatio = 1.0
+        }
+        
         self.mediaHaveSameAspectRatio = allSameAspectRatio
-        self.mediaAspectRatio = allSameAspectRatio ? max(1.0, firstAspectRatio) : 1.0
         
         adjustMediaCollectionViewConstraintsBasedOnAspectRatio()
     }
+
     
     func adjustMediaCollectionViewConstraintsBasedOnAspectRatio(){
         // Remove old height constraint if it exists

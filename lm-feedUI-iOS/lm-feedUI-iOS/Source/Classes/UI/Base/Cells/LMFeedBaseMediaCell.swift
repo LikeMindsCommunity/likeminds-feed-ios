@@ -99,14 +99,28 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
     
     private func updateMediaCollectionViewHeight(mediaHaveSameAspectRatio: Bool, aspectRatio: Double) {
         mediaCollectionViewHeightConstraint?.isActive = false
-        let heightFactor = 1/aspectRatio
+        
+        let heightFactor: Double
+        
+        if mediaHaveSameAspectRatio {
+            // Handle aspect ratios from 1.91:1 to 4:5
+            let minAspectRatio: Double = 4/5 // Corresponding to 1.91:1
+            let maxAspectRatio: Double = 1.91 // Corresponding to 4:5
+            
+            // Clamp the aspect ratio within the valid range
+            heightFactor = 1/min(max(aspectRatio, minAspectRatio), maxAspectRatio)
+        } else {
+            // Set the aspect ratio to 1:1 when mediaHaveSameAspectRatio is false
+            heightFactor = 1.0
+        }
         
         // Create and add the new height constraint
-        mediaCollectionViewHeightConstraint = mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor, multiplier: min(1,heightFactor))
+        mediaCollectionViewHeightConstraint = mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor, multiplier: heightFactor)
         mediaCollectionViewHeightConstraint?.isActive = true
         
         mediaCollectionView.layoutIfNeeded()
     }
+
     
     
     open func setupMediaCells(mediaHaveSameAspectRatio: Bool, aspectRatio: Double) {
