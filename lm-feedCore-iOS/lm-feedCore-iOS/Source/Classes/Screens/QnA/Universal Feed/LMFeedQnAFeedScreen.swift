@@ -1,25 +1,23 @@
 //
-//  LMUniversalFeedScreen.swift
-//  LMFramework
+//  LMFeedQnAFeedScreen.swift
+//  LikeMindsFeedCore
 //
-//  Created by Devansh Mohata on 28/11/23.
+//  Created by Devansh Mohata on 06/08/24.
 //
 
 import LikeMindsFeedUI
 import UIKit
 
-open class LMUniversalFeedScreen: LMFeedBaseUniversalFeed {
-    // MARK: UI Elements
-    open private(set) lazy var postList: LMFeedPostListScreen? = {
+open class LMFeedQnAFeedScreen: LMFeedBaseUniversalFeed {
+    open private(set) lazy var postList: LMFeedQnAPostListScreen? = {
         do {
-            let vc = try LMFeedPostListViewModel.createModule(with: self)
+            let vc = try LMFeedQnAPostListViewModel.createModule(with: self)
             return vc
         } catch let error {
             print(error.localizedDescription)
             return nil
         }
     }()
-    
     
     // MARK: setupViews
     open override func setupViews() {
@@ -84,10 +82,30 @@ open class LMUniversalFeedScreen: LMFeedBaseUniversalFeed {
     
     open override func didTapSearchButton() {
         do {
-            let viewcontroller = try LMFeedSearchPostViewModel.createModule()
+            let viewcontroller = try LMFeedQnASearchPostViewModel.createModule()
             navigationController?.pushViewController(viewcontroller, animated: true)
         } catch {
             print(error.localizedDescription)
         }
+    }
+    
+    
+    open override func setupNavigationBar() {
+        super.setupNavigationBar()
+        
+        let searchButton = UIBarButtonItem(image: LMFeedConstants.shared.images.searchIcon,
+                                           style: .plain,
+                                           target: self,
+                                           action: #selector(didTapSearchButton))
+        searchButton.tintColor = .black
+        
+        let notificationBell =  UIBarButtonItem(
+            image: LMFeedConstants.shared.images.notificationBell,
+            style: .plain,
+            target: self,
+            action: #selector(didTapNotificationButton))
+        notificationBell.tintColor = .black
+        
+        navigationItem.rightBarButtonItems = [searchButton, notificationBell]
     }
 }
