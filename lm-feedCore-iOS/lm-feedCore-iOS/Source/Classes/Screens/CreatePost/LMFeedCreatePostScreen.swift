@@ -101,6 +101,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     open private(set) lazy var mediaPageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.isUserInteractionEnabled = false
         pageControl.hidesForSinglePage = true
         pageControl.tintColor = LMFeedAppearance.shared.colors.appTintColor
         pageControl.currentPageIndicatorTintColor = LMFeedAppearance.shared.colors.appTintColor
@@ -214,6 +215,9 @@ open class LMFeedCreatePostScreen: LMViewController {
     public var documentAttachmentData: [LMFeedDocumentPreview.ContentModel] = []
     public var documenTableHeight: NSLayoutConstraint?
     public var documentAttachmentHeight: CGFloat = 90
+    public var mediaHaveSameAspectRatio: Bool = false
+    public var mediaAspectRatio: Double = 1.0
+    private var mediaCollectionViewHeightConstraint: NSLayoutConstraint?
     
     public var taggingViewHeight: NSLayoutConstraint?
     public var questionViewHeightConstraint: NSLayoutConstraint?
@@ -302,7 +306,9 @@ open class LMFeedCreatePostScreen: LMViewController {
         documenTableHeight = documentTableView.setHeightConstraint(with: documentAttachmentHeight)
         scrollView.setWidthConstraint(with: containerStackView.widthAnchor)
         scrollStackView.setWidthConstraint(with: containerStackView.widthAnchor)
-        mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
+        mediaCollectionView.setWidthConstraint(with: containerStackView.widthAnchor)
+        mediaCollectionViewHeightConstraint = mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
+        mediaCollectionView.addConstraint(leading: (containerStackView.leadingAnchor,0), trailing: (containerStackView.trailingAnchor, 0))
         
         headingTextContainer.pinSubView(subView: headingTextView, padding: .init(top: 0, left: 0, bottom: -8, right: 0))
         
@@ -490,7 +496,7 @@ extension LMFeedCreatePostScreen: UICollectionViewDataSource, UICollectionViewDe
             return cell
         } else if let data = mediaAttachmentData[indexPath.row] as? LMFeedVideoCollectionCell.ContentModel,
                   let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreview, for: indexPath) {
-            cell.configure(with: data) { [weak self] videoID in
+            cell.configure(with: data, index: indexPath.row) { [weak self] videoID in
                 guard let self else { return }
                 viewModel?.removeAsset(url: videoID)
             }
@@ -759,7 +765,7 @@ public extension LMFeedCreatePostScreen {
                         }
                         return false
                     }
-                
+                    
                 case .video:
                     if(fileSize <= videoSizeLimit){
                         return true
@@ -775,7 +781,12 @@ public extension LMFeedCreatePostScreen {
                 }
             }.compactMap{ $0 }
             
-            self?.viewModel?.handleAssets(assets: filteredAssets.map { ($0.asset, $0.url, $0.data) })
+            var mappedMedia: [(asset: PHAsset, url: URL, data: Data)]
+            mappedMedia = filteredAssets.map { ($0.asset, $0.url, $0.data) }
+            
+            self?.handleMediaAspectRatio(assets: mappedMedia)
+            self?.viewModel?.handleAssets(assets: mappedMedia)
+            
         }
     }
     

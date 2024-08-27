@@ -34,6 +34,8 @@ public extension LMFeedAppearance {
         // UIKit Colors
         public var white: UIColor = .white
         public var black: UIColor = .black
+        public var black1: UIColor = UIColor(r: 0, g: 0, b: 0, a: 0.1)
+        public var black4: UIColor = UIColor(r: 0, g: 0, b: 0, a: 0.4)
         public var clear: UIColor = .clear
         public var red: UIColor = .systemRed
         public var userProfileColor: UIColor = .blue

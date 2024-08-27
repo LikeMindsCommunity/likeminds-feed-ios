@@ -28,12 +28,16 @@ public final class LMFeedCreatePostViewModel {
         let data: Data
         let mediaType: PostCreationAttachmentType
         let asset: PHAsset?
+        let width: Int?
+        let height: Int?
         
-        public init(url: URL, data: Data, mediaType: PostCreationAttachmentType, asset: PHAsset? = nil) {
+        public init(url: URL, data: Data, mediaType: PostCreationAttachmentType, asset: PHAsset? = nil, width: Int? = nil, height: Int? = nil) {
             self.url = url
             self.data = data
             self.mediaType = mediaType
             self.asset = asset
+            self.height = height
+            self.width = width
         }
     }
     
@@ -85,7 +89,7 @@ public final class LMFeedCreatePostViewModel {
                 return
             }
             
-            attachments.append(.init(url: medium.url, data: medium.data, fileName: medium.url.lastPathComponent, awsFilePath: filePath, contentType: medium.mediaType))
+            attachments.append(.init(url: medium.url, data: medium.data, fileName: medium.url.lastPathComponent, awsFilePath: filePath, contentType: medium.mediaType, width: medium.width, height: medium.height))
         }
         
         LMFeedCreatePostOperation.shared.createPost(with: text, heading: question, topics: selectedTopics.map({ $0.topicID }), files: attachments, linkPreview: linkPreview, poll: pollDetails)
@@ -101,9 +105,9 @@ public extension LMFeedCreatePostViewModel {
         
         assets.forEach { asset in
             if asset.0.mediaType == .image {
-                media.append(.init(url: asset.1, data: asset.2, mediaType: .image, asset: asset.0))
+                media.append(.init(url: asset.1, data: asset.2, mediaType: .image, asset: asset.0, width: asset.0.pixelWidth, height: asset.0.pixelHeight))
             } else if asset.0.mediaType == .video {
-                media.append(.init(url: asset.1, data: asset.2, mediaType: .video, asset: asset.0))
+                media.append(.init(url: asset.1, data: asset.2, mediaType: .video, asset: asset.0, width: asset.0.pixelWidth, height: asset.0.pixelHeight))
             }
         }
         
@@ -163,9 +167,10 @@ public extension LMFeedCreatePostViewModel {
         media.forEach { medium in
             switch medium.mediaType {
             case .image:
-                mediaData.append(LMFeedImageCollectionCell.ContentModel(image: medium.url.absoluteString, isFilePath: medium.url.isFileURL))
+                mediaData.append(LMFeedImageCollectionCell.ContentModel(image: medium.url.absoluteString, isFilePath: medium.url.isFileURL, width: medium.width, height: medium.height))
             case .video:
-                mediaData.append(LMFeedVideoCollectionCell.ContentModel(videoURL: medium.url.absoluteString, isFilePath: medium.url.isFileURL))
+                let timestamp = Date().millisecondsSince1970
+                mediaData.append(LMFeedVideoCollectionCell.ContentModel(videoURL: medium.url.absoluteString, isFilePath: medium.url.isFileURL, postID: "-\(timestamp)", width: medium.width, height: medium.height))
             case .document:
                 docData.append(
                     .init(

@@ -23,7 +23,8 @@ open class LMFeedMediaImagePreview: LMCollectionViewCell {
     
     open override func setupViews() {
         super.setupViews()
-        contentView.addSubviewWithDefaultConstraints(previewImageView)
+        contentView.addSubview(previewImageView)
+        contentView.pinSubView(subView: previewImageView)
     }
     
     open func configure(with data: LMFeedMediaPreviewContentModel) {

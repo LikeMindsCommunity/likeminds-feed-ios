@@ -9,6 +9,7 @@ import LikeMindsFeedUI
 import UIKit
 
 open class LMFeedSearchPostScreen: LMFeedBaseSearchPostScreen {
+    
     open override func setupTableView(_ tableView: LMTableView) {
         super.setupTableView(tableView)
         

@@ -69,23 +69,7 @@ open class LMFeedMediaPreviewScreen: LMViewController {
         super.viewDidAppear(animated)
         viewModel.scrollToMediaPreview()
     }
-        
-    open func navigateToVideoPlayer(with url: String) {
-        guard let videoURL = URL(string: url) else {
-            showErrorAlert(message: "Unable to play video")
-            return
-        }
-        
-        let player = AVPlayer(url: videoURL)
-        let playerViewController = AVPlayerViewController()
-        playerViewController.player = player
-        playerViewController.allowsPictureInPicturePlayback = false
-        playerViewController.showsPlaybackControls = true
-        
-        present(playerViewController, animated: false) {
-            player.play()
-        }
-    }
+
 }
 
 extension LMFeedMediaPreviewScreen: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {

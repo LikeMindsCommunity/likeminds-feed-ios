@@ -21,8 +21,15 @@ public extension LMPostWidgetTableViewCellProtocol {
 
 
 // MARK: LMFeedMediaProtocol
+// Protocol for binding image and video data
 public protocol LMFeedMediaProtocol { }
 
+
+// MARK: LMFeedPostMediaCellProtocol
+// Protocol for listening to gestures on Media Cell in Post
+public protocol LMFeedPostMediaCellProtocol: LMPostWidgetTableViewCellProtocol {
+    func didTapMedia(postID: String, index: Int)
+}
 
 // MARK: LMFeedLinkProtocol
 public protocol LMFeedLinkProtocol: LMPostWidgetTableViewCellProtocol {

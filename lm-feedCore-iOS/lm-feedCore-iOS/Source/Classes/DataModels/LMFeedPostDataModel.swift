@@ -29,6 +29,8 @@ public struct LMFeedPostDataModel {
     public var isShowFullText: Bool
     public var isShowAllDocuments: Bool
     public let topResponse: LMFeedCommentDataModel?
+    public let aspectRatio: Double
+    public let mediaHaveSameAspectRatio: Bool
     
     public init(
         postId: String,
@@ -46,11 +48,13 @@ public struct LMFeedPostDataModel {
         topics: [LMFeedTopicDataModel],
         imageVideoAttachment: [LMFeedPostDataModel.ImageVideoAttachment] = [],
         documentAttachment: [LMFeedPostDataModel.DocumentAttachment] = [],
-        linkAttachment: LMFeedPostDataModel.LinkAttachment? = .none, 
+        linkAttachment: LMFeedPostDataModel.LinkAttachment? = .none,
         pollAttachment: LMFeedPollDataModel? = .none,
         isShowFullText: Bool = false,
         isShowAllDocuments: Bool = false,
-        topResponse: LMFeedCommentDataModel?
+        topResponse: LMFeedCommentDataModel?,
+        aspectRatio: Double = 1.0,
+        mediaHaveSameAspectRatio: Bool = false
     ) {
         self.postId = postId
         self.postQuestion = postQuestion
@@ -72,6 +76,8 @@ public struct LMFeedPostDataModel {
         self.isShowFullText = isShowFullText
         self.isShowAllDocuments = isShowAllDocuments
         self.topResponse = topResponse
+        self.mediaHaveSameAspectRatio = mediaHaveSameAspectRatio
+        self.aspectRatio = aspectRatio
     }
 }
 
@@ -111,12 +117,75 @@ extension LMFeedPostDataModel {
         
         self.topResponse = Self.fetchTopResponse(for: post, users: users, filteredComments: filteredComments)
         
+        let aspectAttachment = post.attachments ?? []
+        
+        if aspectAttachment.isEmpty {
+            self.mediaHaveSameAspectRatio = false
+            self.aspectRatio = 1.0 // No attachments or empty array, default to aspect ratio 1
+        }else{
+            
+            var commonAspectRatio: Double? = nil
+            var allSameAspectRatio = true
+            
+            for attachment in aspectAttachment {
+                // Get width and height, use 1 as the default value if nil
+                let width = Double(attachment.attachmentMeta?.width ?? 1)
+                let height = Double(attachment.attachmentMeta?.height ?? 1)
+                
+                // Calculate the aspect ratio
+                let aspectRatio = width / height
+                
+                if let commonRatio = commonAspectRatio {
+                    if aspectRatio != commonRatio {
+                        allSameAspectRatio = false
+                        commonAspectRatio = nil
+                        break
+                    }
+                } else {
+                    commonAspectRatio = aspectRatio
+                }
+            }
+            
+            self.mediaHaveSameAspectRatio = allSameAspectRatio
+            self.aspectRatio = commonAspectRatio ?? 1
+        }
+
         let attachments = handleAttachments(for: postId, attachments: post.attachments ?? [], widgets: widgets, users: users)
         self.imageVideoAttachment = attachments.images
         self.documentAttachment = attachments.docs
         self.linkAttachment = attachments.link
         self.pollAttachment = attachments.poll
+        
     }
+    
+    public func checkAspectRatios(attachments: [Attachment]) -> (allSameAspectRatio: Bool, aspectRatio: Double) {
+            guard !attachments.isEmpty else {
+                return (false, 1.0) // No attachments or empty array, default to aspect ratio 1
+            }
+            
+            var commonAspectRatio: Double? = nil
+            var allSameAspectRatio = true
+            
+            for attachment in attachments {
+                // Get width and height, use 1 as the default value if nil
+                let width = Double(attachment.attachmentMeta?.width ?? 1)
+                let height = Double(attachment.attachmentMeta?.height ?? 1)
+                
+                // Calculate the aspect ratio
+                let aspectRatio = width / height
+                
+                if let commonRatio = commonAspectRatio {
+                    if aspectRatio != commonRatio {
+                        allSameAspectRatio = false
+                        break
+                    }
+                } else {
+                    commonAspectRatio = aspectRatio
+                }
+            }
+            
+            return (allSameAspectRatio, commonAspectRatio ?? 1.0)
+        }
     
     func handleAttachments(for postID: String, attachments: [Attachment], widgets: [Widget], users: [String: User]) -> (images: [ImageVideoAttachment], docs: [DocumentAttachment], link: LinkAttachment?, poll: LMFeedPollDataModel?) {
         var tempImageVideoAttachment: [ImageVideoAttachment] = []
@@ -133,8 +202,8 @@ extension LMFeedPostDataModel {
                             name: attachment.attachmentMeta?.name ?? "",
                             url: url,
                             isVideo: type == .video,
-                            size: attachment.attachmentMeta?.size ?? 0, 
-                            duration: attachment.attachmentMeta?.duration
+                            size: attachment.attachmentMeta?.size ?? 0,
+                            duration: attachment.attachmentMeta?.duration,height: attachment.attachmentMeta?.height, width: attachment.attachmentMeta?.width
                         ))
                     }
                 case .doc:
@@ -175,13 +244,17 @@ public extension LMFeedPostDataModel {
         public let isVideo: Bool
         public let size: Int
         public let duration: Int?
+        public let width: Int?
+        public let height: Int?
         
-        public init(name: String, url: String, isVideo: Bool, size: Int, duration: Int?) {
+        public init(name: String, url: String, isVideo: Bool, size: Int, duration: Int?, height: Int?, width: Int?) {
             self.name = name
             self.url = url
             self.isVideo = isVideo
             self.size = size
             self.duration = duration
+            self.height = height
+            self.width = width
         }
     }
 }
