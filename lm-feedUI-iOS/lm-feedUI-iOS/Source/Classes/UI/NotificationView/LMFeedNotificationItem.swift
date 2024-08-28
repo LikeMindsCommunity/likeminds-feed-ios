@@ -30,8 +30,8 @@ open class LMFeedNotificationItem: LMTableViewCell {
     }
     
     // MARK: UI Elements    
-    open private(set) lazy var userImage: LMImageView = {
-        let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var userImage: LMFeedProfileImageView = {
+        let image = LMFeedProfileImageView().translatesAutoresizingMaskIntoConstraints()
         image.clipsToBounds = true
         return image
     }()
@@ -151,7 +151,7 @@ open class LMFeedNotificationItem: LMTableViewCell {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        userImage.layer.cornerRadius = userImageHeight / 2
+        userImage.roundCorners(with: userImageHeight / 2)
         mediaContainerView.layer.cornerRadius = mediaImageHeight / 2
     }
     
@@ -161,7 +161,7 @@ open class LMFeedNotificationItem: LMTableViewCell {
         
         titleLabel.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.notification)
         timeLabel.text = data.time
-        userImage.kf.setImage(with: URL(string: data.user.userProfileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.user.userName))
+        userImage.configure(with: data.user.userProfileImage, userName: data.user.userName)
         mediaImage.image = LMFeedConstants.Images.loadSystemImage(with: data.mediaImage ?? "")
         mediaContainerView.isHidden = data.mediaImage?.isEmpty != false
         

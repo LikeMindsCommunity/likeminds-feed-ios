@@ -136,9 +136,9 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
             guard let self else {
                 return
             }
-            
-            self.mediaCollectionView.reloadData()
-            
+            UIView.performWithoutAnimation {
+                self.mediaCollectionView.reloadData()
+            }
             self.pageControl.isHidden = self.mediaCellsData.count < 2
             self.pageControl.numberOfPages = self.mediaCellsData.count
             

@@ -24,8 +24,8 @@ open class LMFeedTaggingUserItem: LMTableViewCell {
     
     
     // MARK: UI Elements
-    open private(set) lazy var userImage: LMImageView = {
-        let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var userImage: LMFeedProfileImageView = {
+        let image = LMFeedProfileImageView().translatesAutoresizingMaskIntoConstraints()
         image.clipsToBounds = true
         return image
     }()
@@ -85,7 +85,7 @@ open class LMFeedTaggingUserItem: LMTableViewCell {
         super.setupAppearance()
         
         sepratorView.backgroundColor = LMFeedAppearance.shared.colors.gray4
-        userImage.layer.cornerRadius = userImage.bounds.height / 2
+        userImage.roundCorners(with: userImage.bounds.height / 2)
         userNameLabel.font = LMFeedAppearance.shared.fonts.textFont1
         userNameLabel.textColor = LMFeedAppearance.shared.colors.textColor
         
@@ -98,6 +98,6 @@ open class LMFeedTaggingUserItem: LMTableViewCell {
     // MARK: configure
     open func configure(with data: ContentModel) {
         userNameLabel.text = data.userName
-        userImage.kf.setImage(with: URL(string: data.userImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.userName))
+        userImage.configure(with: data.userImage, userName: data.userName)
     }
 }

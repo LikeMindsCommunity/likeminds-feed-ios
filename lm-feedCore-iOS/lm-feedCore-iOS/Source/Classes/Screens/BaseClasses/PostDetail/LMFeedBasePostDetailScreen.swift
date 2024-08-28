@@ -550,7 +550,9 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
         self.commentsData.append(contentsOf: comments)
         
         if isInitialPage {
-            postDetailListView.reloadData()
+            UIView.performWithoutAnimation {
+                postDetailListView.reloadData()
+            }
         } else {
             insertNewComments(commentCount: comments.count)
             (postDetailListView.footerView(forSection: 0) as? LMFeedBasePostFooterView)?.configure(with: post.footerData, postID: post.postID, delegate: self)

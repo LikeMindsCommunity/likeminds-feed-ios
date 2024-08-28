@@ -568,7 +568,9 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
         linkPreview.isHidden = true
         documentTableView.isHidden = documents.isEmpty
         documentAttachmentData.append(contentsOf: documents)
-        documentTableView.reloadData()
+        UIView.performWithoutAnimation {
+            documentTableView.reloadData()
+        }
         if !documents.isEmpty {
             documenTableHeight?.constant = CGFloat(documents.count) * documentAttachmentHeight
         }
@@ -584,7 +586,9 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
         mediaPageControl.isHidden = media.count < 2
         mediaPageControl.numberOfPages = media.count
         mediaAttachmentData.append(contentsOf: media)
-        mediaCollectionView.reloadData()
+        UIView.performWithoutAnimation {
+            mediaCollectionView.reloadData()
+        }
         DispatchQueue.main.async { [weak self] in
             self?.scrollingFinished()
         }

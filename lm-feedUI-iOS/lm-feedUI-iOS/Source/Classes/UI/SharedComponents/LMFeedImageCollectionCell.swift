@@ -108,7 +108,12 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
         self.crossButtonAction = crossButtonAction
         crossButton.isHidden = crossButtonAction == nil
         self.didTapImage = didTapImage
-        imageView.kf.setImage(with: URL(string: data.image), placeholder: LMFeedConstants.shared.images.placeholderImage)
+        
+        imageView.kf.setImage(with: URL(string: data.image), placeholder: LMFeedConstants.shared.images.placeholderImage,
+                              options: [
+                                .cacheOriginalImage,
+                                .transition(.fade(0.2)),
+                                .scaleFactor(UIScreen.main.scale),
+                              ])
     }
-    
 }
