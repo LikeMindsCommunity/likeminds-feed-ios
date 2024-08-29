@@ -12,7 +12,7 @@ public struct LMFeedConvertToFeedPost {
     public static func convertToViewModel(for post: LMFeedPostDataModel) -> LMFeedPostContentModel {
         
         let documents = convertToDocument(from: post.documentAttachment)
-        let media = convertToMediaProtocol(from: post.imageVideoAttachment)
+        let media = convertToMediaProtocol(from: post.imageVideoAttachment, postID: post.postId)
         var linkPreview: LMFeedLinkPreview.ContentModel?
         let pollPreview = convertToPollModel(from: post)
         
@@ -57,7 +57,10 @@ public struct LMFeedConvertToFeedPost {
             linkPreview: linkPreview,
             mediaData: media,
             pollWidget: pollPreview, 
-            topResponse: topResponse
+            topResponse: topResponse,
+            mediaHaveSameAspectRatio: post.mediaHaveSameAspectRatio,
+            aspectRatio: post.aspectRatio,
+            createdAt: post.createTime
         )
         
         return transformedData
@@ -114,12 +117,12 @@ public struct LMFeedConvertToFeedPost {
         }
     }
     
-    public static func convertToMediaProtocol(from data: [LMFeedPostDataModel.ImageVideoAttachment]) -> [LMFeedMediaProtocol] {
+    public static func convertToMediaProtocol(from data: [LMFeedPostDataModel.ImageVideoAttachment], postID: String) -> [LMFeedMediaProtocol] {
         data.map { datum in
             if datum.isVideo {
-                return LMFeedVideoCollectionCell.ContentModel(videoURL: datum.url)
+                return LMFeedVideoCollectionCell.ContentModel(videoURL: datum.url, postID: postID, width: datum.width, height: datum.height)
             } else {
-                return LMFeedImageCollectionCell.ContentModel(image: datum.url)
+                return LMFeedImageCollectionCell.ContentModel(image: datum.url, width: datum.width, height: datum.height)
             }
         }
     }

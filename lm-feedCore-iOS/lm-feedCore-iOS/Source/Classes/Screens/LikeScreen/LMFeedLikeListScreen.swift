@@ -94,7 +94,9 @@ extension LMFeedLikeListScreen: UITableViewDataSource, UITableViewDelegate {
 extension LMFeedLikeListScreen: LMFeedLikeViewModelProtocol {
     public func reloadTableView(with data: [LMFeedMemberItem.ContentModel], totalCount: Int) {
         userData = data
-        memberListView.reloadData()
+        UIView.performWithoutAnimation {
+            memberListView.reloadData()
+        }
         totalLikes = totalCount
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.likeVariable.pluralize(),
                                       subtitle: "\(totalLikes) \(LMStringConstants.shared.likeVariable.pluralize(count: totalLikes))",

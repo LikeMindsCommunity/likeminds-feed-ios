@@ -70,7 +70,7 @@ open class LMFeedPostQnAMediaCell: LMFeedBaseMediaCell {
     
     
     // MARK: configure
-    open override func configure(with data: LMFeedPostContentModel, delegate: (any LMPostWidgetTableViewCellProtocol)?) {
+    open override func configure(with data: LMFeedPostContentModel, delegate: (any LMFeedPostMediaCellProtocol)?) {
         super.configure(with: data, delegate: delegate)
         
         questionTitle.text = data.postQuestion

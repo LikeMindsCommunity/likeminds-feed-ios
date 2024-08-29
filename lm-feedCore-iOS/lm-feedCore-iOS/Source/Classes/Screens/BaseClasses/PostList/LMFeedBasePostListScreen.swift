@@ -406,7 +406,21 @@ extension LMFeedBasePostListScreen: LMFeedPostFooterViewProtocol {
 
 // MARK: - LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol
 @objc
-extension LMFeedBasePostListScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol {
+extension LMFeedBasePostListScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol, LMFeedPostMediaCellProtocol {
+    public func didTapMedia(postID: String, index: Int) {
+        
+        guard let postData = data.first(where: { $0.postID == postID }) else {
+            return
+        }
+        
+        do {
+            let viewcontroller = try LMFeedMediaPreviewViewModel.createModule(with: postData, postID: postData.postID, startIndex: index)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
     public func didTapPost(postID: String) {
         fatalError("Needs to be implemented by subclass")
     }

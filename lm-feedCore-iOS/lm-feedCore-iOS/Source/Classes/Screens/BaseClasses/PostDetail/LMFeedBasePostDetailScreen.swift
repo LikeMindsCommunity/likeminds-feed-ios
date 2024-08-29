@@ -550,7 +550,9 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
         self.commentsData.append(contentsOf: comments)
         
         if isInitialPage {
-            postDetailListView.reloadData()
+            UIView.performWithoutAnimation {
+                postDetailListView.reloadData()
+            }
         } else {
             insertNewComments(commentCount: comments.count)
             (postDetailListView.footerView(forSection: 0) as? LMFeedBasePostFooterView)?.configure(with: post.footerData, postID: post.postID, delegate: self)
@@ -824,9 +826,21 @@ extension LMFeedBasePostDetailScreen: LMFeedPostHeaderViewProtocol, LMFeedPostFo
 }
 
 
-// MARK: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol
+// MARK: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol, LMFeedPostMediaCellProtocol
 @objc
-extension LMFeedBasePostDetailScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol {
+extension LMFeedBasePostDetailScreen: LMFeedLinkProtocol, LMFeedPostDocumentCellProtocol, LMFeedPostMediaCellProtocol {
+    public func didTapMedia(postID: String, index: Int) {
+        guard let postData else {
+            return
+        }
+        do {
+            let viewcontroller = try LMFeedMediaPreviewViewModel.createModule(with: postData, postID: postData.postID, startIndex: index)
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
     open func didTapShowMoreDocuments(for indexPath: IndexPath) {
         if var data = postData {
             data.isShowMoreDocuments.toggle()

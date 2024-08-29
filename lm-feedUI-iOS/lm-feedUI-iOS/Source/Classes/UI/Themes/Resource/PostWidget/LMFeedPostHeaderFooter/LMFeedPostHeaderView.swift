@@ -43,13 +43,8 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         return view
     }()
 
-    open private(set) lazy var imageView: LMImageView = {
-        let imageView = LMImageView(frame: .zero)
-        imageView.clipsToBounds = true
-        imageView.isUserInteractionEnabled = true
-        imageView.layer.masksToBounds = true
-        imageView.image = UIImage(systemName: "person")
-        imageView.contentMode = .scaleAspectFill
+    open private(set) lazy var imageView: LMFeedProfileImageView = {
+        let imageView = LMFeedProfileImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -234,7 +229,7 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         
         backgroundColor = .clear
         contentContainerView.backgroundColor = .white
-        imageView.layer.cornerRadius = 48 / 2
+        imageView.roundCorners(with: 48/2)
     }
     
     open func configure(with data: ContentModel, postID: String, userUUID: String, delegate: LMFeedPostHeaderViewProtocol?) {
@@ -242,7 +237,7 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         self.userUUID = userUUID
         self.delegate = delegate
         
-        imageView.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.authorName))
+        imageView.configure(with: data.profileImage, userName: data.authorName)
         
         authorNameLabel.text = data.authorName
         authorTagLabel.text = data.authorTag

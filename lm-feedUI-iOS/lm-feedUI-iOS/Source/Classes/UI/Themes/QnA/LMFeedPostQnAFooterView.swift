@@ -52,9 +52,9 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         return view
     }()
     
-    open private(set) lazy var profileView: LMImageView = {
-        let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
-        image.backgroundColor = .black
+    open private(set) lazy var profileView: LMFeedProfileImageView = {
+        let image = LMFeedProfileImageView().translatesAutoresizingMaskIntoConstraints()
+        image.imageView.backgroundColor = .black
         return image
     }()
     
@@ -166,9 +166,7 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         super.setupAppearance()
         containerView.backgroundColor = LMFeedAppearance.shared.colors.white
         
-        
         likeContainerView.clipsToBounds = true
-        
         likeContainerView.backgroundColor = LMFeedAppearance.shared.colors.backgroundColor
         likeContainerView.layer.cornerRadius = 18
         likeContainerView.layer.borderColor = LMFeedAppearance.shared.colors.gray155.cgColor
@@ -177,11 +175,10 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         actionStackView.spacing = 16
         
         likeButton.tintColor = LMFeedAppearance.shared.colors.appTintColor
-        
         likeTextButton.setTitleColor(LMFeedAppearance.shared.colors.gray102, for: .normal)
         
         profileView.clipsToBounds = true
-        profileView.layer.cornerRadius = 15
+        profileView.roundCorners(with: 15)
     }
     
     
@@ -202,6 +199,6 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         
         likeCountButton.setTitle(likeText, for: .normal)
         
-        profileView.kf.setImage(with: URL(string: data.user?.userProfileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.user?.userName))
+        profileView.configure(with: data.user?.userProfileImage, userName: data.user?.userName)
     }
 }

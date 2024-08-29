@@ -142,7 +142,7 @@ public final class LMFeedEditPostViewModel {
         
         
         if !media.isEmpty {
-            let mediaCells = LMFeedConvertToFeedPost.convertToMediaProtocol(from: media)
+            let mediaCells = LMFeedConvertToFeedPost.convertToMediaProtocol(from: media, postID: postDetail.postId)
             delegate?.setupMediaPreview(with: mediaCells)
         } else if !documents.isEmpty {
             let documentCells = LMFeedConvertToFeedPost.convertToDocument(from: documents)

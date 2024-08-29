@@ -177,6 +177,7 @@ open class LMViewController: UIViewController {
         super.didReceiveMemoryWarning()
         ImageCache.default.clearMemoryCache()
     }
+
 }
 
 

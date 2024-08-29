@@ -30,9 +30,8 @@ open class LMFeedCreatePollHeader: LMView {
         return view
     }()
     
-    open private(set) lazy var userProfileImage: LMImageView = {
-        let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
-        image.image = UIImage(systemName: "person.circle.fill")
+    open private(set) lazy var userProfileImage: LMFeedProfileImageView = {
+        let image = LMFeedProfileImageView().translatesAutoresizingMaskIntoConstraints()
         image.clipsToBounds = true
         return image
     }()
@@ -89,7 +88,7 @@ open class LMFeedCreatePollHeader: LMView {
         
         containerView.addConstraint(top: (topAnchor, 0),
                                     leading: (leadingAnchor, 0),
-        trailing: (trailingAnchor, 0))
+                                    trailing: (trailingAnchor, 0))
         containerView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         
         
@@ -119,16 +118,16 @@ open class LMFeedCreatePollHeader: LMView {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        userProfileImage.layer.cornerRadius = userImageSize / 2
+        userProfileImage.roundCorners(with: userImageSize / 2)
     }
     
     
     // MARK: configure
     open func configure(with data: ContentModel) {
-        userProfileImage.kf.setImage(
-            with: URL(string: data.profileImage ?? ""),
-            placeholder: LMImageView.generateLetterImage(name: data.username)
-        )
+        userProfileImage.configure(
+            with: data.profileImage,
+            userName: data.username)
+        
         
         userNameLabel.text = data.username
         

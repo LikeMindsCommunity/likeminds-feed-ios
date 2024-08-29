@@ -25,8 +25,8 @@ open class LMFeedMemberItem: LMTableViewCell {
     }
     
     // MARK: UI Elements
-    open private(set) lazy var userImage: LMImageView = {
-        let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var userImage: LMFeedProfileImageView = {
+        let image = LMFeedProfileImageView().translatesAutoresizingMaskIntoConstraints()
         image.clipsToBounds = true
         return image
     }()
@@ -80,7 +80,7 @@ open class LMFeedMemberItem: LMTableViewCell {
     
     open override func setupAppearance() {
         super.setupAppearance()
-        userImage.layer.cornerRadius = userImage.frame.height / 2
+        userImage.roundCorners(with: userImage.frame.height / 2)
     }
     
     
@@ -88,7 +88,7 @@ open class LMFeedMemberItem: LMTableViewCell {
     open func configure(with data: ContentModel, onTapCallback: (() -> Void)?) {
         self.onTapCallback = onTapCallback
         userTitleLabel.attributedText = setUsername(with: data.username, customTitle: data.customTitle)
-        userImage.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.username))
+        userImage.configure(with: data.profileImage, userName: data.username)
     }
     
     public func setUsername(with username: String, customTitle: String?) -> NSMutableAttributedString {

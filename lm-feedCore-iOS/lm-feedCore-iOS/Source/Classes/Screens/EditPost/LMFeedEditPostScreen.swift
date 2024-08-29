@@ -305,7 +305,7 @@ extension LMFeedEditPostScreen: UICollectionViewDataSource, UICollectionViewDele
             return cell
         } else if let data = mediaCells[safe: indexPath.row] as? LMFeedVideoCollectionCell.ContentModel,
                   let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreview, for: indexPath) {
-            cell.configure(with: data)
+            cell.configure(with: data, index: indexPath.row)
             return cell
         }
         return UICollectionViewCell()
@@ -419,7 +419,9 @@ extension LMFeedEditPostScreen: LMFeedEditPostViewModelProtocol {
         self.mediaCells = mediaCells
         
         mediaCollectionView.isHidden = false
-        mediaCollectionView.reloadData()
+        UIView.performWithoutAnimation {
+            mediaCollectionView.reloadData()
+        }
         scrollingFinished()
         mediaPageControl.isHidden = false
         mediaPageControl.numberOfPages = mediaCells.count

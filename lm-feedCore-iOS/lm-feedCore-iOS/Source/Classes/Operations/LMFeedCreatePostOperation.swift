@@ -40,6 +40,8 @@ final class LMFeedCreatePostOperation {
         let awsFilePath: String
         let contentType: PostCreationAttachmentType
         var awsURL: String?
+        var width: Int?
+        var height: Int?
     }
     
     private init(){}
@@ -156,10 +158,18 @@ final class LMFeedCreatePostOperation {
             size = attr[.size] as? Int
         }
         
-        let attachmentMeta = AttachmentMeta()
+        var attachmentMeta = AttachmentMeta()
             .attachmentUrl(awsURL)
             .size(size ?? 0)
             .name(attachment.fileName)
+        
+        if let width = attachment.width {
+            attachmentMeta = attachmentMeta.width(width)
+        }
+        
+        if let height = attachment.height {
+            attachmentMeta = attachmentMeta.height(height)
+        }
         
         let attachmentRequest = Attachment()
             .attachmentType(.image)
@@ -180,11 +190,19 @@ final class LMFeedCreatePostOperation {
         let duration = asset.duration
         let durationTime = CMTimeGetSeconds(duration)
         
-        let attachmentMeta = AttachmentMeta()
+        var attachmentMeta = AttachmentMeta()
             .attachmentUrl(awsURL)
             .size(size ?? 0)
             .name(attachment.fileName)
             .duration(Int(durationTime))
+        
+        if let width = attachment.width {
+            attachmentMeta = attachmentMeta.width(width)
+        }
+        
+        if let height = attachment.height {
+            attachmentMeta = attachmentMeta.height(height)
+        }
         
         let attachmentRequest = Attachment()
             .attachmentType(.video)

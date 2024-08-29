@@ -9,6 +9,7 @@ import AVKit
 import BSImagePicker
 import LikeMindsFeedUI
 import UIKit
+import Kingfisher
 import Photos
 
 
@@ -100,6 +101,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     open private(set) lazy var mediaPageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.isUserInteractionEnabled = false
         pageControl.hidesForSinglePage = true
         pageControl.tintColor = LMFeedAppearance.shared.colors.appTintColor
         pageControl.currentPageIndicatorTintColor = LMFeedAppearance.shared.colors.appTintColor
@@ -213,6 +215,9 @@ open class LMFeedCreatePostScreen: LMViewController {
     public var documentAttachmentData: [LMFeedDocumentPreview.ContentModel] = []
     public var documenTableHeight: NSLayoutConstraint?
     public var documentAttachmentHeight: CGFloat = 90
+    public var mediaHaveSameAspectRatio: Bool = false
+    public var mediaAspectRatio: Double = 1.0
+    private var mediaCollectionViewHeightConstraint: NSLayoutConstraint?
     
     public var taggingViewHeight: NSLayoutConstraint?
     public var questionViewHeightConstraint: NSLayoutConstraint?
@@ -301,7 +306,9 @@ open class LMFeedCreatePostScreen: LMViewController {
         documenTableHeight = documentTableView.setHeightConstraint(with: documentAttachmentHeight)
         scrollView.setWidthConstraint(with: containerStackView.widthAnchor)
         scrollStackView.setWidthConstraint(with: containerStackView.widthAnchor)
-        mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
+        mediaCollectionView.setWidthConstraint(with: containerStackView.widthAnchor)
+        mediaCollectionViewHeightConstraint = mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
+        mediaCollectionView.addConstraint(leading: (containerStackView.leadingAnchor,0), trailing: (containerStackView.trailingAnchor, 0))
         
         headingTextContainer.pinSubView(subView: headingTextView, padding: .init(top: 0, left: 0, bottom: -8, right: 0))
         
@@ -489,7 +496,7 @@ extension LMFeedCreatePostScreen: UICollectionViewDataSource, UICollectionViewDe
             return cell
         } else if let data = mediaAttachmentData[indexPath.row] as? LMFeedVideoCollectionCell.ContentModel,
                   let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreview, for: indexPath) {
-            cell.configure(with: data) { [weak self] videoID in
+            cell.configure(with: data, index: indexPath.row) { [weak self] videoID in
                 guard let self else { return }
                 viewModel?.removeAsset(url: videoID)
             }
@@ -561,7 +568,9 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
         linkPreview.isHidden = true
         documentTableView.isHidden = documents.isEmpty
         documentAttachmentData.append(contentsOf: documents)
-        documentTableView.reloadData()
+        UIView.performWithoutAnimation {
+            documentTableView.reloadData()
+        }
         if !documents.isEmpty {
             documenTableHeight?.constant = CGFloat(documents.count) * documentAttachmentHeight
         }
@@ -577,7 +586,9 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
         mediaPageControl.isHidden = media.count < 2
         mediaPageControl.numberOfPages = media.count
         mediaAttachmentData.append(contentsOf: media)
-        mediaCollectionView.reloadData()
+        UIView.performWithoutAnimation {
+            mediaCollectionView.reloadData()
+        }
         DispatchQueue.main.async { [weak self] in
             self?.scrollingFinished()
         }
@@ -586,7 +597,7 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
         
         observeCreateButton()
     }
-        
+    
     public func resetMediaView() {
         pollPreview.isHidden = true
         mediaCollectionView.isHidden = true
@@ -700,6 +711,7 @@ public extension LMFeedCreatePostScreen {
         }, deselect: { asset in
         }, cancel: { _ in
         }, finish: { [weak self] assets in
+            
             self?.handleMultiMedia(with: assets)
         })
     }
@@ -735,9 +747,111 @@ public extension LMFeedCreatePostScreen {
         }
         
         dispatchGroup.notify(queue: .main) { [weak self] in
-            // Remove nil values before passing to handleAssets
-            let filteredAssets = currentAssets.compactMap { $0 }
-            self?.viewModel?.handleAssets(assets: filteredAssets.map { ($0.asset, $0.url, $0.data) })
+            let value = LocalPreferences.communityConfiguration?.configs.first?.value
+            let imageSizeLimit: Int64 = Int64(value?.maxImageSize ?? 5 * 1024)  // 5MB in Kilobytes
+            let videoSizeLimit: Int64 = Int64(value?.maxVideoSize ?? 100 * 1024)  // 100MB in Kilobytes
+            
+            var sizeLimitErrorShown : Bool = false
+            
+            let filteredAssets = currentAssets.filter { assetTuple in
+                guard let (asset, _, data) = assetTuple else {
+                    return false
+                }
+                let fileSize = Int64(data.count/1024) // Converts Byte into Kilobytes
+                switch asset.mediaType {
+                case .image:
+                    if(fileSize <= imageSizeLimit){
+                        return true
+                    }else{
+                        if(!sizeLimitErrorShown){
+                            sizeLimitErrorShown = true
+                            self?.showError(with: "Please select image smaller than \(imageSizeLimit/1024)MB", isPopVC: false)
+                        }
+                        return false
+                    }
+                    
+                case .video:
+                    if(fileSize <= videoSizeLimit){
+                        return true
+                    }else{
+                        if(!sizeLimitErrorShown){
+                            sizeLimitErrorShown = true
+                            self?.showError(with: "Please select videos smaller than \(videoSizeLimit/1024)MB", isPopVC: false)
+                        }
+                        return false
+                    }
+                default:
+                    return false
+                }
+            }.compactMap{ $0 }
+            
+            var mappedMedia: [(asset: PHAsset, url: URL, data: Data)]
+            mappedMedia = filteredAssets.map { ($0.asset, $0.url, $0.data) }
+            
+            self?.handleMediaAspectRatio(assets: mappedMedia)
+            self?.viewModel?.handleAssets(assets: mappedMedia)
+            
+        }
+    }
+    
+    func handleMediaAspectRatio(assets: [(asset: PHAsset, url: URL, data: Data)]) {
+        guard !assets.isEmpty else {
+            // If there are no assets, reset the flags
+            self.mediaHaveSameAspectRatio = false
+            self.mediaAspectRatio = 1.0
+            return
+        }
+        
+        // Calculate the aspect ratio of the first asset
+        let firstAsset = assets[0].asset
+        let firstAspectRatio = Double(firstAsset.pixelWidth) / Double(firstAsset.pixelHeight)
+        
+        var allSameAspectRatio = true
+        
+        // Iterate over the remaining assets and compare aspect ratios
+        for assetInfo in assets {
+            let asset = assetInfo.asset
+            let aspectRatio = Double(asset.pixelWidth) / Double(asset.pixelHeight)
+            
+            // Allow for minor floating-point differences
+            if aspectRatio == firstAspectRatio {
+                allSameAspectRatio = false
+                break
+            }
+        }
+        
+        // Set the properties accordingly
+        if allSameAspectRatio {
+            // Handle aspect ratios within the range 1.91:1 to 4:5
+            let minAspectRatio: Double = 4/5 // Corresponding to 4:5
+            let maxAspectRatio: Double = 1.91 // Corresponding to 1.91:1
+            
+            // Clamp the aspect ratio within the valid range
+            self.mediaAspectRatio = min(max(firstAspectRatio, minAspectRatio), maxAspectRatio)
+        } else {
+            // If the aspect ratios are not the same, set the aspect ratio to 1.0
+            self.mediaAspectRatio = 1.0
+        }
+        
+        self.mediaHaveSameAspectRatio = allSameAspectRatio
+        
+        adjustMediaCollectionViewConstraintsBasedOnAspectRatio()
+    }
+
+    
+    func adjustMediaCollectionViewConstraintsBasedOnAspectRatio(){
+        // Remove old height constraint if it exists
+        if let heightConstraint = self.mediaCollectionViewHeightConstraint {
+            self.mediaCollectionView.removeConstraint(heightConstraint)
+        }
+        let heightFactor = 1 / self.mediaAspectRatio
+
+        // Create and add the new height constraint
+        self.mediaCollectionViewHeightConstraint = self.mediaCollectionView.setHeightConstraint(with: self.mediaCollectionView.widthAnchor, multiplier: min(1,heightFactor))
+        self.mediaCollectionViewHeightConstraint?.isActive = true
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.mediaCollectionView.reloadData()
         }
     }
 }

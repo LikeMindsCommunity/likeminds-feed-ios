@@ -11,7 +11,7 @@ public struct Components {
     public static var shared = Self()
     
     // MARK: Universal Feed
-    public var universalFeedScreen: LMUniversalFeedScreen.Type = LMUniversalFeedScreen.self
+    public var universalFeedScreen: LMFeedSocialFeedScreen.Type = LMFeedSocialFeedScreen.self
     public var feedListScreen: LMFeedPostListScreen.Type = LMFeedPostListScreen.self
     
     // MARK: Post Detail
@@ -48,9 +48,12 @@ public struct Components {
     // MARK: Search Screen
     public var searchPostScreen: LMFeedSearchPostScreen.Type = LMFeedSearchPostScreen.self
     
+    // MARK: Media Preview Screen
+    public var mediaPreviewScreen: LMFeedMediaPreviewScreen.Type = LMFeedMediaPreviewScreen.self
+    
     // MARK: QnA Feed
     public var qnaPostListScreen: LMFeedQnAPostListScreen.Type = LMFeedQnAPostListScreen.self
     public var qnaPostDetailScreen: LMFeedQnAPostDetailScreen.Type = LMFeedQnAPostDetailScreen.self
     public var qnaSearchPostScreen: LMFeedQnASearchPostScreen.Type = LMFeedQnASearchPostScreen.self
-    public var qnaUniversalFeed: LMFeedQnAUniversalFeed.Type = LMFeedQnAUniversalFeed.self
+    public var qnaUniversalFeed: LMFeedQnAFeedScreen.Type = LMFeedQnAFeedScreen.self
 }
