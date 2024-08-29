@@ -324,6 +324,7 @@ open class LMFeedBasePostDetailScreen: LMViewController {
         replyView.isHidden = true
         viewModel?.getMemberState()
         viewModel?.getPost(isInitialFetch: true)
+        inputTextView.addDoneButtonOnKeyboard()
         showHideLoaderView(isShow: true)
     }
     
