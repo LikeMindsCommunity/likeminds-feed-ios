@@ -419,7 +419,9 @@ extension LMFeedEditPostScreen: LMFeedEditPostViewModelProtocol {
         self.mediaCells = mediaCells
         
         mediaCollectionView.isHidden = false
-        mediaCollectionView.reloadData()
+        UIView.performWithoutAnimation {
+            mediaCollectionView.reloadData()
+        }
         scrollingFinished()
         mediaPageControl.isHidden = false
         mediaPageControl.numberOfPages = mediaCells.count

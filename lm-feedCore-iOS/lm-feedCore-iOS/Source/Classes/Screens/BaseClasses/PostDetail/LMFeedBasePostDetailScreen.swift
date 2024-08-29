@@ -324,7 +324,6 @@ open class LMFeedBasePostDetailScreen: LMViewController {
         replyView.isHidden = true
         viewModel?.getMemberState()
         viewModel?.getPost(isInitialFetch: true)
-        inputTextView.addDoneButtonOnKeyboard()
         showHideLoaderView(isShow: true)
     }
     
@@ -550,7 +549,9 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
         self.commentsData.append(contentsOf: comments)
         
         if isInitialPage {
-            postDetailListView.reloadData()
+            UIView.performWithoutAnimation {
+                postDetailListView.reloadData()
+            }
         } else {
             insertNewComments(commentCount: comments.count)
             (postDetailListView.footerView(forSection: 0) as? LMFeedBasePostFooterView)?.configure(with: post.footerData, postID: post.postID, delegate: self)

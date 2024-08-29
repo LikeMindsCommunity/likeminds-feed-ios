@@ -99,7 +99,7 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     
     open func didTapHashTag(hashtag: String) { }
     
-    open func didTapRoute(route: String) { 
+    open func didTapRoute(route: String) {
         actionDelegate?.didTapRoute(route: route)
     }
     

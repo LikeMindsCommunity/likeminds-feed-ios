@@ -277,9 +277,9 @@ extension LMFeedBaseUniversalFeed: LMBaseUniversalFeedViewModelProtocol {
     public func loadTopics(with topics: [LMFeedTopicCollectionCellDataModel]) {
         self.selectedTopics = topics
         feedListDelegate?.loadPostsWithTopics(selectedTopics.map { $0.topicID })
-        
-        topicCollection.reloadData()
-
+        UIView.performWithoutAnimation {
+            topicCollection.reloadData()
+        }
         topicSelectionButton.isHidden = !topics.isEmpty
         topicCollection.isHidden = topics.isEmpty
         clearButton.isHidden = topics.isEmpty

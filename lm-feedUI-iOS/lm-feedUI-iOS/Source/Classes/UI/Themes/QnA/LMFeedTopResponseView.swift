@@ -33,8 +33,8 @@ open class LMFeedTopResponseView: LMView {
         return stack
     }()
     
-    open private(set) lazy var profilePicture: LMImageView = {
-        let imageView = LMImageView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var profilePicture: LMFeedProfileImageView = {
+        let imageView = LMFeedProfileImageView().translatesAutoresizingMaskIntoConstraints()
         return imageView
     }()
     
@@ -145,13 +145,13 @@ open class LMFeedTopResponseView: LMView {
         contentStackView.layer.masksToBounds = true
         
         profilePicture.clipsToBounds = true
-        profilePicture.layer.cornerRadius = profilePictureHeight / 2
+        profilePicture.roundCorners(with: profilePictureHeight / 2)
     }
     
     
     // MARK: configure
     open func configure(with data: LMFeedCommentContentModel) {
-        profilePicture.kf.setImage(with: URL(string: data.author.userProfileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.authorName))
+        profilePicture.configure(with: data.author.userProfileImage, userName: data.authorName)
         
         usernameLabel.text = data.authorName
         timeStampLabel.text = data.commentTime

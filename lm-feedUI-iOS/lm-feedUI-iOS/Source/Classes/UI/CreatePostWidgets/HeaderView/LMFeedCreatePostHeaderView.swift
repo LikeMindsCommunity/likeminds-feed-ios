@@ -42,9 +42,8 @@ open class LMFeedCreatePostHeaderView: LMView {
         return view
     }()
     
-    open private(set) lazy var userProfileImage: LMImageView = {
-        let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
-        image.image = UIImage(systemName: "person.circle.fill")
+    open private(set) lazy var userProfileImage: LMFeedProfileImageView = {
+        let image = LMFeedProfileImageView().translatesAutoresizingMaskIntoConstraints()
         image.clipsToBounds = true
         return image
     }()
@@ -86,13 +85,13 @@ open class LMFeedCreatePostHeaderView: LMView {
     // MARK: setupAppearance
     open override func setupAppearance() {
         super.setupAppearance()
-        imageContainerView.layer.cornerRadius = 24
+        imageContainerView.roundCorners(with: 24)
     }
     
   
     // MARK: configure
     open func configure(with data: ContentModel) {
-        userProfileImage.kf.setImage(with: URL(string: data.profileImage ?? ""), placeholder: LMImageView.generateLetterImage(name: data.username))
+        userProfileImage.configure(with: data.profileImage, userName: data.username)
         userNameLabel.text = data.username
     }
 }
