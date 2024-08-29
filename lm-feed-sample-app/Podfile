@@ -6,10 +6,8 @@ workspace 'lm-feed-sample-app.xcworkspace'
 target 'lm-feed-sample-app' do
   project 'lm-feed-sample-app.xcodeproj'
   use_frameworks!
-  
-  pod 'LikeMindsFeed', path: '../../likeminds-feed-ios-data/LikeMindsFeedDev.podspec'
-  pod 'LikeMindsFeedUI', path: '../LikeMindsFeedUI.podspec'
-  pod 'LikeMindsFeedCore', path: '../LikeMindsFeedCore.podspec'
+ 
+  pod 'LikeMindsFeedCore'
 end
 
 post_install do |installer|
