@@ -5,7 +5,6 @@
 //  Created by Devansh Mohata on 24/11/23.
 //
 
-import Kingfisher
 import PDFKit
 import SafariServices
 import UIKit
@@ -175,7 +174,7 @@ open class LMViewController: UIViewController {
     
     open override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        ImageCache.default.clearMemoryCache()
+        LMFeedImageProvider.shared.removeAllImages()
     }
 
 }

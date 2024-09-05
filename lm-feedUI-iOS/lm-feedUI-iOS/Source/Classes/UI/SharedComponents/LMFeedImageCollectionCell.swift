@@ -5,7 +5,6 @@
 //  Created by Devansh Mohata on 01/12/23.
 //
 
-import Kingfisher
 import UIKit
 
 @IBDesignable
@@ -101,7 +100,6 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
         crossButton.layer.borderWidth = 1
     }
     
-    
     // MARK: configure
     open func configure(with data: ContentModel, crossButtonAction: ((String) -> Void)? = nil, didTapImage: (() -> Void)? = nil) {
         self.url = data.image
@@ -109,11 +107,6 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
         crossButton.isHidden = crossButtonAction == nil
         self.didTapImage = didTapImage
         
-        imageView.kf.setImage(with: URL(string: data.image), placeholder: LMFeedConstants.shared.images.placeholderImage,
-                              options: [
-                                .cacheOriginalImage,
-                                .transition(.fade(0.2)),
-                                .scaleFactor(UIScreen.main.scale),
-                              ])
+        imageView.loadImage(url: data.image)
     }
 }

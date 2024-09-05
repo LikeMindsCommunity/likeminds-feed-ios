@@ -40,7 +40,7 @@ public class LMFeedBaseSearchPostViewModel {
         self.delegate = delegate
         self.postList = []
         self.page = 1
-        self.pageSize = 10
+        self.pageSize = 20
         self.searchString = ""
         self.searchType = "text"
         self.isFetchingResults = false

@@ -24,10 +24,6 @@ open class LMFeedPostFooterView: LMFeedBasePostFooterView {
         
         contentView.pinSubView(subView: containerView, padding: .init(top: 0, left: 0, bottom: -8, right: 0))
         containerView.pinSubView(subView: actionStackView, padding: .init(top: 8, left: 16, bottom: -8, right: -16))
-        
-        [likeButton, likeTextButton, commentButton, saveButton, shareButton].forEach { btn in
-            btn.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-        }
     }
     
     open override func updateLikeText(for likeCount: Int) {

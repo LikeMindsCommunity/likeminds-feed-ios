@@ -58,6 +58,7 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
     
     open override func setupLayouts() {
         super.setupLayouts()
+        
         mediaCollectionView.setWidthConstraint(with: contentStack.widthAnchor)
         mediaCollectionViewHeightConstraint = mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
     }
@@ -98,7 +99,10 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
     }
     
     private func updateMediaCollectionViewHeight(mediaHaveSameAspectRatio: Bool, aspectRatio: Double) {
-        mediaCollectionViewHeightConstraint?.isActive = false
+        if let existingHeightConstraint = mediaCollectionViewHeightConstraint {
+            mediaCollectionView.removeConstraint(existingHeightConstraint)
+            mediaCollectionViewHeightConstraint = nil
+        }
         
         let heightFactor: Double
         
@@ -116,11 +120,15 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
         
         // Create and add the new height constraint
         mediaCollectionViewHeightConstraint = mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor, multiplier: heightFactor)
+        mediaCollectionViewHeightConstraint?.priority = .defaultHigh
         mediaCollectionViewHeightConstraint?.isActive = true
         
-        mediaCollectionView.layoutIfNeeded()
+        // Animate the layout change
+        UIView.animate(withDuration: 0.5, animations: {
+            self.mediaCollectionView.layoutIfNeeded()
+        })
     }
-
+    
     
     
     open func setupMediaCells(mediaHaveSameAspectRatio: Bool, aspectRatio: Double) {
@@ -136,9 +144,9 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
             guard let self else {
                 return
             }
-            UIView.performWithoutAnimation {
-                self.mediaCollectionView.reloadData()
-            }
+            
+            self.mediaCollectionView.reloadData()
+            
             self.pageControl.isHidden = self.mediaCellsData.count < 2
             self.pageControl.numberOfPages = self.mediaCellsData.count
             

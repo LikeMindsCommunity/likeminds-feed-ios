@@ -9,7 +9,6 @@ import AVKit
 import BSImagePicker
 import LikeMindsFeedUI
 import UIKit
-import Kingfisher
 import Photos
 
 

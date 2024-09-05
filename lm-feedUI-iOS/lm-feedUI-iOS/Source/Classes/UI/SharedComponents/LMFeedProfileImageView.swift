@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Kingfisher
 
 open class LMFeedProfileImageView: LMView{
     open private(set) lazy var imageView: LMImageView = {
@@ -46,27 +45,14 @@ open class LMFeedProfileImageView: LMView{
             return
         }
         
-        if let url = URL(string: profileImageUrl ?? "") {
-     
-            imageView.kf.setImage(with: url, options: [
-                .transition(.fade(0.2)),
-                .cacheOriginalImage
-            ]){ [weak self] result in
-                guard let self else {
-                    return
-                }
-                switch result {
-                case .success(_):
-                    initialsView.isHidden = true
-                    imageView.isHidden = false
-                    
-                case .failure(let error):
-                    print(error) // The error happens
-                    imageView.isHidden = true
-                    initialsView.isHidden = false
-                }
-            }
-        }else if let name = userName, !name.isEmpty {
+        
+        if let profileImageUrl, !profileImageUrl.isEmpty {
+            imageView.isHidden = false
+            initialsView.isHidden = true
+            imageView.loadImage(url: profileImageUrl, to: CGSize(width: 100, height: 100), scale: CGFloat(1.0))
+        }
+
+        else if let name = userName, !name.isEmpty {
             
             var letter: String = ""
             

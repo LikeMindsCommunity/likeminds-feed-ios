@@ -5,7 +5,6 @@
 //  Created by Anurag Tyagi on 24/07/24.
 //
 
-import Kingfisher
 import UIKit
 
 open class LMFeedMediaImagePreview: LMCollectionViewCell {
