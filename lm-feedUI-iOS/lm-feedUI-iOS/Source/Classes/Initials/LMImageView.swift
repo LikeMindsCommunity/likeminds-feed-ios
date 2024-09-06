@@ -50,7 +50,7 @@ public class LMImageView: UIImageView {
     open func deloadImageView() {
         lastUrlLoaded = nil
         DispatchQueue.main.async{
-            self.image = LMFeedConstants.Images.shared.placeholderImage
+            self.image = nil
         }
     }
     

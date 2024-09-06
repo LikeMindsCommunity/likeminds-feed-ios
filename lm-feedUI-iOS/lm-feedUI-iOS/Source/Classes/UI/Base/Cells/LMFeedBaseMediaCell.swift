@@ -124,7 +124,7 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
         mediaCollectionViewHeightConstraint?.isActive = true
         
         // Animate the layout change
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.mediaCollectionView.layoutIfNeeded()
         })
     }

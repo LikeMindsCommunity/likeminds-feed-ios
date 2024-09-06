@@ -15,6 +15,7 @@ open class LMFeedProfileImageView: LMView{
         imageView.layer.masksToBounds = true
         imageView.image = UIImage(systemName: "person")
         imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = LMFeedAppearance.shared.colors.black
         return imageView
     }()
     

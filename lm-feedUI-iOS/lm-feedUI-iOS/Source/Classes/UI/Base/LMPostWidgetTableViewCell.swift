@@ -56,7 +56,7 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        topicFeed.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        topicFeed.setContentHuggingPriority(.defaultLow, for: .vertical)
         topicFeed.setHeightConstraint(with: 10, priority: .defaultLow)
         postText.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         postText.setHeightConstraint(with: 10, priority: .defaultLow)

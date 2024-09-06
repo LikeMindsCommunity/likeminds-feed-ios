@@ -37,13 +37,7 @@ public protocol LMFeedImageCacheProtocol: AnyObject {
 
 open class LMFeedImageProvider : LMFeedImageCacheProtocol{
     static let shared = LMFeedImageProvider()
-    
-    private lazy var imageCache: NSCache<NSString, UIImage> = {
-        let cache = NSCache<NSString, UIImage>()
-        cache.countLimit = config.countLimit
-        cache.totalCostLimit = config.countLimit
-        return cache
-    }()
+    var imageCache: NSCache<NSString, UIImage> = NSCache<NSString, UIImage>()
     
     private let lock = NSLock()
     private let config: Config
@@ -52,15 +46,16 @@ open class LMFeedImageProvider : LMFeedImageCacheProtocol{
         let countLimit: Int
         let memoryLimit: Int
         
-        static let defaultConfig = Config(countLimit: 100, memoryLimit: 1024 * 1024 * 150) // 150 MB
+        static let defaultConfig = Config(countLimit: 100, memoryLimit: 1024 * 1024 * 300) // 150 MB
     }
     
     private init(config: Config = Config.defaultConfig) {
         self.config = config
+        imageCache.countLimit = config.countLimit
+        imageCache.totalCostLimit = config.memoryLimit
     }
     
     open func getCachedimage(for url: String) -> UIImage? {
-        lock.lock(); defer { lock.unlock() }
         // the best case scenario -> there is a decoded image
         if let decodedImage = imageCache.object(forKey:  url as NSString) {
             return decodedImage
@@ -70,20 +65,24 @@ open class LMFeedImageProvider : LMFeedImageCacheProtocol{
     }
     
     open func insertImage(_ image: UIImage?, for url: String) {
+        defer { lock.unlock() }
+        lock.lock()
+        
         guard let image = image else { return removeImage(for: url) }
-        lock.lock(); defer { lock.unlock() }
         imageCache.setObject(image, forKey: url as NSString, cost: image.cacheCost)
     }
     
     open func removeImage(for url: String) {
-        lock.lock();
         defer { lock.unlock() }
+        
+        lock.lock()
         imageCache.removeObject(forKey:  url as NSString)
     }
     
     open func removeAllImages() {
-        lock.lock();
-        defer { lock.unlock() }
+         lock.lock()
+         defer { lock.unlock() }
+        
         imageCache.removeAllObjects()
     }
     

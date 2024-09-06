@@ -25,7 +25,6 @@ open class LMFeedBaseDocumentCell: LMPostWidgetTableViewCell {
         return button
     }()
     
-    
     // MARK: Variables
     public weak var delegate: LMFeedPostDocumentCellProtocol?
     var indexPath: IndexPath?
