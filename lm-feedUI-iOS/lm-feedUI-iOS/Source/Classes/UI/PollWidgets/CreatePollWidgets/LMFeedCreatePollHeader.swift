@@ -5,7 +5,6 @@
 //  Created by Devansh Mohata on 06/06/24.
 //
 
-import Kingfisher
 import UIKit
 
 @IBDesignable

@@ -19,6 +19,5 @@ Pod::Spec.new do |spec|
   spec.ios.deployment_target = '13.0'
   spec.swift_version = '5.0'
   spec.requires_arc = true
-  
-  spec.dependency 'Kingfisher', '~> 7.0'
+
 end

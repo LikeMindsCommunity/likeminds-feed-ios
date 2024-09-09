@@ -5,7 +5,6 @@
 //  Created by Devansh Mohata on 17/01/24.
 //
 
-import Kingfisher
 import UIKit
 
 @IBDesignable
@@ -184,8 +183,7 @@ open class LMFeedLinkPreview: LMView {
         crossButton.isHidden = crossButtonAction == nil
         self.crossButtonAction = crossButtonAction
         
-        imageView.kf.indicatorType = .activity
-        imageView.kf.setImage(with: URL(string: data.linkPreview ?? "")) { [weak imageView] result in
+        imageView.loadImage(url: data.linkPreview ?? "") { [weak imageView] result in
             switch result {
             case .success(_):
                 imageView?.isHidden = false
@@ -193,7 +191,7 @@ open class LMFeedLinkPreview: LMView {
                 imageView?.isHidden = true
             }
         }
-        
+
         titleLabel.text = data.title
         titleLabel.isHidden = data.title?.isEmpty != false
         

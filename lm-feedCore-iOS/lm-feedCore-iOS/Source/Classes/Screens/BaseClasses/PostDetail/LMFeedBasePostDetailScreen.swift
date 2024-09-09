@@ -177,8 +177,8 @@ open class LMFeedBasePostDetailScreen: LMViewController {
         super.setupLayouts()
         
         postDetailListView.addConstraint(top: (view.safeAreaLayoutGuide.topAnchor, 0),
-                                leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
-                                trailing: (view.safeAreaLayoutGuide.trailingAnchor, 0))
+                                         leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
+                                         trailing: (view.safeAreaLayoutGuide.trailingAnchor, 0))
         
         containerView.addConstraint(top: (postDetailListView.bottomAnchor, 0),
                                     leading: (view.safeAreaLayoutGuide.leadingAnchor, 0),
@@ -189,18 +189,18 @@ open class LMFeedBasePostDetailScreen: LMViewController {
                                   trailing: (containerStackView.trailingAnchor, 0))
         
         replySepratorView.addConstraint(leading: (containerStackView.leadingAnchor, 0),
-                                  trailing: (containerStackView.trailingAnchor, 0))
+                                        trailing: (containerStackView.trailingAnchor, 0))
         
         replyView.addConstraint(leading: (containerStackView.leadingAnchor, 0),
-                                  trailing: (containerStackView.trailingAnchor, 0))
+                                trailing: (containerStackView.trailingAnchor, 0))
         
         replyNameLabel.addConstraint(top: (replyView.topAnchor, 16),
                                      bottom: (replyView.bottomAnchor, -16),
                                      leading: (replyView.leadingAnchor, 16))
         
         removeReplyButton.addConstraint( leading: (replyNameLabel.trailingAnchor, 16),
-                                  trailing: (replyView.trailingAnchor, -16),
-                                  centerY: (replyNameLabel.centerYAnchor, 0))
+                                         trailing: (replyView.trailingAnchor, -16),
+                                         centerY: (replyNameLabel.centerYAnchor, 0))
         
         removeReplyButton.setWidthConstraint(with: removeReplyButton.heightAnchor)
         
@@ -209,7 +209,7 @@ open class LMFeedBasePostDetailScreen: LMViewController {
         
         inputTextView.addConstraint(top: (stackView.topAnchor, 0),
                                     bottom: (stackView.bottomAnchor, 0))
-                
+        
         sendButton.setWidthConstraint(with: sendButton.heightAnchor)
         
         NSLayoutConstraint.activate([
@@ -393,12 +393,12 @@ extension LMFeedBasePostDetailScreen: UITableViewDataSource, UITableViewDelegate
     
     open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0,
-        let postData,
+           let postData,
            let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.postDetailHeaderView) {
             header.configure(with: postData.headerData, postID: postData.postID, userUUID: postData.userUUID, delegate: self)
             return header
         } else if var data = commentsData[safe: section - 1],
-            let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.commentView) {
+                  let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.commentView) {
             header.configure(with: data, delegate: self, indexPath: .init(row: NSNotFound, section: section)) { [weak self] in
                 data.isShowMore.toggle()
                 self?.commentsData[section - 1] = data
@@ -450,7 +450,7 @@ extension LMFeedBasePostDetailScreen: UITableViewDataSource, UITableViewDelegate
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if let frozenContentOffsetForRowAnimation,
-            postDetailListView.contentOffset != frozenContentOffsetForRowAnimation {
+           postDetailListView.contentOffset != frozenContentOffsetForRowAnimation {
             postDetailListView.setContentOffset(frozenContentOffsetForRowAnimation, animated: false)
         }
     }
@@ -477,11 +477,11 @@ extension LMFeedBasePostDetailScreen: UITableViewDataSource, UITableViewDelegate
             scrollingFinished()
         }
     }
-
+    
     open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         scrollingFinished()
     }
-
+    
     func scrollingFinished() {
         postDetailListView.visibleCells.forEach { cell in
             if type(of: cell) == LMFeedPostDetailMediaCell.self,
@@ -515,7 +515,7 @@ extension LMFeedBasePostDetailScreen: LMFeedPostCommentProtocol {
     
     open func didTapLikeCountButton(for commentId: String) {
         guard let viewModel,
-            viewModel.allowCommentLikeView(for: commentId) else { return }
+              viewModel.allowCommentLikeView(for: commentId) else { return }
         do {
             let viewcontroller = try LMFeedLikeViewModel.createModule(postID: viewModel.postID, commentID: commentId)
             navigationController?.pushViewController(viewcontroller, animated: true)
@@ -550,9 +550,9 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
         self.commentsData.append(contentsOf: comments)
         
         if isInitialPage {
-            UIView.performWithoutAnimation {
-                postDetailListView.reloadData()
-            }
+            
+            postDetailListView.reloadData()
+            
         } else {
             insertNewComments(commentCount: comments.count)
             (postDetailListView.footerView(forSection: 0) as? LMFeedBasePostFooterView)?.configure(with: post.footerData, postID: post.postID, delegate: self)
@@ -678,7 +678,7 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
     
     public func replyToComment(userName: String) {
         let replyLabelText = NSMutableAttributedString(string: "Replying To ", attributes: [.font: LMFeedAppearance.shared.fonts.textFont2,
-                                                                                           .foregroundColor: LMFeedAppearance.shared.colors.gray51])
+                                                                                            .foregroundColor: LMFeedAppearance.shared.colors.gray51])
         
         replyLabelText.append(NSAttributedString(string: userName, attributes: [.font: LMFeedAppearance.shared.fonts.textFont2,
                                                                                 .foregroundColor: LMFeedAppearance.shared.colors.appTintColor]))

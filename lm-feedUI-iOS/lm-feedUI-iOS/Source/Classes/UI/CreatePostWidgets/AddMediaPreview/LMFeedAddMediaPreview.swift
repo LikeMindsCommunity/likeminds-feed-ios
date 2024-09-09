@@ -6,7 +6,6 @@
 //
 
 import AVFoundation
-import Kingfisher
 import PDFKit
 import UIKit
 

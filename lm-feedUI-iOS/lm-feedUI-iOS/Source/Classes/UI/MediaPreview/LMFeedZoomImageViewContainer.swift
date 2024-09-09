@@ -85,7 +85,7 @@ open class LMFeedZoomImageViewContainer: UIScrollView {
     
     public func configure(with image: URL?) {
         guard let image else { return }
-        imageView.kf.setImage(with: image)
+        imageView.loadImage(url: image.absoluteString)
     }
     
     public func configure(with image: UIImage?) {

@@ -29,7 +29,7 @@ public final class LMFeedTaggingListViewModel {
     // MARK: Init
     init(delegate: LMFeedTaggingListViewModelProtocol?) {
         self.currentPage = 1
-        self.pageSize = 10
+        self.pageSize = 20
         self.isFetching = false
         self.isLastPage = false
         self.searchString = ""

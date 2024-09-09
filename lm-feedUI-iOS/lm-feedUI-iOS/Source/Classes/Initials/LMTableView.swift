@@ -85,27 +85,22 @@ public class LMTableView: UITableView {
     }
     
     open func reloadTable(for index: IndexPath? = nil) {
-        UIView.performWithoutAnimation { [weak self] in
-            if let index {
-                if index.row == NSNotFound {
-                    
-                    self?.reloadSections(IndexSet(integer: index.section), with: .none)
-                } else {
-                    self?.reloadRows(at: [index], with: .none)
-                }
+        if let index {
+            if index.row == NSNotFound {
+                reloadSections(IndexSet(integer: index.section), with: .none)
             } else {
-                self?.reloadData()
+                reloadRows(at: [index], with: .none)
             }
+        } else {
+            reloadData()
         }
     }
     
     open func reloadTableForSection(for index: IndexSet?) {
-        UIView.performWithoutAnimation { [weak self] in
-            if let index {
-                self?.reloadSections(index, with: .none)
-            } else {
-                self?.reloadData()
-            }
+        if let index {
+            reloadSections(index, with: .none)
+        } else {
+            reloadData()
         }
     }
 }
