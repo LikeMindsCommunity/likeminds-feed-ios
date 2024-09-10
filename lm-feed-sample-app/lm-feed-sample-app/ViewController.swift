@@ -57,7 +57,7 @@ class ViewController: UIViewController {
             switch result {
             case .success(_):
                 do {
-                    let viewController = try LMUniversalFeedViewModel.createModule()
+                    let viewController = try LMFeedSocialFeedViewModel.createModule()
                     UIApplication.shared.windows.first?.rootViewController = UINavigationController(rootViewController: viewController)
                     UIApplication.shared.windows.first?.makeKeyAndVisible()
                 } catch {

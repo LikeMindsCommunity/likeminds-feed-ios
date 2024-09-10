@@ -5,7 +5,6 @@
 //  Created by Devansh Mohata on 21/07/24.
 //
 
-import Kingfisher
 import UIKit
 
 open class LMFeedTopResponseView: LMView {

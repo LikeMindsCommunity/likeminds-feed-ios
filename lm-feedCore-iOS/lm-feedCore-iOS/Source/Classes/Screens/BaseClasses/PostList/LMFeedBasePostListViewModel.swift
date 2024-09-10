@@ -34,7 +34,7 @@ public class LMFeedBasePostListViewModel {
     
     init(delegate: LMFeedBasePostListViewModelProtocol) {
         self.currentPage = 1
-        self.pageSize = 10
+        self.pageSize = 20
         self.selectedTopics = []
         self.isLastPostReached = false
         self.isFetchingFeed = false

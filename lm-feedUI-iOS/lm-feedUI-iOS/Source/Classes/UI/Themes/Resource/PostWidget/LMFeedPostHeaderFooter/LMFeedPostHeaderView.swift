@@ -5,7 +5,6 @@
 //  Created by Devansh Mohata on 28/11/23.
 //
 
-import Kingfisher
 import UIKit
 
 public protocol LMFeedPostHeaderViewProtocol: AnyObject {

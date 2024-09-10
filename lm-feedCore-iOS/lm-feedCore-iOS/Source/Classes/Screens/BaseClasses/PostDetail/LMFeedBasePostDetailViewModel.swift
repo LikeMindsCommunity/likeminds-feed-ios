@@ -26,7 +26,7 @@ public class LMFeedBasePostDetailViewModel {
         self.postID = postID
         self.commentList = []
         self.currentPage = 1
-        self.pageSize = 10
+        self.pageSize = 20
         self.isFetchingData = false
         self.isDataAvailable = true
         self.openCommentSection = openCommentSection

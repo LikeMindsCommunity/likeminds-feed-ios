@@ -7,7 +7,6 @@
 
 import FirebaseCore
 import FirebaseMessaging
-import Kingfisher
 import LikeMindsFeedUI
 import LikeMindsFeedCore
 import UIKit
@@ -23,7 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         LMFeedCore.shared.setupFeed(deviceId: deviceId)
         
-        ImageCache.default.memoryStorage.config.totalCostLimit = 1 //1 in bytes
         return true
     }
     

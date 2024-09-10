@@ -9,7 +9,6 @@ import AVKit
 import BSImagePicker
 import LikeMindsFeedUI
 import UIKit
-import Kingfisher
 import Photos
 
 
@@ -215,6 +214,7 @@ open class LMFeedCreatePostScreen: LMViewController {
     public var documentAttachmentData: [LMFeedDocumentPreview.ContentModel] = []
     public var documenTableHeight: NSLayoutConstraint?
     public var documentAttachmentHeight: CGFloat = 90
+    public var addMoreButtonHeight: CGFloat = 40
     public var mediaHaveSameAspectRatio: Bool = false
     public var mediaAspectRatio: Double = 1.0
     private var mediaCollectionViewHeightConstraint: NSLayoutConstraint?
@@ -318,6 +318,8 @@ open class LMFeedCreatePostScreen: LMViewController {
         headerSepratorView.setHeightConstraint(with: 1)
         
         questionViewHeightConstraint = headingTextContainer.setHeightConstraint(with: textInputMinimumHeight)
+        
+        addMoreButton.setHeightConstraint(with: addMoreButtonHeight)
         
         
         headingTextContainer.isHidden = !showQuestionHeading

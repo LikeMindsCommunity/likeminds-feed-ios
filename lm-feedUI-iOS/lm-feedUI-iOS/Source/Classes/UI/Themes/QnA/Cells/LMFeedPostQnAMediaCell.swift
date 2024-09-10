@@ -54,7 +54,7 @@ open class LMFeedPostQnAMediaCell: LMFeedBaseMediaCell {
         topResponseView.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         
         mediaCollectionView.setWidthConstraint(with: contentStack.widthAnchor)
-        mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor, multiplier: 2/3)
+        mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
         
         pageControl.addConstraint(leading: (contentStack.leadingAnchor, 0), trailing: (contentStack.trailingAnchor, 0))
     }
