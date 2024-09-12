@@ -15,7 +15,7 @@ open class LMFeedPostPollCell: LMFeedBasePollCell {
         contentView.addSubview(containerView)
         containerView.addSubview(contentStack)
         
-        [topicFeed, postText].forEach { subView in
+        [topicFeed, postText.postText, postText.seeMoreButton].forEach { subView in
             contentStack.addArrangedSubview(subView)
         }
     }

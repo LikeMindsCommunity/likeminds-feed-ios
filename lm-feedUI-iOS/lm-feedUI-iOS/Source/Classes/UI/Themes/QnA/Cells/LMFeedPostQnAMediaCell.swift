@@ -33,8 +33,8 @@ open class LMFeedPostQnAMediaCell: LMFeedBaseMediaCell {
         
         contentStack.addArrangedSubview(topicFeed)
         contentStack.addArrangedSubview(questionTitle)
-        contentStack.addArrangedSubview(postText)
-        contentStack.addArrangedSubview(seeMoreButton)
+        contentStack.addArrangedSubview(postText.postText)
+        contentStack.addArrangedSubview(postText.seeMoreButton)
         contentStack.addArrangedSubview(mediaCollectionView)
         contentStack.addArrangedSubview(pageControl)
         contentStack.addArrangedSubview(topResponseView)

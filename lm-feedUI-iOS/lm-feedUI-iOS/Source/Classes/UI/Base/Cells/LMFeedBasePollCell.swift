@@ -8,6 +8,13 @@
 import UIKit
 
 open class LMFeedBasePollCell: LMPostWidgetTableViewCell {
+    open private(set) lazy var postText: LMFeedPostBaseTextCell = {
+        let postText = LMUIComponents.shared.textCell.init()
+        postText.translatesAutoresizingMaskIntoConstraints = false
+        return postText
+    }()
+    
+    
     // MARK: UI Elements
     open private(set) lazy var pollPreview: LMFeedDisplayPollView = {
         let poll = LMUIComponents.shared.pollDisplayView.init()
@@ -22,7 +29,7 @@ open class LMFeedBasePollCell: LMPostWidgetTableViewCell {
         topicFeed.configure(with: data.topics)
         topicFeed.isHidden = data.topics.topics.isEmpty
         
-        setupPostText(text: data.postText, showMore: data.isShowMore)
+        postText.configure(text: data.postText, showMore: data.isShowMore)
         
         if let pollData = data.pollWidget {
             pollPreview.configure(with: pollData, delegate: delegate)

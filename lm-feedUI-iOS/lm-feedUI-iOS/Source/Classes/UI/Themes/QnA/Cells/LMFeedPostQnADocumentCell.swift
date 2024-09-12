@@ -28,7 +28,7 @@ open class LMFeedPostQnADocumentCell: LMFeedBaseDocumentCell {
         contentView.addSubview(containerView)
         containerView.addSubview(contentStack)
         
-        [topicFeed, questionTitle, postText, seeMoreButton, documentContainerStack, topResponseView].forEach { subView in
+        [topicFeed, questionTitle, postText.postText, postText.seeMoreButton, documentContainerStack, topResponseView].forEach { subView in
             contentStack.addArrangedSubview(subView)
         }
     }

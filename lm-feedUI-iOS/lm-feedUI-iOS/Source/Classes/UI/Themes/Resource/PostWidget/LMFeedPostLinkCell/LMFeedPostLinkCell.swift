@@ -16,7 +16,7 @@ open class LMFeedPostLinkCell: LMFeedBaseLinkCell {
         contentView.addSubview(containerView)
         containerView.addSubview(contentStack)
         
-        [topicFeed, postText, seeMoreButton].forEach { subView in
+        [topicFeed, postText.postText, postText.seeMoreButton].forEach { subView in
             contentStack.addArrangedSubview(subView)
         }
     }

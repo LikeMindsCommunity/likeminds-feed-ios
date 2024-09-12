@@ -11,6 +11,7 @@ import LikeMindsFeedUI
 open class LMFeedPostListScreen: LMFeedBasePostListScreen {
     // MARK: - Overridden Methods
     open override func configureTableViewCells(_ tableView: LMTableView) {
+        tableView.register(LMUIComponents.shared.textCell)
         tableView.register(LMUIComponents.shared.postCell)
         tableView.register(LMUIComponents.shared.documentCell)
         tableView.register(LMUIComponents.shared.linkCell)
@@ -23,7 +24,12 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
         let item = data[indexPath.section]
         
         switch item.postType {
-        case .text, .media:
+        case .text:
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.textCell, for: indexPath) {
+                cell.configure(text: item.postText, showMore: item.isShowMore)
+                return cell
+            }
+        case .media:
             if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell, for: indexPath) {
                 cell.configure(with: item, delegate: self)
                 return cell

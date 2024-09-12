@@ -8,6 +8,13 @@
 import UIKit
 
 open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
+    
+    open private(set) lazy var postText: LMFeedPostBaseTextCell = {
+        let postText = LMUIComponents.shared.textCell.init()
+        postText.translatesAutoresizingMaskIntoConstraints = false
+        return postText
+    }()
+    
     // MARK: UI Elements
     open private(set) lazy var mediaCollectionView: LMCollectionView = {
         let collection = LMCollectionView(frame: .zero, collectionViewLayout: LMCollectionView.mediaFlowLayout())
@@ -89,7 +96,7 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
         postID = data.postID
         userUUID = data.userUUID
         
-        setupPostText(text: data.postText, showMore: data.isShowMore)
+        postText.configure(text: data.postText, showMore: data.isShowMore)
         topicFeed.configure(with: data.topics)
         
         topicFeed.isHidden = data.topics.topics.isEmpty

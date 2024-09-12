@@ -29,7 +29,7 @@ open class LMFeedPostQnALinkCell: LMFeedBaseLinkCell {
         contentView.addSubview(containerView)
         containerView.addSubview(contentStack)
         
-        [topicFeed, questionTitle, postText, seeMoreButton, topResponseView].forEach { subView in
+        [topicFeed, questionTitle, postText.postText, postText.seeMoreButton, topResponseView].forEach { subView in
             contentStack.addArrangedSubview(subView)
         }
     }

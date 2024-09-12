@@ -1,15 +1,14 @@
 //
-//  LMFeedPostMediaCell.swift
-//  LMFramework
+//  LMFeedPostTextCell.swift
+//  LikeMindsFeedUI
 //
-//  Created by Devansh Mohata on 29/11/23.
+//  Created by Anurag Tyagi on 12/09/24.
 //
 
-import AVKit
-import UIKit
+import Foundation
 
 @IBDesignable
-open class LMFeedPostMediaCell: LMFeedBaseMediaCell {
+open class LMFeedPostTextCell: LMFeedPostBaseTextCell {
     // MARK: setupViews
     open override func setupViews() {
         super.setupViews()
@@ -17,13 +16,10 @@ open class LMFeedPostMediaCell: LMFeedBaseMediaCell {
         contentView.addSubview(containerView)
         
         containerView.addSubview(contentStack)
-        containerView.addSubview(postText)
         
         contentStack.addArrangedSubview(topicFeed)
-        contentStack.addArrangedSubview(postText.postText)
-        contentStack.addArrangedSubview(postText.seeMoreButton)
-        contentStack.addArrangedSubview(mediaCollectionView)
-        contentStack.addArrangedSubview(pageControl)
+        contentStack.addArrangedSubview(postText)
+        contentStack.addArrangedSubview(seeMoreButton)
     }
     
     
@@ -36,7 +32,5 @@ open class LMFeedPostMediaCell: LMFeedBaseMediaCell {
         
         topicFeed.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         postText.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
-        
-        pageControl.addConstraint(leading: (contentStack.leadingAnchor, 0), trailing: (contentStack.trailingAnchor, 0))
     }
 }

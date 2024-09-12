@@ -24,6 +24,7 @@ public struct LMUIComponents {
     public var mediaImagePreviewCell: LMFeedMediaImagePreview.Type = LMFeedMediaImagePreview.self
     
     // MARK: Universal Feed Components
+    public var textCell: LMFeedPostTextCell.Type = LMFeedPostTextCell.self
     public var documentCell: LMFeedPostDocumentCell.Type = LMFeedPostDocumentCell.self
     public var footerView: LMFeedPostFooterView.Type = LMFeedPostFooterView.self
     public var headerView: LMFeedPostHeaderView.Type = LMFeedPostHeaderView.self
