@@ -8,6 +8,13 @@
 import Foundation
 
 open class LMFeedPostBaseTextCell: LMPostWidgetTableViewCell {
+    open private(set) lazy var questionTitle: LMLabel = {
+        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray51
+        label.numberOfLines = 0
+        return label
+    }()
     
     open private(set) lazy var postText: LMTextView = {
         let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
@@ -37,6 +44,7 @@ open class LMFeedPostBaseTextCell: LMPostWidgetTableViewCell {
         
         topicFeed.setContentHuggingPriority(.defaultLow, for: .vertical)
         topicFeed.setHeightConstraint(with: 10, priority: .defaultLow)
+        questionTitle.setHeightConstraint(with: 10, priority: .defaultLow)
         postText.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         postText.setHeightConstraint(with: 10, priority: .defaultLow)
         seeMoreButton.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
@@ -88,9 +96,12 @@ open class LMFeedPostBaseTextCell: LMPostWidgetTableViewCell {
         actionDelegate?.didTapSeeMoreButton(for: postID)
     }
     
-    open func configure(text: String, showMore: Bool) {
-        postText.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: text.trimmingCharacters(in: .whitespacesAndNewlines), andPrefix: "@")
-        postText.isHidden = text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    open func configure(data: LMFeedPostContentModel) {
+        questionTitle.text = data.postQuestion
+        topicFeed.configure(with: data.topics)
+        
+        postText.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.postText.trimmingCharacters(in: .whitespacesAndNewlines), andPrefix: "@")
+        postText.isHidden =  data.postText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         
         seeMoreButton.isHidden = true // !(postText.numberOfLines > 4 && showMore)
         postText.textContainer.maximumNumberOfLines = 0 // postText.numberOfLines > 4 && !showMore ? .zero : 4

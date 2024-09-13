@@ -61,7 +61,7 @@ open class LMFeedBaseLinkCell: LMPostWidgetTableViewCell {
         
         topicFeed.isHidden = data.topics.topics.isEmpty
         
-        postText.configure(text: data.postText, showMore: data.isShowMore)
+        postText.configure(data: data)
         
         if let linkPreview = data.linkPreview {
             linkPreveiw.configure(with: linkPreview)

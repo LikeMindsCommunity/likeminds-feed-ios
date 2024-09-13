@@ -96,7 +96,7 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
         postID = data.postID
         userUUID = data.userUUID
         
-        postText.configure(text: data.postText, showMore: data.isShowMore)
+        postText.configure(data: data)
         topicFeed.configure(with: data.topics)
         
         topicFeed.isHidden = data.topics.topics.isEmpty

@@ -12,7 +12,7 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
     // MARK: - Overridden Methods
     open override func configureTableViewCells(_ tableView: LMTableView) {
         tableView.register(LMUIComponents.shared.textCell)
-        tableView.register(LMUIComponents.shared.postCell)
+        tableView.register(LMUIComponents.shared.mediaCell)
         tableView.register(LMUIComponents.shared.documentCell)
         tableView.register(LMUIComponents.shared.linkCell)
         tableView.register(LMUIComponents.shared.pollCell)
@@ -26,11 +26,11 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
         switch item.postType {
         case .text:
             if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.textCell, for: indexPath) {
-                cell.configure(text: item.postText, showMore: item.isShowMore)
+                cell.configure(data: item)
                 return cell
             }
         case .media:
-            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell, for: indexPath) {
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.mediaCell, for: indexPath) {
                 cell.configure(with: item, delegate: self)
                 return cell
             }
@@ -74,4 +74,5 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
         guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: true) else { return }
         navigationController?.pushViewController(viewController, animated: true)
     }
+
 }

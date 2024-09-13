@@ -13,7 +13,7 @@ open class LMFeedSearchPostScreen: LMFeedBaseSearchPostScreen {
     open override func setupTableView(_ tableView: LMTableView) {
         super.setupTableView(tableView)
         
-        tableView.register(LMUIComponents.shared.postCell)
+        tableView.register(LMUIComponents.shared.mediaCell)
         tableView.register(LMUIComponents.shared.documentCell)
         tableView.register(LMUIComponents.shared.linkCell)
         tableView.register(LMUIComponents.shared.pollCell)
@@ -24,7 +24,7 @@ open class LMFeedSearchPostScreen: LMFeedBaseSearchPostScreen {
     open override func cellForItem(tableView: UITableView, indexPath: IndexPath, item: LMFeedPostContentModel) -> UITableViewCell {
         switch item.postType {
         case .text, .media:
-            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell) {
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.mediaCell) {
                 cell.configure(with: item, delegate: self)
                 return cell
             }

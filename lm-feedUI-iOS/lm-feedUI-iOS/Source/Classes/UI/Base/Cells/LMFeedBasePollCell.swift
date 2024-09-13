@@ -29,7 +29,7 @@ open class LMFeedBasePollCell: LMPostWidgetTableViewCell {
         topicFeed.configure(with: data.topics)
         topicFeed.isHidden = data.topics.topics.isEmpty
         
-        postText.configure(text: data.postText, showMore: data.isShowMore)
+        postText.configure(data: data)
         
         if let pollData = data.pollWidget {
             pollPreview.configure(with: pollData, delegate: delegate)

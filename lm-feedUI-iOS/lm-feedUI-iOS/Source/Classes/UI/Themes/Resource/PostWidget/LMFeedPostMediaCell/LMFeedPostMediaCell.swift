@@ -17,7 +17,6 @@ open class LMFeedPostMediaCell: LMFeedBaseMediaCell {
         contentView.addSubview(containerView)
         
         containerView.addSubview(contentStack)
-        containerView.addSubview(postText)
         
         contentStack.addArrangedSubview(topicFeed)
         contentStack.addArrangedSubview(postText.postText)
@@ -35,7 +34,8 @@ open class LMFeedPostMediaCell: LMFeedBaseMediaCell {
         containerView.pinSubView(subView: contentStack)
         
         topicFeed.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
-        postText.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
+        postText.postText.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
+        postText.seeMoreButton.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         
         pageControl.addConstraint(leading: (contentStack.leadingAnchor, 0), trailing: (contentStack.trailingAnchor, 0))
     }

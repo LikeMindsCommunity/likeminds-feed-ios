@@ -24,12 +24,12 @@ public struct LMUIComponents {
     public var mediaImagePreviewCell: LMFeedMediaImagePreview.Type = LMFeedMediaImagePreview.self
     
     // MARK: Universal Feed Components
-    public var textCell: LMFeedPostTextCell.Type = LMFeedPostTextCell.self
+    public var textCell: LMFeedPostBaseTextCell.Type = LMFeedPostQnATextCell.self
     public var documentCell: LMFeedPostDocumentCell.Type = LMFeedPostDocumentCell.self
     public var footerView: LMFeedPostFooterView.Type = LMFeedPostFooterView.self
     public var headerView: LMFeedPostHeaderView.Type = LMFeedPostHeaderView.self
     public var linkCell: LMFeedPostLinkCell.Type = LMFeedPostLinkCell.self
-    public var postCell: LMFeedPostMediaCell.Type = LMFeedPostMediaCell.self
+    public var mediaCell: LMFeedPostMediaCell.Type = LMFeedPostMediaCell.self
     public var pollCell: LMFeedPostPollCell.Type = LMFeedPostPollCell.self
     
     // MARK: Comment Components
@@ -81,7 +81,7 @@ public struct LMUIComponents {
     
     
     // MARK: QA Theme
-    public var qnaPostCell: LMFeedPostQnAMediaCell.Type = LMFeedPostQnAMediaCell.self
+    public var qnaPostCell: LMFeedBaseMediaCell.Type = LMFeedPostQnAMediaCell.self
     public var qnaLinkCell: LMFeedPostQnALinkCell.Type = LMFeedPostQnALinkCell.self
     public var qnaDocumentCell: LMFeedPostQnADocumentCell.Type = LMFeedPostQnADocumentCell.self
     public var qnaPollCell: LMFeedPostQnAPollCell.Type = LMFeedPostQnAPollCell.self
