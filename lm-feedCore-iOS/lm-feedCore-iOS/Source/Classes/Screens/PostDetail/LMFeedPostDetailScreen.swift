@@ -62,7 +62,7 @@ open class LMFeedPostDetailScreen: LMFeedBasePostDetailScreen {
         if section == 0,
            let postData,
            let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.postDetailFooterView) {
-            footer.configure(with: postData.footerData, postID: postData.postID, delegate: self, commentCount: postData.totalCommentCount)
+            footer.configure(with: postData.footerData, topResponse: postData.topResponse, postID: postData.postID, delegate: self, commentCount: postData.totalCommentCount)
             return footer
         } else if let data = commentsData[safe: section - 1],
                   data.repliesCount != 0,

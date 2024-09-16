@@ -59,7 +59,7 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
     open override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if let cellData = data[safe: section],
            let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.footerView) {
-            footer.configure(with: cellData.footerData, postID: cellData.postID, delegate: self)
+            footer.configure(with: cellData.footerData, topResponse: cellData.topResponse, postID: cellData.postID, delegate: self)
             return footer
         }
         return nil

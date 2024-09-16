@@ -37,7 +37,7 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
         super.setupLayouts()
         
         topicFeed.setContentHuggingPriority(.defaultLow, for: .vertical)
-        topicFeed.setHeightConstraint(with: 10, priority: .defaultLow)
+        topicFeed.setHeightConstraint(with: 0, priority: .defaultLow)
     }
     
     open override func prepareForReuse() {

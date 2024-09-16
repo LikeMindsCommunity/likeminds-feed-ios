@@ -46,6 +46,11 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
         return view
     }()
     
+    open private(set) lazy var topResponseView: LMFeedTopResponseView = {
+        let view = LMFeedTopResponseView().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
     open private(set) lazy var actionStackView: LMStackView = {
         let stack = LMStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -123,7 +128,7 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
     open var likeText: String {
         get {
             _likeText
-        } set { 
+        } set {
             _likeText = newValue
         }
     }
@@ -181,7 +186,7 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
     }
     
     // MARK: Configure
-    open func configure(with data: ContentModel, postID: String, delegate: LMFeedPostFooterViewProtocol) {
+    open func configure(with data: ContentModel, topResponse: LMFeedCommentContentModel?, postID: String, delegate: LMFeedPostFooterViewProtocol) {
         self.likeText = data.likeText
         self.commentText = data.commentText
         self.postID = postID
@@ -193,6 +198,13 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
         
         updateLikeText(for: data.likeCount)
         updateCommentText(for: data.commentCount)
+        
+        if let topComment = topResponse {
+            topResponseView.configure(with: topComment)
+            topResponseView.isHidden = false
+        } else {
+            topResponseView.isHidden = true
+        }
     }
     
     // MARK: Helper Methods

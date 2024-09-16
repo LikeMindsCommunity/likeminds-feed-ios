@@ -24,13 +24,13 @@ public struct LMUIComponents {
     public var mediaImagePreviewCell: LMFeedMediaImagePreview.Type = LMFeedMediaImagePreview.self
     
     // MARK: Universal Feed Components
-    public var textCell: LMFeedPostBaseTextCell.Type = LMFeedPostQnATextCell.self
-    public var documentCell: LMFeedPostDocumentCell.Type = LMFeedPostDocumentCell.self
-    public var footerView: LMFeedPostFooterView.Type = LMFeedPostFooterView.self
+    public var textCell: LMFeedPostBaseTextCell.Type = LMFeedPostTextCell.self
+    public var documentCell: LMFeedBaseDocumentCell.Type = LMFeedPostDocumentCell.self
+    public var footerView: LMFeedBasePostFooterView.Type = LMFeedPostFooterView.self
     public var headerView: LMFeedPostHeaderView.Type = LMFeedPostHeaderView.self
-    public var linkCell: LMFeedPostLinkCell.Type = LMFeedPostLinkCell.self
-    public var mediaCell: LMFeedPostMediaCell.Type = LMFeedPostMediaCell.self
-    public var pollCell: LMFeedPostPollCell.Type = LMFeedPostPollCell.self
+    public var linkCell: LMFeedBaseLinkCell.Type = LMFeedPostLinkCell.self
+    public var mediaCell: LMFeedBaseMediaCell.Type = LMFeedPostMediaCell.self
+    public var pollCell: LMFeedBasePollCell.Type = LMFeedPostPollCell.self
     
     // MARK: Comment Components
     public var replyView: LMFeedReplyView.Type = LMFeedReplyView.self
@@ -38,7 +38,7 @@ public struct LMUIComponents {
     public var loadMoreReplies: LMFeedMoreRepliesView.Type = LMFeedMoreRepliesView.self
     
     // MARK: Post Detail Components
-    public var postDetailDocumentCell: LMFeedPostDetailDocumentCell.Type = LMFeedPostDetailDocumentCell.self
+    public var postDetailDocumentCell: LMFeedPostDetailDocumentCell.Type = LMFeedPostDetailDocumentCell.self 
     public var postDetailLinkCell: LMFeedPostDetailLinkCell.Type = LMFeedPostDetailLinkCell.self
     public var postDetailMediaCell: LMFeedPostDetailMediaCell.Type = LMFeedPostDetailMediaCell.self
     public var postDetailPollCell: LMFeedPostDetailPollCell.Type = LMFeedPostDetailPollCell.self
@@ -79,12 +79,7 @@ public struct LMUIComponents {
     public var pollDisplayView: LMFeedDisplayPollView.Type = LMFeedDisplayPollView.self
     public var pollDisplayWidget: LMFeedDisplayPollOptionWidget.Type = LMFeedDisplayPollOptionWidget.self
     
-    
-    // MARK: QA Theme
-    public var qnaPostCell: LMFeedBaseMediaCell.Type = LMFeedPostQnAMediaCell.self
-    public var qnaLinkCell: LMFeedPostQnALinkCell.Type = LMFeedPostQnALinkCell.self
-    public var qnaDocumentCell: LMFeedPostQnADocumentCell.Type = LMFeedPostQnADocumentCell.self
-    public var qnaPollCell: LMFeedPostQnAPollCell.Type = LMFeedPostQnAPollCell.self
-    public var qnaFooterView: LMFeedPostQnAFooterView.Type = LMFeedPostQnAFooterView.self
+    // MARK: QnA Feed Theme
+    public var qnaFooterView: LMFeedBasePostFooterView.Type = LMFeedPostQnAFooterView.self
     public var qnaFooterDetailView: LMFeedQnADetailFooterView.Type = LMFeedQnADetailFooterView.self
 }

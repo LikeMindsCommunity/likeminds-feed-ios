@@ -11,34 +11,39 @@ import UIKit
 open class LMFeedQnASearchPostScreen: LMFeedBaseSearchPostScreen {
     open override func setupTableView(_ tableView: LMTableView) {
         super.setupTableView(tableView)
-        
-        tableView.register(LMUIComponents.shared.qnaPostCell)
-        tableView.register(LMUIComponents.shared.qnaDocumentCell)
-        tableView.register(LMUIComponents.shared.qnaLinkCell)
-        tableView.register(LMUIComponents.shared.qnaPollCell)
+        tableView.register(LMUIComponents.shared.textCell)
+        tableView.register(LMUIComponents.shared.mediaCell)
+        tableView.register(LMUIComponents.shared.documentCell)
+        tableView.register(LMUIComponents.shared.linkCell)
+        tableView.register(LMUIComponents.shared.pollCell)
         tableView.registerHeaderFooter(LMUIComponents.shared.headerView)
         tableView.registerHeaderFooter(LMUIComponents.shared.qnaFooterView)
     }
     
     open override func cellForItem(tableView: UITableView, indexPath: IndexPath, item: LMFeedPostContentModel) -> UITableViewCell {
         switch item.postType {
-        case .text, .media:
-            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.qnaPostCell) {
+        case .text:
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.textCell) {
+                cell.configure(data: item)
+                return cell
+            }
+        case .media:
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.mediaCell) {
                 cell.configure(with: item, delegate: self)
                 return cell
             }
         case .documents:
-            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.qnaDocumentCell) {
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.documentCell) {
                 cell.configure(for: indexPath, with: item, delegate: self)
                 return cell
             }
         case .link:
-            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.qnaLinkCell) {
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.linkCell) {
                 cell.configure(with: item, delegate: self)
                 return cell
             }
         case .poll:
-            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.qnaPollCell) {
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.pollCell) {
                 cell.configure(with: item, delegate: self)
                 return cell
             }
@@ -51,7 +56,7 @@ open class LMFeedQnASearchPostScreen: LMFeedBaseSearchPostScreen {
     open override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if let cellData = data[safe: section],
            let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.qnaFooterView) {
-            footer.configure(with: cellData.footerData, postID: cellData.postID, delegate: self)
+            footer.configure(with: cellData.footerData, topResponse: cellData.topResponse, postID: cellData.postID, delegate: self)
             return footer
         }
         return nil

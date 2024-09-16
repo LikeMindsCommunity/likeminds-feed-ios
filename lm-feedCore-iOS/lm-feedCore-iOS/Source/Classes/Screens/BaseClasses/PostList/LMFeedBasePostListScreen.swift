@@ -197,7 +197,7 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
         if onlyHeader {
             (postList.headerView(forSection: index) as? LMFeedPostHeaderView)?.togglePinStatus(isPinned: post.headerData.isPinned)
         } else if onlyFooter {
-            (postList.footerView(forSection: index) as? LMFeedBasePostFooterView)?.configure(with: post.footerData, postID: post.postID, delegate: self)
+            (postList.footerView(forSection: index) as? LMFeedBasePostFooterView)?.configure(with: post.footerData,topResponse: post.topResponse, postID: post.postID, delegate: self)
         } else {
             postList.beginUpdates()
             postList.reloadSections(.init(integer: index), with: .none)
