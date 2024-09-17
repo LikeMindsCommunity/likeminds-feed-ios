@@ -10,6 +10,7 @@ import UIKit
 
 open class LMFeedPostDetailScreen: LMFeedBasePostDetailScreen {
     open override func setupTableView(_ table: UITableView) {
+        table.register(LMUIComponents.shared.postDetailTextCell)
         table.register(LMUIComponents.shared.postDetailMediaCell)
         table.register(LMUIComponents.shared.postDetailLinkCell)
         table.register(LMUIComponents.shared.postDetailDocumentCell)
@@ -25,7 +26,13 @@ open class LMFeedPostDetailScreen: LMFeedBasePostDetailScreen {
         if indexPath.section == 0,
            let postData {
             switch postData.postType {
-            case .text, .media:
+            case .text:
+                if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailTextCell) {
+                    cell.configure(data: postData)
+                    return cell
+                }
+                
+            case .media:
                 if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailMediaCell) {
                     cell.configure(with: postData, delegate: self)
                     return cell

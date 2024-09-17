@@ -283,7 +283,20 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
 extension LMFeedBasePostListScreen: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
     open func numberOfSections(in tableView: UITableView) -> Int { data.count }
     
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1 }
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // Each post can have multiple rows: one for text and others for attachments
+        let item = data[section]
+        
+        if( item.postType == .text){
+            return 1
+        }else{
+            if item.postText.isEmpty && item.postQuestion.isEmpty{
+                return 1
+            }else{
+                return 2
+            }
+        }
+    }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         fatalError("Needs to be implemented by subclass")
@@ -345,6 +358,15 @@ extension LMFeedBasePostListScreen: UITableViewDataSource, UITableViewDelegate, 
     
     open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         scrollingFinished()
+    }
+    
+    open func getRowType(for row: Int, in item: LMFeedPostContentModel) -> LMFeedPostType {
+        // First row is for text, subsequent rows are for attachments
+        if row == 0, !item.postText.isEmpty || !item.postQuestion.isEmpty {
+            return .text
+        }
+        
+        return item.postType
     }
 }
 

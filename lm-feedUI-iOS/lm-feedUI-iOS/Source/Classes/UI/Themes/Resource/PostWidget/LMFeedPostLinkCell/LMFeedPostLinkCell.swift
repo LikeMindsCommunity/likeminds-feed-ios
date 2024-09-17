@@ -16,9 +16,8 @@ open class LMFeedPostLinkCell: LMFeedBaseLinkCell {
         contentView.addSubview(containerView)
         containerView.addSubview(contentStack)
         
-        [topicFeed, postText.postText, postText.seeMoreButton].forEach { subView in
-            contentStack.addArrangedSubview(subView)
-        }
+        contentStack.addArrangedSubview(topicFeed)
+
     }
     
     
@@ -30,8 +29,6 @@ open class LMFeedPostLinkCell: LMFeedBaseLinkCell {
         containerView.pinSubView(subView: contentStack)
 
         topicFeed.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
-        postText.postText.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
-        postText.seeMoreButton.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         
         linkPreveiw.setHeightConstraint(with: 1000, priority: .defaultLow)
         linkPreveiw.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)

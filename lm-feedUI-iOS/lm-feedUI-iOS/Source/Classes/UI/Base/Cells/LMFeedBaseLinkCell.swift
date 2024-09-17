@@ -9,12 +9,6 @@ import UIKit
 
 open class LMFeedBaseLinkCell: LMPostWidgetTableViewCell {
     
-    open private(set) lazy var postText: LMFeedPostBaseTextCell = {
-        let postText = LMUIComponents.shared.textCell.init()
-        postText.translatesAutoresizingMaskIntoConstraints = false
-        return postText
-    }()
-    
     // MARK: UI Elements
     open private(set) lazy var linkPreveiw: LMFeedLinkPreview = {
         let view = LMUIComponents.shared.linkPreview.init().translatesAutoresizingMaskIntoConstraints()
@@ -60,8 +54,6 @@ open class LMFeedBaseLinkCell: LMPostWidgetTableViewCell {
         topicFeed.configure(with: data.topics)
         
         topicFeed.isHidden = data.topics.topics.isEmpty
-        
-        postText.configure(data: data)
         
         if let linkPreview = data.linkPreview {
             linkPreveiw.configure(with: linkPreview)

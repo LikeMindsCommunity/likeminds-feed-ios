@@ -22,8 +22,9 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
     
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = data[indexPath.section]
+        let rowType = getRowType(for: indexPath.row, in: item)
         
-        switch item.postType {
+        switch rowType {
         case .text:
             if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.textCell, for: indexPath) {
                 cell.configure(data: item)

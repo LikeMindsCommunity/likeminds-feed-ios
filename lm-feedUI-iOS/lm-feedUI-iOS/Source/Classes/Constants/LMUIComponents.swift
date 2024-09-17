@@ -38,7 +38,8 @@ public struct LMUIComponents {
     public var loadMoreReplies: LMFeedMoreRepliesView.Type = LMFeedMoreRepliesView.self
     
     // MARK: Post Detail Components
-    public var postDetailDocumentCell: LMFeedPostDetailDocumentCell.Type = LMFeedPostDetailDocumentCell.self 
+    public var postDetailTextCell: LMFeedPostDetailTextCell.Type = LMFeedPostDetailTextCell.self
+    public var postDetailDocumentCell: LMFeedPostDetailDocumentCell.Type = LMFeedPostDetailDocumentCell.self
     public var postDetailLinkCell: LMFeedPostDetailLinkCell.Type = LMFeedPostDetailLinkCell.self
     public var postDetailMediaCell: LMFeedPostDetailMediaCell.Type = LMFeedPostDetailMediaCell.self
     public var postDetailPollCell: LMFeedPostDetailPollCell.Type = LMFeedPostDetailPollCell.self

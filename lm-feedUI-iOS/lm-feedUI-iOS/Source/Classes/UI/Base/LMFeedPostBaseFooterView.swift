@@ -193,7 +193,9 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
         self.likeCount = data.likeCount
         self.delegate = delegate
         
+        
         likeButton.isSelected = data.isLiked
+        likeButton.tintColor = likeButtonTintColor
         saveButton.isSelected = data.isSaved
         
         updateLikeText(for: data.likeCount)
