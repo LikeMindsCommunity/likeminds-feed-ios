@@ -181,7 +181,11 @@ open class LMFeedBaseSearchPostScreen: LMViewController {
 
 
 // MARK: TableView
-extension LMFeedBaseSearchPostScreen: UITableViewDelegate, UITableViewDataSourcePrefetching {
+extension LMFeedBaseSearchPostScreen: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        fatalError("Needs to be implemented by subclass")
+    }
+    
     open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let cellData = data[safe: section],
            let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.headerView) {
@@ -189,6 +193,21 @@ extension LMFeedBaseSearchPostScreen: UITableViewDelegate, UITableViewDataSource
             return header
         }
         return nil
+    }
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // Each post can have multiple rows: one for text and others for attachments
+        let item = data[section]
+        
+        if( item.postType == .text){
+            return 1
+        }else{
+            if item.postText.isEmpty && item.postQuestion.isEmpty{
+                return 1
+            }else{
+                return 2
+            }
+        }
     }
     
     open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -248,6 +267,15 @@ extension LMFeedBaseSearchPostScreen: UITableViewDelegate, UITableViewDataSource
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         searchController.searchBar.resignFirstResponder()
+    }
+    
+    public func getRowType(for row: Int, in item: LMFeedPostContentModel) -> LMFeedPostType {
+        // First row is for text, subsequent rows are for attachments
+        if row == 0, !item.postText.isEmpty || !item.postQuestion.isEmpty {
+            return .text
+        }
+        
+        return item.postType
     }
 }
 
