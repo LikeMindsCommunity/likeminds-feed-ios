@@ -9,6 +9,10 @@ import LikeMindsFeedUI
 import UIKit
 
 open class LMFeedQnAFeedScreen: LMFeedBaseUniversalFeed {
+    // MARK: Variables
+    public override var showHeadingInCreatePost: Bool { true }
+    
+    
     open private(set) lazy var postList: LMFeedQnAPostListScreen? = {
         do {
             let vc = try LMFeedQnAPostListViewModel.createModule(with: self)

@@ -102,8 +102,7 @@ open class LMFeedTopicView: LMView {
         topics = data.topics
         isEditFlow = data.isEditFlow
         isSelectFlow = data.isSelectFlow
-        sepratorView.isHidden = !data.isSepratorShown || data.topics.isEmpty
-        containerView.isHidden = data.topics.isEmpty
+        sepratorView.isHidden = !data.isSepratorShown
         
         collectionView.reloadData()
         layoutIfNeeded()
