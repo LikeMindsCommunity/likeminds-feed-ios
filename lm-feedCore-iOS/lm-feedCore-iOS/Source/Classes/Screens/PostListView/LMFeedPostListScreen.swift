@@ -11,7 +11,8 @@ import LikeMindsFeedUI
 open class LMFeedPostListScreen: LMFeedBasePostListScreen {
     // MARK: - Overridden Methods
     open override func configureTableViewCells(_ tableView: LMTableView) {
-        tableView.register(LMUIComponents.shared.postCell)
+        tableView.register(LMUIComponents.shared.textCell)
+        tableView.register(LMUIComponents.shared.mediaCell)
         tableView.register(LMUIComponents.shared.documentCell)
         tableView.register(LMUIComponents.shared.linkCell)
         tableView.register(LMUIComponents.shared.pollCell)
@@ -21,10 +22,16 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
     
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = data[indexPath.section]
+        let rowType = getRowType(for: indexPath.row, in: item)
         
-        switch item.postType {
-        case .text, .media:
-            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell, for: indexPath) {
+        switch rowType {
+        case .text:
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.textCell, for: indexPath) {
+                cell.configure(data: item)
+                return cell
+            }
+        case .media:
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.mediaCell, for: indexPath) {
                 cell.configure(with: item, delegate: self)
                 return cell
             }
@@ -53,7 +60,7 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
     open override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if let cellData = data[safe: section],
            let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.footerView) {
-            footer.configure(with: cellData.footerData, postID: cellData.postID, delegate: self)
+            footer.configure(with: cellData.footerData, topResponse: cellData.topResponse, postID: cellData.postID, delegate: self)
             return footer
         }
         return nil
@@ -68,4 +75,5 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
         guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: true) else { return }
         navigationController?.pushViewController(viewController, animated: true)
     }
+
 }

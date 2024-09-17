@@ -85,6 +85,7 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         setupActionStackViews()
         
         containerView.addSubview(footerContainerView)
+        footerContainerView.addArrangedSubview(topResponseView)
         
         footerContainerView.addArrangedSubview(actionStackView)
         footerContainerView.addArrangedSubview(addCommentView)
@@ -193,8 +194,8 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         addCommentView.isHidden = commentCount != .zero
     }
     
-    open override func configure(with data: LMFeedBasePostFooterView.ContentModel, postID: String, delegate: any LMFeedPostFooterViewProtocol) {
-        super.configure(with: data, postID: postID, delegate: delegate)
+    open override func configure(with data: LMFeedBasePostFooterView.ContentModel, topResponse: LMFeedCommentContentModel?, postID: String, delegate: any LMFeedPostFooterViewProtocol) {
+        super.configure(with: data, topResponse: topResponse, postID: postID, delegate: delegate)
         
         likeCountButton.setTitle(likeText, for: .normal)
         

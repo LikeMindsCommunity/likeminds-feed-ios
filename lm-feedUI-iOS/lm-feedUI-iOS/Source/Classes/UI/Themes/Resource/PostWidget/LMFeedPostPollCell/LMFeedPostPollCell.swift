@@ -14,10 +14,8 @@ open class LMFeedPostPollCell: LMFeedBasePollCell {
         
         contentView.addSubview(containerView)
         containerView.addSubview(contentStack)
+        contentStack.addArrangedSubview(topicFeed)
         
-        [topicFeed, postText].forEach { subView in
-            contentStack.addArrangedSubview(subView)
-        }
     }
     
     
@@ -27,8 +25,7 @@ open class LMFeedPostPollCell: LMFeedBasePollCell {
         
         contentView.pinSubView(subView: containerView)
         containerView.pinSubView(subView: contentStack)
-
+        
         topicFeed.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
-        postText.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
     }
 }

@@ -12,8 +12,8 @@ open class LMFeedSearchPostScreen: LMFeedBaseSearchPostScreen {
     
     open override func setupTableView(_ tableView: LMTableView) {
         super.setupTableView(tableView)
-        
-        tableView.register(LMUIComponents.shared.postCell)
+        tableView.register(LMUIComponents.shared.textCell)
+        tableView.register(LMUIComponents.shared.mediaCell)
         tableView.register(LMUIComponents.shared.documentCell)
         tableView.register(LMUIComponents.shared.linkCell)
         tableView.register(LMUIComponents.shared.pollCell)
@@ -23,8 +23,14 @@ open class LMFeedSearchPostScreen: LMFeedBaseSearchPostScreen {
     
     open override func cellForItem(tableView: UITableView, indexPath: IndexPath, item: LMFeedPostContentModel) -> UITableViewCell {
         switch item.postType {
-        case .text, .media:
-            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postCell) {
+        case .text:
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.textCell) {
+                cell.configure(data: item)
+                return cell
+            }
+                
+                case .media:
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.mediaCell) {
                 cell.configure(with: item, delegate: self)
                 return cell
             }
@@ -52,7 +58,7 @@ open class LMFeedSearchPostScreen: LMFeedBaseSearchPostScreen {
     open override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if let cellData = data[safe: section],
            let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.footerView) {
-            footer.configure(with: cellData.footerData, postID: cellData.postID, delegate: self)
+            footer.configure(with: cellData.footerData, topResponse: cellData.topResponse, postID: cellData.postID, delegate: self)
             return footer
         }
         return nil

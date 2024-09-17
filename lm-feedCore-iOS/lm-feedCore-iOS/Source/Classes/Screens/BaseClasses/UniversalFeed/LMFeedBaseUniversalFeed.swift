@@ -96,6 +96,7 @@ open class LMFeedBaseUniversalFeed: LMViewController {
     
     
     // MARK: Data Variables
+    public var showHeadingInCreatePost: Bool { false }
     public var selectedTopics: [LMFeedTopicCollectionCellDataModel] = []
     public var isShowCreatePost: Bool = false
     public var isPostCreationInProgress: Bool = false
@@ -158,7 +159,7 @@ open class LMFeedBaseUniversalFeed: LMViewController {
             return
         }
         do {
-            let viewcontroller = try LMFeedCreatePostViewModel.createModule(showHeading: true)
+            let viewcontroller = try LMFeedCreatePostViewModel.createModule(showHeading: showHeadingInCreatePost)
             navigationController?.pushViewController(viewcontroller, animated: true)
             
             LMFeedCore.analytics?.trackEvent(for: .postCreationStarted, eventProperties: [:])

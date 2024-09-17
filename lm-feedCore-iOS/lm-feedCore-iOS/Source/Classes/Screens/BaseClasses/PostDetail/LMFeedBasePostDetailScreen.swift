@@ -422,7 +422,7 @@ extension LMFeedBasePostDetailScreen: UITableViewDataSource, UITableViewDelegate
         if section == 0,
            let postData,
            let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.postDetailFooterView) {
-            footer.configure(with: postData.footerData, postID: postData.postID, delegate: self, commentCount: postData.totalCommentCount)
+            footer.configure(with: postData.footerData, topResponse: postData.topResponse, postID: postData.postID, delegate: self, commentCount: postData.totalCommentCount)
             return footer
         } else if let data = commentsData[safe: section - 1],
                   data.repliesCount != 0,
@@ -555,7 +555,7 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
             
         } else {
             insertNewComments(commentCount: comments.count)
-            (postDetailListView.footerView(forSection: 0) as? LMFeedBasePostFooterView)?.configure(with: post.footerData, postID: post.postID, delegate: self)
+            (postDetailListView.footerView(forSection: 0) as? LMFeedBasePostFooterView)?.configure(with: post.footerData,topResponse: post.topResponse, postID: post.postID, delegate: self)
         }
     }
     
@@ -576,7 +576,7 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
         setNavigationTitle(with: post.totalCommentCount)
         
         if onlyFooter {
-            (postDetailListView.footerView(forSection: 0) as? LMFeedBasePostFooterView)?.configure(with: post.footerData, postID: post.postID, delegate: self)
+            (postDetailListView.footerView(forSection: 0) as? LMFeedBasePostFooterView)?.configure(with: post.footerData, topResponse: post.topResponse, postID: post.postID, delegate: self)
         } else if onlyHeader {
             (postDetailListView.headerView(forSection: 0) as? LMFeedPostHeaderView)?.togglePinStatus(isPinned: post.headerData.isPinned)
         } else {

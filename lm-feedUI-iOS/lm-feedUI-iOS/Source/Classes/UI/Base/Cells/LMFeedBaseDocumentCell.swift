@@ -8,6 +8,7 @@
 import UIKit
 
 open class LMFeedBaseDocumentCell: LMPostWidgetTableViewCell {
+    
     // MARK: UI Elements
     open private(set) lazy var documentContainerStack: LMStackView = {
         let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
@@ -59,8 +60,6 @@ open class LMFeedBaseDocumentCell: LMPostWidgetTableViewCell {
         
         postID = data.postID
         userUUID = data.userUUID
-                
-        setupPostText(text: data.postText, showMore: data.isShowMore)
         
         topicFeed.configure(with: data.topics)
         
