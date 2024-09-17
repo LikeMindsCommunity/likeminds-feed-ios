@@ -615,6 +615,8 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
         
         postDetailListView.beginUpdates()
         postDetailListView.deleteSections(.init(integer: index + 1), with: .none)
+        let footerView = (postDetailListView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)
+        footerView?.updateCommentCount(with: commentsData.count)
         postDetailListView.endUpdates()
     }
     
@@ -643,6 +645,9 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
                 }
             }
         }, completion: nil)
+        
+        let footerView = (postDetailListView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)
+        footerView?.updateCommentCount(with: commentsData.count)
     }
     
     public func handleCommentScroll(openCommentSection: Bool, scrollToCommentSection: Bool) {

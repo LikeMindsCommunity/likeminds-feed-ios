@@ -360,7 +360,7 @@ extension LMFeedBasePostListScreen: UITableViewDataSource, UITableViewDelegate, 
         scrollingFinished()
     }
     
-    open func getRowType(for row: Int, in item: LMFeedPostContentModel) -> LMFeedPostType {
+    public func getRowType(for row: Int, in item: LMFeedPostContentModel) -> LMFeedPostType {
         // First row is for text, subsequent rows are for attachments
         if row == 0, !item.postText.isEmpty || !item.postQuestion.isEmpty {
             return .text
