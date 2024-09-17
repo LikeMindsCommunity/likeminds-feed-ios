@@ -118,6 +118,7 @@ open class LMFeedCreateDisplayPollView: BaseDisplayPollView {
                                       leading: (questionStackView.leadingAnchor, 0),
                                       trailing: (questionStackView.trailingAnchor, 0))
         
+        expiryDateLabel.setHeightConstraint(with: buttonSize, priority: .defaultLow)
         expiryDateLabel.addConstraint(top: (optionStackView.bottomAnchor, 16),
                                       bottom: (containerView.bottomAnchor, -16),
                                       leading: (questionStackView.leadingAnchor, 0))
