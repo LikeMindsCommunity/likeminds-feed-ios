@@ -92,7 +92,7 @@ open class LMFeedTopicView: LMView {
     open override func setupLayouts() {
         super.setupLayouts()
         pinSubView(subView: containerView)
-        containerView.pinSubView(subView: stackView, padding: .init(top: 8, left: 0, bottom: 0, right: 0))
+        containerView.pinSubView(subView: stackView, padding: .init(top: 8, left: 0, bottom: -8, right: 0))
         sepratorView.setHeightConstraint(with: 1)
     }
     

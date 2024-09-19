@@ -12,6 +12,7 @@ open class LMFeedSearchPostScreen: LMFeedBaseSearchPostScreen {
     
     open override func setupTableView(_ tableView: LMTableView) {
         super.setupTableView(tableView)
+        tableView.register(LMUIComponents.shared.topicCell)
         tableView.register(LMUIComponents.shared.textCell)
         tableView.register(LMUIComponents.shared.mediaCell)
         tableView.register(LMUIComponents.shared.documentCell)
@@ -30,6 +31,13 @@ open class LMFeedSearchPostScreen: LMFeedBaseSearchPostScreen {
         
         // Switch based on the type of content to return the appropriate cell
         switch rowType {
+        case .topic:
+            // If the row is for text, dequeue a reusable text cell
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.topicCell, for: indexPath) {
+                // Configure the cell with the post's text data
+                cell.configure(data: item)
+                return cell
+            }
         case .text:
             if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.textCell) {
                 cell.configure(data: item)

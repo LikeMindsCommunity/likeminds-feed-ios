@@ -10,6 +10,7 @@ import UIKit
 
 open class LMFeedPostDetailScreen: LMFeedBasePostDetailScreen {
     open override func setupTableView(_ table: UITableView) {
+        table.register(LMUIComponents.shared.postDetailTopicCell)
         table.register(LMUIComponents.shared.postDetailTextCell)
         table.register(LMUIComponents.shared.postDetailMediaCell)
         table.register(LMUIComponents.shared.postDetailLinkCell)
@@ -25,7 +26,18 @@ open class LMFeedPostDetailScreen: LMFeedBasePostDetailScreen {
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0,
            let postData {
-            switch postData.postType {
+             // Determine the type of row (text, media, documents, link, or poll) based on its position within the section
+             let rowType = getRowType(for: indexPath.row, in: postData)
+             
+            // Switch based on the type of content to return the appropriate cell
+            switch rowType {
+            case .topic:
+                // If the row is for text, dequeue a reusable text cell
+                if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailTopicCell, for: indexPath) {
+                    // Configure the cell with the post's text data
+                    cell.configure(data: postData)
+                    return cell
+                }
             case .text:
                 if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.postDetailTextCell) {
                     cell.configure(data: postData)

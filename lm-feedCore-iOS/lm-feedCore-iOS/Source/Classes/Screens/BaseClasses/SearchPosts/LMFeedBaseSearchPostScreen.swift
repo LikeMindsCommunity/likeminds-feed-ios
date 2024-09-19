@@ -199,15 +199,21 @@ extension LMFeedBaseSearchPostScreen: UITableViewDataSource, UITableViewDelegate
         // Each post can have multiple rows: one for text and others for attachments
         let item = data[section]
         
-        if( item.postType == .text){
-            return 1
-        }else{
-            if item.postText.isEmpty && item.postQuestion.isEmpty{
-                return 1
-            }else{
-                return 2
-            }
+        var numberOfRows = 0
+        
+        if(!item.topics.topics.isEmpty){
+            numberOfRows += 1
         }
+        
+        if( !item.postText.isEmpty || !item.postQuestion.isEmpty){
+            numberOfRows += 1
+        }
+        
+        if item.postType != .text && item.postType != .topic{
+            numberOfRows += 1
+        }
+        
+        return numberOfRows
     }
     
     open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -271,7 +277,19 @@ extension LMFeedBaseSearchPostScreen: UITableViewDataSource, UITableViewDelegate
     
     public func getRowType(for row: Int, in item: LMFeedPostContentModel) -> LMFeedPostType {
         // First row is for text, subsequent rows are for attachments
-        if row == 0, !item.postText.isEmpty || !item.postQuestion.isEmpty {
+        let isTopicsEmpty = item.topics.topics.isEmpty
+        let isTextAndHeadingEmpty = item.postText.isEmpty && item.postQuestion.isEmpty
+        
+        if row == 0, !isTopicsEmpty {
+            return .topic
+        }
+        
+        if row == 0, isTopicsEmpty,
+            !isTextAndHeadingEmpty {
+            return .text
+        }
+        
+        if row == 1, !isTopicsEmpty, !isTextAndHeadingEmpty{
             return .text
         }
         

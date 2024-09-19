@@ -11,6 +11,7 @@ import LikeMindsFeedUI
 open class LMFeedPostListScreen: LMFeedBasePostListScreen {
     // MARK: - Overridden Methods
     open override func configureTableViewCells(_ tableView: LMTableView) {
+        tableView.register(LMUIComponents.shared.topicCell)
         tableView.register(LMUIComponents.shared.textCell)
         tableView.register(LMUIComponents.shared.mediaCell)
         tableView.register(LMUIComponents.shared.documentCell)
@@ -29,6 +30,13 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
         
         // Switch based on the type of content to return the appropriate cell
         switch rowType {
+        case .topic:
+            // If the row is for text, dequeue a reusable text cell
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.topicCell, for: indexPath) {
+                // Configure the cell with the post's text data
+                cell.configure(data: item)
+                return cell
+            }
         case .text:
             // If the row is for text, dequeue a reusable text cell
             if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.textCell, for: indexPath) {
@@ -72,7 +80,7 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
         // Return an empty cell in case no valid cell is dequeued (this should rarely happen)
         return UITableViewCell()
     }
-
+    
     
     open override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if let cellData = data[safe: section],
@@ -92,5 +100,5 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
         guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: true) else { return }
         navigationController?.pushViewController(viewController, animated: true)
     }
-
+    
 }
