@@ -2,7 +2,7 @@ Pod::Spec.new do |spec|
   spec.name         = 'LikeMindsFeedCore'
   spec.summary      = 'LikeMinds Feed official iOS SDK'
   spec.homepage     = 'https://likeminds.community/'
-  spec.version      = '1.5.0'
+  spec.version      = '1.5.1'
   
   spec.license      = { :type => 'MIT', :file => 'LICENSE' }
   spec.authors      = { 'Devansh Mohata' => 'devansh.mohata@likeminds.community' }
