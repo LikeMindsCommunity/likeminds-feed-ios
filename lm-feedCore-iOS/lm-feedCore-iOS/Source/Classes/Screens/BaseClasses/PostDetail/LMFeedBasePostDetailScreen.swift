@@ -384,6 +384,27 @@ extension LMFeedBasePostDetailScreen: UITableViewDataSource, UITableViewDelegate
         if let comment = commentsData[safe: section - 1] {
             return comment.replies.count
         }
+        
+        if section == 0{
+            guard let item = postData else { return 1 }
+            // Each post can have multiple rows: one for text and others for attachments
+            
+            var numberOfRows = 0
+            
+            if(!item.topics.topics.isEmpty){
+                numberOfRows += 1
+            }
+            
+            if( !item.postText.isEmpty || !item.postQuestion.isEmpty){
+                numberOfRows += 1
+            }
+            
+            if item.postType != .text && item.postType != .topic{
+                numberOfRows += 1
+            }
+            
+            return numberOfRows
+        }
         return 1
     }
     
@@ -490,6 +511,7 @@ extension LMFeedBasePostDetailScreen: UITableViewDataSource, UITableViewDelegate
             }
         }
     }
+    
 }
 
 
@@ -615,6 +637,8 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
         
         postDetailListView.beginUpdates()
         postDetailListView.deleteSections(.init(integer: index + 1), with: .none)
+        let footerView = (postDetailListView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)
+        footerView?.updateCommentCount(with: commentsData.count)
         postDetailListView.endUpdates()
     }
     
@@ -643,6 +667,9 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
                 }
             }
         }, completion: nil)
+        
+        let footerView = (postDetailListView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)
+        footerView?.updateCommentCount(with: commentsData.count)
     }
     
     public func handleCommentScroll(openCommentSection: Bool, scrollToCommentSection: Bool) {
@@ -897,4 +924,25 @@ extension LMFeedBasePostDetailScreen: LMFeedAddOptionProtocol {
             viewModel?.getPost(isInitialFetch: true)
         }
     }
+}
+
+public func getRowType(for row: Int, in item: LMFeedPostContentModel) -> LMFeedPostType {
+    // First row is for text, subsequent rows are for attachments
+    let isTopicsEmpty = item.topics.topics.isEmpty
+    let isTextAndHeadingEmpty = item.postText.isEmpty && item.postQuestion.isEmpty
+    
+    if row == 0, !isTopicsEmpty {
+        return .topic
+    }
+    
+    if row == 0, isTopicsEmpty,
+        !isTextAndHeadingEmpty {
+        return .text
+    }
+    
+    if row == 1, !isTopicsEmpty, !isTextAndHeadingEmpty{
+        return .text
+    }
+    
+    return item.postType
 }

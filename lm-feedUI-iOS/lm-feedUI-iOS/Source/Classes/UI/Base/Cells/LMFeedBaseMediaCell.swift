@@ -90,9 +90,6 @@ open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
         postID = data.postID
         userUUID = data.userUUID
         
-        topicFeed.configure(with: data.topics)
-        topicFeed.isHidden = data.topics.topics.isEmpty
-        
         mediaCellsData = data.mediaData
         setupMediaCells(mediaHaveSameAspectRatio: data.mediaHaveSameAspectRatio, aspectRatio: data.aspectRatio)
     }

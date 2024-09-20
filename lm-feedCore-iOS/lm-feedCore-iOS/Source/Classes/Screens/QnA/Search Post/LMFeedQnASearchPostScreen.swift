@@ -11,6 +11,7 @@ import UIKit
 open class LMFeedQnASearchPostScreen: LMFeedBaseSearchPostScreen {
     open override func setupTableView(_ tableView: LMTableView) {
         super.setupTableView(tableView)
+        tableView.register(LMUIComponents.shared.topicCell)
         tableView.register(LMUIComponents.shared.textCell)
         tableView.register(LMUIComponents.shared.mediaCell)
         tableView.register(LMUIComponents.shared.documentCell)
@@ -21,7 +22,21 @@ open class LMFeedQnASearchPostScreen: LMFeedBaseSearchPostScreen {
     }
     
     open override func cellForItem(tableView: UITableView, indexPath: IndexPath, item: LMFeedPostContentModel) -> UITableViewCell {
-        switch item.postType {
+        // Fetch the item (post) corresponding to the section
+        let item = data[indexPath.section]
+        
+        // Determine the type of row (text, media, documents, link, or poll) based on its position within the section
+        let rowType = getRowType(for: indexPath.row, in: item)
+        
+        // Switch based on the type of content to return the appropriate cell
+        switch rowType {
+        case .topic:
+                   // If the row is for text, dequeue a reusable text cell
+                   if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.topicCell, for: indexPath) {
+                       // Configure the cell with the post's text data
+                       cell.configure(data: item)
+                       return cell
+                   }
         case .text:
             if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.textCell) {
                 cell.configure(data: item)

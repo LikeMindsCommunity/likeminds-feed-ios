@@ -24,6 +24,7 @@ public struct LMUIComponents {
     public var mediaImagePreviewCell: LMFeedMediaImagePreview.Type = LMFeedMediaImagePreview.self
     
     // MARK: Universal Feed Components
+    public var topicCell: LMFeedPostBaseTopicCell.Type = LMFeedPostTopicCell.self
     public var textCell: LMFeedPostBaseTextCell.Type = LMFeedPostTextCell.self
     public var documentCell: LMFeedBaseDocumentCell.Type = LMFeedPostDocumentCell.self
     public var footerView: LMFeedBasePostFooterView.Type = LMFeedPostFooterView.self
@@ -38,6 +39,7 @@ public struct LMUIComponents {
     public var loadMoreReplies: LMFeedMoreRepliesView.Type = LMFeedMoreRepliesView.self
     
     // MARK: Post Detail Components
+    public var postDetailTopicCell: LMFeedPostDetailTopicCell.Type = LMFeedPostDetailTopicCell.self
     public var postDetailTextCell: LMFeedPostDetailTextCell.Type = LMFeedPostDetailTextCell.self
     public var postDetailDocumentCell: LMFeedPostDetailDocumentCell.Type = LMFeedPostDetailDocumentCell.self
     public var postDetailLinkCell: LMFeedPostDetailLinkCell.Type = LMFeedPostDetailLinkCell.self

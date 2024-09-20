@@ -60,10 +60,6 @@ open class LMFeedBaseDocumentCell: LMPostWidgetTableViewCell {
         
         postID = data.postID
         userUUID = data.userUUID
-        
-        topicFeed.configure(with: data.topics)
-        
-        topicFeed.isHidden = data.topics.topics.isEmpty
                 
         documentContainerStack.removeAllArrangedSubviews()
         
