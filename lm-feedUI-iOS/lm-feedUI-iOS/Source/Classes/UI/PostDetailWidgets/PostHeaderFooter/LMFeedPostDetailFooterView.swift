@@ -102,7 +102,7 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
     open func updateCommentCount(with commentCount: Int) {
         updateCommentText(for: commentCount)
         
-        noCommentContainerView.isHidden = commentCount != 0
+        noCommentContainerView.isHidden = commentCount > 0
         commentContainerView.isHidden = commentCount == 0
         
         if commentCount == 0 {
@@ -111,5 +111,7 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
         }
         
         totalCommentLabel.text = "\(commentCount) \(commentText.pluralize(count: commentCount))"
+        
+        layoutIfNeeded()
     }
 }

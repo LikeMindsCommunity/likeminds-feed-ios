@@ -13,6 +13,7 @@ public enum LMFeedPostType {
          media,
          documents,
          poll,
+         topic,
          other
 }
 

@@ -20,8 +20,6 @@ open class LMFeedBasePollCell: LMPostWidgetTableViewCell {
     // MARK: configure
     open func configure(with data: LMFeedPostContentModel, delegate: LMFeedPostPollCellProtocol?) {
         actionDelegate = delegate
-        topicFeed.configure(with: data.topics)
-        topicFeed.isHidden = data.topics.topics.isEmpty
         
         if let pollData = data.pollWidget {
             pollPreview.configure(with: pollData, delegate: delegate)

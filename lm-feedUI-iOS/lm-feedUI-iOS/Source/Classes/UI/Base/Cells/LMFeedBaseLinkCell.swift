@@ -51,10 +51,6 @@ open class LMFeedBaseLinkCell: LMPostWidgetTableViewCell {
         self.actionDelegate = delegate
         postURL = data.linkPreview?.url
         
-        topicFeed.configure(with: data.topics)
-        
-        topicFeed.isHidden = data.topics.topics.isEmpty
-        
         if let linkPreview = data.linkPreview {
             linkPreveiw.configure(with: linkPreview)
             contentStack.addArrangedSubview(linkPreveiw)

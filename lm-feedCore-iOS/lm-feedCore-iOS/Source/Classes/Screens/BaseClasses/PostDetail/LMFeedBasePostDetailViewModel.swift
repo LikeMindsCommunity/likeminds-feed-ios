@@ -278,7 +278,6 @@ public extension LMFeedPostDetailViewModel {
     func sendButtonTapped(with comment: String) {
         if let editCommentIndex {
             editReply(with: comment, commentID: editCommentIndex.commentID, index: editCommentIndex.indexPath)
-            self.editCommentIndex = nil
         } else {
             postReply(with: comment)
         }
@@ -343,7 +342,7 @@ public extension LMFeedPostDetailViewModel {
             delegate?.insertComment(comment: LMFeedConvertToFeedPost.convertToCommentModel(from: localComment), index: 0)
             postReplyOnPost(with: commentString, localComment: localComment)
         }
-        
+       
         replyToComment = nil
     }
     

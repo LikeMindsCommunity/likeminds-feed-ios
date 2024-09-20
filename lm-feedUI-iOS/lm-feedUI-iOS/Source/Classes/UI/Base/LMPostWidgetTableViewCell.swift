@@ -19,12 +19,6 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
         return stack
     }()
     
-    open private(set) lazy var topicFeed: LMFeedTopicView = {
-        let view = LMFeedTopicView().translatesAutoresizingMaskIntoConstraints()
-        return view
-    }()
-    
-    
     // MARK: Data Variables
     public weak var actionDelegate: LMPostWidgetTableViewCellProtocol?
     public var userUUID: String?
@@ -35,9 +29,6 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
-        
-        topicFeed.setContentHuggingPriority(.defaultLow, for: .vertical)
-        topicFeed.setHeightConstraint(with: 0, priority: .defaultLow)
     }
     
     open override func prepareForReuse() {

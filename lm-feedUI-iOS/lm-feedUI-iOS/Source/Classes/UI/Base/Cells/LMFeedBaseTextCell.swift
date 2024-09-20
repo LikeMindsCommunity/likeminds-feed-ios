@@ -42,8 +42,6 @@ open class LMFeedPostBaseTextCell: LMPostWidgetTableViewCell {
     open override func setupLayouts() {
         super.setupLayouts()
         
-        topicFeed.setContentHuggingPriority(.defaultLow, for: .vertical)
-        topicFeed.setHeightConstraint(with: 10, priority: .defaultLow)
         questionTitle.setHeightConstraint(with: 10, priority: .defaultLow)
         postText.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         postText.setHeightConstraint(with: 10, priority: .defaultLow)
@@ -98,8 +96,6 @@ open class LMFeedPostBaseTextCell: LMPostWidgetTableViewCell {
     
     open func configure(data: LMFeedPostContentModel) {
         questionTitle.text = data.postQuestion
-        topicFeed.configure(with: data.topics)
-        topicFeed.isHidden = data.topics.topics.isEmpty
         
         postText.attributedText = GetAttributedTextWithRoutes.getAttributedText(from: data.postText.trimmingCharacters(in: .whitespacesAndNewlines), andPrefix: "@")
         postText.isHidden =  data.postText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
