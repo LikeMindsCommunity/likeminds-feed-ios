@@ -197,7 +197,7 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
         if onlyHeader {
             (postList.headerView(forSection: index) as? LMFeedPostHeaderView)?.togglePinStatus(isPinned: post.headerData.isPinned)
         } else if onlyFooter {
-            (postList.footerView(forSection: index) as? LMFeedBasePostFooterView)?.configure(with: post.footerData, postID: post.postID, delegate: self)
+            (postList.footerView(forSection: index) as? LMFeedBasePostFooterView)?.configure(with: post.footerData,topResponse: post.topResponse, postID: post.postID, delegate: self)
         } else {
             postList.beginUpdates()
             postList.reloadSections(.init(integer: index), with: .none)
@@ -283,7 +283,26 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
 extension LMFeedBasePostListScreen: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
     open func numberOfSections(in tableView: UITableView) -> Int { data.count }
     
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1 }
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // Each post can have multiple rows: one for text and others for attachments
+        let item = data[section]
+        
+        var numberOfRows = 0
+        
+        if(!item.topics.topics.isEmpty){
+            numberOfRows += 1
+        }
+        
+        if( !item.postText.isEmpty || !item.postQuestion.isEmpty){
+            numberOfRows += 1
+        }
+        
+        if item.postType != .text && item.postType != .topic{
+            numberOfRows += 1
+        }
+        
+        return numberOfRows
+    }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         fatalError("Needs to be implemented by subclass")
@@ -345,6 +364,27 @@ extension LMFeedBasePostListScreen: UITableViewDataSource, UITableViewDelegate, 
     
     open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         scrollingFinished()
+    }
+    
+    public func getRowType(for row: Int, in item: LMFeedPostContentModel) -> LMFeedPostType {
+        // First row is for text, subsequent rows are for attachments
+        let isTopicsEmpty = item.topics.topics.isEmpty
+        let isTextAndHeadingEmpty = item.postText.isEmpty && item.postQuestion.isEmpty
+        
+        if row == 0, !isTopicsEmpty {
+            return .topic
+        }
+        
+        if row == 0, isTopicsEmpty,
+            !isTextAndHeadingEmpty {
+            return .text
+        }
+        
+        if row == 1, !isTopicsEmpty, !isTextAndHeadingEmpty{
+            return .text
+        }
+        
+        return item.postType
     }
 }
 

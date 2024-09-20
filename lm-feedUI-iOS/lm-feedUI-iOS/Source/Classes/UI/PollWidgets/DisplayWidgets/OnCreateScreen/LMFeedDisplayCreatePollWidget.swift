@@ -23,6 +23,8 @@ open class LMFeedDisplayCreatePollWidget: BaseDisplayPollWidget {
         }
     }
     
+    // MARK: Variables
+    public var optionHeight: CGFloat = 48.0
     
     // MARK: setupViews
     open override func setupViews() {
@@ -40,6 +42,7 @@ open class LMFeedDisplayCreatePollWidget: BaseDisplayPollWidget {
         super.setupLayouts()
         
         pinSubView(subView: containerView)
+        containerView.setHeightConstraint(with: optionHeight)
         containerView.pinSubView(subView: stackView, padding: .init(top: 16, left: 16, bottom: -16, right: -16))
     }
     

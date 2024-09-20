@@ -181,7 +181,11 @@ open class LMFeedBaseSearchPostScreen: LMViewController {
 
 
 // MARK: TableView
-extension LMFeedBaseSearchPostScreen: UITableViewDelegate, UITableViewDataSourcePrefetching {
+extension LMFeedBaseSearchPostScreen: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        fatalError("Needs to be implemented by subclass")
+    }
+    
     open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let cellData = data[safe: section],
            let header = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.headerView) {
@@ -189,6 +193,27 @@ extension LMFeedBaseSearchPostScreen: UITableViewDelegate, UITableViewDataSource
             return header
         }
         return nil
+    }
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // Each post can have multiple rows: one for text and others for attachments
+        let item = data[section]
+        
+        var numberOfRows = 0
+        
+        if(!item.topics.topics.isEmpty){
+            numberOfRows += 1
+        }
+        
+        if( !item.postText.isEmpty || !item.postQuestion.isEmpty){
+            numberOfRows += 1
+        }
+        
+        if item.postType != .text && item.postType != .topic{
+            numberOfRows += 1
+        }
+        
+        return numberOfRows
     }
     
     open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -248,6 +273,27 @@ extension LMFeedBaseSearchPostScreen: UITableViewDelegate, UITableViewDataSource
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         searchController.searchBar.resignFirstResponder()
+    }
+    
+    public func getRowType(for row: Int, in item: LMFeedPostContentModel) -> LMFeedPostType {
+        // First row is for text, subsequent rows are for attachments
+        let isTopicsEmpty = item.topics.topics.isEmpty
+        let isTextAndHeadingEmpty = item.postText.isEmpty && item.postQuestion.isEmpty
+        
+        if row == 0, !isTopicsEmpty {
+            return .topic
+        }
+        
+        if row == 0, isTopicsEmpty,
+            !isTextAndHeadingEmpty {
+            return .text
+        }
+        
+        if row == 1, !isTopicsEmpty, !isTextAndHeadingEmpty{
+            return .text
+        }
+        
+        return item.postType
     }
 }
 

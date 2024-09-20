@@ -8,6 +8,7 @@
 import UIKit
 
 open class LMFeedBaseLinkCell: LMPostWidgetTableViewCell {
+    
     // MARK: UI Elements
     open private(set) lazy var linkPreveiw: LMFeedLinkPreview = {
         let view = LMUIComponents.shared.linkPreview.init().translatesAutoresizingMaskIntoConstraints()
@@ -49,12 +50,6 @@ open class LMFeedBaseLinkCell: LMPostWidgetTableViewCell {
         self.delegate = delegate
         self.actionDelegate = delegate
         postURL = data.linkPreview?.url
-        
-        topicFeed.configure(with: data.topics)
-        
-        topicFeed.isHidden = data.topics.topics.isEmpty
-        
-        setupPostText(text: data.postText, showMore: data.isShowMore)
         
         if let linkPreview = data.linkPreview {
             linkPreveiw.configure(with: linkPreview)

@@ -36,7 +36,7 @@ public struct LMFeedConvertToFeedPost {
             postType = .link
         } else if pollPreview != nil {
             postType = .poll
-        } else if !post.postContent.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+        } else if !post.postContent.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !post.postQuestion.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             postType = .text
         } else {
             postType = .other

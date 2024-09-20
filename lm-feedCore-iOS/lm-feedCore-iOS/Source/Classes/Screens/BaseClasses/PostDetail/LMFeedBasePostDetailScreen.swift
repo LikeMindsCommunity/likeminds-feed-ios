@@ -384,6 +384,27 @@ extension LMFeedBasePostDetailScreen: UITableViewDataSource, UITableViewDelegate
         if let comment = commentsData[safe: section - 1] {
             return comment.replies.count
         }
+        
+        if section == 0{
+            guard let item = postData else { return 1 }
+            // Each post can have multiple rows: one for text and others for attachments
+            
+            var numberOfRows = 0
+            
+            if(!item.topics.topics.isEmpty){
+                numberOfRows += 1
+            }
+            
+            if( !item.postText.isEmpty || !item.postQuestion.isEmpty){
+                numberOfRows += 1
+            }
+            
+            if item.postType != .text && item.postType != .topic{
+                numberOfRows += 1
+            }
+            
+            return numberOfRows
+        }
         return 1
     }
     
@@ -422,7 +443,7 @@ extension LMFeedBasePostDetailScreen: UITableViewDataSource, UITableViewDelegate
         if section == 0,
            let postData,
            let footer = tableView.dequeueReusableHeaderFooterView(LMUIComponents.shared.postDetailFooterView) {
-            footer.configure(with: postData.footerData, postID: postData.postID, delegate: self, commentCount: postData.totalCommentCount)
+            footer.configure(with: postData.footerData, topResponse: postData.topResponse, postID: postData.postID, delegate: self, commentCount: postData.totalCommentCount)
             return footer
         } else if let data = commentsData[safe: section - 1],
                   data.repliesCount != 0,
@@ -490,6 +511,7 @@ extension LMFeedBasePostDetailScreen: UITableViewDataSource, UITableViewDelegate
             }
         }
     }
+    
 }
 
 
@@ -555,7 +577,7 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
             
         } else {
             insertNewComments(commentCount: comments.count)
-            (postDetailListView.footerView(forSection: 0) as? LMFeedBasePostFooterView)?.configure(with: post.footerData, postID: post.postID, delegate: self)
+            (postDetailListView.footerView(forSection: 0) as? LMFeedBasePostFooterView)?.configure(with: post.footerData,topResponse: post.topResponse, postID: post.postID, delegate: self)
         }
     }
     
@@ -576,7 +598,7 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
         setNavigationTitle(with: post.totalCommentCount)
         
         if onlyFooter {
-            (postDetailListView.footerView(forSection: 0) as? LMFeedBasePostFooterView)?.configure(with: post.footerData, postID: post.postID, delegate: self)
+            (postDetailListView.footerView(forSection: 0) as? LMFeedBasePostFooterView)?.configure(with: post.footerData, topResponse: post.topResponse, postID: post.postID, delegate: self)
         } else if onlyHeader {
             (postDetailListView.headerView(forSection: 0) as? LMFeedPostHeaderView)?.togglePinStatus(isPinned: post.headerData.isPinned)
         } else {
@@ -615,6 +637,8 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
         
         postDetailListView.beginUpdates()
         postDetailListView.deleteSections(.init(integer: index + 1), with: .none)
+        let footerView = (postDetailListView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)
+        footerView?.updateCommentCount(with: commentsData.count)
         postDetailListView.endUpdates()
     }
     
@@ -643,6 +667,9 @@ extension LMFeedBasePostDetailScreen: LMFeedBasePostDetailViewModelProtocol {
                 }
             }
         }, completion: nil)
+        
+        let footerView = (postDetailListView.footerView(forSection: 0) as? LMFeedPostDetailFooterView)
+        footerView?.updateCommentCount(with: commentsData.count)
     }
     
     public func handleCommentScroll(openCommentSection: Bool, scrollToCommentSection: Bool) {
@@ -897,4 +924,25 @@ extension LMFeedBasePostDetailScreen: LMFeedAddOptionProtocol {
             viewModel?.getPost(isInitialFetch: true)
         }
     }
+}
+
+public func getRowType(for row: Int, in item: LMFeedPostContentModel) -> LMFeedPostType {
+    // First row is for text, subsequent rows are for attachments
+    let isTopicsEmpty = item.topics.topics.isEmpty
+    let isTextAndHeadingEmpty = item.postText.isEmpty && item.postQuestion.isEmpty
+    
+    if row == 0, !isTopicsEmpty {
+        return .topic
+    }
+    
+    if row == 0, isTopicsEmpty,
+        !isTextAndHeadingEmpty {
+        return .text
+    }
+    
+    if row == 1, !isTopicsEmpty, !isTextAndHeadingEmpty{
+        return .text
+    }
+    
+    return item.postType
 }

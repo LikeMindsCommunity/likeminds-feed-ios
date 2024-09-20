@@ -94,15 +94,15 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
         commentContainerView.backgroundColor = LMFeedAppearance.shared.colors.white
     }
     
-    open func configure(with data: LMFeedPostFooterView.ContentModel, postID: String, delegate: LMFeedPostFooterViewProtocol, commentCount: Int) {
-        super.configure(with: data, postID: postID, delegate: delegate)
+    open func configure(with data: LMFeedPostFooterView.ContentModel,topResponse: LMFeedCommentContentModel?, postID: String, delegate: LMFeedPostFooterViewProtocol, commentCount: Int) {
+        super.configure(with: data, topResponse: topResponse, postID: postID, delegate: delegate)
         updateCommentCount(with: commentCount)
     }
     
     open func updateCommentCount(with commentCount: Int) {
         updateCommentText(for: commentCount)
         
-        noCommentContainerView.isHidden = commentCount != 0
+        noCommentContainerView.isHidden = commentCount > 0
         commentContainerView.isHidden = commentCount == 0
         
         if commentCount == 0 {
@@ -111,5 +111,7 @@ open class LMFeedPostDetailFooterView: LMFeedPostFooterView {
         }
         
         totalCommentLabel.text = "\(commentCount) \(commentText.pluralize(count: commentCount))"
+        
+        layoutIfNeeded()
     }
 }

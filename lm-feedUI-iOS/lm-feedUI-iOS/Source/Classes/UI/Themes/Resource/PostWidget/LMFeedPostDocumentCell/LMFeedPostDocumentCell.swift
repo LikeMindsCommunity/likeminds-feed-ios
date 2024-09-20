@@ -15,10 +15,8 @@ open class LMFeedPostDocumentCell: LMFeedBaseDocumentCell {
         
         contentView.addSubview(containerView)
         containerView.addSubview(contentStack)
+        contentStack.addArrangedSubview(documentContainerStack)
         
-        [topicFeed, postText, seeMoreButton, documentContainerStack].forEach { subView in
-            contentStack.addArrangedSubview(subView)
-        }
     }
     
     
@@ -29,8 +27,6 @@ open class LMFeedPostDocumentCell: LMFeedBaseDocumentCell {
         contentView.pinSubView(subView: containerView)
         containerView.pinSubView(subView: contentStack)
         
-        topicFeed.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
-        postText.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
         documentContainerStack.addConstraint(leading: (contentStack.leadingAnchor, 16), trailing: (contentStack.trailingAnchor, -16))
     }
 }
