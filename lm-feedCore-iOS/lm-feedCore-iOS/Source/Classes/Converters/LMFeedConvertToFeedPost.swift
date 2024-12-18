@@ -16,6 +16,8 @@ public struct LMFeedConvertToFeedPost {
         var linkPreview: LMFeedLinkPreview.ContentModel?
         let pollPreview = convertToPollModel(from: post)
         
+        let widgets = convertToWidget(from: post.widgetAttachment)
+        
         var topResponse: LMFeedCommentContentModel?
         
         if let topResponseData = post.topResponse {
@@ -36,6 +38,8 @@ public struct LMFeedConvertToFeedPost {
             postType = .link
         } else if pollPreview != nil {
             postType = .poll
+        }else if !widgets.isEmpty{
+            postType = .widget
         } else if !post.postContent.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !post.postQuestion.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             postType = .text
         } else {
@@ -54,6 +58,7 @@ public struct LMFeedConvertToFeedPost {
             footerData: convertToFooterViewData(from: post),
             totalCommentCount: post.commentCount,
             documents: documents,
+            widgets: widgets,
             linkPreview: linkPreview,
             mediaData: media,
             pollWidget: pollPreview, 
@@ -114,6 +119,12 @@ public struct LMFeedConvertToFeedPost {
                 pageCount: datum.pageCount,
                 docType: datum.format
             )
+        }
+    }
+    
+    public static func convertToWidget(from data: [LMFeedWidgetDataModel]) -> [LMFeedWidgetContentModel]{
+        data.compactMap{ widget in
+            return LMFeedWidgetContentModel.init(id: widget.id, parentEntityID: widget.parentEntityID, parentEntityType: widget.parentEntityType, metadata: widget.metadata, createdAt: widget.createdAt, updatedAt: widget.updatedAt, lmMeta: widget.lmMeta)
         }
     }
     

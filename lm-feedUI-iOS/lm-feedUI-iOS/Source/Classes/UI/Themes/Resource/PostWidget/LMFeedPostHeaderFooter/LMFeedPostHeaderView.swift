@@ -226,7 +226,7 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
     open override func setupAppearance() {
         super.setupAppearance()
         
-        backgroundColor = .clear
+        backgroundView = nil
         contentContainerView.backgroundColor = .white
         imageView.roundCorners(with: 48/2)
     }

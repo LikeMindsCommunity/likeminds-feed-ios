@@ -32,7 +32,7 @@ final class LMFeedEditPostOperation {
                     post: data,
                     users: users,
                     allTopics: response.data?.topics?.compactMap({ $0.value }) ?? [],
-                    widgets: response.data?.widgets?.compactMap({ $0.value }) ?? [], 
+                    widgets: response.data?.widgets ?? [:],
                     filteredComments: [:]
                 ) {
                 NotificationCenter.default.post(name: .LMPostEdited, object: post)
@@ -48,43 +48,43 @@ final class LMFeedEditPostOperation {
         media.forEach { medium in
             switch medium.isVideo {
             case true:
-                let attachmentMeta = AttachmentMeta()
-                    .attachmentUrl(medium.url)
-                    .size(medium.size)
-                    .name(medium.name)
-                    .duration(medium.duration ?? 0)
+                var attachmentMeta = AttachmentMeta.Builder()
+                attachmentMeta = attachmentMeta.attachmentUrl(medium.url)
+                attachmentMeta = attachmentMeta.size(medium.size)
+                attachmentMeta = attachmentMeta.name(medium.name)
+                attachmentMeta = attachmentMeta.duration(medium.duration ?? 0)
                 
                 
                 let attachment = Attachment()
                     .attachmentType(.video)
-                    .attachmentMeta(attachmentMeta)
+                    .attachmentMeta(attachmentMeta.build())
                 
                 attachments.append(attachment)
             case false:
-                let attachmentMeta = AttachmentMeta()
-                    .attachmentUrl(medium.url)
-                    .size(medium.size)
-                    .name(medium.name)
+                var attachmentMeta = AttachmentMeta.Builder()
+                attachmentMeta = attachmentMeta.attachmentUrl(medium.url)
+                attachmentMeta = attachmentMeta.size(medium.size)
+                attachmentMeta = attachmentMeta.name(medium.name)
                 
                 let attachment = Attachment()
                     .attachmentType(.image)
-                    .attachmentMeta(attachmentMeta)
+                    .attachmentMeta(attachmentMeta.build())
                 
                 attachments.append(attachment)
             }
         }
         
         documents.forEach { document in
-            let attachmentMeta = AttachmentMeta()
-                .attachmentUrl(document.url)
-                .size(document.size ?? 0)
-                .pageCount(document.pageCount ?? 0)
-                .name(document.name)
-                .format(document.format ?? ".pdf")
+            var attachmentMeta = AttachmentMeta.Builder()
+            attachmentMeta = attachmentMeta.attachmentUrl(document.url)
+            attachmentMeta = attachmentMeta.size(document.size ?? 0)
+            attachmentMeta = attachmentMeta.pageCount(document.pageCount ?? 0)
+            attachmentMeta = attachmentMeta.name(document.name)
+            attachmentMeta = attachmentMeta .format(document.format ?? ".pdf")
             
             let attachment = Attachment()
                 .attachmentType(.doc)
-                .attachmentMeta(attachmentMeta)
+                .attachmentMeta(attachmentMeta.build())
             
             attachments.append(attachment)
         }
@@ -97,31 +97,31 @@ final class LMFeedEditPostOperation {
                 .description(linkAttachment.description ?? "")
                 .url(linkAttachment.url)
             
-            let attachmentMeta = AttachmentMeta()
-                .ogTags(ogTags)
+            var attachmentMeta = AttachmentMeta.Builder()
+            attachmentMeta = attachmentMeta.ogTags(ogTags)
             
             let attachment = Attachment()
                 .attachmentType(.link)
-                .attachmentMeta(attachmentMeta)
+                .attachmentMeta(attachmentMeta.build())
             
             attachments.append(attachment)
         }
         
         if let poll {
-            let attachmentMeta = AttachmentMeta()
-                .entityID(poll.id)
-                .title(poll.question)
-                .expiryTime(poll.expiryTime)
-                .pollOptions(poll.options.map({ $0.option }))
-                .multiSelectState(poll.pollSelectType.apiKey)
-                .pollType(poll.isInstantPoll ? "instant" : "deferred")
-                .multSelectNo(poll.pollSelectCount)
-                .isAnonymous(poll.isAnonymous)
-                .allowAddOptions(poll.allowAddOptions)
+            var attachmentMeta = AttachmentMeta.Builder()
+            attachmentMeta = attachmentMeta.entityID(poll.id)
+            attachmentMeta = attachmentMeta.title(poll.question)
+            attachmentMeta = attachmentMeta.expiryTime(poll.expiryTime)
+            attachmentMeta = attachmentMeta.pollOptions(poll.options.map({ $0.option }))
+            attachmentMeta = attachmentMeta.multiSelectState(poll.pollSelectType.apiKey)
+            attachmentMeta = attachmentMeta.pollType(poll.isInstantPoll ? "instant" : "deferred")
+            attachmentMeta = attachmentMeta.multSelectNo(poll.pollSelectCount)
+            attachmentMeta = attachmentMeta.isAnonymous(poll.isAnonymous)
+            attachmentMeta = attachmentMeta.allowAddOptions(poll.allowAddOptions)
             
             let attachmentRequest = Attachment()
                 .attachmentType(.poll)
-                .attachmentMeta(attachmentMeta)
+                .attachmentMeta(attachmentMeta.build())
             
             attachments.append(attachmentRequest)
         }

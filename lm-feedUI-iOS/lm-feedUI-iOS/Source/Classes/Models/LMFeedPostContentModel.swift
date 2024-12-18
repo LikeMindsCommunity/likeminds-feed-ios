@@ -13,6 +13,7 @@ public enum LMFeedPostType {
          media,
          documents,
          poll,
+         widget,
          topic,
          other
 }
@@ -44,6 +45,7 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
     public var footerData: LMFeedBasePostFooterView.ContentModel
     public var totalCommentCount: Int
     public var documents: [LMFeedDocumentPreview.ContentModel]
+    public var widgets: [LMFeedWidgetContentModel]
     public var isShowMoreDocuments: Bool
     public var linkPreview: LMFeedLinkPreview.ContentModel?
     public var mediaData: [LMFeedMediaProtocol]
@@ -75,6 +77,7 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
         footerData: LMFeedBasePostFooterView.ContentModel,
         totalCommentCount: Int,
         documents: [LMFeedDocumentPreview.ContentModel],
+        widgets: [LMFeedWidgetContentModel],
         linkPreview: LMFeedLinkPreview.ContentModel?,
         mediaData: [LMFeedMediaProtocol],
         pollWidget: LMFeedDisplayPollView.ContentModel?,
@@ -104,5 +107,35 @@ public struct LMFeedPostContentModel: LMFeedPostTableCellProtocol {
         self.mediaHaveSameAspectRatio = mediaHaveSameAspectRatio
         self.aspectRatio = aspectRatio
         self.createdAt = createdAt
+        self.widgets = widgets
+    }
+}
+
+
+public class LMFeedWidgetContentModel{
+    public let id: String?
+    public let parentEntityID: String?
+    public let parentEntityType: String?
+    public let metadata: [String: Any]?
+    public let createdAt: Double?
+    public let updatedAt: Double?
+    public let lmMeta: [String: Any]?
+
+    public init(
+        id: String?,
+        parentEntityID: String?,
+        parentEntityType: String?,
+        metadata: [String: Any]?,
+        createdAt: Double?,
+        updatedAt: Double?,
+        lmMeta: [String: Any]?
+    ) {
+        self.id = id
+        self.parentEntityID = parentEntityID
+        self.parentEntityType = parentEntityType
+        self.metadata = metadata
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+        self.lmMeta = lmMeta
     }
 }

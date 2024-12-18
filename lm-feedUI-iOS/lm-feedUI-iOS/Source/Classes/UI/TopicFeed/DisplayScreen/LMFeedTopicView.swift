@@ -117,8 +117,7 @@ extension LMFeedTopicView: UICollectionViewDataSource, UICollectionViewDelegateF
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.topicFeedDisplayView, for: indexPath),
-           let data = topics[safe: indexPath.row] {
+        if let data = topics[safe: indexPath.row], let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.topicFeedDisplayView, for: indexPath){
             cell.configure(with: data)
             return cell
         } else if isEditFlow,
