@@ -124,7 +124,19 @@ public struct LMFeedConvertToFeedPost {
     
     public static func convertToWidget(from data: [LMFeedWidgetDataModel]) -> [LMFeedWidgetContentModel]{
         data.compactMap{ widget in
-            return LMFeedWidgetContentModel.init(id: widget.id, parentEntityID: widget.parentEntityID, parentEntityType: widget.parentEntityType, metadata: widget.metadata, createdAt: widget.createdAt, updatedAt: widget.updatedAt, lmMeta: widget.lmMeta)
+            var lmMeta: LMFeedLMMetaContentModel?
+            if let widgetLMMeta = widget.lmMeta{
+                var pollOptions: [LMFeedPollOptionContentModel]?
+                
+                pollOptions = widgetLMMeta.options.map{
+                    option in
+                    return LMFeedPollOptionContentModel(id: option.id, text: option.text, isSelected: option.isSelected, percentage: option.percentage, uuid: option.uuid, voteCount: option.voteCount)
+                }
+                
+                lmMeta = LMFeedLMMetaContentModel(options: pollOptions ?? [], pollAnswerText: widgetLMMeta.pollAnswerText, isShowResult: widgetLMMeta.isShowResult, voteCount: widgetLMMeta.voteCount)
+            }
+            
+            return LMFeedWidgetContentModel.init(id: widget.id, parentEntityID: widget.parentEntityID, parentEntityType: widget.parentEntityType, metadata: widget.metadata, createdAt: widget.createdAt, updatedAt: widget.updatedAt, lmMeta: lmMeta)
         }
     }
     

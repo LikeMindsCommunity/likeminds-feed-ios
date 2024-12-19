@@ -119,7 +119,7 @@ public class LMFeedWidgetContentModel{
     public let metadata: [String: Any]?
     public let createdAt: Double?
     public let updatedAt: Double?
-    public let lmMeta: [String: Any]?
+    public let lmMeta: LMFeedLMMetaContentModel?
 
     public init(
         id: String?,
@@ -128,7 +128,7 @@ public class LMFeedWidgetContentModel{
         metadata: [String: Any]?,
         createdAt: Double?,
         updatedAt: Double?,
-        lmMeta: [String: Any]?
+        lmMeta: LMFeedLMMetaContentModel?
     ) {
         self.id = id
         self.parentEntityID = parentEntityID
@@ -137,5 +137,45 @@ public class LMFeedWidgetContentModel{
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.lmMeta = lmMeta
+    }
+}
+
+public class LMFeedLMMetaContentModel{
+    public let options: [LMFeedPollOptionContentModel]
+    public let pollAnswerText: String?
+    public let isShowResult: Bool?
+    public let voteCount: Int?
+    
+    public enum CodingKeys: String, CodingKey {
+        case options
+        case pollAnswerText = "poll_answer_text"
+        case isShowResult = "to_show_results"
+        case voteCount = "voters_count"
+    }
+    
+    public init(options: [LMFeedPollOptionContentModel], pollAnswerText: String?, isShowResult: Bool?, voteCount: Int?) {
+        self.options = options
+        self.pollAnswerText = pollAnswerText
+        self.isShowResult = isShowResult
+        self.voteCount = voteCount
+    }
+}
+
+
+public class LMFeedPollOptionContentModel{
+    public let id: String?
+    public let text: String?
+    public let isSelected: Bool
+    public let percentage: Double
+    public let uuid: String?
+    public let voteCount: Int
+    
+    public init(id: String?, text: String?, isSelected: Bool, percentage: Double, uuid: String?, voteCount: Int) {
+        self.id = id
+        self.text = text
+        self.isSelected = isSelected
+        self.percentage = percentage
+        self.uuid = uuid
+        self.voteCount = voteCount
     }
 }

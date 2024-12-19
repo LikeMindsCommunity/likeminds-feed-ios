@@ -78,7 +78,7 @@ public extension LMFeedPollDataModel {
         guard let widget = widget,
               let id = widget.id,
               let question = widget.metadata?["title"] as? String,
-              let pollDisplayText = (widget.lmMeta?["poll_answer_text"] as? String?)
+              let pollDisplayText = widget.lmMeta?.pollAnswerText
         else { return nil }
         
         let selectType: String = (widget.metadata?["multiple_select_state"] as? String) ?? "exactly"
@@ -91,16 +91,16 @@ public extension LMFeedPollDataModel {
         self.id = id
         self.postID = postID
         self.question = question
-        self.options = (widget.lmMeta?["options"] as? [PollOption] as [PollOption]?)?.compactMap({ Option.init(users: users, option: $0) }) ?? []
-        self.pollDisplayText = pollDisplayText ?? ""
+        self.options = (widget.lmMeta?.options)?.compactMap({ Option.init(users: users, option: $0) }) ?? []
+        self.pollDisplayText = pollDisplayText
         self.pollSelectType = .init(key: selectType) ?? .exactly
         self.pollSelectCount = selectNumber
         self.expiryTime = expiryTime
         self.isAnonymous = isAnonymous
         self.allowAddOptions = allowAddOptions
-        self.showResults =  widget.lmMeta?["to_show_results"] as? Bool ?? false
+        self.showResults =  widget.lmMeta?.isShowResult ?? false
         self.isInstantPoll = pollType == "instant"
-        self.voteCount = widget.lmMeta?["voters_count"] as? Int ?? 0
+        self.voteCount = widget.lmMeta?.voteCount ?? 0
         self.userSelectedOptions = []
     }
 }
