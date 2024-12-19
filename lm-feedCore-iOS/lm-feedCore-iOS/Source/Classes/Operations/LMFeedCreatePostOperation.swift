@@ -55,31 +55,33 @@ final class LMFeedCreatePostOperation {
         files: [LMAWSRequestModel],
         linkPreview: LMFeedPostDataModel.LinkAttachment?,
         poll: LMFeedCreatePollDataModel?,
-        meta: [String:Any]? = nil
+        meta: [String: Any]? = nil
     ) {
         postMessageForPostCreationStart(files.first)
-        
+
         // Var to store custom widget attachment
         var customWidgetAttachment: Attachment?
-        
+
         // If meta is provided, create a Attachment of type .widget
         // and store it in a variable to be used for createPost() method
         if meta != nil {
             var customWidgetAttachmentMetaBuilder = AttachmentMeta.Builder()
-            
+
             // Create attachment meta using the given meta object
-            customWidgetAttachmentMetaBuilder = customWidgetAttachmentMetaBuilder.meta(meta)
-            
+            customWidgetAttachmentMetaBuilder =
+                customWidgetAttachmentMetaBuilder.meta(meta)
+
             // Create an attachment of type .widget
-            customWidgetAttachment = Attachment().attachmentType(.widget).attachmentMeta(customWidgetAttachmentMetaBuilder.build())
+            customWidgetAttachment = Attachment().attachmentType(.widget)
+                .attachmentMeta(customWidgetAttachmentMetaBuilder.build())
         }
-    
 
         if let linkPreview {
-            
+
             var attachmentMetaBuilder = AttachmentMeta.Builder()
-            
-            attachmentMetaBuilder =  attachmentMetaBuilder
+
+            attachmentMetaBuilder =
+                attachmentMetaBuilder
                 .ogTags(
                     .init()
                         .image(linkPreview.previewImage ?? "")
@@ -90,10 +92,10 @@ final class LMFeedCreatePostOperation {
             let attachmentRequest = Attachment()
                 .attachmentType(.link)
                 .attachmentMeta(attachmentMetaBuilder.build())
-            
+
             // Store list of attachments
             var attachmentList = [attachmentRequest]
-            
+
             // If custom widget is provided,
             // add the earlier created custom widget attachment into
             // the attachments list
@@ -104,28 +106,35 @@ final class LMFeedCreatePostOperation {
             createPost(
                 with: content, heading: heading,
                 attachments: attachmentList, topics: topics)
-            
+
         } else if let poll {
-            
+
             var attachmentMetaBuilder = AttachmentMeta.Builder()
-            
-            
-            attachmentMetaBuilder =  attachmentMetaBuilder.title(poll.pollQuestion)
-            attachmentMetaBuilder =  attachmentMetaBuilder.expiryTime(Int(poll.expiryTime.timeIntervalSince1970 * 1000))
-            attachmentMetaBuilder =  attachmentMetaBuilder.pollOptions(poll.pollOptions)
-            attachmentMetaBuilder =  attachmentMetaBuilder.multiSelectState(poll.selectState.apiKey)
-            attachmentMetaBuilder =  attachmentMetaBuilder.pollType(poll.isInstantPoll ? "instant" : "deferred")
-            attachmentMetaBuilder =  attachmentMetaBuilder.multSelectNo(poll.selectStateCount)
-            attachmentMetaBuilder =  attachmentMetaBuilder.isAnonymous(poll.isAnonymous)
-            attachmentMetaBuilder =  attachmentMetaBuilder.allowAddOptions(poll.allowAddOptions)
+
+            attachmentMetaBuilder = attachmentMetaBuilder.title(
+                poll.pollQuestion)
+            attachmentMetaBuilder = attachmentMetaBuilder.expiryTime(
+                Int(poll.expiryTime.timeIntervalSince1970 * 1000))
+            attachmentMetaBuilder = attachmentMetaBuilder.pollOptions(
+                poll.pollOptions)
+            attachmentMetaBuilder = attachmentMetaBuilder.multiSelectState(
+                poll.selectState.apiKey)
+            attachmentMetaBuilder = attachmentMetaBuilder.pollType(
+                poll.isInstantPoll ? "instant" : "deferred")
+            attachmentMetaBuilder = attachmentMetaBuilder.multSelectNo(
+                poll.selectStateCount)
+            attachmentMetaBuilder = attachmentMetaBuilder.isAnonymous(
+                poll.isAnonymous)
+            attachmentMetaBuilder = attachmentMetaBuilder.allowAddOptions(
+                poll.allowAddOptions)
 
             let attachmentRequest = Attachment()
                 .attachmentType(.poll)
                 .attachmentMeta(attachmentMetaBuilder.build())
-            
+
             // Store list of attachments
             var attachmentList = [attachmentRequest]
-            
+
             // If custom widget is provided,
             // add the earlier created custom widget attachment into
             // the attachments list
@@ -136,7 +145,7 @@ final class LMFeedCreatePostOperation {
             createPost(
                 with: content, heading: heading,
                 attachments: attachmentList, topics: topics)
-            
+
         } else if !files.isEmpty {
             var tempFiles = files
 
@@ -189,14 +198,14 @@ final class LMFeedCreatePostOperation {
                         with: "Files Upload Error!")
                     return
                 }
-                
+
                 // If custom widget is provided,
                 // add the earlier created custom widget attachment into
                 // the attachments list
                 if let customWidgetAttachment {
                     attachments.append(customWidgetAttachment)
                 }
-                
+
                 self.createPost(
                     with: content, heading: heading, attachments: attachments,
                     topics: topics)
@@ -204,16 +213,17 @@ final class LMFeedCreatePostOperation {
         } else {
             // Create an empty list of attachments
             var attachmentList = [Attachment]()
-            
+
             // If custom widget is provided,
             // add the earlier created custom widget attachment into
             // the attachments list
             if let customWidgetAttachment {
                 attachmentList.append(customWidgetAttachment)
             }
-            
+
             createPost(
-                with: content, heading: heading, attachments: attachmentList, topics: topics
+                with: content, heading: heading, attachments: attachmentList,
+                topics: topics
             )
         }
     }
@@ -223,13 +233,14 @@ final class LMFeedCreatePostOperation {
         topics: [String]
     ) {
         var addPostRequest = AddPostRequest.Builder()
-        
+
         addPostRequest = addPostRequest.heading(heading)
         addPostRequest = addPostRequest.text(content)
         addPostRequest = addPostRequest.attachments(attachments)
         addPostRequest = addPostRequest.topics(topics)
-            
-        LMFeedClient.shared.addPost(addPostRequest.build()) { [weak self] response in
+
+        LMFeedClient.shared.addPost(addPostRequest.build()) {
+            [weak self] response in
             guard response.success else {
                 self?.postMessageForCompleteCreatePost(
                     with: response.errorMessage)
@@ -253,7 +264,7 @@ final class LMFeedCreatePostOperation {
         }
 
         var attachmentMeta = AttachmentMeta.Builder()
-        
+
         attachmentMeta = attachmentMeta.attachmentUrl(awsURL)
         attachmentMeta = attachmentMeta.size(size ?? 0)
         attachmentMeta = attachmentMeta.name(attachment.fileName)
@@ -289,7 +300,7 @@ final class LMFeedCreatePostOperation {
         let durationTime = CMTimeGetSeconds(duration)
 
         var attachmentMeta = AttachmentMeta.Builder()
-        
+
         attachmentMeta = attachmentMeta.attachmentUrl(awsURL)
         attachmentMeta = attachmentMeta.size(size ?? 0)
         attachmentMeta = attachmentMeta.name(attachment.fileName)

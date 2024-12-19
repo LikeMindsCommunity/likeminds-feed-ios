@@ -211,11 +211,13 @@ extension LMFeedPostDataModel {
     }
 
     func handleAttachments(
-    for postID: String, attachments: [Attachment], widgets: [String:Widget],
+        for postID: String, attachments: [Attachment],
+        widgets: [String: Widget],
         users: [String: User]
     ) -> (
         images: [ImageVideoAttachment], docs: [DocumentAttachment],
-        link: LinkAttachment?, poll: LMFeedPollDataModel?, widgets: [LMFeedWidgetDataModel]
+        link: LinkAttachment?, poll: LMFeedPollDataModel?,
+        widgets: [LMFeedWidgetDataModel]
     ) {
         var tempImageVideoAttachment: [ImageVideoAttachment] = []
         var tempDocumentAttachment: [DocumentAttachment] = []
@@ -263,9 +265,15 @@ extension LMFeedPostDataModel {
                                 .image)
                     }
                 case .poll:
-                    poll = .init(postID: postID, users: users, widget: widgets[(attachment.attachmentMeta?.entityID)!] ?? nil)
+                    poll = .init(
+                        postID: postID, users: users,
+                        widget: widgets[(attachment.attachmentMeta?.entityID)!]
+                            ?? nil)
                 case .widget:
-                    tempWidgetAttachment.append(.from(widget: widgets[(attachment.attachmentMeta?.entityID)!]!))
+                    tempWidgetAttachment.append(
+                        .from(
+                            widget: widgets[
+                                (attachment.attachmentMeta?.entityID)!]!))
                 default:
                     break
                 }
