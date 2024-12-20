@@ -27,8 +27,9 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
         public var likeText: String
         public var commentText: String
         public let user: LMFeedUserModel?
+        public let widgets: [LMFeedWidgetContentModel]?
         
-        public init(isSaved: Bool, isLiked: Bool, likeCount: Int, commentCount: Int, likeText: String, commentText: String, user: LMFeedUserModel?) {
+        public init(isSaved: Bool, isLiked: Bool, likeCount: Int, commentCount: Int, likeText: String, commentText: String, user: LMFeedUserModel?, widgets: [LMFeedWidgetContentModel]?) {
             self.isSaved = isSaved
             self.isLiked = isLiked
             self.likeCount = likeCount
@@ -36,6 +37,7 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
             self.likeText = likeText
             self.commentText = commentText
             self.user = user
+            self.widgets = widgets
         }
     }
     

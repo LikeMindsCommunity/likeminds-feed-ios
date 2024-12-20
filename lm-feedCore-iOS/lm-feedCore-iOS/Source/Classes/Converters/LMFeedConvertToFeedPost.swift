@@ -94,13 +94,17 @@ public struct LMFeedConvertToFeedPost {
     public static func convertToHeaderViewData(from data: LMFeedPostDataModel)
         -> LMFeedPostHeaderView.ContentModel
     {
-        .init(
+        let widgets: [LMFeedWidgetContentModel] =
+            convertToWidget(from: data.widgetAttachment)
+
+        return .init(
             profileImage: data.userDetails.userProfileImage,
             authorName: data.userDetails.userName,
             authorTag: data.userDetails.customTitle,
             subtitle: "\(data.createTime)\(data.isEdited ? " • Edited" : "")",
             isPinned: data.isPinned,
-            showMenu: !data.postMenu.isEmpty
+            showMenu: !data.postMenu.isEmpty,
+            widgets: widgets
         )
     }
 
@@ -116,6 +120,9 @@ public struct LMFeedConvertToFeedPost {
                 userProfileImage: user.imageUrl, customTitle: user.customTitle)
         }
 
+        let widgets: [LMFeedWidgetContentModel] =
+            convertToWidget(from: data.widgetAttachment)
+
         return .init(
             isSaved: data.isSaved,
             isLiked: data.isLiked,
@@ -123,7 +130,8 @@ public struct LMFeedConvertToFeedPost {
             commentCount: data.commentCount,
             likeText: LMStringConstants.shared.likeVariable,
             commentText: LMStringConstants.shared.commentVariable,
-            user: loggedInUser
+            user: loggedInUser,
+            widgets: widgets
         )
     }
 
