@@ -49,7 +49,17 @@ final class LMFeedCreatePostOperation {
     static let shared = LMFeedCreatePostOperation()
     var attachmentList: [LMAWSRequestModel] = []
     let dispatchGroup = DispatchGroup()
-
+    
+    /// Creates a post with various content types including text, links, polls, files, and custom widgets.
+    ///
+    /// - Parameters:
+    ///   - content: The textual content of the post.
+    ///   - heading: An optional heading for the post.
+    ///   - topics: A list of topic IDs associated with the post.
+    ///   - files: A list of files to be attached to the post.
+    ///   - linkPreview: An optional link preview to be included in the post.
+    ///   - poll: An optional poll to be included in the post.
+    ///   - meta: An optional dictionary containing metadata for creating a custom widget attachment.
     func createPost(
         with content: String, heading: String? = nil, topics: [String],
         files: [LMAWSRequestModel],
@@ -249,7 +259,11 @@ final class LMFeedCreatePostOperation {
             NotificationCenter.default.post(name: .LMPostCreated, object: nil)
         }
     }
-
+    
+    /// Creates an image attachment for a post from an `LMAWSRequestModel` object.
+    ///
+    /// - Parameter attachment: The `LMAWSRequestModel` containing details about the image file.
+    /// - Returns: An `Attachment` object configured as an image attachment, or `nil` if the `awsURL` is invalid.
     func imageAttachmentData(attachment: LMAWSRequestModel) -> Attachment? {
         guard let awsURL = attachment.awsURL,
             !awsURL.isEmpty
@@ -283,6 +297,10 @@ final class LMFeedCreatePostOperation {
         return attachmentRequest
     }
 
+    /// Creates a video attachment for a post from an `LMAWSRequestModel` object.
+    ///
+    /// - Parameter attachment: The `LMAWSRequestModel` containing details about the video file.
+    /// - Returns: An `Attachment` object configured as a video attachment, or `nil` if the `awsURL` is invalid.
     func videoAttachmentData(attachment: LMAWSRequestModel) -> Attachment? {
         guard let awsURL = attachment.awsURL,
             !awsURL.isEmpty
@@ -320,7 +338,11 @@ final class LMFeedCreatePostOperation {
 
         return attachmentRequest
     }
-
+    
+    /// Creates a document attachment for a post from an `LMAWSRequestModel` object.
+    ///
+    /// - Parameter attachment: The `LMAWSRequestModel` containing details about the document file.
+    /// - Returns: An `Attachment` object configured as a document attachment, or `nil` if the `awsURL` is invalid.
     func fileAttachmentData(attachment: LMAWSRequestModel) -> Attachment? {
         guard let awsURL = attachment.awsURL,
             !awsURL.isEmpty
@@ -354,48 +376,53 @@ final class LMFeedCreatePostOperation {
         return attachmentRequest
     }
 
+    /// Posts a notification indicating the completion of a post creation process.
+    ///
+    /// - Parameter error: An optional error message describing the failure, if any.
     func postMessageForCompleteCreatePost(with error: String?) {
         DispatchQueue.main.async {
             NotificationCenter.default.post(
                 name: .LMPostCreateError,
-                object: LMFeedError.postCreationFailed(error: error))
+                object: LMFeedError.postCreationFailed(error: error)
+            )
         }
     }
 
+    /// Posts a notification indicating the start of a post creation process, including an optional thumbnail image.
+    ///
+    /// - Parameter file: An optional `LMAWSRequestModel` representing the file for which the post is being created.
     func postMessageForPostCreationStart(_ file: LMAWSRequestModel?) {
         var image: UIImage?
 
         if let file {
             switch file.contentType {
             case .image:
+                // Generate a thumbnail image from the provided image file
                 do {
                     let data = try Data(contentsOf: file.url)
                     image = UIImage(data: data)
                 } catch {}
             case .video:
+                // Generate a thumbnail image from the first frame of the video
                 do {
                     let asset = AVAsset(url: file.url)
                     let imgGenerator = AVAssetImageGenerator(asset: asset)
                     imgGenerator.appliesPreferredTrackTransform = true
-                    let cgImage = try imgGenerator.copyCGImage(
-                        at: .zero, actualTime: nil)
+                    let cgImage = try imgGenerator.copyCGImage(at: .zero, actualTime: nil)
                     image = UIImage(cgImage: cgImage)
                 } catch {}
             case .document:
+                // Generate a thumbnail image from the first page of a PDF document
                 if let pdf = PDFDocument(url: file.url),
-                    let pdfPage = pdf.page(at: 0)
-                {
+                   let pdfPage = pdf.page(at: 0) {
                     let pdfPageSize = pdfPage.bounds(for: .mediaBox)
-                    let renderer = UIGraphicsImageRenderer(
-                        size: pdfPageSize.size)
+                    let renderer = UIGraphicsImageRenderer(size: pdfPageSize.size)
 
                     image = renderer.image { ctx in
                         UIColor.white.set()
                         ctx.fill(pdfPageSize)
-                        ctx.cgContext.translateBy(
-                            x: 0.0, y: pdfPageSize.size.height)
+                        ctx.cgContext.translateBy(x: 0.0, y: pdfPageSize.size.height)
                         ctx.cgContext.scaleBy(x: 1.0, y: -1.0)
-
                         pdfPage.draw(with: .mediaBox, to: ctx.cgContext)
                     }
                 }
@@ -404,7 +431,9 @@ final class LMFeedCreatePostOperation {
             }
         }
 
+        // Post a notification with the generated thumbnail image
         NotificationCenter.default.post(
-            name: .LMPostCreationStarted, object: image)
+            name: .LMPostCreationStarted, object: image
+        )
     }
 }

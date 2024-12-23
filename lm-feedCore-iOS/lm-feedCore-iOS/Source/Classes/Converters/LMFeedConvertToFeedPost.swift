@@ -12,7 +12,6 @@ public struct LMFeedConvertToFeedPost {
     public static func convertToViewModel(for post: LMFeedPostDataModel)
         -> LMFeedPostContentModel
     {
-
         let documents = convertToDocument(from: post.documentAttachment)
         let media = convertToMediaProtocol(
             from: post.imageVideoAttachment, postID: post.postId)
@@ -245,31 +244,39 @@ extension LMFeedConvertToFeedPost {
 
 // MARK: Poll Specific
 extension LMFeedConvertToFeedPost {
-    public static func convertToPollModel(from data: LMFeedPostDataModel)
-        -> LMFeedDisplayPollView.ContentModel?
-    {
+    /// Converts an `LMFeedPostDataModel` object to a `LMFeedDisplayPollView.ContentModel` object.
+    ///
+    /// - Parameter data: An `LMFeedPostDataModel` object containing the poll data.
+    /// - Returns: A `LMFeedDisplayPollView.ContentModel` object representing the poll, or `nil` if the input data does not contain a poll attachment.
+    public static func convertToPollModel(from data: LMFeedPostDataModel) -> LMFeedDisplayPollView.ContentModel? {
+        // Ensure the poll attachment exists in the provided data
         guard let pollAttachment = data.pollAttachment else { return nil }
-
+        
+        // Extract key attributes from the poll attachment
         let postID = pollAttachment.postID
         let pollID = pollAttachment.id
-
         let optionCount = pollAttachment.options.count
-
+        
+        // Determine if the poll has been submitted
         let isPollSubmitted = isPollSubmitted(options: pollAttachment.options)
-
+        
+        // Determine if the poll has ended
         let isPollEnded = hasPollEnded(time: pollAttachment.expiryTime)
-
+        
+        // Check if the poll is multi-choice
         let isMultiChoice = isMultiChoicePoll(
             pollSelectCount: pollAttachment.pollSelectCount,
             pollSelectType: pollAttachment.pollSelectType
         )
-
+        
+        // Determine if the "Submit" button should be shown
         let isShowSubmitButton = isShowSubmitButton(
             isPollEnded: isPollEnded,
             isMultiChoice: isMultiChoice,
             isPollSubmitted: isPollSubmitted
         )
-
+        
+        // Determine if the "Add Option" button should be shown
         let allowAddOptions = isShowAddOptionButton(
             isInstantPoll: pollAttachment.isInstantPoll,
             isPollSubmitted: isPollSubmitted,
@@ -277,28 +284,24 @@ extension LMFeedConvertToFeedPost {
             isPollEnded: isPollEnded,
             optionCount: optionCount
         )
-
-        let options: [LMFeedDisplayPollOptionWidget.ContentModel] =
-            pollAttachment.options.map({
-                .init(
-                    pollId: pollID,
-                    optionId: $0.id,
-                    option: $0.option,
-                    addedBy: pollAttachment.allowAddOptions
-                        ? $0.addedBy.userName : nil,
-                    voteCount: $0.voteCount,
-                    votePercentage: $0.percentage,
-                    isSelected: $0.isSelected
-                        || pollAttachment.userSelectedOptions.contains($0.id),
-                    showVoteCount: pollAttachment.showResults,
-                    showProgressBar: pollAttachment.showResults
-                        && (isPollEnded || isPollSubmitted),
-                    showTickButton: ($0.isSelected
-                        || pollAttachment.userSelectedOptions.contains($0.id))
-                        && (isMultiChoice || !pollAttachment.isInstantPoll)
-                )
-            })
-
+        
+        // Map the poll options to the display model
+        let options: [LMFeedDisplayPollOptionWidget.ContentModel] = pollAttachment.options.map({
+            .init(
+                pollId: pollID,
+                optionId: $0.id,
+                option: $0.option,
+                addedBy: pollAttachment.allowAddOptions ? $0.addedBy.userName : nil,
+                voteCount: $0.voteCount,
+                votePercentage: $0.percentage,
+                isSelected: $0.isSelected || pollAttachment.userSelectedOptions.contains($0.id),
+                showVoteCount: pollAttachment.showResults,
+                showProgressBar: pollAttachment.showResults && (isPollEnded || isPollSubmitted),
+                showTickButton: ($0.isSelected || pollAttachment.userSelectedOptions.contains($0.id)) && (isMultiChoice || !pollAttachment.isInstantPoll)
+            )
+        })
+        
+        // Return the constructed poll content model
         return .init(
             postID: postID,
             pollID: pollID,
@@ -317,13 +320,20 @@ extension LMFeedConvertToFeedPost {
                 && !pollAttachment.isInstantPoll
         )
     }
-
-    public static func isPollSubmitted(options: [LMFeedPollDataModel.Option])
-        -> Bool
-    {
+    
+    /// Determines if a poll has been submitted by checking if any option is selected.
+    ///
+    /// - Parameter options: An array of `LMFeedPollDataModel.Option` objects representing the poll options.
+    /// - Returns: A Boolean value indicating whether at least one option has been selected (`true`) or not (`false`).
+    public static func isPollSubmitted(options: [LMFeedPollDataModel.Option]) -> Bool {
         options.contains(where: { $0.isSelected })
     }
-
+    
+    /// Checks whether a poll has ended based on the given time.
+    ///
+    /// - Parameter time: The end time of the poll, provided as an epoch timestamp.
+    ///                   This can either be in seconds or milliseconds.
+    /// - Returns: A Boolean value indicating whether the current time has surpassed the poll's end time (`true`) or not (`false`).
     public static func hasPollEnded(time: Int) -> Bool {
         if DateUtility.isEpochTimeInSeconds(time) {
             Int(Date().timeIntervalSince1970) > time
@@ -332,25 +342,37 @@ extension LMFeedConvertToFeedPost {
         }
     }
 
-    public static func isMultiChoicePoll(
-        pollSelectCount: Int, pollSelectType: LMFeedPollSelectState
-    ) -> Bool {
+    /// Determines if the poll allows multiple choices based on the selection count and selection type.
+    ///
+    /// - Parameters:
+    ///   - pollSelectCount: The number of choices a user can select.
+    ///   - pollSelectType: The type of poll selection, represented by `LMFeedPollSelectState`.
+    /// - Returns: A Boolean value indicating whether the poll is a multi-choice poll (`true`) or a single-choice poll (`false`).
+    public static func isMultiChoicePoll(pollSelectCount: Int, pollSelectType: LMFeedPollSelectState) -> Bool {
         !(pollSelectType == .exactly && pollSelectCount == 1)
     }
-
-    /// if poll has ended, hide the submit button
-    /// if it is single choice, hide the submit button
-    /// if poll has been submitted, hide the submit button
-    public static func isShowSubmitButton(
-        isPollEnded: Bool, isMultiChoice: Bool, isPollSubmitted: Bool
-    ) -> Bool {
+    
+    /// Determines whether the "Submit" button should be shown for a poll.
+    ///
+    /// - Parameters:
+    ///   - isPollEnded: A Boolean value indicating if the poll has ended.
+    ///   - isMultiChoice: A Boolean value indicating if the poll allows multiple choices.
+    ///   - isPollSubmitted: A Boolean value indicating if the poll has already been submitted.
+    /// - Returns: A Boolean value indicating whether the "Submit" button should be displayed (`true`) or not (`false`).
+    public static func isShowSubmitButton(isPollEnded: Bool, isMultiChoice: Bool, isPollSubmitted: Bool) -> Bool {
         !(isPollEnded || !isMultiChoice || isPollSubmitted)
     }
-
-    public static func isShowAddOptionButton(
-        isInstantPoll: Bool, isPollSubmitted: Bool, isAllowAddOption: Bool,
-        isPollEnded: Bool, optionCount: Int
-    ) -> Bool {
+    
+    /// Determines whether the "Add Option" button should be shown in a poll.
+    ///
+    /// - Parameters:
+    ///   - isInstantPoll: A Boolean value indicating if the poll is an instant poll.
+    ///   - isPollSubmitted: A Boolean value indicating if the poll has already been submitted.
+    ///   - isAllowAddOption: A Boolean value indicating if adding options is allowed for the poll.
+    ///   - isPollEnded: A Boolean value indicating if the poll has ended.
+    ///   - optionCount: The current number of options in the poll.
+    /// - Returns: A Boolean value indicating whether the "Add Option" button should be displayed (`true`) or not (`false`).
+    public static func isShowAddOptionButton(isInstantPoll: Bool, isPollSubmitted: Bool, isAllowAddOption: Bool, isPollEnded: Bool, optionCount: Int) -> Bool {
         var isAllowed = true
 
         if isInstantPoll {
