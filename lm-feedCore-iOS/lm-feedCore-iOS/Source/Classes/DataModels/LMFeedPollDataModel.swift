@@ -15,8 +15,11 @@ public struct LMFeedPollDataModel {
         public let voteCount: Int
         public let percentage: Double
         public let addedBy: LMFeedUserDataModel
-        
-        public init(id: String, option: String, isSelected: Bool, voteCount: Int, percentage: Double, addedBy: LMFeedUserDataModel) {
+
+        public init(
+            id: String, option: String, isSelected: Bool, voteCount: Int,
+            percentage: Double, addedBy: LMFeedUserDataModel
+        ) {
             self.id = id
             self.option = option
             self.isSelected = isSelected
@@ -25,7 +28,7 @@ public struct LMFeedPollDataModel {
             self.addedBy = addedBy
         }
     }
-    
+
     public let id: String
     public let postID: String
     public let question: String
@@ -40,7 +43,7 @@ public struct LMFeedPollDataModel {
     public let isInstantPoll: Bool
     public let voteCount: Int
     public var userSelectedOptions: [String]
-    
+
     public init(
         id: String,
         postID: String,
@@ -73,24 +76,33 @@ public struct LMFeedPollDataModel {
     }
 }
 
-public extension LMFeedPollDataModel {
-    init?(postID: String, users: [String: User], widgets: [Widget]) {
-        guard let widget = widgets.first(where: { $0.parentEntityID == postID }),
-              let id = widget.id,
-              let question = widget.metadata?["title"] as? String,
-              let pollDisplayText = widget.lmMeta?.pollAnswerText else { return nil }
-        
-        let selectType: String = (widget.metadata?["multiple_select_state"] as? String) ?? "exactly"
-        let selectNumber: Int = (widget.metadata?["multiple_select_number"] as? Int) ?? 1
+extension LMFeedPollDataModel {
+    public init?(postID: String, users: [String: User], widget: Widget?) {
+        guard let widget = widget,
+            let id = widget.id,
+            let question = widget.metadata?["title"] as? String,
+            let pollDisplayText = widget.lmMeta?.pollAnswerText
+        else { return nil }
+
+        let selectType: String =
+            (widget.metadata?["multiple_select_state"] as? String) ?? "exactly"
+        let selectNumber: Int =
+            (widget.metadata?["multiple_select_number"] as? Int) ?? 1
         let expiryTime: Int = (widget.metadata?["expiry_time"] as? Int) ?? .zero
-        let isAnonymous: Bool = (widget.metadata?["is_anonymous"] as? Bool) ?? false
-        let allowAddOptions: Bool = (widget.metadata?["allow_add_option"] as? Bool) ?? false
-        let pollType: String = (widget.metadata?["poll_type"] as? String) ?? "instant"
-        
+        let isAnonymous: Bool =
+            (widget.metadata?["is_anonymous"] as? Bool) ?? false
+        let allowAddOptions: Bool =
+            (widget.metadata?["allow_add_option"] as? Bool) ?? false
+        let pollType: String =
+            (widget.metadata?["poll_type"] as? String) ?? "instant"
+
         self.id = id
         self.postID = postID
         self.question = question
-        self.options = widget.lmMeta?.options.compactMap({ .init(users: users, option: $0) }) ?? []
+        self.options =
+            (widget.lmMeta?.options)?.compactMap({
+                Option.init(users: users, option: $0)
+            }) ?? []
         self.pollDisplayText = pollDisplayText
         self.pollSelectType = .init(key: selectType) ?? .exactly
         self.pollSelectCount = selectNumber
@@ -104,14 +116,14 @@ public extension LMFeedPollDataModel {
     }
 }
 
-
-public extension LMFeedPollDataModel.Option {
-    init?(users: [String: User], option: PollOption) {
+extension LMFeedPollDataModel.Option {
+    public init?(users: [String: User], option: PollOption) {
         guard let uuid = option.uuid,
-              let user = users[uuid],
-        let id = option.id,
-        let text = option.text else { return nil }
-        
+            let user = users[uuid],
+            let id = option.id,
+            let text = option.text
+        else { return nil }
+
         self.id = id
         self.option = text
         self.isSelected = option.isSelected

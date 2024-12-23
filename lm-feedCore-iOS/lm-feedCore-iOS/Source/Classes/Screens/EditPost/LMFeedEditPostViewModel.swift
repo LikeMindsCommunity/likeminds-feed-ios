@@ -94,7 +94,7 @@ public final class LMFeedEditPostViewModel {
             }
             
             let allTopics = response.data?.topics?.compactMap({ $0.value }) ?? []
-            let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
+            let widgets = response.data?.widgets ?? [:]
             
             self.postDetail = .init(post: data, users: users, allTopics: allTopics, widgets: widgets, filteredComments: [:])
             dispatchGroup.leave()

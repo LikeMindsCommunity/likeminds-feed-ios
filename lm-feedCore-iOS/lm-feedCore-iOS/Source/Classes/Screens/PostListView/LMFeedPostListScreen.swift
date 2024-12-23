@@ -17,6 +17,7 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
         tableView.register(LMUIComponents.shared.documentCell)
         tableView.register(LMUIComponents.shared.linkCell)
         tableView.register(LMUIComponents.shared.pollCell)
+        tableView.register(LMUIComponents.shared.customCell)
         tableView.registerHeaderFooter(LMUIComponents.shared.headerView)
         tableView.registerHeaderFooter(LMUIComponents.shared.footerView)
     }
@@ -72,9 +73,14 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
                 cell.configure(with: item, delegate: self)
                 return cell
             }
+        case .widget:
+            if let cell = tableView.dequeueReusableCell(LMUIComponents.shared.customCell){
+                cell.configure(for: indexPath, with: item)
+                return cell
+            }
         default:
-            // For any other type of content, handle it with a custom widget
-            return handleCustomWidget(with: item)
+            // For any other type of content
+            return LMTableViewCell()
         }
         
         // Return an empty cell in case no valid cell is dequeued (this should rarely happen)

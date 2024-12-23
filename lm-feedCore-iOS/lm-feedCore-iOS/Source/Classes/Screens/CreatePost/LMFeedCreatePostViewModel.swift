@@ -79,7 +79,7 @@ public final class LMFeedCreatePostViewModel {
         return viewcontroller
     }
     
-    func createPost(with text: String, question: String?) {
+    public func createPost(with text: String, question: String?, meta: [String:Any]? = nil) {
         var attachments: [LMFeedCreatePostOperation.LMAWSRequestModel] = []
         let filePath = "files/post/\(LocalPreferences.userObj?.clientUUID ?? "user")/\(Int(Date().timeIntervalSince1970))/"
         
@@ -92,7 +92,7 @@ public final class LMFeedCreatePostViewModel {
             attachments.append(.init(url: medium.url, data: medium.data, fileName: medium.url.lastPathComponent, awsFilePath: filePath, contentType: medium.mediaType, width: medium.width, height: medium.height))
         }
         
-        LMFeedCreatePostOperation.shared.createPost(with: text, heading: question, topics: selectedTopics.map({ $0.topicID }), files: attachments, linkPreview: linkPreview, poll: pollDetails)
+        LMFeedCreatePostOperation.shared.createPost(with: text, heading: question, topics: selectedTopics.map({ $0.topicID }), files: attachments, linkPreview: linkPreview, poll: pollDetails, meta: meta)
         delegate?.popViewController(animated: true)
     }
 }

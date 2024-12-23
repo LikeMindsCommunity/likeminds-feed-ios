@@ -32,6 +32,7 @@ public struct LMUIComponents {
     public var linkCell: LMFeedBaseLinkCell.Type = LMFeedPostLinkCell.self
     public var mediaCell: LMFeedBaseMediaCell.Type = LMFeedPostMediaCell.self
     public var pollCell: LMFeedBasePollCell.Type = LMFeedPostPollCell.self
+    public var customCell: LMFeedBaseCustomCell.Type = LMFeedPostCustomCell.self
     
     // MARK: Comment Components
     public var replyView: LMFeedReplyView.Type = LMFeedReplyView.self

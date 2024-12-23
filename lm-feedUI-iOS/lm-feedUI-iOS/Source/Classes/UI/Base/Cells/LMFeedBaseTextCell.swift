@@ -50,7 +50,6 @@ open class LMFeedPostBaseTextCell: LMPostWidgetTableViewCell {
     
     open override func prepareForReuse() {
         super.prepareForReuse()
-        print(#function)
     }
     
     // MARK: setupActions

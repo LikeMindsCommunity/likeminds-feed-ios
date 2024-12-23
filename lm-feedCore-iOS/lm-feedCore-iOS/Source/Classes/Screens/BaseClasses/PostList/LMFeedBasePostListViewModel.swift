@@ -83,7 +83,7 @@ public extension LMFeedBasePostListViewModel {
                 $0.value
             } ?? []
             
-            let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
+            let widgets = response.data?.widgets ?? [:]
             
             let comments = response.data?.filteredComments ?? [:]
             
@@ -346,7 +346,7 @@ public extension LMFeedBasePostListViewModel {
                let post = response.data?.post,
                let users = response.data?.users {
                 let allTopics = response.data?.topics?.compactMap({ $0.value }) ?? []
-                let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
+                let widgets = response.data?.widgets ?? [:]
                 
                 
                 guard let newData = LMFeedPostDataModel.init(post: post, users: users, allTopics: allTopics, widgets: widgets),

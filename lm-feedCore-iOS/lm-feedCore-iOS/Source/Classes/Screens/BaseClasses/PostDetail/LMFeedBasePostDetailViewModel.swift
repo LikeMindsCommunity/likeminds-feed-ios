@@ -117,7 +117,7 @@ public extension LMFeedPostDetailViewModel {
                let post = response.data?.post,
                let users = response.data?.users {
                 let allTopics = response.data?.topics?.compactMap({ $0.value }) ?? []
-                let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
+                let widgets = response.data?.widgets ?? [:]
                 
                 if currentPage == 1 {
                     commentList.removeAll(keepingCapacity: true)
