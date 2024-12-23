@@ -49,37 +49,49 @@ final class LMFeedCreatePostOperation {
     static let shared = LMFeedCreatePostOperation()
     var attachmentList: [LMAWSRequestModel] = []
     let dispatchGroup = DispatchGroup()
-
+    
+    /// Creates a post with various content types including text, links, polls, files, and custom widgets.
+    ///
+    /// - Parameters:
+    ///   - content: The textual content of the post.
+    ///   - heading: An optional heading for the post.
+    ///   - topics: A list of topic IDs associated with the post.
+    ///   - files: A list of files to be attached to the post.
+    ///   - linkPreview: An optional link preview to be included in the post.
+    ///   - poll: An optional poll to be included in the post.
+    ///   - meta: An optional dictionary containing metadata for creating a custom widget attachment.
     func createPost(
         with content: String, heading: String? = nil, topics: [String],
         files: [LMAWSRequestModel],
         linkPreview: LMFeedPostDataModel.LinkAttachment?,
         poll: LMFeedCreatePollDataModel?,
-        meta: [String:Any]? = nil
+        meta: [String: Any]? = nil
     ) {
         postMessageForPostCreationStart(files.first)
-        
+
         // Var to store custom widget attachment
         var customWidgetAttachment: Attachment?
-        
+
         // If meta is provided, create a Attachment of type .widget
         // and store it in a variable to be used for createPost() method
         if meta != nil {
             var customWidgetAttachmentMetaBuilder = AttachmentMeta.Builder()
-            
+
             // Create attachment meta using the given meta object
-            customWidgetAttachmentMetaBuilder = customWidgetAttachmentMetaBuilder.meta(meta)
-            
+            customWidgetAttachmentMetaBuilder =
+                customWidgetAttachmentMetaBuilder.meta(meta)
+
             // Create an attachment of type .widget
-            customWidgetAttachment = Attachment().attachmentType(.widget).attachmentMeta(customWidgetAttachmentMetaBuilder.build())
+            customWidgetAttachment = Attachment().attachmentType(.widget)
+                .attachmentMeta(customWidgetAttachmentMetaBuilder.build())
         }
-    
 
         if let linkPreview {
-            
+
             var attachmentMetaBuilder = AttachmentMeta.Builder()
-            
-            attachmentMetaBuilder =  attachmentMetaBuilder
+
+            attachmentMetaBuilder =
+                attachmentMetaBuilder
                 .ogTags(
                     .init()
                         .image(linkPreview.previewImage ?? "")
@@ -90,10 +102,10 @@ final class LMFeedCreatePostOperation {
             let attachmentRequest = Attachment()
                 .attachmentType(.link)
                 .attachmentMeta(attachmentMetaBuilder.build())
-            
+
             // Store list of attachments
             var attachmentList = [attachmentRequest]
-            
+
             // If custom widget is provided,
             // add the earlier created custom widget attachment into
             // the attachments list
@@ -104,28 +116,35 @@ final class LMFeedCreatePostOperation {
             createPost(
                 with: content, heading: heading,
                 attachments: attachmentList, topics: topics)
-            
+
         } else if let poll {
-            
+
             var attachmentMetaBuilder = AttachmentMeta.Builder()
-            
-            
-            attachmentMetaBuilder =  attachmentMetaBuilder.title(poll.pollQuestion)
-            attachmentMetaBuilder =  attachmentMetaBuilder.expiryTime(Int(poll.expiryTime.timeIntervalSince1970 * 1000))
-            attachmentMetaBuilder =  attachmentMetaBuilder.pollOptions(poll.pollOptions)
-            attachmentMetaBuilder =  attachmentMetaBuilder.multiSelectState(poll.selectState.apiKey)
-            attachmentMetaBuilder =  attachmentMetaBuilder.pollType(poll.isInstantPoll ? "instant" : "deferred")
-            attachmentMetaBuilder =  attachmentMetaBuilder.multSelectNo(poll.selectStateCount)
-            attachmentMetaBuilder =  attachmentMetaBuilder.isAnonymous(poll.isAnonymous)
-            attachmentMetaBuilder =  attachmentMetaBuilder.allowAddOptions(poll.allowAddOptions)
+
+            attachmentMetaBuilder = attachmentMetaBuilder.title(
+                poll.pollQuestion)
+            attachmentMetaBuilder = attachmentMetaBuilder.expiryTime(
+                Int(poll.expiryTime.timeIntervalSince1970 * 1000))
+            attachmentMetaBuilder = attachmentMetaBuilder.pollOptions(
+                poll.pollOptions)
+            attachmentMetaBuilder = attachmentMetaBuilder.multiSelectState(
+                poll.selectState.apiKey)
+            attachmentMetaBuilder = attachmentMetaBuilder.pollType(
+                poll.isInstantPoll ? "instant" : "deferred")
+            attachmentMetaBuilder = attachmentMetaBuilder.multSelectNo(
+                poll.selectStateCount)
+            attachmentMetaBuilder = attachmentMetaBuilder.isAnonymous(
+                poll.isAnonymous)
+            attachmentMetaBuilder = attachmentMetaBuilder.allowAddOptions(
+                poll.allowAddOptions)
 
             let attachmentRequest = Attachment()
                 .attachmentType(.poll)
                 .attachmentMeta(attachmentMetaBuilder.build())
-            
+
             // Store list of attachments
             var attachmentList = [attachmentRequest]
-            
+
             // If custom widget is provided,
             // add the earlier created custom widget attachment into
             // the attachments list
@@ -136,7 +155,7 @@ final class LMFeedCreatePostOperation {
             createPost(
                 with: content, heading: heading,
                 attachments: attachmentList, topics: topics)
-            
+
         } else if !files.isEmpty {
             var tempFiles = files
 
@@ -189,14 +208,14 @@ final class LMFeedCreatePostOperation {
                         with: "Files Upload Error!")
                     return
                 }
-                
+
                 // If custom widget is provided,
                 // add the earlier created custom widget attachment into
                 // the attachments list
                 if let customWidgetAttachment {
                     attachments.append(customWidgetAttachment)
                 }
-                
+
                 self.createPost(
                     with: content, heading: heading, attachments: attachments,
                     topics: topics)
@@ -204,16 +223,17 @@ final class LMFeedCreatePostOperation {
         } else {
             // Create an empty list of attachments
             var attachmentList = [Attachment]()
-            
+
             // If custom widget is provided,
             // add the earlier created custom widget attachment into
             // the attachments list
             if let customWidgetAttachment {
                 attachmentList.append(customWidgetAttachment)
             }
-            
+
             createPost(
-                with: content, heading: heading, attachments: attachmentList, topics: topics
+                with: content, heading: heading, attachments: attachmentList,
+                topics: topics
             )
         }
     }
@@ -223,13 +243,14 @@ final class LMFeedCreatePostOperation {
         topics: [String]
     ) {
         var addPostRequest = AddPostRequest.Builder()
-        
+
         addPostRequest = addPostRequest.heading(heading)
         addPostRequest = addPostRequest.text(content)
         addPostRequest = addPostRequest.attachments(attachments)
         addPostRequest = addPostRequest.topics(topics)
-            
-        LMFeedClient.shared.addPost(addPostRequest.build()) { [weak self] response in
+
+        LMFeedClient.shared.addPost(addPostRequest.build()) {
+            [weak self] response in
             guard response.success else {
                 self?.postMessageForCompleteCreatePost(
                     with: response.errorMessage)
@@ -238,7 +259,11 @@ final class LMFeedCreatePostOperation {
             NotificationCenter.default.post(name: .LMPostCreated, object: nil)
         }
     }
-
+    
+    /// Creates an image attachment for a post from an `LMAWSRequestModel` object.
+    ///
+    /// - Parameter attachment: The `LMAWSRequestModel` containing details about the image file.
+    /// - Returns: An `Attachment` object configured as an image attachment, or `nil` if the `awsURL` is invalid.
     func imageAttachmentData(attachment: LMAWSRequestModel) -> Attachment? {
         guard let awsURL = attachment.awsURL,
             !awsURL.isEmpty
@@ -253,7 +278,7 @@ final class LMFeedCreatePostOperation {
         }
 
         var attachmentMeta = AttachmentMeta.Builder()
-        
+
         attachmentMeta = attachmentMeta.attachmentUrl(awsURL)
         attachmentMeta = attachmentMeta.size(size ?? 0)
         attachmentMeta = attachmentMeta.name(attachment.fileName)
@@ -272,6 +297,10 @@ final class LMFeedCreatePostOperation {
         return attachmentRequest
     }
 
+    /// Creates a video attachment for a post from an `LMAWSRequestModel` object.
+    ///
+    /// - Parameter attachment: The `LMAWSRequestModel` containing details about the video file.
+    /// - Returns: An `Attachment` object configured as a video attachment, or `nil` if the `awsURL` is invalid.
     func videoAttachmentData(attachment: LMAWSRequestModel) -> Attachment? {
         guard let awsURL = attachment.awsURL,
             !awsURL.isEmpty
@@ -289,7 +318,7 @@ final class LMFeedCreatePostOperation {
         let durationTime = CMTimeGetSeconds(duration)
 
         var attachmentMeta = AttachmentMeta.Builder()
-        
+
         attachmentMeta = attachmentMeta.attachmentUrl(awsURL)
         attachmentMeta = attachmentMeta.size(size ?? 0)
         attachmentMeta = attachmentMeta.name(attachment.fileName)
@@ -309,7 +338,11 @@ final class LMFeedCreatePostOperation {
 
         return attachmentRequest
     }
-
+    
+    /// Creates a document attachment for a post from an `LMAWSRequestModel` object.
+    ///
+    /// - Parameter attachment: The `LMAWSRequestModel` containing details about the document file.
+    /// - Returns: An `Attachment` object configured as a document attachment, or `nil` if the `awsURL` is invalid.
     func fileAttachmentData(attachment: LMAWSRequestModel) -> Attachment? {
         guard let awsURL = attachment.awsURL,
             !awsURL.isEmpty
@@ -343,48 +376,53 @@ final class LMFeedCreatePostOperation {
         return attachmentRequest
     }
 
+    /// Posts a notification indicating the completion of a post creation process.
+    ///
+    /// - Parameter error: An optional error message describing the failure, if any.
     func postMessageForCompleteCreatePost(with error: String?) {
         DispatchQueue.main.async {
             NotificationCenter.default.post(
                 name: .LMPostCreateError,
-                object: LMFeedError.postCreationFailed(error: error))
+                object: LMFeedError.postCreationFailed(error: error)
+            )
         }
     }
 
+    /// Posts a notification indicating the start of a post creation process, including an optional thumbnail image.
+    ///
+    /// - Parameter file: An optional `LMAWSRequestModel` representing the file for which the post is being created.
     func postMessageForPostCreationStart(_ file: LMAWSRequestModel?) {
         var image: UIImage?
 
         if let file {
             switch file.contentType {
             case .image:
+                // Generate a thumbnail image from the provided image file
                 do {
                     let data = try Data(contentsOf: file.url)
                     image = UIImage(data: data)
                 } catch {}
             case .video:
+                // Generate a thumbnail image from the first frame of the video
                 do {
                     let asset = AVAsset(url: file.url)
                     let imgGenerator = AVAssetImageGenerator(asset: asset)
                     imgGenerator.appliesPreferredTrackTransform = true
-                    let cgImage = try imgGenerator.copyCGImage(
-                        at: .zero, actualTime: nil)
+                    let cgImage = try imgGenerator.copyCGImage(at: .zero, actualTime: nil)
                     image = UIImage(cgImage: cgImage)
                 } catch {}
             case .document:
+                // Generate a thumbnail image from the first page of a PDF document
                 if let pdf = PDFDocument(url: file.url),
-                    let pdfPage = pdf.page(at: 0)
-                {
+                   let pdfPage = pdf.page(at: 0) {
                     let pdfPageSize = pdfPage.bounds(for: .mediaBox)
-                    let renderer = UIGraphicsImageRenderer(
-                        size: pdfPageSize.size)
+                    let renderer = UIGraphicsImageRenderer(size: pdfPageSize.size)
 
                     image = renderer.image { ctx in
                         UIColor.white.set()
                         ctx.fill(pdfPageSize)
-                        ctx.cgContext.translateBy(
-                            x: 0.0, y: pdfPageSize.size.height)
+                        ctx.cgContext.translateBy(x: 0.0, y: pdfPageSize.size.height)
                         ctx.cgContext.scaleBy(x: 1.0, y: -1.0)
-
                         pdfPage.draw(with: .mediaBox, to: ctx.cgContext)
                     }
                 }
@@ -393,7 +431,9 @@ final class LMFeedCreatePostOperation {
             }
         }
 
+        // Post a notification with the generated thumbnail image
         NotificationCenter.default.post(
-            name: .LMPostCreationStarted, object: image)
+            name: .LMPostCreationStarted, object: image
+        )
     }
 }

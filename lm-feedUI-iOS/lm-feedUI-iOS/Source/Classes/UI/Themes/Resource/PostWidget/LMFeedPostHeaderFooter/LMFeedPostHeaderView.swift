@@ -22,14 +22,16 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         public let subtitle: String?
         public var isPinned: Bool
         public let showMenu: Bool
+        public let widgets: [LMFeedWidgetContentModel]?
         
-        public init(profileImage: String?, authorName: String, authorTag: String?, subtitle: String?, isPinned: Bool, showMenu: Bool) {
+        public init(profileImage: String?, authorName: String, authorTag: String?, subtitle: String?, isPinned: Bool, showMenu: Bool, widgets: [LMFeedWidgetContentModel]?) {
             self.profileImage = profileImage
             self.authorName = authorName
             self.authorTag = authorTag
             self.subtitle = subtitle
             self.isPinned = isPinned
             self.showMenu = showMenu
+            self.widgets = widgets
         }
     }
     
