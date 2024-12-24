@@ -107,7 +107,7 @@ public class LMFeedBaseSearchPostViewModel {
                 $0.value
             } ?? []
             
-            let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
+            let widgets = response.data?.widgets ?? [:]
             
             let convertedData: [LMFeedPostDataModel] = posts.compactMap { post in
                 return .init(post: post, users: users, allTopics: topics, widgets: widgets, filteredComments: [:])
@@ -391,7 +391,7 @@ public extension LMFeedBaseSearchPostViewModel {
                let post = response.data?.post,
                let users = response.data?.users {
                 let allTopics = response.data?.topics?.compactMap({ $0.value }) ?? []
-                let widgets = response.data?.widgets?.compactMap({ $0.value }) ?? []
+                let widgets = response.data?.widgets ?? [:]
                 
                 
                 guard let newData = LMFeedPostDataModel.init(post: post, users: users, allTopics: allTopics, widgets: widgets, filteredComments: [:]),

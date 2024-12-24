@@ -6,19 +6,19 @@ PODS:
   - AWSS3 (2.19.1):
     - AWSCore (= 2.19.1)
   - BSImagePicker (3.3.3)
-  - FirebaseCore (11.1.0):
-    - FirebaseCoreInternal (~> 11.0)
+  - FirebaseCore (11.6.0):
+    - FirebaseCoreInternal (~> 11.6.0)
     - GoogleUtilities/Environment (~> 8.0)
     - GoogleUtilities/Logger (~> 8.0)
-  - FirebaseCoreInternal (11.1.0):
+  - FirebaseCoreInternal (11.6.0):
     - "GoogleUtilities/NSData+zlib (~> 8.0)"
-  - FirebaseInstallations (11.1.0):
-    - FirebaseCore (~> 11.0)
+  - FirebaseInstallations (11.6.0):
+    - FirebaseCore (~> 11.6.0)
     - GoogleUtilities/Environment (~> 8.0)
     - GoogleUtilities/UserDefaults (~> 8.0)
     - PromisesObjC (~> 2.4)
-  - FirebaseMessaging (11.1.0):
-    - FirebaseCore (~> 11.0)
+  - FirebaseMessaging (11.6.0):
+    - FirebaseCore (~> 11.6.0)
     - FirebaseInstallations (~> 11.0)
     - GoogleDataTransport (~> 10.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
@@ -53,20 +53,18 @@ PODS:
   - GoogleUtilities/UserDefaults (8.0.2):
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
-  - Kingfisher (7.12.0)
-  - LikeMindsFeed (1.9.0):
+  - LikeMindsFeed (1.11.0):
     - Alamofire (~> 5.7.1)
-  - LikeMindsFeedCore (1.3.0):
+  - LikeMindsFeedCore (1.6.0):
     - AWSCognito
     - AWSCore
     - AWSS3
     - BSImagePicker (~> 3.3.3)
     - FirebaseCore
     - FirebaseMessaging
-    - LikeMindsFeed (~> 1.9.0)
-    - LikeMindsFeedUI (= 1.3.0)
-  - LikeMindsFeedUI (1.3.0):
-    - Kingfisher (~> 7.0)
+    - LikeMindsFeed (~> 1.11.0)
+    - LikeMindsFeedUI (= 1.6.0)
+  - LikeMindsFeedUI (1.6.0)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
@@ -75,7 +73,8 @@ PODS:
   - PromisesObjC (2.4.0)
 
 DEPENDENCIES:
-  - LikeMindsFeedCore
+  - LikeMindsFeedCore (from `../LikemindsFeedCore.podspec`)
+  - LikeMindsFeedUI (from `../LikeMindsFeedUI.podspec`)
 
 SPEC REPOS:
   trunk:
@@ -90,12 +89,15 @@ SPEC REPOS:
     - FirebaseMessaging
     - GoogleDataTransport
     - GoogleUtilities
-    - Kingfisher
     - LikeMindsFeed
-    - LikeMindsFeedCore
-    - LikeMindsFeedUI
     - nanopb
     - PromisesObjC
+
+EXTERNAL SOURCES:
+  LikeMindsFeedCore:
+    :path: "../LikemindsFeedCore.podspec"
+  LikeMindsFeedUI:
+    :path: "../LikeMindsFeedUI.podspec"
 
 SPEC CHECKSUMS:
   Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
@@ -103,19 +105,18 @@ SPEC CHECKSUMS:
   AWSCore: 55c154ae27efc5c98bdc30a0eeea5a35d10a2ab5
   AWSS3: 2272253b098d07803af8dd20ce6ce7302bcffb47
   BSImagePicker: 57900b323f951711608acaf97d52e9183530cb6d
-  FirebaseCore: 6e2a2782e234b14d48e880ed369ac55cda87fed7
-  FirebaseCoreInternal: adefedc9a88dbe393c4884640a73ec9e8e790f8c
-  FirebaseInstallations: d0a8fea5a6fa91abc661591cf57c0f0d70863e57
-  FirebaseMessaging: 61014ecade746724664eee1f6c066c058a7c9fa7
+  FirebaseCore: 48b0dd707581cf9c1a1220da68223fb0a562afaa
+  FirebaseCoreInternal: d98ab91e2d80a56d7b246856a8885443b302c0c2
+  FirebaseInstallations: efc0946fc756e4d22d8113f7c761948120322e8c
+  FirebaseMessaging: e1aca1fcc23e8b9eddb0e33f375ff90944623021
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
-  Kingfisher: 53a10ea35051a436b5fb626ca2dd8f3144d755e9
-  LikeMindsFeed: 9af037fe7216ed0d49c30fb134750bed73542a3e
-  LikeMindsFeedCore: 8b8818391d395b8b55942eaaae398da7a542b7fd
-  LikeMindsFeedUI: 682b1aa8f28be322f061c18311a8187f08abbe1b
+  LikeMindsFeed: 4ac9e7d3446a868377a515ffc24b0ca6d8e52f84
+  LikeMindsFeedCore: 073ccdc1e289638ab77c0ef0af154d4a35e0aaa0
+  LikeMindsFeedUI: f6a4c1519c8c43be774598f7c904f519dca477a6
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
 
-PODFILE CHECKSUM: 424bc91082a3d3a309570f2c079ddfc5cf5fea76
+PODFILE CHECKSUM: 1d53c33b40776c7caff50e3a2c437782ec02d109
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

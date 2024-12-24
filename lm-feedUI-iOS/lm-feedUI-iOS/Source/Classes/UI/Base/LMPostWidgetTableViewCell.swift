@@ -33,7 +33,6 @@ open class LMPostWidgetTableViewCell: LMTableViewCell {
     
     open override func prepareForReuse() {
         super.prepareForReuse()
-        print(#function)
     }
     
     // MARK: setupActions

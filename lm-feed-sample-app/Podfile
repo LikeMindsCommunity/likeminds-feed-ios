@@ -7,7 +7,8 @@ target 'lm-feed-sample-app' do
   project 'lm-feed-sample-app.xcodeproj'
   use_frameworks!
  
-  pod 'LikeMindsFeedCore'
+  pod 'LikeMindsFeedUI', path: '../LikeMindsFeedUI.podspec'
+  pod 'LikeMindsFeedCore', path: '../LikemindsFeedCore.podspec'
 end
 
 post_install do |installer|

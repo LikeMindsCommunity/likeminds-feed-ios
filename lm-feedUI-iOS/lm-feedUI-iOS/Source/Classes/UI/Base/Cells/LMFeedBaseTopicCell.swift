@@ -25,7 +25,6 @@ open class LMFeedPostBaseTopicCell: LMPostWidgetTableViewCell {
     
     open override func prepareForReuse() {
         super.prepareForReuse()
-        print(#function)
     }
     
     open func configure(data: LMFeedPostContentModel) {

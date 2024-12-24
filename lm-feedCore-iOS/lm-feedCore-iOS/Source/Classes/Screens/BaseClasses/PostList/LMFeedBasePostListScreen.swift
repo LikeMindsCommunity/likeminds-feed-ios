@@ -239,10 +239,6 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
         }
     }
     
-    open func handleCustomWidget(with data: LMFeedPostContentModel) -> LMTableViewCell {
-        return LMTableViewCell()
-    }
-    
     open func navigateToPollResultScreen(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?) {
         do {
             let viewcontroller = try LMFeedPollResultViewModel.createModule(with: pollID, optionList: optionList, selectedOption: selectedOption)
