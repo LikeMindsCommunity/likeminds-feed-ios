@@ -96,6 +96,8 @@ class ViewController: UIViewController {
 }
 
 class CustomClientView: LMFeedPostCustomCell {
+    
+    
     private let customLabel: UILabel = {
         let label = UILabel()
         label.text = "Your Custom Text"
