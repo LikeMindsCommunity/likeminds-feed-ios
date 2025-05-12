@@ -68,18 +68,20 @@ public class LMFeedTopicSelectionViewModel {
         
         isFetching = true
         
-        var request = TopicFeedRequest.builder()
+        var builder = TopicFeedRequest.builder()
             .setEnableState(isEnabled)
             .setPage(currentPage)
             .setPageSize(pageSize)
         
         if let search,
            !search.isEmpty {
-            request = request
+            builder = builder
                 .setSearchTopic(search)
                 .setSearchType(searchType)
-                .build()
+                
         }
+        
+        let request =  builder.build()
         
         searchString = search
         

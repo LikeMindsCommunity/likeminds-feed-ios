@@ -12,15 +12,15 @@ final public class LMFeedPostOperation {
     static let shared = LMFeedPostOperation()
     
     func getFeed(currentPage: Int, pageSize: Int, selectedTopics: [String], completion: ((LMResponse<GetFeedResponse>) -> Void)?) {
-        var request = GetFeedRequest.builder()
+        var builder = GetFeedRequest.builder()
             .page(currentPage)
             .pageSize(pageSize)
         
         if !selectedTopics.isEmpty {
-            request = request
+            builder = builder
                 .topics(selectedTopics)
-                .build()
         }
+        let request = builder.build()
         
         LMFeedClient.shared.getFeed(request) { response in
             completion?(response)

@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMTextView: UITextView {
+open class LMFeedTextView: UITextView {
     private var disabledCharacters: Set<String> = []
     
     public var placeHolderText: String = "" {
@@ -114,7 +114,7 @@ open class LMTextView: UITextView {
 }
 
 
-extension LMTextView: UITextViewDelegate {
+extension LMFeedTextView: UITextViewDelegate {
     open func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == placeHolderText {
             textView.text = nil

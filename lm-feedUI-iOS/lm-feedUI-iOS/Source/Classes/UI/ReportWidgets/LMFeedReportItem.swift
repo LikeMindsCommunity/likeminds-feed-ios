@@ -8,10 +8,10 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedReportItem: LMCollectionViewCell {
+open class LMFeedReportItem: LMFeedCollectionViewCell {
     // MARK: UI Elements
-    open private(set) lazy var textLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var textLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.textFont1
         label.textColor = LMFeedAppearance.shared.colors.gray102
         label.text = "Tag"

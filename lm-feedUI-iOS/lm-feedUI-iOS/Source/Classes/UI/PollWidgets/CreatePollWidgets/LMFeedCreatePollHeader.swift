@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedCreatePollHeader: LMView {
+open class LMFeedCreatePollHeader: LMFeedView {
     public struct ContentModel {
         let profileImage: String?
         let username: String
@@ -23,8 +23,8 @@ open class LMFeedCreatePollHeader: LMView {
     
     
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
@@ -35,24 +35,24 @@ open class LMFeedCreatePollHeader: LMView {
         return image
     }()
     
-    open private(set) lazy var userNameLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var userNameLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.textColor = LMFeedAppearance.shared.colors.gray1
         label.text = "Devansh Mohata"
         return label
     }()
     
-    open private(set) lazy var pollQuestionTitle: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var pollQuestionTitle: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.buttonFont2
         label.textColor = .blue // LMFeedAppearance.shared.colors.appTintColor
         label.text = "Poll question"
         return label
     }()
     
-    open private(set) lazy var pollQuestionTextField: LMTextView = {
-        let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var pollQuestionTextField: LMFeedTextView = {
+        let textView = LMFeedTextView().translatesAutoresizingMaskIntoConstraints()
         textView.placeHolderText = textFieldPlaceholderText
         textView.addDoneButtonOnKeyboard()
         textView.delegate = self

@@ -8,16 +8,16 @@
 import Foundation
 
 open class LMFeedPostBaseTextCell: LMPostWidgetTableViewCell {
-    open private(set) lazy var questionTitle: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var questionTitle: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.textColor = LMFeedAppearance.shared.colors.gray51
         label.numberOfLines = 0
         return label
     }()
     
-    open private(set) lazy var postText: LMTextView = {
-        let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var postText: LMFeedTextView = {
+        let textView = LMFeedTextView().translatesAutoresizingMaskIntoConstraints()
         textView.textContainer.maximumNumberOfLines = 0
         textView.isScrollEnabled = false
         textView.isUserInteractionEnabled = true
@@ -30,8 +30,8 @@ open class LMFeedPostBaseTextCell: LMPostWidgetTableViewCell {
         return textView
     }()
     
-    open private(set) lazy var seeMoreButton: LMButton = {
-        let button = LMButton.createButton(with: "See More", image: nil, textColor: LMFeedAppearance.shared.colors.textColor, textFont: LMFeedAppearance.shared.fonts.textFont1)
+    open private(set) lazy var seeMoreButton: LMFeedButton = {
+        let button = LMFeedButton.createButton(with: "See More", image: nil, textColor: LMFeedAppearance.shared.colors.textColor, textFont: LMFeedAppearance.shared.fonts.textFont1)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -63,7 +63,7 @@ open class LMFeedPostBaseTextCell: LMPostWidgetTableViewCell {
     
     @objc
     open func tappedTextView(tapGesture: UITapGestureRecognizer) {
-        guard let textView = tapGesture.view as? LMTextView,
+        guard let textView = tapGesture.view as? LMFeedTextView,
               let position = textView.closestPosition(to: tapGesture.location(in: textView)),
               let text = textView.textStyling(at: position, in: .forward) else { return }
         if let url = text[.link] as? URL {

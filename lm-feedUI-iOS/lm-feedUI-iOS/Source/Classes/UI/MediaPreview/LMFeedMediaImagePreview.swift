@@ -7,7 +7,7 @@
 
 import UIKit
 
-open class LMFeedMediaImagePreview: LMCollectionViewCell {
+open class LMFeedMediaImagePreview: LMFeedCollectionViewCell {
     open private(set) lazy var previewImageView: LMFeedZoomImageViewContainer = {
         let image = LMUIComponents.shared.mediaImageZoomPreview.init()
         image.translatesAutoresizingMaskIntoConstraints = false

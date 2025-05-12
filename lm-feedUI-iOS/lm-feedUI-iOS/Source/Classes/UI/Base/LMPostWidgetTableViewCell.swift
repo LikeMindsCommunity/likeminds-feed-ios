@@ -8,10 +8,10 @@
 import UIKit
 
 @IBDesignable
-open class LMPostWidgetTableViewCell: LMTableViewCell {
+open class LMPostWidgetTableViewCell: LMFeedTableViewCell {
     // MARK: UI Elements
-    open private(set) lazy var contentStack: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var contentStack: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .center
         stack.distribution = .fill

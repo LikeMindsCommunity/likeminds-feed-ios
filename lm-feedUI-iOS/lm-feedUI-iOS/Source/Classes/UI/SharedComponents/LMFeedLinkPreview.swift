@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedLinkPreview: LMView {
+open class LMFeedLinkPreview: LMFeedView {
     public struct ContentModel: LMFeedMediaProtocol {
         let linkPreview: String?
         let title: String?
@@ -25,23 +25,23 @@ open class LMFeedLinkPreview: LMView {
     
     
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
         view.clipsToBounds = true
         return view
     }()
     
-    open private(set) lazy var containerStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fill
         return stack
     }()
         
-    open private(set) lazy var crossButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var crossButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
         button.backgroundColor = LMFeedAppearance.shared.colors.white
@@ -50,28 +50,28 @@ open class LMFeedLinkPreview: LMView {
         return button
     }()
     
-    open private(set) lazy var imageView: LMImageView = {
-        let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var imageView: LMFeedImageView = {
+        let image = LMFeedImageView().translatesAutoresizingMaskIntoConstraints()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         image.layer.masksToBounds = true
         return image
     }()
     
-    open private(set) lazy var sepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var sepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.gray3
         return view
     }()
     
-    open private(set) lazy var metaDataContainerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var metaDataContainerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
-    open private(set) lazy var metaDataStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var metaDataStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fill
@@ -79,8 +79,8 @@ open class LMFeedLinkPreview: LMView {
         return stack
     }()
     
-    open private(set) lazy var titleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var titleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Trial Text"
         label.numberOfLines = 2
         label.font = LMFeedAppearance.shared.fonts.headingFont1
@@ -88,8 +88,8 @@ open class LMFeedLinkPreview: LMView {
         return label
     }()
     
-    open private(set) lazy var descriptionLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var descriptionLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Trial Description"
         label.numberOfLines = 2
         label.font = LMFeedAppearance.shared.fonts.subHeadingFont2
@@ -97,8 +97,8 @@ open class LMFeedLinkPreview: LMView {
         return label
     }()
     
-    open private(set) lazy var urlLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var urlLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Trial URL"
         label.font = LMFeedAppearance.shared.fonts.subHeadingFont1
         label.textColor = LMFeedAppearance.shared.colors.gray102
@@ -183,14 +183,16 @@ open class LMFeedLinkPreview: LMView {
         crossButton.isHidden = crossButtonAction == nil
         self.crossButtonAction = crossButtonAction
         
-        imageView.loadImage(url: data.linkPreview ?? "") { [weak imageView] result in
-            switch result {
-            case .success(_):
-                imageView?.isHidden = false
-            case .failure(_):
-                imageView?.isHidden = true
+            imageView.loadImage(url: data.linkPreview ?? "") { [weak imageView] result in
+                DispatchQueue.main.async {
+                       switch result {
+                       case .success(_):
+                           imageView?.isHidden = false
+                       case .failure(_):
+                           imageView?.isHidden = true
+                       }
+                   }
             }
-        }
 
         titleLabel.text = data.title
         titleLabel.isHidden = data.title?.isEmpty != false

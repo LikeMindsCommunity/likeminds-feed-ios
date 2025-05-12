@@ -9,7 +9,7 @@ import Foundation
 
 /// Protocol for LM Life Cycle Methods
 @objc
-public protocol LMViewLifeCycle {
+public protocol LMFeedViewLifeCycle {
     /// This function handles the initialization of views.
     func setupViews()
     

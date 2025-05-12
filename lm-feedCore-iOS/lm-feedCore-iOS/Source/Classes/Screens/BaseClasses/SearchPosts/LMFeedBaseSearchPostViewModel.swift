@@ -451,17 +451,18 @@ public extension LMFeedBaseSearchPostViewModel {
     }
     
     func submitPollVote(for postID: String, pollID: String, options: [String]) {
-        let request = SubmitPollVoteRequest
-            .builder()
-            .pollID(pollID)
-            .votes(options)
-            .build()
-        
-        LMFeedClient.shared.submitPollVoteRequest(request) { [weak self] response in
-            if response.success {
-                self?.getPost(for: postID)
+       
+            let request =  SubmitPollVoteRequest
+                .builder()
+                .pollID(pollID)
+                .votes(options)
+                .build()
+            
+            LMFeedClient.shared.submitPollVoteRequest(request) { [weak self] response in
+                if response.success {
+                    self?.getPost(for: postID)
+                }
             }
-        }
     }
     
     func editPoll(for postID: String) {

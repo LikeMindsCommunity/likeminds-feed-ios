@@ -184,7 +184,7 @@ public class LMFeedCore {
         }
     }
     
-    public func didReceiveNotification(_ notification: UNNotificationRequest, completion: ((Result<LMViewController, LMFeedError>) -> Void)?) {
+    public func didReceiveNotification(_ notification: UNNotificationRequest, completion: ((Result<LMFeedViewController, LMFeedError>) -> Void)?) {
         guard Self.isInitialized,
               let route = notification.content.userInfo["route"] as? String else {
             completion?(.failure(.feedNotInitialized))
@@ -202,7 +202,7 @@ public class LMFeedCore {
     }
     
     func fetchCommunityConfiguration() {
-        LMFeedClient.shared.getCommunityConfiguration(GetCommunityConfigurationRequest.builder()) { response in
+        LMFeedClient.shared.getCommunityConfiguration(GetCommunityConfigurationRequest.builder().build()) { response in
             let configurations = response.data?.communityConfigurations ?? []
             LocalPreferences.communityConfiguration = .init(configs: configurations)
         }

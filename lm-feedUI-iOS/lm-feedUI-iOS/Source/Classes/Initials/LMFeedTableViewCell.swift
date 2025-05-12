@@ -8,10 +8,10 @@
 import UIKit
 
 @IBDesignable
-open class LMTableViewCell: UITableViewCell {
+open class LMFeedTableViewCell: UITableViewCell {
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
@@ -42,7 +42,7 @@ open class LMTableViewCell: UITableViewCell {
 
 // MARK: LMViewLifeCycle
 // Default Implementation is Empty.
-extension LMTableViewCell: LMViewLifeCycle {
+extension LMFeedTableViewCell: LMFeedViewLifeCycle {
     open func setupViews() { }
     
     open func setupLayouts() { }

@@ -8,10 +8,10 @@
 import LikeMindsFeedUI
 import UIKit
 
-open class LMFeedBaseSearchPostScreen: LMViewController {
+open class LMFeedBaseSearchPostScreen: LMFeedViewController {
     // MARK: UI Elements
-    open private(set) lazy var postList: LMTableView = {
-        let table = LMTableView(frame: .zero, style: .grouped)
+    open private(set) lazy var postList: LMFeedTableView = {
+        let table = LMFeedTableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.separatorStyle = .none
         table.showsVerticalScrollIndicator = false
@@ -54,8 +54,8 @@ open class LMFeedBaseSearchPostScreen: LMViewController {
     public typealias DataSource = UITableViewDiffableDataSource<String, LMFeedPostContentModel>
     public typealias Snapshot = NSDiffableDataSourceSnapshot<String, LMFeedPostContentModel>
     
-    open func handleCustomWidget(with data: LMFeedPostContentModel) -> LMTableViewCell {
-        return LMTableViewCell()
+    open func handleCustomWidget(with data: LMFeedPostContentModel) -> LMFeedTableViewCell {
+        return LMFeedTableViewCell()
     }
     
     
@@ -136,7 +136,7 @@ open class LMFeedBaseSearchPostScreen: LMViewController {
         }
     }
     
-    open func setupTableView(_ tableView: LMTableView) {
+    open func setupTableView(_ tableView: LMFeedTableView) {
         postList.dataSource = dataSource
         postList.delegate = self
         postList.prefetchDataSource = self

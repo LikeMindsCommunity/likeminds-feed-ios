@@ -18,17 +18,17 @@ public struct LMFeedTopicCollectionCellDataModel {
 }
 
 @IBDesignable
-open class LMFeedTopicEditViewCell: LMCollectionViewCell {
+open class LMFeedTopicEditViewCell: LMFeedCollectionViewCell {
     // MARK: UI Elements
-    open private(set) lazy var textLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var textLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = LMFeedAppearance.shared.colors.appTintColor
         label.font = LMFeedAppearance.shared.fonts.textFont1
         return label
     }()
     
-    open private(set) lazy var crossButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var crossButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
         button.tintColor = LMFeedAppearance.shared.colors.appTintColor

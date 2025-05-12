@@ -18,7 +18,7 @@ public protocol LMFeedPostFooterViewProtocol: AnyObject {
 }
 
 
-open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
+open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
     public struct ContentModel {
         public var isSaved: Bool
         public var isLiked: Bool
@@ -43,8 +43,8 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
     
     
     // MARK: Common UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
@@ -53,8 +53,8 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
         return view
     }()
     
-    open private(set) lazy var actionStackView: LMStackView = {
-        let stack = LMStackView()
+    open private(set) lazy var actionStackView: LMFeedStackView = {
+        let stack = LMFeedStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
         stack.spacing = 8
@@ -63,8 +63,8 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
         return stack
     }()
     
-    open private(set) lazy var likeButton: LMButton = {
-        let button = LMButton()
+    open private(set) lazy var likeButton: LMFeedButton = {
+        let button = LMFeedButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(LMFeedConstants.shared.images.heart, for: .normal)
         button.setImage(LMFeedConstants.shared.images.heartFilled, for: .selected)
@@ -73,8 +73,8 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
         return button
     }()
     
-    open private(set) lazy var likeTextButton: LMButton = {
-        let button = LMButton()
+    open private(set) lazy var likeTextButton: LMFeedButton = {
+        let button = LMFeedButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(LMFeedConstants.shared.strings.like, for: .normal)
         button.setTitleColor(LMFeedAppearance.shared.colors.gray2, for: .normal)
@@ -82,8 +82,8 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
         return button
     }()
     
-    open private(set) lazy var commentButton: LMButton = {
-        let button = LMButton()
+    open private(set) lazy var commentButton: LMFeedButton = {
+        let button = LMFeedButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(LMFeedConstants.Images.shared.commentIcon, for: .normal)
         button.setTitle("", for: .normal)
@@ -94,8 +94,8 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
         return button
     }()
     
-    open private(set) lazy var saveButton: LMButton = {
-        let button = LMButton()
+    open private(set) lazy var saveButton: LMFeedButton = {
+        let button = LMFeedButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(LMFeedConstants.shared.images.bookmark, for: .normal)
         button.setImage(LMFeedConstants.shared.images.bookmarkFilled, for: .selected)
@@ -104,8 +104,8 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
         return button
     }()
     
-    open private(set) lazy var shareButton: LMButton = {
-        let button = LMButton()
+    open private(set) lazy var shareButton: LMFeedButton = {
+        let button = LMFeedButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(LMFeedConstants.shared.images.shareIcon, for: .normal)
         button.tintColor = LMFeedAppearance.shared.colors.gray2
@@ -113,8 +113,8 @@ open class LMFeedBasePostFooterView: LMTableViewHeaderFooterView {
         return button
     }()
     
-    open private(set) lazy var spacer: LMView = {
-        LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var spacer: LMFeedView = {
+        LMFeedView().translatesAutoresizingMaskIntoConstraints()
     }()
     
     // MARK: Common Data Variables

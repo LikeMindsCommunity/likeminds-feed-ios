@@ -9,10 +9,10 @@ import LikeMindsFeedUI
 import UIKit
 
 @IBDesignable
-open class LMFeedLikeListScreen: LMViewController {
+open class LMFeedLikeListScreen: LMFeedViewController {
     // MARK: UI Elements
-    open private(set) lazy var memberListView: LMTableView = {
-        let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var memberListView: LMFeedTableView = {
+        let table = LMFeedTableView().translatesAutoresizingMaskIntoConstraints()
         table.dataSource = self
         table.delegate = self
         table.backgroundColor = LMFeedAppearance.shared.colors.clear

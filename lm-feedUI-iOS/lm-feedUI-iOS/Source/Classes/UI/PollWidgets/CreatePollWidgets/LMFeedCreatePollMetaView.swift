@@ -12,7 +12,7 @@ public protocol LMFeedCreatePollMetaViewProtocol: AnyObject {
     func onValueChanged(for id: Int)
 }
 
-open class LMFeedCreatePollMetaView: LMView {
+open class LMFeedCreatePollMetaView: LMFeedView {
     public struct ContentModel {
         public let metaOptions: [LMFeedCreatePollMetaOptionWidget.ContentModel]
         public let optionState: String
@@ -27,13 +27,13 @@ open class LMFeedCreatePollMetaView: LMView {
     
     
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var metaOptionStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var metaOptionStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fillEqually
@@ -41,13 +41,13 @@ open class LMFeedCreatePollMetaView: LMView {
         return stack
     }()
     
-    open private(set) lazy var optionContainerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var optionContainerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var titleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var titleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.buttonFont1
         label.textColor = LMFeedAppearance.shared.colors.gray155
         label.text = "User can vote for"
@@ -64,9 +64,9 @@ open class LMFeedCreatePollMetaView: LMView {
         return view
     }()
     
-    open private(set) lazy var equalSymbol: LMImageView = {
+    open private(set) lazy var equalSymbol: LMFeedImageView = {
         let image = LMFeedConstants.shared.images.equalIcon.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 24)))
-        let imageView = LMImageView(image: image)
+        let imageView = LMFeedImageView(image: image)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()

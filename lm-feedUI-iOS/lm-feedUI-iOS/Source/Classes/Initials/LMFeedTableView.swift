@@ -61,7 +61,7 @@ public extension UITableView {
     }
 }
 
-public class LMTableView: UITableView {
+public class LMFeedTableView: UITableView {
     public var tableViewHeight: CGFloat {
         layoutIfNeeded()
         return contentSize.height

@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-public class LMImageView: UIImageView {
+public class LMFeedImageView: UIImageView {
     var lastUrlLoaded: String?
     private var currentDownloadTask: URLSessionDataTask?
 

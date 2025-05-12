@@ -181,7 +181,7 @@ public extension UIView {
 }
 
 @IBDesignable
-open class LMView: UIView {
+open class LMFeedView: UIView {
     /// Initializes `UIView` and set up subviews, auto layouts and actions.
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -218,7 +218,7 @@ open class LMView: UIView {
 
 // MARK: LMViewLifeCycle
 // Default Implementation is empty
-extension LMView: LMViewLifeCycle {
+extension LMFeedView: LMFeedViewLifeCycle {
     open func setupViews() { }
     
     open func setupLayouts() { }

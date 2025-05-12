@@ -8,10 +8,10 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedTopicEditIcon: LMCollectionViewCell {
+open class LMFeedTopicEditIcon: LMFeedCollectionViewCell {
     // MARK: UI Elements
-    open private(set) lazy var editIcon: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var editIcon: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(LMFeedConstants.shared.images.pencilIcon, for: .normal)
         button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)

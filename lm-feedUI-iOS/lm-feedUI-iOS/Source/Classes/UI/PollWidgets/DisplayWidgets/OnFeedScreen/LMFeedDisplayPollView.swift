@@ -82,8 +82,8 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
     
     
     // MARK: UI Elements
-    open private(set) lazy var bottomStack: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var bottomStack: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .leading
         stack.distribution = .fill
@@ -91,15 +91,15 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         return stack
     }()
     
-    open private(set) lazy var submitButton: LMButton = {
-        let button = LMButton.createButton(with: LMFeedConstants.shared.strings.submitVote, image: nil, textColor: LMFeedAppearance.shared.colors.white, textFont: LMFeedAppearance.shared.fonts.buttonFont2, contentSpacing: .init(top: 12, left: 8, bottom: 12, right: 8))
+    open private(set) lazy var submitButton: LMFeedButton = {
+        let button = LMFeedButton.createButton(with: LMFeedConstants.shared.strings.submitVote, image: nil, textColor: LMFeedAppearance.shared.colors.white, textFont: LMFeedAppearance.shared.fonts.buttonFont2, contentSpacing: .init(top: 12, left: 8, bottom: 12, right: 8))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = LMFeedAppearance.shared.colors.appTintColor
         return button
     }()
     
-    open private(set) lazy var bottomMetaStack: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var bottomMetaStack: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .horizontal
         stack.alignment = .fill
         stack.distribution = .fill
@@ -107,8 +107,8 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         return stack
     }()
     
-    open private(set) lazy var answerTitleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var answerTitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = LMFeedAppearance.shared.colors.appTintColor
         label.font = LMFeedAppearance.shared.fonts.textFont1
         label.text = "Be the first one to vote"
@@ -116,8 +116,8 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         return label
     }()
     
-    open private(set) lazy var editVoteLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var editVoteLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.isUserInteractionEnabled = true
         label.textColor = LMFeedAppearance.shared.colors.appTintColor
         label.font = LMFeedAppearance.shared.fonts.textFont1
@@ -125,8 +125,8 @@ open class LMFeedDisplayPollView: BaseDisplayPollView {
         return label
     }()
     
-    open private(set) lazy var addOptionButton: LMButton = {
-        let button = LMButton.createButton(with: "Add an Option", image: LMFeedConstants.shared.images.plusIcon, textColor: LMFeedAppearance.shared.colors.black, textFont: LMFeedAppearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 0, bottom: 8, right: 0), imageSpacing: 4)
+    open private(set) lazy var addOptionButton: LMFeedButton = {
+        let button = LMFeedButton.createButton(with: "Add an Option", image: LMFeedConstants.shared.images.plusIcon, textColor: LMFeedAppearance.shared.colors.black, textFont: LMFeedAppearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 0, bottom: 8, right: 0), imageSpacing: 4)
         button.tintColor = LMFeedAppearance.shared.colors.black
         button.translatesAutoresizingMaskIntoConstraints = false
         return button

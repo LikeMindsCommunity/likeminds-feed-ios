@@ -8,16 +8,16 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedNoPostWidget: LMView {
+open class LMFeedNoPostWidget: LMFeedView {
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
-    open private(set) lazy var stackView: LMStackView = {
-        let sv = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var stackView: LMFeedStackView = {
+        let sv = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         sv.axis  = .vertical
         sv.alignment = .center
         sv.distribution = .fill
@@ -25,8 +25,8 @@ open class LMFeedNoPostWidget: LMView {
         return sv
     }()
     
-    open private(set) lazy var emptyImageView: LMImageView = {
-        let imageView = LMImageView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var emptyImageView: LMFeedImageView = {
+        let imageView = LMFeedImageView().translatesAutoresizingMaskIntoConstraints()
         imageView.clipsToBounds = true
         imageView.image = LMFeedConstants.shared.images.docImageIcon
         imageView.tintColor = LMFeedAppearance.shared.colors.gray102
@@ -34,8 +34,8 @@ open class LMFeedNoPostWidget: LMView {
         return imageView
     }()
     
-    open private(set) lazy var emptyTitleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var emptyTitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = LMFeedAppearance.shared.colors.gray1
         label.font = LMFeedAppearance.shared.fonts.buttonFont1
         label.text = ""
@@ -45,7 +45,7 @@ open class LMFeedNoPostWidget: LMView {
     }()
     
     open private(set) lazy var emptySubtitleLabel: UILabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = LMFeedAppearance.shared.colors.gray2
         label.font = LMFeedAppearance.shared.fonts.buttonFont1
         label.text = ""
@@ -54,8 +54,8 @@ open class LMFeedNoPostWidget: LMView {
         return label
     }()
     
-    open private(set) lazy var createPostButton: LMButton = {
-        let button = LMButton.createButton(
+    open private(set) lazy var createPostButton: LMFeedButton = {
+        let button = LMFeedButton.createButton(
             with: "",
             image: LMFeedConstants.shared.images.createPostIcon,
             textColor: LMFeedAppearance.shared.colors.white,

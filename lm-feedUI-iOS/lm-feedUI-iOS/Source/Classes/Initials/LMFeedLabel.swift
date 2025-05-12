@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-public class LMLabel: UILabel {
+public class LMFeedLabel: UILabel {
     var textEdgeInsets = UIEdgeInsets.zero {
         didSet { invalidateIntrinsicContentSize() }
     }

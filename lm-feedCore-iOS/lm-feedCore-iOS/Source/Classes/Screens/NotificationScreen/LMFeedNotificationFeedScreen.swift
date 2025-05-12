@@ -10,10 +10,10 @@ import LikeMindsFeedUI
 import UIKit
 
 @IBDesignable
-open class LMFeedNotificationFeedScreen: LMViewController {
+open class LMFeedNotificationFeedScreen: LMFeedViewController {
     // MARK: UI Elements
-    open private(set) lazy var notificationListView: LMTableView = {
-        let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var notificationListView: LMFeedTableView = {
+        let table = LMFeedTableView().translatesAutoresizingMaskIntoConstraints()
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.register(LMUIComponents.shared.notificationItem)

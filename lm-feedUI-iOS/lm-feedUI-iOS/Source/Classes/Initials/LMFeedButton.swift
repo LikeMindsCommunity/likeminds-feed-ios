@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-public class LMButton: UIButton {
+public class LMFeedButton: UIButton {
     public override init(frame: CGRect) {
         super.init(frame: frame)
         tintAdjustmentMode = .normal
@@ -28,9 +28,9 @@ public class LMButton: UIButton {
         titleLabel?.font = font
     }
     
-    public static func createButton(with title: String?, image: UIImage?, textColor: UIColor?, textFont: UIFont?, contentSpacing: UIEdgeInsets = .zero, imageSpacing: CGFloat = .zero) -> LMButton {
+    public static func createButton(with title: String?, image: UIImage?, textColor: UIColor?, textFont: UIFont?, contentSpacing: UIEdgeInsets = .zero, imageSpacing: CGFloat = .zero) -> LMFeedButton {
         if #available(iOS 15.0, *) {
-            var config: LMButton.Configuration = .plain()
+            var config: LMFeedButton.Configuration = .plain()
             
             config.title = title
             config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
@@ -43,9 +43,9 @@ public class LMButton: UIButton {
             config.image = image
             config.contentInsets = .init(top: contentSpacing.top, leading: contentSpacing.left, bottom: contentSpacing.bottom, trailing: contentSpacing.right)
             config.imagePadding = imageSpacing
-            return LMButton(configuration: config)
+            return LMFeedButton(configuration: config)
         } else {
-            let button = LMButton()
+            let button = LMFeedButton()
             button.setTitle(title, for: .normal)
             button.setTitleColor(textColor, for: .normal)
             button.titleLabel?.font =  textFont
@@ -91,7 +91,7 @@ public class LMButton: UIButton {
 
 
 // MARK: LMLoadingButton
-public class LMLoadingButton: LMButton {
+public class LMLoadingButton: LMFeedButton {
     var originalButtonText: String?
     var activityIndicator: UIActivityIndicatorView!
     

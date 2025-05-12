@@ -8,10 +8,10 @@
 import UIKit
 
 @IBDesignable
-open class LMCollectionViewCell: UICollectionViewCell {
+open class LMFeedCollectionViewCell: UICollectionViewCell {
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
@@ -40,7 +40,7 @@ open class LMCollectionViewCell: UICollectionViewCell {
 
 // MARK: LMViewLifeCycle
 // Default Implementation is Empty
-extension LMCollectionViewCell: LMViewLifeCycle {
+extension LMFeedCollectionViewCell: LMFeedViewLifeCycle {
     open func setupViews() { }
     
     open func setupLayouts() { }

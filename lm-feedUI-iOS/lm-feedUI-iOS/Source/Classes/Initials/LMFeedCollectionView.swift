@@ -24,7 +24,7 @@ extension UICollectionView {
     }
 }
 
-open class LMCollectionView: UICollectionView {
+open class LMFeedCollectionView: UICollectionView {
     public func translatesAutoresizingMaskIntoConstraints() -> Self {
         self.translatesAutoresizingMaskIntoConstraints = false
         return self

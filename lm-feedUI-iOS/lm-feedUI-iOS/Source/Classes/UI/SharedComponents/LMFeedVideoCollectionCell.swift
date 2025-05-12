@@ -9,7 +9,7 @@ import AVKit
 import UIKit
 
 @IBDesignable
-open class LMFeedVideoCollectionCell: LMCollectionViewCell {
+open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
     
     open private(set) var playPauseButton: UIButton = {
         var playPauseButton = UIButton(type: .system)
@@ -55,8 +55,8 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         return player
     }()
     
-    open private(set) lazy var crossButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var crossButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
         button.backgroundColor = LMFeedAppearance.shared.colors.black4
@@ -65,8 +65,8 @@ open class LMFeedVideoCollectionCell: LMCollectionViewCell {
         return button
     }()
     
-    open private(set) lazy var volumeButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var volumeButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(LMFeedVideoProvider.isMuted ? LMFeedConstants.shared.images.unMuteFillIcon : LMFeedConstants.shared.images.muteFillIcon , for: .normal)
         button.backgroundColor = LMFeedAppearance.shared.colors.black4

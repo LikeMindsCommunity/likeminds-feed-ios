@@ -7,20 +7,20 @@
 
 import UIKit
 
-open class LMFeedAddResponseView: LMView {
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+open class LMFeedAddResponseView: LMFeedView {
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var sepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var sepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
         return view
     }()
     
-    open private(set) lazy var containerStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .horizontal
         stack.alignment = .fill
         stack.distribution = .fill
@@ -28,13 +28,13 @@ open class LMFeedAddResponseView: LMView {
         return stack
     }()
     
-    open private(set) lazy var profileView: LMImageView = {
-        let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var profileView: LMFeedImageView = {
+        let image = LMFeedImageView().translatesAutoresizingMaskIntoConstraints()
         return image
     }()
     
-    open private(set) lazy var placeholderLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var placeholderLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Be the first one to answer"
         label.font = LMFeedAppearance.shared.fonts.subHeadingFont2
         label.textColor = LMFeedAppearance.shared.colors.gray102

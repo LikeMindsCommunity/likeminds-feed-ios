@@ -55,10 +55,10 @@ public extension LMBaseViewControllerProtocol {
 
 /// Base LM View Controller Class with LM Life Cycle Methods
 @IBDesignable
-open class LMViewController: UIViewController {
+open class LMFeedViewController: UIViewController {
     // MARK: UI Elements
-    open private(set) lazy var loaderScreen: LMView = {
-        let view = LMView(frame: view.bounds).translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var loaderScreen: LMFeedView = {
+        let view = LMFeedView(frame: view.bounds).translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
@@ -116,12 +116,12 @@ open class LMViewController: UIViewController {
     }
     
     open func setNavigationTitleAndSubtitle(with title: String?, subtitle: String?, alignment: UIStackView.Alignment = .leading) {
-        let titleView = LMView().translatesAutoresizingMaskIntoConstraints()
+        let titleView = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         let widthConstraint = NSLayoutConstraint.init(item: titleView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: UIScreen.main.bounds.width)
         widthConstraint.priority = .defaultLow
         widthConstraint.isActive = true
         
-        let stackView = LMStackView().translatesAutoresizingMaskIntoConstraints()
+        let stackView = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stackView.spacing = 4
         stackView.axis = .vertical
         stackView.alignment = alignment
@@ -132,7 +132,7 @@ open class LMViewController: UIViewController {
         
         if let title,
            !title.isEmpty {
-            let titleLabel = LMLabel().translatesAutoresizingMaskIntoConstraints()
+            let titleLabel = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
             titleLabel.text = title
             titleLabel.textColor = LMFeedAppearance.shared.colors.gray51
             titleLabel.font = LMFeedAppearance.shared.fonts.navigationTitleFont
@@ -141,7 +141,7 @@ open class LMViewController: UIViewController {
         
         if let subtitle,
            !subtitle.isEmpty {
-            let subtitleLabel = LMLabel().translatesAutoresizingMaskIntoConstraints()
+            let subtitleLabel = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
             subtitleLabel.text = subtitle
             subtitleLabel.textColor = LMFeedAppearance.shared.colors.gray51
             subtitleLabel.font = LMFeedAppearance.shared.fonts.navigationSubtitleFont
@@ -181,7 +181,7 @@ open class LMViewController: UIViewController {
 
 
 // MARK: LMViewLifeCycle
-extension LMViewController: LMViewLifeCycle {
+extension LMFeedViewController: LMFeedViewLifeCycle {
     /// This function handles the initialization of views.
     open func setupViews() { }
     
@@ -201,7 +201,7 @@ extension LMViewController: LMViewLifeCycle {
 
 // MARK: LMBaseViewControllerProtocol
 @objc
-extension LMViewController: LMBaseViewControllerProtocol {
+extension LMFeedViewController: LMBaseViewControllerProtocol {
     open func presentAlert(with alert: UIAlertController, animated: Bool = true) {
         present(alert, animated: animated)
     }
@@ -258,6 +258,6 @@ extension LMViewController: LMBaseViewControllerProtocol {
 }
 
 
-extension LMViewController: UIDocumentInteractionControllerDelegate {
+extension LMFeedViewController: UIDocumentInteractionControllerDelegate {
     open func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController { self }
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-open class LMTableViewHeaderFooterView: UITableViewHeaderFooterView { 
+open class LMFeedTableViewHeaderFooterView: UITableViewHeaderFooterView { 
     public override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         initUI()
@@ -31,7 +31,7 @@ open class LMTableViewHeaderFooterView: UITableViewHeaderFooterView {
 }
 
 @objc
-extension LMTableViewHeaderFooterView: LMViewLifeCycle {
+extension LMFeedTableViewHeaderFooterView: LMFeedViewLifeCycle {
     open func setupViews() { }
     
     open func setupLayouts() { }

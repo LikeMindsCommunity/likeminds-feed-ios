@@ -18,8 +18,8 @@ open class LMFeedZoomImageViewContainer: UIScrollView {
         }
     }
     
-    open private(set) var imageView: LMImageView = {
-        let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) var imageView: LMFeedImageView = {
+        let image = LMFeedImageView().translatesAutoresizingMaskIntoConstraints()
         image.clipsToBounds = true
         image.contentMode = .scaleAspectFit
         return image
