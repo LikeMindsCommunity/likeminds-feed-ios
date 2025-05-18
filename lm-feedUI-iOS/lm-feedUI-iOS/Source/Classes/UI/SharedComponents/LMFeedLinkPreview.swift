@@ -184,6 +184,7 @@ open class LMFeedLinkPreview: LMFeedView {
         self.crossButtonAction = crossButtonAction
         
             imageView.loadImage(url: data.linkPreview ?? "") { [weak imageView] result in
+                //UIImageView set isHidden must be used from main thread only
                 DispatchQueue.main.async {
                        switch result {
                        case .success(_):

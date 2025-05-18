@@ -32,7 +32,7 @@ open class BaseDisplayPollWidget: LMFeedView {
         let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.textColor = LMFeedAppearance.shared.colors.gray51
-        label.text = "Option Text"
+        label.text = LMFeedConstants.shared.strings.pollOptionalText
         return label
     }()
     
@@ -40,7 +40,7 @@ open class BaseDisplayPollWidget: LMFeedView {
         let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.subHeadingFont1
         label.textColor = LMFeedAppearance.shared.colors.blueGray.withAlphaComponent(0.7)
-        label.text = "Added By Text"
+        label.text = LMFeedConstants.shared.strings.pollAddByText
         return label
     }()
 }
