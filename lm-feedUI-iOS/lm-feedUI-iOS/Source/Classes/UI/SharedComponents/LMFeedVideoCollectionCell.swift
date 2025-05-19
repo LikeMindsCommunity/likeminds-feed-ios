@@ -28,13 +28,15 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
         public let postID: String
         public let width: Int?
         public let height: Int?
+        public let showRemoveButton: Bool
         
-        public init(videoURL: String, isFilePath: Bool = false, postID: String, width: Int?, height: Int?) {
+        public init(videoURL: String, isFilePath: Bool = false, postID: String, width: Int?, height: Int?, showRemoveButton: Bool = true) {
             self.videoURL = videoURL
             self.isFilePath = isFilePath
             self.postID = postID
             self.height = height
             self.width = width
+            self.showRemoveButton = showRemoveButton
         }
     }
     
@@ -196,8 +198,8 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
         self.didTapVideo = didTapVideo
         videoPlayer.prepareVideo(with: data, index, showControls: showControls)
         self.crossButtonAction = crossButtonAction
-        crossButton.isHidden = crossButtonAction == nil
-        if crossButtonAction != nil {
+        crossButton.isHidden = !data.showRemoveButton || crossButtonAction == nil
+        if crossButtonAction != nil && data.showRemoveButton {
             containerView.bringSubviewToFront(crossButton)
         }
         seekBar.isHidden = !showControls

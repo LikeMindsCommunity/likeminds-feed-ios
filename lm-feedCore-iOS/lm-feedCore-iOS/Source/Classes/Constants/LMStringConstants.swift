@@ -60,6 +60,7 @@ public struct LMStringConstants {
     public var maxUploadSizeErrorMessage = "Max Upload Size is %d MB"
     public var doneText = "Done"
     public var oKText = "OK"
+    public var postText = "POST"
     
     // CreatePost Strings
     public var addMoreText = "Add More"

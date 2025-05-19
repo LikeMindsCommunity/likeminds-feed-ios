@@ -51,6 +51,9 @@ public struct Components {
     // MARK: Media Preview Screen
     public var mediaPreviewScreen: LMFeedMediaPreviewScreen.Type = LMFeedMediaPreviewScreen.self
     
+    //MARK: Create Reel Video
+    public var createShortVideoScreen: LMFeedCreateShortVideoScreen.Type = LMFeedCreateShortVideoScreen.self
+    
     // MARK: QnA Feed
     public var qnaPostListScreen: LMFeedQnAPostListScreen.Type = LMFeedQnAPostListScreen.self
     public var qnaPostDetailScreen: LMFeedQnAPostDetailScreen.Type = LMFeedQnAPostDetailScreen.self
