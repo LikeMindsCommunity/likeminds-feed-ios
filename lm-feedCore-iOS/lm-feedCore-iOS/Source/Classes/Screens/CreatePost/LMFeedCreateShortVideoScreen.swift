@@ -87,12 +87,6 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         return button
     }()
     
-    open private(set) lazy var selectVideoButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: LMFeedConstants.shared.images.galleryIcon, style: .plain, target: self, action: #selector(didTapSelectVideo))
-        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
-        return button
-    }()
-    
     // MARK: Data Variables
     public var viewModel: LMFeedCreateShortVideoViewModel?
     public var videoAttachmentData: [LMFeedMediaProtocol] = []
@@ -145,17 +139,12 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
-        navigationItem.rightBarButtonItems = [createPostButton, selectVideoButton]
+        navigationItem.rightBarButtonItem = createPostButton
     }
     
     @objc
     open func didTapCreateButton() {
         viewModel?.createReel(with: inputTextView.getText())
-    }
-    
-    @objc
-    open func didTapSelectVideo() {
-        viewModel?.selectVideo()
     }
     
     // MARK: viewDidLoad
@@ -178,7 +167,7 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
     }
     
     open func setupInitialView() {
-        videoPreview.isHidden = true
+        videoPreview.isHidden = false
         topicView.isHidden = true
         createPostButton.isEnabled = false
     }
@@ -247,7 +236,7 @@ extension LMFeedCreateShortVideoScreen : LMFeedCreateShortVideoViewModelProtocol
     }
     
     public func resetMediaView() {
-        videoPreview.isHidden = true
+        videoPreview.isHidden = false
         videoAttachmentData.removeAll()
     }
     

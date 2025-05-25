@@ -54,6 +54,8 @@ public struct Components {
     //MARK: Create Reel Video
     public var createShortVideoScreen: LMFeedCreateShortVideoScreen.Type = LMFeedCreateShortVideoScreen.self
     
+    public var feedVideoFeedScreen : LMFeedVideoFeedScreen.Type = LMFeedVideoFeedScreen.self
+    
     // MARK: QnA Feed
     public var qnaPostListScreen: LMFeedQnAPostListScreen.Type = LMFeedQnAPostListScreen.self
     public var qnaPostDetailScreen: LMFeedQnAPostDetailScreen.Type = LMFeedQnAPostDetailScreen.self

@@ -194,7 +194,7 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         addCommentView.isHidden = commentCount != .zero
     }
     
-    open override func configure(with data: LMFeedBasePostFooterView.ContentModel, topResponse: LMFeedCommentContentModel?, postID: String, delegate: any LMFeedPostFooterViewProtocol) {
+    open override func configure(with data: LMFeedBasePostFooterView.ContentModel, topResponse: LMFeedCommentContentModel?, postID: String, delegate: any LMFeedPostFooterViewProtocol, orientation:LMFeedPostFooterOrientation ) {
         super.configure(with: data, topResponse: topResponse, postID: postID, delegate: delegate)
         
         likeCountButton.setTitle(likeText, for: .normal)

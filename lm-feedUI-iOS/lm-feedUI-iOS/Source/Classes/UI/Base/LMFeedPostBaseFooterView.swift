@@ -17,6 +17,10 @@ public protocol LMFeedPostFooterViewProtocol: AnyObject {
     func didTapPost(postID: String)
 }
 
+public enum LMFeedPostFooterOrientation {
+    case horizontal
+    case vertical
+}
 
 open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
     public struct ContentModel {
@@ -56,9 +60,9 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
     open private(set) lazy var actionStackView: LMFeedStackView = {
         let stack = LMFeedStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .horizontal
-        stack.spacing = 8
-        stack.alignment = .center
+        stack.axis = orientation == .horizontal ? .horizontal : .vertical
+        stack.spacing = orientation == .horizontal ? 8 : 12
+        stack.alignment = orientation == .horizontal ? .center : .leading
         stack.distribution = .fill
         return stack
     }()
@@ -70,6 +74,7 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
         button.setImage(LMFeedConstants.shared.images.heartFilled, for: .selected)
         button.tintColor = LMFeedAppearance.shared.colors.gray102
         button.setPreferredSymbolConfiguration(.init(font: LMFeedAppearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
+        button.contentHorizontalAlignment = .left
         return button
     }()
     
@@ -91,6 +96,7 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
         button.tintColor = LMFeedAppearance.shared.colors.gray2
         button.centerTextAndImage(spacing: 4)
         button.setPreferredSymbolConfiguration(.init(font: LMFeedAppearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
+        button.contentHorizontalAlignment = .left
         return button
     }()
     
@@ -101,6 +107,7 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
         button.setImage(LMFeedConstants.shared.images.bookmarkFilled, for: .selected)
         button.tintColor = LMFeedAppearance.shared.colors.gray2
         button.setPreferredSymbolConfiguration(.init(font: LMFeedAppearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
+        button.contentHorizontalAlignment = .left
         return button
     }()
     
@@ -110,6 +117,7 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
         button.setImage(LMFeedConstants.shared.images.shareIcon, for: .normal)
         button.tintColor = LMFeedAppearance.shared.colors.gray2
         button.setPreferredSymbolConfiguration(.init(font: LMFeedAppearance.shared.fonts.buttonFont1, scale: .large), forImageIn: .normal)
+        button.contentHorizontalAlignment = .left
         return button
     }()
     
@@ -121,6 +129,11 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
     public weak var delegate: LMFeedPostFooterViewProtocol?
     public var postID: String?
     public var likeCount: Int = 0
+    public var orientation: LMFeedPostFooterOrientation = .horizontal {
+        didSet {
+            updateStackViewOrientation()
+        }
+    }
     
     // Private stored properties
     private var _likeText: String = "Like"
@@ -188,13 +201,13 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
     }
     
     // MARK: Configure
-    open func configure(with data: ContentModel, topResponse: LMFeedCommentContentModel?, postID: String, delegate: LMFeedPostFooterViewProtocol) {
+    open func configure(with data: ContentModel, topResponse: LMFeedCommentContentModel?, postID: String, delegate: LMFeedPostFooterViewProtocol, orientation: LMFeedPostFooterOrientation = .horizontal) {
+        self.orientation = orientation
         self.likeText = data.likeText
         self.commentText = data.commentText
         self.postID = postID
         self.likeCount = data.likeCount
         self.delegate = delegate
-        
         
         likeButton.isSelected = data.isLiked
         likeButton.tintColor = likeButtonTintColor
@@ -268,5 +281,21 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
     @objc open func didTapPost() {
         guard let postID = postID else { return }
         delegate?.didTapPost(postID: postID)
+    }
+    
+    private func updateStackViewOrientation() {
+        actionStackView.axis = orientation == .horizontal ? .horizontal : .vertical
+        actionStackView.spacing = orientation == .horizontal ? 8 : 12
+        actionStackView.alignment = orientation == .horizontal ? .center : .leading
+        
+        // Update button alignments
+        let alignment: UIControl.ContentHorizontalAlignment = orientation == .horizontal ? .center : .left
+        [likeButton, likeTextButton, commentButton, saveButton, shareButton].forEach { button in
+            button.contentHorizontalAlignment = alignment
+        }
+        
+        // Update constraints if needed
+        setNeedsLayout()
+        layoutIfNeeded()
     }
 }

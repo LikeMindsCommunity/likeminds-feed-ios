@@ -72,5 +72,7 @@ public extension LMFeedConstants {
         public var pauseFilled = loadSystemImage(with: "pause.fill")
         public var upvoteIcon = loadImage(with: "upvote")
         public var upvoteFilledIcon = loadImage(with: "upvotefilled")
+        
+        public var addVideoPostIcon = loadImage(with: "addPostIcon")
     }
 }

@@ -62,13 +62,15 @@ public struct LMStringConstants {
     public var oKText = "OK"
     public var postText = "POST"
     
+    
     // CreatePost Strings
     public var addMoreText = "Add More"
     public var addPhotoText = "Add Photo"
     public var addVideoText = "Add Video"
     public var attachFiles = "Attach Files"
     public var addPoll = "Add Poll"
-    
+    public var newVideoPost = "New post"
+        
     public var createPostTitle: String {
         String(format: "Create a %@", pluralizeOrCapitalize(to: postVariable, withAction: .allSmallSingular))
     }
