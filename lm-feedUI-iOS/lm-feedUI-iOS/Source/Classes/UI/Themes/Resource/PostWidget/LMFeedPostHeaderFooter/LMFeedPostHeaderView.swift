@@ -35,12 +35,20 @@ open class LMFeedPostHeaderView: LMFeedTableViewHeaderFooterView {
         }
     }
     
+    // MARK: Customization Properties
+    @IBInspectable
+    open var containerBackgroundColor: UIColor = .white {
+        didSet {
+            contentContainerView.backgroundColor = containerBackgroundColor
+        }
+    }
+    
     // MARK: UI Elements
     open private(set) lazy var contentContainerView: LMFeedView = {
         let view = LMFeedView()
         view.contentMode = .scaleToFill
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = LMFeedAppearance.shared.colors.clear
+        view.backgroundColor = containerBackgroundColor
         return view
     }()
 
@@ -229,7 +237,7 @@ open class LMFeedPostHeaderView: LMFeedTableViewHeaderFooterView {
         super.setupAppearance()
         
         backgroundView = nil
-        contentContainerView.backgroundColor = .white
+        contentContainerView.backgroundColor = containerBackgroundColor
         imageView.roundCorners(with: 48/2)
     }
     

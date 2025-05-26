@@ -151,12 +151,33 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = LMFeedAppearance.shared.colors.white
-        setNavigationTitleAndSubtitle(with: "New Reel", subtitle: nil, alignment: .center)
+        
+        // Configure navigation bar
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        navigationController?.navigationBar.isTranslucent = false
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .white
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.black,
+            .font: UIFont.systemFont(ofSize: 17, weight: .semibold)
+        ]
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.tintColor = LMFeedAppearance.shared.colors.appTintColor
+        
+        setNavigationTitleAndSubtitle(with: "New Reel", subtitle: nil, alignment: .leading)
         
         inputTextView.setAttributedText(from: "")
         setupInitialView()
         
         viewModel?.getTopics()
+    }
+    
+    // MARK: Status Bar
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .darkContent
     }
     
     open override func viewWillDisappear(_ animated: Bool) {

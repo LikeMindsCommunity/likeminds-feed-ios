@@ -28,6 +28,29 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
         return button
     }()
     
+    private lazy var videoListScreen: LMFeedVideoListScreen = {
+        let screen = LMFeedVideoListScreen()
+        screen.viewModel = LMFeedVideoListViewModel(delegate: screen)
+        screen.delegate = self
+        return screen
+    }()
+    
+    private lazy var customNavBar: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .black.withAlphaComponent(0.5)
+        return view
+    }()
+    
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Reels"
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     // MARK: Data Variables
     private let feedType: LMFeedType
     public var viewModel: LMFeedVideoFeedViewModel?
@@ -58,6 +81,7 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
         setupAppearance()
         
         viewModel = LMFeedVideoFeedViewModel(delegate: self)
+        addChildViewController()
     }
     
     // MARK: Setup Methods
@@ -71,25 +95,63 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
     
     open override func setupActions() {
         super.setupActions()
-        // Set title to the left
-        let titleLabel = UILabel()
-        titleLabel.text = "Reels"
-        titleLabel.textColor = .white
-        titleLabel.font = .systemFont(ofSize: 20, weight: .bold)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleLabel)
-        
-        // Add post button to the right
-        let buttonContainer = UIView(frame: CGRect(x: 0, y: 0, width: 120, height: 40))
-        buttonContainer.addSubview(newPostButton)
-        newPostButton.frame = buttonContainer.bounds
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttonContainer)
     }
     
     open override func setupAppearance() {
         super.setupAppearance()
         view.backgroundColor = .black
-        navigationController?.navigationBar.barTintColor = .black
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        // Set status bar style to light content
+        if #available(iOS 13.0, *) {
+            let window = UIApplication.shared.windows.first
+            window?.overrideUserInterfaceStyle = .dark
+        }
+    }
+    
+    // MARK: Status Bar
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    // MARK: Child View Controller Setup
+    private func addChildViewController() {
+        // First add the video list screen
+        addChild(videoListScreen)
+        view.addSubview(videoListScreen.view)
+        videoListScreen.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Then add the custom navigation bar on top
+        view.addSubview(customNavBar)
+        customNavBar.addSubview(titleLabel)
+        customNavBar.addSubview(newPostButton)
+        
+        NSLayoutConstraint.activate([
+            // Video list screen constraints
+            videoListScreen.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            videoListScreen.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            videoListScreen.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            videoListScreen.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            // Navigation bar constraints
+            customNavBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            customNavBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            customNavBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            customNavBar.heightAnchor.constraint(equalToConstant: 44),
+            
+            titleLabel.leadingAnchor.constraint(equalTo: customNavBar.leadingAnchor, constant: 16),
+            titleLabel.centerYAnchor.constraint(equalTo: customNavBar.centerYAnchor),
+            
+            newPostButton.trailingAnchor.constraint(equalTo: customNavBar.trailingAnchor, constant: -16),
+            newPostButton.centerYAnchor.constraint(equalTo: customNavBar.centerYAnchor),
+            newPostButton.widthAnchor.constraint(equalToConstant: 120),
+            newPostButton.heightAnchor.constraint(equalToConstant: 40)
+        ])
+        
+        videoListScreen.didMove(toParent: self)
+        
+        // Ensure navigation bar is on top
+        view.bringSubviewToFront(customNavBar)
     }
     
     // MARK: Actions
@@ -113,9 +175,33 @@ extension LMFeedVideoFeedScreen: LMFeedVideoFeedViewModelDelegate {
         do {
             let shortVideoScreen = try LMFeedCreateShortVideoViewModel.createModule()
             shortVideoScreen.viewModel?.handleAssets(assets: [video])
+            
+            // Show navigation bar for the next screen
+            navigationController?.setNavigationBarHidden(false, animated: true)
+            
+            // Configure navigation bar appearance
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .black
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+            navigationController?.navigationBar.tintColor = .white
+            
             navigationController?.pushViewController(shortVideoScreen, animated: true)
         } catch {
             print(error.localizedDescription)
         }
+    }
+}
+
+// MARK: - LMFeedPostListVCFromProtocol
+extension LMFeedVideoFeedScreen: LMFeedPostListVCFromProtocol {
+    public func onPostListScrolled(_ scrollView: UIScrollView) {
+        
+    }
+    
+    public func onPostDataFetched(isEmpty: Bool) {
+        // Handle empty state if needed
     }
 }

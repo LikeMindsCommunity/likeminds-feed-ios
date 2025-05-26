@@ -135,6 +135,14 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
         }
     }
     
+    // MARK: Customization Properties
+    @IBInspectable
+    open var containerBackgroundColor: UIColor = .white {
+        didSet {
+            containerView.backgroundColor = containerBackgroundColor
+        }
+    }
+    
     // Private stored properties
     private var _likeText: String = "Like"
     private var _commentText: String = "Comment"
@@ -196,8 +204,7 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
     // MARK: Appearance
     open override func setupAppearance() {
         super.setupAppearance()
-        
-        containerView.backgroundColor = LMFeedAppearance.shared.colors.white
+        containerView.backgroundColor = containerBackgroundColor
     }
     
     // MARK: Configure
