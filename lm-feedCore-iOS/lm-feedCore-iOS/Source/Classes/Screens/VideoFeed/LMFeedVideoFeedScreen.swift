@@ -54,6 +54,7 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
     // MARK: Data Variables
     private let feedType: LMFeedType
     public var viewModel: LMFeedVideoFeedViewModel?
+    public var isPostCreationInProgress: Bool = false
     
     // MARK: Initialization
     public init(feedType: LMFeedType = .universal) {
@@ -108,6 +109,49 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
             window?.overrideUserInterfaceStyle = .dark
         }
     }
+    
+    // MARK: setupObservers
+    open override func setupObservers() {
+        super.setupObservers()
+        NotificationCenter.default.addObserver(self, selector: #selector(postCreationInProgress), name: .LMPostCreationStarted, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postCreationSuccessful), name: .LMPostCreated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostEditError, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postError), name: .LMPostCreateError, object: nil)
+    }
+    
+    @objc
+    open func postCreationInProgress(notification: Notification) {
+        let image = notification.object as? UIImage
+        createPostLoaderView.isHidden = false
+        isPostCreationInProgress = true
+        createPostLoaderView.configure(with: image)
+    }
+    
+    @objc
+    open func postCreationSuccessful() {
+        isPostCreationInProgress = false
+        createPostLoaderView.stopAnimating()
+        createPostLoaderView.isHidden = true
+//        feedListDelegate?.loadPostsWithTopics(selectedTopics.map { $0.topicID })
+    }
+    
+    @objc
+    open func postError(notification: Notification) {
+        isPostCreationInProgress = false
+        createPostLoaderView.stopAnimating()
+        createPostLoaderView.isHidden = true
+        
+        if let error = notification.object as? LMFeedError {
+            showError(with: error.localizedDescription)
+        }
+    }
+    
+    
+    open private(set) lazy var createPostLoaderView: LMFeedAddMediaPreview = {
+        let view = LMFeedAddMediaPreview().translatesAutoresizingMaskIntoConstraints()
+        return view
+    }()
+    
     
     // MARK: Status Bar
     open override var preferredStatusBarStyle: UIStatusBarStyle {

@@ -15,7 +15,6 @@ import PDFKit
 public protocol LMFeedCreateShortVideoViewModelProtocol: LMBaseViewControllerProtocol {
     func showVideo(video: [LMFeedMediaProtocol])
     func resetMediaView()
-    func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int, selectedAssets: [PHAsset])
     func updateTopicView(with data: LMFeedTopicView.ContentModel)
     func navigateToTopicView(with topics: [LMFeedTopicDataModel])
 }
@@ -65,47 +64,25 @@ public class LMFeedCreateShortVideoViewModel {
     }
     
     public func createReel(with caption: String) {
-        guard let videoAttachment = media.first else {
-            delegate?.showError(with: "Please select a video", isPopVC: false)
-            return
+        var attachments: [LMFeedCreatePostOperation.LMAWSRequestModel] = []
+        let filePath = "files/post/\(LocalPreferences.userObj?.clientUUID ?? "user")/\(Int(Date().timeIntervalSince1970))/"
+        
+        media.forEach { medium in
+            if medium.url.getFileSize() > LMNumbersConstant.shared.maxFileSizeInBytes {
+                delegate?.showError(with: String(format: LMStringConstants.shared.maxUploadSizeErrorMessage, LMNumbersConstant.shared.maxFileSizeInMB), isPopVC: false)
+                return
+            }
+            
+            attachments.append(.init(url: medium.url, data: medium.data, fileName: medium.url.lastPathComponent, awsFilePath: filePath, contentType: medium.mediaType, width: medium.width, height: medium.height))
         }
         
-        if videoAttachment.url.getFileSize() > LMNumbersConstant.shared.maxFileSizeInBytes {
-            delegate?.showError(with: String(format: LMStringConstants.shared.maxUploadSizeErrorMessage, LMNumbersConstant.shared.maxFileSizeInMB), isPopVC: false)
-            return
-        }
-        
-        let filePath = "files/reel/\(LocalPreferences.userObj?.clientUUID ?? "user")/\(Int(Date().timeIntervalSince1970))/"
-        
-        let attachment = LMFeedCreatePostOperation.LMAWSRequestModel(
-            url: videoAttachment.url,
-            data: videoAttachment.data,
-            fileName: videoAttachment.url.lastPathComponent,
-            awsFilePath: filePath,
-            contentType: .video,
-            width: videoAttachment.width,
-            height: videoAttachment.height
-        )
-        
-        LMFeedCreatePostOperation.shared.createPost(
-            with: caption,
-            heading: nil,
-            topics: selectedTopics.map({ $0.topicID }),
-            files: [attachment],
-            linkPreview: nil,
-            poll: nil,
-            meta: ["is_reel": true]
-        )
-        
+        LMFeedCreatePostOperation.shared.createPost(with: caption, heading: nil, topics: selectedTopics.map({ $0.topicID }), files: attachments, linkPreview: nil, poll: nil, meta: nil)
         delegate?.popViewController(animated: true)
     }
 }
 
 // MARK: Assets Handling
 public extension LMFeedCreateShortVideoViewModel {
-    func selectVideo() {
-        updateCurrentSelection(to: .video)
-    }
     
     func handleAssets(assets: [(PHAsset, URL, Data)]) {
         media.removeAll(keepingCapacity: true)
@@ -115,7 +92,7 @@ public extension LMFeedCreateShortVideoViewModel {
             media.append(.init(
                 url: videoAsset.1,
                 data: videoAsset.2,
-                mediaType: .video,
+                mediaType: .reel,
                 asset: videoAsset.0,
                 width: videoAsset.0.pixelWidth,
                 height: videoAsset.0.pixelHeight
@@ -130,11 +107,6 @@ public extension LMFeedCreateShortVideoViewModel {
         reloadMedia()
     }
     
-    func updateCurrentSelection(to type: PostCreationAttachmentType) {
-        currentMediaSelectionType = type
-        let selectedMedia = media.compactMap { $0.asset }
-        delegate?.openMediaPicker(type, isFirstPick: media.isEmpty, allowedNumber: maxMedia, selectedAssets: selectedMedia)
-    }
     
     func reloadMedia() {
         var mediaData: [LMFeedMediaProtocol] = []
@@ -142,7 +114,7 @@ public extension LMFeedCreateShortVideoViewModel {
         currentMediaSelectionType = media.isEmpty ? .none : currentMediaSelectionType
         
         media.forEach { medium in
-            if medium.mediaType == .video {
+            if medium.mediaType == .reel {
                 let timestamp = Date().millisecondsSince1970
                 mediaData.append(LMFeedVideoCollectionCell.ContentModel(
                     videoURL: medium.url.absoluteString,

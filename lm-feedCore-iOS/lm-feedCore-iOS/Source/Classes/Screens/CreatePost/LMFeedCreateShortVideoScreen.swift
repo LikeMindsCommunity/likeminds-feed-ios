@@ -118,12 +118,11 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         
         scrollStackView.setWidthConstraint(with: containerView.widthAnchor, multiplier: 1)
         scrollStackView.setHeightConstraint(with: 700, priority: .defaultLow)
-        videoPreview.setWidthConstraint(with: containerStackView.widthAnchor, multiplier: 0.7)
-
         
-        videoCollectionViewHeightConstraint = videoPreview.setHeightConstraint(with: videoPreview.widthAnchor, multiplier: 1.3)
-        videoPreview.addConstraint(leading: (containerStackView.leadingAnchor, 50))
-        
+        // Update video preview constraints
+        videoPreview.setWidthConstraint(with: containerStackView.widthAnchor, multiplier: 0.9)
+        videoPreview.setHeightConstraint(with: videoPreview.widthAnchor, multiplier: 1.3)
+        videoPreview.addConstraint(leading: (containerStackView.leadingAnchor, 20))
         videoPreview.topAnchor.constraint(equalTo: scrollStackView.topAnchor, constant: 25).isActive = true
         
         scrollStackView.subviews.forEach { subView in
@@ -220,7 +219,8 @@ extension LMFeedCreateShortVideoScreen: UICollectionViewDataSource, UICollection
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        .init(width: collectionView.frame.width, height: collectionView.frame.width * 1.3)
+        let width = collectionView.frame.width
+        return CGSize(width: width, height: width * 1.3)
     }
     
     open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -261,18 +261,6 @@ extension LMFeedCreateShortVideoScreen : LMFeedCreateShortVideoViewModelProtocol
         videoAttachmentData.removeAll()
     }
     
-    public func openMediaPicker(_ mediaType: PostCreationAttachmentType, isFirstPick: Bool, allowedNumber: Int, selectedAssets: [PHAsset]) {
-        let imagePicker = ImagePickerController(selectedAssets: selectedAssets)
-        imagePicker.settings.selection.max = allowedNumber
-        imagePicker.settings.fetch.assets.supportedMediaTypes = [.video]
-        
-        presentImagePicker(imagePicker, select: { asset in
-        }, deselect: { asset in
-        }, cancel: { _ in
-        }, finish: { [weak self] assets in
-            self?.handleMultiMedia(with: assets)
-        })
-    }
     
     public func updateTopicView(with data: LMFeedTopicView.ContentModel) {
         topicView.isHidden = false
@@ -288,53 +276,6 @@ extension LMFeedCreateShortVideoScreen : LMFeedCreateShortVideoViewModelProtocol
         }
     }
     
-    private func handleMultiMedia(with assets: [PHAsset]) {
-        var currentAssets: [(asset: PHAsset, url: URL, data: Data)?] = Array(repeating: nil, count: assets.count)
-        let dispatchGroup = DispatchGroup()
-        
-        let fm = FileManager.default
-        
-        for (index, asset) in assets.enumerated() {
-            dispatchGroup.enter()
-            asset.asyncURL { url in
-                defer { dispatchGroup.leave() }
-                
-                guard let url else { return }
-                
-                let destination = fm.temporaryDirectory.appendingPathComponent("\(Int(Date().timeIntervalSince1970))_\(url.lastPathComponent)")
-                do {
-                    try fm.copyItem(at: url, to: destination)
-                    let data = try Data(contentsOf: url)
-                    currentAssets[index] = (asset, destination, data)
-                } catch {
-                    print(error.localizedDescription)
-                }
-            }
-        }
-        
-        dispatchGroup.notify(queue: .main) { [weak self] in
-            let value = LocalPreferences.communityConfiguration?.configs.first?.value
-            let videoSizeLimit: Int64 = Int64(value?.maxVideoSize ?? 100 * 1024)  // 100MB in Kilobytes
-            
-            let filteredAssets = currentAssets.filter { assetTuple in
-                guard let (asset, _, data) = assetTuple else {
-                    return false
-                }
-                let fileSize = Int64(data.count/1024) // Converts Byte into Kilobytes
-                if fileSize <= videoSizeLimit {
-                    return true
-                } else {
-                    self?.showError(with: "Please select videos smaller than \(videoSizeLimit/1024)MB", isPopVC: false)
-                    return false
-                }
-            }.compactMap{ $0 }
-            
-            var mappedMedia: [(asset: PHAsset, url: URL, data: Data)]
-            mappedMedia = filteredAssets.map { ($0.asset, $0.url, $0.data) }
-            
-            self?.viewModel?.handleAssets(assets: mappedMedia)
-        }
-    }
 }
 
 // MARK: LMFeedTaggingTextViewProtocol

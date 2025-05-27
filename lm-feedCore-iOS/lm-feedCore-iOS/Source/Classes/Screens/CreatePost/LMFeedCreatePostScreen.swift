@@ -616,7 +616,7 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
             checkPhotoLibraryPermission { [weak self] in
                 self?.openImagePicker(.image, isFirstTime: isFirstPick, maxSelection: allowedNumber, selectedAssets: selectedAssets)
             }
-        case .video:
+        case .video,.reel:
             checkPhotoLibraryPermission { [weak self] in
                 self?.openImagePicker(.video, isFirstTime: isFirstPick, maxSelection: allowedNumber, selectedAssets: selectedAssets)
             }

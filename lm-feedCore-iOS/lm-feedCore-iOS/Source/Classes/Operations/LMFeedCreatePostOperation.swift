@@ -14,6 +14,7 @@ public enum PostCreationAttachmentType {
         video,
         document,
         poll,
+         reel,
         none
 
     var contentType: String {
@@ -28,6 +29,8 @@ public enum PostCreationAttachmentType {
             return ""
         case .poll:
             return "poll"
+        case .reel:
+            return "reel"
         }
     }
 }
@@ -198,6 +201,11 @@ final class LMFeedCreatePostOperation {
                         {
                             attachments.append(attachment)
                         }
+                    case .reel:
+                        if let attachment = reelAttachmentData(attachment: file)
+                            {
+                            attachments.append(attachment)
+                        }
                     case .none, .poll:
                         break
                     }
@@ -339,6 +347,47 @@ final class LMFeedCreatePostOperation {
         return attachmentRequest
     }
     
+    
+    func reelAttachmentData(attachment: LMAWSRequestModel) -> Attachment? {
+        guard let awsURL = attachment.awsURL,
+            !awsURL.isEmpty
+        else { return nil }
+        
+        
+
+        var size: Int?
+        if let attr = try? FileManager.default.attributesOfItem(
+            atPath: attachment.url.absoluteString)
+        {
+            size = attr[.size] as? Int
+        }
+
+        let asset = AVAsset(url: attachment.url)
+        let duration = asset.duration
+        let durationTime = CMTimeGetSeconds(duration)
+
+        var attachmentMeta = AttachmentMeta.Builder()
+
+        attachmentMeta = attachmentMeta.attachmentUrl(awsURL)
+        attachmentMeta = attachmentMeta.size(size ?? 0)
+        attachmentMeta = attachmentMeta.name(attachment.fileName)
+        attachmentMeta = attachmentMeta.duration(Int(durationTime))
+
+        if let width = attachment.width {
+            attachmentMeta = attachmentMeta.width(width)
+        }
+
+        if let height = attachment.height {
+            attachmentMeta = attachmentMeta.height(height)
+        }
+
+        let attachmentRequest = Attachment()
+            .attachmentType(.reel)
+            .attachmentMeta(attachmentMeta.build())
+
+        return attachmentRequest
+    }
+    
     /// Creates a document attachment for a post from an `LMAWSRequestModel` object.
     ///
     /// - Parameter attachment: The `LMAWSRequestModel` containing details about the document file.
@@ -404,6 +453,15 @@ final class LMFeedCreatePostOperation {
                 } catch {}
             case .video:
                 // Generate a thumbnail image from the first frame of the video
+                do {
+                    let asset = AVAsset(url: file.url)
+                    let imgGenerator = AVAssetImageGenerator(asset: asset)
+                    imgGenerator.appliesPreferredTrackTransform = true
+                    let cgImage = try imgGenerator.copyCGImage(at: .zero, actualTime: nil)
+                    image = UIImage(cgImage: cgImage)
+                } catch {}
+                
+            case .reel:
                 do {
                     let asset = AVAsset(url: file.url)
                     let imgGenerator = AVAssetImageGenerator(asset: asset)
