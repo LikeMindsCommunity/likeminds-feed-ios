@@ -87,10 +87,17 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         return button
     }()
     
+    open private(set) lazy var taggingView: LMFeedTaggingListView = {
+        let view = LMFeedTaggingListViewModel.createModule(delegate: self)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     // MARK: Data Variables
     public var viewModel: LMFeedCreateShortVideoViewModel?
     public var videoAttachmentData: [LMFeedMediaProtocol] = []
     private var videoCollectionViewHeightConstraint: NSLayoutConstraint?
+    public var taggingViewHeight: NSLayoutConstraint?
     
     // MARK: setupViews
     open override func setupViews() {
@@ -101,7 +108,7 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         containerStackView.addArrangedSubview(scrollView)
         scrollView.addSubview(scrollStackView)
         
-        [ videoPreview, topicView, inputTextView].forEach { subView in
+        [ videoPreview, topicView, inputTextView, taggingView].forEach { subView in
             scrollStackView.addArrangedSubview(subView)
         }
     }
@@ -124,6 +131,13 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         videoPreview.setHeightConstraint(with: videoPreview.widthAnchor, multiplier: 1.3)
         videoPreview.addConstraint(leading: (containerStackView.leadingAnchor, 20))
         videoPreview.topAnchor.constraint(equalTo: scrollStackView.topAnchor, constant: 25).isActive = true
+        
+        taggingView.addConstraint(top: (inputTextView.bottomAnchor, 0),
+                                leading: (inputTextView.leadingAnchor, 0),
+                                trailing: (inputTextView.trailingAnchor, 0))
+        
+        taggingView.bottomAnchor.constraint(lessThanOrEqualTo: scrollStackView.bottomAnchor, constant: -16).isActive = true
+        taggingViewHeight = taggingView.setHeightConstraint(with: 10)
         
         scrollStackView.subviews.forEach { subView in
             if subView != videoPreview {
@@ -190,6 +204,7 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         videoPreview.isHidden = false
         topicView.isHidden = true
         createPostButton.isEnabled = false
+        taggingView.isHidden = true
     }
     
     open func observeCreateButton() {
@@ -281,11 +296,13 @@ extension LMFeedCreateShortVideoScreen : LMFeedCreateShortVideoViewModelProtocol
 // MARK: LMFeedTaggingTextViewProtocol
 extension LMFeedCreateShortVideoScreen: LMFeedTaggingTextViewProtocol {
     public func mentionStarted(with text: String) {
-        // Handle mentions if needed
+        taggingView.isHidden = false
+        taggingView.getUsers(for: text)
     }
     
     public func mentionStopped() {
-        // Handle mentions if needed
+        taggingView.stopFetchingUsers()
+        taggingView.isHidden = true
     }
     
     public func contentHeightChanged() {
@@ -308,6 +325,17 @@ extension LMFeedCreateShortVideoScreen: LMFeedTopicViewCellProtocol {
 extension LMFeedCreateShortVideoScreen: LMFeedTopicSelectionViewProtocol {
     public func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
         viewModel?.updateTopicFeed(with: topics)
+    }
+}
+
+// MARK: LMFeedTaggedUserFoundProtocol
+extension LMFeedCreateShortVideoScreen: LMFeedTaggedUserFoundProtocol {
+    public func userSelected(with route: String, and userName: String) {
+        inputTextView.addTaggedUser(with: userName, route: route)
+    }
+    
+    public func updateHeight(with height: CGFloat) {
+        taggingViewHeight?.constant = height
     }
 }
 

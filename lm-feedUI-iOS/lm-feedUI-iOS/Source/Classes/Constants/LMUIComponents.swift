@@ -86,4 +86,7 @@ public struct LMUIComponents {
     // MARK: QnA Feed Theme
     public var qnaFooterView: LMFeedBasePostFooterView.Type = LMFeedPostQnAFooterView.self
     public var qnaFooterDetailView: LMFeedQnADetailFooterView.Type = LMFeedQnADetailFooterView.self
+    
+    
+    public var videoFooterView : LMFeedVideoPostFooterView.Type = LMFeedVideoPostFooterView.self
 }

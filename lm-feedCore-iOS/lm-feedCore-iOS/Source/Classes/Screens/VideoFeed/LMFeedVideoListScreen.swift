@@ -26,6 +26,12 @@ open class LMFeedVideoListScreen: LMFeedViewController {
     public var viewModel: LMFeedVideoListViewModel?
     public weak var delegate: LMFeedPostListVCFromProtocol?
     
+    // MARK: Data Variables
+    public var data: [LMFeedPostContentModel] = [] {
+        didSet {
+            print(data.count)
+        }
+    }
     // MARK: Lifecycle Methods
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +41,57 @@ open class LMFeedVideoListScreen: LMFeedViewController {
         setupAppearance()
         
         viewModel?.getFeed()
+    }
+    
+    public func updatePostList(with post: [LMFeedPostContentModel], isInitialPage: Bool) {
+        
+        if isInitialPage {
+            data.removeAll(keepingCapacity: true)
+        }
+        
+        let oldIndex = data.count
+        data.append(contentsOf: post)
+        let newIndex = data.count - 1
+        
+        if data.isEmpty {
+            configureEmptyListView()
+        } else {
+            videoCollectionView.backgroundView = nil
+        }
+        
+        if isInitialPage {
+            videoCollectionView.reloadData()
+        } else {
+            videoCollectionView.performBatchUpdates({
+                let indexSet = IndexSet(integersIn: oldIndex...newIndex)
+                videoCollectionView.insertSections(indexSet)
+            })
+        }
+        
+        delegate?.onPostDataFetched(isEmpty: data.isEmpty)
+    }
+    
+    
+    public func updatePost(with post: LMFeedPostContentModel, onlyHeader: Bool, onlyFooter: Bool) {
+        guard let index = data.firstIndex(where: { $0.postID == post.postID }) else { return }
+        
+        data[index] = post
+        
+        if onlyHeader {
+            if let cell = videoCollectionView.cellForItem(at: IndexPath(item: index, section: 0)),
+               let header = cell.contentView.subviews.first(where: { $0 is LMFeedPostHeaderView }) as? LMFeedPostHeaderView {
+                header.togglePinStatus(isPinned: post.headerData.isPinned)
+            }
+        } else if onlyFooter {
+            if let cell = videoCollectionView.cellForItem(at: IndexPath(item: index, section: 0)),
+               let footer = cell.contentView.subviews.first(where: { $0 is LMFeedBasePostFooterView }) as? LMFeedBasePostFooterView {
+                footer.configure(with: post.footerData, topResponse: post.topResponse, postID: post.postID, delegate: self, orientation: .vertical)
+            }
+        } else {
+            videoCollectionView.performBatchUpdates({
+                videoCollectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+            })
+        }
     }
     
     // MARK: Setup Methods
@@ -61,12 +118,29 @@ open class LMFeedVideoListScreen: LMFeedViewController {
     open func reloadCollectionView() {
         videoCollectionView.reloadData()
     }
+    
+    open func configureEmptyListView() {
+        let emptyView = LMFeedNoPostWidget(frame: .zero)
+        emptyView.translatesAutoresizingMaskIntoConstraints = false
+        emptyView.configure(title: LMStringConstants.shared.newPost) { [weak self] in
+            do {
+                let viewcontroller = try LMFeedCreatePostViewModel.createModule(showHeading: false)
+                self?.navigationController?.pushViewController(viewcontroller, animated: true)
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+        
+        videoCollectionView.backgroundView = emptyView
+        emptyView.setHeightConstraint(with: videoCollectionView.heightAnchor)
+        emptyView.setWidthConstraint(with: videoCollectionView.widthAnchor)
+    }
 }
 
 // MARK: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching
 extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching {
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel?.pageColors.count ?? 0
+        return data.count
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -75,23 +149,45 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
         // Remove any existing subviews
         cell.contentView.subviews.forEach { $0.removeFromSuperview() }
         
-        if let color = viewModel?.pageColors[safe: indexPath.item] {
-            cell.backgroundColor = color
+        if let postData = data[safe: indexPath.item] {
+            cell.backgroundColor = .black
             
-            // Add a label to show the color name
-            let label = UILabel()
-            label.text = "Page \(indexPath.item + 1)"
-            label.textColor = .white
-            label.font = .systemFont(ofSize: 24, weight: .bold)
-            label.translatesAutoresizingMaskIntoConstraints = false
+            // Add text cell first (bottom element)
+            let textCell = LMUIComponents.shared.textCell.init()
+            textCell.translatesAutoresizingMaskIntoConstraints = false
+            textCell.backgroundColor = .clear
+            textCell.contentView.backgroundColor = .clear
+            textCell.backgroundView = nil
+            textCell.containerView.backgroundColor = .clear
+            textCell.configure(data: postData)
             
-            cell.contentView.addSubview(label)
+            cell.contentView.addSubview(textCell)
             NSLayoutConstraint.activate([
-                label.centerXAnchor.constraint(equalTo: cell.contentView.centerXAnchor),
-                label.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor)
+                textCell.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 16),
+                textCell.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -80),
+                textCell.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -60),
+                textCell.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
+            ])
+
+            // Add topic cell above text cell
+            let topicCell = LMUIComponents.shared.topicCell.init()
+            topicCell.translatesAutoresizingMaskIntoConstraints = false
+            topicCell.backgroundColor = .clear
+            topicCell.contentView.backgroundColor = .clear
+            topicCell.backgroundView = nil
+            topicCell.containerView.backgroundColor = .clear
+            
+            cell.contentView.addSubview(topicCell)
+            NSLayoutConstraint.activate([
+                topicCell.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 16),
+                topicCell.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -88),
+                topicCell.bottomAnchor.constraint(equalTo: textCell.topAnchor, constant: -8),
+                topicCell.heightAnchor.constraint(equalToConstant: 40)
             ])
             
-            // Add header
+            topicCell.configure(data: postData)
+
+            // Add header above topic cell
             let header = LMFeedPostHeaderView()
             header.translatesAutoresizingMaskIntoConstraints = false
             header.backgroundColor = .clear
@@ -102,20 +198,18 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
             cell.contentView.addSubview(header)
             NSLayoutConstraint.activate([
                 header.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 16),
-                header.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -276),
-                header.widthAnchor.constraint(equalToConstant: 200),
+                header.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -88),
+                header.bottomAnchor.constraint(equalTo: topicCell.topAnchor, constant: -8),
                 header.heightAnchor.constraint(equalToConstant: 60)
             ])
-            
-            
-            // Add footer
-            let footer = LMFeedPostFooterView()
+
+            // Add footer on the right side
+            let footer = LMUIComponents.shared.videoFooterView.init()
             footer.translatesAutoresizingMaskIntoConstraints = false
-            footer.orientation = .vertical
             footer.backgroundColor = .clear
             footer.contentView.backgroundColor = .clear
-            footer.containerBackgroundColor = .clear
             footer.backgroundView = nil
+            footer.containerBackgroundColor = .clear
             
             cell.contentView.addSubview(footer)
             NSLayoutConstraint.activate([
@@ -126,36 +220,31 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
             ])
             
             // Configure header
-            let headerData = LMFeedPostHeaderView.ContentModel(
-                profileImage: nil,
-                authorName: "User \(indexPath.item + 1)",
-                authorTag: "Creator",
-                subtitle: "2d ago",
-                isPinned: false,
-                showMenu: false,
-                widgets: nil
-            )
-            header.configure(with: headerData, postID: "page_\(indexPath.item)", userUUID: "user_\(indexPath.item)", delegate: self)
+            header.configure(with: postData.headerData, postID: postData.postID, userUUID: postData.userUUID, delegate: self)
+            header.authorNameLabel.textColor = .white
+            header.subTitleLabel.textColor = .white
+            header.menuButton.isHidden = true
             
             // Configure footer
-            let footerData = LMFeedPostFooterView.ContentModel(
-                isSaved: false,
-                isLiked: false,
-                likeCount: 0,
-                commentCount: 0,
-                likeText: "Like",
-                commentText: "Comment",
-                user: nil,
-                widgets: nil
-            )
-            footer.configure(with: footerData, topResponse: nil, postID: "page_\(indexPath.item)", delegate: self, orientation: .vertical)
+            footer.configure(with: postData.footerData, topResponse: postData.topResponse, postID: postData.postID, delegate: self, orientation: .vertical)
         }
         
         return cell
     }
     
     open func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        // Handle prefetching if needed
+        let filtered = indexPaths.filter({ $0.item >= data.count - 1 })
+        
+        if !filtered.isEmpty {
+            viewModel?.getFeed()
+        }
+    }
+    
+    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let page = Int(scrollView.contentOffset.y / scrollView.frame.height)
+        if page >= data.count - 1 {
+            viewModel?.getFeed()
+        }
     }
 }
 
@@ -177,8 +266,30 @@ extension LMFeedVideoListScreen: LMFeedVideoListViewModelProtocol {
     }
     
     public func updateVideoList(with posts: [LMFeedPostContentModel], isInitialPage: Bool) {
-        reloadCollectionView()
-        delegate?.onPostDataFetched(isEmpty: false)
+        if isInitialPage {
+            data.removeAll(keepingCapacity: true)
+        }
+        
+        let oldIndex = data.count
+        data.append(contentsOf: posts)
+        let newIndex = data.count - 1
+        
+        if data.isEmpty {
+            configureEmptyListView()
+        } else {
+            videoCollectionView.backgroundView = nil
+        }
+        
+        if isInitialPage {
+            videoCollectionView.reloadData()
+        } else {
+            videoCollectionView.performBatchUpdates({
+                let indexSet = IndexSet(integersIn: oldIndex...newIndex)
+                videoCollectionView.insertSections(indexSet)
+            })
+        }
+        
+        delegate?.onPostDataFetched(isEmpty: data.isEmpty)
     }
 }
 
@@ -196,11 +307,21 @@ extension LMFeedVideoListScreen: LMFeedPostHeaderViewProtocol, LMFeedPostFooterV
         viewModel?.showMenu(for: postID)
     }
     
+    
+    public func didTapSaveButton(for postID: String) {
+        viewModel?.savePost(for: postID)
+    }
+    
     public func didTapLikeButton(for postID: String) {
-        if let index = viewModel?.pageColors.firstIndex(where: { _ in true }) {
+        if let index = data.firstIndex(where: { $0.postID == postID }) {
+            data[index].footerData.isLiked.toggle()
+            let isLiked = data[index].footerData.isLiked
+            data[index].footerData.likeCount += isLiked ? 1 : -1
             viewModel?.likePost(for: postID)
         }
     }
+    
+    
     
     public func didTapLikeTextButton(for postID: String) {
         guard viewModel?.allowPostLikeView(for: postID) == true else { return }
@@ -213,15 +334,15 @@ extension LMFeedVideoListScreen: LMFeedPostHeaderViewProtocol, LMFeedPostFooterV
     }
     
     public func didTapCommentButton(for postID: String) {
-        guard let viewController = LMFeedPostDetailViewModel.createModule(for: postID, openCommentSection: true) else { return }
-        navigationController?.pushViewController(viewController, animated: true)
+        let postDetailViewModel = LMFeedPostDetailViewModel(postID: postID, delegate: nil, openCommentSection: false, scrollToCommentSection: false)
+        let bottomSheet = LMFeedCommentBottomsheet(postID: postID, viewModel: postDetailViewModel)
+        bottomSheet.modalPresentationStyle = .pageSheet
+        present(bottomSheet, animated: true)
     }
     
     public func didTapShareButton(for postID: String) {
         LMFeedShareUtility.sharePost(from: self, postID: postID)
     }
     
-    public func didTapSaveButton(for postID: String) {
-        viewModel?.savePost(for: postID)
-    }
+    
 }

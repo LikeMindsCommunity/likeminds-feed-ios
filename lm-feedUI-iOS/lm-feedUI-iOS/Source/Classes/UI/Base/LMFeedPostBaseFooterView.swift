@@ -293,12 +293,12 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
     private func updateStackViewOrientation() {
         actionStackView.axis = orientation == .horizontal ? .horizontal : .vertical
         actionStackView.spacing = orientation == .horizontal ? 8 : 12
-        actionStackView.alignment = orientation == .horizontal ? .center : .leading
+        actionStackView.alignment = .center
         
         // Update button alignments
-        let alignment: UIControl.ContentHorizontalAlignment = orientation == .horizontal ? .center : .left
+        let alignment: UIControl.ContentHorizontalAlignment = orientation == .horizontal ? .center : .center
         [likeButton, likeTextButton, commentButton, saveButton, shareButton].forEach { button in
-            button.contentHorizontalAlignment = alignment
+            button.contentHorizontalAlignment = .center
         }
         
         // Update constraints if needed
