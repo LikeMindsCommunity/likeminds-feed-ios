@@ -40,7 +40,7 @@ open class LMFeedVideoListScreen: LMFeedViewController {
         setupActions()
         setupAppearance()
         
-        viewModel?.getFeed()
+        viewModel?.getFeed(fetchInitialPage: true)
     }
     
     public func updatePostList(with post: [LMFeedPostContentModel], isInitialPage: Bool) {
@@ -140,7 +140,7 @@ open class LMFeedVideoListScreen: LMFeedViewController {
 // MARK: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching
 extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching {
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return data.count
+        return data.count + 1 // Add 1 for the caught up view
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -148,6 +148,12 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
         
         // Remove any existing subviews
         cell.contentView.subviews.forEach { $0.removeFromSuperview() }
+        
+        // If this is the last cell, show the caught up view
+        if indexPath.item == data.count {
+            configureCaughtUpCell(cell)
+            return cell
+        }
         
         if let postData = data[safe: indexPath.item] {
             cell.backgroundColor = .black
@@ -168,7 +174,6 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
                 videoCell.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
             ])
 
-    
             videoCell.configure(with: postData.mediaData.first as! LMFeedVideoCollectionCell.ContentModel as LMFeedVideoCollectionCell.ContentModel, index: indexPath.row)
             
             let textCell = LMUIComponents.shared.textCell.init()
@@ -248,6 +253,88 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
         }
         
         return cell
+    }
+    
+    private func configureCaughtUpCell(_ cell: UICollectionViewCell) {
+        cell.backgroundColor = .white
+        
+        let caughtUpView = UIView()
+        caughtUpView.translatesAutoresizingMaskIntoConstraints = false
+        caughtUpView.backgroundColor = .white
+        
+        // Add checkmark icon in circle
+        let checkmarkImageView = UIImageView()
+        checkmarkImageView.translatesAutoresizingMaskIntoConstraints = false
+        checkmarkImageView.contentMode = .scaleAspectFit
+        checkmarkImageView.tintColor = .systemGreen
+        
+        // Create circle background for checkmark
+        let circleView = UIView()
+        circleView.translatesAutoresizingMaskIntoConstraints = false
+        circleView.backgroundColor = .systemGreen.withAlphaComponent(0.1)
+        circleView.layer.cornerRadius = 30 // Will be set to half of width/height
+        
+        // Configure checkmark image
+        if let checkmarkImage = UIImage(systemName: "checkmark.circle.fill") {
+            checkmarkImageView.image = checkmarkImage
+        }
+        
+        let messageLabel = UILabel()
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageLabel.text = "You're All Caught Up"
+        messageLabel.textColor = .black
+        messageLabel.font = .systemFont(ofSize: 18, weight: .medium)
+        messageLabel.textAlignment = .center
+        
+        let viewOldPostsButton = UIButton(type: .system)
+        viewOldPostsButton.translatesAutoresizingMaskIntoConstraints = false
+        viewOldPostsButton.setTitle("View older posts", for: .normal)
+        viewOldPostsButton.setTitleColor(.systemBlue, for: .normal)
+        viewOldPostsButton.titleLabel?.font = .systemFont(ofSize: 16)
+        viewOldPostsButton.backgroundColor = .clear
+        viewOldPostsButton.addTarget(self, action: #selector(didTapViewOldPosts), for: .touchUpInside)
+        
+        caughtUpView.addSubview(circleView)
+        circleView.addSubview(checkmarkImageView)
+        caughtUpView.addSubview(messageLabel)
+        caughtUpView.addSubview(viewOldPostsButton)
+        
+        cell.contentView.addSubview(caughtUpView)
+        
+        NSLayoutConstraint.activate([
+            caughtUpView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+            caughtUpView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+            caughtUpView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+            caughtUpView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor),
+            
+            // Circle view constraints
+            circleView.centerXAnchor.constraint(equalTo: caughtUpView.centerXAnchor),
+            circleView.centerYAnchor.constraint(equalTo: caughtUpView.centerYAnchor, constant: -60),
+            circleView.widthAnchor.constraint(equalToConstant: 60),
+            circleView.heightAnchor.constraint(equalToConstant: 60),
+            
+            // Checkmark image constraints
+            checkmarkImageView.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
+            checkmarkImageView.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
+            checkmarkImageView.widthAnchor.constraint(equalToConstant: 40),
+            checkmarkImageView.heightAnchor.constraint(equalToConstant: 40),
+            
+            messageLabel.centerXAnchor.constraint(equalTo: caughtUpView.centerXAnchor),
+            messageLabel.topAnchor.constraint(equalTo: circleView.bottomAnchor, constant: 16),
+            
+            viewOldPostsButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 16),
+            viewOldPostsButton.centerXAnchor.constraint(equalTo: caughtUpView.centerXAnchor),
+            viewOldPostsButton.widthAnchor.constraint(equalToConstant: 150),
+            viewOldPostsButton.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    
+    @objc private func didTapViewOldPosts() {
+        // Clear existing posts
+        data.removeAll()
+        videoCollectionView.reloadData()
+        // Get fresh posts from page 1
+        viewModel?.getFeed(fetchInitialPage: true)
     }
     
     open func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {

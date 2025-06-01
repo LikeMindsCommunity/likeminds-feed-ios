@@ -13,6 +13,11 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         isLoadingMore = false
         
         commentsData.append(contentsOf: comments)
+        
+        // Show/hide no comments view based on comments count
+        noCommentContainerView.isHidden = !commentsData.isEmpty
+        commentTableView.isHidden = commentsData.isEmpty
+        
         commentTableView.reloadData()
     }
     
@@ -152,6 +157,30 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         return view
     }()
     
+    private lazy var headerView: LMFeedView = {
+        let view = LMFeedView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
+        return view
+    }()
+    
+    private lazy var headerTitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Comments"
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
+        label.textColor = LMFeedAppearance.shared.colors.gray1
+        return label
+    }()
+    
+    private lazy var dismissButton: LMFeedButton = {
+        let button = LMFeedButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
+        button.tintColor = LMFeedAppearance.shared.colors.gray3
+        return button
+    }()
+    
     private lazy var commentTableView: LMFeedTableView = {
         let table = LMFeedTableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -186,6 +215,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         textView.contentMode = .center
         textView.font = LMFeedAppearance.shared.fonts.textFont1
         textView.placeHolderText = LMStringConstants.shared.writeComment
+        textView.setAttributedText(from: "")
         return textView
     }()
     
@@ -241,6 +271,33 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         return view
     }()
     
+    private lazy var noCommentContainerView: LMFeedView = {
+        let view = LMFeedView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
+        return view
+    }()
+    
+    private lazy var noCommentTitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "No Comments Found"
+        label.textColor = LMFeedAppearance.shared.colors.gray51
+        label.font = LMFeedAppearance.shared.fonts.headingFont3
+        label.textAlignment = .center
+        return label
+    }()
+    
+    private lazy var noCommentSubtitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Be the first one to create a comment"
+        label.textColor = LMFeedAppearance.shared.colors.gray102
+        label.font = LMFeedAppearance.shared.fonts.textFont1
+        label.textAlignment = .center
+        return label
+    }()
+    
     // MARK: Data Variables
     private var postID: String
     private var commentsData: [LMFeedCommentContentModel] = []
@@ -289,10 +346,18 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         super.setupViews()
         view.addSubview(contentView)
         contentView.addSubview(containerView)
+        containerView.addSubview(headerView)
         containerView.addSubview(commentTableView)
+        containerView.addSubview(noCommentContainerView)
         containerView.addSubview(replySepratorView)
         containerView.addSubview(replyView)
         containerView.addSubview(stackView)
+        
+        headerView.addSubview(headerTitleLabel)
+        headerView.addSubview(dismissButton)
+        
+        noCommentContainerView.addSubview(noCommentTitleLabel)
+        noCommentContainerView.addSubview(noCommentSubtitleLabel)
         
         replyView.addSubview(replyNameLabel)
         replyView.addSubview(removeReplyButton)
@@ -311,10 +376,34 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
             contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            commentTableView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            headerView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 56),
+            
+            headerTitleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+            headerTitleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            
+            dismissButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
+            dismissButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            dismissButton.widthAnchor.constraint(equalToConstant: 24),
+            dismissButton.heightAnchor.constraint(equalToConstant: 24),
+            
+            commentTableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
             commentTableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             commentTableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             commentTableView.bottomAnchor.constraint(equalTo: replySepratorView.topAnchor),
+            
+            noCommentContainerView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            noCommentContainerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            noCommentContainerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            
+            noCommentTitleLabel.topAnchor.constraint(equalTo: noCommentContainerView.topAnchor, constant: 16),
+            noCommentTitleLabel.centerXAnchor.constraint(equalTo: noCommentContainerView.centerXAnchor),
+            
+            noCommentSubtitleLabel.topAnchor.constraint(equalTo: noCommentTitleLabel.bottomAnchor, constant: 2),
+            noCommentSubtitleLabel.bottomAnchor.constraint(equalTo: noCommentContainerView.bottomAnchor, constant: -16),
+            noCommentSubtitleLabel.centerXAnchor.constraint(equalTo: noCommentTitleLabel.centerXAnchor),
             
             replySepratorView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             replySepratorView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
@@ -355,6 +444,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         sendButton.addTarget(self, action: #selector(didTapSendCommentButton), for: .touchUpInside)
         inputTextView.addDoneButtonOnKeyboard()
         removeReplyButton.addTarget(self, action: #selector(didTapReplyCrossButton), for: .touchUpInside)
+        dismissButton.addTarget(self, action: #selector(didTapDismissButton), for: .touchUpInside)
     }
     
     open override func setupAppearance() {
@@ -364,6 +454,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         commentTableView.backgroundColor = LMFeedAppearance.shared.colors.backgroundColor
         replyView.isHidden = true
         replySepratorView.isHidden = true
+        noCommentContainerView.isHidden = true
     }
     
     // MARK: Action Methods
@@ -380,6 +471,10 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         inputTextView.setAttributedText(from: "")
         contentHeightChanged()
         replyView.isHidden = true
+    }
+    
+    @objc private func didTapDismissButton() {
+        dismiss(animated: true)
     }
 }
 
@@ -491,8 +586,7 @@ extension LMFeedCommentBottomsheet: LMFeedPostCommentProtocol {
     }
     
     public func didTapLikeCountButton(for commentId: String) {
-       
-              viewModel.allowCommentLikeView(for: commentId)
+        viewModel.allowCommentLikeView(for: commentId)
         do {
             let viewcontroller = try LMFeedLikeViewModel.createModule(postID: postID, commentID: commentId)
             navigationController?.pushViewController(viewcontroller, animated: true)
