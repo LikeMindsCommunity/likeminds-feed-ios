@@ -5,7 +5,13 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
     public func showPostDetails(with post: LMFeedPostContentModel, comments: [LMFeedCommentContentModel], isInitialPage: Bool) {
         if isInitialPage {
             commentsData.removeAll(keepingCapacity: true)
+            isInitialLoad = false
         }
+        
+        // Update pagination state
+        hasMoreData = !comments.isEmpty
+        isLoadingMore = false
+        
         commentsData.append(contentsOf: comments)
         commentTableView.reloadData()
     }
@@ -66,6 +72,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
 
         replyNameLabel.attributedText = replyLabelText
         replyView.isHidden = false
+        replySepratorView.isHidden = false
         inputTextView.becomeFirstResponder()
     }
     
@@ -103,7 +110,15 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
     }
     
     public func handleCommentScroll(openCommentSection: Bool, scrollToCommentSection: Bool) {
-        // Not needed for comment bottomsheet
+        if openCommentSection, isCommentingEnabled {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.inputTextView.becomeFirstResponder()
+            }
+        }
+        
+        if commentTableView.numberOfSections >= 1, scrollToCommentSection {
+            commentTableView.scrollToRow(at: IndexPath(row: NSNotFound, section: 1), at: .bottom, animated: true)
+        }
     }
     
     public func navigateToPollResultScreen(with pollID: String, optionList: [LMFeedPollDataModel.Option], selectedOption: String?) {
@@ -197,6 +212,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
     private lazy var replyView: LMFeedView = {
         let view = LMFeedView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
 
@@ -232,6 +248,9 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
     private var inputTextViewHeightConstraint: NSLayoutConstraint?
     private var textInputMaximumHeight: CGFloat = 100
     private var viewModel: LMFeedPostDetailViewModel
+    private var isInitialLoad = true
+    private var isLoadingMore = false
+    private var hasMoreData = true
     
     // MARK: Initialization
     public init(postID: String, viewModel: LMFeedPostDetailViewModel) {
@@ -253,7 +272,10 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         setupLayouts()
         setupActions()
         setupAppearance()
-        viewModel.getPost(isInitialFetch: true)
+        // Only call getPost if it's initial load
+        if isInitialLoad {
+            viewModel.getPost(isInitialFetch: true)
+        }
     }
     
     private func setupTableView() {
@@ -302,6 +324,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
             replyView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             replyView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             replyView.bottomAnchor.constraint(equalTo: stackView.topAnchor),
+            replyView.heightAnchor.constraint(equalToConstant: 52),
             
             replyNameLabel.topAnchor.constraint(equalTo: replyView.topAnchor, constant: 16),
             replyNameLabel.bottomAnchor.constraint(equalTo: replyView.bottomAnchor, constant: -16),
@@ -340,11 +363,13 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         containerView.backgroundColor = LMFeedAppearance.shared.colors.white
         commentTableView.backgroundColor = LMFeedAppearance.shared.colors.backgroundColor
         replyView.isHidden = true
+        replySepratorView.isHidden = true
     }
     
     // MARK: Action Methods
     @objc private func didTapReplyCrossButton() {
         replyView.isHidden = true
+        replySepratorView.isHidden = true
         viewModel.replyToComment(having: nil)
     }
 
@@ -416,7 +441,9 @@ extension LMFeedCommentBottomsheet: UITableViewDataSource, UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        if section == commentsData.count - 1 {
+        // Only load more if we're not already loading, have more data, and not in initial load
+        if !isLoadingMore && hasMoreData && !isInitialLoad && section == commentsData.count - 1 {
+            isLoadingMore = true
             viewModel.getPost(isInitialFetch: false)
         }
     }

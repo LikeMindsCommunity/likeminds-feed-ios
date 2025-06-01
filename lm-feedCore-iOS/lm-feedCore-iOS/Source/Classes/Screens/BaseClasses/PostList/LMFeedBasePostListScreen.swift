@@ -405,6 +405,10 @@ extension LMFeedBasePostListScreen: LMFeedPostHeaderViewProtocol {
 // MARK: - LMFeedPostFooterViewProtocol
 @objc
 extension LMFeedBasePostListScreen: LMFeedPostFooterViewProtocol {
+    public func didTapFooterMenuButton(for postID: String) {
+      //Need to implement only in video Feed
+    }
+    
     public func didTapLikeButton(for postID: String) {
         if let index = data.firstIndex(where: { $0.postID == postID }) {
             data[index].footerData.isLiked.toggle()

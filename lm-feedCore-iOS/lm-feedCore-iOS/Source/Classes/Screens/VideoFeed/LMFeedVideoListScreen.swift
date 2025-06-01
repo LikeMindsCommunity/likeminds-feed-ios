@@ -152,7 +152,25 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
         if let postData = data[safe: indexPath.item] {
             cell.backgroundColor = .black
             
-            // Add text cell first (bottom element)
+            // Add video preview cell as background
+            let videoCell = LMUIComponents.shared.videoPreview.init()
+            videoCell.translatesAutoresizingMaskIntoConstraints = false
+            videoCell.backgroundColor = .clear
+            videoCell.contentView.backgroundColor = .clear
+            videoCell.backgroundView = nil
+            videoCell.containerView.backgroundColor = .clear
+            
+            cell.contentView.addSubview(videoCell)
+            NSLayoutConstraint.activate([
+                videoCell.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+                videoCell.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+                videoCell.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+                videoCell.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
+            ])
+
+    
+            videoCell.configure(with: postData.mediaData.first as! LMFeedVideoCollectionCell.ContentModel as LMFeedVideoCollectionCell.ContentModel, index: indexPath.row)
+            
             let textCell = LMUIComponents.shared.textCell.init()
             textCell.translatesAutoresizingMaskIntoConstraints = false
             textCell.backgroundColor = .clear
@@ -291,10 +309,49 @@ extension LMFeedVideoListScreen: LMFeedVideoListViewModelProtocol {
         
         delegate?.onPostDataFetched(isEmpty: data.isEmpty)
     }
+    
+    public override func presentAlert(with alert: UIAlertController, animated: Bool) {
+        present(alert, animated: animated)
+    }
+    public func removePost(with postID: String) {
+        guard let index = data.firstIndex(where: { $0.postID == postID }) else { return }
+        
+        data.remove(at: index)
+        
+//        postList.beginUpdates()
+//        postList.deleteSections(.init(integer: index), with: .none)
+//        postList.endUpdates()
+    }
+    
+    public func navigateToReportScreen(for postID: String, creatorUUID: String) {
+        do {
+            let viewcontroller = try LMFeedReportViewModel.createModule(creatorUUID: creatorUUID, postID: postID)
+            
+            navigationController?.pushViewController(viewcontroller, animated: true)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
+    public func navigateToDeleteScreen(for postID: String) {
+        guard let viewcontroller = LMFeedDeleteViewModel.createModule(postID: postID) else { return }
+        viewcontroller.modalPresentationStyle = .overFullScreen
+        present(viewcontroller, animated: false)
+    }
+    
+    public func navigateToEditScreen(for postID: String) {
+        guard let viewcontroller = LMFeedEditShortVideoViewModel.createModule(for: postID) else { return }
+        navigationController?.pushViewController(viewcontroller, animated: true)
+    }
 }
 
 // MARK: LMFeedPostHeaderViewProtocol, LMFeedPostFooterViewProtocol
 extension LMFeedVideoListScreen: LMFeedPostHeaderViewProtocol, LMFeedPostFooterViewProtocol {
+    public func didTapFooterMenuButton(for postID: String) {
+        viewModel?.showMenu(for: postID)
+    }
+    
+    
     public func didTapPost(postID: String) {
     
     }
@@ -304,7 +361,7 @@ extension LMFeedVideoListScreen: LMFeedPostHeaderViewProtocol, LMFeedPostFooterV
     }
     
     public func didTapPostMenuButton(for postID: String) {
-        viewModel?.showMenu(for: postID)
+       //
     }
     
     
@@ -320,6 +377,7 @@ extension LMFeedVideoListScreen: LMFeedPostHeaderViewProtocol, LMFeedPostFooterV
             viewModel?.likePost(for: postID)
         }
     }
+    
     
     
     

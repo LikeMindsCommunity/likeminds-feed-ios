@@ -70,6 +70,7 @@ public struct LMStringConstants {
     public var attachFiles = "Attach Files"
     public var addPoll = "Add Poll"
     public var newVideoPost = "New post"
+    public var editVideoPost = "Edit Reel"
         
     public var createPostTitle: String {
         String(format: "Create a %@", pluralizeOrCapitalize(to: postVariable, withAction: .allSmallSingular))

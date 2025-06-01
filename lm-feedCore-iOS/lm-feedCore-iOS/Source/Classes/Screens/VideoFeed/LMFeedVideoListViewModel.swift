@@ -9,6 +9,11 @@ public protocol LMFeedVideoListViewModelProtocol: AnyObject {
     func showHideFooterLoader(isShow: Bool)
     func updatePostList(with post: [LMFeedPostContentModel], isInitialPage: Bool)
     func updatePost(with post: LMFeedPostContentModel, onlyHeader: Bool, onlyFooter: Bool)
+    func removePost(with postID: String)
+    func presentAlert(with alert: UIAlertController, animated: Bool)
+    func navigateToReportScreen(for postID: String, creatorUUID: String)
+    func navigateToDeleteScreen(for postID: String)
+    func navigateToEditScreen(for postID: String)
 }
 
 open class LMFeedVideoListViewModel {
@@ -30,18 +35,6 @@ open class LMFeedVideoListViewModel {
         self.postList = []
         self.delegate = delegate
     }
-    
-    // Sample colors for demonstration
-    public let pageColors: [UIColor] = [
-        .systemRed,
-        .systemBlue,
-        .systemGreen,
-        .systemYellow,
-        .systemPurple,
-        .systemOrange,
-        .systemPink,
-        .systemTeal
-    ]
     
     func getFeed(fetchInitialPage: Bool = false) {
         if fetchInitialPage {
@@ -152,7 +145,123 @@ open class LMFeedVideoListViewModel {
     }
     
     public func showMenu(for postID: String) {
-        // Handle menu action
+            guard let post = postList.first(where: { $0.postId == postID }) else { return }
+            
+            let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            
+            post.postMenu.forEach { menu in
+                switch menu.id {
+                case .deletePost:
+                    let action = UIAlertAction(title: menu.name, style: .destructive) { [weak self] _ in
+                        self?.handleDeletePost(for: post)
+                    }
+                    alert.addAction(action)
+                case .pinPost,
+                        .unpinPost:
+                    let action = UIAlertAction(title: menu.name, style: .default) { [weak self] _ in
+                        self?.togglePostPin(for: postID)
+                        
+                        LMFeedCore.analytics?.trackEvent(for: post.isPinned ? .postUnpinned : .postPinned, eventProperties: [
+                            "created_by_id": post.userDetails.userUUID,
+                            "post_id": postID,
+                            "post_type": post.getPostType()
+                        ])
+                    }
+                    alert.addAction(action)
+                case .reportPost:
+                    let action = UIAlertAction(title: menu.name, style: .destructive) { [weak self] _ in
+                        self?.delegate?.navigateToReportScreen(for: postID, creatorUUID: post.userDetails.userUUID)
+                    }
+                    alert.addAction(action)
+                case .editPost:
+                    let action = UIAlertAction(title: menu.name, style: .default) { [weak self] _ in
+                        self?.delegate?.navigateToEditScreen(for: postID)
+                        
+                        LMFeedCore.analytics?.trackEvent(for: .postEdited, eventProperties: [
+                            "post_id": postID,
+                            "post_type": post.getPostType()
+                        ])
+                    }
+                    alert.addAction(action)
+                default:
+                    break
+                }
+            }
+            
+            alert.addAction(.init(title: "Cancel", style: .default))
+            
+            delegate?.presentAlert(with: alert, animated: true)
+        }
+    
+    func handleDeletePost(for post: LMFeedPostDataModel) {
+        // Case of Self Deletion
+        if post.userDetails.userUUID == LocalPreferences.userObj?.sdkClientInfo?.uuid {
+            let alert = UIAlertController(title: "\(LMStringConstants.shared.deletePost)?", message: LMStringConstants.shared.deletePostMessage, preferredStyle: .alert)
+            
+            let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+                self?.deletePost(postID: post.postId, reason: nil)
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            
+            alert.addAction(cancelAction)
+            alert.addAction(deleteAction)
+            
+            delegate?.presentAlert(with: alert, animated: true)
+            
+            LMFeedCore.analytics?.trackEvent(for: .postDeleted, eventProperties: [
+                "user_state": "member",
+                "user_id": post.userDetails.userUUID,
+                "post_id": post.postId,
+                "post_type": post.getPostType()
+            ])
+        } else if LocalPreferences.memberState?.state == 1 {
+            delegate?.navigateToDeleteScreen(for: post.postId)
+            
+            LMFeedCore.analytics?.trackEvent(for: .postDeleted, eventProperties: [
+                "user_state": "CM",
+                "user_id": post.userDetails.userUUID,
+                "post_id": post.postId,
+                "post_type": post.getPostType()
+            ])
+        }
+    }
+    func deletePost(postID: String, reason: String?) {
+        LMFeedPostOperation.shared.deletePost(postId: postID, reason: reason) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success():
+                removePost(for: postID)
+            case .failure(let error):
+                delegate?.showError(with: error.localizedDescription, isPopVC: false)
+            }
+        }
+    }
+    
+    func removePost(for postID: String) {
+        postList.removeAll(where: { $0.postId == postID })
+        delegate?.removePost(with: postID)
+    }
+    
+    private func togglePostPin(for postID: String) {
+        LMFeedPostOperation.shared.pinUnpinPost(postId: postID) { [weak self] response in
+            guard let self,
+                  let index = postList.firstIndex(where: { $0.postId == postID }) else { return }
+            
+            if response {
+                var feed = postList[index]
+                feed.isPinned.toggle()
+                if let idx = feed.postMenu.firstIndex(where: { $0.id == .pinPost }) {
+                    feed.postMenu[idx] = .init(id: .unpinPost, name: LMStringConstants.shared.unpinThisPost)
+                } else if let idx = feed.postMenu.firstIndex(where: { $0.id == .unpinPost }) {
+                    feed.postMenu[idx] = .init(id: .pinPost, name: LMStringConstants.shared.pinThisPost)
+                }
+                
+                postList[index] = feed
+                
+                updatePost(for: postID, onlyHeader: true)
+            }
+        }
     }
     
     public func allowPostLikeView(for postID: String) -> Bool {

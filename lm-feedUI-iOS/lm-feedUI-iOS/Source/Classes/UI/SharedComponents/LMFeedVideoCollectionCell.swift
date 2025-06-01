@@ -105,7 +105,7 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
     
     
     // MARK: setupViews
-    public override func setupViews() {
+    open override func setupViews() {
         super.setupViews()
         
         contentView.addSubview(containerView)
@@ -114,6 +114,9 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
         containerView.addSubview(volumeButton)
         containerView.addSubview(playPauseButton)
         containerView.addSubview(seekBar)
+        
+        // Ensure video player is at the back
+        containerView.sendSubviewToBack(videoPlayer)
     }
     
     
@@ -124,6 +127,7 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
         contentView.pinSubView(subView: containerView)
         containerView.pinSubView(subView: videoPlayer)
         
+        // Position controls on top of video
         volumeButton.addConstraint(bottom: (containerView.bottomAnchor, -16),
                                    trailing: (containerView.trailingAnchor, -16))
         volumeButton.setHeightConstraint(with: volumeButtonHeight)
@@ -138,7 +142,9 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
         playPauseButton.setWidthConstraint(with: playPauseButton.heightAnchor)
         playPauseButton.addConstraint(centerX: (centerXAnchor, 0), centerY: (centerYAnchor, 0))
    
-        seekBar.addConstraint( bottom: (containerView.bottomAnchor, -16), leading: (containerView.leadingAnchor, 16) , trailing: (volumeButton.leadingAnchor, -16))
+        seekBar.addConstraint(bottom: (containerView.bottomAnchor, -16), 
+                             leading: (containerView.leadingAnchor, 16),
+                             trailing: (volumeButton.leadingAnchor, -16))
         seekBar.setHeightConstraint(with: 30)
     }
     

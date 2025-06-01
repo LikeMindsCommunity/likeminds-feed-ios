@@ -15,6 +15,7 @@ public protocol LMFeedPostFooterViewProtocol: AnyObject {
     func didTapShareButton(for postID: String)
     func didTapSaveButton(for postID: String)
     func didTapPost(postID: String)
+    func didTapFooterMenuButton(for postID: String)
 }
 
 public enum LMFeedPostFooterOrientation {

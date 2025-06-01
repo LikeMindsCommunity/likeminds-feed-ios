@@ -89,7 +89,7 @@ open class LMFeedVideoPostFooterView: LMFeedBasePostFooterView {
     open override func setupActions() {
         super.setupActions()
         likeText = "Like"
-//        moreButton.addTarget(self, action: #selector(didTapMoreButton), for: .touchUpInside)
+        moreButton.addTarget(self, action: #selector(didTapFooterMenuButton), for: .touchUpInside)
     }
     
     // MARK: setupAppearance
@@ -122,9 +122,8 @@ open class LMFeedVideoPostFooterView: LMFeedBasePostFooterView {
         super.configure(with: data, topResponse: topResponse, postID: postID, delegate: delegate, orientation: orientation)
     }
     
-    // MARK: Action Methods
-//    @objc private func didTapMoreButton() {
-//        guard let postID = postID else { return }
-//        delegate?.didTapPostMenuButton(for: postID)
-//    }
-} 
+    @objc open func didTapFooterMenuButton() {
+        guard let postID = postID else { return }
+        delegate?.didTapFooterMenuButton(for: postID)
+    }
+}
