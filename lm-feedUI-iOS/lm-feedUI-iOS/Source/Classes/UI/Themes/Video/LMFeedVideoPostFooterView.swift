@@ -62,6 +62,7 @@ open class LMFeedVideoPostFooterView: LMFeedBasePostFooterView {
         
         // Setup comment container
         commentContainerStack.addArrangedSubview(commentButton)
+        commentContainerStack.addArrangedSubview(commentTextButton)
         
         // Setup share container
         shareContainerStack.addArrangedSubview(shareButton)
@@ -106,16 +107,20 @@ open class LMFeedVideoPostFooterView: LMFeedBasePostFooterView {
         }
         likeTextButton.setTitleColor(LMFeedAppearance.shared.colors.white, for: .normal)
         commentButton.setTitleColor(LMFeedAppearance.shared.colors.white, for: .normal)
+        commentTextButton.setTitleColor(LMFeedAppearance.shared.colors.white, for: .normal)
     }
     
     // MARK: Helper Methods
     open override func updateLikeText(for likeCount: Int) {
-//        likeTextButton.isHidden = likeCount == .zero
+        likeTextButton.isHidden = likeCount == .zero
+
         likeTextButton.setTitle(formattedText(for: likeCount), for: .normal)
     }
     
     open override func updateCommentText(for commentCount: Int) {
-        commentButton.setTitle(formattedText(for: commentCount), for: .normal)
+        commentButton.setTitle("", for: .normal)
+        commentTextButton.isHidden = commentCount == .zero
+        commentTextButton.setTitle(formattedText(for: commentCount), for: .normal)
     }
     
     open override func configure(with data: ContentModel, topResponse: LMFeedCommentContentModel?, postID: String, delegate: LMFeedPostFooterViewProtocol, orientation: LMFeedPostFooterOrientation = .vertical) {

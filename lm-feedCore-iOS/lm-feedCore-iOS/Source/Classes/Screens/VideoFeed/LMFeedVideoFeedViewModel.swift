@@ -16,6 +16,18 @@ public class LMFeedVideoFeedViewModel {
         self.delegate = delegate
     }
     
+    public static func createModule() throws -> LMFeedVideoFeedScreen{
+        guard LMFeedCore.isInitialized else { throw LMFeedError.feedNotInitialized }
+        
+        
+        let viewController = Components.shared.feedVideoFeedScreen.init()
+        let viewModel = LMFeedVideoFeedViewModel(delegate: viewController)
+        
+        viewController.viewModel = viewModel
+        
+        return viewController
+    }
+    
     // MARK: Public Methods
     func handleSelectedVideo(_ assets: [PHAsset]) {
         guard let videoAsset = assets.first else { return }

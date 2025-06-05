@@ -164,21 +164,22 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         return view
     }()
     
+    private lazy var dragHandlerView: LMFeedView = {
+        let view = LMFeedView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = LMFeedAppearance.shared.colors.gray155
+        view.layer.cornerRadius = 2.5
+        return view
+    }()
+    
     private lazy var headerTitleLabel: LMFeedLabel = {
         let label = LMFeedLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Comments"
         label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.textColor = LMFeedAppearance.shared.colors.gray1
+        label.textAlignment = .center
         return label
-    }()
-    
-    private lazy var dismissButton: LMFeedButton = {
-        let button = LMFeedButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
-        button.tintColor = LMFeedAppearance.shared.colors.gray3
-        return button
     }()
     
     private lazy var commentTableView: LMFeedTableView = {
@@ -353,8 +354,8 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         containerView.addSubview(replyView)
         containerView.addSubview(stackView)
         
+        headerView.addSubview(dragHandlerView)
         headerView.addSubview(headerTitleLabel)
-        headerView.addSubview(dismissButton)
         
         noCommentContainerView.addSubview(noCommentTitleLabel)
         noCommentContainerView.addSubview(noCommentSubtitleLabel)
@@ -379,15 +380,15 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
             headerView.topAnchor.constraint(equalTo: containerView.topAnchor),
             headerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 56),
+            headerView.heightAnchor.constraint(equalToConstant: 72),
             
-            headerTitleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
-            headerTitleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            dragHandlerView.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 12),
+            dragHandlerView.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
+            dragHandlerView.widthAnchor.constraint(equalToConstant: 40),
+            dragHandlerView.heightAnchor.constraint(equalToConstant: 5),
             
-            dismissButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
-            dismissButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            dismissButton.widthAnchor.constraint(equalToConstant: 24),
-            dismissButton.heightAnchor.constraint(equalToConstant: 24),
+            headerTitleLabel.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
+            headerTitleLabel.topAnchor.constraint(equalTo: dragHandlerView.bottomAnchor, constant: 16),
             
             commentTableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
             commentTableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
@@ -444,7 +445,6 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         sendButton.addTarget(self, action: #selector(didTapSendCommentButton), for: .touchUpInside)
         inputTextView.addDoneButtonOnKeyboard()
         removeReplyButton.addTarget(self, action: #selector(didTapReplyCrossButton), for: .touchUpInside)
-        dismissButton.addTarget(self, action: #selector(didTapDismissButton), for: .touchUpInside)
     }
     
     open override func setupAppearance() {
@@ -471,10 +471,6 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         inputTextView.setAttributedText(from: "")
         contentHeightChanged()
         replyView.isHidden = true
-    }
-    
-    @objc private func didTapDismissButton() {
-        dismiss(animated: true)
     }
 }
 

@@ -43,6 +43,25 @@ open class LMFeedVideoListScreen: LMFeedViewController {
         viewModel?.getFeed(fetchInitialPage: true)
     }
     
+    open override func setupObservers() {
+        super.setupObservers()
+        NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostEdited, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: .LMPostUpdate, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postDelete), name: .LMPostDeleted, object: nil)
+    }
+    
+    @objc open func postUpdated(notification: Notification) {
+        if let data = notification.object as? LMFeedPostDataModel {
+            viewModel?.updatePostData(for: data)
+        }
+    }
+    
+    @objc open func postDelete(notification: Notification) {
+        if let postID = notification.object as? String {
+            viewModel?.removePost(for: postID)
+        }
+    }
+    
     public func updatePostList(with post: [LMFeedPostContentModel], isInitialPage: Bool) {
         
         if isInitialPage {
@@ -175,6 +194,8 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
             ])
 
             videoCell.configure(with: postData.mediaData.first as! LMFeedVideoCollectionCell.ContentModel as LMFeedVideoCollectionCell.ContentModel, index: indexPath.row)
+            videoCell.volumeButton.isHidden = true
+            
             
             let textCell = LMUIComponents.shared.textCell.init()
             textCell.translatesAutoresizingMaskIntoConstraints = false
@@ -239,7 +260,7 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
                 footer.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -16),
                 footer.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -16),
                 footer.widthAnchor.constraint(equalToConstant: 60),
-                footer.heightAnchor.constraint(equalToConstant: 200)
+                footer.heightAnchor.constraint(equalToConstant: 220)
             ])
             
             // Configure header
@@ -405,9 +426,9 @@ extension LMFeedVideoListScreen: LMFeedVideoListViewModelProtocol {
         
         data.remove(at: index)
         
-//        postList.beginUpdates()
-//        postList.deleteSections(.init(integer: index), with: .none)
-//        postList.endUpdates()
+        videoCollectionView.performBatchUpdates({
+            videoCollectionView.deleteSections(IndexSet(integer: index))
+        })
     }
     
     public func navigateToReportScreen(for postID: String, creatorUUID: String) {
@@ -470,12 +491,9 @@ extension LMFeedVideoListScreen: LMFeedPostHeaderViewProtocol, LMFeedPostFooterV
     
     public func didTapLikeTextButton(for postID: String) {
         guard viewModel?.allowPostLikeView(for: postID) == true else { return }
-        do {
-            let viewcontroller = try LMFeedLikeViewModel.createModule(postID: postID)
-            navigationController?.pushViewController(viewcontroller, animated: true)
-        } catch let error {
-            print(error.localizedDescription)
-        }
+        let bottomSheet = LMFeedLikeBottomsheet(postID: postID)
+        bottomSheet.modalPresentationStyle = .pageSheet
+        present(bottomSheet, animated: true)
     }
     
     public func didTapCommentButton(for postID: String) {

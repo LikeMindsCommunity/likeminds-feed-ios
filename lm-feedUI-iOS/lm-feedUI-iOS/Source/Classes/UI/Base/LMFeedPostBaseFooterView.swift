@@ -101,6 +101,15 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
         return button
     }()
     
+    open private(set) lazy var commentTextButton: LMFeedButton = {
+        let button = LMFeedButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("", for: .normal)
+        button.setTitleColor(LMFeedAppearance.shared.colors.gray2, for: .normal)
+        button.tintColor = LMFeedAppearance.shared.colors.gray2
+        return button
+    }()
+    
     open private(set) lazy var saveButton: LMFeedButton = {
         let button = LMFeedButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -175,6 +184,15 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
         
         contentView.addSubview(containerView)
         containerView.addSubview(actionStackView)
+        
+        // Add buttons to stack view
+        actionStackView.addArrangedSubview(likeButton)
+        actionStackView.addArrangedSubview(likeTextButton)
+        actionStackView.addArrangedSubview(commentButton)
+        actionStackView.addArrangedSubview(commentTextButton)
+        actionStackView.addArrangedSubview(saveButton)
+        actionStackView.addArrangedSubview(shareButton)
+        actionStackView.addArrangedSubview(spacer)
     }
     
     // MARK: Constraints
@@ -184,7 +202,7 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
         contentView.pinSubView(subView: containerView, padding: .init(top: 0, left: 0, bottom: -8, right: 0))
         containerView.pinSubView(subView: actionStackView, padding: .init(top: 8, left: 16, bottom: -8, right: -16))
         
-        [likeButton, likeTextButton, commentButton, saveButton, shareButton].forEach { btn in
+        [likeButton, likeTextButton, commentButton, commentTextButton, saveButton, shareButton].forEach { btn in
             btn.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         }
     }
@@ -196,6 +214,7 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
         likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         likeTextButton.addTarget(self, action: #selector(didTapLikeTextButton), for: .touchUpInside)
         commentButton.addTarget(self, action: #selector(didTapCommentButton), for: .touchUpInside)
+        commentTextButton.addTarget(self, action: #selector(didTapCommentButton), for: .touchUpInside)
         saveButton.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
         shareButton.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
         containerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapPost)))
@@ -296,9 +315,13 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
         actionStackView.spacing = orientation == .horizontal ? 8 : 12
         actionStackView.alignment = .center
         
+        // Update button visibility based on orientation
+        commentTextButton.isHidden = orientation == .vertical
+        commentButton.setTitle(orientation == .vertical ? commentText : "", for: .normal)
+        
         // Update button alignments
         let alignment: UIControl.ContentHorizontalAlignment = orientation == .horizontal ? .center : .center
-        [likeButton, likeTextButton, commentButton, saveButton, shareButton].forEach { button in
+        [likeButton, likeTextButton, commentButton, commentTextButton, saveButton, shareButton].forEach { button in
             button.contentHorizontalAlignment = .center
         }
         

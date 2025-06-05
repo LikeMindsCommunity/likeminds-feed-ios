@@ -267,4 +267,10 @@ open class LMFeedVideoListViewModel {
     public func allowPostLikeView(for postID: String) -> Bool {
         return true
     }
+    
+    func updatePostData(for post: LMFeedPostDataModel) {
+        guard let index = postList.firstIndex(where: { $0.postId == post.postId }) else { return }
+        postList[index] = post
+        updatePost(for: post.postId)
+    }
 } 

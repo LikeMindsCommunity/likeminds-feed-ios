@@ -88,6 +88,7 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
     // MARK: Setup Methods
     open override func setupViews() {
         super.setupViews()
+        view.addSubview(createPostLoaderView)
     }
     
     open override func setupLayouts() {
@@ -132,8 +133,8 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
         isPostCreationInProgress = false
         createPostLoaderView.stopAnimating()
         createPostLoaderView.isHidden = true
-//        feedListDelegate?.loadPostsWithTopics(selectedTopics.map { $0.topicID })
     }
+    
     
     @objc
     open func postError(notification: Notification) {
@@ -147,8 +148,11 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
     }
     
     
+    
     open private(set) lazy var createPostLoaderView: LMFeedAddMediaPreview = {
-        let view = LMFeedAddMediaPreview().translatesAutoresizingMaskIntoConstraints()
+        let view = LMFeedAddMediaPreview()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
         return view
     }()
     
@@ -189,13 +193,20 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
             newPostButton.trailingAnchor.constraint(equalTo: customNavBar.trailingAnchor, constant: -16),
             newPostButton.centerYAnchor.constraint(equalTo: customNavBar.centerYAnchor),
             newPostButton.widthAnchor.constraint(equalToConstant: 120),
-            newPostButton.heightAnchor.constraint(equalToConstant: 40)
+            newPostButton.heightAnchor.constraint(equalToConstant: 40),
+
+            // Create post loader view constraints
+            createPostLoaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            createPostLoaderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            createPostLoaderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            createPostLoaderView.heightAnchor.constraint(equalToConstant: 60)
         ])
         
         videoListScreen.didMove(toParent: self)
         
         // Ensure navigation bar is on top
         view.bringSubviewToFront(customNavBar)
+        view.bringSubviewToFront(createPostLoaderView)
     }
     
     // MARK: Actions

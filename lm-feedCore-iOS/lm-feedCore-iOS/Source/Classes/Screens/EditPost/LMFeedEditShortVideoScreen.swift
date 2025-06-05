@@ -55,6 +55,9 @@ open class LMFeedEditShortVideoScreen: LMFeedViewController {
         collection.dataSource = self
         collection.delegate = self
         collection.isPagingEnabled = true
+        collection.layer.cornerRadius = 12
+        collection.clipsToBounds = true
+        collection.backgroundColor = .black
         return collection
     }()
     
@@ -68,6 +71,12 @@ open class LMFeedEditShortVideoScreen: LMFeedViewController {
         return pageControl
     }()
     
+    open private(set) lazy var taggingView: LMFeedTaggingListView = {
+        let view = LMFeedTaggingListViewModel.createModule(delegate: self)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     open private(set) lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(didTapSaveButton))
     
     // MARK: Data Variables
@@ -75,6 +84,7 @@ open class LMFeedEditShortVideoScreen: LMFeedViewController {
     public var mediaCells: [LMFeedVideoCollectionCell.ContentModel] = []
     public var inputTextViewHeightConstraint: NSLayoutConstraint?
     public var textInputMaximumHeight: CGFloat = 150
+    public var taggingViewHeight: NSLayoutConstraint?
     
     // MARK: setupViews
     open override func setupViews() {
@@ -84,7 +94,7 @@ open class LMFeedEditShortVideoScreen: LMFeedViewController {
         containerView.addSubview(scrollView)
         scrollView.addSubview(scrollStackView)
         
-        [headerView, inputTextView, mediaCollectionView, mediaPageControl].forEach { subview in
+        [headerView, inputTextView, mediaCollectionView, mediaPageControl, taggingView].forEach { subview in
             scrollStackView.addArrangedSubview(subview)
         }
     }
@@ -100,12 +110,13 @@ open class LMFeedEditShortVideoScreen: LMFeedViewController {
         headerView.setHeightConstraint(with: 64)
         
         inputTextViewHeightConstraint = inputTextView.setHeightConstraint(with: 80)
+        taggingViewHeight = taggingView.setHeightConstraint(with: 0)
         
         scrollView.setWidthConstraint(with: containerView.widthAnchor)
         scrollStackView.setWidthConstraint(with: containerView.widthAnchor)
         mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
         
-        [headerView, inputTextView, mediaCollectionView, mediaPageControl].forEach { subView in
+        [headerView, inputTextView, mediaCollectionView, mediaPageControl, taggingView].forEach { subView in
             NSLayoutConstraint.activate([
                 subView.leadingAnchor.constraint(equalTo: scrollStackView.leadingAnchor, constant: 16),
                 subView.trailingAnchor.constraint(equalTo: scrollStackView.trailingAnchor, constant: -16)
@@ -167,6 +178,8 @@ extension LMFeedEditShortVideoScreen: UICollectionViewDataSource, UICollectionVi
         if let data = mediaCells[safe: indexPath.row],
            let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreview, for: indexPath) {
             cell.configure(with: data, index: indexPath.row)
+            cell.contentView.layer.cornerRadius = 12
+            cell.contentView.clipsToBounds = true
             return cell
         }
         return UICollectionViewCell()
@@ -205,11 +218,13 @@ extension LMFeedEditShortVideoScreen: UICollectionViewDataSource, UICollectionVi
 @objc
 extension LMFeedEditShortVideoScreen: LMFeedTaggingTextViewProtocol {
     open func mentionStarted(with text: String) {
-        // Handle mention started if needed
+        taggingView.isHidden = false
+        taggingView.getUsers(for: text)
     }
     
     open func mentionStopped() {
-        // Handle mention stopped if needed
+        taggingView.stopFetchingUsers()
+        taggingView.isHidden = true
     }
     
     open func contentHeightChanged() {
@@ -224,6 +239,18 @@ extension LMFeedEditShortVideoScreen: LMFeedTaggingTextViewProtocol {
     
     public func observeSaveButton() {
         saveButton.isEnabled = !inputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+}
+
+// MARK: LMFeedTaggedUserFoundProtocol
+extension LMFeedEditShortVideoScreen: LMFeedTaggedUserFoundProtocol {
+    public func userSelected(with route: String, and userName: String) {
+        inputTextView.addTaggedUser(with: userName, route: route)
+        mentionStopped()
+    }
+    
+    public func updateHeight(with height: CGFloat) {
+        taggingViewHeight?.constant = height
     }
 }
 
