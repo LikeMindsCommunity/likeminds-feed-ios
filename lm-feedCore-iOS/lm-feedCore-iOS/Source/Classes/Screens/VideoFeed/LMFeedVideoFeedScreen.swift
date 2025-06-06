@@ -30,7 +30,7 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
     
     private lazy var videoListScreen: LMFeedVideoListScreen = {
         let screen = LMFeedVideoListScreen()
-        screen.viewModel = LMFeedVideoListViewModel(delegate: screen)
+        screen.viewModel = LMFeedVideoListViewModel(delegate: screen, postIds: viewModel?.postIds ?? [])
         screen.delegate = self
         return screen
     }()
@@ -80,8 +80,6 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
         setupLayouts()
         setupActions()
         setupAppearance()
-        
-        viewModel = LMFeedVideoFeedViewModel(delegate: self)
         addChildViewController()
     }
     

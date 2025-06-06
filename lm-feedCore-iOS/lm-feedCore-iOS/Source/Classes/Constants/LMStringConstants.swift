@@ -109,6 +109,10 @@ public struct LMStringConstants {
         String(format: "Delete %@", pluralizeOrCapitalize(to: postVariable, withAction: .firstLetterCapitalSingular))
     }
     
+    public var discardEditPost : String {
+        String(format: "Discard %@", pluralizeOrCapitalize(to: postVariable, withAction: .firstLetterCapitalSingular))
+    }
+    
     public var deletePostMessage: String {
         String(format: "Are you sure you want to delete this %@? This action cannot be reversed", pluralizeOrCapitalize(to: postVariable, withAction: .allSmallSingular))
     }
@@ -131,5 +135,9 @@ public struct LMStringConstants {
     
     public var searchPostNavTitle: String {
         String(format: "Search %@", postVariable)
+    }
+    
+    public var discardEditPostMessage : String {
+        String(format: "Are you sure you want to discard your reel? Any unsaved changes will be lost, and this action cannot be undone.", pluralizeOrCapitalize(to: postVariable, withAction: .allSmallSingular))
     }
 }

@@ -149,10 +149,34 @@ open class LMFeedEditShortVideoScreen: LMFeedViewController {
         // Configure navigation bar
         navigationController?.setNavigationBarHidden(false, animated: false)
         navigationController?.navigationBar.isTranslucent = false
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        
+        // Add custom back button
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(didTapBackButton))
+        navigationItem.leftBarButtonItem = backButton
         
         setupInitialView()
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.editVideoPost, subtitle: nil, alignment: .center)
         viewmodel?.getInitalData()
+    }
+    
+    @objc private func didTapBackButton() {
+        showDiscardAlert()
+    }
+    
+    private func showDiscardAlert() {
+        let alert = UIAlertController(title: "\(LMStringConstants.shared.discardEditPost)?", message: LMStringConstants.shared.discardEditPostMessage, preferredStyle: .alert)
+        
+        let discardAction = UIAlertAction(title: "Discard", style: .destructive) { [weak self] _ in
+            self?.navigationController?.popViewController(animated: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        alert.addAction(discardAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
@@ -275,5 +299,16 @@ extension LMFeedEditShortVideoScreen: LMFeedEditShortVideoViewModelProtocol {
             mediaPageControl.numberOfPages = mediaCells.count
             mediaPageControl.currentPage = 0
         }
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+extension LMFeedEditShortVideoScreen: UIGestureRecognizerDelegate {
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer == navigationController?.interactivePopGestureRecognizer {
+            showDiscardAlert()
+            return false
+        }
+        return true
     }
 } 

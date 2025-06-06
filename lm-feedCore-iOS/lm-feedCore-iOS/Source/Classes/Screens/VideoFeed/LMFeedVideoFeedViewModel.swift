@@ -10,19 +10,19 @@ public class LMFeedVideoFeedViewModel {
     // MARK: Data Variables
     private var selectedVideo: (PHAsset, URL, Data)?
     public weak var delegate: LMFeedVideoFeedViewModelDelegate?
+    public var postIds: [String] = []
     
     // MARK: Initialization
     init(delegate: LMFeedVideoFeedViewModelDelegate?) {
         self.delegate = delegate
     }
     
-    public static func createModule() throws -> LMFeedVideoFeedScreen{
+    public static func createModule(postIds: [String] = []) throws -> LMFeedVideoFeedScreen{
         guard LMFeedCore.isInitialized else { throw LMFeedError.feedNotInitialized }
-        
         
         let viewController = Components.shared.feedVideoFeedScreen.init()
         let viewModel = LMFeedVideoFeedViewModel(delegate: viewController)
-        
+        viewModel.postIds = postIds
         viewController.viewModel = viewModel
         
         return viewController

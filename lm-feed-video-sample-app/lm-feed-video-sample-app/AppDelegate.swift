@@ -23,8 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         LMFeedCore.shared.setupFeed(deviceId: deviceId)
         
-        LMUIComponents.shared.customCell = CustomClientView.self
-        
         return true
     }
     

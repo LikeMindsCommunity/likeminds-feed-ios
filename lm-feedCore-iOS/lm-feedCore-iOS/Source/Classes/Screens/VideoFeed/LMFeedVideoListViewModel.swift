@@ -23,16 +23,18 @@ open class LMFeedVideoListViewModel {
     public var isLastPostReached: Bool
     public var isFetchingFeed: Bool
     public var postList: [LMFeedPostDataModel]
+    public var postIds: [String]
     
     public weak var delegate: LMFeedVideoListViewModelProtocol?
     
-    init(delegate: LMFeedVideoListViewModelProtocol) {
+    init(delegate: LMFeedVideoListViewModelProtocol, postIds: [String] = []) {
         self.currentPage = 1
         self.pageSize = 20
         self.selectedTopics = []
         self.isLastPostReached = false
         self.isFetchingFeed = false
         self.postList = []
+        self.postIds = postIds
         self.delegate = delegate
     }
     
@@ -53,7 +55,7 @@ open class LMFeedVideoListViewModel {
         
         isFetchingFeed = true
         
-        LMFeedPostOperation.shared.getFeed(currentPage: currentPage, pageSize: pageSize, selectedTopics: selectedTopics) { [weak self] response in
+        LMFeedPostOperation.shared.getFeed(currentPage: currentPage, pageSize: pageSize, selectedTopics: selectedTopics, postIds: postIds) { [weak self] response in
             guard let self else { return }
             
             delegate?.showHideFooterLoader(isShow: false)
@@ -82,6 +84,7 @@ open class LMFeedVideoListViewModel {
                 return .init(post: post, users: users, allTopics: topics, widgets: widgets, filteredComments: comments)
             }
             
+            
             self.updatePostList(with: convertedData)
         }
     }
@@ -98,6 +101,18 @@ open class LMFeedVideoListViewModel {
             let convertedData = await convertToViewData(from: data)
             await MainActor.run {
                 self.isFetchingFeed = false
+                
+               
+                // Check if current page is 1 and we have startFeedWithPostIds
+                if currentPage == 1 && !postIds.isEmpty {
+                    for (index, post) in convertedData.enumerated() {
+                        if index < postIds.count && post.postID != postIds[index] {
+                            delegate?.showError(with: "Post has been deleted", isPopVC: false)
+                            break
+                        }
+                    }
+                }
+                
                 delegate?.updatePostList(with: convertedData, isInitialPage: currentPage == 1)
                 isLastPostReached = postList.isEmpty
                 currentPage += 1

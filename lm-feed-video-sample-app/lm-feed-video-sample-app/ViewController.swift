@@ -1,143 +1,137 @@
-//
-//  ViewController.swift
-//  lm-feed-video-sample-app
-//
-//  Created by Arpit Verma on 05/06/25.
-//
-
 import FirebaseMessaging
-import LikeMindsFeedCore
 import LikeMindsFeedUI
+import LikeMindsFeedCore
 import UIKit
-
-class ViewController: UIViewController {
-
-    @IBOutlet private weak var apiKeyTextField: UITextField!
-    @IBOutlet private weak var usernameTextField: UITextField!
-    @IBOutlet private weak var userIdTextField: UITextField!
-    @IBOutlet private weak var submitBtn: UIButton!
-
+extension UIViewController {
+    var window: UIWindow? {
+        if #available(iOS 13, *) {
+            guard
+                let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                let delegate = windowScene.delegate as? SceneDelegate,
+                let window = delegate.window
+            else { return nil }
+            return window
+        }
+        return nil
+    }
+}
+class ViewController: LMFeedViewController{
+    // MARK: - UI Components
+    private let apiKeyField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "API Key"
+        textField.borderStyle = .roundedRect
+        return textField
+    }()
+    private let userIdField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "User ID"
+        textField.borderStyle = .roundedRect
+        return textField
+    }()
+    private let userNameField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Username"
+        textField.borderStyle = .roundedRect
+        return textField
+    }()
+    private let postIdField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Post IDs"
+        textField.borderStyle = .roundedRect
+        return textField
+    }()
+    private let loginButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Submit", for: .normal)
+        button.backgroundColor = .systemBlue
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 8
+        button.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        return button
+    }()
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        submitBtn.layer.cornerRadius = 8
-        view.addGestureRecognizer(
-            UITapGestureRecognizer(target: self, action: #selector(endEditing)))
+        setupUI()
         isSavedData()
     }
-
-    @discardableResult
-    func isSavedData() -> Bool {
-        let userDefalut = UserDefaults.standard
-        guard let apiKey = userDefalut.value(forKey: "apiKey") as? String,
-            let userId = userDefalut.value(forKey: "userId") as? String,
-            let username = userDefalut.value(forKey: "username") as? String
-        else {
-            return false
-        }
-        initateAPI(apiKey: apiKey, username: username, userId: userId)
-        return true
+    // MARK: - Setup UI
+    private func setupUI() {
+        view.backgroundColor = .white
+        title = "Login"
+        let stackView = UIStackView(arrangedSubviews: [apiKeyField, userIdField, userNameField, postIdField, loginButton])
+        stackView.axis = .vertical
+        stackView.spacing = 16
+        stackView.alignment = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stackView)
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        loginButton.addTarget(self, action: #selector(loginButtonClicked(_:)), for: .touchUpInside)
     }
-
-    @IBAction private func submitBtnClicked(_ sender: UIButton) {
+    // MARK: - Actions
+    @objc func loginButtonClicked(_ sender: UIButton) {
         guard
-            let apiKey = apiKeyTextField?.text?.trimmingCharacters(
-                in: .whitespacesAndNewlines), !apiKey.isEmpty,
-            let userId = userIdTextField?.text?.trimmingCharacters(
-                in: .whitespacesAndNewlines), !userId.isEmpty,
-            let username = usernameTextField?.text?.trimmingCharacters(
-                in: .whitespacesAndNewlines), !username.isEmpty
+            let apiKey = apiKeyField.text?.trimmingCharacters(in: .whitespacesAndNewlines), !apiKey.isEmpty,
+            let userId = userIdField.text?.trimmingCharacters(in: .whitespacesAndNewlines), !userId.isEmpty,
+            let username = userNameField.text?.trimmingCharacters(in: .whitespacesAndNewlines), !username.isEmpty
         else {
             showAlert(message: "All fields are mandatory!")
             return
         }
-
-        let userDefalut = UserDefaults.standard
-        userDefalut.setValue(apiKey, forKey: "apiKey")
-        userDefalut.setValue(userId, forKey: "userId")
-        userDefalut.setValue(username, forKey: "username")
-        userDefalut.synchronize()
-
-        initateAPI(apiKey: apiKey, username: username, userId: userId)
+        
+        let postIds = postIdField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+            .components(separatedBy: ",")
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty } ?? []
+        let userDefaults = UserDefaults.standard
+        userDefaults.setValue(apiKey, forKey: "apiKey")
+        userDefaults.setValue(userId, forKey: "userId")
+        userDefaults.setValue(username, forKey: "username")
+        userDefaults.synchronize()
+        callInitiateApi(userId: userId, username: username, apiKey: apiKey, postIds: postIds)
     }
-
-    @objc
-    private func endEditing() {
-        view.endEditing(true)
+    // MARK: - Utilities
+    @discardableResult
+    func isSavedData() -> Bool {
+        let userDefaults = UserDefaults.standard
+        guard
+            let apiKey = userDefaults.value(forKey: "apiKey") as? String,
+            let userId = userDefaults.value(forKey: "userId") as? String,
+            let username = userDefaults.value(forKey: "username") as? String
+        else {
+            return false
+        }
+        callInitiateApi(userId: userId, username: username, apiKey: apiKey, postIds: [])
+        return true
     }
-
-    func initateAPI(apiKey: String, username: String, userId: String) {
-        LMFeedCore.shared.showFeed(
-            apiKey: apiKey, username: username, uuid: userId
-        ) { [weak self] result in
+    func callInitiateApi(userId: String, username: String, apiKey: String, postIds: [String]) {
+        self.showHideLoaderView(isShow: true, backgroundColor: .clear)
+        LMFeedCore.shared.showFeed(apiKey: apiKey, username: username, uuid: userId) { [weak self] result in
             switch result {
-            case .success(_):
-                do {
-                    let viewController =
-                    try LMFeedVideoFeedViewModel.createModule()
-                    UIApplication.shared.windows.first?.rootViewController =
-                        UINavigationController(
-                            rootViewController: viewController)
-                    UIApplication.shared.windows.first?.makeKeyAndVisible()
-                } catch {
-                    print(error.localizedDescription)
-                }
+            case .success:
+                self?.showHideLoaderView(isShow: false, backgroundColor: .clear)
+                let homeVC = try! LMFeedVideoFeedViewModel.createModule(postIds: postIds)
+                let navigation = UINavigationController(rootViewController: homeVC)
+                navigation.modalPresentationStyle = .overFullScreen
+                self?.window?.rootViewController = navigation
             case .failure(let error):
+                self?.showHideLoaderView(isShow: false, backgroundColor: .clear)
                 self?.showAlert(message: error.localizedDescription)
             }
         }
     }
-    
     func showAlert(message: String) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        let alert = UIAlertController(
+            title: nil,
+            message: message,
+            preferredStyle: .alert
+        )
         alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
         present(alert, animated: true)
     }
 }
-
-class CustomClientView: LMFeedPostCustomCell {
-    
-    
-    private let customLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Your Custom Text"
-        label.textColor = .white  // Set text color
-        label.textAlignment = .center  // Center align the text
-        label.backgroundColor = .blue  // Set background color
-        label.layer.cornerRadius = 8  // Optional: rounded corners
-        label.clipsToBounds = true  // Ensure corners are clipped
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-
-    // MARK: setupViews
-    open override func setupViews() {
-        super.setupViews()
-
-        contentView.addSubview(containerView)
-        containerView.addSubview(contentStack)
-        
-        contentStack.addArrangedSubview(customLabel)
-    }
-
-    // MARK: setupLayouts
-    open override func setupLayouts() {
-        super.setupLayouts()
-
-        contentView.pinSubView(subView: containerView)
-        containerView.pinSubView(subView: contentStack)
-
-        // Add constraints for customLabel
-        NSLayoutConstraint.activate([
-            customLabel.leadingAnchor.constraint(
-                equalTo: contentStack.leadingAnchor, constant: 16),
-            customLabel.trailingAnchor.constraint(
-                equalTo: contentStack.trailingAnchor, constant: -16),
-            customLabel.topAnchor.constraint(
-                equalTo: contentStack.topAnchor, constant: 16),
-            customLabel.heightAnchor.constraint(equalToConstant: 100),  // Optional height
-        ])
-    }
-
-}
-
