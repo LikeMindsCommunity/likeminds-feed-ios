@@ -154,6 +154,70 @@ open class LMFeedVideoListScreen: LMFeedViewController {
         emptyView.setHeightConstraint(with: videoCollectionView.heightAnchor)
         emptyView.setWidthConstraint(with: videoCollectionView.widthAnchor)
     }
+    
+    // Add this method to handle video playback
+    private func handleVideoPlayback() {
+        // Get the current visible cell
+        let visibleRect = CGRect(origin: videoCollectionView.contentOffset, size: videoCollectionView.bounds.size)
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        
+        if let visibleIndexPath = videoCollectionView.indexPathForItem(at: visiblePoint),
+           let cell = videoCollectionView.cellForItem(at: visibleIndexPath) {
+            // Find the video cell in the content view
+            if let videoCell = cell.contentView.subviews.first(where: { $0 is LMFeedVideoCollectionCell }) as? LMFeedVideoCollectionCell {
+                // Pause all other video cells
+                videoCollectionView.visibleCells.forEach { cell in
+                    if let videoCell = cell.contentView.subviews.first(where: { $0 is LMFeedVideoCollectionCell }) as? LMFeedVideoCollectionCell {
+                        videoCell.pauseVideo()
+                    }
+                }
+                // Play the visible video cell
+                videoCell.playVideo()
+            }
+        }
+    }
+    
+    // Modify scroll handling methods
+    open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        // Pause all visible videos when scrolling starts
+        videoCollectionView.visibleCells.forEach { cell in
+            if let videoCell = cell.contentView.subviews.first(where: { $0 is LMFeedVideoCollectionCell }) as? LMFeedVideoCollectionCell {
+                videoCell.pauseVideo()
+            }
+        }
+    }
+    
+    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let page = Int(scrollView.contentOffset.y / scrollView.frame.height)
+        if page >= data.count - 1 {
+            viewModel?.getFeed()
+        }
+        // Handle video playback when scrolling stops
+        handleVideoPlayback()
+    }
+    
+    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            // Handle video playback when scrolling stops without deceleration
+            handleVideoPlayback()
+        }
+    }
+    
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Start playing the visible video when view appears
+        handleVideoPlayback()
+    }
+    
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Pause all videos when view disappears
+        videoCollectionView.visibleCells.forEach { cell in
+            if let videoCell = cell.contentView.subviews.first(where: { $0 is LMFeedVideoCollectionCell }) as? LMFeedVideoCollectionCell {
+                videoCell.pauseVideo()
+            }
+        }
+    }
 }
 
 // MARK: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching
@@ -184,7 +248,6 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
             videoCell.contentView.backgroundColor = .clear
             videoCell.backgroundView = nil
             videoCell.containerView.backgroundColor = .clear
-
             
             cell.contentView.addSubview(videoCell)
             NSLayoutConstraint.activate([
@@ -194,9 +257,12 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
                 videoCell.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
             ])
 
-            videoCell.configure(with: postData.mediaData.first as! LMFeedVideoCollectionCell.ContentModel as LMFeedVideoCollectionCell.ContentModel, index: indexPath.row,showVolumeButton: false)
-        
-            
+            // Configure video cell with auto-play disabled initially
+            if let videoData = postData.mediaData.first as? LMFeedVideoCollectionCell.ContentModel {
+                videoCell.configure(with: videoData, index: indexPath.row, showVolumeButton: false)
+                // Initially pause the video
+                videoCell.pauseVideo()
+            }
             
             let textCell = LMUIComponents.shared.textCell.init()
             textCell.translatesAutoresizingMaskIntoConstraints = false
@@ -363,13 +429,6 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
         let filtered = indexPaths.filter({ $0.item >= data.count - 1 })
         
         if !filtered.isEmpty {
-            viewModel?.getFeed()
-        }
-    }
-    
-    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let page = Int(scrollView.contentOffset.y / scrollView.frame.height)
-        if page >= data.count - 1 {
             viewModel?.getFeed()
         }
     }

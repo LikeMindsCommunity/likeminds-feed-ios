@@ -8,14 +8,11 @@ import LikeMindsFeedUI
 import LikeMindsFeed
 
 public class LMFeedSocialFeedViewModel: LMFeedBaseUniversalFeedViewModel {
-    public static func createModule() throws -> LMFeedVideoFeedScreen{
+    public static func createModule() throws -> LMFeedSocialFeedScreen{
         guard LMFeedCore.isInitialized else { throw LMFeedError.feedNotInitialized }
         
-//        let viewController = Components.shared.universalFeedScreen.init()
-//        let viewModel = LMFeedSocialFeedViewModel(delegate: viewController)
-        
-        let viewController = Components.shared.feedVideoFeedScreen.init()
-        let viewModel = LMFeedVideoFeedViewModel(delegate: viewController)
+        let viewController = Components.shared.universalFeedScreen.init()
+        let viewModel = LMFeedSocialFeedViewModel(delegate: viewController)
         
         viewController.viewModel = viewModel
         return viewController

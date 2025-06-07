@@ -185,14 +185,14 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
         contentView.addSubview(containerView)
         containerView.addSubview(actionStackView)
         
-        // Add buttons to stack view
-        actionStackView.addArrangedSubview(likeButton)
-        actionStackView.addArrangedSubview(likeTextButton)
-        actionStackView.addArrangedSubview(commentButton)
-        actionStackView.addArrangedSubview(commentTextButton)
-        actionStackView.addArrangedSubview(saveButton)
-        actionStackView.addArrangedSubview(shareButton)
-        actionStackView.addArrangedSubview(spacer)
+//        // Add buttons to stack view
+//        actionStackView.addArrangedSubview(likeButton)
+//        actionStackView.addArrangedSubview(likeTextButton)
+//        actionStackView.addArrangedSubview(commentButton)
+//        actionStackView.addArrangedSubview(commentTextButton)
+//        actionStackView.addArrangedSubview(saveButton)
+//        actionStackView.addArrangedSubview(shareButton)
+//        actionStackView.addArrangedSubview(spacer)
     }
     
     // MARK: Constraints
@@ -330,3 +330,4 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
         layoutIfNeeded()
     }
 }
+    
