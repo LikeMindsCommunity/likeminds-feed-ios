@@ -282,7 +282,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
     private lazy var noCommentTitleLabel: LMFeedLabel = {
         let label = LMFeedLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "No Comments Found"
+        label.text = LMStringConstants.shared.noCommentTitleLable
         label.textColor = LMFeedAppearance.shared.colors.gray51
         label.font = LMFeedAppearance.shared.fonts.headingFont3
         label.textAlignment = .center
@@ -292,11 +292,19 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
     private lazy var noCommentSubtitleLabel: LMFeedLabel = {
         let label = LMFeedLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Be the first one to create a comment"
+        label.text = LMStringConstants.shared.noCommentSubTitleLable
         label.textColor = LMFeedAppearance.shared.colors.gray102
         label.font = LMFeedAppearance.shared.fonts.textFont1
         label.textAlignment = .center
         return label
+    }()
+    
+    private lazy var taggingView: LMFeedTaggingListView = {
+        let view = LMFeedTaggingListViewModel.createModule(delegate: self)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
+        view.isUserInteractionEnabled = true
+        return view
     }()
     
     // MARK: Data Variables
@@ -309,6 +317,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
     private var isInitialLoad = true
     private var isLoadingMore = false
     private var hasMoreData = true
+    private var taggingViewHeightConstraint: NSLayoutConstraint?
     
     // MARK: Initialization
     public init(postID: String, viewModel: LMFeedPostDetailViewModel) {
@@ -354,6 +363,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         containerView.addSubview(replySepratorView)
         containerView.addSubview(replyView)
         containerView.addSubview(stackView)
+        containerView.addSubview(taggingView)
         
         headerView.addSubview(dragHandlerView)
         headerView.addSubview(headerTitleLabel)
@@ -433,11 +443,18 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
             inputTextView.topAnchor.constraint(equalTo: stackView.topAnchor),
             inputTextView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
             
-            sendButton.widthAnchor.constraint(equalTo: sendButton.heightAnchor)
+            sendButton.widthAnchor.constraint(equalTo: sendButton.heightAnchor),
+            
+            taggingView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            taggingView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            taggingView.bottomAnchor.constraint(equalTo: stackView.topAnchor)
         ])
         
         inputTextViewHeightConstraint = inputTextView.heightAnchor.constraint(equalToConstant: 30)
         inputTextViewHeightConstraint?.isActive = true
+        
+        taggingViewHeightConstraint = taggingView.heightAnchor.constraint(equalToConstant: 0)
+        taggingViewHeightConstraint?.isActive = true
     }
     
     open override func setupActions() {
@@ -541,11 +558,11 @@ extension LMFeedCommentBottomsheet: UITableViewDataSource, UITableViewDelegate {
 // MARK: LMFeedTaggingTextViewProtocol
 extension LMFeedCommentBottomsheet: LMFeedTaggingTextViewProtocol {
     public func mentionStarted(with text: String) {
-        // TODO: Implement mention functionality
+        taggingView.getUsers(for: text)
     }
     
     public func mentionStopped() {
-        // TODO: Implement mention stop functionality
+        taggingView.stopFetchingUsers()
     }
     
     public func contentHeightChanged() {
@@ -557,6 +574,18 @@ extension LMFeedCommentBottomsheet: LMFeedTaggingTextViewProtocol {
         
         sendButton.isEnabled = !inputTextView.attributedText.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && 
             inputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines) != inputTextView.placeHolderText
+    }
+}
+
+// MARK: LMFeedTaggedUserFoundProtocol
+extension LMFeedCommentBottomsheet: LMFeedTaggedUserFoundProtocol {
+    public func userSelected(with route: String, and userName: String) {
+        inputTextView.addTaggedUser(with: userName, route: route)
+        mentionStopped()
+    }
+    
+    public func updateHeight(with height: CGFloat) {
+        taggingViewHeightConstraint?.constant = height
     }
 }
 

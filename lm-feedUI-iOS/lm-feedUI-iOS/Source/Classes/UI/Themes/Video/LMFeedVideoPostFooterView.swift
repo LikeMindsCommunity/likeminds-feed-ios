@@ -1,7 +1,19 @@
     import UIKit
 
+
+public protocol LMFeedVideoFooterViewProtocol: LMFeedPostFooterViewProtocol {
+    func didTapFooterMenuButton(for postID: String)
+}
+
 open class LMFeedVideoPostFooterView: LMFeedBasePostFooterView {
     // MARK: UI Elements
+    private weak var _videoDelegate: LMFeedVideoFooterViewProtocol?
+    
+    public var videoDelegate: LMFeedVideoFooterViewProtocol? {
+        get { _videoDelegate }
+        set { _videoDelegate = newValue }
+    }
+    
     open private(set) lazy var footerContainerView: LMFeedStackView = {
         let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
@@ -10,6 +22,8 @@ open class LMFeedVideoPostFooterView: LMFeedBasePostFooterView {
         stack.spacing = 8
         return stack
     }()
+    
+    
     
     open private(set) lazy var likeContainerStack: LMFeedStackView = {
         let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
@@ -125,10 +139,11 @@ open class LMFeedVideoPostFooterView: LMFeedBasePostFooterView {
     
     open override func configure(with data: ContentModel, topResponse: LMFeedCommentContentModel?, postID: String, delegate: LMFeedPostFooterViewProtocol, orientation: LMFeedPostFooterOrientation = .vertical) {
         super.configure(with: data, topResponse: topResponse, postID: postID, delegate: delegate, orientation: orientation)
+        self._videoDelegate = delegate as? LMFeedVideoFooterViewProtocol
     }
     
     @objc open func didTapFooterMenuButton() {
         guard let postID = postID else { return }
-        delegate?.didTapFooterMenuButton(for: postID)
+        _videoDelegate?.didTapFooterMenuButton(for: postID)
     }
 }

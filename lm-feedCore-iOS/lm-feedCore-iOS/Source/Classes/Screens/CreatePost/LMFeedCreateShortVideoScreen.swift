@@ -60,7 +60,7 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         textView.backgroundColor = LMFeedAppearance.shared.colors.clear
         textView.isScrollEnabled = true
         textView.isEditable = true
-        textView.placeHolderText = "Write a caption and hashtags..."
+        textView.placeHolderText = LMStringConstants.shared.inputTextPlaceholder
         textView.backgroundColor = LMFeedAppearance.shared.colors.clear
         textView.addDoneButtonOnKeyboard()
         return textView

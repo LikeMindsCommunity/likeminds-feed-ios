@@ -71,6 +71,11 @@ public struct LMStringConstants {
     public var addPoll = "Add Poll"
     public var newVideoPost = "New post"
     public var editVideoPost = "Edit Reel"
+    public var videoListEndPageTitle = "You're All Caught Up"
+    public var videoListEndPageButtonTitle = "View older posts"
+    public var noCommentTitleLable = "No Comments Found"
+    public var noCommentSubTitleLable = "Be the first one to create a comment"
+    public var inputTextPlaceholder = "Write a caption and hashtags..."
         
     public var createPostTitle: String {
         String(format: "Create a %@", pluralizeOrCapitalize(to: postVariable, withAction: .allSmallSingular))
@@ -140,4 +145,5 @@ public struct LMStringConstants {
     public var discardEditPostMessage : String {
         String(format: "Are you sure you want to discard your reel? Any unsaved changes will be lost, and this action cannot be undone.", pluralizeOrCapitalize(to: postVariable, withAction: .allSmallSingular))
     }
+    
 }

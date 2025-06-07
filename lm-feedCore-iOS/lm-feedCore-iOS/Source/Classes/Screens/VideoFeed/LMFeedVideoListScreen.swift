@@ -369,14 +369,14 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
         
         let messageLabel = UILabel()
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
-        messageLabel.text = "You're All Caught Up"
+        messageLabel.text = LMStringConstants.shared.videoListEndPageTitle
         messageLabel.textColor = .black
         messageLabel.font = .systemFont(ofSize: 18, weight: .medium)
         messageLabel.textAlignment = .center
         
         let viewOldPostsButton = UIButton(type: .system)
         viewOldPostsButton.translatesAutoresizingMaskIntoConstraints = false
-        viewOldPostsButton.setTitle("View older posts", for: .normal)
+        viewOldPostsButton.setTitle(LMStringConstants.shared.videoListEndPageButtonTitle, for: .normal)
         viewOldPostsButton.setTitleColor(.systemBlue, for: .normal)
         viewOldPostsButton.titleLabel?.font = .systemFont(ofSize: 16)
         viewOldPostsButton.backgroundColor = .clear
@@ -514,7 +514,7 @@ extension LMFeedVideoListScreen: LMFeedVideoListViewModelProtocol {
 }
 
 // MARK: LMFeedPostHeaderViewProtocol, LMFeedPostFooterViewProtocol
-extension LMFeedVideoListScreen: LMFeedPostHeaderViewProtocol, LMFeedPostFooterViewProtocol {
+extension LMFeedVideoListScreen: LMFeedPostHeaderViewProtocol, LMFeedVideoFooterViewProtocol {
     public func didTapFooterMenuButton(for postID: String) {
         viewModel?.showMenu(for: postID)
     }

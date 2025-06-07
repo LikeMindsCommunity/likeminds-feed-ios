@@ -108,7 +108,6 @@ public class LMFeedBasePostDetailViewModel {
 // MARK: Get Post Details
 extension LMFeedPostDetailViewModel {
     public func getPost(isInitialFetch: Bool) {
-        print("count1 ")
         if isInitialFetch {
             currentPage = 1
             isFetchingData = false
