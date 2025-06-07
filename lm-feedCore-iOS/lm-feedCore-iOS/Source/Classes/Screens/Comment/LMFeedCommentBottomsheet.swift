@@ -326,11 +326,12 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
     open override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-        setupViews()
-        setupLayouts()
-        setupActions()
-        setupAppearance()
+        replyView.isHidden = true
         // Only call getPost if it's initial load
+        updateCommentStatus(
+            isEnabled: LocalPreferences.memberState?.memberRights?.contains(
+                where: { $0.state == .commentOrReplyOnPost }) ?? false)
+        viewModel.getMemberState()
         if isInitialLoad {
             viewModel.getPost(isInitialFetch: true)
         }
@@ -435,7 +436,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
             sendButton.widthAnchor.constraint(equalTo: sendButton.heightAnchor)
         ])
         
-        inputTextViewHeightConstraint = inputTextView.heightAnchor.constraint(equalToConstant: 40)
+        inputTextViewHeightConstraint = inputTextView.heightAnchor.constraint(equalToConstant: 30)
         inputTextViewHeightConstraint?.isActive = true
     }
     
@@ -452,9 +453,6 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         view.backgroundColor = .clear
         containerView.backgroundColor = LMFeedAppearance.shared.colors.white
         commentTableView.backgroundColor = LMFeedAppearance.shared.colors.backgroundColor
-        replyView.isHidden = true
-        replySepratorView.isHidden = true
-        noCommentContainerView.isHidden = true
     }
     
     // MARK: Action Methods
