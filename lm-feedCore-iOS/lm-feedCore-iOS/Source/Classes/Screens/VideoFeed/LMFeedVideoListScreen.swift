@@ -184,6 +184,7 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
             videoCell.contentView.backgroundColor = .clear
             videoCell.backgroundView = nil
             videoCell.containerView.backgroundColor = .clear
+
             
             cell.contentView.addSubview(videoCell)
             NSLayoutConstraint.activate([
@@ -193,8 +194,8 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
                 videoCell.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
             ])
 
-            videoCell.configure(with: postData.mediaData.first as! LMFeedVideoCollectionCell.ContentModel as LMFeedVideoCollectionCell.ContentModel, index: indexPath.row)
-            videoCell.volumeButton.isHidden = true
+            videoCell.configure(with: postData.mediaData.first as! LMFeedVideoCollectionCell.ContentModel as LMFeedVideoCollectionCell.ContentModel, index: indexPath.row,showVolumeButton: false)
+        
             
             
             let textCell = LMUIComponents.shared.textCell.init()

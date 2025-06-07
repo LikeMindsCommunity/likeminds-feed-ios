@@ -78,7 +78,7 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
     }()
     
     open private(set) lazy var seekBar: UISlider = {
-       let slider = UISlider()
+        let slider = UISlider()
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.minimumValue = 0
         return slider
@@ -94,6 +94,7 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
     public var videoURL: URL?
     var timeObserverToken: Any?
     var showControls: Bool = true
+    var showVolumeButton: Bool = true
     
     
     // MARK: prepareForReuse
@@ -141,10 +142,10 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
         playPauseButton.setHeightConstraint(with: playPauseButtonHeight)
         playPauseButton.setWidthConstraint(with: playPauseButton.heightAnchor)
         playPauseButton.addConstraint(centerX: (centerXAnchor, 0), centerY: (centerYAnchor, 0))
-   
-        seekBar.addConstraint(bottom: (containerView.bottomAnchor, -16), 
-                             leading: (containerView.leadingAnchor, 16),
-                             trailing: (volumeButton.leadingAnchor, -16))
+        
+        seekBar.addConstraint(bottom: (containerView.bottomAnchor, -16),
+                              leading: (containerView.leadingAnchor, 16),
+                              trailing: (volumeButton.leadingAnchor, -16))
         seekBar.setHeightConstraint(with: 30)
     }
     
@@ -197,10 +198,11 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
     }
     
     // MARK: configure
-    open func configure(with data: ContentModel, index: Int, crossButtonAction: ((String) -> Void)? = nil, didTapVideo: (() -> Void)? = nil, showControls: Bool = false) {
+    open func configure(with data: ContentModel, index: Int, crossButtonAction: ((String) -> Void)? = nil, didTapVideo: (() -> Void)? = nil, showControls: Bool = false,showVolumeButton : Bool = true) {
         guard let url = URL(string: data.videoURL) else { return }
         videoURL = url
         self.showControls = showControls
+        self.showVolumeButton = showVolumeButton
         self.didTapVideo = didTapVideo
         videoPlayer.prepareVideo(with: data, index, showControls: showControls)
         self.crossButtonAction = crossButtonAction
@@ -260,7 +262,7 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
     private func showButton() {
         seekBar.isHidden = !showControls
         playPauseButton.isHidden = false
-        volumeButton.isHidden = false
+        volumeButton.isHidden = !showVolumeButton
     }
     
     @objc private func didTapPlayPauseButton() {
