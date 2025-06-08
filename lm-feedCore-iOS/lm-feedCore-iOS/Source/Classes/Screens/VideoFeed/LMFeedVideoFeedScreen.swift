@@ -122,6 +122,7 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
         isPostCreationInProgress = false
         createPostLoaderView.stopAnimating()
         createPostLoaderView.isHidden = true
+        videoListScreen.viewModel?.getFeed(fetchInitialPage: true)
     }
     
     

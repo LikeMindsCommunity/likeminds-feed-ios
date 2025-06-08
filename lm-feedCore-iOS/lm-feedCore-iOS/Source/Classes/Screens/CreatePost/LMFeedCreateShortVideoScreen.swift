@@ -47,12 +47,6 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
     }()
     
     
-    open private(set) lazy var topicView: LMFeedTopicView = {
-        let view = LMUIComponents.shared.topicFeedView.init().translatesAutoresizingMaskIntoConstraints()
-        view.delegate = self
-        return view
-    }()
-    
     open private(set) lazy var inputTextView: LMFeedTaggingTextView = {
         let textView = LMFeedTaggingTextView().translatesAutoresizingMaskIntoConstraints()
         textView.dataDetectorTypes = [.link]
@@ -85,7 +79,7 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         let button = LMFeedButton.createButton(
             with: LMStringConstants.shared.postText,
             image: nil,
-            textColor: LMFeedAppearance.shared.colors.white,
+            textColor: LMFeedAppearance.shared.colors.black,
             textFont: LMFeedAppearance.shared.fonts.buttonFont1,
             contentSpacing: .init(top: 8, left: 8, bottom: 8, right: 12),
             imageSpacing: 8
@@ -117,7 +111,7 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         containerStackView.addArrangedSubview(scrollView)
         scrollView.addSubview(scrollStackView)
         
-        [ videoPreview, topicView, inputTextView, taggingView].forEach { subView in
+        [ videoPreview, inputTextView, taggingView].forEach { subView in
             scrollStackView.addArrangedSubview(subView)
         }
     }
@@ -129,8 +123,6 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         view.safePinSubView(subView: containerView)
         containerView.pinSubView(subView: containerStackView)
         scrollView.pinSubView(subView: scrollStackView, padding: .init(top: 8, left: 0, bottom: -8, right: 0))
-        
-        topicView.setHeightConstraint(with: 2, priority: .defaultLow)
         
         scrollStackView.setWidthConstraint(with: containerView.widthAnchor, multiplier: 1)
         scrollStackView.setHeightConstraint(with: 700, priority: .defaultLow)
@@ -193,8 +185,6 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         
         inputTextView.setAttributedText(from: "")
         setupInitialView()
-        
-        viewModel?.getTopics()
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
@@ -206,7 +196,6 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
     
     open func setupInitialView() {
         videoPreview.isHidden = false
-        topicView.isHidden = true
         createPostButton.isEnabled = false
         taggingView.isHidden = true
     }
@@ -280,21 +269,6 @@ extension LMFeedCreateShortVideoScreen : LMFeedCreateShortVideoViewModelProtocol
         videoAttachmentData.removeAll()
     }
     
-    
-    public func updateTopicView(with data: LMFeedTopicView.ContentModel) {
-        topicView.isHidden = false
-        topicView.configure(with: data)
-    }
-    
-    public func navigateToTopicView(with topics: [LMFeedTopicDataModel]) {
-        do {
-            let viewcontroller = try LMFeedTopicSelectionViewModel.createModule(topicEnabledState: true, isShowAllTopicsButton: false, selectedTopicIds: topics, delegate: self)
-            navigationController?.pushViewController(viewcontroller, animated: true)
-        } catch let error {
-            print(error.localizedDescription)
-        }
-    }
-    
 }
 
 // MARK: LMFeedTaggingTextViewProtocol
@@ -311,24 +285,6 @@ extension LMFeedCreateShortVideoScreen: LMFeedTaggingTextViewProtocol {
     
     public func contentHeightChanged() {
         observeCreateButton()
-    }
-}
-
-// MARK: LMFeedTopicViewCellProtocol
-extension LMFeedCreateShortVideoScreen: LMFeedTopicViewCellProtocol {
-    public func didTapEditButton() {
-        viewModel?.didTapTopicSelection()
-    }
-    
-    public func didTapSelectTopicButton() {
-        viewModel?.didTapTopicSelection()
-    }
-}
-
-// MARK: LMFeedTopicSelectionViewProtocol
-extension LMFeedCreateShortVideoScreen: LMFeedTopicSelectionViewProtocol {
-    public func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
-        viewModel?.updateTopicFeed(with: topics)
     }
 }
 

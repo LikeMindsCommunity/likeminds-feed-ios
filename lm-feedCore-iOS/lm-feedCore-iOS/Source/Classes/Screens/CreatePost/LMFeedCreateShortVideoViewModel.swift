@@ -15,8 +15,6 @@ import PDFKit
 public protocol LMFeedCreateShortVideoViewModelProtocol: LMBaseViewControllerProtocol {
     func showVideo(video: [LMFeedMediaProtocol])
     func resetMediaView()
-    func updateTopicView(with data: LMFeedTopicView.ContentModel)
-    func navigateToTopicView(with topics: [LMFeedTopicDataModel])
 }
 
 public class LMFeedCreateShortVideoViewModel {
@@ -43,13 +41,11 @@ public class LMFeedCreateShortVideoViewModel {
     private var media: [Attachment]
     private var currentMediaSelectionType: PostCreationAttachmentType
     public let maxMedia: Int
-    private var isShowTopicFeed: Bool
     private var selectedTopics: [LMFeedTopicDataModel]
     
     init(delegate: LMFeedCreateShortVideoViewModelProtocol?) {
         currentMediaSelectionType = .none
         media = []
-        isShowTopicFeed = false
         selectedTopics = []
         maxMedia = 1 // Only one video allowed for reels
         self.delegate = delegate
@@ -130,41 +126,3 @@ public extension LMFeedCreateShortVideoViewModel {
         delegate?.showVideo(video: mediaData)
     }
 }
-
-// MARK: Topics Handling
-extension LMFeedCreateShortVideoViewModel {
-    func getTopics() {
-        delegate?.showHideLoaderView(isShow: true)
-        let request = TopicFeedRequest.builder()
-            .setEnableState(true)
-            .build()
-        
-        LMFeedClient.shared.getTopicFeed(request) { [weak self] response in
-            self?.delegate?.showHideLoaderView(isShow: false)
-            self?.isShowTopicFeed = !(response.data?.topics?.isEmpty ?? true)
-            self?.setupTopicFeed()
-        }
-    }
-    
-    func setupTopicFeed() {
-        if isShowTopicFeed {
-            let data: LMFeedTopicView.ContentModel = .init(
-                topics: selectedTopics.map({ .init(topic: $0.topicName, topicID: $0.topicID) }),
-                isSelectFlow: selectedTopics.isEmpty,
-                isEditFlow: !selectedTopics.isEmpty,
-                isSepratorShown: true
-            )
-            
-            delegate?.updateTopicView(with: data)
-        }
-    }
-    
-    func didTapTopicSelection() {
-        delegate?.navigateToTopicView(with: selectedTopics)
-    }
-    
-    func updateTopicFeed(with topics: [LMFeedTopicDataModel]) {
-        self.selectedTopics = topics
-        setupTopicFeed()
-    }
-} 
