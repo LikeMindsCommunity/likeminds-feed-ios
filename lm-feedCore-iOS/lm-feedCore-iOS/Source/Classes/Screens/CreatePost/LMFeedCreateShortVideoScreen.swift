@@ -81,9 +81,18 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         return collection
     }()
     
-    open private(set) lazy var createPostButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(title: LMStringConstants.shared.postText, style: .plain, target: self, action: #selector(didTapCreateButton))
-        button.tintColor = LMFeedAppearance.shared.colors.appTintColor
+    open private(set) lazy var createPostButton: LMFeedButton = {
+        let button = LMFeedButton.createButton(
+            with: LMStringConstants.shared.postText,
+            image: nil,
+            textColor: LMFeedAppearance.shared.colors.white,
+            textFont: LMFeedAppearance.shared.fonts.buttonFont1,
+            contentSpacing: .init(top: 8, left: 8, bottom: 8, right: 12),
+            imageSpacing: 8
+        )
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
         return button
     }()
     
@@ -152,7 +161,7 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
     // MARK: setupActions
     open override func setupActions() {
         super.setupActions()
-        navigationItem.rightBarButtonItem = createPostButton
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: createPostButton)
     }
     
     @objc
@@ -180,17 +189,12 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.tintColor = LMFeedAppearance.shared.colors.appTintColor
         
-        setNavigationTitleAndSubtitle(with: "New Reel", subtitle: nil, alignment: .leading)
+        setNavigationTitleAndSubtitle(with: LMStringConstants.shared.navtitleCreateVideo, subtitle: nil, alignment: .leading)
         
         inputTextView.setAttributedText(from: "")
         setupInitialView()
         
         viewModel?.getTopics()
-    }
-    
-    // MARK: Status Bar
-    open override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .darkContent
     }
     
     open override func viewWillDisappear(_ animated: Bool) {

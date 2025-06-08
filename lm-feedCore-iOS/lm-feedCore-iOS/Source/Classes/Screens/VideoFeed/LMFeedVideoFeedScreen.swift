@@ -35,15 +35,14 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
         return screen
     }()
     
-    private lazy var customNavBar: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .black.withAlphaComponent(0.5)
+    private lazy var customNavBar: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
+        view.backgroundColor = LMFeedAppearance.shared.colors.black.withAlphaComponent(0.5)
         return view
     }()
     
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
+    private lazy var titleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Reels"
         label.textColor = .white
         label.font = .systemFont(ofSize: 20, weight: .bold)
@@ -87,14 +86,6 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
     open override func setupViews() {
         super.setupViews()
         view.addSubview(createPostLoaderView)
-    }
-    
-    open override func setupLayouts() {
-        super.setupLayouts()
-    }
-    
-    open override func setupActions() {
-        super.setupActions()
     }
     
     open override func setupAppearance() {
@@ -154,12 +145,7 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
         return view
     }()
     
-    
-    // MARK: Status Bar
-    open override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
+
     // MARK: Child View Controller Setup
     private func addChildViewController() {
         // First add the video list screen
