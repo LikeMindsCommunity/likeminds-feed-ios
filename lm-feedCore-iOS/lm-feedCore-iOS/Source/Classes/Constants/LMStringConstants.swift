@@ -77,6 +77,7 @@ public struct LMStringConstants {
     public var noCommentSubTitleLable = "Be the first one to create a comment"
     public var inputTextPlaceholder = "Write a caption and hashtags..."
     public var navtitleCreateVideo = "New Reel"
+    public var cancelActionTitle = "Cancel"
         
     public var createPostTitle: String {
         String(format: "Create a %@", pluralizeOrCapitalize(to: postVariable, withAction: .allSmallSingular))

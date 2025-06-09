@@ -244,9 +244,6 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
             // Add video preview cell as background
             let videoCell = LMUIComponents.shared.videoPreview.init()
             videoCell.translatesAutoresizingMaskIntoConstraints = false
-            videoCell.backgroundColor = .clear
-            videoCell.contentView.backgroundColor = .clear
-            videoCell.backgroundView = nil
             videoCell.containerView.backgroundColor = .clear
             
             cell.contentView.addSubview(videoCell)
@@ -264,62 +261,35 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
                 videoCell.pauseVideo()
             }
             
-            let textCell = LMUIComponents.shared.textCell.init()
+            let textCell = LMUIComponents.shared.videoTextCell.init()
             textCell.translatesAutoresizingMaskIntoConstraints = false
-            textCell.backgroundColor = .clear
-            textCell.contentView.backgroundColor = .clear
-            textCell.backgroundView = nil
             textCell.containerView.backgroundColor = .clear
             textCell.configure(data: postData)
             
             cell.contentView.addSubview(textCell)
             NSLayoutConstraint.activate([
                 textCell.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 16),
-                textCell.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -80),
-                textCell.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -60),
-                textCell.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
+                textCell.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -40),
+                textCell.heightAnchor.constraint(greaterThanOrEqualToConstant: 100),
+                textCell.widthAnchor.constraint(equalToConstant: 300),
             ])
 
-            // Add topic cell above text cell
-            let topicCell = LMUIComponents.shared.topicCell.init()
-            topicCell.translatesAutoresizingMaskIntoConstraints = false
-            topicCell.backgroundColor = .clear
-            topicCell.contentView.backgroundColor = .clear
-            topicCell.backgroundView = nil
-            topicCell.containerView.backgroundColor = .clear
-            
-            cell.contentView.addSubview(topicCell)
-            NSLayoutConstraint.activate([
-                topicCell.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 16),
-                topicCell.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -88),
-                topicCell.bottomAnchor.constraint(equalTo: textCell.topAnchor, constant: -8),
-                topicCell.heightAnchor.constraint(equalToConstant: 40)
-            ])
-            
-            topicCell.configure(data: postData)
-
-            // Add header above topic cell
+            // Configure header
             let header = LMFeedPostHeaderView()
             header.translatesAutoresizingMaskIntoConstraints = false
-            header.backgroundColor = .clear
-            header.contentView.backgroundColor = .clear
-            header.backgroundView = nil
             header.containerBackgroundColor = .clear
             
             cell.contentView.addSubview(header)
             NSLayoutConstraint.activate([
                 header.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 16),
                 header.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -88),
-                header.bottomAnchor.constraint(equalTo: topicCell.topAnchor, constant: -8),
+                header.bottomAnchor.constraint(equalTo: textCell.topAnchor, constant: -8),
                 header.heightAnchor.constraint(equalToConstant: 60)
             ])
 
             // Add footer on the right side
             let footer = LMUIComponents.shared.videoFooterView.init()
             footer.translatesAutoresizingMaskIntoConstraints = false
-            footer.backgroundColor = .clear
-            footer.contentView.backgroundColor = .clear
-            footer.backgroundView = nil
             footer.containerBackgroundColor = .clear
             
             cell.contentView.addSubview(footer)

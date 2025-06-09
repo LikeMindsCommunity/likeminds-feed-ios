@@ -35,20 +35,12 @@ open class LMFeedPostHeaderView: LMFeedTableViewHeaderFooterView {
         }
     }
     
-    // MARK: Customization Properties
-    @IBInspectable
-    open var containerBackgroundColor: UIColor = .white {
-        didSet {
-            contentContainerView.backgroundColor = containerBackgroundColor
-        }
-    }
-    
     // MARK: UI Elements
     open private(set) lazy var contentContainerView: LMFeedView = {
         let view = LMFeedView()
         view.contentMode = .scaleToFill
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = containerBackgroundColor
+        view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
 
@@ -163,6 +155,7 @@ open class LMFeedPostHeaderView: LMFeedTableViewHeaderFooterView {
     public weak var delegate: LMFeedPostHeaderViewProtocol?
     public var userUUID: String?
     public var postID: String?
+    public var containerBackgroundColor: UIColor = LMFeedAppearance.shared.colors.white
     
     // MARK: View Hierachy
     open override func setupViews() {
@@ -272,7 +265,7 @@ extension LMFeedPostHeaderView {
         delegate?.didTapProfilePicture(having: userUUID)
     }
     
-    open func didTapMenuButton() { 
+    open func didTapMenuButton() {
         guard let postID else { return }
         delegate?.didTapPostMenuButton(for: postID)
     }

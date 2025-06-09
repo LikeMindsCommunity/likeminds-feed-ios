@@ -203,7 +203,7 @@ open class LMFeedVideoListViewModel {
                 }
             }
             
-            alert.addAction(.init(title: "Cancel", style: .default))
+        alert.addAction(.init(title: LMStringConstants.shared.cancelActionTitle , style: .default))
             
             delegate?.presentAlert(with: alert, animated: true)
         }
