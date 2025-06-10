@@ -12,14 +12,27 @@ open class LMFeedVideoTextCell: LMFeedPostBaseTextCell {
         // First add containerView to contentView
         contentView.addSubview(containerView)
         
+        // Make background transparent
+        containerView.backgroundColor = .clear
+        contentView.backgroundColor = .clear
+        backgroundColor = .clear
+        
         // Update seeMoreButton appearance
         seeMoreButton.setTitle("...See More", for: .normal)
         seeMoreButton.setTitleColor(.white, for: .normal)
+        seeMoreButton.setTitleColor(.white, for: .highlighted)
+        seeMoreButton.setTitleColor(.white, for: .selected)
         seeMoreButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         seeMoreButton.contentHorizontalAlignment = .left // Align button text to left
+        seeMoreButton.backgroundColor = .clear
+        seeMoreButton.tintColor = .white
         
         // Set text color to white for better visibility
         postText.textColor = .white
+        postText.backgroundColor = .clear
+        
+        // Configure question title
+        questionTitle.textColor = .white
         
         // Configure postText
         postText.isEditable = false
@@ -29,6 +42,7 @@ open class LMFeedVideoTextCell: LMFeedPostBaseTextCell {
         
         // Add contentStack to containerView
         containerView.addSubview(contentStack)
+        contentStack.backgroundColor = .clear
         
         // Add arranged subviews to contentStack
         contentStack.addArrangedSubview(questionTitle)
@@ -39,6 +53,16 @@ open class LMFeedVideoTextCell: LMFeedPostBaseTextCell {
         contentStack.axis = .vertical
         contentStack.spacing = 0 // Remove spacing between elements
         contentStack.alignment = .fill// Align all elements to the left
+    }
+    
+    open override func setupAppearance() {
+        super.setupAppearance()
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+        containerView.backgroundColor = .clear
+        contentStack.backgroundColor = .clear
+        questionTitle.textColor = .white
+        postText.textColor = .white
     }
     
     open override func setupLayouts() {
@@ -90,6 +114,10 @@ open class LMFeedVideoTextCell: LMFeedPostBaseTextCell {
         
         // Configure text view
         postText.textContainer.maximumNumberOfLines = initialMaxLines
+        
+        // Set text colors to white
+        questionTitle.textColor = .white
+        postText.textColor = .white
         
         // Update seeMoreButton visibility
         updateSeeMoreButtonState()

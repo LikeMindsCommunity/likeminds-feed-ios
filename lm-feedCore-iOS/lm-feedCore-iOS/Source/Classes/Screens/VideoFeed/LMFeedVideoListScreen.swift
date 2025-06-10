@@ -263,7 +263,6 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
             
             let textCell = LMUIComponents.shared.videoTextCell.init()
             textCell.translatesAutoresizingMaskIntoConstraints = false
-            textCell.containerView.backgroundColor = .clear
             textCell.configure(data: postData)
             
             cell.contentView.addSubview(textCell)
@@ -272,7 +271,7 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
                 textCell.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -40),
                 textCell.heightAnchor.constraint(greaterThanOrEqualToConstant: 100),
                 textCell.widthAnchor.constraint(equalToConstant: 300),
-            ])
+            ])  
 
             // Configure header
             let header = LMFeedPostHeaderView()
@@ -284,7 +283,7 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
                 header.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 16),
                 header.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -88),
                 header.bottomAnchor.constraint(equalTo: textCell.topAnchor, constant: -8),
-                header.heightAnchor.constraint(equalToConstant: 60)
+                header.heightAnchor.constraint(equalToConstant: 65)
             ])
 
             // Add footer on the right side
@@ -297,7 +296,7 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
                 footer.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -16),
                 footer.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -16),
                 footer.widthAnchor.constraint(equalToConstant: 60),
-                footer.heightAnchor.constraint(equalToConstant: 220)
+                footer.heightAnchor.constraint(equalToConstant: 240)
             ])
             
             // Configure header
@@ -464,7 +463,6 @@ extension LMFeedVideoListScreen: LMFeedVideoListViewModelProtocol {
     public func navigateToReportScreen(for postID: String, creatorUUID: String) {
         do {
             let viewcontroller = try LMFeedReportViewModel.createModule(creatorUUID: creatorUUID, postID: postID)
-            
             navigationController?.pushViewController(viewcontroller, animated: true)
         } catch let error {
             print(error.localizedDescription)

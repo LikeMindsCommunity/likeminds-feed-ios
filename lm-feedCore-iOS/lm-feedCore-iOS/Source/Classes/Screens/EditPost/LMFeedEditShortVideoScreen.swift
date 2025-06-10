@@ -7,8 +7,16 @@ open class LMFeedEditShortVideoScreen: LMFeedViewController {
     // MARK: UI Elements
     open private(set) lazy var containerView: LMFeedView = {
         let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = LMFeedAppearance.shared.colors.clear
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
+    }()
+    
+    open private(set) lazy var containerStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
+        stack.axis = .vertical
+        stack.alignment = .fill
+        stack.distribution = .fill
+        return stack
     }()
     
     open private(set) lazy var scrollView: UIScrollView = {
@@ -28,12 +36,6 @@ open class LMFeedEditShortVideoScreen: LMFeedViewController {
         stack.distribution = .fill
         stack.spacing = 8
         return stack
-    }()
-    
-    open private(set) lazy var headerView: LMFeedCreatePostHeaderView = {
-        let view = LMUIComponents.shared.createPostHeaderView.init().translatesAutoresizingMaskIntoConstraints()
-        view.backgroundColor = LMFeedAppearance.shared.colors.clear
-        return view
     }()
     
     open private(set) lazy var inputTextView: LMFeedTaggingTextView = {
@@ -91,10 +93,11 @@ open class LMFeedEditShortVideoScreen: LMFeedViewController {
         super.setupViews()
         
         view.addSubview(containerView)
-        containerView.addSubview(scrollView)
+        containerView.addSubview(containerStackView)
+        containerStackView.addArrangedSubview(scrollView)
         scrollView.addSubview(scrollStackView)
         
-        [headerView, inputTextView, mediaCollectionView, mediaPageControl, taggingView].forEach { subview in
+        [mediaCollectionView, inputTextView, taggingView].forEach { subview in
             scrollStackView.addArrangedSubview(subview)
         }
     }
@@ -102,25 +105,34 @@ open class LMFeedEditShortVideoScreen: LMFeedViewController {
     // MARK: setupLayouts
     open override func setupLayouts() {
         super.setupLayouts()
-        view.pinSubView(subView: containerView)
-        containerView.pinSubView(subView: scrollView)
-        scrollView.pinSubView(subView: scrollStackView)
         
-        scrollStackView.setHeightConstraint(with: 1000, priority: .defaultLow)
-        headerView.setHeightConstraint(with: 64)
+        view.safePinSubView(subView: containerView)
+        containerView.pinSubView(subView: containerStackView)
+        scrollView.pinSubView(subView: scrollStackView, padding: .init(top: 8, left: 0, bottom: -8, right: 0))
         
-        inputTextViewHeightConstraint = inputTextView.setHeightConstraint(with: 80)
-        taggingViewHeight = taggingView.setHeightConstraint(with: 0)
+        scrollStackView.setWidthConstraint(with: containerView.widthAnchor, multiplier: 1)
+        scrollStackView.setHeightConstraint(with: 700, priority: .defaultLow)
         
-        scrollView.setWidthConstraint(with: containerView.widthAnchor)
-        scrollStackView.setWidthConstraint(with: containerView.widthAnchor)
-        mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor)
+        // Update media collection view constraints
+        mediaCollectionView.setWidthConstraint(with: containerStackView.widthAnchor, multiplier: 0.9)
+        mediaCollectionView.setHeightConstraint(with: mediaCollectionView.widthAnchor, multiplier: 1.3)
+        mediaCollectionView.addConstraint(leading: (containerStackView.leadingAnchor, 20))
+        mediaCollectionView.topAnchor.constraint(equalTo: scrollStackView.topAnchor, constant: 25).isActive = true
         
-        [headerView, inputTextView, mediaCollectionView, mediaPageControl, taggingView].forEach { subView in
-            NSLayoutConstraint.activate([
-                subView.leadingAnchor.constraint(equalTo: scrollStackView.leadingAnchor, constant: 16),
-                subView.trailingAnchor.constraint(equalTo: scrollStackView.trailingAnchor, constant: -16)
-            ])
+        taggingView.addConstraint(top: (inputTextView.bottomAnchor, 0),
+                                leading: (inputTextView.leadingAnchor, 0),
+                                trailing: (inputTextView.trailingAnchor, 0))
+        
+        taggingView.bottomAnchor.constraint(lessThanOrEqualTo: scrollStackView.bottomAnchor, constant: -16).isActive = true
+        taggingViewHeight = taggingView.setHeightConstraint(with: 10)
+        
+        scrollStackView.subviews.forEach { subView in
+            if subView != mediaCollectionView {
+                NSLayoutConstraint.activate([
+                    subView.leadingAnchor.constraint(equalTo: scrollStackView.leadingAnchor, constant: 16),
+                    subView.trailingAnchor.constraint(equalTo: scrollStackView.trailingAnchor, constant: -16)
+                ])
+            }
         }
     }
     
@@ -158,6 +170,40 @@ open class LMFeedEditShortVideoScreen: LMFeedViewController {
         setupInitialView()
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.editVideoPost, subtitle: nil, alignment: .center)
         viewmodel?.getInitalData()
+        
+        // Add keyboard observers
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        mediaCollectionView.visibleCells.forEach { cell in
+            (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
+        }
+        // Remove keyboard observers
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        
+        let keyboardHeight = keyboardFrame.height
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardHeight, right: 0.0)
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+        
+        // If active text view is hidden by keyboard, scroll to it
+        if let activeTextView = inputTextView.isFirstResponder ? inputTextView : nil {
+            let rect = activeTextView.convert(activeTextView.bounds, to: scrollView)
+            scrollView.scrollRectToVisible(rect, animated: true)
+        }
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = .zero
     }
     
     @objc private func didTapBackButton() {
@@ -179,16 +225,10 @@ open class LMFeedEditShortVideoScreen: LMFeedViewController {
         present(alert, animated: true)
     }
     
-    open override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        mediaCollectionView.visibleCells.forEach { cell in
-            (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
-        }
-    }
-    
     open func setupInitialView() {
         mediaCollectionView.isHidden = true
         mediaPageControl.isHidden = true
+        taggingView.isHidden = true
     }
 }
 
@@ -281,7 +321,6 @@ extension LMFeedEditShortVideoScreen: LMFeedTaggedUserFoundProtocol {
 // MARK: LMFeedEditShortVideoViewModelProtocol
 extension LMFeedEditShortVideoScreen: LMFeedEditShortVideoViewModelProtocol {
     public func setupData(with userData: LMFeedCreatePostHeaderView.ContentModel, text: String) {
-        headerView.configure(with: userData)
         inputTextView.setAttributedText(from: text, prefix: "@")
         contentHeightChanged()
     }

@@ -74,5 +74,11 @@ public extension LMFeedConstants {
         public var upvoteFilledIcon = loadImage(with: "upvotefilled")
         
         public var addVideoPostIcon = loadImage(with: "addPostIcon")
+        
+        
+        public var heartVideoIcon = loadImage(with: "heartVideo")
+        public var heartVideoFilledIcon = loadImage(with: "heartVideoFilled")
+        public var shareVideoIcon = loadImage(with: "shareVideo")
+        public var commentVideoIcon = loadImage(with: "commentVideo")
     }
 }

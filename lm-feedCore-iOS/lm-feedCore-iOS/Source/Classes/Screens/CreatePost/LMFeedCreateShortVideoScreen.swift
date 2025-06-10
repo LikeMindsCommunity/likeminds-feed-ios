@@ -185,6 +185,10 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         
         inputTextView.setAttributedText(from: "")
         setupInitialView()
+        
+        // Add keyboard observers
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
@@ -192,6 +196,29 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         videoPreview.visibleCells.forEach { cell in
             (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
         }
+        // Remove keyboard observers
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        
+        let keyboardHeight = keyboardFrame.height
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardHeight, right: 0.0)
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+        
+        // If active text view is hidden by keyboard, scroll to it
+        if let activeTextView = inputTextView.isFirstResponder ? inputTextView : nil {
+            let rect = activeTextView.convert(activeTextView.bounds, to: scrollView)
+            scrollView.scrollRectToVisible(rect, animated: true)
+        }
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = .zero
     }
     
     open func setupInitialView() {
@@ -201,7 +228,7 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
     }
     
     open func observeCreateButton() {
-        createPostButton.isEnabled = !videoAttachmentData.isEmpty || !inputTextView.getText().isEmpty
+        createPostButton.isEnabled = !videoAttachmentData.isEmpty
     }
 }
 

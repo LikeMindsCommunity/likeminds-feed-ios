@@ -119,6 +119,15 @@ open class LMFeedVideoPostFooterView: LMFeedBasePostFooterView {
         [likeButton, commentButton, shareButton, moreButton].forEach { button in
             button.tintColor = LMFeedAppearance.shared.colors.white
         }
+        
+        // Set custom icons for buttons
+        likeButton.setImage(LMFeedConstants.shared.images.heartVideoIcon, for: .normal)
+        likeButton.setImage(LMFeedConstants.shared.images.heartVideoFilledIcon, for: .selected)
+        
+        commentButton.setImage(LMFeedConstants.shared.images.commentVideoIcon, for: .normal)
+        
+        shareButton.setImage(LMFeedConstants.shared.images.shareVideoIcon, for: .normal)
+        
         likeTextButton.setTitleColor(LMFeedAppearance.shared.colors.white, for: .normal)
         commentButton.setTitleColor(LMFeedAppearance.shared.colors.white, for: .normal)
         commentTextButton.setTitleColor(LMFeedAppearance.shared.colors.white, for: .normal)
@@ -126,15 +135,14 @@ open class LMFeedVideoPostFooterView: LMFeedBasePostFooterView {
     
     // MARK: Helper Methods
     open override func updateLikeText(for likeCount: Int) {
-        likeTextButton.isHidden = likeCount == .zero
-
-        likeTextButton.setTitle(formattedText(for: likeCount), for: .normal)
+        let likeCountText = likeCount == 0 ? "0" : formattedText(for: likeCount)
+        likeTextButton.setTitle(likeCountText, for: .normal)
     }
     
     open override func updateCommentText(for commentCount: Int) {
         commentButton.setTitle("", for: .normal)
-        commentTextButton.isHidden = commentCount == .zero
-        commentTextButton.setTitle(formattedText(for: commentCount), for: .normal)
+        let commentCountText = commentCount == 0 ? "0" : formattedText(for: commentCount)
+        commentTextButton.setTitle(commentCountText, for: .normal)
     }
     
     open override func configure(with data: ContentModel, topResponse: LMFeedCommentContentModel?, postID: String, delegate: LMFeedPostFooterViewProtocol, orientation: LMFeedPostFooterOrientation = .vertical) {

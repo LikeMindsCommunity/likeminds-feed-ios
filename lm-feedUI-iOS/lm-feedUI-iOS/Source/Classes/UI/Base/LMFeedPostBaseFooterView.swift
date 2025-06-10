@@ -306,7 +306,7 @@ open class LMFeedBasePostFooterView: LMFeedTableViewHeaderFooterView {
         actionStackView.alignment = .center
         
         // Update button visibility based on orientation
-        commentTextButton.isHidden = orientation == .vertical
+        commentTextButton.isHidden = orientation == .horizontal
         commentButton.setTitle(orientation == .vertical ? commentText : "", for: .normal)
         
         // Update button alignments

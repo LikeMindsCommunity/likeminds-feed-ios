@@ -53,6 +53,11 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
     
     public func insertComment(comment: LMFeedCommentContentModel, index: Int) {
         commentsData.insert(comment, at: index)
+//        commentTableView.insertSections(.init(integer: index), with: .none)
+        noCommentContainerView.isHidden = true
+        commentTableView.isHidden = false
+            
+            // Insert the new section
         commentTableView.insertSections(.init(integer: index), with: .none)
     }
     
@@ -318,6 +323,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
     private var isLoadingMore = false
     private var hasMoreData = true
     private var taggingViewHeightConstraint: NSLayoutConstraint?
+    private var inputTextViewBottomConstraint: NSLayoutConstraint?
     
     // MARK: Initialization
     public init(postID: String, viewModel: LMFeedPostDetailViewModel) {
@@ -438,7 +444,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
             
             stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
-            stackView.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -16),
             
             inputTextView.topAnchor.constraint(equalTo: stackView.topAnchor),
             inputTextView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
@@ -455,6 +461,9 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         
         taggingViewHeightConstraint = taggingView.heightAnchor.constraint(equalToConstant: 0)
         taggingViewHeightConstraint?.isActive = true
+        
+        inputTextViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        inputTextViewBottomConstraint?.isActive = true
     }
     
     open override func setupActions() {
@@ -470,6 +479,33 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         view.backgroundColor = .clear
         containerView.backgroundColor = LMFeedAppearance.shared.colors.white
         commentTableView.backgroundColor = LMFeedAppearance.shared.colors.backgroundColor
+    }
+    
+    open override func setupObservers() {
+        super.setupObservers()
+        
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc
+    open func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            inputTextViewBottomConstraint?.constant = -keyboardSize.size.height
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    @objc
+    open func keyboardWillHide(notification: NSNotification) {
+        inputTextViewBottomConstraint?.constant = .zero
+        containerView.layoutIfNeeded()
     }
     
     // MARK: Action Methods

@@ -21,24 +21,28 @@ class ViewController: LMFeedViewController{
         let textField = UITextField()
         textField.placeholder = "API Key"
         textField.borderStyle = .roundedRect
+        textField.returnKeyType = .next
         return textField
     }()
     private let userIdField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "User ID"
         textField.borderStyle = .roundedRect
+        textField.returnKeyType = .next
         return textField
     }()
     private let userNameField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Username"
         textField.borderStyle = .roundedRect
+        textField.returnKeyType = .next
         return textField
     }()
     private let postIdField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Post IDs"
         textField.borderStyle = .roundedRect
+        textField.returnKeyType = .done
         return textField
     }()
     private let loginButton: UIButton = {
@@ -54,6 +58,7 @@ class ViewController: LMFeedViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupKeyboardDismissal()
         isSavedData()
     }
     // MARK: - Setup UI
@@ -72,6 +77,20 @@ class ViewController: LMFeedViewController{
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
         loginButton.addTarget(self, action: #selector(loginButtonClicked(_:)), for: .touchUpInside)
+    }
+    private func setupKeyboardDismissal() {
+        // Add tap gesture to dismiss keyboard
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+        
+        // Set text field delegates
+        apiKeyField.delegate = self
+        userIdField.delegate = self
+        userNameField.delegate = self
+        postIdField.delegate = self
+    }
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
     // MARK: - Actions
     @objc func loginButtonClicked(_ sender: UIButton) {
@@ -133,5 +152,24 @@ class ViewController: LMFeedViewController{
         )
         alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
         present(alert, animated: true)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension ViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        switch textField {
+        case apiKeyField:
+            userIdField.becomeFirstResponder()
+        case userIdField:
+            userNameField.becomeFirstResponder()
+        case userNameField:
+            postIdField.becomeFirstResponder()
+        case postIdField:
+            textField.resignFirstResponder()
+        default:
+            textField.resignFirstResponder()
+        }
+        return true
     }
 }
