@@ -71,8 +71,6 @@ public struct LMStringConstants {
     public var addPoll = "Add Poll"
     public var newVideoPost = "New post"
     public var editVideoPost = "Edit Reel"
-    public var videoListEndPageTitle = "You're All Caught Up"
-    public var videoListEndPageButtonTitle = "View older posts"
     public var noCommentTitleLable = "No Comments Found"
     public var noCommentSubTitleLable = "Be the first one to create a comment"
     public var inputTextPlaceholder = "Write a caption and hashtags..."

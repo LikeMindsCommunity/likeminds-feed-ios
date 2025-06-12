@@ -37,6 +37,7 @@ public struct Components {
     
     // MARK: Report Screem
     public var reportScreen: LMFeedReportScreen.Type = LMFeedReportScreen.self
+    public var videoReportScreen : LMFeedVideoReportScreen.Type = LMFeedVideoReportScreen.self
     
     // MARK: Create Poll
     public var createPollScreen: LMFeedCreatePollScreen.Type = LMFeedCreatePollScreen.self

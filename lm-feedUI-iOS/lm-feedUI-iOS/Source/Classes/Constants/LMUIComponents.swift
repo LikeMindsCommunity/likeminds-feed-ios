@@ -90,4 +90,5 @@ public struct LMUIComponents {
     
     public var videoFooterView : LMFeedVideoPostFooterView.Type = LMFeedVideoPostFooterView.self
     public var videoTextCell : LMFeedVideoTextCell.Type = LMFeedVideoTextCell.self
+    public var videoListEndPage: LMFeedVideoListEndPage.Type = LMFeedVideoListEndPage.self
 }

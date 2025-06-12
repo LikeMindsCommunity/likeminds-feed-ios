@@ -72,7 +72,7 @@ public class LMFeedCreateShortVideoViewModel {
             attachments.append(.init(url: medium.url, data: medium.data, fileName: medium.url.lastPathComponent, awsFilePath: filePath, contentType: medium.mediaType, width: medium.width, height: medium.height))
         }
         
-        LMFeedCreatePostOperation.shared.createPost(with: caption, heading: nil, topics: selectedTopics.map({ $0.topicID }), files: attachments, linkPreview: nil, poll: nil, meta: nil)
+        LMFeedCreatePostOperation.shared.createPost(with: caption.isEmpty ? "" : caption, heading: nil, topics: selectedTopics.map({ $0.topicID }), files: attachments, linkPreview: nil, poll: nil, meta: nil)
         delegate?.popViewController(animated: true)
     }
 }

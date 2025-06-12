@@ -264,14 +264,15 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
             let textCell = LMUIComponents.shared.videoTextCell.init()
             textCell.translatesAutoresizingMaskIntoConstraints = false
             textCell.configure(data: postData)
+            textCell.heightDelegate = self
             
             cell.contentView.addSubview(textCell)
             NSLayoutConstraint.activate([
                 textCell.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 16),
                 textCell.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -40),
-                textCell.heightAnchor.constraint(greaterThanOrEqualToConstant: 100),
                 textCell.widthAnchor.constraint(equalToConstant: 300),
-            ])  
+                textCell.heightAnchor.constraint(equalToConstant: 80)
+            ])
 
             // Configure header
             let header = LMFeedPostHeaderView()
@@ -283,10 +284,20 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
                 header.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 16),
                 header.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -88),
                 header.bottomAnchor.constraint(equalTo: textCell.topAnchor, constant: -8),
-                header.heightAnchor.constraint(equalToConstant: 65)
+                header.heightAnchor.constraint(equalToConstant: 70)
             ])
-
-            // Add footer on the right side
+            
+            // Store header reference in cell for later updates
+            cell.tag = indexPath.item
+            objc_setAssociatedObject(cell, &AssociatedKeys.headerKey, header, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            
+            // Configure header
+            header.configure(with: postData.headerData, postID: postData.postID, userUUID: postData.userUUID, delegate: self)
+            header.authorNameLabel.textColor = .white
+            header.subTitleLabel.textColor = .white
+            header.menuButton.isHidden = true
+            
+            // Configure footer
             let footer = LMUIComponents.shared.videoFooterView.init()
             footer.translatesAutoresizingMaskIntoConstraints = false
             footer.containerBackgroundColor = .clear
@@ -299,13 +310,6 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
                 footer.heightAnchor.constraint(equalToConstant: 240)
             ])
             
-            // Configure header
-            header.configure(with: postData.headerData, postID: postData.postID, userUUID: postData.userUUID, delegate: self)
-            header.authorNameLabel.textColor = .white
-            header.subTitleLabel.textColor = .white
-            header.menuButton.isHidden = true
-            
-            // Configure footer
             footer.configure(with: postData.footerData, topResponse: postData.topResponse, postID: postData.postID, delegate: self, orientation: .vertical)
         }
         
@@ -315,46 +319,11 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
     private func configureCaughtUpCell(_ cell: UICollectionViewCell) {
         cell.backgroundColor = .white
         
-        let caughtUpView = UIView()
+        let caughtUpView = LMUIComponents.shared.videoListEndPage.init()
         caughtUpView.translatesAutoresizingMaskIntoConstraints = false
-        caughtUpView.backgroundColor = .white
-        
-        // Add checkmark icon in circle
-        let checkmarkImageView = UIImageView()
-        checkmarkImageView.translatesAutoresizingMaskIntoConstraints = false
-        checkmarkImageView.contentMode = .scaleAspectFit
-        checkmarkImageView.tintColor = .systemGreen
-        
-        // Create circle background for checkmark
-        let circleView = UIView()
-        circleView.translatesAutoresizingMaskIntoConstraints = false
-        circleView.backgroundColor = .systemGreen.withAlphaComponent(0.1)
-        circleView.layer.cornerRadius = 30 // Will be set to half of width/height
-        
-        // Configure checkmark image
-        if let checkmarkImage = UIImage(systemName: "checkmark.circle.fill") {
-            checkmarkImageView.image = checkmarkImage
+        caughtUpView.onViewOldPostsTapped = { [weak self] in
+            self?.didTapViewOldPosts()
         }
-        
-        let messageLabel = UILabel()
-        messageLabel.translatesAutoresizingMaskIntoConstraints = false
-        messageLabel.text = LMStringConstants.shared.videoListEndPageTitle
-        messageLabel.textColor = .black
-        messageLabel.font = .systemFont(ofSize: 18, weight: .medium)
-        messageLabel.textAlignment = .center
-        
-        let viewOldPostsButton = UIButton(type: .system)
-        viewOldPostsButton.translatesAutoresizingMaskIntoConstraints = false
-        viewOldPostsButton.setTitle(LMStringConstants.shared.videoListEndPageButtonTitle, for: .normal)
-        viewOldPostsButton.setTitleColor(.systemBlue, for: .normal)
-        viewOldPostsButton.titleLabel?.font = .systemFont(ofSize: 16)
-        viewOldPostsButton.backgroundColor = .clear
-        viewOldPostsButton.addTarget(self, action: #selector(didTapViewOldPosts), for: .touchUpInside)
-        
-        caughtUpView.addSubview(circleView)
-        circleView.addSubview(checkmarkImageView)
-        caughtUpView.addSubview(messageLabel)
-        caughtUpView.addSubview(viewOldPostsButton)
         
         cell.contentView.addSubview(caughtUpView)
         
@@ -362,27 +331,7 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
             caughtUpView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
             caughtUpView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
             caughtUpView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
-            caughtUpView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor),
-            
-            // Circle view constraints
-            circleView.centerXAnchor.constraint(equalTo: caughtUpView.centerXAnchor),
-            circleView.centerYAnchor.constraint(equalTo: caughtUpView.centerYAnchor, constant: -60),
-            circleView.widthAnchor.constraint(equalToConstant: 60),
-            circleView.heightAnchor.constraint(equalToConstant: 60),
-            
-            // Checkmark image constraints
-            checkmarkImageView.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
-            checkmarkImageView.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
-            checkmarkImageView.widthAnchor.constraint(equalToConstant: 40),
-            checkmarkImageView.heightAnchor.constraint(equalToConstant: 40),
-            
-            messageLabel.centerXAnchor.constraint(equalTo: caughtUpView.centerXAnchor),
-            messageLabel.topAnchor.constraint(equalTo: circleView.bottomAnchor, constant: 16),
-            
-            viewOldPostsButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 16),
-            viewOldPostsButton.centerXAnchor.constraint(equalTo: caughtUpView.centerXAnchor),
-            viewOldPostsButton.widthAnchor.constraint(equalToConstant: 150),
-            viewOldPostsButton.heightAnchor.constraint(equalToConstant: 40)
+            caughtUpView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
         ])
     }
     
@@ -462,8 +411,10 @@ extension LMFeedVideoListScreen: LMFeedVideoListViewModelProtocol {
     
     public func navigateToReportScreen(for postID: String, creatorUUID: String) {
         do {
-            let viewcontroller = try LMFeedReportViewModel.createModule(creatorUUID: creatorUUID, postID: postID)
-            navigationController?.pushViewController(viewcontroller, animated: true)
+            let videoReportScreen = Components.shared.videoReportScreen.init()
+            let viewmodel = LMFeedVideoReportViewModel(delegate: videoReportScreen, postID: postID, commentID: nil, replyCommentID: nil, creatorUUID: creatorUUID)
+            videoReportScreen.viewmodel = viewmodel
+            navigationController?.pushViewController(videoReportScreen, animated: true)
         } catch let error {
             print(error.localizedDescription)
         }
@@ -534,6 +485,58 @@ extension LMFeedVideoListScreen: LMFeedPostHeaderViewProtocol, LMFeedVideoFooter
     public func didTapShareButton(for postID: String) {
         LMFeedShareUtility.sharePost(from: self, postID: postID)
     }
-    
-    
 }
+
+// Add at the top of the file after imports
+private struct AssociatedKeys {
+    static var headerKey = "headerKey"
+}
+
+// Add extension for LMFeedVideoTextCellHeightDelegate
+extension LMFeedVideoListScreen: LMFeedVideoTextCellHeightDelegate {
+    public func videoTextCell(_ cell: LMFeedVideoTextCell, didChangeHeight height: CGFloat) {
+        // Find the collection view cell containing this text cell
+        guard let collectionCell = cell.superview?.superview as? UICollectionViewCell else { return }
+        
+        // Get the header from the associated object
+        guard let header = objc_getAssociatedObject(collectionCell, &AssociatedKeys.headerKey) as? LMFeedPostHeaderView else { return }
+        
+        // First, update the text cell's height constraint
+        if let heightConstraint = cell.constraints.first(where: { $0.firstAttribute == .height }) {
+            heightConstraint.constant = height
+        }
+        
+        // Force layout update for the text cell
+        cell.layoutIfNeeded()
+        
+        // Now update the header's position
+        UIView.animate(withDuration: 0.3) {
+            // Remove existing header constraints
+            header.removeFromSuperview()
+            collectionCell.contentView.addSubview(header)
+            
+            // Add new constraints based on expanded state
+            if cell.expandedState {
+                // Expanded state - header moves up
+                NSLayoutConstraint.activate([
+                    header.leadingAnchor.constraint(equalTo: collectionCell.contentView.leadingAnchor, constant: 16),
+                    header.trailingAnchor.constraint(equalTo: collectionCell.contentView.trailingAnchor, constant: -88),
+                    header.bottomAnchor.constraint(equalTo: cell.topAnchor, constant: -height+80),
+                    header.heightAnchor.constraint(equalToConstant: 70)
+                ])
+            } else {
+                // Collapsed state - restore original position
+                NSLayoutConstraint.activate([
+                    header.leadingAnchor.constraint(equalTo: collectionCell.contentView.leadingAnchor, constant: 16),
+                    header.trailingAnchor.constraint(equalTo: collectionCell.contentView.trailingAnchor, constant: -88),
+                    header.bottomAnchor.constraint(equalTo: cell.topAnchor, constant: -8),
+                    header.heightAnchor.constraint(equalToConstant: 70)
+                ])
+            }
+            
+            // Force layout update for the collection cell
+            collectionCell.layoutIfNeeded()
+        }
+    }
+}
+
