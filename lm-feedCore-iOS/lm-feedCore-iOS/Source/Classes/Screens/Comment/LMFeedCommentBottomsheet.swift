@@ -155,21 +155,21 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
     }
     
     // MARK: UI Elements
-    private lazy var contentView: LMFeedView = {
+    open private(set) lazy var contentView: LMFeedView = {
         let view = LMFeedView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
         return view
     }()
     
-    private lazy var headerView: LMFeedView = {
+    open private(set) lazy var headerView: LMFeedView = {
         let view = LMFeedView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
-    private lazy var dragHandlerView: LMFeedView = {
+    open private(set) lazy var dragHandlerView: LMFeedView = {
         let view = LMFeedView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = LMFeedAppearance.shared.colors.gray155
@@ -177,7 +177,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         return view
     }()
     
-    private lazy var headerTitleLabel: LMFeedLabel = {
+    open private(set) lazy var headerTitleLabel: LMFeedLabel = {
         let label = LMFeedLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Comments"
@@ -187,7 +187,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         return label
     }()
     
-    private lazy var commentTableView: LMFeedTableView = {
+    open private(set) lazy var commentTableView: LMFeedTableView = {
         let table = LMFeedTableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.separatorStyle = .none
@@ -204,14 +204,14 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         return table
     }()
     
-    private lazy var containerView: LMFeedView = {
+    open private(set) lazy var containerView: LMFeedView = {
         let view = LMFeedView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
-    private lazy var inputTextView: LMFeedTaggingTextView = {
+    open private(set) lazy var inputTextView: LMFeedTaggingTextView = {
         let textView = LMFeedTaggingTextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isEditable = true
@@ -225,7 +225,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         return textView
     }()
     
-    private lazy var sendButton: LMFeedButton = {
+    open private(set) lazy var sendButton: LMFeedButton = {
         let button = LMFeedButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(nil, for: .normal)
@@ -235,7 +235,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         return button
     }()
     
-    private lazy var stackView: LMFeedStackView = {
+    open private(set) lazy var stackView: LMFeedStackView = {
         let stack = LMFeedStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
@@ -245,14 +245,14 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         return stack
     }()
     
-    private lazy var replyView: LMFeedView = {
+    open private(set) lazy var replyView: LMFeedView = {
         let view = LMFeedView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
 
-    private lazy var replyNameLabel: LMFeedLabel = {
+    open private(set) lazy var replyNameLabel: LMFeedLabel = {
         let label = LMFeedLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Replying To XYZ"
@@ -261,7 +261,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         return label
     }()
 
-    private lazy var removeReplyButton: LMFeedButton = {
+    open private(set) lazy var removeReplyButton: LMFeedButton = {
         let button = LMFeedButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(nil, for: .normal)
@@ -270,21 +270,21 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         return button
     }()
 
-    private lazy var replySepratorView: LMFeedView = {
+    open private(set) lazy var replySepratorView: LMFeedView = {
         let view = LMFeedView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
         return view
     }()
     
-    private lazy var noCommentContainerView: LMFeedView = {
+    open private(set) lazy var noCommentContainerView: LMFeedView = {
         let view = LMFeedView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
-    private lazy var noCommentTitleLabel: LMFeedLabel = {
+    open private(set) lazy var noCommentTitleLabel: LMFeedLabel = {
         let label = LMFeedLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = LMStringConstants.shared.noCommentTitleLable
@@ -294,7 +294,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         return label
     }()
     
-    private lazy var noCommentSubtitleLabel: LMFeedLabel = {
+    open private(set) lazy var noCommentSubtitleLabel: LMFeedLabel = {
         let label = LMFeedLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = LMStringConstants.shared.noCommentSubTitleLable
@@ -304,7 +304,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         return label
     }()
     
-    private lazy var taggingView: LMFeedTaggingListView = {
+    open private(set) lazy var taggingView: LMFeedTaggingListView = {
         let view = LMFeedTaggingListViewModel.createModule(delegate: self)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
@@ -313,17 +313,17 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
     }()
     
     // MARK: Data Variables
-    private var postID: String
-    private var commentsData: [LMFeedCommentContentModel] = []
-    private var isCommentingEnabled: Bool = LocalPreferences.memberState?.memberRights?.contains(where: { $0.state == .commentOrReplyOnPost }) ?? false
-    private var inputTextViewHeightConstraint: NSLayoutConstraint?
-    private var textInputMaximumHeight: CGFloat = 100
-    private var viewModel: LMFeedPostDetailViewModel
-    private var isInitialLoad = true
-    private var isLoadingMore = false
-    private var hasMoreData = true
-    private var taggingViewHeightConstraint: NSLayoutConstraint?
-    private var inputTextViewBottomConstraint: NSLayoutConstraint?
+    open private(set) var postID: String
+    open private(set) var commentsData: [LMFeedCommentContentModel] = []
+    open private(set) var isCommentingEnabled: Bool = LocalPreferences.memberState?.memberRights?.contains(where: { $0.state == .commentOrReplyOnPost }) ?? false
+    open private(set) var inputTextViewHeightConstraint: NSLayoutConstraint?
+    open private(set) var textInputMaximumHeight: CGFloat = 100
+    open private(set) var viewModel: LMFeedPostDetailViewModel
+    open private(set) var isInitialLoad = true
+    open private(set) var isLoadingMore = false
+    open private(set) var hasMoreData = true
+    open private(set) var taggingViewHeightConstraint: NSLayoutConstraint?
+    open private(set) var inputTextViewBottomConstraint: NSLayoutConstraint?
     
     // MARK: Initialization
     public init(postID: String, viewModel: LMFeedPostDetailViewModel) {
@@ -342,7 +342,6 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         super.viewDidLoad()
         setupTableView()
         replyView.isHidden = true
-        // Only call getPost if it's initial load
         updateCommentStatus(
             isEnabled: LocalPreferences.memberState?.memberRights?.contains(
                 where: { $0.state == .commentOrReplyOnPost }) ?? false)
@@ -352,7 +351,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         }
     }
     
-    private func setupTableView() {
+    open func setupTableView() {
         commentTableView.register(LMUIComponents.shared.replyView)
         commentTableView.registerHeaderFooter(LMUIComponents.shared.loadMoreReplies)
         commentTableView.registerHeaderFooter(LMUIComponents.shared.commentView)
@@ -509,13 +508,15 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
     }
     
     // MARK: Action Methods
-    @objc private func didTapReplyCrossButton() {
+    @objc
+    open func didTapReplyCrossButton() {
         replyView.isHidden = true
         replySepratorView.isHidden = true
         viewModel.replyToComment(having: nil)
     }
 
-    @objc private func didTapSendCommentButton() {
+    @objc
+    open func didTapSendCommentButton() {
         let commentText = inputTextView.getText()
         viewModel.sendButtonTapped(with: commentText)
         inputTextView.resignFirstResponder()

@@ -54,7 +54,7 @@ public struct Components {
     
     //MARK: Create Reel Video
     public var createShortVideoScreen: LMFeedCreateShortVideoScreen.Type = LMFeedCreateShortVideoScreen.self
-    
+    public var likeBottomSheet : LMFeedLikeBottomsheet.Type  = LMFeedLikeBottomsheet.self
     public var feedVideoFeedScreen : LMFeedVideoFeedScreen.Type = LMFeedVideoFeedScreen.self
     public var commentBottomSheet : LMFeedCommentBottomsheet.Type = LMFeedCommentBottomsheet.self
     public var editShortVideoScreen : LMFeedEditShortVideoScreen.Type = LMFeedEditShortVideoScreen.self

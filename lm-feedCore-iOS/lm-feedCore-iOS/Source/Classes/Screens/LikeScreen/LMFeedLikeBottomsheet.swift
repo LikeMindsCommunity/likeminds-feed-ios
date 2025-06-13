@@ -3,14 +3,14 @@ import LikeMindsFeedUI
 
 open class LMFeedLikeBottomsheet: LMFeedViewController {
     // MARK: UI Elements
-    private lazy var contentView: LMFeedView = {
+    open private(set) lazy var contentView: LMFeedView = {
         let view = LMFeedView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
         return view
     }()
     
-    private lazy var containerView: LMFeedView = {
+    open private(set) lazy var containerView: LMFeedView = {
         let view = LMFeedView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = LMFeedAppearance.shared.colors.white
@@ -19,14 +19,14 @@ open class LMFeedLikeBottomsheet: LMFeedViewController {
         return view
     }()
     
-    private lazy var headerView: LMFeedView = {
+    open private(set) lazy var headerView: LMFeedView = {
         let view = LMFeedView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
-    private lazy var dragHandlerView: LMFeedView = {
+    open private(set) lazy var dragHandlerView: LMFeedView = {
         let view = LMFeedView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = LMFeedAppearance.shared.colors.gray155
@@ -34,7 +34,7 @@ open class LMFeedLikeBottomsheet: LMFeedViewController {
         return view
     }()
     
-    private lazy var headerTitleLabel: LMFeedLabel = {
+    open private(set) lazy var headerTitleLabel: LMFeedLabel = {
         let label = LMFeedLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Liked"
@@ -44,8 +44,7 @@ open class LMFeedLikeBottomsheet: LMFeedViewController {
         return label
     }()
     
-    
-    private lazy var memberListView: LMFeedTableView = {
+    open private(set) lazy var memberListView: LMFeedTableView = {
         let table = LMFeedTableView().translatesAutoresizingMaskIntoConstraints()
         table.dataSource = self
         table.delegate = self
@@ -59,15 +58,15 @@ open class LMFeedLikeBottomsheet: LMFeedViewController {
     }()
     
     // MARK: Data Variables
-    private var postID: String
-    private var commentID: String?
-    private var viewModel: LMFeedLikeViewModel!
-    private var userData: [LMFeedMemberItem.ContentModel] = []
-    private var cellHeight: CGFloat = 72
-    private var totalLikes: Int = 0
+    open private(set) var postID: String
+    open private(set) var commentID: String?
+    open private(set) var viewModel: LMFeedLikeViewModel!
+    open private(set) var userData: [LMFeedMemberItem.ContentModel] = []
+    open private(set) var cellHeight: CGFloat = 72
+    open private(set) var totalLikes: Int = 0
     
     // MARK: Initialization
-    public init(postID: String, commentID: String? = nil) {
+    public required init(postID: String, commentID: String? = nil) {
         self.postID = postID
         self.commentID = commentID
         super.init(nibName: nil, bundle: nil)
@@ -155,7 +154,8 @@ open class LMFeedLikeBottomsheet: LMFeedViewController {
     }
     
     // MARK: Action Methods
-    @objc private func didTapDismissButton() {
+    @objc
+    open func didTapDismissButton() {
         dismiss(animated: true)
     }
     

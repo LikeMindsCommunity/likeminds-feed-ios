@@ -83,7 +83,7 @@ open class LMFeedEditShortVideoScreen: LMFeedViewController {
     
     // MARK: Data Variables
     public var viewmodel: LMFeedEditShortVideoViewModel?
-    public var mediaCells: [LMFeedVideoCollectionCell.ContentModel] = []
+    public  var mediaCells: [LMFeedVideoCollectionCell.ContentModel] = []
     public var inputTextViewHeightConstraint: NSLayoutConstraint?
     public var textInputMaximumHeight: CGFloat = 150
     public var taggingViewHeight: NSLayoutConstraint?
@@ -158,35 +158,47 @@ open class LMFeedEditShortVideoScreen: LMFeedViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Configure navigation bar
+        setupNavigationBar()
+        setupInitialView()
+        setupKeyboardObservers()
+        viewmodel?.getInitalData()
+    }
+    
+    open override func setupNavigationBar() {
         navigationController?.setNavigationBarHidden(false, animated: false)
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         
-        // Add custom back button
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(didTapBackButton))
         navigationItem.leftBarButtonItem = backButton
         
-        setupInitialView()
         setNavigationTitleAndSubtitle(with: LMStringConstants.shared.editVideoPost, subtitle: nil, alignment: .center)
-        viewmodel?.getInitalData()
-        
-        // Add keyboard observers
+    }
+    
+    open func setupKeyboardObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        pauseAllVideos()
+        removeKeyboardObservers()
+    }
+    
+    open func pauseAllVideos() {
         mediaCollectionView.visibleCells.forEach { cell in
             (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
         }
-        // Remove keyboard observers
+    }
+    
+    open func removeKeyboardObservers() {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    @objc private func keyboardWillShow(notification: NSNotification) {
+    @objc
+    open func keyboardWillShow(notification: NSNotification) {
         guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         
         let keyboardHeight = keyboardFrame.height
@@ -194,23 +206,24 @@ open class LMFeedEditShortVideoScreen: LMFeedViewController {
         scrollView.contentInset = contentInsets
         scrollView.scrollIndicatorInsets = contentInsets
         
-        // If active text view is hidden by keyboard, scroll to it
         if let activeTextView = inputTextView.isFirstResponder ? inputTextView : nil {
             let rect = activeTextView.convert(activeTextView.bounds, to: scrollView)
             scrollView.scrollRectToVisible(rect, animated: true)
         }
     }
     
-    @objc private func keyboardWillHide(notification: NSNotification) {
+    @objc
+    open func keyboardWillHide(notification: NSNotification) {
         scrollView.contentInset = .zero
         scrollView.scrollIndicatorInsets = .zero
     }
     
-    @objc private func didTapBackButton() {
+    @objc
+    open func didTapBackButton() {
         showDiscardAlert()
     }
     
-    private func showDiscardAlert() {
+    open func showDiscardAlert() {
         let alert = UIAlertController(title: "\(LMStringConstants.shared.discardEditPost)?", message: LMStringConstants.shared.discardEditPostMessage, preferredStyle: .alert)
         
         let discardAction = UIAlertAction(title: "Discard", style: .destructive) { [weak self] _ in

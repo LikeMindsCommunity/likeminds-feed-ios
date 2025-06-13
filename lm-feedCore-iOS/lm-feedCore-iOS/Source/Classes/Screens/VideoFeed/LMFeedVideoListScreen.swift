@@ -27,11 +27,12 @@ open class LMFeedVideoListScreen: LMFeedViewController {
     public weak var delegate: LMFeedPostListVCFromProtocol?
     
     // MARK: Data Variables
-    public var data: [LMFeedPostContentModel] = [] {
+    open private(set) var data: [LMFeedPostContentModel] = [] {
         didSet {
             print(data.count)
         }
     }
+    
     // MARK: Lifecycle Methods
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,8 +63,7 @@ open class LMFeedVideoListScreen: LMFeedViewController {
         }
     }
     
-    public func updatePostList(with post: [LMFeedPostContentModel], isInitialPage: Bool) {
-        
+    open func updatePostList(with post: [LMFeedPostContentModel], isInitialPage: Bool) {
         if isInitialPage {
             data.removeAll(keepingCapacity: true)
         }
@@ -90,8 +90,7 @@ open class LMFeedVideoListScreen: LMFeedViewController {
         delegate?.onPostDataFetched(isEmpty: data.isEmpty)
     }
     
-    
-    public func updatePost(with post: LMFeedPostContentModel, onlyHeader: Bool, onlyFooter: Bool) {
+    open func updatePost(with post: LMFeedPostContentModel, onlyHeader: Bool, onlyFooter: Bool) {
         guard let index = data.firstIndex(where: { $0.postID == post.postID }) else { return }
         
         data[index] = post
@@ -156,7 +155,7 @@ open class LMFeedVideoListScreen: LMFeedViewController {
     }
     
     // Add this method to handle video playback
-    private func handleVideoPlayback() {
+    open func handleVideoPlayback() {
         // Get the current visible cell
         let visibleRect = CGRect(origin: videoCollectionView.contentOffset, size: videoCollectionView.bounds.size)
         let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
@@ -316,7 +315,7 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
         return cell
     }
     
-    private func configureCaughtUpCell(_ cell: UICollectionViewCell) {
+    open func configureCaughtUpCell(_ cell: UICollectionViewCell) {
         cell.backgroundColor = .white
         
         let caughtUpView = LMUIComponents.shared.videoListEndPage.init()
@@ -335,7 +334,7 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
         ])
     }
     
-    @objc private func didTapViewOldPosts() {
+    @objc open func didTapViewOldPosts() {
         // Clear existing posts
         data.removeAll()
         videoCollectionView.reloadData()
@@ -399,6 +398,7 @@ extension LMFeedVideoListScreen: LMFeedVideoListViewModelProtocol {
     public override func presentAlert(with alert: UIAlertController, animated: Bool) {
         present(alert, animated: animated)
     }
+    
     public func removePost(with postID: String) {
         guard let index = data.firstIndex(where: { $0.postID == postID }) else { return }
         
@@ -438,7 +438,6 @@ extension LMFeedVideoListScreen: LMFeedPostHeaderViewProtocol, LMFeedVideoFooter
         viewModel?.showMenu(for: postID)
     }
     
-    
     public func didTapPost(postID: String) {
     
     }
@@ -450,7 +449,6 @@ extension LMFeedVideoListScreen: LMFeedPostHeaderViewProtocol, LMFeedVideoFooter
     public func didTapPostMenuButton(for postID: String) {
        //
     }
-    
     
     public func didTapSaveButton(for postID: String) {
         viewModel?.savePost(for: postID)
@@ -465,12 +463,9 @@ extension LMFeedVideoListScreen: LMFeedPostHeaderViewProtocol, LMFeedVideoFooter
         }
     }
     
-    
-    
-    
     public func didTapLikeTextButton(for postID: String) {
         guard viewModel?.allowPostLikeView(for: postID) == true else { return }
-        let bottomSheet = LMFeedLikeBottomsheet(postID: postID)
+        let bottomSheet = Components.shared.likeBottomSheet.init(postID: postID)
         bottomSheet.modalPresentationStyle = .pageSheet
         present(bottomSheet, animated: true)
     }

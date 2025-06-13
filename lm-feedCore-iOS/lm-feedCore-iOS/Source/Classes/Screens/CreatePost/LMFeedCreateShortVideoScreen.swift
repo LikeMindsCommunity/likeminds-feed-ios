@@ -46,7 +46,6 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         return stack
     }()
     
-    
     open private(set) lazy var inputTextView: LMFeedTaggingTextView = {
         let textView = LMFeedTaggingTextView().translatesAutoresizingMaskIntoConstraints()
         textView.dataDetectorTypes = [.link]
@@ -98,9 +97,9 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
     
     // MARK: Data Variables
     public var viewModel: LMFeedCreateShortVideoViewModel?
-    public var videoAttachmentData: [LMFeedMediaProtocol] = []
-    private var videoCollectionViewHeightConstraint: NSLayoutConstraint?
-    public var taggingViewHeight: NSLayoutConstraint?
+    open private(set) var videoAttachmentData: [LMFeedMediaProtocol] = []
+    open private(set) var videoCollectionViewHeightConstraint: NSLayoutConstraint?
+    open private(set) var taggingViewHeight: NSLayoutConstraint?
     
     // MARK: setupViews
     open override func setupViews() {
@@ -201,7 +200,8 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    @objc private func keyboardWillShow(notification: NSNotification) {
+    @objc
+    open func keyboardWillShow(notification: NSNotification) {
         guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         
         let keyboardHeight = keyboardFrame.height
@@ -216,7 +216,8 @@ open class LMFeedCreateShortVideoScreen: LMFeedViewController {
         }
     }
     
-    @objc private func keyboardWillHide(notification: NSNotification) {
+    @objc
+    open func keyboardWillHide(notification: NSNotification) {
         scrollView.contentInset = .zero
         scrollView.scrollIndicatorInsets = .zero
     }
@@ -274,7 +275,7 @@ extension LMFeedCreateShortVideoScreen: UICollectionViewDataSource, UICollection
         scrollingFinished()
     }
     
-    public func scrollingFinished() {
+    open func scrollingFinished() {
         let visibleCount = videoPreview.indexPathsForFullyVisibleItems()
         if visibleCount.count == 1,
            let index = visibleCount.first {
@@ -295,7 +296,6 @@ extension LMFeedCreateShortVideoScreen : LMFeedCreateShortVideoViewModelProtocol
         videoPreview.isHidden = false
         videoAttachmentData.removeAll()
     }
-    
 }
 
 // MARK: LMFeedTaggingTextViewProtocol

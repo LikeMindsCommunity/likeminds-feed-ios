@@ -1,8 +1,8 @@
 import UIKit
 
-public class LMFeedVideoListEndPage: LMFeedView {
+open class LMFeedVideoListEndPage: LMFeedView {
     // MARK: UI Elements
-    private lazy var checkmarkImageView: LMFeedImageView = {
+    open private(set) lazy var checkmarkImageView: LMFeedImageView = {
         let imageView = LMFeedImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
@@ -13,7 +13,7 @@ public class LMFeedVideoListEndPage: LMFeedView {
         return imageView
     }()
     
-    private lazy var circleView: LMFeedView = {
+    open private(set) lazy var circleView: LMFeedView = {
         let view = LMFeedView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 30
@@ -21,7 +21,7 @@ public class LMFeedVideoListEndPage: LMFeedView {
         return view
     }()
     
-    private lazy var messageLabel: LMFeedLabel = {
+    open private(set) lazy var messageLabel: LMFeedLabel = {
         let label = LMFeedLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = LMFeedConstants.Strings.shared.videoListEndPageTitle
@@ -32,7 +32,7 @@ public class LMFeedVideoListEndPage: LMFeedView {
         return label
     }()
     
-    private lazy var viewOldPostsButton: LMFeedButton = {
+    open private(set) lazy var viewOldPostsButton: LMFeedButton = {
         let button = LMFeedButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(LMFeedConstants.Strings.shared.videoListEndPageButtonTitle, for: .normal)
@@ -53,9 +53,8 @@ public class LMFeedVideoListEndPage: LMFeedView {
         setupActions()
     }
     
-
     // MARK: Setup Methods
-    public override func setupViews() {
+    open override func setupViews() {
         backgroundColor = .white
         
         // Add views in correct order
@@ -69,7 +68,7 @@ public class LMFeedVideoListEndPage: LMFeedView {
         layoutIfNeeded()
     }
     
-    public override func setupLayouts() {
+    open override func setupLayouts() {
         NSLayoutConstraint.activate([
             // Circle view constraints
             circleView.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -96,16 +95,16 @@ public class LMFeedVideoListEndPage: LMFeedView {
         ])
     }
     
-    public override func setupActions() {
+    open override func setupActions() {
         viewOldPostsButton.addTarget(self, action: #selector(didTapViewOldPosts), for: .touchUpInside)
     }
     
     // MARK: Actions
-    @objc private func didTapViewOldPosts() {
+    @objc open func didTapViewOldPosts() {
         onViewOldPostsTapped?()
     }
     
-    public override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
         // Ensure all views are visible after layout
         messageLabel.isHidden = false

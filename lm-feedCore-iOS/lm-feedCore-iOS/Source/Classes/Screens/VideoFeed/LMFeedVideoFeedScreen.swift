@@ -10,7 +10,7 @@ public enum LMFeedType {
 
 open class LMFeedVideoFeedScreen: LMFeedViewController {
     // MARK: UI Elements
-    private lazy var newPostButton: LMFeedButton = {
+    open private(set) lazy var newPostButton: LMFeedButton = {
         let button = LMFeedButton.createButton(
             with: LMStringConstants.shared.newVideoPost,
             image: LMFeedConstants.shared.images.addVideoPostIcon,
@@ -28,20 +28,20 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
         return button
     }()
     
-    private lazy var videoListScreen: LMFeedVideoListScreen = {
+    open private(set) lazy var videoListScreen: LMFeedVideoListScreen = {
         let screen = LMFeedVideoListScreen()
         screen.viewModel = LMFeedVideoListViewModel(delegate: screen, postIds: viewModel?.postIds ?? [])
         screen.delegate = self
         return screen
     }()
     
-    private lazy var customNavBar: LMFeedView = {
+    open private(set) lazy var customNavBar: LMFeedView = {
         let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.black.withAlphaComponent(0.5)
         return view
     }()
     
-    private lazy var titleLabel: LMFeedLabel = {
+    open private(set) lazy var titleLabel: LMFeedLabel = {
         let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Reels"
         label.textColor = .white
@@ -51,7 +51,7 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
     }()
     
     // MARK: Data Variables
-    private let feedType: LMFeedType
+    open private(set) var feedType: LMFeedType
     public var viewModel: LMFeedVideoFeedViewModel?
     public var isPostCreationInProgress: Bool = false
     
@@ -125,7 +125,6 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
         videoListScreen.viewModel?.getFeed(fetchInitialPage: true)
     }
     
-    
     @objc
     open func postError(notification: Notification) {
         isPostCreationInProgress = false
@@ -137,8 +136,6 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
         }
     }
     
-    
-    
     open private(set) lazy var createPostLoaderView: LMFeedAddMediaPreview = {
         let view = LMFeedAddMediaPreview()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -146,9 +143,8 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
         return view
     }()
     
-
     // MARK: Child View Controller Setup
-    private func addChildViewController() {
+    open func addChildViewController() {
         // First add the video list screen
         addChild(videoListScreen)
         view.addSubview(videoListScreen.view)
@@ -195,7 +191,7 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
     }
     
     // MARK: Actions
-    @objc private func didTapNewPost() {
+    @objc open func didTapNewPost() {
         let imagePicker = ImagePickerController()
         imagePicker.settings.selection.max = 1
         imagePicker.settings.fetch.assets.supportedMediaTypes = [.video]

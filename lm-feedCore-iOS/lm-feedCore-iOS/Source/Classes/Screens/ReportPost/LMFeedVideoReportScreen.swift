@@ -8,7 +8,6 @@
 import LikeMindsFeedUI
 import UIKit
 
-
 @IBDesignable
 open class LMFeedVideoReportScreen: LMFeedViewController {
     // MARK: UI Elements
@@ -88,7 +87,6 @@ open class LMFeedVideoReportScreen: LMFeedViewController {
         return label
     }()
     
-    
     open private(set) lazy var submitButton: LMFeedButton = {
         let button = LMFeedButton.createButton(with: "Submit Report", image: nil, textColor: .white, textFont: LMFeedAppearance.shared.fonts.buttonFont3, contentSpacing: .init(top: 16, left: 60, bottom: 16, right: 60))
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -107,7 +105,7 @@ open class LMFeedVideoReportScreen: LMFeedViewController {
     open private(set) lazy var thankYouCircleView: LMFeedView = {
         let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.red.withAlphaComponent(0.1)
-        view.layer.cornerRadius = 15 // Will be set to half of width/height
+        view.layer.cornerRadius = 15
         return view
     }()
     
@@ -264,21 +262,44 @@ open class LMFeedVideoReportScreen: LMFeedViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Setup navigation bar
+        setupNavigationBar()
+        setupInitialState()
+        viewmodel?.fetchReportTags()
+    }
+    
+    open override func setupNavigationBar() {
         navigationController?.setNavigationBarHidden(false, animated: false)
         navigationController?.navigationBar.isHidden = false
         
-        // Create custom title view with exclamation icon and title
+        let titleView = createNavigationTitleView()
+        navigationItem.titleView = titleView
+        navigationItem.titleView?.frame = CGRect(x: 0, y: 0, width: 200, height: 44)
+        navigationItem.leftBarButtonItem = nil
+        
+        let closeButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(didTapCloseButton))
+        closeButton.tintColor = LMFeedAppearance.shared.colors.gray51
+        navigationItem.rightBarButtonItem = closeButton
+        navigationItem.hidesBackButton = true
+    }
+    
+    open func setupInitialState() {
+        otherReasonTextView.text = "Write a message"
+        otherReasonTextView.textColor = LMFeedAppearance.shared.colors.gray155
+        otherReasonTextView.font = LMFeedAppearance.shared.fonts.textFont1
+        
+        setupButton(isEnabled: false)
+        subtitleLabel.text = LMStringConstants.shared.reportSubtitle(isComment: false)
+    }
+    
+    open func createNavigationTitleView() -> UIView {
         let titleView = UIView()
         titleView.translatesAutoresizingMaskIntoConstraints = false
         
-        // Create circle view for exclamation icon
         let circleView = UIView()
         circleView.translatesAutoresizingMaskIntoConstraints = false
         circleView.backgroundColor = LMFeedAppearance.shared.colors.black.withAlphaComponent(0.1)
-        circleView.layer.cornerRadius = 15 // Will be set to half of width/height
+        circleView.layer.cornerRadius = 15
         
-        // Create exclamation icon
         let exclamationImageView = UIImageView()
         exclamationImageView.translatesAutoresizingMaskIntoConstraints = false
         exclamationImageView.contentMode = .scaleAspectFit
@@ -287,19 +308,16 @@ open class LMFeedVideoReportScreen: LMFeedViewController {
             exclamationImageView.image = exclamationImage
         }
         
-        // Create title label
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "Report Abuse"
         titleLabel.font = LMFeedAppearance.shared.fonts.headingFont1
         titleLabel.textColor = LMFeedAppearance.shared.colors.black
         
-        // Add subviews
         circleView.addSubview(exclamationImageView)
         titleView.addSubview(circleView)
         titleView.addSubview(titleLabel)
         
-        // Setup constraints
         NSLayoutConstraint.activate([
             circleView.leadingAnchor.constraint(equalTo: titleView.leadingAnchor),
             circleView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor),
@@ -316,29 +334,7 @@ open class LMFeedVideoReportScreen: LMFeedViewController {
             titleLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor)
         ])
         
-        // Set the custom title view with left alignment
-        navigationItem.titleView = titleView
-        navigationItem.titleView?.frame = CGRect(x: 0, y: 0, width: 200, height: 44)
-        
-        // Set left bar button item to nil to remove any default spacing
-        navigationItem.leftBarButtonItem = nil
-        
-        // Add close button
-        let closeButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(didTapCloseButton))
-        closeButton.tintColor = LMFeedAppearance.shared.colors.gray51
-        navigationItem.rightBarButtonItem = closeButton
-        
-        // Hide back button
-        navigationItem.hidesBackButton = true
-        
-        otherReasonTextView.text = "Write a message"
-        otherReasonTextView.textColor = LMFeedAppearance.shared.colors.gray155
-        otherReasonTextView.font = LMFeedAppearance.shared.fonts.textFont1
-        
-        setupButton(isEnabled: false)
-        subtitleLabel.text = LMStringConstants.shared.reportSubtitle(isComment: false)
-        
-        viewmodel?.fetchReportTags()
+        return titleView
     }
     
     open override func viewWillAppear(_ animated: Bool) {
@@ -348,7 +344,7 @@ open class LMFeedVideoReportScreen: LMFeedViewController {
     }
     
     @objc
-    private func didTapCloseButton() {
+    open func didTapCloseButton() {
         navigationController?.popViewController(animated: true)
     }
     
@@ -370,19 +366,15 @@ open class LMFeedVideoReportScreen: LMFeedViewController {
     }
 
     @objc 
-    open func keyboardWillHide(notification: NSNotification){
+    open func keyboardWillHide(notification: NSNotification) {
         containerScrollView.contentInset.bottom = 0
     }
     
     // MARK: Public Methods
-    public func showThankYouMessage() {
-        // Hide the report form
+    open func showThankYouMessage() {
         containerView.isHidden = true
-        
-        // Show thank you message
         thankYouView.isHidden = false
         
-        // Pop back after 2 seconds
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }

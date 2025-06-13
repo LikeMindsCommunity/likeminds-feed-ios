@@ -116,7 +116,7 @@ open class LMFeedVideoTextCell: LMPostWidgetTableViewCell {
     }
     
     // MARK: - Helper Methods
-    private func calculateExpandedHeight() -> CGFloat {
+    open  func calculateExpandedHeight() -> CGFloat {
         guard let font = postText.font else { return 300 }
         
         // Use the actual width from video list screen (300 - 24 for padding)
@@ -136,7 +136,7 @@ open class LMFeedVideoTextCell: LMPostWidgetTableViewCell {
         return min(totalHeight, 300)
     }
     
-    private func updateSeeMoreButtonState() {
+    open  func updateSeeMoreButtonState() {
         guard let font = postText.font else { return }
         
         // Use the actual width from video list screen (300 - 24 for padding)
