@@ -118,6 +118,11 @@ open class LMFeedVideoPostFooterView: LMFeedBasePostFooterView {
         // Customize button appearances
         [likeButton, commentButton, shareButton, moreButton].forEach { button in
             button.tintColor = LMFeedAppearance.shared.colors.white
+            // Add shadow effect to buttons
+            button.layer.shadowColor = LMFeedAppearance.shared.colors.black.cgColor
+            button.layer.shadowOffset = CGSize(width: 0, height: 0)
+            button.layer.shadowOpacity = 0.3
+            button.layer.shadowRadius = 1.0
         }
         
         // Set custom icons for buttons
@@ -128,9 +133,14 @@ open class LMFeedVideoPostFooterView: LMFeedBasePostFooterView {
         
         shareButton.setImage(LMFeedConstants.shared.images.shareVideoIcon, for: .normal)
         
-        likeTextButton.setTitleColor(LMFeedAppearance.shared.colors.white, for: .normal)
-        commentButton.setTitleColor(LMFeedAppearance.shared.colors.white, for: .normal)
-        commentTextButton.setTitleColor(LMFeedAppearance.shared.colors.white, for: .normal)
+        // Add shadow effect to count text buttons
+        [likeTextButton, commentTextButton].forEach { button in
+            button.setTitleColor(LMFeedAppearance.shared.colors.white, for: .normal)
+            button.layer.shadowColor = LMFeedAppearance.shared.colors.black.cgColor
+            button.layer.shadowOffset = CGSize(width: 0, height: 0)
+            button.layer.shadowOpacity = 0.3
+            button.layer.shadowRadius = 1.0
+        }
     }
     
     // MARK: Helper Methods

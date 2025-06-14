@@ -19,6 +19,7 @@ open class LMFeedVideoListScreen: LMFeedViewController {
         collection.dataSource = self
         collection.prefetchDataSource = self
         collection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "ColorCell")
+        collection.contentInsetAdjustmentBehavior = .never
         return collection
     }()
     
@@ -120,7 +121,13 @@ open class LMFeedVideoListScreen: LMFeedViewController {
     
     open override func setupLayouts() {
         super.setupLayouts()
-        view.pinSubView(subView: videoCollectionView)
+        // Ensure collection view fills the entire view
+        NSLayoutConstraint.activate([
+            videoCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            videoCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            videoCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            videoCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
     
     open override func setupActions() {
@@ -204,8 +211,17 @@ open class LMFeedVideoListScreen: LMFeedViewController {
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Ensure navigation bar is hidden
+        navigationController?.setNavigationBarHidden(true, animated: false)
         // Start playing the visible video when view appears
         handleVideoPlayback()
+    }
+    
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // Force layout update for collection view
+        videoCollectionView.collectionViewLayout.invalidateLayout()
+        videoCollectionView.layoutIfNeeded()
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
@@ -295,6 +311,18 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
             header.authorNameLabel.textColor = .white
             header.subTitleLabel.textColor = .white
             header.menuButton.isHidden = true
+            
+            // Add shadow effect to header labels
+            header.authorNameLabel.layer.shadowColor = LMFeedAppearance.shared.colors.black.cgColor
+            header.authorNameLabel.layer.shadowOffset = CGSize(width: 0, height: 0)
+            header.authorNameLabel.layer.shadowOpacity = 0.3
+            header.authorNameLabel.layer.shadowRadius = 1.0
+            
+            header.subTitleLabel.layer.shadowColor = LMFeedAppearance.shared.colors.black.cgColor
+            header.subTitleLabel.layer.shadowOffset = CGSize(width: 0, height: 0)
+            header.subTitleLabel.layer.shadowOpacity = 0.3
+            header.subTitleLabel.layer.shadowRadius = 1.0
+            
             
             // Configure footer
             let footer = LMUIComponents.shared.videoFooterView.init()
@@ -405,7 +433,7 @@ extension LMFeedVideoListScreen: LMFeedVideoListViewModelProtocol {
         data.remove(at: index)
         
         videoCollectionView.performBatchUpdates({
-            videoCollectionView.deleteSections(IndexSet(integer: index))
+            videoCollectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
         })
     }
     

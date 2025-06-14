@@ -40,7 +40,7 @@ class ViewController: LMFeedViewController{
     }()
     private let postIdField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Post IDs"
+        textField.placeholder = "Post Ids to start feed with separated by comma"
         textField.borderStyle = .roundedRect
         textField.returnKeyType = .done
         return textField

@@ -72,18 +72,21 @@ open class LMFeedVideoListViewModel {
             } ?? []
             
             let widgets = response.data?.widgets ?? [:]
-            
             let comments = response.data?.filteredComments ?? [:]
             
-            let convertedData: [LMFeedPostDataModel] = posts.compactMap { post in
+            // Filter posts to only include reels
+            let reelPosts = posts.filter { post in
                 guard let attachments = post.attachments,
-                      !attachments.isEmpty,
-                      attachments[0].attachmentType == .reel else {
-                    return nil
+                      !attachments.isEmpty else {
+                    return false
                 }
-                return .init(post: post, users: users, allTopics: topics, widgets: widgets, filteredComments: comments)
+                return attachments[0].attachmentType == .reel
             }
             
+            // Convert filtered posts to data models
+            let convertedData: [LMFeedPostDataModel] = reelPosts.compactMap { post in
+                return .init(post: post, users: users, allTopics: topics, widgets: widgets, filteredComments: comments)
+            }
             
             self.updatePostList(with: convertedData)
         }
@@ -102,8 +105,15 @@ open class LMFeedVideoListViewModel {
             await MainActor.run {
                 self.isFetchingFeed = false
                 
-               
-                // Check if current page is 1 and we have startFeedWithPostIds
+                
+                for (index, post) in convertedData.enumerated() {
+                    // Print index and post ID for each post
+                    print("Index: \(index), Post ID: \(post.postID)")
+                    
+            
+                }
+                
+                // Only validate post order on first page when we have postIds
                 if currentPage == 1 && !postIds.isEmpty {
                     for (index, post) in convertedData.enumerated() {
                         if index < postIds.count && post.postID != postIds[index] {

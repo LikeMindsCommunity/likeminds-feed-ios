@@ -143,7 +143,7 @@ open class LMFeedVideoReportScreen: LMFeedViewController {
     public var textInputHeight: CGFloat = 100
     public var tagsData: [(String, Int)] = []
     public var selectedTag = -1
-    public var placeholderText = "Write Description!"
+    public var placeholderText = "Write a message"
     public var viewmodel: LMFeedVideoReportViewModel?
     
     // MARK: setupViews
@@ -283,7 +283,8 @@ open class LMFeedVideoReportScreen: LMFeedViewController {
     }
     
     open func setupInitialState() {
-        otherReasonTextView.text = "Write a message"
+        otherReasonTextView.text = ""
+        otherReasonTextView.placeHolderText = "Write a message"
         otherReasonTextView.textColor = LMFeedAppearance.shared.colors.gray155
         otherReasonTextView.font = LMFeedAppearance.shared.fonts.textFont1
         

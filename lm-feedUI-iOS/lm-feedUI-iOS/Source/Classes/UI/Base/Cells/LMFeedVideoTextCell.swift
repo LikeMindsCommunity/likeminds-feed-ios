@@ -27,6 +27,11 @@ open class LMFeedVideoTextCell: LMPostWidgetTableViewCell {
         textView.textColor = .white
         textView.backgroundColor = .clear
         textView.smartInsertDeleteType = .no
+        // Add shadow effect
+        textView.layer.shadowColor = LMFeedAppearance.shared.colors.black.cgColor
+        textView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        textView.layer.shadowOpacity = 0.3
+        textView.layer.shadowRadius = 1.0
         return textView
     }()
     
@@ -36,6 +41,11 @@ open class LMFeedVideoTextCell: LMPostWidgetTableViewCell {
         button.contentHorizontalAlignment = .left
         button.backgroundColor = .clear
         button.tintColor = .white
+        // Add shadow effect
+        button.titleLabel?.layer.shadowColor = LMFeedAppearance.shared.colors.black.cgColor
+        button.titleLabel?.layer.shadowOffset = CGSize(width: 0, height: 0)
+        button.titleLabel?.layer.shadowOpacity = 0.3
+        button.titleLabel?.layer.shadowRadius = 1.0
         return button
     }()
     
