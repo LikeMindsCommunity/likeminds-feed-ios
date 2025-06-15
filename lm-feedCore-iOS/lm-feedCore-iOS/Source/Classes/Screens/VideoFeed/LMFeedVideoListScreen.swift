@@ -25,7 +25,6 @@ open class LMFeedVideoListScreen: LMFeedViewController {
     
     // MARK: Data Variables
     public var viewModel: LMFeedVideoListViewModel?
-    public weak var delegate: LMFeedPostListVCFromProtocol?
     
     // MARK: Data Variables
     open private(set) var data: [LMFeedPostContentModel] = [] {
@@ -88,7 +87,6 @@ open class LMFeedVideoListScreen: LMFeedViewController {
             })
         }
         
-        delegate?.onPostDataFetched(isEmpty: data.isEmpty)
     }
     
     open func updatePost(with post: LMFeedPostContentModel, onlyHeader: Bool, onlyFooter: Bool) {
@@ -346,19 +344,19 @@ extension LMFeedVideoListScreen: UICollectionViewDataSource, UICollectionViewDel
     open func configureCaughtUpCell(_ cell: UICollectionViewCell) {
         cell.backgroundColor = .white
         
-        let caughtUpView = LMUIComponents.shared.videoListEndPage.init()
-        caughtUpView.translatesAutoresizingMaskIntoConstraints = false
-        caughtUpView.onViewOldPostsTapped = { [weak self] in
+        let videoListEndPage = LMUIComponents.shared.videoListEndPage.init()
+        videoListEndPage.translatesAutoresizingMaskIntoConstraints = false
+        videoListEndPage.onViewOldPostsTapped = { [weak self] in
             self?.didTapViewOldPosts()
         }
         
-        cell.contentView.addSubview(caughtUpView)
+        cell.contentView.addSubview(videoListEndPage)
         
         NSLayoutConstraint.activate([
-            caughtUpView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
-            caughtUpView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
-            caughtUpView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
-            caughtUpView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
+            videoListEndPage.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+            videoListEndPage.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+            videoListEndPage.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+            videoListEndPage.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
         ])
     }
     
@@ -420,7 +418,6 @@ extension LMFeedVideoListScreen: LMFeedVideoListViewModelProtocol {
             })
         }
         
-        delegate?.onPostDataFetched(isEmpty: data.isEmpty)
     }
     
     public override func presentAlert(with alert: UIAlertController, animated: Bool) {

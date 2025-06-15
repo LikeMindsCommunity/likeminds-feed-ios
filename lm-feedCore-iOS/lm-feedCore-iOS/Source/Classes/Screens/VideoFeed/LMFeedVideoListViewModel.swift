@@ -166,7 +166,20 @@ open class LMFeedVideoListViewModel {
     }
     
     public func savePost(for postID: String) {
-        // Handle save action
+        func savePost(for postId: String) {
+            LMFeedPostOperation.shared.savePost(for: postId) { [weak self] response in
+                guard let self,
+                      let index = postList.firstIndex(where: { $0.postId == postId }) else { return }
+                
+                if response {
+                    var feed = postList[index]
+                    feed.isSaved.toggle()
+                    postList[index] = feed
+                } else {
+                    updatePost(for: postId, onlyFooter: true)
+                }
+            }
+        }
     }
     
     public func showMenu(for postID: String) {

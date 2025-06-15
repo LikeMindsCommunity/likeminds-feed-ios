@@ -29,19 +29,18 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
     }()
     
     open private(set) lazy var videoListScreen: LMFeedVideoListScreen = {
-        let screen = LMFeedVideoListScreen()
+        let screen = Components.shared.feedVideoListScreen.init()
         screen.viewModel = LMFeedVideoListViewModel(delegate: screen, postIds: viewModel?.postIds ?? [])
-        screen.delegate = self
         return screen
     }()
     
-    open private(set) lazy var customNavBar: LMFeedView = {
+    open private(set) lazy var videoFeedNavBar: LMFeedView = {
         let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.black.withAlphaComponent(0.5)
         return view
     }()
     
-    open private(set) lazy var titleLabel: LMFeedLabel = {
+    open private(set) lazy var navBarTitleLabel: LMFeedLabel = {
         let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Reels"
         label.textColor = .white
@@ -151,9 +150,9 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
         videoListScreen.view.translatesAutoresizingMaskIntoConstraints = false
         
         // Then add the custom navigation bar on top
-        view.addSubview(customNavBar)
-        customNavBar.addSubview(titleLabel)
-        customNavBar.addSubview(newPostButton)
+        view.addSubview(videoFeedNavBar)
+        videoFeedNavBar.addSubview(navBarTitleLabel)
+        videoFeedNavBar.addSubview(newPostButton)
         
         NSLayoutConstraint.activate([
             // Video list screen constraints
@@ -163,16 +162,16 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
             videoListScreen.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             // Navigation bar constraints
-            customNavBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            customNavBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            customNavBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            customNavBar.heightAnchor.constraint(equalToConstant: 44),
+            videoFeedNavBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            videoFeedNavBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            videoFeedNavBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            videoFeedNavBar.heightAnchor.constraint(equalToConstant: 44),
             
-            titleLabel.leadingAnchor.constraint(equalTo: customNavBar.leadingAnchor, constant: 16),
-            titleLabel.centerYAnchor.constraint(equalTo: customNavBar.centerYAnchor),
+            navBarTitleLabel.leadingAnchor.constraint(equalTo: videoFeedNavBar.leadingAnchor, constant: 16),
+            navBarTitleLabel.centerYAnchor.constraint(equalTo: videoFeedNavBar.centerYAnchor),
             
-            newPostButton.trailingAnchor.constraint(equalTo: customNavBar.trailingAnchor, constant: -16),
-            newPostButton.centerYAnchor.constraint(equalTo: customNavBar.centerYAnchor),
+            newPostButton.trailingAnchor.constraint(equalTo: videoFeedNavBar.trailingAnchor, constant: -16),
+            newPostButton.centerYAnchor.constraint(equalTo: videoFeedNavBar.centerYAnchor),
             newPostButton.widthAnchor.constraint(equalToConstant: 120),
             newPostButton.heightAnchor.constraint(equalToConstant: 40),
 
@@ -186,7 +185,7 @@ open class LMFeedVideoFeedScreen: LMFeedViewController {
         videoListScreen.didMove(toParent: self)
         
         // Ensure navigation bar is on top
-        view.bringSubviewToFront(customNavBar)
+        view.bringSubviewToFront(videoFeedNavBar)
         view.bringSubviewToFront(createPostLoaderView)
     }
     
@@ -228,16 +227,5 @@ extension LMFeedVideoFeedScreen: LMFeedVideoFeedViewModelDelegate {
         } catch {
             print(error.localizedDescription)
         }
-    }
-}
-
-// MARK: - LMFeedPostListVCFromProtocol
-extension LMFeedVideoFeedScreen: LMFeedPostListVCFromProtocol {
-    public func onPostListScrolled(_ scrollView: UIScrollView) {
-        
-    }
-    
-    public func onPostDataFetched(isEmpty: Bool) {
-        // Handle empty state if needed
     }
 }
