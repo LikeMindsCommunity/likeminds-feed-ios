@@ -289,7 +289,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = LMStringConstants.shared.noCommentTitleLable
         label.textColor = LMFeedAppearance.shared.colors.gray51
-        label.font = LMFeedAppearance.shared.fonts.headingFont3
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.textAlignment = .center
         return label
     }()
@@ -299,7 +299,7 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = LMStringConstants.shared.noCommentSubTitleLable
         label.textColor = LMFeedAppearance.shared.colors.gray102
-        label.font = LMFeedAppearance.shared.fonts.textFont1
+        label.font = LMFeedAppearance.shared.fonts.textFont2
         label.textAlignment = .center
         return label
     }()
@@ -649,7 +649,8 @@ extension LMFeedCommentBottomsheet: LMFeedPostCommentProtocol {
         viewModel.allowCommentLikeView(for: commentId)
         do {
             let viewcontroller = try LMFeedLikeViewModel.createModule(postID: postID, commentID: commentId)
-            navigationController?.pushViewController(viewcontroller, animated: true)
+            viewcontroller.modalPresentationStyle = .pageSheet
+            present(viewcontroller, animated: true)
         } catch let error {
             print(error.localizedDescription)
         }

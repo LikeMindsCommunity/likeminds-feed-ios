@@ -57,6 +57,33 @@ open class LMFeedLikeBottomsheet: LMFeedViewController {
         return table
     }()
     
+    open private(set) lazy var noLikedContainerView: LMFeedView = {
+        let view = LMFeedView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
+        return view
+    }()
+    
+    open private(set) lazy var noLikedTitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = LMStringConstants.shared.noLikeTitleLabel
+        label.textColor = LMFeedAppearance.shared.colors.gray51
+        label.font = LMFeedAppearance.shared.fonts.headingFont1
+        label.textAlignment = .center
+        return label
+    }()
+    
+    open private(set) lazy var noLikedSubtitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = LMStringConstants.shared.noLikeSubTitleLabel
+        label.textColor = LMFeedAppearance.shared.colors.gray102
+        label.font = LMFeedAppearance.shared.fonts.textFont2
+        label.textAlignment = .center
+        return label
+    }()
+    
     // MARK: Data Variables
     open private(set) var postID: String
     open private(set) var commentID: String?
@@ -97,9 +124,13 @@ open class LMFeedLikeBottomsheet: LMFeedViewController {
         contentView.addSubview(containerView)
         containerView.addSubview(headerView)
         containerView.addSubview(memberListView)
+        containerView.addSubview(noLikedContainerView)
         
         headerView.addSubview(dragHandlerView)
         headerView.addSubview(headerTitleLabel)
+        
+        noLikedContainerView.addSubview(noLikedTitleLabel)
+        noLikedContainerView.addSubview(noLikedSubtitleLabel)
     }
     
     open override func setupLayouts() {
@@ -140,6 +171,20 @@ open class LMFeedLikeBottomsheet: LMFeedViewController {
             memberListView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             memberListView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             memberListView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
+        
+        // Setup no likes container view constraints
+        NSLayoutConstraint.activate([
+            noLikedContainerView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            noLikedContainerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            noLikedContainerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            
+            noLikedTitleLabel.topAnchor.constraint(equalTo: noLikedContainerView.topAnchor, constant: 16),
+            noLikedTitleLabel.centerXAnchor.constraint(equalTo: noLikedContainerView.centerXAnchor),
+            
+            noLikedSubtitleLabel.topAnchor.constraint(equalTo: noLikedTitleLabel.bottomAnchor, constant: 2),
+            noLikedSubtitleLabel.bottomAnchor.constraint(equalTo: noLikedContainerView.bottomAnchor, constant: -16),
+            noLikedSubtitleLabel.centerXAnchor.constraint(equalTo: noLikedTitleLabel.centerXAnchor)
         ])
     }
     
@@ -198,6 +243,10 @@ extension LMFeedLikeBottomsheet: LMFeedLikeViewModelProtocol {
             memberListView.reloadData()
         }
         totalLikes = totalCount
+        
+        // Show/hide no likes view based on data count
+        noLikedContainerView.isHidden = !userData.isEmpty
+        memberListView.isHidden = userData.isEmpty
     }
     
     public func showHideTableLoader(isShow: Bool) {

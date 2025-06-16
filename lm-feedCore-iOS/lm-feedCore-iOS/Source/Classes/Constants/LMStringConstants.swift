@@ -73,6 +73,8 @@ public struct LMStringConstants {
     public var editVideoPost = "Edit Reel"
     public var noCommentTitleLable = "No Comments Found"
     public var noCommentSubTitleLable = "Be the first one to create a comment"
+    public var noLikeTitleLabel = "No Likes yet"
+    public var noLikeSubTitleLabel = "Be the first one to Like"
     public var inputTextPlaceholder = "Write a caption and hashtags..."
     public var navtitleCreateVideo = "New Reel"
     public var cancelActionTitle = "Cancel"
