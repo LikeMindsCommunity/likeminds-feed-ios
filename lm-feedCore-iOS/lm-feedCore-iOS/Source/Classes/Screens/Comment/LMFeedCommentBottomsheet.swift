@@ -12,13 +12,24 @@ open class LMFeedCommentBottomsheet: LMFeedViewController, LMFeedBasePostDetailV
         hasMoreData = !comments.isEmpty
         isLoadingMore = false
         
+        let startIndex = commentsData.count
+        let endIndex = commentsData.count + comments.count - 1
+        
         commentsData.append(contentsOf: comments)
         
         // Show/hide no comments view based on comments count
         noCommentContainerView.isHidden = !commentsData.isEmpty
         commentTableView.isHidden = commentsData.isEmpty
         
-        commentTableView.reloadData()
+        if isInitialPage {
+            commentTableView.reloadData()
+        } else {
+            commentTableView.performBatchUpdates({
+                if endIndex >= startIndex {
+                    commentTableView.insertSections(IndexSet(integersIn: startIndex...endIndex), with: .none)
+                }
+            }, completion: nil)
+        }
     }
     
     public func updatePost(post: LMFeedPostContentModel, onlyHeader: Bool, onlyFooter: Bool) {
