@@ -11,10 +11,11 @@ final public class LMFeedPostOperation {
     private init() { }
     static let shared = LMFeedPostOperation()
     
-    func getFeed(currentPage: Int, pageSize: Int, selectedTopics: [String], completion: ((LMResponse<GetFeedResponse>) -> Void)?) {
+    func getFeed(currentPage: Int, pageSize: Int, selectedTopics: [String], postIds: [String] = [], completion: ((LMResponse<GetFeedResponse>) -> Void)?) {
         var builder = GetFeedRequest.builder()
             .page(currentPage)
             .pageSize(pageSize)
+            .startFeedWithPostIds(postIds)
         
         if !selectedTopics.isEmpty {
             builder = builder

@@ -1254,6 +1254,10 @@ extension LMFeedBasePostDetailScreen: LMFeedTaggedUserFoundProtocol {
 extension LMFeedBasePostDetailScreen: LMFeedPostHeaderViewProtocol,
     LMFeedPostFooterViewProtocol
 {
+    public func didTapFooterMenuButton(for postID: String) {
+    
+    }
+    
     open func didTapPostMenuButton(for postID: String) {
         viewModel?.showMenu(postID: postID)
     }

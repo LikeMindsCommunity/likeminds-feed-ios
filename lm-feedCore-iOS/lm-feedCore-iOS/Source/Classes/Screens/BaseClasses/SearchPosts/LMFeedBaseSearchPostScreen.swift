@@ -364,6 +364,10 @@ extension LMFeedBaseSearchPostScreen: LMFeedPostHeaderViewProtocol {
 // MARK: LMFeedPostFooterViewProtocol
 @objc
 extension LMFeedBaseSearchPostScreen: LMFeedPostFooterViewProtocol {
+    public func didTapFooterMenuButton(for postID: String) {
+    
+    }
+    
     open func didTapLikeButton(for postID: String) {
         if let index = data.firstIndex(where: { $0.postID == postID }) {
             data[index].footerData.isLiked.toggle()

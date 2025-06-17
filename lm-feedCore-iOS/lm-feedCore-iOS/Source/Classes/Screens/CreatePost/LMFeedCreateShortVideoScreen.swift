@@ -1,0 +1,329 @@
+//
+//  LMFeedCreateShortVideoScreen.swift
+//  lm-feedCore-iOS
+//
+//  Created by Arpit Verma on 16/05/25.
+//
+
+import AVKit
+import BSImagePicker
+import LikeMindsFeedUI
+import UIKit
+import Photos
+
+open class LMFeedCreateShortVideoScreen: LMFeedViewController {
+    // MARK: UI Elements
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
+        return view
+    }()
+    
+    open private(set) lazy var containerStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
+        stack.axis = .vertical
+        stack.alignment = .fill
+        stack.distribution = .fill
+        return stack
+    }()
+    
+    open private(set) lazy var scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.isDirectionalLockEnabled = true
+        scroll.showsHorizontalScrollIndicator = false
+        scroll.showsVerticalScrollIndicator = false
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        scroll.bounces = false
+        return scroll
+    }()
+    
+    open private(set) lazy var scrollStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.distribution = .fill
+        stack.spacing = 8
+        return stack
+    }()
+    
+    open private(set) lazy var inputTextView: LMFeedTaggingTextView = {
+        let textView = LMFeedTaggingTextView().translatesAutoresizingMaskIntoConstraints()
+        textView.dataDetectorTypes = [.link]
+        textView.mentionDelegate = self
+        textView.backgroundColor = LMFeedAppearance.shared.colors.clear
+        textView.isScrollEnabled = true
+        textView.isEditable = true
+        textView.placeHolderText = LMStringConstants.shared.inputTextPlaceholder
+        textView.backgroundColor = LMFeedAppearance.shared.colors.clear
+        textView.addDoneButtonOnKeyboard()
+        return textView
+    }()
+    
+    open private(set) lazy var videoPreview: LMFeedCollectionView = {
+        let collection = LMFeedCollectionView(frame: .zero, collectionViewLayout: LMFeedCollectionView.mediaFlowLayout())
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.registerCell(type: LMUIComponents.shared.videoPreview)
+        collection.showsVerticalScrollIndicator = false
+        collection.showsHorizontalScrollIndicator = false
+        collection.isPagingEnabled = true
+        collection.dataSource = self
+        collection.delegate = self
+        collection.layer.cornerRadius = 12
+        collection.clipsToBounds = true
+        collection.backgroundColor = .black
+        return collection
+    }()
+    
+    open private(set) lazy var createPostButton: LMFeedButton = {
+        let button = LMFeedButton.createButton(
+            with: LMStringConstants.shared.postText,
+            image: nil,
+            textColor: LMFeedAppearance.shared.colors.black,
+            textFont: LMFeedAppearance.shared.fonts.buttonFont1,
+            contentSpacing: .init(top: 8, left: 8, bottom: 8, right: 12),
+            imageSpacing: 8
+        )
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
+        return button
+    }()
+    
+    open private(set) lazy var taggingView: LMFeedTaggingListView = {
+        let view = LMFeedTaggingListViewModel.createModule(delegate: self)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    // MARK: Data Variables
+    public var viewModel: LMFeedCreateShortVideoViewModel?
+    open private(set) var videoAttachmentData: [LMFeedMediaProtocol] = []
+    open private(set) var videoCollectionViewHeightConstraint: NSLayoutConstraint?
+    open private(set) var taggingViewHeight: NSLayoutConstraint?
+    
+    // MARK: setupViews
+    open override func setupViews() {
+        super.setupViews()
+        
+        view.addSubview(containerView)
+        containerView.addSubview(containerStackView)
+        containerStackView.addArrangedSubview(scrollView)
+        scrollView.addSubview(scrollStackView)
+        
+        [ videoPreview, inputTextView, taggingView].forEach { subView in
+            scrollStackView.addArrangedSubview(subView)
+        }
+    }
+    
+    // MARK: setupLayouts
+    open override func setupLayouts() {
+        super.setupLayouts()
+        
+        view.safePinSubView(subView: containerView)
+        containerView.pinSubView(subView: containerStackView)
+        scrollView.pinSubView(subView: scrollStackView, padding: .init(top: 8, left: 0, bottom: -8, right: 0))
+        
+        scrollStackView.setWidthConstraint(with: containerView.widthAnchor, multiplier: 1)
+        scrollStackView.setHeightConstraint(with: 700, priority: .defaultLow)
+        
+        // Update video preview constraints
+        videoPreview.setWidthConstraint(with: containerStackView.widthAnchor, multiplier: 0.9)
+        videoPreview.setHeightConstraint(with: videoPreview.widthAnchor, multiplier: 1.3)
+        videoPreview.addConstraint(leading: (containerStackView.leadingAnchor, 20))
+        videoPreview.topAnchor.constraint(equalTo: scrollStackView.topAnchor, constant: 25).isActive = true
+        
+        taggingView.addConstraint(top: (inputTextView.bottomAnchor, 0),
+                                leading: (inputTextView.leadingAnchor, 0),
+                                trailing: (inputTextView.trailingAnchor, 0))
+        
+        taggingView.bottomAnchor.constraint(lessThanOrEqualTo: scrollStackView.bottomAnchor, constant: -16).isActive = true
+        taggingViewHeight = taggingView.setHeightConstraint(with: 10)
+        
+        scrollStackView.subviews.forEach { subView in
+            if subView != videoPreview {
+                NSLayoutConstraint.activate([
+                    subView.leadingAnchor.constraint(equalTo: scrollStackView.leadingAnchor, constant: 16),
+                    subView.trailingAnchor.constraint(equalTo: scrollStackView.trailingAnchor, constant: -16)
+                ])
+            }
+        }
+    }
+    
+    // MARK: setupActions
+    open override func setupActions() {
+        super.setupActions()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: createPostButton)
+    }
+    
+    @objc
+    open func didTapCreateButton() {
+        viewModel?.createReel(with: inputTextView.getText())
+    }
+    
+    // MARK: viewDidLoad
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = LMFeedAppearance.shared.colors.white
+        
+        // Configure navigation bar
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        navigationController?.navigationBar.isTranslucent = false
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .white
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.black,
+            .font: UIFont.systemFont(ofSize: 17, weight: .semibold)
+        ]
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.tintColor = LMFeedAppearance.shared.colors.appTintColor
+        
+        setNavigationTitleAndSubtitle(with: LMStringConstants.shared.navtitleCreateVideo, subtitle: nil, alignment: .leading)
+        
+        inputTextView.setAttributedText(from: "")
+        setupInitialView()
+        
+        // Add keyboard observers
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        videoPreview.visibleCells.forEach { cell in
+            (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
+        }
+        // Remove keyboard observers
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc
+    open func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        
+        let keyboardHeight = keyboardFrame.height
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardHeight, right: 0.0)
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+        
+        // If active text view is hidden by keyboard, scroll to it
+        if let activeTextView = inputTextView.isFirstResponder ? inputTextView : nil {
+            let rect = activeTextView.convert(activeTextView.bounds, to: scrollView)
+            scrollView.scrollRectToVisible(rect, animated: true)
+        }
+    }
+    
+    @objc
+    open func keyboardWillHide(notification: NSNotification) {
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = .zero
+    }
+    
+    open func setupInitialView() {
+        videoPreview.isHidden = false
+        createPostButton.isEnabled = false
+        taggingView.isHidden = true
+    }
+    
+    open func observeCreateButton() {
+        createPostButton.isEnabled = !videoAttachmentData.isEmpty
+    }
+}
+
+// MARK: UICollectionView
+extension LMFeedCreateShortVideoScreen: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { videoAttachmentData.count }
+    
+    open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if let data = videoAttachmentData[indexPath.row] as? LMFeedVideoCollectionCell.ContentModel,
+           let cell = collectionView.dequeueReusableCell(with: LMUIComponents.shared.videoPreview, for: indexPath) {
+            let modifiedData = LMFeedVideoCollectionCell.ContentModel(
+                videoURL: data.videoURL,
+                isFilePath: data.isFilePath,
+                postID: data.postID,
+                width: data.width,
+                height: data.height,
+                showRemoveButton: false
+            )
+            cell.configure(with: modifiedData, index: indexPath.row) { _ in }
+            return cell
+        }
+        return UICollectionViewCell()
+    }
+    
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.frame.width
+        return CGSize(width: width, height: width * 1.3)
+    }
+    
+    open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        videoPreview.visibleCells.forEach { cell in
+            (cell as? LMFeedVideoCollectionCell)?.pauseVideo()
+        }
+    }
+    
+    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            scrollingFinished()
+        }
+    }
+    
+    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        scrollingFinished()
+    }
+    
+    open func scrollingFinished() {
+        let visibleCount = videoPreview.indexPathsForFullyVisibleItems()
+        if visibleCount.count == 1,
+           let index = visibleCount.first {
+            (videoPreview.cellForItem(at: index) as? LMFeedVideoCollectionCell)?.playVideo()
+        }
+    }
+}
+
+extension LMFeedCreateShortVideoScreen : LMFeedCreateShortVideoViewModelProtocol {
+    public func showVideo(video: [LMFeedMediaProtocol]) {
+        videoPreview.isHidden = video.isEmpty
+        videoAttachmentData = video
+        videoPreview.reloadData()
+        observeCreateButton()
+    }
+    
+    public func resetMediaView() {
+        videoPreview.isHidden = false
+        videoAttachmentData.removeAll()
+    }
+}
+
+// MARK: LMFeedTaggingTextViewProtocol
+extension LMFeedCreateShortVideoScreen: LMFeedTaggingTextViewProtocol {
+    public func mentionStarted(with text: String) {
+        taggingView.isHidden = false
+        taggingView.getUsers(for: text)
+    }
+    
+    public func mentionStopped() {
+        taggingView.stopFetchingUsers()
+        taggingView.isHidden = true
+    }
+    
+    public func contentHeightChanged() {
+        observeCreateButton()
+    }
+}
+
+// MARK: LMFeedTaggedUserFoundProtocol
+extension LMFeedCreateShortVideoScreen: LMFeedTaggedUserFoundProtocol {
+    public func userSelected(with route: String, and userName: String) {
+        inputTextView.addTaggedUser(with: userName, route: route)
+    }
+    
+    public func updateHeight(with height: CGFloat) {
+        taggingViewHeight?.constant = height
+    }
+}
+
+

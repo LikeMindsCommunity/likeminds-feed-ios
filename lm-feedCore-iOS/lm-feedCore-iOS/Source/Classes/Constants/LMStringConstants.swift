@@ -60,6 +60,8 @@ public struct LMStringConstants {
     public var maxUploadSizeErrorMessage = "Max Upload Size is %d MB"
     public var doneText = "Done"
     public var oKText = "OK"
+    public var postText = "POST"
+    
     
     // CreatePost Strings
     public var addMoreText = "Add More"
@@ -67,7 +69,16 @@ public struct LMStringConstants {
     public var addVideoText = "Add Video"
     public var attachFiles = "Attach Files"
     public var addPoll = "Add Poll"
-    
+    public var newVideoPost = "New post"
+    public var editVideoPost = "Edit Reel"
+    public var noCommentTitleLable = "No Comments Found"
+    public var noCommentSubTitleLable = "Be the first one to create a comment"
+    public var noLikeTitleLabel = "No Likes yet"
+    public var noLikeSubTitleLabel = "Be the first one to Like"
+    public var inputTextPlaceholder = "Write a caption and hashtags..."
+    public var navtitleCreateVideo = "New Reel"
+    public var cancelActionTitle = "Cancel"
+        
     public var createPostTitle: String {
         String(format: "Create a %@", pluralizeOrCapitalize(to: postVariable, withAction: .allSmallSingular))
     }
@@ -105,6 +116,10 @@ public struct LMStringConstants {
         String(format: "Delete %@", pluralizeOrCapitalize(to: postVariable, withAction: .firstLetterCapitalSingular))
     }
     
+    public var discardEditPost : String {
+        String(format: "Discard %@", pluralizeOrCapitalize(to: postVariable, withAction: .firstLetterCapitalSingular))
+    }
+    
     public var deletePostMessage: String {
         String(format: "Are you sure you want to delete this %@? This action cannot be reversed", pluralizeOrCapitalize(to: postVariable, withAction: .allSmallSingular))
     }
@@ -128,4 +143,9 @@ public struct LMStringConstants {
     public var searchPostNavTitle: String {
         String(format: "Search %@", postVariable)
     }
+    
+    public var discardEditPostMessage : String {
+        String(format: "Are you sure you want to discard your reel? Any unsaved changes will be lost, and this action cannot be undone.", pluralizeOrCapitalize(to: postVariable, withAction: .allSmallSingular))
+    }
+    
 }

@@ -28,13 +28,15 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
         public let postID: String
         public let width: Int?
         public let height: Int?
+        public let showRemoveButton: Bool
         
-        public init(videoURL: String, isFilePath: Bool = false, postID: String, width: Int?, height: Int?) {
+        public init(videoURL: String, isFilePath: Bool = false, postID: String, width: Int?, height: Int?, showRemoveButton: Bool = true) {
             self.videoURL = videoURL
             self.isFilePath = isFilePath
             self.postID = postID
             self.height = height
             self.width = width
+            self.showRemoveButton = showRemoveButton
         }
     }
     
@@ -76,7 +78,7 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
     }()
     
     open private(set) lazy var seekBar: UISlider = {
-       let slider = UISlider()
+        let slider = UISlider()
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.minimumValue = 0
         return slider
@@ -92,6 +94,7 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
     public var videoURL: URL?
     var timeObserverToken: Any?
     var showControls: Bool = true
+    var showVolumeButton: Bool = true
     
     
     // MARK: prepareForReuse
@@ -103,7 +106,7 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
     
     
     // MARK: setupViews
-    public override func setupViews() {
+    open override func setupViews() {
         super.setupViews()
         
         contentView.addSubview(containerView)
@@ -112,6 +115,9 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
         containerView.addSubview(volumeButton)
         containerView.addSubview(playPauseButton)
         containerView.addSubview(seekBar)
+        
+        // Ensure video player is at the back
+        containerView.sendSubviewToBack(videoPlayer)
     }
     
     
@@ -122,6 +128,7 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
         contentView.pinSubView(subView: containerView)
         containerView.pinSubView(subView: videoPlayer)
         
+        // Position controls on top of video
         volumeButton.addConstraint(bottom: (containerView.bottomAnchor, -16),
                                    trailing: (containerView.trailingAnchor, -16))
         volumeButton.setHeightConstraint(with: volumeButtonHeight)
@@ -135,8 +142,10 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
         playPauseButton.setHeightConstraint(with: playPauseButtonHeight)
         playPauseButton.setWidthConstraint(with: playPauseButton.heightAnchor)
         playPauseButton.addConstraint(centerX: (centerXAnchor, 0), centerY: (centerYAnchor, 0))
-   
-        seekBar.addConstraint( bottom: (containerView.bottomAnchor, -16), leading: (containerView.leadingAnchor, 16) , trailing: (volumeButton.leadingAnchor, -16))
+        
+        seekBar.addConstraint(bottom: (containerView.bottomAnchor, -16),
+                              leading: (containerView.leadingAnchor, 16),
+                              trailing: (volumeButton.leadingAnchor, -16))
         seekBar.setHeightConstraint(with: 30)
     }
     
@@ -189,15 +198,16 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
     }
     
     // MARK: configure
-    open func configure(with data: ContentModel, index: Int, crossButtonAction: ((String) -> Void)? = nil, didTapVideo: (() -> Void)? = nil, showControls: Bool = false) {
+    open func configure(with data: ContentModel, index: Int, crossButtonAction: ((String) -> Void)? = nil, didTapVideo: (() -> Void)? = nil, showControls: Bool = false,showVolumeButton : Bool = true) {
         guard let url = URL(string: data.videoURL) else { return }
         videoURL = url
         self.showControls = showControls
+        self.showVolumeButton = showVolumeButton
         self.didTapVideo = didTapVideo
         videoPlayer.prepareVideo(with: data, index, showControls: showControls)
         self.crossButtonAction = crossButtonAction
-        crossButton.isHidden = crossButtonAction == nil
-        if crossButtonAction != nil {
+        crossButton.isHidden = !data.showRemoveButton || crossButtonAction == nil
+        if crossButtonAction != nil && data.showRemoveButton {
             containerView.bringSubviewToFront(crossButton)
         }
         seekBar.isHidden = !showControls
@@ -252,7 +262,7 @@ open class LMFeedVideoCollectionCell: LMFeedCollectionViewCell {
     private func showButton() {
         seekBar.isHidden = !showControls
         playPauseButton.isHidden = false
-        volumeButton.isHidden = false
+        volumeButton.isHidden = !showVolumeButton
     }
     
     @objc private func didTapPlayPauseButton() {

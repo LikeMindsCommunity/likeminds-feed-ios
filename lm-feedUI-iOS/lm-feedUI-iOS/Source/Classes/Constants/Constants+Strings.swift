@@ -34,5 +34,9 @@ public extension LMFeedConstants {
         
         public var pollOptionalText = "Option Text"
         public var pollAddByText = "Added By Text"
+        
+        public var videoListEndPageTitle = "You're All Caught Up"
+        public var videoListEndPageButtonTitle = "View older posts"
+    
     }
 }
