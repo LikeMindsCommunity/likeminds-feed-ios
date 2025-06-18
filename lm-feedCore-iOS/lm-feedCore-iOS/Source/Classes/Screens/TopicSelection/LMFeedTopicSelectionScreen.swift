@@ -13,16 +13,16 @@ public protocol LMFeedTopicSelectionViewProtocol: AnyObject {
 }
 
 @IBDesignable
-open class LMFeedTopicSelectionScreen: LMViewController {
+open class LMFeedTopicSelectionScreen: LMFeedViewController {
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
-    open private(set) lazy var topicSelectionListView: LMTableView = {
-        let table = LMTableView(frame: .zero, style: .grouped).translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var topicSelectionListView: LMFeedTableView = {
+        let table = LMFeedTableView(frame: .zero, style: .grouped).translatesAutoresizingMaskIntoConstraints()
         table.backgroundColor = LMFeedAppearance.shared.colors.clear
         table.dataSource = self
         table.delegate = self
@@ -116,7 +116,7 @@ extension LMFeedTopicSelectionScreen: UITableViewDataSource, UITableViewDelegate
             return cell
         }
         
-        return LMTableViewCell()
+        return LMFeedTableViewCell()
     }
     
     open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? { .none }

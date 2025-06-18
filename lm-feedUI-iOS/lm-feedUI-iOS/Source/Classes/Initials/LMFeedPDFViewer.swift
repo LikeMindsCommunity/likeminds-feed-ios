@@ -9,7 +9,7 @@ import PDFKit
 import UIKit
 
 @IBDesignable
-open class LMFeedPDFViewer: LMViewController {
+open class LMFeedPDFViewer: LMFeedViewController {
     open private(set) lazy var pdfViewer: PDFView = {
         let pdfView = PDFView()
         pdfView.translatesAutoresizingMaskIntoConstraints = false

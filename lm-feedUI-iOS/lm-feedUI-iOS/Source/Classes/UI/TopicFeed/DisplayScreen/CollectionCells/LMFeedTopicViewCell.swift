@@ -8,10 +8,10 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedTopicViewCell: LMCollectionViewCell {
+open class LMFeedTopicViewCell: LMFeedCollectionViewCell {
     // MARK: UI Elements
-    open private(set) lazy var textLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var textLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.textFont2
         label.textColor = LMFeedAppearance.shared.colors.appTintColor
         return label

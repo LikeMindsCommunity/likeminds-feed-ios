@@ -8,28 +8,28 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedAddMediaView: LMView {
+open class LMFeedAddMediaView: LMFeedView {
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = .clear
         return view
     }()
     
-    open private(set) lazy var imageView: LMImageView = {
-        let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var imageView: LMFeedImageView = {
+        let image = LMFeedImageView().translatesAutoresizingMaskIntoConstraints()
         return image
     }()
     
-    open private(set) lazy var titleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var titleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.buttonFont1
         label.textColor = LMFeedAppearance.shared.colors.gray1
         return label
     }()
     
-    open private(set) lazy var sepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var sepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
         return view
     }()

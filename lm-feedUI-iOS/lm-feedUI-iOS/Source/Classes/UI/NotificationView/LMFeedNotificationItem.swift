@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedNotificationItem: LMTableViewCell {
+open class LMFeedNotificationItem: LMFeedTableViewCell {
     public struct ContentModel {
         public let notificationID: String
         public let notification: String
@@ -36,22 +36,22 @@ open class LMFeedNotificationItem: LMTableViewCell {
         return image
     }()
     
-    open private(set) lazy var mediaContainerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var mediaContainerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.appTintColor
         return view
     }()
     
-    open private(set) lazy var mediaImage: LMImageView = {
-        let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var mediaImage: LMFeedImageView = {
+        let image = LMFeedImageView().translatesAutoresizingMaskIntoConstraints()
         image.clipsToBounds = true
         image.tintColor = LMFeedAppearance.shared.colors.white
         image.contentMode = .scaleAspectFit
         return image
     }()
     
-    open private(set) lazy var contentStack: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var contentStack: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fill
@@ -59,16 +59,16 @@ open class LMFeedNotificationItem: LMTableViewCell {
         return stack
     }()
     
-    open private(set) lazy var titleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var titleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.headingFont3
         label.textColor = LMFeedAppearance.shared.colors.black
         label.numberOfLines = 4
         return label
     }()
     
-    open private(set) lazy var timeLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var timeLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.subHeadingFont2
         label.textColor = LMFeedAppearance.shared.colors.gray155
         return label

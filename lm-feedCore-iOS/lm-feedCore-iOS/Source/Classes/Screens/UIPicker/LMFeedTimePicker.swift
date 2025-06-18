@@ -12,15 +12,15 @@ public protocol LMFeedTimePickerProtocol: AnyObject {
     func didSelectTime(at date: Date)
 }
 
-open class LMFeedTimePicker: LMViewController {
+open class LMFeedTimePicker: LMFeedViewController {
     // MARK: UI Elements
-    open private(set) lazy var dismissView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var dismissView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
@@ -35,8 +35,8 @@ open class LMFeedTimePicker: LMViewController {
     }()
     
     
-    open private(set) lazy var doneButtonStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var doneButtonStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .horizontal
         stack.alignment = .fill
         stack.distribution = .fill
@@ -45,24 +45,24 @@ open class LMFeedTimePicker: LMViewController {
     }()
     
     
-    open private(set) lazy var doneButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var doneButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle("Done", for: .normal)
         button.setTitleColor(LMFeedAppearance.shared.colors.appTintColor, for: .normal)
         button.setImage(nil, for: .normal)
         return button
     }()
     
-    open private(set) lazy var cancelButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var cancelButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle("Cancel", for: .normal)
         button.setTitleColor(LMFeedAppearance.shared.colors.appTintColor, for: .normal)
         button.setImage(nil, for: .normal)
         return button
     }()
     
-    open private(set) lazy var spacerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var spacerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
         view.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return view

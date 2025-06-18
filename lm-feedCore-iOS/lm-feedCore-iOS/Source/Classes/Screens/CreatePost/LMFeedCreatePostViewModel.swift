@@ -149,7 +149,7 @@ public extension LMFeedCreatePostViewModel {
     
     func addMoreButtonClicked() {
         switch currentMediaSelectionType {
-        case .image, .video, .document:
+        case .image, .video, .document, .reel:
             let selectedMedia = media.compactMap { $0.asset }
             delegate?.openMediaPicker(currentMediaSelectionType, isFirstPick: media.isEmpty, allowedNumber: maxMedia, selectedAssets: selectedMedia)
         case .poll, 
@@ -168,7 +168,7 @@ public extension LMFeedCreatePostViewModel {
             switch medium.mediaType {
             case .image:
                 mediaData.append(LMFeedImageCollectionCell.ContentModel(image: medium.url.absoluteString, isFilePath: medium.url.isFileURL, width: medium.width, height: medium.height))
-            case .video:
+            case .video,.reel:
                 let timestamp = Date().millisecondsSince1970
                 mediaData.append(LMFeedVideoCollectionCell.ContentModel(videoURL: medium.url.absoluteString, isFilePath: medium.url.isFileURL, postID: "-\(timestamp)", width: medium.width, height: medium.height))
             case .document:
@@ -191,7 +191,7 @@ public extension LMFeedCreatePostViewModel {
         delegate?.resetMediaView()
         
         switch currentMediaSelectionType {
-        case .image, .video, .none, .poll:
+        case .image, .video, .none, .poll,.reel:
             delegate?.showMedia(media: mediaData, isShowAddMore: !media.isEmpty && media.count < maxMedia, isShowBottomTab: media.isEmpty)
         case .document:
             delegate?.showMedia(documents: docData, isShowAddMore: !media.isEmpty && media.count < maxMedia, isShowBottomTab: media.isEmpty)

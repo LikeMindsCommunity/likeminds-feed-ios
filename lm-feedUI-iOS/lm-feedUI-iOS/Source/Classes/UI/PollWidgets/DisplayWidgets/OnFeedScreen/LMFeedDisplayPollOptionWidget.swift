@@ -52,8 +52,8 @@ open class LMFeedDisplayPollOptionWidget: BaseDisplayPollWidget {
     
     
     // MARK: UI Elements
-    open private(set) lazy var outerStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var outerStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fill
@@ -68,14 +68,14 @@ open class LMFeedDisplayPollOptionWidget: BaseDisplayPollWidget {
         return progress
     }()
     
-    open private(set) lazy var voteCountContainer: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var voteCountContainer: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
-    open private(set) lazy var voteCount: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var voteCount: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle("Vote Count", for: .normal)
         button.setImage(nil, for: .normal)
         button.setFont(LMFeedAppearance.shared.fonts.buttonFont1)
@@ -83,18 +83,18 @@ open class LMFeedDisplayPollOptionWidget: BaseDisplayPollWidget {
         return button
     }()
     
-    open private(set) lazy var innerContainerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var innerContainerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
         view.isUserInteractionEnabled = true
         return view
     }()
     
-    open private(set) lazy var checkmarkIcon: LMImageView = {
+    open private(set) lazy var checkmarkIcon: LMFeedImageView = {
         let image = LMFeedConstants.shared.images.checkmarkIconFilled
             .applyingSymbolConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.headingFont1))
         
-        let imageView = LMImageView(image: image)
+        let imageView = LMFeedImageView(image: image)
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = LMFeedAppearance.shared.colors.appTintColor

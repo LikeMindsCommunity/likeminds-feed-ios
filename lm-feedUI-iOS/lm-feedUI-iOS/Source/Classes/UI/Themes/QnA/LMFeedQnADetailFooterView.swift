@@ -9,37 +9,37 @@ import UIKit
 
 open class LMFeedQnADetailFooterView: LMFeedPostQnAFooterView {
     // MARK: UI Elements
-    open private(set) lazy var actionStackContainer: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var actionStackContainer: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var commentContainerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var commentContainerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var totalCommentLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var totalCommentLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.headingFont3
         label.textColor = LMFeedAppearance.shared.colors.gray1
         return label
     }()
     
-    open private(set) lazy var noCommentContainerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var noCommentContainerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var noCommenTitleLabel: LMLabel = {
-        let label =  LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var noCommenTitleLabel: LMFeedLabel = {
+        let label =  LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = ""
         label.textColor = LMFeedAppearance.shared.colors.gray51
         return label
     }()
     
-    open private(set) lazy var noCommentSubtitleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var noCommentSubtitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = ""
         label.textColor = LMFeedAppearance.shared.colors.gray102
         return label
@@ -123,8 +123,8 @@ open class LMFeedQnADetailFooterView: LMFeedPostQnAFooterView {
         commentContainerView.isHidden = commentCount == .zero
     }
     
-    open override func configure(with data: LMFeedBasePostFooterView.ContentModel, topResponse: LMFeedCommentContentModel?, postID: String, delegate: any LMFeedPostFooterViewProtocol) {
-        super.configure(with: data, topResponse: topResponse, postID: postID, delegate: delegate)
+    open override func configure(with data: LMFeedBasePostFooterView.ContentModel, topResponse: LMFeedCommentContentModel?, postID: String, delegate: any LMFeedPostFooterViewProtocol, orientation: LMFeedPostFooterOrientation = .horizontal) {
+        super.configure(with: data, topResponse: topResponse, postID: postID, delegate: delegate, orientation: orientation)
         
         addCommentView.isHidden = data.commentCount != .zero
         

@@ -14,7 +14,7 @@ public final class LMFeedRouter {
         case routeToCreatePost = "create_post"
     }
     
-    public static func fetchRoute(from cta: String, completion: ((Result<LMViewController, LMFeedError>) -> Void)) {
+    public static func fetchRoute(from cta: String, completion: ((Result<LMFeedViewController, LMFeedError>) -> Void)) {
         guard let route = cta.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
         let url = URL(string: route),
         let host = url.host,

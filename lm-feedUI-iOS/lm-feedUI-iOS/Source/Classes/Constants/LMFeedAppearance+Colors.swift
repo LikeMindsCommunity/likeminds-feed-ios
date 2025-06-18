@@ -41,5 +41,7 @@ public extension LMFeedAppearance {
         public var userProfileColor: UIColor = .blue
         public var linkColor: UIColor = .red
         public var hashtagColor: UIColor = .blue
+        public var green : UIColor = UIColor(red: 0, green: 137/255, blue: 123/255, alpha: 1.0)
+        public var blue : UIColor = .blue
     }
 }

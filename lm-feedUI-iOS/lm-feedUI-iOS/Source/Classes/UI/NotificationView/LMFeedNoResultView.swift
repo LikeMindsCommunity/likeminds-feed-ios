@@ -8,19 +8,19 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedNoResultView: LMView {
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+open class LMFeedNoResultView: LMFeedView {
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var emptyImageView: LMImageView = {
-        let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var emptyImageView: LMFeedImageView = {
+        let image = LMFeedImageView().translatesAutoresizingMaskIntoConstraints()
         return image
     }()
     
-    open private(set) lazy var textLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var textLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = LMFeedConstants.shared.strings.noResultsFound
         label.textColor = LMFeedAppearance.shared.colors.gray51
         label.font = LMFeedAppearance.shared.fonts.headingFont3

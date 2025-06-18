@@ -8,10 +8,10 @@
 import LikeMindsFeedUI
 import UIKit
 
-open class LMFeedBaseUniversalFeed: LMViewController {
+open class LMFeedBaseUniversalFeed: LMFeedViewController {
     // MARK: UI Elements
-    open private(set) lazy var contentStack: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var contentStack: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.backgroundColor = LMFeedAppearance.shared.colors.clear
         stack.axis = .vertical
         stack.alignment = .fill
@@ -20,14 +20,14 @@ open class LMFeedBaseUniversalFeed: LMViewController {
         return stack
     }()
     
-    open private(set) lazy var topicContainerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var topicContainerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
-    open private(set) lazy var topicStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var topicStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.backgroundColor = LMFeedAppearance.shared.colors.white
         stack.axis = .horizontal
         stack.alignment = .center
@@ -36,8 +36,8 @@ open class LMFeedBaseUniversalFeed: LMViewController {
         return stack
     }()
     
-    open private(set) lazy var topicSelectionButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var topicSelectionButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(LMFeedConstants.shared.strings.allTopics, for: .normal)
         button.setImage(LMFeedConstants.shared.images.downArrow, for: .normal)
         button.setFont(LMFeedAppearance.shared.fonts.buttonFont2)
@@ -47,12 +47,12 @@ open class LMFeedBaseUniversalFeed: LMViewController {
         return button
     }()
     
-    open private(set) lazy var topicCollection: LMCollectionView = {
+    open private(set) lazy var topicCollection: LMFeedCollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.estimatedItemSize = .init(width: 100, height: 30)
         
-        let collection = LMCollectionView(frame: .zero, collectionViewLayout: layout).translatesAutoresizingMaskIntoConstraints()
+        let collection = LMFeedCollectionView(frame: .zero, collectionViewLayout: layout).translatesAutoresizingMaskIntoConstraints()
         collection.dataSource = self
         collection.delegate = self
         collection.registerCell(type: LMUIComponents.shared.topicFeedEditView)
@@ -62,8 +62,8 @@ open class LMFeedBaseUniversalFeed: LMViewController {
         return collection
     }()
     
-    open private(set) lazy var clearButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var clearButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setFont(LMFeedAppearance.shared.fonts.buttonFont2)
         button.setTitleColor(LMFeedAppearance.shared.colors.gray102, for: .normal)
         button.setTitle("Clear", for: .normal)
@@ -74,8 +74,8 @@ open class LMFeedBaseUniversalFeed: LMViewController {
     
     
     
-    open private(set) lazy var createPostButton: LMButton = {
-        let button = LMButton.createButton(
+    open private(set) lazy var createPostButton: LMFeedButton = {
+        let button = LMFeedButton.createButton(
             with: LMStringConstants.shared.newPost,
             image: LMFeedConstants.shared.images.createPostIcon,
             textColor: LMFeedAppearance.shared.colors.white,

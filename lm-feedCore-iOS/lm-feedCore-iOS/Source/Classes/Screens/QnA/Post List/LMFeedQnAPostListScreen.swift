@@ -10,7 +10,7 @@ import LikeMindsFeedUI
 
 open class LMFeedQnAPostListScreen: LMFeedBasePostListScreen {
     // MARK: - Overridden Methods
-    open override func configureTableViewCells(_ tableView: LMTableView) {
+    open override func configureTableViewCells(_ tableView: LMFeedTableView) {
         tableView.register(LMUIComponents.shared.topicCell)
         tableView.register(LMUIComponents.shared.textCell)
         tableView.register(LMUIComponents.shared.mediaCell)
@@ -65,7 +65,7 @@ open class LMFeedQnAPostListScreen: LMFeedBasePostListScreen {
                 return cell
             }
         default:
-            return LMTableViewCell()
+            return LMFeedTableViewCell()
         }
         
         return UITableViewCell()

@@ -20,7 +20,7 @@ public extension LMFeedTopicViewCellProtocol {
 }
 
 @IBDesignable
-open class LMFeedTopicView: LMView {
+open class LMFeedTopicView: LMFeedView {
     public struct ContentModel {
         public let topics: [LMFeedTopicCollectionCellDataModel]
         public let isSelectFlow: Bool
@@ -36,14 +36,14 @@ open class LMFeedTopicView: LMView {
     }
     
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
-    open private(set) lazy var stackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var stackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fill
@@ -64,8 +64,8 @@ open class LMFeedTopicView: LMView {
         return collection
     }()
     
-    open private(set) lazy var sepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var sepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
         return view
     }()

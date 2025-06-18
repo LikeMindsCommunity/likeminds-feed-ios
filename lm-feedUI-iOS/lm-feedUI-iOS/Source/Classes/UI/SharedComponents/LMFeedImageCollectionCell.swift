@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedImageCollectionCell: LMCollectionViewCell {
+open class LMFeedImageCollectionCell: LMFeedCollectionViewCell {
     public struct ContentModel: LMFeedMediaProtocol {
         public let image: String
         public let isFilePath: Bool
@@ -25,16 +25,16 @@ open class LMFeedImageCollectionCell: LMCollectionViewCell {
     
     
     // MARK: UI Elements
-    open private(set) lazy var imageView: LMImageView = {
-        let image = LMImageView()
+    open private(set) lazy var imageView: LMFeedImageView = {
+        let image = LMFeedImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFit
         image.backgroundColor = LMFeedAppearance.shared.colors.black
         return image
     }()
     
-    open private(set) lazy var crossButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var crossButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
         button.backgroundColor = LMFeedAppearance.shared.colors.black4

@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedTaggingUserItem: LMTableViewCell {
+open class LMFeedTaggingUserItem: LMFeedTableViewCell {
     public struct ContentModel {
         public let userImage: String?
         public let userName: String
@@ -29,13 +29,13 @@ open class LMFeedTaggingUserItem: LMTableViewCell {
         return image
     }()
     
-    open private(set) lazy var userNameLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var userNameLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         return label
     }()
     
-    open private(set) lazy var sepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var sepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     

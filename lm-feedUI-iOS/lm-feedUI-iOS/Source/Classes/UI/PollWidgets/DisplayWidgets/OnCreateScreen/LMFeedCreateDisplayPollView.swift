@@ -34,8 +34,8 @@ open class LMFeedCreateDisplayPollView: BaseDisplayPollView {
     }
     
     // MARK: UI Elements
-    open private(set) lazy var questionStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var questionStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .horizontal
         stack.alignment = .top
         stack.distribution = .fill
@@ -43,8 +43,8 @@ open class LMFeedCreateDisplayPollView: BaseDisplayPollView {
         return stack
     }()
     
-    open private(set) lazy var crossButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var crossButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(LMFeedConstants.shared.images.crossIcon, for: .normal)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.headingFont1), forImageIn: .normal)
@@ -54,8 +54,8 @@ open class LMFeedCreateDisplayPollView: BaseDisplayPollView {
         return button
     }()
     
-    open private(set) lazy var editButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var editButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(LMFeedConstants.shared.images.pencilIcon, for: .normal)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.headingFont1), forImageIn: .normal)

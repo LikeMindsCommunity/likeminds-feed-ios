@@ -8,10 +8,10 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedReplyView: LMTableViewCell {
+open class LMFeedReplyView: LMFeedTableViewCell {
     // MARK: UI Elements    
-    open private(set) lazy var authorNameLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var authorNameLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = LMFeedAppearance.shared.colors.gray1
         label.font = LMFeedAppearance.shared.fonts.headingFont3
         label.text = "Ronald Richards"
@@ -19,16 +19,16 @@ open class LMFeedReplyView: LMTableViewCell {
         return label
     }()
     
-    open private(set) lazy var commentContainerStack: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var commentContainerStack: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .horizontal
         stack.alignment = .center
         stack.distribution = .equalSpacing
         return stack
     }()
     
-    open private(set) lazy var commentStack: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var commentStack: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .leading
         stack.distribution = .fill
@@ -36,8 +36,8 @@ open class LMFeedReplyView: LMTableViewCell {
         return stack
     }()
     
-    open private(set) lazy var commentLabel: LMTextView = {
-        let label = LMTextView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var commentLabel: LMFeedTextView = {
+        let label = LMFeedTextView().translatesAutoresizingMaskIntoConstraints()
         label.isScrollEnabled = false
         label.isEditable = false
         label.textContainer.lineBreakMode = .byTruncatingTail
@@ -47,8 +47,8 @@ open class LMFeedReplyView: LMTableViewCell {
         return label
     }()
     
-    open private(set) lazy var seeMoreText: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var seeMoreText: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle("See More", for: .normal)
         button.setTitleColor(LMFeedAppearance.shared.colors.gray155, for: .normal)
         button.setFont(LMFeedAppearance.shared.fonts.buttonFont1)
@@ -56,16 +56,16 @@ open class LMFeedReplyView: LMTableViewCell {
         return button
     }()
     
-    open private(set) lazy var menuButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var menuButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(LMFeedConstants.shared.images.ellipsis, for: .normal)
         button.tintColor = LMFeedAppearance.shared.colors.gray102
         return button
     }()
     
-    open private(set) lazy var actionStack: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var actionStack: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .horizontal
         stack.alignment = .fill
         stack.distribution = .fill
@@ -73,8 +73,8 @@ open class LMFeedReplyView: LMTableViewCell {
         return stack
     }()
     
-    open private(set) lazy var likeButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var likeButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(LMFeedConstants.shared.images.heart, for: .normal)
         button.setImage(LMFeedConstants.shared.images.heartFilled, for: .selected)
@@ -82,8 +82,8 @@ open class LMFeedReplyView: LMTableViewCell {
         return button
     }()
     
-    open private(set) lazy var likeTextButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var likeTextButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(nil, for: .normal)
         button.setTitleColor(LMFeedAppearance.shared.colors.gray3, for: .normal)
@@ -91,8 +91,8 @@ open class LMFeedReplyView: LMTableViewCell {
         return button
     }()
     
-    open private(set) lazy var commentTimeLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var commentTimeLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = LMFeedAppearance.shared.colors.gray3
         label.font = LMFeedAppearance.shared.fonts.subHeadingFont1
         label.text = "20m"
@@ -208,7 +208,7 @@ open class LMFeedReplyView: LMTableViewCell {
     
     @objc
     open func tappedTextView(tapGesture: UITapGestureRecognizer) {
-        guard let textView = tapGesture.view as? LMTextView,
+        guard let textView = tapGesture.view as? LMFeedTextView,
               let position = textView.closestPosition(to: tapGesture.location(in: textView)),
               let text = textView.textStyling(at: position, in: .forward) else { return }
         if let url = text[.link] as? URL {

@@ -10,8 +10,8 @@ import UIKit
 open class LMFeedBaseMediaCell: LMPostWidgetTableViewCell {
     
     // MARK: UI Elements
-    open private(set) lazy var mediaCollectionView: LMCollectionView = {
-        let collection = LMCollectionView(frame: .zero, collectionViewLayout: LMCollectionView.mediaFlowLayout())
+    open private(set) lazy var mediaCollectionView: LMFeedCollectionView = {
+        let collection = LMFeedCollectionView(frame: .zero, collectionViewLayout: LMFeedCollectionView.mediaFlowLayout())
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.dataSource = self
         collection.delegate = self

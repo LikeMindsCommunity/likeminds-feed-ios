@@ -12,36 +12,36 @@ public protocol LMFeedAddOptionProtocol: AnyObject {
     func onAddOptionResponse(postID: String, success: Bool, errorMessage: String?)
 }
 
-open class LMFeedPollAddOptionScreen: LMViewController {
+open class LMFeedPollAddOptionScreen: LMFeedViewController {
     // MARK: UI Elements
-    open private(set) lazy var dismissView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var dismissView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.black.withAlphaComponent(0.5)
         return view
     }()
     
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
-    open private(set) lazy var sepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var sepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
         return view
     }()
     
-    open private(set) lazy var titleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var titleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.text = "Add new poll option"
         label.textColor = LMFeedAppearance.shared.colors.gray51
         return label
     }()
     
-    open private(set) lazy var subtitleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var subtitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.subHeadingFont2
         label.text = "Enter an option that you think is missing in this poll. This can not be undone."
         label.textColor = LMFeedAppearance.shared.colors.gray51
@@ -49,14 +49,14 @@ open class LMFeedPollAddOptionScreen: LMViewController {
         return label
     }()
     
-    open private(set) lazy var optionTextContainer: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var optionTextContainer: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
-    open private(set) lazy var optionTextField: LMTextField = {
-        let text = LMTextField()
+    open private(set) lazy var optionTextField: LMFeedTextField = {
+        let text = LMFeedTextField()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.placeholder = "Type new option"
         text.textColor = LMFeedAppearance.shared.colors.gray51

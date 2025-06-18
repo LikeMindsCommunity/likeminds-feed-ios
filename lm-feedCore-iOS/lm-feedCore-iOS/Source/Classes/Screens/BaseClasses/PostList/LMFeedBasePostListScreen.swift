@@ -23,10 +23,10 @@ public protocol LMFeedPostListVCToProtocol: AnyObject {
     func loadPostsWithTopics(_ topics: [String])
 }
 
-open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewModelProtocol {
+open class LMFeedBasePostListScreen: LMFeedViewController, LMFeedBasePostListViewModelProtocol {
     // MARK: UI Elements
-    open lazy var postList: LMTableView = {
-        let table = LMTableView(frame: .zero, style: .grouped)
+    open lazy var postList: LMFeedTableView = {
+        let table = LMFeedTableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.separatorStyle = .none
         table.showsVerticalScrollIndicator = false
@@ -114,7 +114,7 @@ open class LMFeedBasePostListScreen: LMViewController, LMFeedBasePostListViewMod
     }
     
     // MARK: Helper Methods
-    open func configureTableViewCells(_ tableView: LMTableView) {
+    open func configureTableViewCells(_ tableView: LMFeedTableView) {
         fatalError("Needs to be implemented by subclass")
     }
     
@@ -405,6 +405,7 @@ extension LMFeedBasePostListScreen: LMFeedPostHeaderViewProtocol {
 // MARK: - LMFeedPostFooterViewProtocol
 @objc
 extension LMFeedBasePostListScreen: LMFeedPostFooterViewProtocol {
+    
     public func didTapLikeButton(for postID: String) {
         if let index = data.firstIndex(where: { $0.postID == postID }) {
             data[index].footerData.isLiked.toggle()

@@ -19,30 +19,30 @@ public protocol LMFeedDeleteViewModelProtocol: LMBaseViewControllerProtocol {
 
 
 @IBDesignable
-open class LMFeedDeleteScreen: LMViewController {
+open class LMFeedDeleteScreen: LMFeedViewController {
     // MARK: UI Elements
-    open private(set) lazy var contentView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var contentView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.black.withAlphaComponent(0.5)
         return view
     }()
     
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
-    open private(set) lazy var titleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var titleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = LMFeedAppearance.shared.colors.gray51
         label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.text = "Delete Post"
         return label
     }()
     
-    open private(set) lazy var subtitleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var subtitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = LMFeedAppearance.shared.colors.gray102
         label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.numberOfLines = 0
@@ -50,8 +50,8 @@ open class LMFeedDeleteScreen: LMViewController {
         return label
     }()
     
-    open private(set) lazy var reasonStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var reasonStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fill
@@ -59,23 +59,23 @@ open class LMFeedDeleteScreen: LMViewController {
         return stack
     }()
     
-    open private(set) lazy var reasonContainerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var reasonContainerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
         view.clipsToBounds = true
         return view
     }()
     
-    open private(set) lazy var reasonTitleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var reasonTitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Reason for deletion"
         label.font = LMFeedAppearance.shared.fonts.textFont1
         label.textColor = LMFeedAppearance.shared.colors.gray155
         return label
     }()
     
-    open private(set) lazy var downArrowImage: LMImageView = {
-        let image = LMImageView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var downArrowImage: LMFeedImageView = {
+        let image = LMFeedImageView().translatesAutoresizingMaskIntoConstraints()
         image.image = LMFeedConstants.shared.images.downArrowFilled
         image.tintColor = LMFeedAppearance.shared.colors.gray1
         return image
@@ -87,21 +87,21 @@ open class LMFeedDeleteScreen: LMViewController {
         return picker
     }()
     
-    open private(set) lazy var otherReasonTextView: LMTextView = {
-        let text = LMTextView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var otherReasonTextView: LMFeedTextView = {
+        let text = LMFeedTextView().translatesAutoresizingMaskIntoConstraints()
         text.clipsToBounds = true
         text.delegate = self
         return text
     }()
     
-    open private(set) lazy var sepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var sepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.gray1
         return view
     }()
     
-    open private(set) lazy var buttonContainerStack: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var buttonContainerStack: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .horizontal
         stack.alignment = .fill
         stack.distribution = .fillEqually
@@ -110,16 +110,16 @@ open class LMFeedDeleteScreen: LMViewController {
         return stack
     }()
     
-    open private(set) lazy var cancelButton: LMButton = {
-        let button = LMButton.createButton(with: "Cancel", image: nil, textColor: LMFeedAppearance.shared.colors.blueGray, textFont: LMFeedAppearance.shared.fonts.buttonFont2)
+    open private(set) lazy var cancelButton: LMFeedButton = {
+        let button = LMFeedButton.createButton(with: "Cancel", image: nil, textColor: LMFeedAppearance.shared.colors.blueGray, textFont: LMFeedAppearance.shared.fonts.buttonFont2)
         button.backgroundColor = LMFeedAppearance.shared.colors.white
         button.translatesAutoresizingMaskIntoConstraints = false
         button.clipsToBounds = true
         return button
     }()
     
-    open private(set) lazy var deleteButton: LMButton = {
-        let button = LMButton.createButton(with: "Delete", image: nil, textColor: LMFeedAppearance.shared.colors.red, textFont: LMFeedAppearance.shared.fonts.buttonFont2)
+    open private(set) lazy var deleteButton: LMFeedButton = {
+        let button = LMFeedButton.createButton(with: "Delete", image: nil, textColor: LMFeedAppearance.shared.colors.red, textFont: LMFeedAppearance.shared.fonts.buttonFont2)
         button.backgroundColor = LMFeedAppearance.shared.colors.white
         button.translatesAutoresizingMaskIntoConstraints = false
         button.clipsToBounds = true

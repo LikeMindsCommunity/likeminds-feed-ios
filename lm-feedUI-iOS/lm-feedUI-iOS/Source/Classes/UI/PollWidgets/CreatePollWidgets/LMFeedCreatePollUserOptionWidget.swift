@@ -7,29 +7,29 @@
 
 import UIKit
 
-open class LMFeedCreatePollUserOptionWidget: LMView {
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+open class LMFeedCreatePollUserOptionWidget: LMFeedView {
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var titleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var titleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = LMFeedAppearance.shared.colors.black
         label.font = LMFeedAppearance.shared.fonts.buttonFont2
         return label
     }()
     
-    open private(set) lazy var downArrow: LMImageView = {
+    open private(set) lazy var downArrow: LMFeedImageView = {
         let image = LMFeedConstants.shared.images.downArrowFilled.withConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.subHeadingFont1))
-        let imageView = LMImageView(image: image)
+        let imageView = LMFeedImageView(image: image)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = LMFeedAppearance.shared.colors.black
         return imageView
     }()
     
-    open private(set) lazy var sepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var sepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.gray4
         return view
     }()

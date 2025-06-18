@@ -7,7 +7,7 @@
 
 import UIKit
 
-open class LMFeedPollResultCollectionCell: LMCollectionViewCell {
+open class LMFeedPollResultCollectionCell: LMFeedCollectionViewCell {
     public struct ContentModel {
         public let optionID: String
         public let title: String
@@ -24,8 +24,8 @@ open class LMFeedPollResultCollectionCell: LMCollectionViewCell {
     
     
     // MARK: UI Elements
-    open private(set) lazy var stackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var stackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fillEqually
@@ -33,22 +33,22 @@ open class LMFeedPollResultCollectionCell: LMCollectionViewCell {
         return stack
     }()
     
-    open private(set) lazy var voteCountLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var voteCountLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.textAlignment = .center
         return label
     }()
     
-    open private(set) lazy var voteTitleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var voteTitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.textAlignment = .center
         return label
     }()
     
-    open private(set) lazy var sepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var sepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()

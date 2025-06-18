@@ -9,8 +9,8 @@ import UIKit
 
 open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
     // MARK: UI Elements
-    open private(set) lazy var footerContainerView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var footerContainerView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fill
@@ -18,8 +18,8 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         return stack
     }()
     
-    open private(set) lazy var likeContainerStack: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var likeContainerStack: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .horizontal
         stack.alignment = .center
         stack.distribution = .fill
@@ -27,26 +27,26 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         return stack
     }()
     
-    open private(set) lazy var likeCountButton: LMButton = {
-        let button = LMButton()
+    open private(set) lazy var likeCountButton: LMFeedButton = {
+        let button = LMFeedButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(LMFeedAppearance.shared.colors.gray102, for: .normal)
         button.setTitle(likeText, for: .normal)
         return button
     }()
     
-    open private(set) lazy var likeContainerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var likeContainerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var addCommentView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var addCommentView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var sepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var sepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
         return view
     }()
@@ -57,8 +57,8 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         return image
     }()
     
-    open private(set) lazy var placeholderLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var placeholderLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Be the first one to answer"
         label.font = LMFeedAppearance.shared.fonts.subHeadingFont2
         label.textColor = LMFeedAppearance.shared.colors.gray102
@@ -194,8 +194,8 @@ open class LMFeedPostQnAFooterView: LMFeedBasePostFooterView {
         addCommentView.isHidden = commentCount != .zero
     }
     
-    open override func configure(with data: LMFeedBasePostFooterView.ContentModel, topResponse: LMFeedCommentContentModel?, postID: String, delegate: any LMFeedPostFooterViewProtocol) {
-        super.configure(with: data, topResponse: topResponse, postID: postID, delegate: delegate)
+    open override func configure(with data: LMFeedBasePostFooterView.ContentModel, topResponse: LMFeedCommentContentModel?, postID: String, delegate: any LMFeedPostFooterViewProtocol, orientation: LMFeedPostFooterOrientation = .horizontal) {
+        super.configure(with: data, topResponse: topResponse, postID: postID, delegate: delegate, orientation: orientation)
         
         likeCountButton.setTitle(likeText, for: .normal)
         

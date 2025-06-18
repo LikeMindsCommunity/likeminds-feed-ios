@@ -45,10 +45,10 @@ public protocol LMFeedBasePostDetailViewModelProtocol:
         with postID: String, pollID: String, options: [String])
 }
 
-open class LMFeedBasePostDetailScreen: LMViewController {
+open class LMFeedBasePostDetailScreen: LMFeedViewController {
     // MARK: UI Elements
-    open private(set) lazy var postDetailListView: LMTableView = {
-        let table = LMTableView(frame: .zero, style: .grouped)
+    open private(set) lazy var postDetailListView: LMFeedTableView = {
+        let table = LMFeedTableView(frame: .zero, style: .grouped)
             .translatesAutoresizingMaskIntoConstraints()
         table.separatorStyle = .none
         table.showsVerticalScrollIndicator = false
@@ -69,14 +69,14 @@ open class LMFeedBasePostDetailScreen: LMViewController {
         return refresh
     }()
 
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
 
-    open private(set) lazy var containerStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .center
         stack.distribution = .fill
@@ -91,29 +91,29 @@ open class LMFeedBasePostDetailScreen: LMViewController {
         return view
     }()
 
-    open private(set) lazy var replyView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var replyView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
 
-    open private(set) lazy var replyNameLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var replyNameLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Replying To XYZ"
         label.font = LMFeedAppearance.shared.fonts.textFont1
         label.textColor = LMFeedAppearance.shared.colors.gray3
         return label
     }()
 
-    open private(set) lazy var removeReplyButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var removeReplyButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
         button.tintColor = LMFeedAppearance.shared.colors.gray3
         return button
     }()
 
-    open private(set) lazy var stackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var stackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .horizontal
         stack.alignment = .center
         stack.distribution = .fill
@@ -134,8 +134,8 @@ open class LMFeedBasePostDetailScreen: LMViewController {
         return textView
     }()
 
-    open private(set) lazy var sendButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var sendButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(
             LMFeedConstants.shared.images.planeIconFilled, for: .normal)
@@ -144,8 +144,8 @@ open class LMFeedBasePostDetailScreen: LMViewController {
         return button
     }()
 
-    open private(set) lazy var replySepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var replySepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
         return view
     }()
@@ -1254,6 +1254,10 @@ extension LMFeedBasePostDetailScreen: LMFeedTaggedUserFoundProtocol {
 extension LMFeedBasePostDetailScreen: LMFeedPostHeaderViewProtocol,
     LMFeedPostFooterViewProtocol
 {
+    public func didTapFooterMenuButton(for postID: String) {
+    
+    }
+    
     open func didTapPostMenuButton(for postID: String) {
         viewModel?.showMenu(postID: postID)
     }

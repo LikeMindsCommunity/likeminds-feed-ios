@@ -228,13 +228,13 @@ extension LMFeedPostDataModel {
         attachments.forEach { attachment in
             if let type = attachment.attachmentType {
                 switch type {
-                case .image, .video:
+                case .image, .video,.reel:
                     if let url = attachment.attachmentMeta?.attachmentUrl {
                         tempImageVideoAttachment.append(
                             .init(
                                 name: attachment.attachmentMeta?.name ?? "",
                                 url: url,
-                                isVideo: type == .video,
+                                isVideo: type == .video || type == .reel,
                                 size: attachment.attachmentMeta?.size ?? 0,
                                 duration: attachment.attachmentMeta?.duration,
                                 height: attachment.attachmentMeta?.height,

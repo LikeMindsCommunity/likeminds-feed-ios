@@ -8,10 +8,10 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedReportItem: LMCollectionViewCell {
+open class LMFeedReportItem: LMFeedCollectionViewCell {
     // MARK: UI Elements
-    open private(set) lazy var textLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var textLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.textFont1
         label.textColor = LMFeedAppearance.shared.colors.gray102
         label.text = "Tag"
@@ -61,10 +61,11 @@ open class LMFeedReportItem: LMCollectionViewCell {
         
         containerView.clipsToBounds = true
         containerView.layer.cornerRadius = contentView.bounds.height / 2
-        containerView.layer.borderColor = isCellSelected ? LMFeedAppearance.shared.colors.appTintColor.cgColor : LMFeedAppearance.shared.colors.gray155.cgColor
-        containerView.layer.borderWidth = 1
+        containerView.layer.borderColor = isCellSelected ? LMFeedAppearance.shared.colors.red.cgColor : LMFeedAppearance.shared.colors.gray155.cgColor
+        containerView.backgroundColor = isCellSelected ? LMFeedAppearance.shared.colors.red.withAlphaComponent(0.1) : LMFeedAppearance.shared.colors.gray4
+//        containerView.layer.borderWidth = 1
         
-        textLabel.textColor = isCellSelected ? LMFeedAppearance.shared.colors.appTintColor : LMFeedAppearance.shared.colors.gray102
+        textLabel.textColor = isCellSelected ? LMFeedAppearance.shared.colors.red : LMFeedAppearance.shared.colors.gray102
     }
     
     // MARK: configure
