@@ -73,6 +73,7 @@ PODS:
   - PromisesObjC (2.4.0)
 
 DEPENDENCIES:
+  - LikeMindsFeed (from `../../likeminds-feed-ios-data/LikeMindsFeedDev.podspec`)
   - LikeMindsFeedCore (from `../LikemindsFeedCore.podspec`)
   - LikeMindsFeedUI (from `../LikeMindsFeedUI.podspec`)
 
@@ -89,11 +90,12 @@ SPEC REPOS:
     - FirebaseMessaging
     - GoogleDataTransport
     - GoogleUtilities
-    - LikeMindsFeed
     - nanopb
     - PromisesObjC
 
 EXTERNAL SOURCES:
+  LikeMindsFeed:
+    :path: "../../likeminds-feed-ios-data/LikeMindsFeedDev.podspec"
   LikeMindsFeedCore:
     :path: "../LikemindsFeedCore.podspec"
   LikeMindsFeedUI:
@@ -111,12 +113,12 @@ SPEC CHECKSUMS:
   FirebaseMessaging: e1aca1fcc23e8b9eddb0e33f375ff90944623021
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
-  LikeMindsFeed: 4ac9e7d3446a868377a515ffc24b0ca6d8e52f84
-  LikeMindsFeedCore: 073ccdc1e289638ab77c0ef0af154d4a35e0aaa0
+  LikeMindsFeed: 3b4bf2c479207ba48131e9cf35cdc31ac375f247
+  LikeMindsFeedCore: 4b3f350bf03c10e30a5bef1e95f93a00d56d1281
   LikeMindsFeedUI: f6a4c1519c8c43be774598f7c904f519dca477a6
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
 
-PODFILE CHECKSUM: 1d53c33b40776c7caff50e3a2c437782ec02d109
+PODFILE CHECKSUM: d49f56c6923b9413ed7193dbf9df422c7d2be0e2
 
 COCOAPODS: 1.16.2

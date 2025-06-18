@@ -15,7 +15,12 @@ open class LMFeedPostFooterView: LMFeedBasePostFooterView {
         
         contentView.addSubview(containerView)
         containerView.addSubview(actionStackView)
+        
+        if orientation == .horizontal {
         [likeButton, likeTextButton, commentButton, spacer, saveButton, shareButton].forEach { actionStackView.addArrangedSubview($0) }
+        } else {
+            [likeButton, likeTextButton, commentButton, saveButton, shareButton].forEach { actionStackView.addArrangedSubview($0) }
+        }
     }
     
     // MARK: -  Constraints
@@ -24,6 +29,13 @@ open class LMFeedPostFooterView: LMFeedBasePostFooterView {
         
         contentView.pinSubView(subView: containerView, padding: .init(top: 0, left: 0, bottom: -8, right: 0))
         containerView.pinSubView(subView: actionStackView, padding: .init(top: 8, left: 16, bottom: -8, right: -16))
+        
+        if orientation == .vertical {
+            // Set fixed width for buttons in vertical orientation
+            [likeButton, likeTextButton, commentButton, saveButton, shareButton].forEach { button in
+                button.widthAnchor.constraint(equalToConstant: 44).isActive = true
+            }
+        }
     }
     
     open override func updateLikeText(for likeCount: Int) {

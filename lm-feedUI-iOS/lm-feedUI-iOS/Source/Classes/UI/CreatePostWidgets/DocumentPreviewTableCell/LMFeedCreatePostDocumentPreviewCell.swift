@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedCreatePostDocumentPreviewCell: LMTableViewCell {
+open class LMFeedCreatePostDocumentPreviewCell: LMFeedTableViewCell {
     // MARK: UI Elements
     open private(set) lazy var documentPreview: LMFeedDocumentPreview = {
         let view = LMUIComponents.shared.documentPreview.init().translatesAutoresizingMaskIntoConstraints()

@@ -7,7 +7,7 @@
 
 import UIKit
 
-open class BaseDisplayPollView: LMView {
+open class BaseDisplayPollView: LMFeedView {
     public protocol Content {
         var question: String { get }
         var expiryDate: Date { get }
@@ -20,14 +20,14 @@ open class BaseDisplayPollView: LMView {
     
     
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
     
-    open private(set) lazy var questionContainerStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var questionContainerStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fill
@@ -35,24 +35,24 @@ open class BaseDisplayPollView: LMView {
         return stack
     }()
     
-    open private(set) lazy var questionTitle: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var questionTitle: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.numberOfLines = 0
         label.textColor = LMFeedAppearance.shared.colors.gray51
         label.font = LMFeedAppearance.shared.fonts.headingFont1
         return label
     }()
     
-    open private(set) lazy var optionSelectCountLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var optionSelectCountLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = LMFeedAppearance.shared.colors.gray155
         label.font = LMFeedAppearance.shared.fonts.buttonFont1
         label.numberOfLines = 0
         return label
     }()
     
-    open private(set) lazy var optionStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var optionStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fill
@@ -60,8 +60,8 @@ open class BaseDisplayPollView: LMView {
         return stack
     }()
     
-    open private(set) lazy var expiryDateLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var expiryDateLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = LMFeedAppearance.shared.colors.gray102
         label.font = LMFeedAppearance.shared.fonts.subHeadingFont1
         return label

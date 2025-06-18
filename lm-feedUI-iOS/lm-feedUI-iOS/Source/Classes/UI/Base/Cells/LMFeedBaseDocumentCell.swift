@@ -10,8 +10,8 @@ import UIKit
 open class LMFeedBaseDocumentCell: LMPostWidgetTableViewCell {
     
     // MARK: UI Elements
-    open private(set) lazy var documentContainerStack: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var documentContainerStack: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .leading
         stack.distribution = .fill
@@ -19,8 +19,8 @@ open class LMFeedBaseDocumentCell: LMPostWidgetTableViewCell {
         return stack
     }()
         
-    open private(set) lazy var seeMoreDocumentsButton: LMButton = {
-        let button = LMButton.createButton(with: "See More", image: nil, textColor: LMFeedAppearance.shared.colors.appTintColor, textFont: LMFeedAppearance.shared.fonts.headingFont1, contentSpacing: .init(top: 8, left: 8, bottom: 8, right: 8))
+    open private(set) lazy var seeMoreDocumentsButton: LMFeedButton = {
+        let button = LMFeedButton.createButton(with: "See More", image: nil, textColor: LMFeedAppearance.shared.colors.appTintColor, textFont: LMFeedAppearance.shared.fonts.headingFont1, contentSpacing: .init(top: 8, left: 8, bottom: 8, right: 8))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         return button

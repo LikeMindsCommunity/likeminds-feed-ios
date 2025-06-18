@@ -7,10 +7,10 @@
 
 import LikeMindsFeedUI
 
-open class LMFeedPollResultListScreen: LMViewController {
+open class LMFeedPollResultListScreen: LMFeedViewController {
     // MARK: UI Elements
-    open private(set) lazy var voteView: LMTableView = {
-        let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var voteView: LMFeedTableView = {
+        let table = LMFeedTableView().translatesAutoresizingMaskIntoConstraints()
         table.register(LMUIComponents.shared.memberItem)
         table.dataSource = self
         table.delegate = self

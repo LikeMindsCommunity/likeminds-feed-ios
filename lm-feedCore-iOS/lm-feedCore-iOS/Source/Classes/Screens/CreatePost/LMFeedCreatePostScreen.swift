@@ -12,16 +12,16 @@ import UIKit
 import Photos
 
 
-open class LMFeedCreatePostScreen: LMViewController {
+open class LMFeedCreatePostScreen: LMFeedViewController {
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.white
         return view
     }()
     
-    open private(set) lazy var containerStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fill
@@ -38,8 +38,8 @@ open class LMFeedCreatePostScreen: LMViewController {
         return scroll
     }()
     
-    open private(set) lazy var scrollStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var scrollStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .center
         stack.distribution = .fill
@@ -84,8 +84,8 @@ open class LMFeedCreatePostScreen: LMViewController {
         return view
     }()
     
-    open private(set) lazy var mediaCollectionView: LMCollectionView = {
-        let collection = LMCollectionView(frame: .zero, collectionViewLayout: LMCollectionView.mediaFlowLayout())
+    open private(set) lazy var mediaCollectionView: LMFeedCollectionView = {
+        let collection = LMFeedCollectionView(frame: .zero, collectionViewLayout: LMFeedCollectionView.mediaFlowLayout())
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.registerCell(type: LMUIComponents.shared.imagePreview)
         collection.registerCell(type: LMUIComponents.shared.videoPreview)
@@ -108,8 +108,8 @@ open class LMFeedCreatePostScreen: LMViewController {
         return pageControl
     }()
     
-    open private(set) lazy var documentTableView: LMTableView = {
-        let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var documentTableView: LMFeedTableView = {
+        let table = LMFeedTableView().translatesAutoresizingMaskIntoConstraints()
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.isScrollEnabled = false
@@ -123,8 +123,8 @@ open class LMFeedCreatePostScreen: LMViewController {
         return table
     }()
     
-    open private(set) lazy var addMoreButton: LMButton = {
-        let button = LMButton.createButton(with: LMStringConstants.shared.addMoreText, image: LMFeedConstants.shared.images.plusIcon, textColor: LMFeedAppearance.shared.colors.appTintColor, textFont: LMFeedAppearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 16, bottom: 8, right: 16))
+    open private(set) lazy var addMoreButton: LMFeedButton = {
+        let button = LMFeedButton.createButton(with: LMStringConstants.shared.addMoreText, image: LMFeedConstants.shared.images.plusIcon, textColor: LMFeedAppearance.shared.colors.appTintColor, textFont: LMFeedAppearance.shared.fonts.buttonFont1, contentSpacing: .init(top: 8, left: 16, bottom: 8, right: 16))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         button.layer.borderColor = LMFeedAppearance.shared.colors.appTintColor.cgColor
@@ -134,8 +134,8 @@ open class LMFeedCreatePostScreen: LMViewController {
     }()
     
     
-    open private(set) lazy var addMediaStack: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var addMediaStack: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fillEqually
@@ -186,13 +186,13 @@ open class LMFeedCreatePostScreen: LMViewController {
     }()
     
     
-    open private(set) lazy var headingTextContainer: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var headingTextContainer: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var headingTextView: LMTextView = {
-        let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var headingTextView: LMFeedTextView = {
+        let textView = LMFeedTextView().translatesAutoresizingMaskIntoConstraints()
         textView.backgroundColor = LMFeedAppearance.shared.colors.clear
         textView.isScrollEnabled = true
         textView.isEditable = true
@@ -203,8 +203,8 @@ open class LMFeedCreatePostScreen: LMViewController {
         return textView
     }()
     
-    open private(set) lazy var headerSepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var headerSepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
         return view
     }()
@@ -616,7 +616,7 @@ extension LMFeedCreatePostScreen: LMFeedCreatePostViewModelProtocol {
             checkPhotoLibraryPermission { [weak self] in
                 self?.openImagePicker(.image, isFirstTime: isFirstPick, maxSelection: allowedNumber, selectedAssets: selectedAssets)
             }
-        case .video:
+        case .video,.reel:
             checkPhotoLibraryPermission { [weak self] in
                 self?.openImagePicker(.video, isFirstTime: isFirstPick, maxSelection: allowedNumber, selectedAssets: selectedAssets)
             }

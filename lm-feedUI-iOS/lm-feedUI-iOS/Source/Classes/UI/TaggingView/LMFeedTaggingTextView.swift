@@ -18,7 +18,7 @@ public extension LMFeedTaggingTextViewProtocol {
 }
 
 @IBDesignable
-open class LMFeedTaggingTextView: LMTextView {
+open class LMFeedTaggingTextView: LMFeedTextView {
     public var rawText: String = ""
     public var isMentioning: Bool = false {
         willSet {

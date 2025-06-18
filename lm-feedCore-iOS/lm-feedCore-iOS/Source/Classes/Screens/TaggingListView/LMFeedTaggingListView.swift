@@ -18,15 +18,15 @@ public protocol LMFeedTaggingProtocol: AnyObject {
 }
 
 @IBDesignable
-open class LMFeedTaggingListView: LMView {
+open class LMFeedTaggingListView: LMFeedView {
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var tableView: LMTableView = {
-        let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var tableView: LMFeedTableView = {
+        let table = LMFeedTableView().translatesAutoresizingMaskIntoConstraints()
         table.dataSource = self
         table.delegate = self
         table.showsVerticalScrollIndicator = false

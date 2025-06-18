@@ -14,7 +14,7 @@ public protocol LMFeedPostHeaderViewProtocol: AnyObject {
 }
 
 @IBDesignable
-open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
+open class LMFeedPostHeaderView: LMFeedTableViewHeaderFooterView {
     public struct ContentModel {
         public let profileImage: String?
         public let authorName: String
@@ -36,8 +36,8 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
     }
     
     // MARK: UI Elements
-    open private(set) lazy var contentContainerView: LMView = {
-        let view = LMView()
+    open private(set) lazy var contentContainerView: LMFeedView = {
+        let view = LMFeedView()
         view.contentMode = .scaleToFill
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
@@ -50,8 +50,8 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         return imageView
     }()
 
-    open private(set) lazy var outerStackView: LMStackView = {
-        let stackView = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var outerStackView: LMFeedStackView = {
+        let stackView = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .fill
@@ -60,8 +60,8 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         return stackView
     }()
 
-    open private(set) lazy var innerStackView: LMStackView = {
-        let stackView = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var innerStackView: LMFeedStackView = {
+        let stackView = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .fill
@@ -69,8 +69,8 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         return stackView
     }()
 
-    open private(set) lazy var pinButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var pinButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.contentMode = .scaleToFill
         button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         button.contentHorizontalAlignment = .center
@@ -80,8 +80,8 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         return button
     }()
 
-    open private(set) lazy var menuButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var menuButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.contentMode = .scaleToFill
         button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         button.contentHorizontalAlignment = .center
@@ -91,8 +91,8 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         return button
     }()
 
-    open private(set) lazy var authorStackView: LMStackView = {
-        let stackView = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var authorStackView: LMFeedStackView = {
+        let stackView = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stackView.axis = .horizontal
         stackView.alignment = .fill
         stackView.distribution = .fill
@@ -101,8 +101,8 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         return stackView
     }()
 
-    open private(set) lazy var subTitleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var subTitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.contentMode = .left
         label.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         label.text = "2d • Edited"
@@ -115,8 +115,8 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         return label
     }()
 
-    open private(set) lazy var authorNameLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var authorNameLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.contentMode = .left
         label.text = "Theresa Webb"
         label.textAlignment = .natural
@@ -127,8 +127,8 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         return label
     }()
 
-    open private(set) lazy var authorTagLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var authorTagLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.contentMode = .left
         label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         label.text = "Admin"
@@ -145,8 +145,8 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         return label
     }()
     
-    open private(set) lazy var spacerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var spacerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
@@ -155,6 +155,7 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
     public weak var delegate: LMFeedPostHeaderViewProtocol?
     public var userUUID: String?
     public var postID: String?
+    public var containerBackgroundColor: UIColor = LMFeedAppearance.shared.colors.white
     
     // MARK: View Hierachy
     open override func setupViews() {
@@ -229,7 +230,7 @@ open class LMFeedPostHeaderView: LMTableViewHeaderFooterView {
         super.setupAppearance()
         
         backgroundView = nil
-        contentContainerView.backgroundColor = .white
+        contentContainerView.backgroundColor = containerBackgroundColor
         imageView.roundCorners(with: 48/2)
     }
     
@@ -264,7 +265,7 @@ extension LMFeedPostHeaderView {
         delegate?.didTapProfilePicture(having: userUUID)
     }
     
-    open func didTapMenuButton() { 
+    open func didTapMenuButton() {
         guard let postID else { return }
         delegate?.didTapPostMenuButton(for: postID)
     }

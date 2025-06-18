@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedMemberItem: LMTableViewCell {
+open class LMFeedMemberItem: LMFeedTableViewCell {
     public struct ContentModel {
         public let username: String
         public let uuid: String
@@ -30,8 +30,8 @@ open class LMFeedMemberItem: LMTableViewCell {
         return image
     }()
     
-    open private(set) lazy var userTitleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var userTitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.buttonFont1
         return label
     }()

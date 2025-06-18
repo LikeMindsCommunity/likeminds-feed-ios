@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedTopicCollectionView: LMCollectionView {
+open class LMFeedTopicCollectionView: LMFeedCollectionView {
     open override var contentSize: CGSize {
         didSet {
             invalidateIntrinsicContentSize()

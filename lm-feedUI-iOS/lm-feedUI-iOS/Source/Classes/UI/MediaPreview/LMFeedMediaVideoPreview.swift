@@ -25,7 +25,7 @@ public struct LMFeedMediaPreviewContentModel {
     }    
 }
 
-open class LMFeedMediaVideoPreview: LMCollectionViewCell {
+open class LMFeedMediaVideoPreview: LMFeedCollectionViewCell {
     // MARK: UI Elements
     open private(set) lazy var videoCell: LMFeedVideoCollectionCell = {
         let videoCell = LMFeedVideoCollectionCell()

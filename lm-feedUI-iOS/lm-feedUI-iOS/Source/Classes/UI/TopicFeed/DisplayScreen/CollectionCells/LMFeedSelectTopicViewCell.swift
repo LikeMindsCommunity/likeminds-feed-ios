@@ -8,10 +8,10 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedSelectTopicViewCell: LMCollectionViewCell {
+open class LMFeedSelectTopicViewCell: LMFeedCollectionViewCell {
     // MARK: UI Elements
-    open private(set) lazy var selectTopicIcon: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var selectTopicIcon: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle("Select Topics", for: .normal)
         button.setTitleColor(LMFeedAppearance.shared.colors.appTintColor, for: .normal)
         button.setFont(LMFeedAppearance.shared.fonts.buttonFont1)

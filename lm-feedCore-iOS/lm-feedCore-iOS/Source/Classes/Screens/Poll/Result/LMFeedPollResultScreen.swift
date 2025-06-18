@@ -8,17 +8,17 @@
 import LikeMindsFeedUI
 import UIKit
 
-open class LMFeedPollResultScreen: LMViewController {
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+open class LMFeedPollResultScreen: LMFeedViewController {
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var optionView: LMCollectionView = {
+    open private(set) lazy var optionView: LMFeedCollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
         
-        let collection = LMCollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        let collection = LMFeedCollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.registerCell(type: LMFeedPollResultCollectionCell.self)
         collection.dataSource = self

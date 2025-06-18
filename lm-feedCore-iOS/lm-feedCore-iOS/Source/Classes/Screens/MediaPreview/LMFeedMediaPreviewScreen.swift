@@ -9,9 +9,9 @@ import AVKit
 import LikeMindsFeedUI
 import UIKit
 
-open class LMFeedMediaPreviewScreen: LMViewController {
-    open private(set) lazy var mediaCollectionView: LMCollectionView = { [unowned self] in
-        let collectionView = LMCollectionView(frame: .zero, collectionViewLayout: layout)
+open class LMFeedMediaPreviewScreen: LMFeedViewController {
+    open private(set) lazy var mediaCollectionView: LMFeedCollectionView = { [unowned self] in
+        let collectionView = LMFeedCollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.dataSource = self
         collectionView.delegate = self

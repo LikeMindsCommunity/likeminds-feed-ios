@@ -10,10 +10,10 @@ import LikeMindsFeedUI
 import UIKit
 
 @IBDesignable
-open class LMFeedEditPostScreen: LMViewController {
+open class LMFeedEditPostScreen: LMFeedViewController {
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
@@ -28,8 +28,8 @@ open class LMFeedEditPostScreen: LMViewController {
         return scroll
     }()
     
-    open private(set) lazy var scrollStackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var scrollStackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .center
         stack.distribution = .fill
@@ -65,8 +65,8 @@ open class LMFeedEditPostScreen: LMViewController {
         return view
     }()
     
-    open private(set) lazy var mediaCollectionView: LMCollectionView = {
-        let collection = LMCollectionView(frame: .zero, collectionViewLayout: LMCollectionView.mediaFlowLayout())
+    open private(set) lazy var mediaCollectionView: LMFeedCollectionView = {
+        let collection = LMFeedCollectionView(frame: .zero, collectionViewLayout: LMFeedCollectionView.mediaFlowLayout())
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.registerCell(type: LMUIComponents.shared.imagePreview)
         collection.registerCell(type: LMUIComponents.shared.videoPreview)
@@ -88,8 +88,8 @@ open class LMFeedEditPostScreen: LMViewController {
         return pageControl
     }()
     
-    open private(set) lazy var documentTableView: LMTableView = {
-        let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var documentTableView: LMFeedTableView = {
+        let table = LMFeedTableView().translatesAutoresizingMaskIntoConstraints()
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.isScrollEnabled = false
@@ -123,13 +123,13 @@ open class LMFeedEditPostScreen: LMViewController {
     
     open private(set) lazy var saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(didTapSaveButton))
     
-    open private(set) lazy var headingTextContainer: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var headingTextContainer: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var headingTextView: LMTextView = {
-        let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var headingTextView: LMFeedTextView = {
+        let textView = LMFeedTextView().translatesAutoresizingMaskIntoConstraints()
         textView.backgroundColor = LMFeedAppearance.shared.colors.clear
         textView.isScrollEnabled = true
         textView.isEditable = true
@@ -139,8 +139,8 @@ open class LMFeedEditPostScreen: LMViewController {
         return textView
     }()
     
-    open private(set) lazy var headerSepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var headerSepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.sepratorColor
         return view
     }()

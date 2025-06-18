@@ -14,10 +14,10 @@ public protocol LMFeedReportViewModelProtocol: LMBaseViewControllerProtocol {
 }
 
 @IBDesignable
-open class LMFeedReportScreen: LMViewController {
+open class LMFeedReportScreen: LMFeedViewController {
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.clear
         return view
     }()
@@ -28,8 +28,8 @@ open class LMFeedReportScreen: LMViewController {
         return scroll
     }()
     
-    open private(set) lazy var stackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var stackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .vertical
         stack.alignment = .center
         stack.distribution = .fill
@@ -37,16 +37,16 @@ open class LMFeedReportScreen: LMViewController {
         return stack
     }()
     
-    open private(set) lazy var titleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var titleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Please specify the problem to continue"
         label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.textColor = LMFeedAppearance.shared.colors.gray51
         return label
     }()
     
-    open private(set) lazy var subtitleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var subtitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "You would be able to report this comment after selecting a problem."
         label.numberOfLines = 0
         label.textColor = LMFeedAppearance.shared.colors.gray102
@@ -54,7 +54,7 @@ open class LMFeedReportScreen: LMViewController {
         return label
     }()
     
-    open private(set) lazy var reportCollectionView: LMCollectionView = {
+    open private(set) lazy var reportCollectionView: LMFeedCollectionView = {
         let collection = LMFeedTopicCollectionView(frame: .zero, collectionViewLayout: TagsLayout()).translatesAutoresizingMaskIntoConstraints()
         collection.isScrollEnabled = true
         collection.dataSource = self
@@ -64,22 +64,22 @@ open class LMFeedReportScreen: LMViewController {
         return collection
     }()
     
-    open private(set) lazy var otherReasonTextView: LMTextView = {
-        let textView = LMTextView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var otherReasonTextView: LMFeedTextView = {
+        let textView = LMFeedTextView().translatesAutoresizingMaskIntoConstraints()
         textView.delegate = self
         textView.addDoneButtonOnKeyboard()
         textView.backgroundColor = LMFeedAppearance.shared.colors.clear
         return textView
     }()
     
-    open private(set) lazy var sepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var sepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.appTintColor
         return view
     }()
     
-    open private(set) lazy var submitButton: LMButton = {
-        let button = LMButton.createButton(with: "REPORT", image: nil, textColor: .white, textFont: LMFeedAppearance.shared.fonts.buttonFont3, contentSpacing: .init(top: 16, left: 60, bottom: 16, right: 60))
+    open private(set) lazy var submitButton: LMFeedButton = {
+        let button = LMFeedButton.createButton(with: "REPORT", image: nil, textColor: .white, textFont: LMFeedAppearance.shared.fonts.buttonFont3, contentSpacing: .init(top: 16, left: 60, bottom: 16, right: 60))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.clipsToBounds = true
         button.backgroundColor = LMFeedAppearance.shared.colors.red

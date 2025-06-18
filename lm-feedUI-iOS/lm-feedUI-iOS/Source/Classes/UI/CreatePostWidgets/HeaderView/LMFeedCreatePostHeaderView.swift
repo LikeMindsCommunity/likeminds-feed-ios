@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedCreatePostHeaderView: LMView {
+open class LMFeedCreatePostHeaderView: LMFeedView {
     public struct ContentModel {
         let profileImage: String?
         let username: String
@@ -19,14 +19,14 @@ open class LMFeedCreatePostHeaderView: LMView {
         }
     }
     
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = .clear
         return view
     }()
     
-    open private(set) lazy var stackView: LMStackView = {
-        let stack = LMStackView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var stackView: LMFeedStackView = {
+        let stack = LMFeedStackView().translatesAutoresizingMaskIntoConstraints()
         stack.axis = .horizontal
         stack.alignment = .center
         stack.distribution = .fill
@@ -34,8 +34,8 @@ open class LMFeedCreatePostHeaderView: LMView {
         return stack
     }()
     
-    open private(set) lazy var imageContainerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var imageContainerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.clipsToBounds = true
         view.backgroundColor = .clear
         return view
@@ -47,8 +47,8 @@ open class LMFeedCreatePostHeaderView: LMView {
         return image
     }()
     
-    open private(set) lazy var userNameLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var userNameLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.textColor = LMFeedAppearance.shared.colors.gray1
         label.text = "Devansh Mohata"

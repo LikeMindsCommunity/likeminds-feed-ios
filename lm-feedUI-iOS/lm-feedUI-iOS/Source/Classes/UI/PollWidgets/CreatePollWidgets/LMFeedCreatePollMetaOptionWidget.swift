@@ -7,7 +7,7 @@
 
 import UIKit
 
-open class LMFeedCreatePollMetaOptionWidget: LMView {
+open class LMFeedCreatePollMetaOptionWidget: LMFeedView {
     public struct ContentModel {
         let id: Int
         let title: String
@@ -22,13 +22,13 @@ open class LMFeedCreatePollMetaOptionWidget: LMView {
     
     
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var optionTitleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var optionTitleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.textColor = LMFeedAppearance.shared.colors.black
         label.font = LMFeedAppearance.shared.fonts.buttonFont2
         return label
@@ -41,8 +41,8 @@ open class LMFeedCreatePollMetaOptionWidget: LMView {
         return switcher
     }()
     
-    open private(set) lazy var sepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var sepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = LMFeedAppearance.shared.colors.backgroundColor
         return view
     }()

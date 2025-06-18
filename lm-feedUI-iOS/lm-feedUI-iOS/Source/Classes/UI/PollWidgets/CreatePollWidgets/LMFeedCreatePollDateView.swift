@@ -7,23 +7,23 @@
 
 import UIKit
 
-open class LMFeedCreatePollDateView: LMView {
+open class LMFeedCreatePollDateView: LMFeedView {
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var titleLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var titleLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Poll expires on"
         label.font = LMFeedAppearance.shared.fonts.buttonFont2
         label.textColor = LMFeedAppearance.shared.colors.appTintColor
         return label
     }()
     
-    open private(set) lazy var dateLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var dateLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "DD-MM-YYYY hh:mm"
         label.font = LMFeedAppearance.shared.fonts.textFont1
         label.textColor = LMFeedAppearance.shared.colors.gray155

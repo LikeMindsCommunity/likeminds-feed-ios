@@ -10,7 +10,7 @@ import LikeMindsFeedUI
 
 open class LMFeedPostListScreen: LMFeedBasePostListScreen {
     // MARK: - Overridden Methods
-    open override func configureTableViewCells(_ tableView: LMTableView) {
+    open override func configureTableViewCells(_ tableView: LMFeedTableView) {
         tableView.register(LMUIComponents.shared.topicCell)
         tableView.register(LMUIComponents.shared.textCell)
         tableView.register(LMUIComponents.shared.mediaCell)
@@ -80,7 +80,7 @@ open class LMFeedPostListScreen: LMFeedBasePostListScreen {
             }
         default:
             // For any other type of content
-            return LMTableViewCell()
+            return LMFeedTableViewCell()
         }
         
         // Return an empty cell in case no valid cell is dequeued (this should rarely happen)

@@ -37,6 +37,7 @@ public struct Components {
     
     // MARK: Report Screem
     public var reportScreen: LMFeedReportScreen.Type = LMFeedReportScreen.self
+    public var videoReportScreen : LMFeedVideoReportScreen.Type = LMFeedVideoReportScreen.self
     
     // MARK: Create Poll
     public var createPollScreen: LMFeedCreatePollScreen.Type = LMFeedCreatePollScreen.self
@@ -50,6 +51,14 @@ public struct Components {
     
     // MARK: Media Preview Screen
     public var mediaPreviewScreen: LMFeedMediaPreviewScreen.Type = LMFeedMediaPreviewScreen.self
+    
+    //MARK: Create Reel Video
+    public var createShortVideoScreen: LMFeedCreateShortVideoScreen.Type = LMFeedCreateShortVideoScreen.self
+    public var likeBottomSheet : LMFeedLikeBottomsheet.Type  = LMFeedLikeBottomsheet.self
+    public var feedVideoFeedScreen : LMFeedVideoFeedScreen.Type = LMFeedVideoFeedScreen.self
+    public var feedVideoListScreen : LMFeedVideoListScreen.Type = LMFeedVideoListScreen.self
+    public var commentBottomSheet : LMFeedCommentBottomsheet.Type = LMFeedCommentBottomsheet.self
+    public var editShortVideoScreen : LMFeedEditShortVideoScreen.Type = LMFeedEditShortVideoScreen.self
     
     // MARK: QnA Feed
     public var qnaPostListScreen: LMFeedQnAPostListScreen.Type = LMFeedQnAPostListScreen.self

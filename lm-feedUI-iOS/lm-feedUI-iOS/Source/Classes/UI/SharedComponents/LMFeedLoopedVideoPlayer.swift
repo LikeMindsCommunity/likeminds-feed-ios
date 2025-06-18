@@ -47,7 +47,21 @@ public final class LMFeedLoopedVideoPlayer: UIView {
                 
                 self.layer.addSublayer(playerLayer)
             }
+            
+            // Add observer for video completion
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(playerDidFinishPlaying),
+                name: .AVPlayerItemDidPlayToEndTime,
+                object: videoPlayerController?.player?.currentItem
+            )
         }
+    }
+    
+    @objc private func playerDidFinishPlaying() {
+        // Seek to beginning and play again
+        videoPlayerController?.player?.seek(to: CMTime.zero)
+        videoPlayerController?.player?.play()
     }
     
     func play() {

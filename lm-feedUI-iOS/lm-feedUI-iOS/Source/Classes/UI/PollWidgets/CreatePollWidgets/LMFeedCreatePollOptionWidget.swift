@@ -7,7 +7,7 @@
 
 import Foundation
 
-open class LMFeedCreatePollOptionWidget: LMTableViewCell {
+open class LMFeedCreatePollOptionWidget: LMFeedTableViewCell {
     public struct ContentModel {
         public let id: Int
         public let option: String?
@@ -20,8 +20,8 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
     
     
     // MARK: UI Elements
-    open private(set) lazy var optionTextField: LMTextField = {
-        let textField = LMTextField()
+    open private(set) lazy var optionTextField: LMFeedTextField = {
+        let textField = LMFeedTextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.addDoneButtonOnKeyboard()
         textField.attributedPlaceholder = NSAttributedString(
@@ -32,8 +32,8 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
         return textField
     }()
     
-    open private(set) lazy var crossButton: LMButton = {
-        let button = LMButton().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var crossButton: LMFeedButton = {
+        let button = LMFeedButton().translatesAutoresizingMaskIntoConstraints()
         button.setTitle(nil, for: .normal)
         button.setImage(LMFeedConstants.shared.images.xmarkIcon, for: .normal)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 24)), forImageIn: .normal)
@@ -41,8 +41,8 @@ open class LMFeedCreatePollOptionWidget: LMTableViewCell {
         return button
     }()
     
-    open private(set) lazy var sepratorView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var sepratorView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = UIColor(red: 208 / 255, green: 216 / 255, blue: 226 / 255, alpha: 1)
         return view
     }()

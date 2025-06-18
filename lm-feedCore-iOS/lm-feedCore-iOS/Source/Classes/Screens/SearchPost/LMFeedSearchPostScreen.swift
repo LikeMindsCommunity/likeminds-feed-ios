@@ -10,7 +10,7 @@ import UIKit
 
 open class LMFeedSearchPostScreen: LMFeedBaseSearchPostScreen {
     
-    open override func setupTableView(_ tableView: LMTableView) {
+    open override func setupTableView(_ tableView: LMFeedTableView) {
         super.setupTableView(tableView)
         tableView.register(LMUIComponents.shared.topicCell)
         tableView.register(LMUIComponents.shared.textCell)

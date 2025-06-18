@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class LMFeedTopicSelectionCell: LMTableViewCell {
+open class LMFeedTopicSelectionCell: LMFeedTableViewCell {
     public struct ContentModel {
         public let topic: String
         public let topicID: String?
@@ -23,16 +23,16 @@ open class LMFeedTopicSelectionCell: LMTableViewCell {
     
     
     // MARK: UI Elements
-    open private(set) lazy var topicLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var topicLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.font = LMFeedAppearance.shared.fonts.headingFont1
         label.textColor = LMFeedAppearance.shared.colors.gray51
         label.text = "Topic #1"
         return label
     }()
     
-    open private(set) lazy var tickButton: LMImageView = {
-        let button = LMImageView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var tickButton: LMFeedImageView = {
+        let button = LMFeedImageView().translatesAutoresizingMaskIntoConstraints()
         button.image = nil
         button.tintColor = LMFeedAppearance.shared.colors.appTintColor
         return button

@@ -13,23 +13,23 @@ public protocol LMFeedCreatePollOptionsViewProtocol: AnyObject {
     func onAddNewOptionTapped()
 }
 
-open class LMFeedCreatePollOptionsView: LMView {
+open class LMFeedCreatePollOptionsView: LMFeedView {
     // MARK: UI Elements
-    open private(set) lazy var containerView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var containerView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         return view
     }()
     
-    open private(set) lazy var answerLabel: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var answerLabel: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Answer options"
         label.font = LMFeedAppearance.shared.fonts.buttonFont2
         label.textColor = LMFeedAppearance.shared.colors.appTintColor
         return label
     }()
     
-    open private(set) lazy var optionStack: LMTableView = {
-        let table = LMTableView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var optionStack: LMFeedTableView = {
+        let table = LMFeedTableView().translatesAutoresizingMaskIntoConstraints()
         table.dataSource = self
         table.delegate = self
         table.isScrollEnabled = false
@@ -42,21 +42,21 @@ open class LMFeedCreatePollOptionsView: LMView {
         return table
     }()
     
-    open private(set) lazy var addOptionView: LMView = {
-        let view = LMView().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var addOptionView: LMFeedView = {
+        let view = LMFeedView().translatesAutoresizingMaskIntoConstraints()
         view.backgroundColor = .clear
         view.isUserInteractionEnabled = true
         return view
     }()
     
-    open private(set) lazy var addOptionImage: LMImageView = {
-        let image = LMImageView(image: LMFeedConstants.shared.images.plusCircleIcon.withConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.buttonFont2)))
+    open private(set) lazy var addOptionImage: LMFeedImageView = {
+        let image = LMFeedImageView(image: LMFeedConstants.shared.images.plusCircleIcon.withConfiguration(UIImage.SymbolConfiguration(font: LMFeedAppearance.shared.fonts.buttonFont2)))
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
     
-    open private(set) lazy var addOptionText: LMLabel = {
-        let label = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var addOptionText: LMFeedLabel = {
+        let label = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         label.text = "Add an option..."
         label.font = LMFeedAppearance.shared.fonts.buttonFont2
         label.textColor = LMFeedAppearance.shared.colors.appTintColor

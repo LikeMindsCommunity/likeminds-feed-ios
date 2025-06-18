@@ -7,9 +7,9 @@
 
 import Foundation
 
-open class LMFeedProfileImageView: LMView{
-    open private(set) lazy var imageView: LMImageView = {
-        let imageView = LMImageView().translatesAutoresizingMaskIntoConstraints()
+open class LMFeedProfileImageView: LMFeedView{
+    open private(set) lazy var imageView: LMFeedImageView = {
+        let imageView = LMFeedImageView().translatesAutoresizingMaskIntoConstraints()
         imageView.clipsToBounds = true
         imageView.isUserInteractionEnabled = true
         imageView.layer.masksToBounds = true
@@ -19,8 +19,8 @@ open class LMFeedProfileImageView: LMView{
         return imageView
     }()
     
-    open private(set) lazy var initialsView: LMLabel = {
-        let nameInitialLabel = LMLabel().translatesAutoresizingMaskIntoConstraints()
+    open private(set) lazy var initialsView: LMFeedLabel = {
+        let nameInitialLabel = LMFeedLabel().translatesAutoresizingMaskIntoConstraints()
         nameInitialLabel.textColor = .white
         nameInitialLabel.textAlignment = NSTextAlignment.center
         nameInitialLabel.backgroundColor = LMFeedAppearance.shared.colors.appTintColor
