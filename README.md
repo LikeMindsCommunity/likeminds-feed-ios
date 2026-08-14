@@ -37,3 +37,6 @@ We have a mailing list located at: [iOS@likeminds.community](mailto:iOS@likemind
 
 ## License
 The project is licensed under the MIT license.
+## License
+
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
